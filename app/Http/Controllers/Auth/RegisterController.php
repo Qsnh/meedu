@@ -48,9 +48,19 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'mobile' => 'bail|required|unique:users',
+            'password' => 'bail|required|min:6|max:16|confirmed',
+        ], [
+            'mobile' => [
+                'required' => '请输入手机号',
+                'unique' => '手机号已经存在',
+            ],
+            'password' => [
+                'required' => '请输入密码',
+                'min' => '密码长度不能小于6个字符',
+                'max' => '密码长度不能超过16个字符',
+                'confirmed' => '两次输入的密码不一致',
+            ],
         ]);
     }
 
@@ -63,8 +73,8 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'nick_name' => $data['nick_name'] ?? User::randomNickName(),
+            'mobile' => $data['mobile'],
             'password' => bcrypt($data['password']),
         ]);
     }
