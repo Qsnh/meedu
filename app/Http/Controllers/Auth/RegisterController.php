@@ -48,9 +48,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'nick_name' => 'required|unique:users',
             'mobile' => 'bail|required|unique:users',
             'password' => 'bail|required|min:6|max:16|confirmed',
         ], [
+            'nick_name' => [
+                'required' => '请输入呢称',
+                'unique' => '呢称已经存在',
+            ],
             'mobile' => [
                 'required' => '请输入手机号',
                 'unique' => '手机号已经存在',
@@ -76,6 +81,8 @@ class RegisterController extends Controller
             'nick_name' => $data['nick_name'] ?? User::randomNickName(),
             'mobile' => $data['mobile'],
             'password' => bcrypt($data['password']),
+            'is_active' => config('meedu.member.is_active_default'),
+            'is_lock' => config('meedu.member.is_lock_default'),
         ]);
     }
 }
