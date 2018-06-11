@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Course;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -41,6 +42,15 @@ class User extends Authenticatable
     public static function randomNickName()
     {
         return 'random.' . str_random(10);
+    }
+
+    /**
+     * 该用户下的课程
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'user_id', 'id');
     }
 
 }
