@@ -16,5 +16,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => 'backend'], function () {
+    Route::get('/login', 'Backend\AdministratorController@showLoginForm')->name('backend.login');
+    Route::post('/login', 'Backend\AdministratorController@loginHandle');
+});
