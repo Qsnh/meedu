@@ -75,7 +75,7 @@ return [
             'model' => App\User::class,
         ],
 
-        'administrator' => [
+        'administrators' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Administrator::class,
         ],

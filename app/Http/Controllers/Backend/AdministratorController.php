@@ -15,9 +15,22 @@ class AdministratorController extends Controller
 
     protected $guard = 'administrator';
 
+    public function __construct()
+    {
+        $this->middleware(
+            'backend.login.check',
+            [
+                'expect' => [
+                    'showLoginForm', 'loginHandle',
+                ]
+            ]
+        );
+    }
+
     public function index()
     {
-        $administrators = Administrator::orderByDesc('created_at')->paginate(10);
+        $administrators = Administrator::orderByDesc('created_at')
+                                        ->paginate(10);
         return view('backend.administrator.index', compact('administrators'));
     }
 
@@ -28,12 +41,14 @@ class AdministratorController extends Controller
 
     public function loginHandle(LoginRequest $request)
     {
-        $credential = $request->only(['email', 'password']);
-        if (! Auth::guard($this->guard)->attempt($credential)) {
+        if (
+            ! Auth::guard($this->guard)->attempt(
+                $request->only(['email', 'password'])
+            )
+        ) {
             flash('邮箱或密码错误');
-            return back();
+            return back()->withInput(['email']);
         }
-        flash('登录成功', 'success');
         return redirect('/');
     }
 
@@ -42,7 +57,10 @@ class AdministratorController extends Controller
         return view('backend.administrator.create');
     }
 
-    public function store(AdministratorRequest $request, Administrator $administrator)
+    public function store(
+        AdministratorRequest $request,
+        $administrator
+    )
     {
         $administrator->fill($request->filldata())->save();
         flash('管理员添加成功', 'success');
@@ -70,7 +88,12 @@ class AdministratorController extends Controller
     public function editPasswordHandle(EditPasswordRequest $request)
     {
         $administrator = Auth::guard($this->guard)->user();
-        if (! Hash::check($request->input('old_password'), $administrator->password)) {
+        if (
+            ! Hash::check(
+                $request->input('old_password'),
+                $administrator->password
+            )
+        ) {
             flash('原密码不正确');
             return back();
         }

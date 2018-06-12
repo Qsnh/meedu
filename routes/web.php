@@ -19,7 +19,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix' => 'backend'], function () {
-    Route::get('/login', 'Backend\AdministratorController@showLoginForm')->name('backend.login');
-    Route::post('/login', 'Backend\AdministratorController@loginHandle');
+Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
+    // 后台登录
+    Route::get('/login', 'AdministratorController@showLoginForm')->name('backend.login');
+    Route::post('/login', 'AdministratorController@loginHandle');
+
+    // 管理员
+    Route::get('/administrator', 'AdministratorController@index')->name('backend.administrator.index');
+
 });
