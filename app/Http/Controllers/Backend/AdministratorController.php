@@ -20,7 +20,7 @@ class AdministratorController extends Controller
         $this->middleware(
             'backend.login.check',
             [
-                'expect' => [
+                'except' => [
                     'showLoginForm', 'loginHandle',
                 ]
             ]
@@ -59,7 +59,7 @@ class AdministratorController extends Controller
 
     public function store(
         AdministratorRequest $request,
-        $administrator
+        Administrator $administrator
     )
     {
         $administrator->fill($request->filldata())->save();
@@ -67,12 +67,13 @@ class AdministratorController extends Controller
         return back();
     }
 
-    public function showEditForm()
+    public function edit($id)
     {
-        return view('backend.administrator.edit');
+        $administrator = Administrator::findOrFail($id);
+        return view('backend.administrator.edit', compact('administrator'));
     }
 
-    public function editHandle(AdministratorRequest $request, $id)
+    public function update(AdministratorRequest $request, $id)
     {
         $administrator = Administrator::findOrFail($id);
         $administrator->fill($request->filldata())->save();
@@ -104,9 +105,21 @@ class AdministratorController extends Controller
 
     public function destroy($id)
     {
-        Administrator::destroy($id);
-        flash('管理员删除成功', 'success');
+        $administrator = Administrator::findOrFail($id);
+        if (! $administrator->couldDestroy()) {
+            flash('当前用户是超级管理员账户无法删除');
+        } else {
+            $administrator->delete();
+            flash('管理员删除成功', 'success');
+        }
         return back();
+    }
+
+    public function logoutHandle()
+    {
+        Auth::guard($this->guard)->logout();
+        flash('成功退出', 'success');
+        return redirect(route('backend.login'));
     }
 
 }

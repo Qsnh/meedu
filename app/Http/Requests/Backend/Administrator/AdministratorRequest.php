@@ -24,13 +24,13 @@ class AdministratorRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|max:16',
-            'email' => ['email'],
-            'password' => 'required|min:6|max:16|confirmed',
+            'name' => 'bail|required|max:16',
+            'email' => ['bail', 'email'],
         ];
 
         if ($this->isMethod('post')) {
             $rules['email'] = array_merge($rules['email'], ['required', 'unique:administrators']);
+            $rules['password'] = 'bail|required|min:6|max:16|confirmed';
         }
 
         return $rules;
@@ -56,7 +56,7 @@ class AdministratorRequest extends FormRequest
      */
     public function filldata()
     {
-        $data = ['name' => $this->input('name', ''),];
+        $data = ['name' => $this->input('name', '')];
         $this->input('password') && $data['password'] = bcrypt($this->input('password'));
         if ($this->isMethod('post')) {
             $data['email'] = $this->input('email');

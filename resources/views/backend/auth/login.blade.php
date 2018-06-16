@@ -39,6 +39,31 @@
 </div>
 
 <script src="{{ asset('js/app.js') }}"></script>
-@include('components.flash')
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                messageSuccess: '{{ get_first_flash('success') }}',
+                messageWarning: '{{ get_first_flash('warning') }}',
+                messageError: '{{ get_first_flash('errors') }}'
+            }
+        },
+        created: function () {
+            if (this.messageSuccess) {
+                this.$message.success(this.messageSuccess);
+                return;
+            }
+            if (this.messageWarning) {
+                this.$message.warning(this.messageWarning);
+                return;
+            }
+            if (this.messageError) {
+                this.$message.warning(this.messageError);
+                return;
+            }
+        }
+    });
+</script>
 </body>
 </html>

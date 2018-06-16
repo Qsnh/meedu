@@ -13,6 +13,10 @@ class AdministratorRole extends Model
         'display_name', 'slug', 'description',
     ];
 
+    protected $appends = [
+        'edit_url', 'destroy_url',
+    ];
+
     /**
      * 角色下的管理员
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -39,6 +43,16 @@ class AdministratorRole extends Model
             'role_id',
             'permission_id'
         );
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.administrator_role.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.administrator_role.destroy', $this);
     }
 
 }

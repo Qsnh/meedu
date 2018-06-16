@@ -21,6 +21,10 @@ class Administrator extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = [
+        'edit_url', 'destroy_url',
+    ];
+
     /**
      * 从Request上创建管理员用户
      * @param Request $request
@@ -52,6 +56,25 @@ class Administrator extends Authenticatable
             'administrator_id',
             'role_id'
         );
+    }
+
+    /**
+     * 当前管理员是否可以删除
+     * @return bool
+     */
+    public function couldDestroy()
+    {
+        return $this->roles()->where('slug', config('meedu.administrator.super_slug'))->exists();
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.administrator.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.administrator.destroy', $this);
     }
 
 }

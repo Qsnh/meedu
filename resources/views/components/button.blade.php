@@ -1,0 +1,1 @@
+<el-button @click="location.href = '{{ $url ?? '' }}'" type="primary">{{ $title ?? '' }}</el-button>

@@ -2,30 +2,25 @@
 
 @section('body')
 
-    @include('components.breadcrumb', ['name' => '管理员列表'])
+    @include('components.breadcrumb', ['name' => '角色列表'])
 
     <el-row>
         <el-col :span="24">
-            @include('components.button', ['url' => route('backend.administrator.create'), 'title' => '添加'])
+            @include('components.button', ['url' => route('backend.administrator_role.create'), 'title' => '添加'])
         </el-col>
         <el-col :span="24">
             <el-table :data="administrators" style="width: 100%">
                 <el-table-column
-                        prop="name"
-                        label="姓名">
+                        prop="display_name"
+                        label="角色名">
                 </el-table-column>
                 <el-table-column
-                        prop="email"
-                        label="邮箱">
+                        prop="slug"
+                        label="Slug">
                 </el-table-column>
                 <el-table-column
-                        prop="last_login_ip"
-                        label="最后登录">
-                    @verbatim
-                    <template slot-scope="scope">
-                        {{scope.row.last_login_date}}/{{scope.row.last_login_ip}}
-                    </template>
-                    @endverbatim
+                        prop="description"
+                        label="描述">
                 </el-table-column>
                 <el-table-column
                         prop="created_at"
@@ -40,6 +35,9 @@
                                 size="mini"
                                 type="danger"
                                 @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
+                                size="mini"
+                                type="primary">授权</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -53,21 +51,23 @@
         Vue.mixin({
             data: function () {
                 return {
-                    remoteData: @json($administrators),
+                    remoteData: @json($roles),
                 }
             },
             computed: {
                 administrators: function () {
-                    var administrators = this.remoteData.data;
-                    return administrators;
+                    var roles = this.remoteData.data;
+                    return roles;
                 }
             },
             methods: {
-                handleEdit: function (index, admin) {
-                    location.href = admin.edit_url;
+                handleEdit: function (index, role) {
+                    location.href = role.edit_url;
                 },
-                handleDelete: function (index, admin) {
-                    location.href = admin.destroy_url;
+                handleDelete: function (index, role) {
+                    if (confirm('确定删除？')) {
+                        location.href = role.destroy_url;
+                    }
                 },
             }
         });
