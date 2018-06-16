@@ -112,6 +112,9 @@
                         <li class="{{ menu_is_active('backend.administrator_role.index') }}">
                             <a href="{{ route('backend.administrator_role.index') }}">角色</a>
                         </li>
+                        <li class="{{ menu_is_active('backend.administrator_permission.index') }}">
+                            <a href="{{ route('backend.administrator_permission.index') }}">权限</a>
+                        </li>
                     </ul>
                 </dd>
             </dl>
