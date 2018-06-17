@@ -37,7 +37,8 @@
                                 @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         <el-button
                                 size="mini"
-                                type="primary">授权</el-button>
+                                type="primary"
+                                @click="handlePermission(scope.$index, scope.row)">授权</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -69,6 +70,9 @@
                         location.href = role.destroy_url;
                     }
                 },
+                handlePermission: function (index, role) {
+                    location.href = role.permission_url;
+                }
             }
         });
     </script>

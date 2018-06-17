@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\Backend\AdministratorRoleRequest;
+use App\Models\AdministratorPermission;
 use App\Models\AdministratorRole;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class AdministratorRoleController extends Controller
 {
@@ -53,6 +55,21 @@ class AdministratorRoleController extends Controller
             $role->delete();
             flash('删除成功', 'success');
         }
+        return back();
+    }
+
+    public function showSelectPermissionPage($id)
+    {
+        $role = AdministratorRole::findOrFail($id);
+        $permissions = AdministratorPermission::all();
+        return view('backend.administrator_role.select_permission', compact('permissions', 'role'));
+    }
+
+    public function handlePermissionSave(Request $request, $id)
+    {
+        $role = AdministratorRole::findOrFail($id);
+        $role->permissions()->sync($request->input('permission_id', []));
+        flash('授权成功', 'success');
         return back();
     }
 

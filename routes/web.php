@@ -42,6 +42,8 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
     Route::get('/administrator_role/{id}/edit', 'AdministratorRoleController@edit')->name('backend.administrator_role.edit');
     Route::put('/administrator_role/{id}/edit', 'AdministratorRoleController@update');
     Route::get('/administrator_role/{id}/destroy', 'AdministratorRoleController@destroy')->name('backend.administrator_role.destroy');
+    Route::get('/administrator_role/{id}/permission', 'AdministratorRoleController@showSelectPermissionPage')->name('backend.administrator_role.permission');
+    Route::post('/administrator_role/{id}/permission', 'AdministratorRoleController@handlePermissionSave');
     // 权限
     Route::get('/administrator_permission', 'AdministratorPermissionController@index')->name('backend.administrator_permission.index');
     Route::get('/administrator_permission/create', 'AdministratorPermissionController@create')->name('backend.administrator_permission.create');

@@ -14,7 +14,7 @@ class AdministratorRole extends Model
     ];
 
     protected $appends = [
-        'edit_url', 'destroy_url',
+        'edit_url', 'destroy_url', 'permission_url',
     ];
 
     /**
@@ -53,6 +53,16 @@ class AdministratorRole extends Model
     public function getDestroyUrlAttribute()
     {
         return route('backend.administrator_role.destroy', $this);
+    }
+
+    public function getPermissionUrlAttribute()
+    {
+        return route('backend.administrator_role.permission', $this);
+    }
+
+    public function hasPermission(AdministratorPermission $permission)
+    {
+        return $this->permissions()->where('id', $permission->id)->exists();
     }
 
 }
