@@ -7,6 +7,7 @@ use App\Http\Requests\Backend\Administrator\EditPasswordRequest;
 use App\Http\Requests\Backend\Administrator\LoginRequest;
 use App\Models\Administrator;
 use App\Http\Controllers\Controller;
+use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,7 +55,8 @@ class AdministratorController extends Controller
 
     public function create()
     {
-        return view('backend.administrator.create');
+        $roles = AdministratorRole::all();
+        return view('backend.administrator.create', compact('roles'));
     }
 
     public function store(
@@ -63,6 +65,9 @@ class AdministratorController extends Controller
     )
     {
         $administrator->fill($request->filldata())->save();
+
+        $administrator->roles()->sync($request->input('role_id', []));
+
         flash('管理员添加成功', 'success');
         return back();
     }
@@ -70,13 +75,18 @@ class AdministratorController extends Controller
     public function edit($id)
     {
         $administrator = Administrator::findOrFail($id);
-        return view('backend.administrator.edit', compact('administrator'));
+        $roles = AdministratorRole::all();
+        return view('backend.administrator.edit', compact('roles', 'administrator'));
     }
 
     public function update(AdministratorRequest $request, $id)
     {
         $administrator = Administrator::findOrFail($id);
+
         $administrator->fill($request->filldata())->save();
+
+        $administrator->roles()->sync($request->input('role_id', []));
+
         flash('管理员信息编辑成功', 'success');
         return back();
     }

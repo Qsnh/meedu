@@ -24,6 +24,15 @@
                 <el-form-item label="请再输入一次密码">
                     <el-input name="password_confirmation" type="password" placeholder="请再输入一次密码"></el-input>
                 </el-form-item>
+                <el-form-item label="角色">
+                    <select name="role_id[]" multiple="multiple">
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" {{ $administrator->hasRole($role) ? 'selected' : '' }}>
+                                {{ $role->display_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </el-form-item>
                 <el-button type="primary" native-type="submit">编辑</el-button>
             </el-form>
         </el-col>

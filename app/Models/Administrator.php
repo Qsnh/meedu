@@ -77,4 +77,9 @@ class Administrator extends Authenticatable
         return route('backend.administrator.destroy', $this);
     }
 
+    public function hasRole(AdministratorRole $role)
+    {
+        return $this->roles()->where('id', $role->id)->exists();
+    }
+
 }
