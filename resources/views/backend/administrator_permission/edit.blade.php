@@ -22,13 +22,13 @@
                     <el-input name="description" value="{{ $permission->description }}" placeholder="请输入描述"></el-input>
                 </el-form-item>
                 <el-form-item label="请求方法">
-                    <el-select v-model="selectedMethods" name="method[]" placeholder="请选择" :multiple="true">
+                    <el-select v-model="selectedMethods" placeholder="请选择" :multiple="true">
                         <el-option v-for="method in methods"
-                                   value-key="label"
                                    :key="method.value"
                                    :label="method.label"
                                    :value="method.value"></el-option>
                     </el-select>
+                    <input type="hidden" name="method[]" :value="method" v-for="method in selectedMethods" :key="method">
                 </el-form-item>
                 <el-form-item label="请求地址">
                     <el-input name="url" value="{{ $permission->url }}" placeholder="请输入请求地址"></el-input>
