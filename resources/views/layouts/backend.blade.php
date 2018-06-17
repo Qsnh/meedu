@@ -94,7 +94,9 @@
                 <dt>主面板</dt>
                 <dd>
                     <ul>
-                        <li><a href="">主面板</a></li>
+                        <li class="{{ menu_is_active('backend.dashboard.index') }}">
+                            <a href="{{ route('backend.dashboard.index') }}">主面板</a>
+                        </li>
                     </ul>
                 </dd>
                 <dt>视频管理</dt>

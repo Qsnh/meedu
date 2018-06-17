@@ -28,6 +28,8 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
     Route::get('/edit/password', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
     Route::put('/edit/password', 'AdministratorController@editPasswordHandle');
 
+    // 主面板
+    Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard.index');
     // 管理员
     Route::get('/administrator', 'AdministratorController@index')->name('backend.administrator.index');
     Route::get('/administrator/create', 'AdministratorController@create')->name('backend.administrator.create');

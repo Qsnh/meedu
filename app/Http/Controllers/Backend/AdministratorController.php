@@ -50,7 +50,7 @@ class AdministratorController extends Controller
             flash('邮箱或密码错误');
             return back()->withInput(['email']);
         }
-        return redirect('/');
+        return redirect(route('backend.dashboard.index'));
     }
 
     public function create()
