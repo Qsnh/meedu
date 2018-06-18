@@ -54,4 +54,12 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
     Route::put('/administrator_permission/{id}/edit', 'AdministratorPermissionController@update');
     Route::get('/administrator_permission/{id}/destroy', 'AdministratorPermissionController@destroy')->name('backend.administrator_permission.destroy');
 
+    // 课程
+    Route::get('/course', 'CourseController@index')->name('backend.course.index');
+    Route::get('/course/create', 'CourseController@create')->name('backend.course.create');
+    Route::post('/course/create', 'CourseController@store');
+    Route::get('/course/{id}/edit', 'CourseController@edit')->name('backend.course.edit');
+    Route::put('/course/{id}/edit', 'CourseController@update');
+    Route::get('/course/{id}/delete', 'CourseController@destroy')->name('backend.course.destroy');
+
 });

@@ -102,7 +102,10 @@
                 <dt>视频管理</dt>
                 <dd>
                     <ul>
-                        <li><a href="">视频列表</a></li>
+                        <li class="{{ menu_is_active('backend.course.index') }}">
+                            <a href="{{ route('backend.course.index') }}">课程</a>
+                        </li>
+                        <li><a href="">视频</a></li>
                     </ul>
                 </dd>
                 <dt>系统</dt>

@@ -19,6 +19,10 @@ class Course extends Model
         'seo_description', 'published_at', 'is_show',
     ];
 
+    protected $appends = [
+        'edit_url', 'destroy_url',
+    ];
+
     /**
      * 该课程所属用户
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -26,6 +30,15 @@ class Course extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * 该课程下面的视频
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'course_id', 'id');
     }
 
     /**
@@ -56,6 +69,16 @@ class Course extends Model
     public function scopePublished($query)
     {
         return $query->where('published_at', '>=', date('Y-m-d H:i:s'));
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.course.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.course.destroy', $this);
     }
 
 }
