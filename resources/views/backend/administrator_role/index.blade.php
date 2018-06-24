@@ -6,7 +6,7 @@
 
     <el-row>
         <el-col :span="24">
-            @include('components.button', ['url' => route('backend.administrator_role.create'), 'title' => '添加'])
+            <meedu-a :url="'{{ route('backend.administrator_role.create') }}'" :name="'添加'"></meedu-a>
         </el-col>
         <el-col :span="24">
             <el-table :data="administrators" style="width: 100%">
@@ -28,17 +28,9 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                                size="mini"
-                                type="danger"
-                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                        <el-button
-                                size="mini"
-                                type="primary"
-                                @click="handlePermission(scope.$index, scope.row)">授权</el-button>
+                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
+                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
+                        <meedu-a :size="'mini'" :name="'授权'" :type="'primary'" :url="scope.row.permission_url"></meedu-a>
                     </template>
                 </el-table-column>
             </el-table>
@@ -59,19 +51,6 @@
                 administrators: function () {
                     var roles = this.remoteData.data;
                     return roles;
-                }
-            },
-            methods: {
-                handleEdit: function (index, role) {
-                    location.href = role.edit_url;
-                },
-                handleDelete: function (index, role) {
-                    if (confirm('确定删除？')) {
-                        location.href = role.destroy_url;
-                    }
-                },
-                handlePermission: function (index, role) {
-                    location.href = role.permission_url;
                 }
             }
         });

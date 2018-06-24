@@ -6,7 +6,7 @@
 
     <el-row>
         <el-col :span="24">
-            @include('components.button', ['url' => route('backend.administrator.create'), 'title' => '添加'])
+            <meedu-a :url="'{{ route('backend.administrator.create') }}'" :name="'添加'"></meedu-a>
         </el-col>
         <el-col :span="24">
             <el-table :data="administrators" style="width: 100%">
@@ -33,13 +33,8 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                                size="mini"
-                                type="danger"
-                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
+                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,14 +56,6 @@
                     var administrators = this.remoteData.data;
                     return administrators;
                 }
-            },
-            methods: {
-                handleEdit: function (index, admin) {
-                    location.href = admin.edit_url;
-                },
-                handleDelete: function (index, admin) {
-                    location.href = admin.destroy_url;
-                },
             }
         });
     </script>

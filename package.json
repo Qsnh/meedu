@@ -17,6 +17,7 @@
     "vue": "^2.5.7"
   },
   "dependencies": {
-    "element-ui": "^2.4.1"
+    "element-ui": "^2.4.1",
+    "mavon-editor": "^2.6.9"
   }
 }

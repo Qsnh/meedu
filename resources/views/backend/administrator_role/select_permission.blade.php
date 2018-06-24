@@ -6,7 +6,7 @@
 
     <el-row>
         <el-col :span="24">
-            @include('components.button', ['url' => route('backend.administrator_role.index'), 'title' => '返回角色列表'])
+            <meedu-a :url="'{{ route('backend.administrator_role.index') }}'" :name="'返回角色列表'"></meedu-a>
         </el-col>
         <el-col :span="12" :offset="6">
             <el-form label-position="top" method="post">

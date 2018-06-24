@@ -62,4 +62,7 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
     Route::put('/course/{id}/edit', 'CourseController@update');
     Route::get('/course/{id}/delete', 'CourseController@destroy')->name('backend.course.destroy');
 
+
+    // 图片上传
+    Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
 });

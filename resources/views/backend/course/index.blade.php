@@ -6,7 +6,7 @@
 
     <el-row>
         <el-col :span="24">
-            @include('components.button', ['url' => route('backend.course.create'), 'title' => '添加'])
+            <meedu-a :url="'{{ route('backend.course.create') }}'" :name="'添加'"></meedu-a>
         </el-col>
 
         <el-col :span="12" :offset="6">
