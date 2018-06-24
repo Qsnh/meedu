@@ -35,7 +35,7 @@ if (! function_exists('menu_is_active')) {
             $currentRouteNameArray = explode('.', $currentRouteName);
             unset($currentRouteNameArray[count($currentRouteNameArray) - 1]);
             $currentRouteName = implode('.', $currentRouteNameArray);
-            $isActive = preg_match("/{$currentRouteName}/", $routeName) ? 'active' : '';
+            $isActive = preg_match("/{$currentRouteName}[^_]/", $routeName) ? 'active' : '';
         }
         return $isActive;
     }
