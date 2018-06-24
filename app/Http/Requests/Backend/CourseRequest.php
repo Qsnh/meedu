@@ -41,7 +41,7 @@ class CourseRequest extends FormRequest
             'title.max' => '课程标题的长度不能超过120个字符',
             'thumb.required' => '请上传课程封面',
             'short_description.required' => '请输入课程的简短介绍',
-            'description.required' => '请输入课程介绍',
+            'description.required' => '请输入课程详情介绍',
             'published_at' => '请输入课程发布时间',
         ];
     }
@@ -62,7 +62,7 @@ class CourseRequest extends FormRequest
         ];
 
         if ($this->isMethod('post')) {
-            $slug = explode('-', (new Pinyin())->convert($this->input('title')));
+            $slug = implode('-', (new Pinyin())->convert($this->input('title')));
             $data['slug'] = $slug;
         }
 

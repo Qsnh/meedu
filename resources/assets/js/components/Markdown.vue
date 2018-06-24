@@ -4,12 +4,15 @@
                       :boxShadow="false"
                       :subfield="false"
                       @imgAdd="$imgAdd" />
+        <div v-show="false">
+            <textarea :name="field" v-model="content"></textarea>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['markdown'],
+        props: ['markdown', 'field'],
         created: function () {
             this.content = this.markdown;
         },

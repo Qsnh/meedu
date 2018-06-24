@@ -4,9 +4,11 @@
 
     @include('components.breadcrumb', ['name' => '添加课程'])
 
-    <el-col :span="24" style="margin-bottom: 20px;">
-        <meedu-a :url="'{{ route('backend.course.index') }}'" :name="'返回课程列表'"></meedu-a>
-    </el-col>
+    <el-row>
+        <el-col :span="24" style="margin-bottom: 20px;">
+            <meedu-a :url="'{{ route('backend.course.index') }}'" :name="'返回课程列表'"></meedu-a>
+        </el-col>
+    </el-row>
 
     <el-row :gutter="20">
         <el-form label-position="top" method="post">
@@ -16,7 +18,7 @@
                     <el-input name="title" placeholder="课程名" value="{{ old('title') }}"></el-input>
                 </el-form-item>
                 <el-form-item label="描述">
-                    <meedu-markdown :markdown="''"></meedu-markdown>
+                    <meedu-markdown :markdown="''" field="description"></meedu-markdown>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -33,10 +35,8 @@
                     <el-date-picker
                             v-model="published_at"
                             type="datetime"
-                            placeholder="选择日期时间"
-                            align="right"
-                            name="published_at"
-                            :picker-options="pickerOptions1">
+                            placeholder="选择上线时间"
+                            name="published_at">
                     </el-date-picker>
                 </el-form-item>
 
@@ -73,10 +73,11 @@
 
 @section('js')
     <script>
+        var now = new Date();
         Vue.mixin({
             data: function () {
                 return {
-                    published_at: '{{ date('Y-m-d H:i:s') }}'
+                    published_at: now
                 }
             }
         });
