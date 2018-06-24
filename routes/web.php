@@ -18,16 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
+// 后台登录
+Route::get('/backend/login', 'AdministratorController@showLoginForm')->name('backend.login');
+Route::post('/backend/login', 'AdministratorController@loginHandle');
+Route::get('/backend/logout', 'AdministratorController@logoutHandle')->name('backend.logout');
+// 修改密码
+Route::get('/backend/edit/password', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
+Route::put('/backend/edit/password', 'AdministratorController@editPasswordHandle');
 
-Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
-    // 后台登录
-    Route::get('/login', 'AdministratorController@showLoginForm')->name('backend.login');
-    Route::post('/login', 'AdministratorController@loginHandle');
-    Route::get('/logout', 'AdministratorController@logoutHandle')->name('backend.logout');
-    // 修改密码
-    Route::get('/edit/password', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
-    Route::put('/edit/password', 'AdministratorController@editPasswordHandle');
-
+Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => ['backend.login.check']], function () {
     // 主面板
     Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard.index');
     // 管理员

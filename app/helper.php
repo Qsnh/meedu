@@ -28,8 +28,15 @@ if (! function_exists('menu_is_active')) {
      */
     function menu_is_active($routeName)
     {
-        $currentRouteName = request()->route()->getName();
-        return strtolower($currentRouteName) === strtolower($routeName)
-            ? 'active' : '';
+        $routeName = strtolower($routeName);
+        $currentRouteName = strtolower(request()->route()->getName());
+        $isActive = $currentRouteName === $routeName ? 'active' : '';
+        if (! $isActive) {
+            $currentRouteNameArray = explode('.', $currentRouteName);
+            unset($currentRouteNameArray[count($currentRouteNameArray) - 1]);
+            $currentRouteName = implode('.', $currentRouteNameArray);
+            $isActive = preg_match("/{$currentRouteName}/", $routeName) ? 'active' : '';
+        }
+        return $isActive;
     }
 }
