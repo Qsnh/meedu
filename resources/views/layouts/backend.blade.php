@@ -105,7 +105,15 @@
                         </li>
                     </ul>
                 </dd>
-                <dt>视频管理</dt>
+                <dt>会员</dt>
+                <dd>
+                    <ul>
+                        <li class="{{ menu_is_active('backend.member.index') }}">
+                            <a href="{{ route('backend.member.index') }}">会员</a>
+                        </li>
+                    </ul>
+                </dd>
+                <dt>视频</dt>
                 <dd>
                     <ul>
                         <li class="{{ menu_is_active('backend.course.index') }}">

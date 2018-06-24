@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('mobile', 32)->unique();
             $table->string('password');
 
-            $table->tinyInteger('credit1')->default(0);
-            $table->tinyInteger('credit2')->default(0);
-            $table->tinyInteger('credit3')->default(0);
+            $table->integer('credit1')->default(0);
+            $table->integer('credit2')->default(0);
+            $table->integer('credit3')->default(0);
 
             $table->tinyInteger('is_active')->comment('1:active,-1:unactive');
             $table->tinyInteger('is_lock')->default(-1)->comment('1:lock,-1:unlock');

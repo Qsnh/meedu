@@ -15,9 +15,14 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'remember_token' => str_random(10),
+        'avatar' => $faker->imageUrl(),
+        'nick_name' => $faker->firstName,
+        'mobile' => $faker->randomElement(['136', '188', '159']) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
+        'password' => bcrypt('12346'),
+        'credit1' => mt_rand(0, 10000),
+        'credit2' => mt_rand(0, 10000),
+        'credit3' => mt_rand(0, 10000),
+        'is_active' => $faker->randomElement([\App\User::ACTIVE_NO, \App\User::ACTIVE_YES]),
+        'is_lock' => $faker->randomElement([\App\User::LOCK_NO, \App\User::LOCK_YES]),
     ];
 });

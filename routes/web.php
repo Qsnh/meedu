@@ -68,6 +68,9 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::put('/video/{id}/edit', 'CourseVideoController@update');
     Route::get('/video/{id}/delete', 'CourseVideoController@destroy')->name('backend.video.destroy');
 
+    // 会员
+    Route::get('/member', 'MemberController@index')->name('backend.member.index');
+    Route::get('/member/{id}', 'MemberController@show')->name('backend.member.show');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
