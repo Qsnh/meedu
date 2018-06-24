@@ -30,10 +30,15 @@
             position: absolute; top: 80px; left: 0; right: 0; bottom: 0;
             width: 100%; height: auto; display: flex;
         }
+
+        /** 左侧菜单 */
         section.backend-section .backend-left-menu {
             width: 210px; height: 100%; overflow-y: auto;
-            background-color: #303133; color: #ffffff;
-            padding-left: 20px;
+            background-color: #606266; color: #ffffff;
+            overflow-x: hidden;
+        }
+        section.backend-section .backend-left-menu dt {
+            background-color: #303133; padding-left: 20px;
         }
         section.backend-section .backend-left-menu a {
             color: #ffffff;
@@ -46,14 +51,15 @@
             width: 100%; height: auto; font-size: .8rem;
         }
         section.backend-section .backend-left-menu dd li {
-            line-height: 26px; margin-left: 10px;
+            line-height: 32px; padding-left: 30px;
         }
-        section.backend-section .backend-left-menu dd li:hover a {
-            color: #409EFF;
+        section.backend-section .backend-left-menu dd li:hover,section.backend-section .backend-left-menu dd li.active {
+            background-color: #409EFF; color: #ffffff;
         }
-        section.backend-section .backend-left-menu dd li.active a {
-            color: #409EFF;
+        section.backend-section .backend-left-menu dd li:hover a,section.backend-section .backend-left-menu dd li.active a {
+            background-color: #409EFF; color: #ffffff;
         }
+
 
         section.backend-section .backend-body {
             flex: 1; height: 100%; overflow-y: auto;
