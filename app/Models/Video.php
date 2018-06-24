@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
+    const IS_SHOW_YES = 1;
+    const IS_SHOW_NO = -1;
 
     protected $table = 'videos';
 
@@ -14,7 +16,11 @@ class Video extends Model
         'user_id', 'course_id', 'title', 'slug',
         'url', 'view_num', 'short_description', 'description',
         'seo_keywords', 'seo_description', 'published_at',
-        'is_show',
+        'is_show', 'charge',
+    ];
+
+    protected $appends = [
+        'edit_url', 'destroy_url',
     ];
 
     /**
@@ -33,6 +39,36 @@ class Video extends Model
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
+
+    /**
+     * 作用域：显示
+     * @param $query
+     * @return mixed
+     */
+    public function scopeShow($query)
+    {
+        return $query->where('is_show', self::IS_SHOW_YES);
+    }
+
+    /**
+     * 作用域：上线的视频
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('published_at', '>=', date('Y-m-d H:i:s'));
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.video.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.video.destroy', $this);
     }
 
 }

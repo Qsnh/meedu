@@ -61,8 +61,20 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend'], function () {
     Route::get('/course/{id}/edit', 'CourseController@edit')->name('backend.course.edit');
     Route::put('/course/{id}/edit', 'CourseController@update');
     Route::get('/course/{id}/delete', 'CourseController@destroy')->name('backend.course.destroy');
+    // 视频
+    Route::get('/video', 'CourseVideoController@index')->name('backend.video.index');
+    Route::get('/video/create', 'CourseVideoController@create')->name('backend.video.create');
+    Route::post('/video/create', 'CourseVideoController@store');
+    Route::get('/video/{id}/edit', 'CourseVideoController@edit')->name('backend.video.edit');
+    Route::put('/video/{id}/edit', 'CourseVideoController@update');
+    Route::get('/video/{id}/delete', 'CourseVideoController@destroy')->name('backend.video.destroy');
 
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
+
+    // Ajax
+    Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
+        Route::get('/course', 'CourseController@index')->name('backend.ajax.course.index');
+    });
 });

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
 {
+    use SoftDeletes;
 
     const SHOW_YES = 1;
     const SHOW_NO = -1;

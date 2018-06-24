@@ -105,7 +105,9 @@
                         <li class="{{ menu_is_active('backend.course.index') }}">
                             <a href="{{ route('backend.course.index') }}">课程</a>
                         </li>
-                        <li><a href="">视频</a></li>
+                        <li class="{{ menu_is_active('backend.video.index') }}">
+                            <a href="{{ route('backend.video.index') }}">视频</a>
+                        </li>
                     </ul>
                 </dd>
                 <dt>系统</dt>
