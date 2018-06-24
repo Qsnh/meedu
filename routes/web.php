@@ -19,12 +19,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // 后台登录
-Route::get('/backend/login', 'AdministratorController@showLoginForm')->name('backend.login');
-Route::post('/backend/login', 'AdministratorController@loginHandle');
-Route::get('/backend/logout', 'AdministratorController@logoutHandle')->name('backend.logout');
+Route::get('/backend/login', 'Backend\AdministratorController@showLoginForm')->name('backend.login');
+Route::post('/backend/login', 'Backend\AdministratorController@loginHandle');
+Route::get('/backend/logout', 'Backend\AdministratorController@logoutHandle')->name('backend.logout');
 // 修改密码
-Route::get('/backend/edit/password', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
-Route::put('/backend/edit/password', 'AdministratorController@editPasswordHandle');
+Route::get('/backend/edit/password', 'Backend\AdministratorController@showEditPasswordForm')->name('backend.edit.password');
+Route::put('/backend/edit/password', 'Backend\AdministratorController@editPasswordHandle');
 
 Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => ['backend.login.check']], function () {
     // 主面板

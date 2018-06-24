@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Events\AdministratorLoginSuccessEvent;
 use App\Http\Requests\Backend\Administrator\AdministratorRequest;
 use App\Http\Requests\Backend\Administrator\EditPasswordRequest;
 use App\Http\Requests\Backend\Administrator\LoginRequest;
@@ -50,6 +51,9 @@ class AdministratorController extends Controller
             flash('邮箱或密码错误');
             return back()->withInput(['email']);
         }
+
+        event(new AdministratorLoginSuccessEvent(Auth::guard($this->guard)->user()));
+
         return redirect(route('backend.dashboard.index'));
     }
 
