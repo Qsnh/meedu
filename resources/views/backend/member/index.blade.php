@@ -7,7 +7,7 @@
     <el-row>
         <el-col :span="12" :offset="6">
             <el-form action="" method="get">
-                <el-form-item label="姓名/手机号">
+                <el-form-item label="呢称/手机号">
                     <el-input name="keywords"
                               value="{{ request()->input('keywords', '') }}"
                               placeholder="请输入关键字">
