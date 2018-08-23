@@ -1,77 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="nick_name" class="col-md-4 control-label">Name</label>
-
-                            <div class="col-md-6">
-                                <input id="nick_name" type="text" class="form-control" name="nick_name" value="{{ old('nick_name') }}" required autofocus>
-
-                                @if ($errors->has('nick_name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('nick_name') }}</strong>
-                                    </span>
-                                @endif
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="row">
+                    <div class="col-sm-12 login-box">
+                        <h3 class="text-center login-box-title">注册</h3>
+                        <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="nick_name">昵称</label>
+                                <input id="nick_name" type="text" class="form-control" name="nick_name" value="{{ old('nick_name') }}" required>
                             </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
-                            <label for="mobile" class="col-md-4 control-label">手机号</label>
-
-                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mobile">手机号</label>
                                 <input id="mobile" type="mobile" class="form-control" name="mobile" value="{{ old('mobile') }}" required>
-
-                                @if ($errors->has('mobile'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('mobile') }}</strong>
-                                    </span>
-                                @endif
                             </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password">密码</label>
                                 <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password-confirm">确认密码</label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 记住我
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block">登陆</button>
+                            </div>
+                        </form>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <a class="btn btn-link" href="{{ route('login') }}">登陆</a>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

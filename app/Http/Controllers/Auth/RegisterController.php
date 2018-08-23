@@ -52,20 +52,14 @@ class RegisterController extends Controller
             'mobile' => 'bail|required|unique:users',
             'password' => 'bail|required|min:6|max:16|confirmed',
         ], [
-            'nick_name' => [
-                'required' => '请输入呢称',
-                'unique' => '呢称已经存在',
-            ],
-            'mobile' => [
-                'required' => '请输入手机号',
-                'unique' => '手机号已经存在',
-            ],
-            'password' => [
-                'required' => '请输入密码',
-                'min' => '密码长度不能小于6个字符',
-                'max' => '密码长度不能超过16个字符',
-                'confirmed' => '两次输入的密码不一致',
-            ],
+            'nick_name.required' => '请输入呢称',
+            'nick_name.unique' => '呢称已经存在',
+            'mobile.required' => '请输入手机号',
+            'mobile.unique' => '手机号已经存在',
+            'password.required' => '请输入密码',
+            'password.min' => '密码长度不能小于6个字符',
+            'password.max' => '密码长度不能超过16个字符',
+            'password.confirmed' => '两次输入的密码不一致',
         ]);
     }
 
