@@ -75,12 +75,14 @@
 @section('js')
     <script>
         var course = @json($course);
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     course: course
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

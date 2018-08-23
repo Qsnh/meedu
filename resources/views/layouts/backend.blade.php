@@ -7,64 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MeEDU后台管理系统</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>
-        * { padding: 0px; margin: 0px; }
-        a { text-decoration: none }
-        li { list-style: none; }
-
-        header.backend-header {
-            position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-            width: 100%; height: 80px; background-color: #409EFF;
-            line-height: 80px;
-        }
-        header.backend-header .backend-header-logo {
-            font-size: 2rem; line-height: 80px; color: #ffffff;
-            margin-left: 20px;
-        }
-        header.backend-header .backend-header-right-section {
-            text-align: right; padding-right: 20px; color: #ffffff;
-        }
-
-        section.backend-section {
-            position: absolute; top: 80px; left: 0; right: 0; bottom: 0;
-            width: 100%; height: auto; display: flex;
-        }
-
-        /** 左侧菜单 */
-        section.backend-section .backend-left-menu {
-            width: 210px; height: 100%; overflow-y: auto;
-            background-color: #606266; color: #ffffff;
-            overflow-x: hidden;
-        }
-        section.backend-section .backend-left-menu dt {
-            background-color: #303133; padding-left: 20px;
-        }
-        section.backend-section .backend-left-menu a {
-            color: #ffffff;
-        }
-        section.backend-section .backend-left-menu dt {
-            width: 100%; height: 40px; line-height: 40px;
-            font-size: 1rem;
-        }
-        section.backend-section .backend-left-menu dd {
-            width: 100%; height: auto; font-size: .8rem;
-        }
-        section.backend-section .backend-left-menu dd li {
-            line-height: 32px; padding-left: 30px;
-        }
-        section.backend-section .backend-left-menu dd li:hover,section.backend-section .backend-left-menu dd li.active {
-            background-color: #409EFF; color: #ffffff;
-        }
-        section.backend-section .backend-left-menu dd li:hover a,section.backend-section .backend-left-menu dd li.active a {
-            background-color: #409EFF; color: #ffffff;
-        }
-
-
-        section.backend-section .backend-body {
-            flex: 1; height: 100%; overflow-y: auto;
-        }
-    </style>
+    <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/backend_diy.css') }}" rel="stylesheet">
     @yield('css')
 </head>
 <body>
@@ -151,11 +95,13 @@
 
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
+<div id="app1"></div>
+
+<script src="{{ asset('js/backend.js') }}"></script>
 @yield('js')
 <script>
-    var vm = new Vue({
-        el: '#app',
+    new Vue({
+        el: '#app1',
         data: function () {
             return {
                 messageSuccess: '{{ get_first_flash('success') }}',

@@ -45,7 +45,8 @@
 
 @section('js')
     <script>
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     remoteData: @json($administrators),

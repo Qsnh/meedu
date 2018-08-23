@@ -41,7 +41,8 @@
 
 @section('js')
     <script>
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     methods: [
@@ -62,5 +63,6 @@
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

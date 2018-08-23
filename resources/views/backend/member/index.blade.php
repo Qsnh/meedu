@@ -89,8 +89,9 @@
 
 @section('js')
     <script>
-        var pagination = JSON.parse('@json($members)');
-        Vue.mixin({
+        var pagination = @json($members);
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     remoteData: pagination
@@ -103,5 +104,6 @@
                 }
             }
         });
+        (new Page).$mount('#app');
     </script>
 @endsection

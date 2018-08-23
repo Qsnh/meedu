@@ -41,7 +41,8 @@
 
 @section('js')
     <script>
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     remoteData: @json($roles),
@@ -54,5 +55,6 @@
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

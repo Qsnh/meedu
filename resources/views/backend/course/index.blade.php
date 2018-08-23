@@ -73,7 +73,8 @@
 @section('js')
     <script>
         var pagination = JSON.parse('@json($courses)');
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     remoteData: pagination
@@ -86,5 +87,6 @@
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

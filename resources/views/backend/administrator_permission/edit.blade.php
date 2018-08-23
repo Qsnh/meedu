@@ -43,8 +43,9 @@
 @section('js')
     <script>
         var selectedMethods = JSON.parse('@json($permission->getMethodArray())');
-        Vue.mixin({
+        var Page = new Vue({
             data: function () {
+                el: '#app',
                 return {
                     methods: [
                         {
@@ -64,5 +65,6 @@
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

@@ -77,12 +77,14 @@
 @section('js')
     <script>
         var now = new Date();
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     published_at: now
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection

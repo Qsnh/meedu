@@ -36,3 +36,5 @@
     </el-row>
 
 @endsection
+
+@include('components.vue_init')

@@ -78,12 +78,14 @@
 @section('js')
     <script>
         var video = @json($video);
-        Vue.mixin({
+        var Page = new Vue({
+            el: '#app',
             data: function () {
                 return {
                     video: video
                 }
             }
         });
+        (new Page).$mount('#app-body');
     </script>
 @endsection
