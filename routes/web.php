@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
+Route::post('/password/reset', 'Auth\ForgotPasswordController@handler');
+
+Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 // 后台登录
