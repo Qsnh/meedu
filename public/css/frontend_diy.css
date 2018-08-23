@@ -1,0 +1,12 @@
+* { padding: 0px; margin: 0px; }
+a { text-decoration: none; color: #636b6f }
+li { list-style: none; }
+body { background-color: #fbfbfb; }
+
+.login-box {
+    background-color: #ffffff; padding: 10px 40px;
+    border-radius: 2px; border: 1px solid #eee;
+}
+.login-box .login-box-title {
+    line-height: 80px;
+}
