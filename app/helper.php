@@ -40,3 +40,12 @@ if (! function_exists('menu_is_active')) {
         return $isActive;
     }
 }
+if (! function_exists('exception_response')) {
+    function exception_response(Exception $exception, string $message = '')
+    {
+        return [
+            'message' => $message ?: $exception->getMessage(),
+            'code' => $exception->getCode() ?: 500,
+        ];
+    }
+}
