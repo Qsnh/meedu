@@ -30,6 +30,11 @@
                 <div class="col-sm-12 member-left-menu border">
                     <ul>
                         <li>
+                            <a href="{{ route('member') }}">
+                                <i class="fa fa-dashboard"></i> 会员中心
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('member.password_reset') }}">
                                 <i class="fa fa-cogs"></i> 修改密码
                             </a>
