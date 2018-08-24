@@ -10,7 +10,7 @@
                         <h3 class="text-center login-box-title">重置密码</h3>
                         <form class="form-horizontal" method="POST">
                             {{ csrf_field() }}
-                            @include('components.mobile_captcha')
+                            @include('components.frontend.mobile_captcha')
                             <div class="form-group">
                                 <label for="password">密码</label>
                                 <input id="password" type="password" class="form-control" name="password" required>

@@ -18,10 +18,22 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
 Route::post('/password/reset', 'Auth\ForgotPasswordController@handler');
-
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group([
+    'prefix' => '/member',
+    'middleware' => ['auth'],
+    'namespace' => 'Frontend'
+], function () {
+    Route::get('/', 'MemberController@index')->name('member');
+
+    Route::get('/password_reset', 'MemberController@showPasswordResetPage')->name('member.password_reset');
+    Route::post('/password_reset', 'MemberController@passwordResetHandler');
+    Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');
+    Route::post('/avatar', 'MemberController@avatarChangeHandler');
+});
+
+
 
 // 后台登录
 Route::get('/backend/login', 'Backend\AdministratorController@showLoginForm')->name('backend.login');

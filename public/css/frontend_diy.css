@@ -1,7 +1,10 @@
 * { padding: 0px; margin: 0px; }
 a { text-decoration: none; color: #636b6f }
 li { list-style: none; }
+ul { padding: 0px; margin: 0px; }
+p { padding: 0px; margin: 0px; }
 body { background-color: #fbfbfb; }
+.border { border-radius: 2px; border: 1px solid #eeeeee; }
 
 .login-box {
     background-color: #ffffff; padding: 10px 40px;
@@ -9,4 +12,33 @@ body { background-color: #fbfbfb; }
 }
 .login-box .login-box-title {
     line-height: 80px;
+}
+
+.member {
+    margin-top: 10px;
+}
+.member .member-left-box {
+    padding-right: 20px;
+}
+.member .member-left-box .avatar {
+    padding-top: 30px; padding-bottom: 30px;
+    background-color: #ffffff; text-align: center;
+}
+.member .member-left-box .avatar img {
+    border-radius: 50%;
+}
+.member .member-left-box .nickname {
+    color: #303133; font-size: 2rem; line-height: 2.5rem;
+}
+.member .member-left-box .member-left-menu {
+    margin-top: 20px; background-color: #ffffff;
+    padding: 5px 20px;
+}
+.member .member-left-box .member-left-menu li {
+    display: inline-block; width: 100%; height: 50px;
+    line-height: 50px; float: left; text-align: center;
+    border-bottom: 1px solid #eeeeee;
+}
+.member .member-box {
+    background-color: #ffffff; padding: 10px 20px;
 }
