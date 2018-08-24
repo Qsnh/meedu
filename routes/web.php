@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Frontend\IndexController@index');
 
 Auth::routes();
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');

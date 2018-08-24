@@ -1,3 +1,44 @@
+<footer class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="container footer-box">
+                <div class="row">
+                    <div class="col-sm-12 friend-link">
+                        <h3>友情链接</h3>
+                        <ul>
+                            <li><a href="https://baidu.com/">百度</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-sm-4">
+                        <h3>关于我们</h3>
+                        <p>MeEdu是基于Laravel开发的开源的，免费的在线教育点播系统。</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <h3>帮助</h3>
+                        <ul>
+                            <li><a href="">关于本站</a></li>
+                            <li><a href="">本站收费规则</a></li>
+                            <li><a href="">为什么本站收费这个价格？</a></li>
+                            <li><a href="">关于新会员注册必须知道的事情</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+
+                    </div>
+
+                    <div class="col-sm-12">
+                        <p>Copyright MeEdu.TV 2018.</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
 <div id="app1"></div>
 <!-- Scripts -->
 <script src="{{ asset('js/frontend.js') }}"></script>
