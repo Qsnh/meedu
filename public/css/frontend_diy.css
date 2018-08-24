@@ -3,6 +3,7 @@ a { text-decoration: none; color: #636b6f }
 li { list-style: none; }
 ul { padding: 0px; margin: 0px; }
 p { padding: 0px; margin: 0px; }
+.color-gray { color: gray; }
 body { background-color: #fbfbfb; }
 .border { border-radius: 2px; border: 1px solid #eeeeee; }
 

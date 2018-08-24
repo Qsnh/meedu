@@ -24,6 +24,7 @@
                         </a>
                     </p>
                     <p class="nickname">{{ Auth::user()->nick_name }}</p>
+                    <p>注册于 &nbsp; <span class="color-gray">{{ Auth::user()->created_at->diffForHumans() }}</span></p>
                 </div>
 
                 <div class="col-sm-12 member-left-menu border">
