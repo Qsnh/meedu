@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
+use App\Models\Course;
 
 class IndexController extends BaseController
 {
 
     public function index()
     {
-        return view('frontend.index.index');
+        $courses = Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
+        return view('frontend.index.index', compact('courses'));
     }
 
 }
