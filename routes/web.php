@@ -19,7 +19,7 @@ Route::post('/password/reset', 'Auth\ForgotPasswordController@handler');
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
-Route::get('/course/{id}', 'Frontend\CourseController@show')->name('course.show');
+Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 
 Route::group([
     'prefix' => '/member',

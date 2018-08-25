@@ -18,76 +18,23 @@
 
     <div class="container course-index-box">
         <div class="row">
+            @foreach($courses as $course)
             <div class="col-sm-4 course-item">
-                <div class="course-item-box border">
-                    <p class="thumb">
-                        <img src="https://ps.ssl.qhimg.com/dmfd/365_365_/t017d478b5ab2f639ff.jpg" width="100%" height="300" alt="">
-                    </p>
-                    <p class="title">
-                        我是课程的标题
-                    </p>
-                    <p class="intro">
-                        <span>最后更新时间 8天前</span>
-                    </p>
-                </div>
+                <a href="{{ route('course.show', ['id' => $course->id, 'slug' => $course->slug]) }}">
+                    <div class="course-item-box border">
+                        <p class="thumb">
+                            <img src="{{ $course->thumb }}" width="100%" height="300" alt="">
+                        </p>
+                        <p class="title">
+                            {{$course->title}}
+                        </p>
+                        <p class="intro">
+                            <span>最后更新时间 {{$course->created_at->diffForHumans()}}</span>
+                        </p>
+                    </div>
+                </a>
             </div>
-
-            <div class="col-sm-4 course-item">
-                <div class="course-item-box border">
-                    <p class="thumb">
-                        <img src="https://ps.ssl.qhimg.com/dmfd/365_365_/t017d478b5ab2f639ff.jpg" width="100%" height="300" alt="">
-                    </p>
-                    <p class="title">
-                        我是课程的标题
-                    </p>
-                    <p class="intro">
-                        <span>最后更新时间 8天前</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-sm-4 course-item">
-                <div class="course-item-box border">
-                    <p class="thumb">
-                        <img src="https://ps.ssl.qhimg.com/dmfd/365_365_/t017d478b5ab2f639ff.jpg" width="100%" height="300" alt="">
-                    </p>
-                    <p class="title">
-                        我是课程的标题
-                    </p>
-                    <p class="intro">
-                        <span>最后更新时间 8天前</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-sm-4 course-item">
-                <div class="course-item-box border">
-                    <p class="thumb">
-                        <img src="https://ps.ssl.qhimg.com/dmfd/365_365_/t017d478b5ab2f639ff.jpg" width="100%" height="300" alt="">
-                    </p>
-                    <p class="title">
-                        我是课程的标题
-                    </p>
-                    <p class="intro">
-                        <span>最后更新时间 8天前</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-sm-4 course-item">
-                <div class="course-item-box border">
-                    <p class="thumb">
-                        <img src="https://ps.ssl.qhimg.com/dmfd/365_365_/t017d478b5ab2f639ff.jpg" width="100%" height="300" alt="">
-                    </p>
-                    <p class="title">
-                        我是课程的标题
-                    </p>
-                    <p class="intro">
-                        <span>最后更新时间 8天前</span>
-                    </p>
-                </div>
-            </div>
-
+            @endforeach
         </div>
     </div>
 

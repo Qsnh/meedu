@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Course extends Model
 {
@@ -70,7 +71,7 @@ class Course extends Model
      */
     public function scopePublished($query)
     {
-        return $query->where('published_at', '>=', date('Y-m-d H:i:s'));
+        return $query->where('published_at', '<=', date('Y-m-d H:i:s'));
     }
 
     public function getEditUrlAttribute()
@@ -93,6 +94,24 @@ class Course extends Model
     {
         $keywords && $query->where('title', 'like', "%{$keywords}%");
         return $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return (new \Parsedown)->text($this->description);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVideos()
+    {
+        return Cache::remember("course_{$this->id}_videos", 360, function () {
+            return $this->videos()->published()->show()->orderBy('published_at', 'asc')->get();
+        });
     }
 
 }

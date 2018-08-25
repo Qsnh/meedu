@@ -10,13 +10,13 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::orderByDesc('created_at')->get();
+        $courses = Course::show()->published()->orderByDesc('created_at')->get();
         return view('frontend.course.index', compact('courses'));
     }
 
-    public function show($id)
+    public function show($id, $slug)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::show()->published()->whereId($id)->firstOrFail();
         return view('frontend.course.show', compact('course'));
     }
 
