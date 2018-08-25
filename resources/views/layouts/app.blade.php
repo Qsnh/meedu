@@ -19,6 +19,17 @@
 
     @include('components.frontend.footer')
     <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echo.js/1.7.3/echo.min.js"></script>
+    <script>
+        echo.init({
+            offset: 100,
+            throttle: 250,
+            unload: false,
+            callback: function (element, op) {
+                //
+            }
+        });
+    </script>
     @yield('js')
 </body>
 </html>

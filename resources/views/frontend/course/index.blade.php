@@ -23,7 +23,7 @@
                 <a href="{{ route('course.show', ['id' => $course->id, 'slug' => $course->slug]) }}">
                     <div class="course-item-box border">
                         <p class="thumb">
-                            <img src="{{ $course->thumb }}" width="100%" height="300" alt="">
+                            <img data-echo="{{ $course->thumb }}" src="/images/loading.png" width="100%" height="300" alt="">
                         </p>
                         <p class="title">
                             {{$course->title}}
