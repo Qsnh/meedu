@@ -19,6 +19,12 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
+                <li>
+                    <a class="{{ menu_is_active('index') }}" href="{{ url('/') }}">首页</a>
+                </li>
+                <li>
+                    <a class="{{ menu_is_active('courses') }}" href="{{ route('courses') }}">课程</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->

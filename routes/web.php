@@ -11,12 +11,15 @@
 |
 */
 
-Route::get('/', 'Frontend\IndexController@index');
+Route::get('/', 'Frontend\IndexController@index')->name('index');
 
 Auth::routes();
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
 Route::post('/password/reset', 'Auth\ForgotPasswordController@handler');
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
+
+Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
+Route::get('/course/{id}', 'Frontend\CourseController@show')->name('course.show');
 
 Route::group([
     'prefix' => '/member',

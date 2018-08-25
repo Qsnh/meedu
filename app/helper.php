@@ -31,7 +31,7 @@ if (! function_exists('menu_is_active')) {
         $routeName = strtolower($routeName);
         $currentRouteName = strtolower(request()->route()->getName());
         $isActive = $currentRouteName === $routeName ? 'active' : '';
-        if (! $isActive) {
+        if (! $isActive && str_contains('.', $currentRouteName)) {
             $currentRouteNameArray = explode('.', $currentRouteName);
             unset($currentRouteNameArray[count($currentRouteNameArray) - 1]);
             $currentRouteName = implode('.', $currentRouteNameArray);

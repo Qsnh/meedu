@@ -83,4 +83,16 @@ class Course extends Model
         return route('backend.course.destroy', $this);
     }
 
+    /**
+     * 作用域：关键词搜索
+     * @param $query
+     * @param string $keywords
+     * @return mixed
+     */
+    public function scopeKeywords($query, string $keywords)
+    {
+        $keywords && $query->where('title', 'like', "%{$keywords}%");
+        return $query;
+    }
+
 }
