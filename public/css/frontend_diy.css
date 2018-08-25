@@ -256,7 +256,7 @@ footer {
     height: 500px;
 }
 .video-box .play-box #player {
-    height: 500px;
+    height: 500px; width: 100%;
 }
 .video-box .play-list {
     height: 500px; overflow-y: auto;
