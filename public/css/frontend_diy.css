@@ -199,6 +199,30 @@ footer {
 .course-show-box .course-video-list-box .tab-content-box .list ul li:hover {
     background-color: #fbfbfb;
 }
+.course-show-box .comment-box {
+    padding-top: 20px; padding-bottom: 20px;
+}
+.course-show-box .comment-list-box {
+    width: 100%;
+}
+.course-show-box .comment-list-box tr.comment-list-item {
+    border-bottom: 1px solid #eeeeee;
+}
+.course-show-box .comment-list-box .user-info {
+    text-align: center;
+}
+.course-show-box .comment-list-box .comment-list-item .avatar {
+    width: 50px; height: 50px; border-radius: 50%; margin-top: 20px;
+}
+.course-show-box .comment-list-box .comment-list-item .nickname {
+    font-size: 12px; line-height: 24px;
+}
+.course-show-box .comment-list-box .comment-content {
+    line-height: 30px; font-size: 14px;
+}
+.course-show-box .comment-list-box .comment-content p {
+    padding-left: 20px;
+}
 
 
 .course-show-box .course-show-page-right{

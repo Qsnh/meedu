@@ -53,6 +53,45 @@
                    </div>
                    <div class="comment" style="display: none">
 
+                       <div class="col-sm-12 comment-box">
+                           <form action="" method="post" class="form-horizontal">
+                               {!! csrf_field() !!}
+                               <div class="form-group">
+                                   <textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
+                               </div>
+                               <div class="form-group text-right">
+                                   <button class="btn btn-primary">提交评论</button>
+                               </div>
+                           </form>
+                       </div>
+
+                       <div class="col-sm-12">
+                           <table class="comment-list-box">
+                               <tbody>
+                               <tr class="comment-list-item">
+                                   <td width="70" class="user-info">
+                                       <p><img class="avatar" src="https://ps.ssl.qhimg.com/t013658e41e8c191970.jpg" width="50" height="50"></p>
+                                       <p class="nickname">昵称</p>
+                                   </td>
+                                   <td class="comment-content">
+                                       <p>评论内容</p>
+                                       <p class="text-right color-gray">2天前</p>
+                                   </td>
+                               </tr>
+                               <tr class="comment-list-item">
+                                   <td width="70" class="user-info">
+                                       <p><img class="avatar" src="https://ps.ssl.qhimg.com/t013658e41e8c191970.jpg" width="50" height="50"></p>
+                                       <p class="nickname">昵称</p>
+                                   </td>
+                                   <td class="comment-content">
+                                       <p>评论内容</p>
+                                       <p class="text-right color-gray">2天前</p>
+                                   </td>
+                               </tr>
+                               </tbody>
+                           </table>
+                       </div>
+
                    </div>
                </div>
             </div>
