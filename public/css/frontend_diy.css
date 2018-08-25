@@ -1,6 +1,6 @@
 * { padding: 0px; margin: 0px; }
 a { text-decoration: none; color: #636b6f; }
-a:hover { text-decoration: none; }
+a:hover { text-decoration: none; color: orange }
 li { list-style: none; }
 ul { padding: 0px; margin: 0px; }
 p { padding: 0px; margin: 0px; }
@@ -218,6 +218,63 @@ footer {
 .course-show-box .course-show-page-right .news-student {
     margin-top: 20px; background-color: #ffffff;
 }
+
+/** 播放界面 */
+.video-box {
+    background-color: #000; padding-top: 10px; padding-bottom: 10px;
+}
+.video-box .title {
+    color: #ccc; line-height: 60px; white-space: nowrap; overflow: hidden;
+    font-size: 1.5rem; font-family: "微软雅黑";
+}
+.video-box .play-box {
+    height: 500px;
+}
+.video-box .play-box #player {
+    height: 500px;
+}
+.video-box .play-list {
+    height: 500px; overflow-y: auto;
+    cursor: pointer;
+}
+.video-box .play-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+.video-box .play-list li {
+    width: 100%; height: 40px; float: left;
+    line-height: 40px; white-space: nowrap; overflow: hidden;
+    font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.video-box .play-list li.active {
+    color: orange;
+}
+.video-play-comment-box {
+    padding-top: 20px; padding-bottom: 20px;
+}
+.video-play-comment-box .comment-list-box {
+    width: 100%;
+}
+.video-play-comment-box .comment-list-box tr.comment-list-item {
+    border-bottom: 1px solid #eeeeee;
+}
+.video-play-comment-box .comment-list-box .user-info {
+    text-align: center;
+}
+.video-play-comment-box .comment-list-box .comment-list-item .avatar {
+    width: 50px; height: 50px; border-radius: 50%; margin-top: 20px;
+}
+.video-play-comment-box .comment-list-box .comment-list-item .nickname {
+    font-size: 12px; line-height: 24px;
+}
+.video-play-comment-box .comment-list-box .comment-content {
+    line-height: 30px; font-size: 14px;
+}
+.video-play-comment-box .comment-list-box .comment-content p {
+    padding-left: 20px;
+}
+
 
 /** 会员中心 */
 .member {

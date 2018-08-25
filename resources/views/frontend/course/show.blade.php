@@ -42,12 +42,12 @@
                    <div class="list" style="display: none">
                        <ul>
                            @foreach($course->getVideos() as $video)
-                               <li>
-                                   <a href="">
+                               <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
+                                   <li>
                                        <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
-                                   </a>
-                                   <span class="color-gray float-right">{{ $video->updated_at->diffForHumans() }}</span>
-                               </li>
+                                       <span class="color-gray float-right">{{ $video->updated_at->diffForHumans() }}</span>
+                                   </li>
+                               </a>
                            @endforeach
                        </ul>
                    </div>

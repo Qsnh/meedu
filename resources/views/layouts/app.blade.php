@@ -10,6 +10,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
     <link href="{{ asset('css/frontend_diy.css') }}" rel="stylesheet">
+    @yield('css')
 </head>
 <body>
     <div id="app">
