@@ -8,14 +8,14 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h2>{{ $course->title }}</h2>
-                            <p>{{ $course->short_description }}</p>
-                            <p>
+                            <h2 class="color-fff">{{ $course->title }}</h2>
+                            <p class="lh-30">{{ $course->short_description }}</p>
+                            <p class="lh-30">
                                 <span class="label label-default">
                                     更新于 {{ $course->created_at->diffForHumans() }}
                                 </span>
                                 @if($course->charge)
-                                    <span class="label label-default">{{$course->charge}}元</span>
+                                    <span class="label label-danger">{{$course->charge}}元</span>
                                 @else
                                     <span class="label label-success">免费</span>
                                 @endif
@@ -52,6 +52,15 @@
                        </ul>
                    </div>
                    <div class="comment" style="display: none">
+
+                       <div class="col-sm-12">
+                           <div class="alert alert-warning">
+                               <p>1.支持Markdown语法</p>
+                               <p>2.支持 @ 某个人，当你 @ TA的时候我们会发站内消息给TA的</p>
+                               <p>3.支持拖拽图片到评论框上传</p>
+                               <p>4.支持emoji表情</p>
+                           </div>
+                       </div>
 
                        <div class="col-sm-12 comment-box">
                            <form action="" method="post" class="form-horizontal">

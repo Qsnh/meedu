@@ -11,6 +11,7 @@ body { background-color: #fbfbfb; }
 span.label { margin-right: 8px; }
 .color-fff { color: #ffffff; }
 .float-right { float: right; }
+.lh-30 { line-height: 30px; }
 
 /** 页头 */
 .navbar {
@@ -262,9 +263,7 @@ footer {
     cursor: pointer;
 }
 .video-box .play-list::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
+    width: 0; height: 0; display: none;
 }
 .video-box .play-list li {
     width: 100%; height: 40px; float: left;
@@ -273,9 +272,6 @@ footer {
 }
 .video-box .play-list li.active {
     color: orange;
-}
-.video-play-comment-box {
-    padding-top: 20px; padding-bottom: 20px;
 }
 .video-play-comment-box .comment-list-box {
     width: 100%;
