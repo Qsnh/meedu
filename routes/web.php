@@ -33,6 +33,9 @@ Route::group([
     Route::post('/password_reset', 'MemberController@passwordResetHandler');
     Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');
     Route::post('/avatar', 'MemberController@avatarChangeHandler');
+
+    Route::post('/member/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
+    Route::post('/member/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
 });
 
 

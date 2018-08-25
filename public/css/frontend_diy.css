@@ -298,7 +298,7 @@ footer {
 
 /** 会员中心 */
 .member {
-    margin-top: 10px;
+    margin-top: 10px; margin-bottom: 20px;
 }
 .member .member-left-box {
     padding-right: 20px;

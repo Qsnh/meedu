@@ -114,4 +114,9 @@ class Course extends Model
         });
     }
 
+    public function comments()
+    {
+        return $this->hasMany(CourseComment::class, 'course_id');
+    }
+
 }

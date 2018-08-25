@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Models\Course;
+use App\Models\CourseComment;
+use App\Models\VideoComment;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -77,5 +79,14 @@ class User extends Authenticatable
         return config('meedu.credit.credit3.name');
     }
 
+    public function courseComments()
+    {
+        return $this->hasMany(CourseComment::class, 'user_id');
+    }
+
+    public function videoComments()
+    {
+        return $this->hasMany(VideoComment::class, 'user_id');
+    }
 
 }

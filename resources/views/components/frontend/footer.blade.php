@@ -4,13 +4,6 @@
 
             <div class="container footer-box">
                 <div class="row">
-                    <div class="col-sm-12 friend-link">
-                        <h3>友情链接</h3>
-                        <ul>
-                            <li><a href="https://baidu.com/">百度</a></li>
-                        </ul>
-                    </div>
-
                     <div class="col-sm-4">
                         <h3>关于我们</h3>
                         <p>MeEdu是基于Laravel开发的开源的，免费的在线教育点播系统。</p>

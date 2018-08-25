@@ -63,7 +63,7 @@
                        </div>
 
                        <div class="col-sm-12 comment-box">
-                           <form action="" method="post" class="form-horizontal">
+                           <form action="{{ route('course.comment', $course) }}" method="post" class="form-horizontal">
                                {!! csrf_field() !!}
                                <div class="form-group">
                                    <textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
@@ -77,26 +77,18 @@
                        <div class="col-sm-12">
                            <table class="comment-list-box">
                                <tbody>
+                               @foreach($course->comments as $comment)
                                <tr class="comment-list-item">
                                    <td width="70" class="user-info">
-                                       <p><img class="avatar" src="https://ps.ssl.qhimg.com/t013658e41e8c191970.jpg" width="50" height="50"></p>
-                                       <p class="nickname">昵称</p>
+                                       <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
+                                       <p class="nickname">{{$comment->user->nick_name}}</p>
                                    </td>
                                    <td class="comment-content">
-                                       <p>评论内容</p>
-                                       <p class="text-right color-gray">2天前</p>
+                                       <p>{!! $comment->getContent() !!}</p>
+                                       <p class="text-right color-gray">{{$comment->created_at->diffForHumans()}}</p>
                                    </td>
                                </tr>
-                               <tr class="comment-list-item">
-                                   <td width="70" class="user-info">
-                                       <p><img class="avatar" src="https://ps.ssl.qhimg.com/t013658e41e8c191970.jpg" width="50" height="50"></p>
-                                       <p class="nickname">昵称</p>
-                                   </td>
-                                   <td class="comment-content">
-                                       <p>评论内容</p>
-                                       <p class="text-right color-gray">2天前</p>
-                                   </td>
-                               </tr>
+                               @endforeach
                                </tbody>
                            </table>
                        </div>

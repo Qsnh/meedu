@@ -71,4 +71,9 @@ class Video extends Model
         return route('backend.video.destroy', $this);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(VideoComment::class, 'video_id');
+    }
+
 }

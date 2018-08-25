@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmsRecordsTable extends Migration
+class CreateVideoCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateSmsRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sms_records', function (Blueprint $table) {
+        Schema::create('video_comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('mobile')->comment('手机号');
-            $table->text('send_data')->nullable(true)->comment('发送数据');
-            $table->text('response_data')->nullable(true)->comment('响应数据');
+            $table->integer('user_id');
+            $table->integer('video_id');
+            $table->text('content')->nullable(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +30,6 @@ class CreateSmsRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sms_records');
+        Schema::dropIfExists('video_comments');
     }
 }
