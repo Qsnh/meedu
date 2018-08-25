@@ -8,12 +8,23 @@ p { padding: 0px; margin: 0px; }
 body { background-color: #fbfbfb; }
 .border { border-radius: 2px; border: 1px solid #eeeeee; }
 
+/** 页头 */
 .navbar {
     margin-bottom: 0px; background-color: orange; border-bottom: 0px;
     color: #ffffff;
 }
 .navbar a { color: #282828!important; }
 
+/** 页脚 */
+footer {
+    background-color: #303133; color: #dddddd;
+    padding-top: 30px; padding-bottom: 30px;
+}
+.footer-box .friend-link {
+    padding-top: 20px; padding-bottom: 20px;
+}
+
+/** 登陆界面 */
 .login-box {
     background-color: #ffffff; padding: 10px 40px;
     border-radius: 2px; border: 1px solid #eee;
@@ -22,6 +33,7 @@ body { background-color: #fbfbfb; }
     line-height: 80px;
 }
 
+/** 首页Banner1 */
 .index-banner { background-color: orange; color: #ffffff; }
 .index-banner h1 { line-height: 120px; }
 .index-banner h4 { line-height: 80px; font-size: 3rem; }
@@ -37,9 +49,12 @@ body { background-color: #fbfbfb; }
     border: 1px solid #eeeeee; color: orange;
 }
 
-.index-banner-title {
-    line-height: 100px; font-size: 3rem; color: orange;
-    margin-bottom: 50px;
+/** 首页Banner2 */
+.index-banner-title h3 {
+    line-height: 100px; font-size: 44px; font-weight: 600;
+}
+.index-banner2 {
+    padding-top: 20px; padding-bottom: 50px;
 }
 .index-banner2 .course {
     padding: 0px 10px;
@@ -49,26 +64,59 @@ body { background-color: #fbfbfb; }
     background-color: #ffffff; cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 10px 0px;
 }
+.index-banner2 .course .course-item:hover {
+    box-shadow: orange 0px 2px 10px 0px;
+}
 .index-banner2 .course .course-item .thumb {
     width: 100%; height: 300px; float: left;
 }
 .index-banner2 .course .course-item .thumb img {
     width: 100%; height: 100%;
+    border-top-left-radius: 2px; border-top-right-radius: 2px;
 }
 .index-banner2 .course .course-item .title {
     width: 100%; height: 50px; float: left;
     line-height: 50px; font-size: 18px; overflow: hidden;
 }
 
-
-footer {
-    background-color: #303133; margin-top: 20px;
-    color: #dddddd; padding-top: 30px; padding-bottom: 30px;
+/** 计划Banner */
+.roles {
+    background-color: #ffffff; padding-top: 20px;
+    padding-bottom: 50px;
 }
-.footer-box .friend-link {
-    padding-top: 20px; padding-bottom: 20px;
+.roles .title {
+    line-height: 100px; font-size: 44px; font-weight: 600;
+}
+.roles .roles-item {
+    padding-left: 20px; padding-right: 20px;
+}
+.roles .roles-item .roles-item-info {
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 10px 0px;
+    cursor: pointer;
+}
+.roles .roles-item .active, .roles .roles-item .roles-item-info:hover {
+    box-shadow: orange 0px 2px 10px 0px; color: orange;
+}
+.roles .roles-item .roles-item-info .title {
+    line-height: 80px; font-size: 32px; font-weight: 400;
+}
+.roles .roles-item .roles-item-info p {
+    line-height: 60px; font-size: 20px; font-weight: 300;
+}
+.roles .roles-item .roles-item-info p.price {
+    line-height: 100px; font-size: 40px; font-weight: 600;
+}
+.roles .roles-item .roles-item-info a.buy-button {
+    display: inline-block; width: 200px; height: 64px;
+    line-height: 64px; font-size: 24px; color: orange;
+    border: 1px solid orange; border-radius: 2px;
+    margin-top: 20px; margin-bottom: 20px;
+}
+.roles .roles-item .active a.buy-button, .roles .roles-item .roles-item-info:hover a.buy-button {
+    background-color: orange; color: #ffffff;
 }
 
+/** 会员中心 */
 .member {
     margin-top: 10px;
 }

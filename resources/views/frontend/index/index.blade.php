@@ -48,7 +48,60 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="container-fluid roles">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="container">
+                    <div class="col-sm-12 text-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h3 class="title">计划</h3>
+                            </div>
+                            <div class="col-sm-4 roles-item">
+                                <div class="roles-item-info text-center border">
+                                    <h2 class="title">半年会员</h2>
+                                    <p>全部视频均可观看</p>
+                                    <p>无次数限制</p>
+                                    <p>专属小密圈</p>
+                                    <p class="price">￥256</p>
+                                    <p>
+                                        <a href="" class="buy-button">立即订阅</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 roles-item">
+                                <div class="roles-item-info active text-center border">
+                                    <h2 class="title">年度会员</h2>
+                                    <p>全部视频均可观看</p>
+                                    <p>无次数限制</p>
+                                    <p>专属小密圈</p>
+                                    <p class="price">￥512</p>
+                                    <p>
+                                        <a href="" class="buy-button">立即订阅</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 roles-item">
+                                <div class="roles-item-info text-center border">
+                                    <h2 class="title">终身会员</h2>
+                                    <p>全部视频均可观看</p>
+                                    <p>无次数限制</p>
+                                    <p>专属小密圈</p>
+                                    <p class="price">￥2048</p>
+                                    <p>
+                                        <a href="" class="buy-button">立即订阅</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 

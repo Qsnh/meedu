@@ -10,7 +10,7 @@
                             <li><a href="https://baidu.com/">百度</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="col-sm-4">
                         <h3>关于我们</h3>
                         <p>MeEdu是基于Laravel开发的开源的，免费的在线教育点播系统。</p>
