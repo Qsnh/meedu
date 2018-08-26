@@ -2,6 +2,7 @@
 
 @section('css')
     <link href="https://cdn.bootcss.com/plyr/3.2.1/plyr.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
     <style>
         .navbar { background-color: #000000; }
     </style>
@@ -43,8 +44,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-9 video-play-comment-box">
+            <div class="col-sm-12 share-box">
+                <div class="social-share"></div>
+            </div>
 
+            <div class="col-sm-9 video-play-comment-box">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-default">
@@ -115,4 +119,5 @@
 
 @section('js')
     <script src="https://cdn.bootcss.com/plyr/3.2.1/plyr.min.js"></script>
+    <script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js"></script>
 @endsection

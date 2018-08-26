@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
     <div class="container-fluid course-detail-banner">
@@ -29,6 +33,10 @@
 
     <div class="container course-show-box">
         <div class="row">
+            <div class="col-sm-12 share-box">
+                <div class="social-share"></div>
+            </div>
+
             <div class="col-sm-9 border course-video-list-box">
                 <div class="row course-video-tab">
                     <div class="col-sm-4 course-video-tab-item active" data="intro">简介</div>
@@ -114,6 +122,7 @@
 @endsection
 
 @section('js')
+    <script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js"></script>
     <script>
         $(function () {
             $('.course-video-tab-item').click(function () {

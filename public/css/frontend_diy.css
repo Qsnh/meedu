@@ -13,6 +13,10 @@ span.label { margin-right: 8px; }
 .float-right { float: right; }
 .lh-30 { line-height: 30px; }
 
+.share-box {
+    padding-top: 10px; padding-bottom: 10px;
+}
+
 /** 页头 */
 .navbar {
     margin-bottom: 0px; background-color: #ffffff; border-bottom: 0px;
