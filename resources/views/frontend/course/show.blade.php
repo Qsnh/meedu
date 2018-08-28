@@ -56,7 +56,7 @@
                                    </li>
                                </a>
                            @empty
-                            <p class="text-center lh-30">暂无课程</p>
+                            <p class="text-center color-gray lh-30">暂无课程</p>
                            @endforelse
                        </ul>
                    </div>
@@ -72,21 +72,23 @@
                        </div>
 
                        <div class="col-sm-12 comment-box">
-                           <form action="{{ route('course.comment', $course) }}" method="post" class="form-horizontal">
-                               {!! csrf_field() !!}
-                               <div class="form-group">
-                                   <textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
-                               </div>
-                               <div class="form-group text-right">
-                                   <button class="btn btn-primary">提交评论</button>
-                               </div>
-                           </form>
+                           <div class="col-sm-12">
+                               <form action="{{ route('course.comment', $course) }}" method="post" class="form-horizontal">
+                                   {!! csrf_field() !!}
+                                   <div class="form-group">
+                                       <textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
+                                   </div>
+                                   <div class="form-group text-right">
+                                       <button class="btn btn-primary">提交评论</button>
+                                   </div>
+                               </form>
+                           </div>
                        </div>
 
                        <div class="col-sm-12">
                            <table class="comment-list-box">
                                <tbody>
-                               @foreach($course->comments as $comment)
+                               @forelse($course->comments as $comment)
                                <tr class="comment-list-item">
                                    <td width="70" class="user-info">
                                        <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
@@ -97,7 +99,11 @@
                                        <p class="text-right color-gray">{{$comment->created_at->diffForHumans()}}</p>
                                    </td>
                                </tr>
-                               @endforeach
+                               @empty
+                               <tr>
+                                   <td class="text-center color-gray" colspan="2">0评论</td>
+                               </tr>
+                               @endforelse
                                </tbody>
                            </table>
                        </div>
@@ -108,7 +114,7 @@
 
             <div class="col-sm-3 course-show-page-right">
                 <div class="col-sm-12 border option">
-                    <a href="" class="join-course-btn">立即学习</a>
+                    <a href="{{ $course->seeUrl() }}" class="join-course-btn">立即学习</a>
                 </div>
 
                 <div class="col-sm-12 border news-student">

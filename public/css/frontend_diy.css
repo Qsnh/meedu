@@ -208,7 +208,7 @@ footer {
     padding-top: 20px; padding-bottom: 20px;
 }
 .course-show-box .comment-list-box {
-    width: 100%;
+    width: 100%; padding-bottom: 10px;
 }
 .course-show-box .comment-list-box tr.comment-list-item {
     border-bottom: 1px solid #eeeeee;
@@ -278,7 +278,7 @@ footer {
     color: orange;
 }
 .video-play-comment-box .comment-list-box {
-    width: 100%;
+    width: 100%; padding-bottom: 10px;
 }
 .video-play-comment-box .comment-list-box tr.comment-list-item {
     border-bottom: 1px solid #eeeeee;

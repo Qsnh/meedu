@@ -123,9 +123,23 @@ class Course extends Model
         });
     }
 
+    /**
+     * 评论
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(CourseComment::class, 'course_id');
+    }
+
+    /**
+     * 课程的观看URL
+     * @return string
+     */
+    public function seeUrl()
+    {
+        $firstVideo = $this->videos()->orderByDesc('published_at')->first();
+        return $firstVideo ? route('video.show', [$this->id, $firstVideo->id, $firstVideo->slug]) : 'javascript:void(0)';
     }
 
 }

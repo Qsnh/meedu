@@ -89,7 +89,7 @@
                             <div class="panel panel-body">
                                 <table class="comment-list-box">
                                     <tbody>
-                                    @foreach($video->comments as $comment)
+                                    @forelse($video->comments as $comment)
                                     <tr class="comment-list-item">
                                         <td width="70" class="user-info">
                                             <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
@@ -100,7 +100,11 @@
                                             <p class="text-right color-gray">{{$comment->created_at->diffForHumans()}}</p>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td class="text-center color-gray" colspan="2">0评论</td>
+                                        </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
                             </div>
