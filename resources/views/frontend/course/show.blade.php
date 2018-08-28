@@ -19,7 +19,7 @@
                                     更新于 {{ $course->created_at->diffForHumans() }}
                                 </span>
                                 @if($course->charge)
-                                    <span class="label label-danger">{{$course->charge}}元</span>
+                                    <span class="label label-danger">价格 {{$course->charge}}元</span>
                                 @else
                                     <span class="label label-success">免费</span>
                                 @endif
@@ -33,10 +33,6 @@
 
     <div class="container course-show-box">
         <div class="row">
-            <div class="col-sm-12 share-box">
-                <div class="social-share"></div>
-            </div>
-
             <div class="col-sm-9 border course-video-list-box">
                 <div class="row course-video-tab">
                     <div class="col-sm-4 course-video-tab-item active" data="intro">简介</div>
@@ -45,6 +41,7 @@
                 </div>
                <div class="tab-content-box">
                    <div class="intro">
+                       <div class="social-share" style="margin-bottom: 20px;"></div>
                        {!! $course->getDescription() !!}
                    </div>
                    <div class="list" style="display: none">

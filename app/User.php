@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Course;
 use App\Models\CourseComment;
 use App\Models\VideoComment;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -59,6 +60,15 @@ class User extends Authenticatable
         return $this->hasMany(Course::class, 'user_id', 'id');
     }
 
+    /**
+     * 用户加入（购买）的课程
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function joinCourses()
+    {
+        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')->withPivot('created_at');
+    }
+
     public function getShowUrlAttribute()
     {
         return route('backend.member.show', $this);
@@ -79,14 +89,33 @@ class User extends Authenticatable
         return config('meedu.credit.credit3.name');
     }
 
+    /**
+     * 用户的课程评论
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function courseComments()
     {
         return $this->hasMany(CourseComment::class, 'user_id');
     }
 
+    /**
+     * 用户的视频评论
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function videoComments()
     {
         return $this->hasMany(VideoComment::class, 'user_id');
+    }
+
+    /**
+     * 方法：加入课程
+     * @param Course $course
+     */
+    public function joinACourse(Course $course)
+    {
+        if (! $this->joinCourses()->whereId($course->id)->exists()) {
+            $this->joinCourses()->attach($course->id, ['created_at' => Carbon::now()->format('Y-m-d H:i:s')]);
+        }
     }
 
 }

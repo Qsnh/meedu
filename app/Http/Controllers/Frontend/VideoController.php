@@ -13,11 +13,14 @@ class VideoController extends Controller
 
     public function show($courseId, $id, $slug)
     {
-        $video = Video::with(['comments', 'user', 'comments.user'])
+        $video = Video::with(['course', 'comments', 'user', 'comments.user'])
             ->published()
             ->show()
             ->whereId($id)
             ->firstOrFail();
+
+        Auth::check() && Auth::user()->joinACourse($video->course);
+
         return view('frontend.video.show', compact('video'));
     }
 

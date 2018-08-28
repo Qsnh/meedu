@@ -36,6 +36,15 @@ class Course extends Model
     }
 
     /**
+     * 购买课程的用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function buyUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_course', 'course_id', 'user_id');
+    }
+
+    /**
      * 该课程下面的视频
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
