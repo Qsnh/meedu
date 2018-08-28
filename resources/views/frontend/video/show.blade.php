@@ -15,11 +15,6 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-12 title">
-                            <a href="{{ url('/') }}">首页</a>
-                            <a href="{{ route('course.show', [$video->course->id, $video->course->slug]) }}">[{{ $video->course->title }}]</a>
-                            <a href="#">[{{ $video->title }}]</a>
-                        </div>
                         <div class="col-sm-9 play-box">
                             <video id="player" playsinline controls>
                                 <source src="" type="video/mp4">
@@ -42,20 +37,25 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 15px;">
         <div class="row">
-            <div class="col-sm-12 share-box">
-                <div class="social-share"></div>
-            </div>
-
             <div class="col-sm-9 video-play-comment-box">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                评论
+                                {{ $video->title }}
                             </div>
                             <div class="panel-body">
+                                <div class="col-sm-12" style="margin-bottom: 20px;">
+                                    <h3></h3>
+                                    <p class="color-gray">{{ $video->short_description }}</p>
+                                </div>
+
+                                <div class="social-share" style="margin-bottom: 10px;"></div>
+
+                                <hr>
+
                                 <div class="col-sm-12">
                                     <div class="alert alert-warning">
                                         <p>1.支持Markdown语法</p>
@@ -65,15 +65,17 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
-                                    <form action="{{ route('video.comment', $video) }}" method="post" class="form-horizontal">
-                                        {!! csrf_field() !!}
-                                        <div class="form-group">
-                                            <textarea class="form-control" rows="2" placeholder="评论内容" name="content"></textarea>
-                                        </div>
-                                        <div class="form-group text-right">
-                                            <button class="btn btn-primary">提交评论</button>
-                                        </div>
-                                    </form>
+                                    <div class="col-sm-12">
+                                        <form action="{{ route('video.comment', $video) }}" method="post" class="form-horizontal">
+                                            {!! csrf_field() !!}
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="2" placeholder="评论内容" name="content"></textarea>
+                                            </div>
+                                            <div class="form-group text-right">
+                                                <button class="btn btn-primary">提交评论</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
