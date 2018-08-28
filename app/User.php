@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Course;
 use App\Models\CourseComment;
+use App\Models\Role;
 use App\Models\VideoComment;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
@@ -26,7 +27,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'avatar', 'nick_name', 'mobile', 'password',
-        'is_lock', 'is_active',
+        'is_lock', 'is_active', 'role_id', 'role_expired_at',
     ];
 
     /**
@@ -41,6 +42,15 @@ class User extends Authenticatable
     protected $appends = [
         'show_url', 'credit1_text', 'credit2_text', 'credit3_text',
     ];
+
+    /**
+     * 所属角色
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 
     /**
      * 获取随机呢称
