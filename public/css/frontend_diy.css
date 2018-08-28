@@ -223,7 +223,7 @@ footer {
     font-size: 12px; line-height: 24px;
 }
 .course-show-box .comment-list-box .comment-content {
-    line-height: 30px; font-size: 14px;
+    line-height: 30px; font-size: 14px; padding-top: 10px;
 }
 .course-show-box .comment-list-box .comment-content p {
     padding-left: 20px;
@@ -293,7 +293,7 @@ footer {
     font-size: 12px; line-height: 24px;
 }
 .video-play-comment-box .comment-list-box .comment-content {
-    line-height: 30px; font-size: 14px;
+    line-height: 30px; font-size: 14px; padding-top: 10px;
 }
 .video-play-comment-box .comment-list-box .comment-content p {
     padding-left: 20px;
