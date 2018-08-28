@@ -25,6 +25,11 @@
                     </p>
                     <p class="nickname">{{ Auth::user()->nick_name }}</p>
                     <p>注册于 &nbsp; <span class="color-gray">{{ Auth::user()->created_at->diffForHumans() }}</span></p>
+                    <p>
+                        @if(Auth::user()->role)
+                            <span class="label label-success">{{Auth::user()->role->name}}</span>
+                        @endif
+                    </p>
                 </div>
 
                 <div class="col-sm-12 member-left-menu border">
@@ -32,6 +37,11 @@
                         <li>
                             <a href="{{ route('member') }}">
                                 <i class="fa fa-dashboard"></i> 会员中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('member.join_role_records') }}">
+                                <i class="fa fa-users"></i> 会员记录
                             </a>
                         </li>
                         <li>

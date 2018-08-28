@@ -36,6 +36,8 @@ Route::group([
 
     Route::post('/member/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/member/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
+
+    Route::get('/member/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');
 });
 
 

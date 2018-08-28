@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
+use App\Models\UserJoinRoleRecord;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,6 +55,12 @@ class MemberController extends BaseController
 
         flash('头像更换成功', 'success');
         return back();
+    }
+
+    public function showJoinRoleRecordsPage()
+    {
+        $records = UserJoinRoleRecord::whereUserId(Auth::id())->orderByDesc('expired_at')->paginate(8);
+        return view('frontend.member.join_role_records', compact('records'));
     }
 
 }
