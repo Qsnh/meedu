@@ -35,6 +35,11 @@
                 </a>
             </div>
             @endforeach
+
+            <div class="col-sm-12 text-center">
+                {{$courses->render()}}
+            </div>
+
         </div>
     </div>
 

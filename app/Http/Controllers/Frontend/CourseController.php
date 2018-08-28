@@ -13,7 +13,7 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::show()->published()->orderByDesc('created_at')->get();
+        $courses = Course::show()->published()->orderByDesc('created_at')->paginate(6);
         return view('frontend.course.index', compact('courses'));
     }
 
