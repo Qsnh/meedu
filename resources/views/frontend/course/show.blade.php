@@ -13,7 +13,6 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h2 class="color-fff">{{ $course->title }}</h2>
-                            <p class="lh-30">{{ $course->short_description }}</p>
                             <p class="lh-30">
                                 <span class="label label-default">
                                     更新于 {{ $course->created_at->diffForHumans() }}
@@ -41,19 +40,24 @@
                 </div>
                <div class="tab-content-box">
                    <div class="intro">
-                       <div class="social-share" style="margin-bottom: 20px;"></div>
+                       <p class="lh-30">{{ $course->short_description }}</p>
+                       <hr>
                        {!! $course->getDescription() !!}
+                       <hr>
+                       <div class="social-share"></div>
                    </div>
                    <div class="list" style="display: none">
                        <ul>
-                           @foreach($course->getVideos() as $video)
+                           @forelse($course->getVideos() as $video)
                                <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
                                    <li>
                                        <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
                                        <span class="color-gray float-right">{{ $video->updated_at->diffForHumans() }}</span>
                                    </li>
                                </a>
-                           @endforeach
+                           @empty
+                            <p class="text-center lh-30">暂无课程</p>
+                           @endforelse
                        </ul>
                    </div>
                    <div class="comment" style="display: none">
