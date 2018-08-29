@@ -126,4 +126,6 @@
 @section('js')
     <script src="https://cdn.bootcss.com/plyr/3.2.1/plyr.min.js"></script>
     <script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js"></script>
+    @include('components.frontend.emoji')
+    @include('components.frontend.comment_js')
 @endsection

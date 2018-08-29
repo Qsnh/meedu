@@ -33,11 +33,12 @@ Route::group([
     Route::post('/password_reset', 'MemberController@passwordResetHandler');
     Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');
     Route::post('/avatar', 'MemberController@avatarChangeHandler');
+    Route::get('/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');
 
-    Route::post('/member/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
-    Route::post('/member/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
+    Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
+    Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
 
-    Route::get('/member/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');
+    Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
 });
 
 

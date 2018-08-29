@@ -228,6 +228,10 @@ footer {
 .course-show-box .comment-list-box .comment-content p {
     padding-left: 20px;
 }
+.course-show-box .comment-list-box .comment-content img {
+    max-width: 100%; box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 10px 0px;
+    margin-top: 10px; margin-bottom: 10px; border-radius: 2px;
+}
 
 
 .course-show-box .course-show-page-right{
@@ -297,6 +301,10 @@ footer {
 }
 .video-play-comment-box .comment-list-box .comment-content p {
     padding-left: 20px;
+}
+.video-play-comment-box .comment-list-box .comment-content img {
+    max-width: 100%; box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 10px 0px;
+    margin-top: 10px; margin-bottom: 10px; border-radius: 2px;
 }
 
 
