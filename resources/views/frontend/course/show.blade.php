@@ -76,11 +76,16 @@
                                <form action="{{ route('course.comment', $course) }}" method="post" class="form-horizontal">
                                    {!! csrf_field() !!}
                                    <div class="form-group">
-                                       <textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
+                                       <textarea name="content"
+                                                 class="form-control"
+                                                 rows="5"
+                                                 placeholder="评论内容" {{Auth::check() ? '' : 'disabled'}}></textarea>
                                    </div>
+                                   @if(Auth::check())
                                    <div class="form-group text-right">
                                        <button class="btn btn-primary">提交评论</button>
                                    </div>
+                                   @endif
                                </form>
                            </div>
                        </div>

@@ -69,11 +69,16 @@
                                         <form action="{{ route('video.comment', $video) }}" method="post" class="form-horizontal">
                                             {!! csrf_field() !!}
                                             <div class="form-group">
-                                                <textarea class="form-control" rows="2" placeholder="评论内容" name="content"></textarea>
+                                                <textarea class="form-control"
+                                                          rows="5"
+                                                          placeholder="评论内容"
+                                                          name="content" {{Auth::check() ? '' : 'disabled'}}></textarea>
                                             </div>
+                                            @if(Auth::check())
                                             <div class="form-group text-right">
                                                 <button class="btn btn-primary">提交评论</button>
                                             </div>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>
