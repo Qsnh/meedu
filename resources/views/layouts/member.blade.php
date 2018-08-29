@@ -40,6 +40,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('member.messages') }}">
+                                <i class="fa fa-comments"></i> 我的消息
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('member.join_role_records') }}">
                                 <i class="fa fa-users"></i> 会员记录
                             </a>

@@ -34,6 +34,17 @@
                     <li><a href="{{ route('login') }}">登陆</a></li>
                     <li><a href="{{ route('register') }}">注册</a></li>
                 @else
+                    @if(Auth::check())
+                    <li>
+                        <a href="">
+                            @if(count(Auth::user()->unreadNotifications))
+                                <span class="label label-danger">{{ count(Auth::user()->unreadNotifications) }}
+                                @else
+                                <span class="label label-default">0</span>
+                            @endif
+                        </a>
+                    </li>
+                    @endif
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                             {{ Auth::user()->nick_name }} <span class="caret"></span>

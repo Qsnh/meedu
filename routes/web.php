@@ -34,6 +34,7 @@ Route::group([
     Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');
     Route::post('/avatar', 'MemberController@avatarChangeHandler');
     Route::get('/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');
+    Route::get('/messages', 'MemberController@showMessagesPage')->name('member.messages');
 
     Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');

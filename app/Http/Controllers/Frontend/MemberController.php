@@ -6,6 +6,7 @@ use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 use App\Models\UserJoinRoleRecord;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -61,6 +62,13 @@ class MemberController extends BaseController
     {
         $records = UserJoinRoleRecord::whereUserId(Auth::id())->orderByDesc('expired_at')->paginate(8);
         return view('frontend.member.join_role_records', compact('records'));
+    }
+
+    public function showMessagesPage()
+    {
+        $messages = new Paginator(Auth::user()->notifications, 10);
+        $messages->setPath(route('member.messages'));
+        return view('frontend.member.messages', compact('messages'));
     }
 
 }
