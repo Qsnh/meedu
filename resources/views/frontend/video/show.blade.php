@@ -15,6 +15,7 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="row">
+                        @if(Auth::check())
                         <div class="col-sm-9 play-box">
                             <video id="player" playsinline controls>
                                 <source src="" type="video/mp4">
@@ -31,6 +32,13 @@
                                 @endforeach
                             </ul>
                         </div>
+                            @else
+                        <div class="col-sm-12 play-box">
+                            <h2 class="text-center" style="line-height: 300px;">
+                                <a href="{{ route('login') }}">点我登陆</a>
+                            </h2>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

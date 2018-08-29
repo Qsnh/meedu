@@ -42,6 +42,7 @@ footer {
 .login-box .login-box-title {
     line-height: 80px;
 }
+.auth-page { margin-top: 100px; margin-bottom: 100px; }
 
 /** 首页Banner1 */
 .index-banner { background-color: orange; color: #ffffff; }

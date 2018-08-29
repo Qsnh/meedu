@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container auth-page">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
             <div class="row">
