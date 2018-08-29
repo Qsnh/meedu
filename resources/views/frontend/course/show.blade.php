@@ -130,6 +130,7 @@
 
 @section('js')
     <script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js"></script>
+    @include('components.frontend.emoji')
     <script>
         $(function () {
             $('.course-video-tab-item').click(function () {

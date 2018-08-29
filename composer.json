@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "emojione/emojione": "^3.1",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
