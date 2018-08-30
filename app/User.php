@@ -132,9 +132,9 @@ class User extends Authenticatable
      * 头像修饰器
      * @return \Illuminate\Config\Repository|mixed
      */
-    public function getAttributeAvatar()
+    public function getAvatarAttribute($avatar)
     {
-        return $this->avatar ?: config('meedu.member.default_avatar');
+        return $avatar ?: config('meedu.member.default_avatar');
     }
 
 }
