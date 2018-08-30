@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Registered' => [
             'App\Listeners\Frontend\UserRegisterSuccess',
         ],
+        'App\Events\AtUserEvent' => [
+            'App\Listeners\AtUserListener',
+        ],
     ];
 
     /**

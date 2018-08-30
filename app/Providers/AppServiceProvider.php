@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\CourseComment;
+use App\Observers\CourseCommentObserver;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
+
+        CourseComment::observe(CourseCommentObserver::class);
     }
 
     /**
