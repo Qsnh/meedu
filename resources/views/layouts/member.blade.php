@@ -50,6 +50,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('member.course.videos') }}">
+                                <i class="fa fa-film"></i> 已购视频
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('member.join_role_records') }}">
                                 <i class="fa fa-users"></i> 会员记录
                             </a>

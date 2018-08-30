@@ -76,4 +76,13 @@ class Video extends Model
         return $this->hasMany(VideoComment::class, 'video_id');
     }
 
+    /**
+     * 购买课程的用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function buyUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')->withPivot('charge', 'created_at');
+    }
+
 }

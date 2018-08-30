@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Course;
 use App\Models\CourseComment;
 use App\Models\Role;
+use App\Models\Video;
 use App\Models\VideoComment;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
@@ -79,6 +80,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')->withPivot('created_at', 'charge');
     }
 
+    /**
+     * 用户购买的视频
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function buyVideos()
+    {
+        return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')->withPivot('created_at', 'charge');
+    }
+
     public function getShowUrlAttribute()
     {
         return route('backend.member.show', $this);
@@ -118,13 +128,30 @@ class User extends Authenticatable
     }
 
     /**
-     * 方法：加入课程
+     * 方法：加入一个课程
      * @param Course $course
      */
     public function joinACourse(Course $course)
     {
         if (! $this->joinCourses()->whereId($course->id)->exists()) {
-            $this->joinCourses()->attach($course->id, ['created_at' => Carbon::now()->format('Y-m-d H:i:s')]);
+            $this->joinCourses()->attach($course->id, [
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'charge' => $course->charge,
+            ]);
+        }
+    }
+
+    /**
+     * 方法：购买一个视频
+     * @param Video $video
+     */
+    public function buyAVideo(Video $video)
+    {
+        if (! $this->buyVideos()->whereIn($video->id)->exists()) {
+            $this->buyVideos()->attach($video->id, [
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'charge' => $video->charge,
+            ]);
         }
     }
 

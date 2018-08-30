@@ -73,8 +73,14 @@ class MemberController extends BaseController
 
     public function showBuyCoursePage()
     {
-        $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(15);
+        $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(16);
         return view('frontend.member.buy_course', compact('courses'));
+    }
+
+    public function showBuyVideoPage()
+    {
+        $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->paginate(16);
+        return view('frontend.member.buy_video', compact('videos'));
     }
 
 }
