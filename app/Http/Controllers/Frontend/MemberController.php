@@ -71,4 +71,10 @@ class MemberController extends BaseController
         return view('frontend.member.messages', compact('messages'));
     }
 
+    public function showBuyCoursePage()
+    {
+        $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(15);
+        return view('frontend.member.buy_course', compact('courses'));
+    }
+
 }

@@ -76,7 +76,7 @@ class User extends Authenticatable
      */
     public function joinCourses()
     {
-        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')->withPivot('created_at');
+        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')->withPivot('created_at', 'charge');
     }
 
     public function getShowUrlAttribute()

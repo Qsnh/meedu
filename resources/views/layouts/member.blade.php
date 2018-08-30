@@ -45,6 +45,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('member.courses') }}">
+                                <i class="fa fa-file"></i> 已购课程
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('member.join_role_records') }}">
                                 <i class="fa fa-users"></i> 会员记录
                             </a>
