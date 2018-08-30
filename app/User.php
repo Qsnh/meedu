@@ -128,4 +128,13 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * 头像修饰器
+     * @return \Illuminate\Config\Repository|mixed
+     */
+    public function getAttributeAvatar()
+    {
+        return $this->avatar ?: config('meedu.member.default_avatar');
+    }
+
 }

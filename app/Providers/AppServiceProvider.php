@@ -19,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
-
         CourseComment::observe(CourseCommentObserver::class);
     }
 

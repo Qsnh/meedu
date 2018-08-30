@@ -10,15 +10,15 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AtUserNotification extends Notification
+class AtUserNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $fromUser;
 
-    protected $fromCommentType;
+    protected $fromType;
 
-    protected $fromCommentId;
+    protected $fromId;
 
     protected $fromComment;
 
@@ -27,15 +27,15 @@ class AtUserNotification extends Notification
      *
      * @return void
      */
-    public function __construct(User $fromUser, $fromCommentType, $fromCommentId)
+    public function __construct(User $fromUser, $fromType, $fromId)
     {
         $this->fromUser = $fromUser;
-        $this->fromCommentType = $fromCommentType;
-        $this->fromCommentId = $fromCommentId;
+        $this->fromType = $fromType;
+        $this->fromId = $fromId;
 
-        $method = 'get' . ucfirst($this->fromCommentType);
+        $method = 'get' . ucfirst($this->fromType);
         if (method_exists($this, $method)) {
-            $this->fromComment = $this->$method($fromCommentId);
+            $this->fromComment = $this->$method($fromId);
         }
     }
 
@@ -85,9 +85,9 @@ class AtUserNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'formUserId' => $this->fromUser->id,
-            'comment_type' => $this->fromCommentType,
-            'comment_id' => $this->fromCommentId,
+            'from_user_id' => $this->fromUser->id,
+            'from_type' => $this->fromType,
+            'from_id' => $this->fromId,
         ];
     }
 }

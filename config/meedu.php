@@ -6,6 +6,9 @@ return [
     'member' => [
         'is_active_default' => \App\User::ACTIVE_NO,
         'is_lock_default' => \App\User::LOCK_NO,
+
+        // 头像
+        'default_avatar' => '/images/default_avatar.jpg',
     ],
 
     // 系统结算
@@ -36,5 +39,4 @@ return [
     'administrator' => [
         'super_slug' => 'administrator',
     ],
-
 ];
