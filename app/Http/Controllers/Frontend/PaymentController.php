@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Exception;
 use App\Http\Controllers\Controller;
 use App\Meedu\Payment\Youzan\Youzan;
 use App\Models\RechargePayment;
@@ -38,14 +39,13 @@ class PaymentController extends Controller
 
             // 创建远程订单
             $result = (new Youzan)->create($recharge);
-            if ($result == false) {
-                throw new \Exception('远程充值订单创建失败');
+            if ($result->status === false) {
+                throw new Exception('远程充值订单创建失败');
             }
 
             DB::commit();
-
             return redirect($result->data['qr_url']);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('系统错误');
