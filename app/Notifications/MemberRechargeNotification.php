@@ -2,23 +2,26 @@
 
 namespace App\Notifications;
 
+use App\Models\RechargePayment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class CommentAtNotification extends Notification
+class MemberRechargeNotification extends Notification
 {
     use Queueable;
+
+    public $payment;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(RechargePayment $payment)
     {
-        //
+        $this->payment = $payment;
     }
 
     /**
@@ -29,7 +32,7 @@ class CommentAtNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -41,9 +44,8 @@ class CommentAtNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('充值到账提醒')
+            ->view('emails.member_recharge', ['payment' => $this->payment]);
     }
 
     /**
@@ -55,7 +57,7 @@ class CommentAtNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'money' => $this->payment->money,
         ];
     }
 }

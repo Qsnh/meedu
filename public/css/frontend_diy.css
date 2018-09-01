@@ -348,3 +348,14 @@ footer {
 .member .member-box .notifications li {
     border-bottom: 1px solid #fbfbfb; line-height: 30px;
 }
+
+/** 充值界面 */
+.recharge-banner {
+    background-color: orange; color: #ffffff;
+}
+.recharge-banner h3 {
+    line-height: 120px; font-size: 36px;
+}
+.recharge-form-box {
+    margin-top: 120px; margin-bottom: 120px;
+}

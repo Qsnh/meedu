@@ -7,7 +7,6 @@ use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Models\CourseComment;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class CourseController extends Controller
 {

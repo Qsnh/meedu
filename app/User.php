@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Course;
 use App\Models\CourseComment;
+use App\Models\RechargePayment;
 use App\Models\Role;
 use App\Models\Video;
 use App\Models\VideoComment;
@@ -162,6 +163,11 @@ class User extends Authenticatable
     public function getAvatarAttribute($avatar)
     {
         return $avatar ?: config('meedu.member.default_avatar');
+    }
+
+    public function rechargePayments()
+    {
+        return $this->hasMany(RechargePayment::class, 'user_id');
     }
 
 }

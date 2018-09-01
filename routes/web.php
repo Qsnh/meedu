@@ -42,6 +42,9 @@ Route::group([
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
 
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
+
+    Route::get('/member/recharge', 'PaymentController@index')->name('member.recharge');
+    Route::post('/member/recharge', 'PaymentController@rechargeHandler');
 });
 
 

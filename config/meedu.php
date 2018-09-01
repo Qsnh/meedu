@@ -23,7 +23,7 @@ return [
         ],
         'credit3' => [
             'name' => '金币',
-            'use' => false,
+            'use' => true,
         ],
     ],
 
@@ -38,5 +38,14 @@ return [
     // 管理员配置
     'administrator' => [
         'super_slug' => 'administrator',
+    ],
+    
+    // 支付网关
+    'payment' => [
+        'youzan' => [
+            'client_id' => env('YOUZAN_CLIENT_ID', ''),
+            'client_secret' => env('YOUZAN_CLIENT_SECRET', ''),
+            'kdt_id' => env('YOUZAN_CLIENT_KDT_ID', ''),
+        ],
     ],
 ];
