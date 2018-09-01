@@ -5,13 +5,14 @@ li { list-style: none; }
 ul { padding: 0px; margin: 0px; }
 p { padding: 0px; margin: 0px; }
 .color-gray { color: gray; }
-body { background-color: #fbfbfb; }
+body { background-color: #fbfbfb; font-family: "微软雅黑" }
 .border { border-radius: 2px; border: 1px solid #eeeeee; }
 .breadcrumb { background: transparent; }
 span.label { margin-right: 8px; }
 .color-fff { color: #ffffff; }
 .float-right { float: right; }
 .lh-30 { line-height: 30px; }
+.font-size-12 { font-size: 12px; }
 
 .share-box {
     padding-top: 10px; padding-bottom: 10px;
@@ -233,7 +234,6 @@ footer {
     max-width: 100%;
 }
 
-
 .course-show-box .course-show-page-right{
     padding-left: 20px;
 }
@@ -250,6 +250,12 @@ footer {
 }
 .course-show-box .course-show-page-right .news-student {
     margin-top: 20px; background-color: #ffffff;
+}
+.course-show-box .course-show-page-right .news-student li {
+    line-height: 36px;
+}
+.course-show-box .course-show-page-right .news-student li img {
+    border-radius: 50%; width: 24px; height: 24px;
 }
 
 /** 播放界面 */

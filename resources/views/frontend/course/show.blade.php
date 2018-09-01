@@ -124,6 +124,19 @@
 
                 <div class="col-sm-12 border news-student">
                     <h4>新加入同学</h4>
+                    <ul>
+                        @forelse($newJoinMembers as $member)
+                            <li>
+                                <img src="{{ $member->avatar }}" width="24" height="24">
+                                <b>{{ $member->nick_name }}</b>
+                                <span class="color-gray font-size-12">{{$member->pivot->created_at}}</span>
+                            </li>
+                            @empty
+                            <li>
+                                <p class="text-center lh-30 color-gray">暂无数据</p>
+                            </li>
+                        @endforelse
+                    </ul>
                 </div>
 
             </div>

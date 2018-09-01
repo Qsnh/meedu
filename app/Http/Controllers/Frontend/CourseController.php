@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Http\Controllers\Controller;
 use App\Models\CourseComment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CourseController extends Controller
 {
@@ -24,7 +25,10 @@ class CourseController extends Controller
             ->published()
             ->whereId($id)
             ->firstOrFail();
-        return view('frontend.course.show', compact('course'));
+
+        $newJoinMembers = $course->getNewJoinMembersCache();
+
+        return view('frontend.course.show', compact('course', 'newJoinMembers'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)

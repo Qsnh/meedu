@@ -36,7 +36,7 @@
                 @else
                     @if(Auth::check())
                     <li>
-                        <a href="">
+                        <a href="{{ route('member.messages') }}">
                             @if(count(Auth::user()->unreadNotifications))
                                 <span class="label label-danger">{{ count(Auth::user()->unreadNotifications) }}
                                 @else
