@@ -55,4 +55,10 @@ class PaymentController extends Controller
         }
     }
 
+    // 支付回调
+    public function callback()
+    {
+        return (new Youzan)->callback();
+    }
+
 }

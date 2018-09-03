@@ -8,6 +8,7 @@ use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
 use App\Models\RechargePayment;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Youzan implements Payment
 {
@@ -27,7 +28,7 @@ class Youzan implements Payment
             $client = new YZTokenClient($this->getToken());
             $params = [
                 'qr_name' => $payment->getGoodsTitle(),
-                'qr_price' => $payment->money * 100,
+                'qr_price' => 10,
                 'qr_type' => 'QR_TYPE_DYNAMIC',
             ];
             $response = $client->post('youzan.pay.qrcode.create', self::VERSION, $params);
@@ -66,20 +67,24 @@ class Youzan implements Payment
 
     public function callback()
     {
+        $data = request()->post();
+        Log::info($data);
+
         try {
-            $data = request()->input();
             $this->checkSing($data);
             if (
-                'TRADE' === $data['type'] &&
+                'trade_TradePaid' === $data['type'] &&
                 false === $data['test'] &&
-                'TRADE_RECEIVED' === $data['status']
+                'PAID' === $data['status']
             ) {
-                event(new PaymentSuccessEvent($data['id']));
+                $msg = json_decode(urldecode($data['msg']), true);
+                event(new PaymentSuccessEvent($msg['qr_info']['qr_id']));
             }
         } catch (Exception $exception) {
             exception_record($exception);
         }
-        return json_encode(['code' => 0, 'msg' => 'scuce']);
+
+        return ['code' => 0, 'msg' => 'success'];
     }
 
     protected function checkSing($data)
