@@ -28,7 +28,7 @@ class Youzan implements Payment
             $client = new YZTokenClient($this->getToken());
             $params = [
                 'qr_name' => $payment->getGoodsTitle(),
-                'qr_price' => 10,
+                'qr_price' => $payment->money * 100,
                 'qr_type' => 'QR_TYPE_DYNAMIC',
             ];
             $response = $client->post('youzan.pay.qrcode.create', self::VERSION, $params);
