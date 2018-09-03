@@ -34,6 +34,7 @@
 - [邮件配置教程](readme.md)
 - [有赞云支付配置教程](readme.md)
 - [短信配置教程](readme.md)
+- [视频收费规则细节](readme.md)
 
 ## 版权
 

@@ -48,6 +48,7 @@ Route::group([
 
     Route::get('/member/recharge', 'PaymentController@index')->name('member.recharge');
     Route::post('/member/recharge', 'PaymentController@rechargeHandler');
+    Route::get('/member/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
 });
 
 

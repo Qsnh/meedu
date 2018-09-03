@@ -43,6 +43,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('member.recharge_records') }}">
+                                <i class="fa fa-credit-card"></i> 充值记录
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('member.messages') }}">
                                 <i class="fa fa-comments"></i> 我的消息
                             </a>

@@ -83,4 +83,10 @@ class MemberController extends BaseController
         return view('frontend.member.buy_video', compact('videos'));
     }
 
+    public function showRechargeRecordsPage()
+    {
+        $records = Auth::user()->rechargePayments()->success()->orderByDesc('created_at')->paginate(10);
+        return view('frontend.member.show_recharge_records', compact('records'));
+    }
+
 }
