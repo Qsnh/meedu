@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Course;
 use App\Models\CourseComment;
+use App\Models\Order;
 use App\Models\RechargePayment;
 use App\Models\Role;
 use App\Models\Video;
@@ -168,6 +169,17 @@ class User extends Authenticatable
     public function rechargePayments()
     {
         return $this->hasMany(RechargePayment::class, 'user_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function credit1Dec($money)
+    {
+        $this->credit1 -= $money;
+        $this->save();
     }
 
 }

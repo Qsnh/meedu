@@ -46,9 +46,12 @@ Route::group([
 
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
 
-    Route::get('/member/recharge', 'PaymentController@index')->name('member.recharge');
-    Route::post('/member/recharge', 'PaymentController@rechargeHandler');
-    Route::get('/member/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
+    Route::get('/recharge', 'PaymentController@index')->name('member.recharge');
+    Route::post('/recharge', 'PaymentController@rechargeHandler');
+    Route::get('/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
+
+    Route::get('/course/{id}/buy', 'CourseController@showBuyPage')->name('member.course.buy');
+    Route::post('/course/{id}/buy', 'CourseController@buyHandler');
 });
 
 
