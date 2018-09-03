@@ -24,7 +24,10 @@ class CourseController extends Controller
             ->published()
             ->whereId($id)
             ->firstOrFail();
-        return view('frontend.course.show', compact('course'));
+
+        $newJoinMembers = $course->getNewJoinMembersCache();
+
+        return view('frontend.course.show', compact('course', 'newJoinMembers'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)

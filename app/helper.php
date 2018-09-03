@@ -95,3 +95,16 @@ if (! function_exists('at_notification_parse')) {
         return '<a href="' . $url . '">用户&nbsp;<b>' . $fromUser->nick_name . '</b>&nbsp;提到您啦。</a>';
     }
 }
+
+if (! function_exists('exception_record')) {
+    function exception_record(Exception $exception)
+    {
+        \Illuminate\Support\Facades\Log::error([
+            'file' => $exception->getFile(),
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage(),
+            'line' => $exception->getLine(),
+            'trace' => $exception->getTraceAsString(),
+        ]);
+    }
+}

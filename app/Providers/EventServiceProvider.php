@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AtUserEvent' => [
             'App\Listeners\AtUserListener',
         ],
+        'App\Events\PaymentSuccessEvent' => [
+            'App\Listeners\PaymentSuccessListener',
+        ],
     ];
 
     /**

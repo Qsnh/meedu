@@ -41,7 +41,7 @@ class Course extends Model
      */
     public function buyUsers()
     {
-        return $this->belongsToMany(User::class, 'user_course', 'course_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_course', 'course_id', 'user_id')->withPivot('charge', 'created_at');
     }
 
     /**
@@ -140,6 +140,30 @@ class Course extends Model
     {
         $firstVideo = $this->videos()->orderByDesc('published_at')->first();
         return $firstVideo ? route('video.show', [$this->id, $firstVideo->id, $firstVideo->slug]) : 'javascript:void(0)';
+    }
+
+    /**
+     * 获取当前课程最近加入的用户[缓存]
+     * @return mixed
+     */
+    public function getNewJoinMembersCache()
+    {
+        $course = $this;
+        if (app()->environment('local')) {
+            return $this->getNewJoinMembers();
+        }
+        return Cache::remember("course:{$course->id}:new_join_member", 60, function () use ($course) {
+            return $course->getNewJoinMembers();
+        });
+    }
+
+    /**
+     * 获取当前课程最近加入的用户
+     * @return mixed
+     */
+    public function getNewJoinMembers()
+    {
+        return $this->buyUsers()->orderByDesc('pivot_created_at')->limit(10)->get();
     }
 
 }
