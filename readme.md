@@ -1,4 +1,4 @@
-<p align="center">MeEdu 基于Laravel开发的在线点播系统</p>
+<p align="center"><img src="public/images/meedu.png"/></p>
 
 ## 介绍
 
