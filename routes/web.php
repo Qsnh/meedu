@@ -22,6 +22,9 @@ Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 
+// 支付回调
+Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
+
 Route::group([
     'prefix' => '/member',
     'middleware' => ['auth'],
@@ -37,14 +40,22 @@ Route::group([
     Route::get('/messages', 'MemberController@showMessagesPage')->name('member.messages');
     Route::get('/courses', 'MemberController@showBuyCoursePage')->name('member.courses');
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
+    Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
 
     Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
 
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
 
-    Route::get('/member/recharge', 'PaymentController@index')->name('member.recharge');
-    Route::post('/member/recharge', 'PaymentController@rechargeHandler');
+    Route::get('/recharge', 'PaymentController@index')->name('member.recharge');
+    Route::post('/recharge', 'PaymentController@rechargeHandler');
+    Route::get('/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
+
+    Route::get('/course/{id}/buy', 'CourseController@showBuyPage')->name('member.course.buy');
+    Route::post('/course/{id}/buy', 'CourseController@buyHandler');
+
+    Route::get('/video/{id}/buy', 'VideoController@showBuyPage')->name('member.video.buy');
+    Route::post('/video/{id}/buy', 'VideoController@buyHandler');
 });
 
 

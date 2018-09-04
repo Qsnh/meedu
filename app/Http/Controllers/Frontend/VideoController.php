@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\Order;
+use Exception;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Models\Video;
 use App\Http\Controllers\Controller;
 use App\Models\VideoComment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VideoController extends Controller
 {
@@ -18,8 +21,6 @@ class VideoController extends Controller
             ->show()
             ->whereId($id)
             ->firstOrFail();
-
-        Auth::check() && Auth::user()->joinACourse($video->course);
 
         return view('frontend.video.show', compact('video'));
     }
@@ -36,6 +37,54 @@ class VideoController extends Controller
         $comment ? flash('评论成功', 'success') : flash('评论失败');
 
         return back();
+    }
+
+    public function showBuyPage($id)
+    {
+        $video = Video::findOrFail($id);
+        return view('frontend.video.buy', compact('video'));
+    }
+
+    public function buyHandler($id)
+    {
+        $video = Video::findOrFail($id);
+        $user = Auth::user();
+        $videoUrl = route('video.show', [$video->course->id, $video->id, $video->slug]);
+
+        if ($user->buyVideos()->whereIn($video->id)->exists()) {
+            flash('您已经购买过本视频啦', 'success');
+            return redirect($videoUrl);
+        }
+
+        if ($user->credit1 < $video->charge) {
+            flash('余额不足，请先充值', 'warning');
+            return redirect('member.recharge');
+        }
+
+        DB::beginTransaction();
+        try {
+            // 创建订单记录
+            $user->orders()->save(new Order([
+                'goods_id' => $video->id,
+                'goods_type' => Order::GOODS_TYPE_VIDEO,
+                'charge' => $video->charge,
+                'status' => Order::STATUS_PAID,
+            ]));
+            // 购买视频
+            $user->buyAVideo($video);
+            // 扣除余额
+            $user->credit1Dec($video->charge);
+
+            DB::commit();
+
+            flash('购买成功', 'success');
+            return redirect($videoUrl);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+            flash('购买失败', 'warning');
+            return back();
+        }
     }
 
 }

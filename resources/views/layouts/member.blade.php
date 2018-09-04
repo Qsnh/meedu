@@ -31,7 +31,7 @@
                         @endif
                     </p>
                     <p class="lh-30">余额
-                        <b>{{ Auth::user()->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
+                        <b>￥{{ Auth::user()->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
                     </p>
                 </div>
 
@@ -40,6 +40,16 @@
                         <li>
                             <a href="{{ route('member') }}">
                                 <i class="fa fa-dashboard"></i> 会员中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('member.recharge_records') }}">
+                                <i class="fa fa-credit-card"></i> 充值记录
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('member.orders') }}">
+                                <i class="fa fa-envelope-open-o"></i> 消费记录
                             </a>
                         </li>
                         <li>

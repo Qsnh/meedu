@@ -42,15 +42,23 @@ class PaymentController extends Controller
             if ($result->status === false) {
                 throw new Exception('远程充值订单创建失败');
             }
+            $pay = $result->data;
 
             DB::commit();
-            return redirect($result->data['qr_url']);
+
+            return view('frontend.payment.pay', compact('pay', 'money'));
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('系统错误');
             return back();
         }
+    }
+
+    // 支付回调
+    public function callback()
+    {
+        return (new Youzan)->callback();
     }
 
 }

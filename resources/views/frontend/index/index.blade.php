@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-sm-12 index-banner text-center">
                 <h1>书山有路勤为径，学海无涯苦作舟</h1>
-                <h4>这里，应有尽有！</h4>
+                <h4>你想要的，这里都有！</h4>
                 <p class="button">
                     <a href="{{ route('courses') }}">立即订阅</a>
                 </p>

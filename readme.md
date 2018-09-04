@@ -1,4 +1,4 @@
-<p align="center">MeEdu 基于Laravel开发的在线点播系统</p>
+<p align="center"><img src="public/images/meedu.png"/></p>
 
 ## 介绍
 
@@ -25,6 +25,8 @@
 - [ ] API接口
 - [ ] 微信小程序
 - [ ] 基于 seele 的版权保护
+- [ ] 广告系统
+- [ ] 邀请推广
 
 ## FAQ
 
@@ -32,6 +34,7 @@
 - [邮件配置教程](readme.md)
 - [有赞云支付配置教程](readme.md)
 - [短信配置教程](readme.md)
+- [视频收费规则细节](readme.md)
 
 ## License
 

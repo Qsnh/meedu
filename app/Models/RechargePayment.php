@@ -28,4 +28,9 @@ class RechargePayment extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function scopeSuccess($query)
+    {
+        return $query->where('status', self::STATUS_PAYED);
+    }
+
 }
