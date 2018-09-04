@@ -27,4 +27,28 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getGoodsTypeText()
+    {
+        $method = 'get' . ucfirst(strtolower($this->goods_type)) . 'GoodsTypeText';
+        return $this->{$method}();
+    }
+
+    protected function getCourseGoodsTypeText()
+    {
+        $course = Course::find($this->goods_id);
+        return "课程《{$course->title}》";
+    }
+
+    protected function getVideoGoodsTypeText()
+    {
+        $video = Video::find($this->goods_id);
+        return "视频《{$video->title}》";
+    }
+
+    protected function getRoleGoodsTypeText()
+    {
+        $role = Role::find($this->goods_id);
+        return "角色《{$role->name}》";
+    }
+
 }

@@ -40,6 +40,7 @@ Route::group([
     Route::get('/messages', 'MemberController@showMessagesPage')->name('member.messages');
     Route::get('/courses', 'MemberController@showBuyCoursePage')->name('member.courses');
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
+    Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
 
     Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
