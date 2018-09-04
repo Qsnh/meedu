@@ -35,7 +35,7 @@
             <div class="col-sm-9 border course-video-list-box">
                 <div class="row course-video-tab">
                     <div class="col-sm-4 course-video-tab-item active" data="intro">简介</div>
-                    <div class="col-sm-4 course-video-tab-item" data="list">课程列表</div>
+                    <div class="col-sm-4 course-video-tab-item" data="list">视频列表</div>
                     <div class="col-sm-4 course-video-tab-item" data="comment">评论</div>
                 </div>
                <div class="tab-content-box">
@@ -56,7 +56,7 @@
                                    </li>
                                </a>
                            @empty
-                            <p class="text-center color-gray lh-30">暂无课程</p>
+                            <p class="text-center color-gray lh-30">暂无视频</p>
                            @endforelse
                        </ul>
                    </div>

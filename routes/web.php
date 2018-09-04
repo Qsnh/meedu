@@ -52,6 +52,9 @@ Route::group([
 
     Route::get('/course/{id}/buy', 'CourseController@showBuyPage')->name('member.course.buy');
     Route::post('/course/{id}/buy', 'CourseController@buyHandler');
+
+    Route::get('/video/{id}/buy', 'VideoController@showBuyPage')->name('member.video.buy');
+    Route::post('/video/{id}/buy', 'VideoController@buyHandler');
 });
 
 

@@ -149,7 +149,7 @@ class User extends Authenticatable
      */
     public function buyAVideo(Video $video)
     {
-        if (! $this->buyVideos()->whereIn($video->id)->exists()) {
+        if (! $this->buyVideos()->whereId($video->id)->exists()) {
             $this->buyVideos()->attach($video->id, [
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'charge' => $video->charge,
@@ -166,20 +166,54 @@ class User extends Authenticatable
         return $avatar ?: config('meedu.member.default_avatar');
     }
 
+    /**
+     * 充值订单
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function rechargePayments()
     {
         return $this->hasMany(RechargePayment::class, 'user_id');
     }
 
+    /**
+     * 关联订单
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id');
     }
 
+    /**
+     * 余额扣除
+     * @param $money
+     */
     public function credit1Dec($money)
     {
         $this->credit1 -= $money;
         $this->save();
+    }
+
+    /**
+     * 判断用户是否可以观看指定的视频
+     * @param Video $video
+     * @return bool
+     */
+    public function canSeeThisVideo(Video $video)
+    {
+        $course = $video->course;
+        if ($video->charge == 0 && $course->charge == 0) {
+            return true;
+        }
+
+        // 是否加入课程
+        $hasJoinCourse = $this->joinCourses()->whereId($video->course->id)->exists();
+        if ($hasJoinCourse) {
+            return true;
+        }
+
+        // 是否购买视频
+        return $this->buyVideos()->whereId($video->id)->exists();
     }
 
 }

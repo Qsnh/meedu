@@ -16,28 +16,45 @@
                 <div class="container">
                     <div class="row">
                         @if(Auth::check())
-                        <div class="col-sm-9 play-box">
-                            <video id="player" playsinline controls>
-                                <source src="" type="video/mp4">
-                            </video>
-                        </div>
-                        <div class="col-sm-3 play-list">
-                            <ul>
-                                @foreach($video->course->getVideos() as $index => $videoItem)
-                                    <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
-                                        <li data-index="{{ $index }}" class="{{ $videoItem->id == $video->id ? 'active' : '' }}">
-                                            <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $videoItem->title }}
-                                        </li>
-                                    </a>
-                                @endforeach
-                            </ul>
-                        </div>
+                            <div class="col-sm-9 play-box">
+                                @if(Auth::user()->canSeeThisVideo($video))
+                                    <video id="player" playsinline controls>
+                                        <source src="" type="video/mp4">
+                                    </video>
+                                    @else
+                                    <div style="padding-top: 200px;">
+                                        @if($video->charge > 0 && $video->course->charge == 0)
+                                            <p class="text-center">
+                                                <a href="{{ route('member.video.buy', $video) }}"
+                                                   class="btn btn-primary">购买此视频 ￥{{$video->charge}}</a>
+                                            </p>
+                                        @endif
+                                        @if($video->course->charge > 0)
+                                            <p class="text-center">
+                                                <a href="{{ route('member.course.buy', $video->course->id) }}"
+                                                   class="btn btn-danger">购买此套课程 ￥{{$video->course->charge}}</a>
+                                            </p>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-sm-3 play-list">
+                                <ul>
+                                    @foreach($video->course->getVideos() as $index => $videoItem)
+                                        <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                            <li data-index="{{ $index }}" class="{{ $videoItem->id == $video->id ? 'active' : '' }}">
+                                                <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $videoItem->title }}
+                                            </li>
+                                        </a>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @else
-                        <div class="col-sm-12 play-box">
-                            <h2 class="text-center" style="line-height: 300px;">
-                                <a href="{{ route('login') }}">点我登陆</a>
-                            </h2>
-                        </div>
+                            <div class="col-sm-12 play-box">
+                                <h2 class="text-center" style="line-height: 300px;">
+                                    <a href="{{ route('login') }}">点我登陆</a>
+                                </h2>
+                            </div>
                         @endif
                     </div>
                 </div>
