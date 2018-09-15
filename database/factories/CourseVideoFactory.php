@@ -9,7 +9,7 @@ $factory->define(\App\Models\Video::class, function (Faker $faker) {
             return factory(\App\Models\Course::class)->create()->id;
         },
         'title' => $faker->title,
-        'slug' => $faker->title,
+        'slug' => $faker->slug(),
         'url' => $faker->url,
         'view_num' => $faker->randomDigit,
         'short_description' => $faker->title,
