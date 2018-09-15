@@ -11,8 +11,6 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
-        if (app()->environment('local')) {
-            factory(\App\Models\Course::class, 50)->create();
-        }
+        factory(\App\Models\Course::class, 50)->create();
     }
 }
