@@ -58,8 +58,6 @@ Route::group([
     Route::post('/video/{id}/buy', 'VideoController@buyHandler');
 });
 
-
-
 // 后台登录
 Route::get('/backend/login', 'Backend\AdministratorController@showLoginForm')->name('backend.login');
 Route::post('/backend/login', 'Backend\AdministratorController@loginHandle');

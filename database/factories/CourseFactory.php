@@ -5,7 +5,7 @@ use Faker\Generator as Faker;
 $factory->define(\App\Models\Course::class, function (Faker $faker) {
     return [
         'user_id' => 0,
-        'title' => $faker->title,
+        'title' => $faker->name,
         'slug' => $faker->slug(),
         'thumb' => $faker->imageUrl(),
         'charge' => $faker->randomDigit,
