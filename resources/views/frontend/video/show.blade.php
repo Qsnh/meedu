@@ -17,7 +17,7 @@
                     <div class="row">
                         @if(Auth::check())
                             <div class="col-sm-9 play-box">
-                                @if(Auth::user()->canSeeThisVideo($video))
+                                @if($user->canSeeThisVideo($video))
                                     <video id="player" playsinline controls>
                                         <source src="" type="video/mp4">
                                     </video>

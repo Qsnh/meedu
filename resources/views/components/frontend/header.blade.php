@@ -37,8 +37,8 @@
                     @if(Auth::check())
                     <li>
                         <a href="{{ route('member.messages') }}">
-                            @if(count(Auth::user()->unreadNotifications))
-                                <span class="label label-danger">{{ count(Auth::user()->unreadNotifications) }}
+                            @if(count($user->unreadNotifications))
+                                <span class="label label-danger">{{ count($user->unreadNotifications) }}
                                 @else
                                 <span class="label label-default">0</span>
                             @endif
@@ -47,7 +47,7 @@
                     @endif
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                            {{ Auth::user()->nick_name }} <span class="caret"></span>
+                            {{ $user->nick_name }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>

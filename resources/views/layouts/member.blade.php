@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{$title ?? Auth::user()->nick_name }} 会员中心 - {{ config('app.name', 'Laravel') }}</title>
+    <title>{{$title ?? $user->nick_name }} 会员中心 - {{ config('app.name', 'Laravel') }}</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
@@ -20,18 +20,18 @@
                 <div class="col-sm-12 avatar border">
                     <p>
                         <a href="{{ route('member.avatar') }}">
-                            <img src="{{ Auth::user()->avatar }}" width="80" height="80">
+                            <img src="{{ $user->avatar }}" width="80" height="80">
                         </a>
                     </p>
-                    <p class="nickname">{{ Auth::user()->nick_name }}</p>
-                    <p class="lh-30">注册于 &nbsp; <span class="color-gray">{{ Auth::user()->created_at->diffForHumans() }}</span></p>
+                    <p class="nickname">{{ $user->nick_name }}</p>
+                    <p class="lh-30">注册于 &nbsp; <span class="color-gray">{{ $user->created_at->diffForHumans() }}</span></p>
                     <p class="lh-30">
-                        @if(Auth::user()->role)
-                            <span class="label label-success">{{Auth::user()->role->name}} {{Auth::user()->role_expired_at}}</span>
+                        @if($user->role)
+                            <span class="label label-success">{{$user->role->name}} {{$user->role_expired_at}}</span>
                         @endif
                     </p>
                     <p class="lh-30">余额
-                        <b>￥{{ Auth::user()->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
+                        <b>￥{{ $user->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
                     </p>
                 </div>
 
