@@ -4,15 +4,22 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Course;
 use App\Models\EmailSubscription;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class IndexController extends BaseController
 {
 
     public function index()
     {
-        $courses = Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
-        return view('frontend.index.index', compact('courses'));
+        $courses = Cache::remember('index_recent_course', 360, function () {
+            return Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
+        });
+        $roles = Cache::remember('index_roles', 360, function () {
+            return Role::orderByDesc('weight')->limit(3)->get();
+        });
+        return view('frontend.index.index', compact('courses', 'roles'));
     }
 
     public function subscriptionHandler(Request $request)

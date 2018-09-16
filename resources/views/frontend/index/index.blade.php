@@ -48,42 +48,20 @@
                             <div class="col-sm-12">
                                 <h3 class="title">计划</h3>
                             </div>
+                            @foreach($roles as $role)
                             <div class="col-sm-4 roles-item">
                                 <div class="roles-item-info text-center border">
-                                    <h2 class="title">半年会员</h2>
-                                    <p>全部视频均可观看</p>
-                                    <p>无次数限制</p>
-                                    <p>专属小密圈</p>
-                                    <p class="price">￥256</p>
+                                    <h2 class="title">{{$role->name}}</h2>
+                                    @foreach($role->descriptionRows() as $row)
+                                    <p>{{$row}}</p>
+                                    @endforeach
+                                    <p class="price">￥{{$role->charge}}</p>
                                     <p>
                                         <a href="" class="buy-button">立即订阅</a>
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-sm-4 roles-item">
-                                <div class="roles-item-info active text-center border">
-                                    <h2 class="title">年度会员</h2>
-                                    <p>全部视频均可观看</p>
-                                    <p>无次数限制</p>
-                                    <p>专属小密圈</p>
-                                    <p class="price">￥512</p>
-                                    <p>
-                                        <a href="" class="buy-button">立即订阅</a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 roles-item">
-                                <div class="roles-item-info text-center border">
-                                    <h2 class="title">终身会员</h2>
-                                    <p>全部视频均可观看</p>
-                                    <p>无次数限制</p>
-                                    <p>专属小密圈</p>
-                                    <p class="price">￥2048</p>
-                                    <p>
-                                        <a href="" class="buy-button">立即订阅</a>
-                                    </p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

@@ -45,4 +45,12 @@ class Role extends Model
             ->when('role_expired_at', '>=', Carbon::now()->format('Y-m-d H:i:s'));
     }
 
+    /**
+     * @return array
+     */
+    public function descriptionRows()
+    {
+        return explode("\n", $this->getAttribute('description'));
+    }
+
 }
