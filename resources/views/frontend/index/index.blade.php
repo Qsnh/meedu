@@ -57,7 +57,7 @@
                                     @endforeach
                                     <p class="price">￥{{$role->charge}}</p>
                                     <p>
-                                        <a href="" class="buy-button">立即订阅</a>
+                                        <a href="{{route('role.index')}}" class="buy-button">立即订阅</a>
                                     </p>
                                 </div>
                             </div>

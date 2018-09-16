@@ -6,7 +6,6 @@ use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 use App\Models\Announcement;
 use App\Models\UserJoinRoleRecord;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

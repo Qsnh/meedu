@@ -27,7 +27,7 @@
                     <p class="lh-30">注册于 &nbsp; <span class="color-gray">{{ Auth::user()->created_at->diffForHumans() }}</span></p>
                     <p class="lh-30">
                         @if(Auth::user()->role)
-                            <span class="label label-success">{{Auth::user()->role->name}}</span>
+                            <span class="label label-success">{{Auth::user()->role->name}} {{Auth::user()->role_expired_at}}</span>
                         @endif
                     </p>
                     <p class="lh-30">余额

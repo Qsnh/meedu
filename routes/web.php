@@ -24,6 +24,8 @@ Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@sh
 
 Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler')->name('subscription.email');
 
+Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
+
 // 支付回调
 Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
 
@@ -58,6 +60,9 @@ Route::group([
 
     Route::get('/video/{id}/buy', 'VideoController@showBuyPage')->name('member.video.buy');
     Route::post('/video/{id}/buy', 'VideoController@buyHandler');
+
+    Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
+    Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
 });
 
 // 后台登录

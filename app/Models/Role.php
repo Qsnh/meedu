@@ -41,8 +41,7 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->hasMany(User::class, 'user_id')
-            ->when('role_expired_at', '>=', Carbon::now()->format('Y-m-d H:i:s'));
+        return $this->hasMany(User::class, 'user_id');
     }
 
     /**

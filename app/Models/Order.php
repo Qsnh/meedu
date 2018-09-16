@@ -48,7 +48,7 @@ class Order extends Model
     protected function getRoleGoodsTypeText()
     {
         $role = Role::find($this->goods_id);
-        return "角色《{$role->name}》";
+        return "VIP《{$role->name}》";
     }
 
 }

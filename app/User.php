@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\UserJoinRoleRecord;
+use Exception;
 use App\Models\Course;
 use App\Models\CourseComment;
 use App\Models\Order;
@@ -216,6 +218,42 @@ class User extends Authenticatable
 
         // 是否购买视频
         return $this->buyVideos()->whereId($video->id)->exists();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function joinRoles()
+    {
+        return $this->hasMany(UserJoinRoleRecord::class, 'user_id');
+    }
+
+    /**
+     * @param Role $role
+     * @throws \Throwable
+     */
+    public function buyRole(Role $role)
+    {
+        throw_if($this->role && $this->role->weight != $role->weight, new Exception('该账户已经存在会员记录'));
+
+        if ($this->role) {
+            $startDate = $this->role_expired_at;
+            $endDate = date('Y-m-d H:i:s', strtotime($startDate) + $role->expire_days * 86400);
+        } else {
+            $startDate = date('Y-m-d H:i:s');
+            $endDate = date('Y-m-d H:i:s', time() + $role->expire_days * 86400);
+        }
+
+        $this->role_id = $role->id;
+        $this->role_expired_at = $endDate;
+        $this->save();
+
+        $this->joinRoles()->save(new UserJoinRoleRecord([
+            'role_id' => $this->role_id,
+            'charge' => $role->charge,
+            'started_at' => $startDate,
+            'expired_at' => $endDate,
+        ]));
     }
 
 }
