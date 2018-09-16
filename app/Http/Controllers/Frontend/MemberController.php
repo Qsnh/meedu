@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
+use App\Models\Announcement;
 use App\Models\UserJoinRoleRecord;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -15,7 +16,8 @@ class MemberController extends BaseController
 
     public function index()
     {
-        return view('frontend.member.index');
+        $announcement = Announcement::recentAnnouncement();
+        return view('frontend.member.index', compact('announcement'));
     }
 
     public function showPasswordResetPage()
@@ -29,7 +31,7 @@ class MemberController extends BaseController
 
         $user = Auth::user();
 
-        if (! Hash::check($oldPassword, $user->password)) {
+        if (!Hash::check($oldPassword, $user->password)) {
             flash('原密码不正确');
             return back();
         }

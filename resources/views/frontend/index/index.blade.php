@@ -102,7 +102,7 @@
                                 {!! csrf_field() !!}
                                 <div class="row">
                                     <div class="col-sm-8">
-                                        <input type="email" name="email" class="input-subscription" placeholder="请输入邮箱">
+                                        <input type="email" name="email" class="input-subscription" placeholder="请输入邮箱" required>
                                     </div>
                                     <div class="col-sm-4">
                                         <button type="submit" class="btn-subscription">订阅</button>
