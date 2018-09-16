@@ -8,7 +8,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class IndexController extends BaseController
+class IndexController extends FrontendController
 {
 
     public function index()

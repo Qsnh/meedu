@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdministratorLoginCheckMiddleware;
+use App\Http\Middleware\UserShareMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -60,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
         'backend.login.check' => AdministratorLoginCheckMiddleware::class,
+        'user.share' => UserShareMiddleware::class,
     ];
 }

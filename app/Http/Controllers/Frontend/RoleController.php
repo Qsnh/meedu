@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Order;
 use App\Models\Role;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use vendor\project\StatusTest;
 
-class RoleController extends Controller
+class RoleController extends FrontendController
 {
 
     public function index()

@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
-use App\Http\Controllers\Controller;
 use App\Meedu\Payment\Youzan\Youzan;
 use App\Models\RechargePayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class PaymentController extends Controller
+class PaymentController extends FrontendController
 {
 
     public function index()

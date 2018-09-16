@@ -6,12 +6,11 @@ use App\Models\Order;
 use Exception;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Models\Video;
-use App\Http\Controllers\Controller;
 use App\Models\VideoComment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class VideoController extends Controller
+class VideoController extends FrontendController
 {
 
     public function show($courseId, $id, $slug)

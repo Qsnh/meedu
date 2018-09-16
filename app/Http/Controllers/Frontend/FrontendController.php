@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 
-class BaseController extends Controller
+class FrontendController extends BaseController
 {
     protected function success($message = '', $data = [])
     {

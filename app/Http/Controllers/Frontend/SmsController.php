@@ -6,7 +6,7 @@ use App\Http\Requests\Frontend\SmsSendRequest;
 use App\Models\SmsRecord;
 use Overtrue\EasySms\EasySms;
 
-class SmsController extends BaseController
+class SmsController extends FrontendController
 {
 
     public function send(SmsSendRequest $request)

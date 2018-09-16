@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Frontend;
 use Exception;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Models\Course;
-use App\Http\Controllers\Controller;
 use App\Models\CourseComment;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class CourseController extends Controller
+class CourseController extends FrontendController
 {
 
     public function index()

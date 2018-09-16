@@ -10,7 +10,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class MemberController extends BaseController
+class MemberController extends FrontendController
 {
 
     public function index()
