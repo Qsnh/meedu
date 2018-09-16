@@ -42,7 +42,6 @@
     <div class="container-fluid roles">
         <div class="row">
             <div class="col-sm-12">
-
                 <div class="container">
                     <div class="col-sm-12 text-center">
                         <div class="row">
@@ -88,7 +87,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
