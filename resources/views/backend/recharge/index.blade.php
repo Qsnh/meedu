@@ -24,8 +24,8 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" native-type="submit">搜索</el-button>
-                    <meedu-a :type="'warning'" :name="'重置'" :url="'{{ route('backend.recharge') }}'">
-                    </meedu-a>
+                    <meedu-a :type="'warning'" :name="'重置'" :url="'{{ route('backend.recharge') }}'"></meedu-a>
+                    <el-button type="danger" name="export" native-type="submit">导出当前记录</el-button>
                 </el-form-item>
             </el-form>
         </el-col>

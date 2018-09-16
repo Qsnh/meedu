@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\RechargePaymentExport;
 use App\Models\RechargePayment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RechargeController extends Controller
 {
 
     public function index(Request $request)
     {
-        $keywords = $request->input('keywords', '');
-        $status = $request->input('status', '');
-
-        $records = RechargePayment::with(['user'])
-            ->when($status, function ($query) use ($status) {
-                return $query->whereStatus($status);
-            })->when($keywords, function ($query) use ($keywords) {
-                return $query->userLike($keywords)
-                    ->orWhere('third_id', 'like', "%{$keywords}%")
-                    ->orWhere('pay_method', $keywords);
-            })
-            ->orderByDesc('created_at')
-            ->paginate(10);
+        if ($request->has('export')) {
+            return redirect(route('backend.recharge.export', $request->all()));
+        }
+        $records = RechargePayment::filter($request)->paginate(10);
         return view('backend.recharge.index', compact('records'));
+    }
+
+    public function exportToExcel(Request $request)
+    {
+        $records = RechargePayment::filter($request)->get();
+        return Excel::download(new RechargePaymentExport($records), 'recharge_records.xlsx');
     }
 
 }

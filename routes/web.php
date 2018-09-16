@@ -112,6 +112,7 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
 
     // 充值
     Route::get('/recharge', 'RechargeController@index')->name('backend.recharge');
+    Route::get('/recharge/export', 'RechargeController@exportToExcel')->name('backend.recharge.export');
 
     // 会员
     Route::get('/member', 'MemberController@index')->name('backend.member.index');
