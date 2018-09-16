@@ -10,13 +10,13 @@ class AdministratorLoginCheckMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (! Auth::guard('administrator')->check()) {
+        if (!Auth::guard('administrator')->check()) {
             flash('请先登录');
             return redirect(route('backend.login'));
         }

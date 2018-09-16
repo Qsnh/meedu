@@ -13,6 +13,10 @@ class Announcement extends Model
         'admin_id', 'announcement',
     ];
 
+    protected $appends = [
+        'edit_url', 'destroy_url',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -38,6 +42,16 @@ class Announcement extends Model
         return Cache::remember('recent_announcement', 360, function () {
             return self::orderByDesc('updated_at')->limit(1)->first();
         });
+    }
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.announcement.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.announcement.destroy', $this);
     }
 
 }

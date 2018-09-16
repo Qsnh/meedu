@@ -114,6 +114,15 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::get('/member', 'MemberController@index')->name('backend.member.index');
     Route::get('/member/{id}', 'MemberController@show')->name('backend.member.show');
 
+    // 公告
+    Route::get('/announcement', 'AnnouncementController@index')->name('backend.announcement.index');
+    Route::get('/announcement/create', 'AnnouncementController@create')->name('backend.announcement.create');
+    Route::post('/announcement/create', 'AnnouncementController@store');
+    Route::get('/announcement/{id}/edit', 'AnnouncementController@edit')->name('backend.announcement.edit');
+    Route::put('/announcement/{id}/edit', 'AnnouncementController@update');
+    Route::get('/announcement/{id}/delete', 'AnnouncementController@destroy')->name('backend.announcement.destroy');
+
+
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
 

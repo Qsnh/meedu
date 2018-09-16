@@ -49,6 +49,14 @@
                         </li>
                     </ul>
                 </dd>
+                <dt>运营</dt>
+                <dd>
+                    <ul>
+                        <li class="{{ menu_is_active('backend.announcement.index') }}">
+                            <a href="{{ route('backend.announcement.index') }}">公告</a>
+                        </li>
+                    </ul>
+                </dd>
                 <dt>会员</dt>
                 <dd>
                     <ul>

@@ -108,3 +108,14 @@ if (! function_exists('exception_record')) {
         ]);
     }
 }
+
+if (!function_exists('admin')) {
+    /**
+     * 获取当前登录的管理员
+     * @return \App\Models\Administrator
+     */
+    function admin()
+    {
+        return \Illuminate\Support\Facades\Auth::guard('administrator')->user();
+    }
+}

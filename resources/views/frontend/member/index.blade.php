@@ -3,7 +3,7 @@
 @section('content')
     @if($announcement)
         <div class="row">
-            <div class="alert alert-warning">
+            <div class="alert alert-warning announcement">
                 <p><b>公告：</b></p>
                 {!! $announcement->getAnnouncementContent() !!}
                 <p class="text-right">{{$announcement->updated_at}}</p>
