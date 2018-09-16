@@ -130,6 +130,22 @@ footer {
     background-color: orange; color: #ffffff;
 }
 
+.index-subscription {
+    padding-bottom: 50px; border-bottom: 1px solid #444444;
+    background-color: #333333; color: #FFFFFF;
+}
+.index-subscription h3 {
+    line-height: 120px;
+}
+.index-subscription .input-subscription {
+    width: 95%; height: 60px; line-height: 60px; border: 0px;
+    padding-left: 5%; font-size: 2rem;
+}
+.index-subscription .btn-subscription {
+    width: 100%; height: 60px; line-height: 60px; background-color: orange;
+    color: #FFFFFF; font-size: 2rem; border: 0px;
+}
+
 /** 课程列表页面 */
 .course-index-banner {
     background-color: orange; color: #ffffff;

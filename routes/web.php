@@ -22,6 +22,8 @@ Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 
+Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler')->name('subscription.email');
+
 // 支付回调
 Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
 

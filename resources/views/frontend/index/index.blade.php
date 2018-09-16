@@ -91,4 +91,29 @@
         </div>
     </div>
 
+    <div class="container-fluid index-subscription">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <h3 class="text-center">订阅本站获取最新消息</h3>
+                            <form action="{{route('subscription.email')}}" method="post">
+                                {!! csrf_field() !!}
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input type="email" name="email" class="input-subscription" placeholder="请输入邮箱">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn-subscription">订阅</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
