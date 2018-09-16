@@ -51,8 +51,10 @@ section.backend-section .backend-left-menu dd li:hover,section.backend-section .
 section.backend-section .backend-left-menu dd li:hover a,section.backend-section .backend-left-menu dd li.active a {
     background-color: #409EFF; color: #ffffff;
 }
-
-
 section.backend-section .backend-body {
     flex: 1; height: 100%; overflow-y: auto;
+}
+
+.backend-dashboard-banner {
+
 }
