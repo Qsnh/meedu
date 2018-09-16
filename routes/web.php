@@ -139,6 +139,9 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::put('/role/{id}/edit', 'RoleController@update');
     Route::get('/role/{id}/delete', 'RoleController@destroy')->name('backend.role.destroy');
 
+    // 邮件群发
+    Route::get('/subscription_email', 'SubscriptionController@create')->name('backend.subscription.email');
+    Route::post('/subscription_email', 'SubscriptionController@store');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');

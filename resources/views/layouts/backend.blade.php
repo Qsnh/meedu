@@ -58,6 +58,9 @@
                         <li class="{{ menu_is_active('backend.role.index') }}">
                             <a href="{{ route('backend.role.index') }}">VIP会员</a>
                         </li>
+                        <li class="{{ menu_is_active('backend.subscription.email') }}">
+                            <a href="{{ route('backend.subscription.email') }}">邮件群发</a>
+                        </li>
                     </ul>
                 </dd>
                 <dt>财务</dt>
