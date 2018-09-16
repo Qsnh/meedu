@@ -49,6 +49,22 @@
                         </li>
                     </ul>
                 </dd>
+                <dt>运营</dt>
+                <dd>
+                    <ul>
+                        <li class="{{ menu_is_active('backend.announcement.index') }}">
+                            <a href="{{ route('backend.announcement.index') }}">公告</a>
+                        </li>
+                    </ul>
+                </dd>
+                <dt>财务</dt>
+                <dd>
+                    <ul>
+                        <li class="{{ menu_is_active('backend.recharge') }}">
+                            <a href="{{ route('backend.recharge') }}">充值记录</a>
+                        </li>
+                    </ul>
+                </dd>
                 <dt>会员</dt>
                 <dd>
                     <ul>

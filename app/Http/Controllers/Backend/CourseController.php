@@ -16,13 +16,6 @@ class CourseController extends Controller
         $courses = Course::when($keywords, function ($query) use ($keywords) {
             return $query->where('title', 'like', '%' . $keywords . '%');
         })
-            ->select([
-                'id', 'user_id', 'title', 'slug', 'thumb',
-                'charge', 'short_description',
-                'seo_keywords', 'seo_description',
-                'published_at', 'is_show', 'created_at',
-                'updated_at',
-            ])
             ->orderByDesc('created_at')
             ->paginate(10);
 

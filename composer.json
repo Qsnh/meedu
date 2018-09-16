@@ -11,6 +11,7 @@
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "maatwebsite/excel": "^3.0",
         "mews/captcha": "^2.2",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0"

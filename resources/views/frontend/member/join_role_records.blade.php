@@ -4,10 +4,10 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>开始时间</th>
-            <th>结束时间</th>
-            <th>价格</th>
-            <th>会员</th>
+            <td>开始时间</td>
+            <td>结束时间</td>
+            <td>价格</td>
+            <td>会员</td>
         </tr>
         </thead>
         <tbody>

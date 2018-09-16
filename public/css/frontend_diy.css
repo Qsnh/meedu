@@ -13,6 +13,7 @@ span.label { margin-right: 8px; }
 .float-right { float: right; }
 .lh-30 { line-height: 30px; }
 .font-size-12 { font-size: 12px; }
+.emoji { width: 16px; height: 16px; }
 
 .share-box {
     padding-top: 10px; padding-bottom: 10px;
@@ -129,6 +130,22 @@ footer {
     background-color: orange; color: #ffffff;
 }
 
+.index-subscription {
+    padding-bottom: 50px; border-bottom: 1px solid #444444;
+    background-color: #333333; color: #FFFFFF;
+}
+.index-subscription h3 {
+    line-height: 120px;
+}
+.index-subscription .input-subscription {
+    width: 95%; height: 60px; line-height: 60px; border: 0px;
+    padding-left: 5%; font-size: 2rem;
+}
+.index-subscription .btn-subscription {
+    width: 100%; height: 60px; line-height: 60px; background-color: orange;
+    color: #FFFFFF; font-size: 2rem; border: 0px;
+}
+
 /** 课程列表页面 */
 .course-index-banner {
     background-color: orange; color: #ffffff;
@@ -197,6 +214,12 @@ footer {
 }
 .course-show-box .course-video-list-box .tab-content-box .intro {
     font-size: 1.5rem; line-height: 2rem; font-family: "微软雅黑";
+}
+.course-show-box .course-video-list-box .tab-content-box .intro p {
+    margin-top: 5px; margin-bottom: 5px;
+}
+.course-show-box .course-video-list-box .tab-content-box .intro img {
+    width: 100%;
 }
 .course-show-box .course-video-list-box .tab-content-box .list ul li {
     width: 100%; height: 50px; line-height: 50px; float: left;
@@ -348,7 +371,12 @@ footer {
 .member .member-box .notifications li {
     border-bottom: 1px solid #fbfbfb; line-height: 30px;
 }
-
+.member .announcement img {
+    width: 100%;
+}
+.member .announcement p {
+    line-height: 30px;
+}
 /** 充值界面 */
 .recharge-banner {
     background-color: orange; color: #ffffff;

@@ -77,9 +77,22 @@ class Administrator extends Authenticatable
         return route('backend.administrator.destroy', $this);
     }
 
+    /**
+     * 是否存在指定角色
+     * @param AdministratorRole $role
+     * @return bool
+     */
     public function hasRole(AdministratorRole $role)
     {
         return $this->roles()->where('id', $role->id)->exists();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class, 'admin_id');
     }
 
 }
