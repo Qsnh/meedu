@@ -110,6 +110,9 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::put('/video/{id}/edit', 'CourseVideoController@update');
     Route::get('/video/{id}/delete', 'CourseVideoController@destroy')->name('backend.video.destroy');
 
+    // 充值
+    Route::get('/recharge', 'RechargeController@index')->name('backend.recharge');
+
     // 会员
     Route::get('/member', 'MemberController@index')->name('backend.member.index');
     Route::get('/member/{id}', 'MemberController@show')->name('backend.member.show');
