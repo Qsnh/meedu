@@ -17,7 +17,8 @@ class MemberController extends BaseController
     public function index()
     {
         $announcement = Announcement::recentAnnouncement();
-        return view('frontend.member.index', compact('announcement'));
+        $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->limit(10)->get();
+        return view('frontend.member.index', compact('announcement', 'videos'));
     }
 
     public function showPasswordResetPage()

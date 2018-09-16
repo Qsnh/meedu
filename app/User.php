@@ -79,7 +79,8 @@ class User extends Authenticatable
      */
     public function joinCourses()
     {
-        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')->withPivot('created_at', 'charge');
+        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id')
+            ->withPivot('created_at', 'charge');
     }
 
     /**
@@ -88,7 +89,8 @@ class User extends Authenticatable
      */
     public function buyVideos()
     {
-        return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')->withPivot('created_at', 'charge');
+        return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')
+            ->withPivot('created_at', 'charge');
     }
 
     public function getShowUrlAttribute()
