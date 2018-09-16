@@ -210,6 +210,11 @@ class User extends Authenticatable
             return true;
         }
 
+        // 是否是会员
+        if ($this->activeRole()) {
+            return true;
+        }
+
         // 是否加入课程
         $hasJoinCourse = $this->joinCourses()->whereId($video->course->id)->exists();
         if ($hasJoinCourse) {
@@ -218,6 +223,15 @@ class User extends Authenticatable
 
         // 是否购买视频
         return $this->buyVideos()->whereId($video->id)->exists();
+    }
+
+    /**
+     * 是否为有效会员
+     * @return bool
+     */
+    public function activeRole()
+    {
+        return $this->role && time() < strtotime($this->role_expired_at);
     }
 
     /**
