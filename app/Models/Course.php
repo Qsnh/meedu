@@ -119,8 +119,13 @@ class Course extends Model
      */
     public function getVideos()
     {
-        return Cache::remember("course_{$this->id}_videos", 360, function () {
-            return $this->videos()->published()->show()->orderBy('published_at', 'asc')->get();
+        $that = $this;
+        return Cache::remember("course_{$this->id}_videos", 360, function () use ($that) {
+            return $that->videos()
+                ->published()
+                ->show()
+                ->orderBy('published_at')
+                ->get();
         });
     }
 
@@ -139,8 +144,14 @@ class Course extends Model
      */
     public function seeUrl()
     {
-        $firstVideo = $this->videos()->orderByDesc('published_at')->first();
-        return $firstVideo ? route('video.show', [$this->id, $firstVideo->id, $firstVideo->slug]) : 'javascript:void(0)';
+        $firstVideo = $this->videos()
+            ->published()
+            ->show()
+            ->orderByDesc('published_at')
+            ->first();
+        return $firstVideo ?
+            route('video.show', [$this->id, $firstVideo->id, $firstVideo->slug]) :
+            'javascript:void(0)';
     }
 
     /**

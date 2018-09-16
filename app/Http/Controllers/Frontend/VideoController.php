@@ -21,7 +21,6 @@ class VideoController extends Controller
             ->show()
             ->whereId($id)
             ->firstOrFail();
-
         return view('frontend.video.show', compact('video'));
     }
 

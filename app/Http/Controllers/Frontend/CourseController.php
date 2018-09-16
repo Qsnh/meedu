@@ -16,7 +16,10 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::show()->published()->orderByDesc('created_at')->paginate(6);
+        $courses = Course::show()
+            ->published()
+            ->orderByDesc('created_at')
+            ->paginate(6);
         return view('frontend.course.index', compact('courses'));
     }
 
@@ -27,23 +30,18 @@ class CourseController extends Controller
             ->published()
             ->whereId($id)
             ->firstOrFail();
-
         $newJoinMembers = $course->getNewJoinMembersCache();
-
         return view('frontend.course.show', compact('course', 'newJoinMembers'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
     {
         $course = Course::findOrFail($courseId);
-
         $comment = $course->comments()->save(new CourseComment([
             'user_id' => Auth::id(),
             'content' => $request->input('content'),
         ]));
-
         $comment ? flash('评论成功', 'success') : flash('评论失败');
-
         return back();
     }
 
