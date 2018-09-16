@@ -55,6 +55,9 @@
                         <li class="{{ menu_is_active('backend.announcement.index') }}">
                             <a href="{{ route('backend.announcement.index') }}">公告</a>
                         </li>
+                        <li class="{{ menu_is_active('backend.role.index') }}">
+                            <a href="{{ route('backend.role.index') }}">VIP会员</a>
+                        </li>
                     </ul>
                 </dd>
                 <dt>财务</dt>

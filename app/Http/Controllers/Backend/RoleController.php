@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\Backend\RoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
@@ -12,7 +11,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::orderByDesc('weight')->get();
         return view('backend.role.index', compact('roles'));
     }
 
@@ -44,13 +43,7 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
-        if ($role->users()->exists()) {
-            flash('该角色下面存在会员记录，无法删除');
-        } else {
-            $role->delete();
-            flash('删除成功', 'success');
-        }
+        flash('角色无删除成功，如果真的需要删除请直接从数据库删除，但是请确保数据完整性！');
         return back();
     }
 

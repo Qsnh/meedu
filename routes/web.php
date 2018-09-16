@@ -126,6 +126,14 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::put('/announcement/{id}/edit', 'AnnouncementController@update');
     Route::get('/announcement/{id}/delete', 'AnnouncementController@destroy')->name('backend.announcement.destroy');
 
+    // 用户角色
+    Route::get('/role', 'RoleController@index')->name('backend.role.index');
+    Route::get('/role/create', 'RoleController@create')->name('backend.role.create');
+    Route::post('/role/create', 'RoleController@store');
+    Route::get('/role/{id}/edit', 'RoleController@edit')->name('backend.role.edit');
+    Route::put('/role/{id}/edit', 'RoleController@update');
+    Route::get('/role/{id}/delete', 'RoleController@destroy')->name('backend.role.destroy');
+
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
