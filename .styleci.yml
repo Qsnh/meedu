@@ -1,0 +1,6 @@
+preset: laravel
+
+risky: false
+
+enabled:
+  - strict
