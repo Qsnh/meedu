@@ -1,3 +1,16 @@
 preset: laravel
 
 risky: false
+
+finder:
+  exclude:
+    - "vendor"
+    - "tests"
+    - "resources"
+    - "storage"
+    - "public"
+    - "docs"
+    - "database"
+    - "bootstrap"
+  path:
+    - "app"
