@@ -1,12 +1,13 @@
 <p align="center"><img src="public/images/meedu.png"/></p>
 
 <p align="center">
+[![StyleCI](https://github.styleci.io/repos/127536154/shield?branch=master)](https://github.styleci.io/repos/127536154)
 <a href="https://travis-ci.org/qsnh/meedu"><img src="https://travis-ci.org/qsnh/meedu.svg?branch=master" alt="Build Status"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/v/unstable.svg" alt="Latest Unstable Version"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/build-status/master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/build.png?b=master" alt="Build Status"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/coverage.png?b=master" alt="Code Coverage"></a>
+<a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/code-intelligence.png?b=master" alt="Code Intelligence"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/license" alt="License"></a>
 </p>
