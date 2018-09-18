@@ -1,7 +1,7 @@
 <p align="center"><img src="public/images/meedu.png"/></p>
 
 <p align="center">
-[![StyleCI](https://github.styleci.io/repos/127536154/shield?branch=master)](https://github.styleci.io/repos/127536154)
+<a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/qsnh/meedu"><img src="https://travis-ci.org/qsnh/meedu.svg?branch=master" alt="Build Status"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/build-status/master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/build.png?b=master" alt="Build Status"></a>
