@@ -1,14 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Jobs;
 
-use App\Mail\EmailSubscriptionEmail;
 use Illuminate\Bus\Queueable;
+use App\Mail\EmailSubscriptionEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
 
 class EmailSubscriptionHandlerJob implements ShouldQueue
 {
@@ -22,8 +31,6 @@ class EmailSubscriptionHandlerJob implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct(string $email, string $title, string $content)
     {
@@ -34,8 +41,6 @@ class EmailSubscriptionHandlerJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle()
     {

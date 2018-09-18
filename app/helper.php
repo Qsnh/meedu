@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 if (! function_exists('flash')) {
     function flash($message, $level = 'warning')
     {
@@ -10,8 +19,10 @@ if (! function_exists('flash')) {
 
 if (! function_exists('get_first_flash')) {
     /**
-     * 获取第一条FLASH信息
+     * 获取第一条FLASH信息.
+     *
      * @param $level
+     *
      * @return mixed|string
      */
     function get_first_flash($level)
@@ -19,14 +30,17 @@ if (! function_exists('get_first_flash')) {
         if (! session()->has($level)) {
             return '';
         }
+
         return session($level)->first();
     }
 }
 
 if (! function_exists('menu_is_active')) {
     /**
-     * 指定路由名是否与当前访问的路由名相同
+     * 指定路由名是否与当前访问的路由名相同.
+     *
      * @param $routeName
+     *
      * @return bool
      */
     function menu_is_active($routeName)
@@ -40,6 +54,7 @@ if (! function_exists('menu_is_active')) {
             $currentRouteName = implode('.', $currentRouteNameArray);
             $isActive = preg_match("/{$currentRouteName}[^_]/", $routeName) ? 'active' : '';
         }
+
         return $isActive;
     }
 }
@@ -59,6 +74,7 @@ if (! function_exists('notification_name')) {
     {
         $arr = explode('\\', $notificationName);
         $name = $arr[count($arr) - 1];
+
         return strtolower($name);
     }
 }
@@ -81,8 +97,8 @@ if (! function_exists('at_notification_parse')) {
     {
         $data = $notification->data;
         $fromUser = \App\User::find($data['from_user_id']);
-        $model = '\\App\\Models\\' . $data['from_type'];
-        $from = (new $model)->whereId($data['from_id'])->first();
+        $model = '\\App\\Models\\'.$data['from_type'];
+        $from = (new $model())->whereId($data['from_id'])->first();
         $url = 'javascript:void(0)';
         switch ($data['from_type']) {
             case 'CourseComment':
@@ -92,7 +108,8 @@ if (! function_exists('at_notification_parse')) {
                 $url = route('video.show', [$from->video->course->id, $from->video->id, $from->video->slug]);
                 break;
         }
-        return '<a href="' . $url . '">用户&nbsp;<b>' . $fromUser->nick_name . '</b>&nbsp;提到您啦。</a>';
+
+        return '<a href="'.$url.'">用户&nbsp;<b>'.$fromUser->nick_name.'</b>&nbsp;提到您啦。</a>';
     }
 }
 
@@ -109,9 +126,10 @@ if (! function_exists('exception_record')) {
     }
 }
 
-if (!function_exists('admin')) {
+if (! function_exists('admin')) {
     /**
-     * 获取当前登录的管理员
+     * 获取当前登录的管理员.
+     *
      * @return \App\Models\Administrator
      */
     function admin()

@@ -1,14 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use App\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
 class RechargePayment extends Model
 {
-
     const STATUS_NO_PAY = 1;
     const STATUS_PAYED = 9;
 
@@ -37,7 +45,9 @@ class RechargePayment extends Model
 
     /**
      * 作用域：充值成功
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeSuccess($query)
@@ -46,9 +56,11 @@ class RechargePayment extends Model
     }
 
     /**
-     * 作用域：用户关键词过滤
+     * 作用域：用户关键词过滤.
+     *
      * @param $query
      * @param $keywords
+     *
      * @return mixed
      */
     public function scopeUserLike($query, $keywords)
@@ -57,11 +69,13 @@ class RechargePayment extends Model
             ->orWhere('mobile', 'like', "%{$keywords}%")
             ->select('id')
             ->pluck('id');
+
         return $query->orWhereIn('user_id', $userIds);
     }
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public static function filter(Request $request)
@@ -77,6 +91,7 @@ class RechargePayment extends Model
                     ->orWhere('pay_method', $keywords);
             })
             ->orderByDesc('created_at');
+
         return $query;
     }
 
@@ -87,5 +102,4 @@ class RechargePayment extends Model
     {
         return $this->status == self::STATUS_NO_PAY ? '已支付' : '未支付';
     }
-
 }

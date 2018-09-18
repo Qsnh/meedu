@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Events;
 
 use App\User;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class AtUserEvent implements ShouldQueue
 {
@@ -26,8 +32,6 @@ class AtUserEvent implements ShouldQueue
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct(User $fromUser, $toUserNickName, $comment, $commentType)
     {

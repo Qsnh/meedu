@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class RechargePaymentExport implements FromCollection, WithMapping, WithHeadings
 {
-
     protected $result = null;
 
     public function __construct($result)
@@ -41,7 +47,7 @@ class RechargePaymentExport implements FromCollection, WithMapping, WithHeadings
         ];
     }
 
-    public function headings() : array
+    public function headings(): array
     {
         return [
             '#',
@@ -55,5 +61,4 @@ class RechargePaymentExport implements FromCollection, WithMapping, WithHeadings
             '支付时间',
         ];
     }
-
 }

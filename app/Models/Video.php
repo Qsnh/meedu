@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use App\User;
@@ -24,7 +33,8 @@ class Video extends Model
     ];
 
     /**
-     * 所属用户
+     * 所属用户.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -33,7 +43,8 @@ class Video extends Model
     }
 
     /**
-     * 所属课程
+     * 所属课程.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function course()
@@ -42,8 +53,10 @@ class Video extends Model
     }
 
     /**
-     * 作用域：显示
+     * 作用域：显示.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeShow($query)
@@ -52,8 +65,10 @@ class Video extends Model
     }
 
     /**
-     * 作用域：上线的视频
+     * 作用域：上线的视频.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopePublished($query)
@@ -77,12 +92,12 @@ class Video extends Model
     }
 
     /**
-     * 购买课程的用户
+     * 购买课程的用户.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function buyUsers()
     {
         return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')->withPivot('charge', 'created_at');
     }
-
 }

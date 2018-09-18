@@ -1,31 +1,34 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Listeners;
 
-use App\Events\PaymentSuccessEvent;
 use App\Models\RechargePayment;
-use App\Notifications\MemberRechargeNotification;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
+use App\Events\PaymentSuccessEvent;
+use App\Notifications\MemberRechargeNotification;
 
 class PaymentSuccessListener
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  PaymentSuccessEvent  $event
-     * @return void
+     * @param PaymentSuccessEvent $event
      */
     public function handle(PaymentSuccessEvent $event)
     {
@@ -36,7 +39,6 @@ class PaymentSuccessListener
 
         DB::beginTransaction();
         try {
-
             // 修改订单状态
             $payment->status = RechargePayment::STATUS_PAYED;
             $payment->save();

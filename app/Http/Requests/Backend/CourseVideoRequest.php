@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Overtrue\Pinyin\Pinyin;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CourseVideoRequest extends FormRequest
 {
@@ -72,5 +81,4 @@ class CourseVideoRequest extends FormRequest
 
         return $data;
     }
-
 }

@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class AdministratorRole extends Model
 {
-
     protected $table = 'administrator_roles';
 
     protected $fillable = [
@@ -18,7 +26,8 @@ class AdministratorRole extends Model
     ];
 
     /**
-     * 角色下的管理员
+     * 角色下的管理员.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function administrators()
@@ -32,7 +41,8 @@ class AdministratorRole extends Model
     }
 
     /**
-     * 角色下的权限
+     * 角色下的权限.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function permissions()
@@ -64,5 +74,4 @@ class AdministratorRole extends Model
     {
         return $this->permissions()->where('id', $permission->id)->exists();
     }
-
 }

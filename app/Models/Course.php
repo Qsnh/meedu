@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use App\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Cache;
 
 class Course extends Model
 {
@@ -27,7 +36,8 @@ class Course extends Model
     ];
 
     /**
-     * 该课程所属用户
+     * 该课程所属用户.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -36,7 +46,8 @@ class Course extends Model
     }
 
     /**
-     * 购买课程的用户
+     * 购买课程的用户.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function buyUsers()
@@ -46,7 +57,8 @@ class Course extends Model
     }
 
     /**
-     * 该课程下面的视频
+     * 该课程下面的视频.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function videos()
@@ -55,8 +67,10 @@ class Course extends Model
     }
 
     /**
-     * 作用域：显示
+     * 作用域：显示.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeShow($query)
@@ -65,8 +79,10 @@ class Course extends Model
     }
 
     /**
-     * 作用域：不显示
+     * 作用域：不显示.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeNotShow($query)
@@ -75,8 +91,10 @@ class Course extends Model
     }
 
     /**
-     * 作用域：上线的视频
+     * 作用域：上线的视频.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopePublished($query)
@@ -95,14 +113,17 @@ class Course extends Model
     }
 
     /**
-     * 作用域：关键词搜索
+     * 作用域：关键词搜索.
+     *
      * @param $query
      * @param string $keywords
+     *
      * @return mixed
      */
     public function scopeKeywords($query, string $keywords)
     {
         $keywords && $query->where('title', 'like', "%{$keywords}%");
+
         return $query;
     }
 
@@ -111,7 +132,7 @@ class Course extends Model
      */
     public function getDescription()
     {
-        return (new \Parsedown)->text($this->description);
+        return (new \Parsedown())->text($this->description);
     }
 
     /**
@@ -120,6 +141,7 @@ class Course extends Model
     public function getVideos()
     {
         $that = $this;
+
         return Cache::remember("course_{$this->id}_videos", 360, function () use ($that) {
             return $that->videos()
                 ->published()
@@ -130,7 +152,8 @@ class Course extends Model
     }
 
     /**
-     * 评论
+     * 评论.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
@@ -139,7 +162,8 @@ class Course extends Model
     }
 
     /**
-     * 课程的观看URL
+     * 课程的观看URL.
+     *
      * @return string
      */
     public function seeUrl()
@@ -149,13 +173,15 @@ class Course extends Model
             ->show()
             ->orderByDesc('published_at')
             ->first();
+
         return $firstVideo ?
             route('video.show', [$this->id, $firstVideo->id, $firstVideo->slug]) :
             'javascript:void(0)';
     }
 
     /**
-     * 获取当前课程最近加入的用户[缓存]
+     * 获取当前课程最近加入的用户[缓存].
+     *
      * @return mixed
      */
     public function getNewJoinMembersCache()
@@ -164,18 +190,19 @@ class Course extends Model
         if (app()->environment('local')) {
             return $this->getNewJoinMembers();
         }
+
         return Cache::remember("course:{$course->id}:new_join_member", 60, function () use ($course) {
             return $course->getNewJoinMembers();
         });
     }
 
     /**
-     * 获取当前课程最近加入的用户
+     * 获取当前课程最近加入的用户.
+     *
      * @return mixed
      */
     public function getNewJoinMembers()
     {
         return $this->buyUsers()->orderByDesc('pivot_created_at')->limit(10)->get();
     }
-
 }

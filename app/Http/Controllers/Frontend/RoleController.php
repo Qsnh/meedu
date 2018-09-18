@@ -1,24 +1,34 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
 use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends FrontendController
 {
-
     public function index()
     {
         $roles = Role::orderByDesc('weight')->get();
+
         return view('frontend.role.index', compact('roles'));
     }
 
     public function showBuyPage($id)
     {
         $role = Role::findOrFail($id);
+
         return view('frontend.role.buy', compact('role'));
     }
 
@@ -29,6 +39,7 @@ class RoleController extends FrontendController
 
         if ($user->role && $user->role->weight != $role->weight) {
             flash('您的账户下面已经有会员啦');
+
             return back();
         }
 
@@ -50,13 +61,14 @@ class RoleController extends FrontendController
 
             DB::commit();
             flash('购买成功', 'success');
+
             return redirect(route('member'));
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('系统出错');
+
             return back();
         }
     }
-
 }

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use App\User;
@@ -7,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserJoinRoleRecord extends Model
 {
-
     protected $table = 'user_join_role_records';
 
     protected $fillable = [
@@ -23,5 +31,4 @@ class UserJoinRoleRecord extends Model
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-
 }

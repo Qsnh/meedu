@@ -1,17 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
-use App\Meedu\Payment\Youzan\Youzan;
-use App\Models\RechargePayment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\RechargePayment;
 use Illuminate\Support\Facades\DB;
+use App\Meedu\Payment\Youzan\Youzan;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends FrontendController
 {
-
     public function index()
     {
         return view('frontend.payment.index');
@@ -22,6 +30,7 @@ class PaymentController extends FrontendController
         $money = abs($request->input('money', 0));
         if ($money <= 0) {
             flash('请输入正确的数字');
+
             return back();
         }
 
@@ -37,7 +46,7 @@ class PaymentController extends FrontendController
             ]));
 
             // 创建远程订单
-            $result = (new Youzan)->create($recharge);
+            $result = (new Youzan())->create($recharge);
             if ($result->status === false) {
                 throw new Exception('远程充值订单创建失败');
             }
@@ -50,6 +59,7 @@ class PaymentController extends FrontendController
             DB::rollBack();
             exception_record($exception);
             flash('系统错误');
+
             return back();
         }
     }
@@ -57,7 +67,6 @@ class PaymentController extends FrontendController
     // 支付回调
     public function callback()
     {
-        return (new Youzan)->callback();
+        return (new Youzan())->callback();
     }
-
 }

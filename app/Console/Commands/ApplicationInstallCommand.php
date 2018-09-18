@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Console\Commands;
 
 use App\Models\Administrator;
@@ -23,8 +32,6 @@ class ApplicationInstallCommand extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -39,14 +46,16 @@ class ApplicationInstallCommand extends Command
     public function handle()
     {
         $action = $this->argument('action');
-        if (!$action) {
+        if (! $action) {
             $this->warn('Please choice action.');
+
             return;
         }
 
         $method = 'action'.implode('', array_map('ucfirst', explode('_', $action)));
-        if (!method_exists($this, $method)) {
+        if (! method_exists($this, $method)) {
             $this->warn('action not exists.');
+
             return;
         }
 
@@ -80,6 +89,7 @@ class ApplicationInstallCommand extends Command
 
         if ($passwordRepeat != $password) {
             $this->warn('password not correct.');
+
             return;
         }
 
@@ -92,5 +102,4 @@ class ApplicationInstallCommand extends Command
 
         $this->info('administrator create success.');
     }
-
 }

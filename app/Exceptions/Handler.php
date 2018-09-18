@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Exceptions;
 
 use Exception;
@@ -31,8 +40,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
-     * @return void
+     * @param \Exception $exception
      */
     public function report(Exception $exception)
     {
@@ -42,8 +50,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $exception
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)

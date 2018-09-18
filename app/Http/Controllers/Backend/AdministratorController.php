@@ -1,20 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Backend;
 
-use App\Events\AdministratorLoginSuccessEvent;
-use App\Http\Requests\Backend\Administrator\AdministratorRequest;
-use App\Http\Requests\Backend\Administrator\EditPasswordRequest;
-use App\Http\Requests\Backend\Administrator\LoginRequest;
 use App\Models\Administrator;
-use App\Http\Controllers\Controller;
 use App\Models\AdministratorRole;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Events\AdministratorLoginSuccessEvent;
+use App\Http\Requests\Backend\Administrator\LoginRequest;
+use App\Http\Requests\Backend\Administrator\EditPasswordRequest;
+use App\Http\Requests\Backend\Administrator\AdministratorRequest;
 
 class AdministratorController extends Controller
 {
-
     protected $guard = 'administrator';
 
     public function __construct()
@@ -24,7 +32,7 @@ class AdministratorController extends Controller
             [
                 'except' => [
                     'showLoginForm', 'loginHandle',
-                ]
+                ],
             ]
         );
     }
@@ -33,6 +41,7 @@ class AdministratorController extends Controller
     {
         $administrators = Administrator::orderByDesc('created_at')
                                         ->paginate(10);
+
         return view('backend.administrator.index', compact('administrators'));
     }
 
@@ -49,6 +58,7 @@ class AdministratorController extends Controller
             )
         ) {
             flash('邮箱或密码错误');
+
             return back()->withInput(['email']);
         }
 
@@ -60,19 +70,20 @@ class AdministratorController extends Controller
     public function create()
     {
         $roles = AdministratorRole::all();
+
         return view('backend.administrator.create', compact('roles'));
     }
 
     public function store(
         AdministratorRequest $request,
         Administrator $administrator
-    )
-    {
+    ) {
         $administrator->fill($request->filldata())->save();
 
         $administrator->roles()->sync($request->input('role_id', []));
 
         flash('管理员添加成功', 'success');
+
         return back();
     }
 
@@ -80,6 +91,7 @@ class AdministratorController extends Controller
     {
         $administrator = Administrator::findOrFail($id);
         $roles = AdministratorRole::all();
+
         return view('backend.administrator.edit', compact('roles', 'administrator'));
     }
 
@@ -92,6 +104,7 @@ class AdministratorController extends Controller
         $administrator->roles()->sync($request->input('role_id', []));
 
         flash('管理员信息编辑成功', 'success');
+
         return back();
     }
 
@@ -110,10 +123,12 @@ class AdministratorController extends Controller
             )
         ) {
             flash('原密码不正确');
+
             return back();
         }
         $administrator->fill($request->filldata())->save();
         flash('密码修改成功', 'success');
+
         return back();
     }
 
@@ -126,6 +141,7 @@ class AdministratorController extends Controller
             $administrator->delete();
             flash('管理员删除成功', 'success');
         }
+
         return back();
     }
 
@@ -133,7 +149,7 @@ class AdministratorController extends Controller
     {
         Auth::guard($this->guard)->logout();
         flash('成功退出', 'success');
+
         return redirect(route('backend.login'));
     }
-
 }

@@ -1,28 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Listeners;
 
 use App\Events\AdministratorLoginSuccessEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class AdministratorLoginSuccessListener
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  AdministratorLoginSuccessEvent  $event
-     * @return void
+     * @param AdministratorLoginSuccessEvent $event
      */
     public function handle(AdministratorLoginSuccessEvent $event)
     {

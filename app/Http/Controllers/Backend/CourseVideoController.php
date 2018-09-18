@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Requests\Backend\CourseVideoRequest;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\CourseVideoRequest;
 
 class CourseVideoController extends Controller
 {
-
     public function index(Request $request)
     {
         $keywords = $request->input('keywords', '');
@@ -43,12 +51,14 @@ class CourseVideoController extends Controller
     {
         $video->fill($request->filldata())->save();
         flash('添加成功', 'success');
+
         return back();
     }
 
     public function edit($id)
     {
         $video = Video::findOrFail($id);
+
         return view('backend.video.edit', compact('video'));
     }
 
@@ -57,6 +67,7 @@ class CourseVideoController extends Controller
         $video = Video::findOrFail($id);
         $video->fill($request->filldata())->save();
         flash('编辑成功', 'success');
+
         return back();
     }
 
@@ -64,7 +75,7 @@ class CourseVideoController extends Controller
     {
         Video::destroy($id);
         flash('删除成功', 'success');
+
         return back();
     }
-
 }

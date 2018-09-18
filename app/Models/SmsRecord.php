@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class SmsRecord extends Model
 {
-
     protected $table = 'sms_records';
 
     protected $fillable = [
@@ -15,11 +23,10 @@ class SmsRecord extends Model
 
     public static function createData(string $mobile, array $sendData, array $response)
     {
-        $self = new self;
+        $self = new self();
         $self->mobile = $mobile;
         $self->send_date = $sendData;
         $self->response_data = $response;
         $self->save();
     }
-
 }

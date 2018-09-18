@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -13,14 +22,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      */
     protected function schedule(Schedule $schedule)
     {
@@ -30,8 +37,6 @@ class Kernel extends ConsoleKernel
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
     protected function commands()
     {

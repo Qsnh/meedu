@@ -11,3 +11,4 @@ npm-debug.log
 yarn-error.log
 .env
 bower_components
+.php_cs.cache

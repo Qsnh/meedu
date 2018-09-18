@@ -1,8 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Meedu\Payment\Youzan;
 
-class YZApiProtocol {
+class YZApiProtocol
+{
     const APP_ID_KEY = 'app_id';
     const METHOD_KEY = 'method';
     const TIMESTAMP_KEY = 'timestamp';
@@ -25,34 +35,40 @@ class YZApiProtocol {
     const ERR_PARAMETER = 41000;
     const ERR_LOGIC = 50000;
 
-    public static function sign($appSecret, $params, $method = 'md5') {
-        if (!is_array($params)) $params = array();
+    public static function sign($appSecret, $params, $method = 'md5')
+    {
+        if (! is_array($params)) {
+            $params = [];
+        }
 
         ksort($params);
         $text = '';
         foreach ($params as $k => $v) {
-            $text .= $k . $v;
+            $text .= $k.$v;
         }
 
-        return self::hash($method, $appSecret . $text . $appSecret);
+        return self::hash($method, $appSecret.$text.$appSecret);
     }
 
-    private static function hash($method, $text) {
+    private static function hash($method, $text)
+    {
         switch ($method) {
             case 'md5':
             default:
                 $signature = md5($text);
                 break;
         }
+
         return $signature;
     }
 
-    public static function allowed_sign_methods() {
-        return array('md5');
+    public static function allowed_sign_methods()
+    {
+        return ['md5'];
     }
 
-    public static function allowed_format() {
-        return array('json');
+    public static function allowed_format()
+    {
+        return ['json'];
     }
-
 }

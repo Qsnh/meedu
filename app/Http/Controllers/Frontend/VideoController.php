@@ -1,18 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
 use Exception;
-use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
+use App\Models\Order;
 use App\Models\Video;
 use App\Models\VideoComment;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends FrontendController
 {
-
     public function show($courseId, $id, $slug)
     {
         $video = Video::with(['course', 'comments', 'user', 'comments.user'])
@@ -20,6 +28,7 @@ class VideoController extends FrontendController
             ->show()
             ->whereId($id)
             ->firstOrFail();
+
         return view('frontend.video.show', compact('video'));
     }
 
@@ -40,6 +49,7 @@ class VideoController extends FrontendController
     public function showBuyPage($id)
     {
         $video = Video::findOrFail($id);
+
         return view('frontend.video.buy', compact('video'));
     }
 
@@ -51,11 +61,13 @@ class VideoController extends FrontendController
 
         if ($user->buyVideos()->whereIn($video->id)->exists()) {
             flash('您已经购买过本视频啦', 'success');
+
             return redirect($videoUrl);
         }
 
         if ($user->credit1 < $video->charge) {
             flash('余额不足，请先充值', 'warning');
+
             return redirect('member.recharge');
         }
 
@@ -76,13 +88,14 @@ class VideoController extends FrontendController
             DB::commit();
 
             flash('购买成功', 'success');
+
             return redirect($videoUrl);
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('购买失败', 'warning');
+
             return back();
         }
     }
-
 }

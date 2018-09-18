@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Requests\Frontend;
 
-use App\Exceptions\MeeduErrorResponseJsonException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use App\Exceptions\MeeduErrorResponseJsonException;
 
 class BaseRequest extends FormRequest
 {
@@ -23,9 +32,7 @@ class BaseRequest extends FormRequest
     {
         if ($this->expectsJson()) {
             throw new MeeduErrorResponseJsonException($validator->errors()->all()[0]);
-        } else {
-            parent::failedValidation($validator);
         }
+        parent::failedValidation($validator);
     }
-
 }

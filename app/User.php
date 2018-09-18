@@ -1,17 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App;
 
-use App\Models\UserJoinRoleRecord;
 use Exception;
-use App\Models\Course;
-use App\Models\CourseComment;
-use App\Models\Order;
-use App\Models\RechargePayment;
-use App\Models\Role;
-use App\Models\Video;
-use App\Models\VideoComment;
 use Carbon\Carbon;
+use App\Models\Role;
+use App\Models\Order;
+use App\Models\Video;
+use App\Models\Course;
+use App\Models\VideoComment;
+use App\Models\CourseComment;
+use App\Models\RechargePayment;
+use App\Models\UserJoinRoleRecord;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -49,7 +58,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * 所属角色
+     * 所属角色.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function role()
@@ -58,16 +68,18 @@ class User extends Authenticatable
     }
 
     /**
-     * 获取随机呢称
+     * 获取随机呢称.
+     *
      * @return string
      */
     public static function randomNickName()
     {
-        return 'random.' . str_random(10);
+        return 'random.'.str_random(10);
     }
 
     /**
-     * 该用户下的课程
+     * 该用户下的课程.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courses()
@@ -76,7 +88,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户加入（购买）的课程
+     * 用户加入（购买）的课程.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function joinCourses()
@@ -86,7 +99,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户购买的视频
+     * 用户购买的视频.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function buyVideos()
@@ -116,7 +130,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户的课程评论
+     * 用户的课程评论.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function courseComments()
@@ -125,7 +140,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户的视频评论
+     * 用户的视频评论.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function videoComments()
@@ -134,7 +150,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 方法：加入一个课程
+     * 方法：加入一个课程.
+     *
      * @param Course $course
      */
     public function joinACourse(Course $course)
@@ -148,7 +165,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 方法：购买一个视频
+     * 方法：购买一个视频.
+     *
      * @param Video $video
      */
     public function buyAVideo(Video $video)
@@ -162,7 +180,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 头像修饰器
+     * 头像修饰器.
+     *
      * @return \Illuminate\Config\Repository|mixed
      */
     public function getAvatarAttribute($avatar)
@@ -171,7 +190,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 充值订单
+     * 充值订单.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rechargePayments()
@@ -180,7 +200,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 关联订单
+     * 关联订单.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders()
@@ -189,7 +210,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 余额扣除
+     * 余额扣除.
+     *
      * @param $money
      */
     public function credit1Dec($money)
@@ -199,8 +221,10 @@ class User extends Authenticatable
     }
 
     /**
-     * 判断用户是否可以观看指定的视频
+     * 判断用户是否可以观看指定的视频.
+     *
      * @param Video $video
+     *
      * @return bool
      */
     public function canSeeThisVideo(Video $video)
@@ -226,7 +250,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 是否为有效会员
+     * 是否为有效会员.
+     *
      * @return bool
      */
     public function activeRole()
@@ -244,6 +269,7 @@ class User extends Authenticatable
 
     /**
      * @param Role $role
+     *
      * @throws \Throwable
      */
     public function buyRole(Role $role)
@@ -269,5 +295,4 @@ class User extends Authenticatable
             'expired_at' => $endDate,
         ]));
     }
-
 }

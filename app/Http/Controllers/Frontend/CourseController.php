@@ -1,24 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
-use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
+use App\Models\Order;
 use App\Models\Course;
 use App\Models\CourseComment;
-use App\Models\Order;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends FrontendController
 {
-
     public function index()
     {
         $courses = Course::show()
             ->published()
             ->orderByDesc('created_at')
             ->paginate(6);
+
         return view('frontend.course.index', compact('courses'));
     }
 
@@ -30,6 +39,7 @@ class CourseController extends FrontendController
             ->whereId($id)
             ->firstOrFail();
         $newJoinMembers = $course->getNewJoinMembersCache();
+
         return view('frontend.course.show', compact('course', 'newJoinMembers'));
     }
 
@@ -41,12 +51,14 @@ class CourseController extends FrontendController
             'content' => $request->input('content'),
         ]));
         $comment ? flash('评论成功', 'success') : flash('评论失败');
+
         return back();
     }
 
     public function showBuyPage($id)
     {
         $course = Course::findOrFail($id);
+
         return view('frontend.course.buy', compact('course'));
     }
 
@@ -57,11 +69,13 @@ class CourseController extends FrontendController
 
         if ($user->joinCourses()->whereId($course->id)->first()) {
             flash('该视频已购买啦', 'success');
+
             return redirect(route($course->seeUrl()));
         }
 
         if ($user->credit1 < $course->charge) {
             flash('余额不足请先充值');
+
             return redirect(route('member.recharge'));
         }
 
@@ -82,13 +96,14 @@ class CourseController extends FrontendController
             DB::commit();
 
             flash('购买成功', 'success');
+
             return redirect($course->seeUrl());
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('购买失败');
+
             return back();
         }
     }
-
 }

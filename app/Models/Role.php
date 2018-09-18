@@ -1,14 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-
     protected $table = 'roles';
 
     protected $fillable = [
@@ -36,7 +43,8 @@ class Role extends Model
     }
 
     /**
-     * 当前会员下的用户
+     * 当前会员下的用户.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
@@ -51,5 +59,4 @@ class Role extends Model
     {
         return explode("\n", $this->getAttribute('description'));
     }
-
 }

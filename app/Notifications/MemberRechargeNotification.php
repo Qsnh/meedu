@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Notifications;
 
-use App\Models\RechargePayment;
 use Illuminate\Bus\Queueable;
+use App\Models\RechargePayment;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class MemberRechargeNotification extends Notification
@@ -16,8 +24,6 @@ class MemberRechargeNotification extends Notification
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct(RechargePayment $payment)
     {
@@ -27,7 +33,8 @@ class MemberRechargeNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -38,12 +45,13 @@ class MemberRechargeNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('充值到账提醒')
             ->view('emails.member_recharge', ['payment' => $this->payment]);
     }
@@ -51,7 +59,8 @@ class MemberRechargeNotification extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)

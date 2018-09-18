@@ -1,16 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Course;
-use App\Models\EmailSubscription;
 use App\Models\Role;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\EmailSubscription;
 use Illuminate\Support\Facades\Cache;
 
 class IndexController extends FrontendController
 {
-
     public function index()
     {
         $courses = Cache::remember('index_recent_course', 360, function () {
@@ -19,22 +27,24 @@ class IndexController extends FrontendController
         $roles = Cache::remember('index_roles', 360, function () {
             return Role::orderByDesc('weight')->limit(3)->get();
         });
+
         return view('frontend.index.index', compact('courses', 'roles'));
     }
 
     public function subscriptionHandler(Request $request)
     {
         $email = $request->input('email', '');
-        if (!$email) {
+        if (! $email) {
             flash('请输入邮箱', 'warning');
+
             return back();
         }
         $exists = EmailSubscription::whereEmail($email)->exists();
-        if (!$exists) {
+        if (! $exists) {
             EmailSubscription::create(compact('email'));
         }
         flash('订阅成功', 'success');
+
         return back();
     }
-
 }

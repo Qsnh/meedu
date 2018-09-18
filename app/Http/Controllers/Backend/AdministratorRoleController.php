@@ -1,19 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Requests\Backend\AdministratorRoleRequest;
-use App\Models\AdministratorPermission;
+use Illuminate\Http\Request;
 use App\Models\AdministratorRole;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\AdministratorPermission;
+use App\Http\Requests\Backend\AdministratorRoleRequest;
 
 class AdministratorRoleController extends Controller
 {
-
     public function index()
     {
         $roles = AdministratorRole::paginate(10);
+
         return view('backend.administrator_role.index', compact('roles'));
     }
 
@@ -25,16 +34,17 @@ class AdministratorRoleController extends Controller
     public function store(
         AdministratorRoleRequest $request,
         AdministratorRole $role
-    )
-    {
+    ) {
         $role->fill($request->filldata())->save();
         flash('角色添加成功', 'success');
+
         return back();
     }
 
     public function edit($id)
     {
         $role = AdministratorRole::findOrFail($id);
+
         return view('backend.administrator_role.edit', compact('role'));
     }
 
@@ -43,6 +53,7 @@ class AdministratorRoleController extends Controller
         $role = AdministratorRole::findOrFail($id);
         $role->fill($request->filldata())->save();
         flash('角色编辑成功', 'success');
+
         return back();
     }
 
@@ -55,6 +66,7 @@ class AdministratorRoleController extends Controller
             $role->delete();
             flash('删除成功', 'success');
         }
+
         return back();
     }
 
@@ -62,6 +74,7 @@ class AdministratorRoleController extends Controller
     {
         $role = AdministratorRole::findOrFail($id);
         $permissions = AdministratorPermission::all();
+
         return view('backend.administrator_role.select_permission', compact('permissions', 'role'));
     }
 
@@ -70,7 +83,7 @@ class AdministratorRoleController extends Controller
         $role = AdministratorRole::findOrFail($id);
         $role->permissions()->sync($request->input('permission_id', []));
         flash('授权成功', 'success');
+
         return back();
     }
-
 }

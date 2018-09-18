@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EmailSubscriptionEmail extends Mailable
 {
@@ -17,8 +25,6 @@ class EmailSubscriptionEmail extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct(string $title, string $content)
     {

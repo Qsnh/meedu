@@ -1,31 +1,34 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Listeners;
 
-use App\Events\AtUserEvent;
-use App\Notifications\AtUserNotification;
 use App\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\AtUserEvent;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\AtUserNotification;
 
 class AtUserListener
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  AtUserEvent  $event
-     * @return void
+     * @param AtUserEvent $event
      */
     public function handle(AtUserEvent $event)
     {
@@ -41,7 +44,8 @@ class AtUserListener
         }
 
         if (! $toUser) {
-            Log::error('AtEvent' . $toUserNickName);
+            Log::error('AtEvent'.$toUserNickName);
+
             return;
         }
 

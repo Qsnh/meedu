@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Requests\Frontend;
 
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +34,7 @@ class UploadImageRequest extends BaseRequest
     {
         $disk = config('filesystems.default');
         $path = $this->file('file')->store('images', compact('disk'));
+
         return [$path, Storage::disk($disk)->url($path)];
     }
 }

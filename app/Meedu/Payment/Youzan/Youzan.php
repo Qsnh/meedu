@@ -1,18 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Meedu\Payment\Youzan;
 
 use Exception;
+use App\Models\RechargePayment;
 use App\Events\PaymentSuccessEvent;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
-use App\Models\RechargePayment;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class Youzan implements Payment
 {
-
     const VERSION = '3.0.0';
 
     protected $config;
@@ -41,7 +49,8 @@ class Youzan implements Payment
             return new PaymentStatus(true, $response);
         } catch (Exception $exception) {
             exception_record($exception);
-            return new PaymentStatus;
+
+            return new PaymentStatus();
         }
     }
 
@@ -56,12 +65,14 @@ class Youzan implements Payment
             $response = $client->post('youzan.trades.qr.get', self::VERSION, $params);
             $response = $response['response'];
             if (! $response['qr_trades']) {
-                return new PaymentStatus;
+                return new PaymentStatus();
             }
+
             return new PaymentStatus(true, $response);
         } catch (Exception $exception) {
             exception_record($exception);
-            return new PaymentStatus;
+
+            return new PaymentStatus();
         }
     }
 
@@ -98,6 +109,7 @@ class Youzan implements Payment
     protected function getTokenCache()
     {
         $self = $this;
+
         return Cache::remember('payment:youzan:token', 360, function () use ($self) {
             return $self->getToken();
         });
@@ -105,11 +117,11 @@ class Youzan implements Payment
 
     protected function getToken()
     {
-        $token = new YZGetTokenClient($this->config['client_id'] , $this->config['client_secret']);
+        $token = new YZGetTokenClient($this->config['client_id'], $this->config['client_secret']);
         $type = 'self';
         $keys['kdt_id'] = $this->config['kdt_id'];
         $tokenString = $token->get_token($type, $keys);
+
         return $tokenString['access_token'] ?? '';
     }
-
 }

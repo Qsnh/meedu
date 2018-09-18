@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use Illuminate\Http\Request;
@@ -26,8 +35,10 @@ class Administrator extends Authenticatable
     ];
 
     /**
-     * 从Request上创建管理员用户
+     * 从Request上创建管理员用户.
+     *
      * @param Request $request
+     *
      * @return Administrator
      */
     public static function createFromRequest(Request $request)
@@ -41,11 +52,13 @@ class Administrator extends Authenticatable
         ];
         $self = new self($data);
         $self->save();
+
         return $self;
     }
 
     /**
-     * 管理员包含的角色
+     * 管理员包含的角色.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
@@ -59,7 +72,8 @@ class Administrator extends Authenticatable
     }
 
     /**
-     * 当前管理员是否可以删除
+     * 当前管理员是否可以删除.
+     *
      * @return bool
      */
     public function couldDestroy()
@@ -78,8 +92,10 @@ class Administrator extends Authenticatable
     }
 
     /**
-     * 是否存在指定角色
+     * 是否存在指定角色.
+     *
      * @param AdministratorRole $role
+     *
      * @return bool
      */
     public function hasRole(AdministratorRole $role)
@@ -94,5 +110,4 @@ class Administrator extends Authenticatable
     {
         return $this->hasMany(Announcement::class, 'admin_id');
     }
-
 }

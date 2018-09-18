@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Models;
 
 use Illuminate\Support\Facades\Cache;
@@ -27,11 +36,12 @@ class Announcement extends Model
 
     /**
      * @param $text
+     *
      * @return string
      */
     public function getAnnouncementContent()
     {
-        return (new \Parsedown)->text($this->announcement);
+        return (new \Parsedown())->text($this->announcement);
     }
 
     /**
@@ -53,5 +63,4 @@ class Announcement extends Model
     {
         return route('backend.announcement.destroy', $this);
     }
-
 }

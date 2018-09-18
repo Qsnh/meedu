@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Requests\Frontend\Member;
 
-use App\Http\Requests\Frontend\BaseRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Frontend\BaseRequest;
 
 class AvatarChangeRequest extends BaseRequest
 {
@@ -28,7 +37,7 @@ class AvatarChangeRequest extends BaseRequest
         $file = $this->file('file');
         $path = $file->store('/avatar');
         $url = Storage::disk(config('filesystems.default'))->url($path);
+
         return [$path, $url];
     }
-
 }
