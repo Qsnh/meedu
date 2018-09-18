@@ -14,7 +14,8 @@
         "maatwebsite/excel": "^3.0",
         "mews/captcha": "^2.2",
         "overtrue/easy-sms": "^1.1",
-        "overtrue/pinyin": "~3.0"
+        "overtrue/pinyin": "~3.0",
+        "spatie/laravel-backup": "^3.0.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
