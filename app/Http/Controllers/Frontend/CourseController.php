@@ -17,6 +17,7 @@ use App\Models\Course;
 use App\Models\CourseComment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SimpleMessageNotification;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends FrontendController
@@ -82,7 +83,7 @@ class CourseController extends FrontendController
         DB::beginTransaction();
         try {
             // 创建订单记录
-            $user->orders()->save(new Order([
+            $order = $user->orders()->save(new Order([
                 'goods_id' => $course->id,
                 'goods_type' => Order::GOODS_TYPE_COURSE,
                 'charge' => $course->charge,
@@ -92,6 +93,8 @@ class CourseController extends FrontendController
             $user->joinACourse($course);
             // 扣除余额
             $user->credit1Dec($course->charge);
+            // 消息通知
+            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
 
             DB::commit();
 

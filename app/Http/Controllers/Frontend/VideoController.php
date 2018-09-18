@@ -17,6 +17,7 @@ use App\Models\Video;
 use App\Models\VideoComment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SimpleMessageNotification;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends FrontendController
@@ -59,7 +60,7 @@ class VideoController extends FrontendController
         $user = Auth::user();
         $videoUrl = route('video.show', [$video->course->id, $video->id, $video->slug]);
 
-        if ($user->buyVideos()->whereIn($video->id)->exists()) {
+        if ($user->buyVideos()->whereId($video->id)->exists()) {
             flash('您已经购买过本视频啦', 'success');
 
             return redirect($videoUrl);
@@ -74,7 +75,7 @@ class VideoController extends FrontendController
         DB::beginTransaction();
         try {
             // 创建订单记录
-            $user->orders()->save(new Order([
+            $order = $user->orders()->save(new Order([
                 'goods_id' => $video->id,
                 'goods_type' => Order::GOODS_TYPE_VIDEO,
                 'charge' => $video->charge,
@@ -84,6 +85,8 @@ class VideoController extends FrontendController
             $user->buyAVideo($video);
             // 扣除余额
             $user->credit1Dec($video->charge);
+            // 消息通知
+            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
 
             DB::commit();
 

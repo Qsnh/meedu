@@ -30,16 +30,34 @@ class Order extends Model
         'charge', 'status', 'extra',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * 获取当前订单的商品名.
+     *
+     * @return mixed
+     */
     public function getGoodsTypeText()
     {
         $method = 'get'.ucfirst(strtolower($this->goods_type)).'GoodsTypeText';
 
         return $this->{$method}();
+    }
+
+    /**
+     * 获取订单的消息通知内容.
+     *
+     * @return string
+     */
+    public function getNotificationContent()
+    {
+        return '你已经购买了'.$this->getGoodsTypeText().'，花费了'.$this->charge.'元';
     }
 
     protected function getCourseGoodsTypeText()

@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SimpleMessageNotification;
 
 class RoleController extends FrontendController
 {
@@ -46,18 +47,18 @@ class RoleController extends FrontendController
         DB::beginTransaction();
         try {
             // 创建订单记录
-            $user->orders()->save(new Order([
+            $order = $user->orders()->save(new Order([
                 'goods_id' => $role->id,
                 'goods_type' => Order::GOODS_TYPE_ROLE,
                 'charge' => $role->charge,
                 'status' => Order::STATUS_PAID,
             ]));
-
             // 扣除余额
             $user->credit1Dec($role->charge);
-
             // 购买会员
             $user->buyRole($role);
+            // 消息通知
+            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
 
             DB::commit();
             flash('购买成功', 'success');
