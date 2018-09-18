@@ -7,7 +7,6 @@
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/build-status/master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/build.png?b=master" alt="Build Status"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
 <a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/coverage.png?b=master" alt="Code Coverage"></a>
-<a href="https://scrutinizer-ci.com/g/qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/code-intelligence.png?b=master" alt="Code Intelligence"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/license" alt="License"></a>
 </p>
