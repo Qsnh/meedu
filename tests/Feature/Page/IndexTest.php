@@ -8,9 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexTest extends TestCase
 {
-
     public function test_visit()
     {
-        $this->get('/')->assertStatus(200);
+        $this->get(url('/'))->assertResponseStatus(200);
     }
 }

@@ -11,7 +11,7 @@ class FindPasswordTest extends TestCase
 
     public function test_visit()
     {
-        $this->get(route('password.request'))->assertStatus(200);
+        $this->get(route('password.request'))->assertResponseStatus(200);
     }
 
 }

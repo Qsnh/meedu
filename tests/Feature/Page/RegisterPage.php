@@ -12,9 +12,9 @@ class RegisterPage extends TestCase
     public function test_visit()
     {
         $response = $this->get(route('register'));
-        $response->assertStatus(200);
-        $response->assertSee('注册');
-        $response->assertSee('登陆');
+        $response->assertResponseStatus(200);
+        $response->see('注册');
+        $response->see('登陆');
     }
 
 }

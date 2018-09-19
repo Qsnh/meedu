@@ -12,7 +12,7 @@ class CourseListPageTest extends TestCase
 
     public function test_visit_course_list_page()
     {
-        $this->get(route('courses'))->assertStatus(200);
+        $this->get(route('courses'))->assertResponseStatus(200);
     }
 
     public function test_visit_course_list_show()
@@ -22,8 +22,8 @@ class CourseListPageTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('courses'));
-        $response->assertStatus(200);
-        $response->assertSeeText($course->title);
+        $response->assertResponseStatus(200);
+        $response->see($course->title);
     }
 
     public function test_visit_course_list_hide()
@@ -33,8 +33,8 @@ class CourseListPageTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('courses'));
-        $response->assertStatus(200);
-        $response->assertDontSeeText($course->title);
+        $response->assertResponseStatus(200);
+        $response->dontSee($course->title);
     }
 
     public function test_visit_course_list_published()
@@ -44,8 +44,8 @@ class CourseListPageTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('courses'));
-        $response->assertStatus(200);
-        $response->assertSeeText($course->title);
+        $response->assertResponseStatus(200);
+        $response->see($course->title);
     }
 
     public function test_visit_course_list_no_published()
@@ -55,8 +55,8 @@ class CourseListPageTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() + 1000),
         ]);
         $response = $this->get(route('courses'));
-        $response->assertStatus(200);
-        $response->assertDontSeeText($course->title);
+        $response->assertResponseStatus(200);
+        $response->dontSee($course->title);
     }
 
 }

@@ -17,7 +17,7 @@ class VideoPlayTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
-        $response->assertStatus(200);
+        $response->assertResponseStatus(200);
     }
 
     public function test_visit_no_show()
@@ -27,7 +27,7 @@ class VideoPlayTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
-        $response->assertStatus(404);
+        $response->assertResponseStatus(404);
     }
 
     public function test_visit_no_published()
@@ -37,7 +37,7 @@ class VideoPlayTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() + 1000),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
-        $response->assertStatus(404);
+        $response->assertResponseStatus(404);
     }
 
 }

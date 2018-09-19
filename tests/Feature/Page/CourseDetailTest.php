@@ -17,7 +17,7 @@ class CourseDetailTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 100),
         ]);
         $response = $this->get(route('course.show', [$courseShow->id, $courseShow->slug]));
-        $response->assertStatus(200);
+        $response->assertResponseStatus(200);
     }
 
     public function test_course_show_no()
@@ -27,7 +27,7 @@ class CourseDetailTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 100),
         ]);
         $response = $this->get(route('course.show', [$courseNoShow->id, $courseNoShow->slug]));
-        $response->assertStatus(404);
+        $response->assertResponseStatus(404);
     }
 
     public function test_course_no_published_show()
@@ -37,7 +37,7 @@ class CourseDetailTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() + 1000),
         ]);
         $response = $this->get(route('course.show', [$courseNoPublished->id, $courseNoPublished->slug]));
-        $response->assertStatus(404);
+        $response->assertResponseStatus(404);
     }
 
     public function test_course_published_show()
@@ -47,8 +47,8 @@ class CourseDetailTest extends TestCase
             'published_at' => date('Y-m-d H:i:s', time() - 1000),
         ]);
         $response = $this->get(route('course.show', [$coursePublished->id, $coursePublished->slug]));
-        $response->assertStatus(200);
-        $response->assertSeeText($coursePublished->title);
+        $response->assertResponseStatus(200);
+        $response->see($coursePublished->title);
     }
 
 }
