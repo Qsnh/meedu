@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
-<a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/qsnh/meedu.svg?branch=master" alt="Build Status"></a>
+<a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/Qsnh/meedu.svg?branch=master" alt="Build Status"></a>
 <a href="https://packagist.org/packages/Qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://scrutinizer-ci.com/g/Qsnh/meedu/build-status/master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/build.png?b=master" alt="Build Status"></a>
 <a href="https://scrutinizer-ci.com/g/Qsnh/meedu/?branch=master"><img src="https://scrutinizer-ci.com/g/qsnh/meedu/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
