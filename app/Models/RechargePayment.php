@@ -100,6 +100,6 @@ class RechargePayment extends Model
      */
     public function statusText()
     {
-        return $this->status == self::STATUS_NO_PAY ? '已支付' : '未支付';
+        return $this->status == self::STATUS_NO_PAY ? '未支付' : '已支付';
     }
 }
