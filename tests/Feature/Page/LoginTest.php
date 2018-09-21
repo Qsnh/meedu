@@ -19,4 +19,27 @@ class LoginTest extends TestCase
         $response->see('注册');
     }
 
+    public function test_mock_user_login_success()
+    {
+        $password = 123456;
+        $user = factory(User::class)->create([
+            'password' => bcrypt($password),
+        ]);
+        $this->visit(route('login'))
+            ->type($user->mobile, 'mobile')
+            ->type($password, 'password')
+            ->press('登陆')
+            ->seePageIs('/member');
+    }
+
+    public function test_mock_user_login_fail()
+    {
+        $user = factory(User::class)->create();
+        $this->visit(route('login'))
+            ->type($user->mobile, 'mobile')
+            ->type($user->password, 'password')
+            ->press('登陆')
+            ->seePageIs('/login');
+    }
+
 }
