@@ -26,7 +26,7 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">登陆</button>
+                                <button type="submit" class="btn btn-primary btn-block">注册</button>
                             </div>
                         </form>
                     </div>
