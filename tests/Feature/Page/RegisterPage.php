@@ -55,7 +55,7 @@ class RegisterPage extends TestCase
             ->press('注册')
             ->seePageIs(route('register'));
     }
-    
+
     public function register_mock_user_success()
     {
         $user = [
