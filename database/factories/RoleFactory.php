@@ -8,6 +8,6 @@ $factory->define(\App\Models\Role::class, function (Faker $faker) {
         'charge' => $faker->randomDigit,
         'expire_days' => $faker->randomDigit,
         'weight' => $faker->randomDigit,
-        'description' => $faker->paragraph,
+        'description' => $faker->name,
     ];
 });
