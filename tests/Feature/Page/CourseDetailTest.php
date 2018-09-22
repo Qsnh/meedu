@@ -3,6 +3,7 @@
 namespace Tests\Feature\Page;
 
 use App\Models\Course;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +15,7 @@ class CourseDetailTest extends TestCase
     {
         $courseShow = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => date('Y-m-d H:i:s', time() - 100),
+            'published_at' => Carbon::now()->subDay(1),
         ]);
         $response = $this->get(route('course.show', [$courseShow->id, $courseShow->slug]));
         $response->assertResponseStatus(200);
@@ -24,7 +25,7 @@ class CourseDetailTest extends TestCase
     {
         $courseNoShow = factory(Course::class)->create([
             'is_show' => Course::SHOW_NO,
-            'published_at' => date('Y-m-d H:i:s', time() - 100),
+            'published_at' => Carbon::now()->subDay(1),
         ]);
         $response = $this->get(route('course.show', [$courseNoShow->id, $courseNoShow->slug]));
         $response->assertResponseStatus(404);
@@ -34,7 +35,7 @@ class CourseDetailTest extends TestCase
     {
         $courseNoPublished = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => date('Y-m-d H:i:s', time() + 1000),
+            'published_at' => Carbon::now()->addDays(1),
         ]);
         $response = $this->get(route('course.show', [$courseNoPublished->id, $courseNoPublished->slug]));
         $response->assertResponseStatus(404);
@@ -44,7 +45,7 @@ class CourseDetailTest extends TestCase
     {
         $coursePublished = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => date('Y-m-d H:i:s', time() - 1000),
+            'published_at' => Carbon::now()->subDay(1),
         ]);
         $response = $this->get(route('course.show', [$coursePublished->id, $coursePublished->slug]));
         $response->assertResponseStatus(200);

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Page;
 
 use App\Models\Video;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +15,7 @@ class VideoPlayTest extends TestCase
     {
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
-            'published_at' => date('Y-m-d H:i:s', time() - 1000),
+            'published_at' => Carbon::now()->subDay(1),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
         $response->assertResponseStatus(200);
@@ -24,7 +25,7 @@ class VideoPlayTest extends TestCase
     {
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_NO,
-            'published_at' => date('Y-m-d H:i:s', time() - 1000),
+            'published_at' => Carbon::now()->subDay(1),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
         $response->assertResponseStatus(404);
@@ -34,7 +35,7 @@ class VideoPlayTest extends TestCase
     {
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
-            'published_at' => date('Y-m-d H:i:s', time() + 1000),
+            'published_at' => Carbon::now()->addDays(1),
         ]);
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
         $response->assertResponseStatus(404);
