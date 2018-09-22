@@ -30,7 +30,7 @@ class MemberRechargeTest extends TestCase
         ]));
         $this->actingAs($user)
             ->visit(route('member.recharge_records'))
-            ->see($rechargeRecord->money);
+            ->see('暂无数据');
     }
 
     public function test_dont_see_unpay_records()
