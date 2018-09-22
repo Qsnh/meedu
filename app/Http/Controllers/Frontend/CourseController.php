@@ -29,7 +29,9 @@ class CourseController extends FrontendController
             ->orderByDesc('created_at')
             ->paginate(6);
 
-        return view('frontend.course.index', compact('courses'));
+        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.course_list');
+
+        return view('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
     }
 
     public function show($id, $slug)
@@ -40,8 +42,17 @@ class CourseController extends FrontendController
             ->whereId($id)
             ->firstOrFail();
         $newJoinMembers = $course->getNewJoinMembersCache();
+        $title = sprintf('课程《%s》', $course->title);
+        $keywords = $course->keywords;
+        $description = $course->description;
 
-        return view('frontend.course.show', compact('course', 'newJoinMembers'));
+        return view('frontend.course.show', compact(
+            'course',
+            'newJoinMembers',
+            'title',
+            'keywords',
+            'description'
+        ));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
@@ -59,8 +70,9 @@ class CourseController extends FrontendController
     public function showBuyPage($id)
     {
         $course = Course::findOrFail($id);
+        $title = sprintf('购买课程《%s》', $course->title);
 
-        return view('frontend.course.buy', compact('course'));
+        return view('frontend.course.buy', compact('course', 'title'));
     }
 
     public function buyHandler($id)

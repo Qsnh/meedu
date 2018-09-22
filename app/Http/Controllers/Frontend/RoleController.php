@@ -22,15 +22,17 @@ class RoleController extends FrontendController
     public function index()
     {
         $roles = Role::orderByDesc('weight')->get();
+        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.role_list');
 
-        return view('frontend.role.index', compact('roles'));
+        return view('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
     }
 
     public function showBuyPage($id)
     {
         $role = Role::findOrFail($id);
+        $title = sprintf('购买VIP《%s》', $role->name);
 
-        return view('frontend.role.buy', compact('role'));
+        return view('frontend.role.buy', compact('role', 'title'));
     }
 
     public function buyHandler($id)

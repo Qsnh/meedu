@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('content')
+@section('member')
 
     <form enctype="multipart/form-data" action="" method="post" class="form-horizontal">
         {!! csrf_field() !!}

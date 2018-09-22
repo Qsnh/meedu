@@ -25,21 +25,22 @@ class MemberController extends FrontendController
     {
         $announcement = Announcement::recentAnnouncement();
         $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->limit(10)->get();
+        $title = '会员中心';
 
-        return view('frontend.member.index', compact('announcement', 'videos'));
+        return view('frontend.member.index', compact('announcement', 'videos', 'title'));
     }
 
     public function showPasswordResetPage()
     {
-        return view('frontend.member.password_reset');
+        $title = '修改密码';
+
+        return view('frontend.member.password_reset', compact('title'));
     }
 
     public function passwordResetHandler(MemberPasswordResetRequest $request)
     {
         [$oldPassword, $newPassword] = $request->filldata();
-
         $user = Auth::user();
-
         if (! Hash::check($oldPassword, $user->password)) {
             flash('原密码不正确');
 
@@ -48,7 +49,6 @@ class MemberController extends FrontendController
 
         $user->password = bcrypt($newPassword);
         $user->save();
-
         flash('密码修改成功', 'success');
 
         return back();
@@ -56,17 +56,17 @@ class MemberController extends FrontendController
 
     public function showAvatarChangePage()
     {
-        return view('frontend.member.avatar');
+        $title = '更换头像';
+
+        return view('frontend.member.avatar', compact('title'));
     }
 
     public function avatarChangeHandler(AvatarChangeRequest $request)
     {
         [$path, $url] = $request->filldata();
-
         $user = Auth::user();
         $user->avatar = $url;
         $user->save();
-
         flash('头像更换成功', 'success');
 
         return back();
@@ -75,43 +75,49 @@ class MemberController extends FrontendController
     public function showJoinRoleRecordsPage()
     {
         $records = UserJoinRoleRecord::whereUserId(Auth::id())->orderByDesc('expired_at')->paginate(8);
+        $title = 'VIP会员记录';
 
-        return view('frontend.member.join_role_records', compact('records'));
+        return view('frontend.member.join_role_records', compact('records', 'title'));
     }
 
     public function showMessagesPage()
     {
         $messages = new Paginator(Auth::user()->notifications, 10);
         $messages->setPath(route('member.messages'));
+        $title = '我的消息';
 
-        return view('frontend.member.messages', compact('messages'));
+        return view('frontend.member.messages', compact('messages', 'title'));
     }
 
     public function showBuyCoursePage()
     {
         $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(16);
+        $title = '我的购买的课程';
 
-        return view('frontend.member.buy_course', compact('courses'));
+        return view('frontend.member.buy_course', compact('courses', 'title'));
     }
 
     public function showBuyVideoPage()
     {
         $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->paginate(16);
+        $title = '我购买的视频';
 
-        return view('frontend.member.buy_video', compact('videos'));
+        return view('frontend.member.buy_video', compact('videos', 'title'));
     }
 
     public function showRechargeRecordsPage()
     {
         $records = Auth::user()->rechargePayments()->success()->orderByDesc('created_at')->paginate(10);
+        $title = '我的充值记录';
 
-        return view('frontend.member.show_recharge_records', compact('records'));
+        return view('frontend.member.show_recharge_records', compact('records', 'title'));
     }
 
     public function showOrdersPage()
     {
         $orders = Auth::user()->orders()->orderByDesc('created_at')->paginate(10);
+        $title = '我的订单';
 
-        return view('frontend.member.show_orders', compact('orders'));
+        return view('frontend.member.show_orders', compact('orders', 'title'));
     }
 }

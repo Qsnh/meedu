@@ -22,7 +22,9 @@ class PaymentController extends FrontendController
 {
     public function index()
     {
-        return view('frontend.payment.index');
+        $title = '充值中心';
+
+        return view('frontend.payment.index', compact('title'));
     }
 
     public function rechargeHandler(Request $request)
@@ -35,7 +37,6 @@ class PaymentController extends FrontendController
         }
 
         $user = Auth::user();
-
         DB::beginTransaction();
         try {
             // 创建订单
@@ -44,7 +45,6 @@ class PaymentController extends FrontendController
                 'status' => RechargePayment::STATUS_NO_PAY,
                 'pay_method' => 'youzan',
             ]));
-
             // 创建远程订单
             $result = (new Youzan())->create($recharge);
             if ($result->status === false) {

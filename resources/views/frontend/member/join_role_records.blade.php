@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('content')
+@section('members')
     <table class="table table-hover">
         <thead>
         <tr>

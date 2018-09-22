@@ -27,8 +27,9 @@ class IndexController extends FrontendController
         $roles = Cache::remember('index_roles', 360, function () {
             return Role::orderByDesc('weight')->limit(3)->get();
         });
+        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
 
-        return view('frontend.index.index', compact('courses', 'roles'));
+        return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description'));
     }
 
     public function subscriptionHandler(Request $request)

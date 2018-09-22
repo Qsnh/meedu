@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('content')
+@section('member')
 
     <div class="col-sm-5">
         <form action="" method="post" class="form-horizontal">

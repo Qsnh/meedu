@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('content')
+@section('member')
     @if($announcement)
         <div class="row">
             <div class="alert alert-warning announcement">

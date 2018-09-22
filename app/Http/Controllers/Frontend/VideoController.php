@@ -29,19 +29,20 @@ class VideoController extends FrontendController
             ->show()
             ->whereId($id)
             ->firstOrFail();
+        $title = sprintf('视频《%s》', $video->title);
+        $keywords = $video->keywords;
+        $description = $video->description;
 
-        return view('frontend.video.show', compact('video'));
+        return view('frontend.video.show', compact('video', 'title', 'keywords', 'description'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
         $video = Video::findOrFail($videoId);
-
         $comment = $video->comments()->save(new VideoComment([
             'user_id' => Auth::id(),
             'content' => $request->input('content'),
         ]));
-
         $comment ? flash('评论成功', 'success') : flash('评论失败');
 
         return back();
@@ -50,8 +51,9 @@ class VideoController extends FrontendController
     public function showBuyPage($id)
     {
         $video = Video::findOrFail($id);
+        $title = sprintf('购买视频《%s》', $video->title);
 
-        return view('frontend.video.buy', compact('video'));
+        return view('frontend.video.buy', compact('video', compact('title')));
     }
 
     public function buyHandler($id)
@@ -65,7 +67,6 @@ class VideoController extends FrontendController
 
             return redirect($videoUrl);
         }
-
         if ($user->credit1 < $video->charge) {
             flash('余额不足，请先充值', 'warning');
 

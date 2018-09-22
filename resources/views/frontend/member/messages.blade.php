@@ -1,6 +1,6 @@
 @extends('layouts.member')
 
-@section('content')
+@section('member')
     <ul class="notifications">
         @forelse($messages as $message)
             <li class="{{ $message->read_at ? 'color-orange' : '' }}">
