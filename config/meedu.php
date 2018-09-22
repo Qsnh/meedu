@@ -2,6 +2,8 @@
 
 return [
 
+    'save' => storage_path('/meedu_config.json'),
+
     // 会员配置
     'member' => [
         'is_active_default' => \App\User::ACTIVE_NO,
@@ -46,6 +48,25 @@ return [
             'client_id' => env('YOUZAN_CLIENT_ID', ''),
             'client_secret' => env('YOUZAN_CLIENT_SECRET', ''),
             'kdt_id' => env('YOUZAN_CLIENT_KDT_ID', ''),
+        ],
+    ],
+
+    // SEO
+    'seo' => [
+        'index' => [
+            'title' => 'MeEdu',
+            'keywords' => '',
+            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+        ],
+        'course_list' => [
+            'title' => '所有课程',
+            'keywords' => '',
+            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+        ],
+        'role_list' => [
+            'title' => 'VIP',
+            'keywords' => '',
+            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
         ],
     ],
 ];

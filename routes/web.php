@@ -143,6 +143,10 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::get('/subscription_email', 'SubscriptionController@create')->name('backend.subscription.email');
     Route::post('/subscription_email', 'SubscriptionController@store');
 
+    // 配置
+    Route::get('/setting', 'SettingController@index')->name('backend.setting.index');
+    Route::post('/setting', 'SettingController@saveHandler');
+
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
 

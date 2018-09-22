@@ -12,3 +12,4 @@ yarn-error.log
 .env
 bower_components
 .php_cs.cache
+/storage/meedu_config.json

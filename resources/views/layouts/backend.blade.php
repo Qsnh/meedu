@@ -93,6 +93,9 @@
                 <dt>系统</dt>
                 <dd>
                     <ul>
+                        <li class="{{ menu_is_active('backend.setting.index') }}">
+                            <a href="{{ route('backend.setting.index') }}">全站配置</a>
+                        </li>
                         <li class="{{ menu_is_active('backend.administrator.index') }}">
                             <a href="{{ route('backend.administrator.index') }}">管理员</a>
                         </li>

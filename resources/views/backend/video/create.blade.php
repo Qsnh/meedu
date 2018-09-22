@@ -85,6 +85,6 @@
                 }
             }
         });
-        (new Page).$mount('#app-body');
+        Page.$mount('#app-body');
     </script>
 @endsection

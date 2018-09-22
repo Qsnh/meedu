@@ -27,6 +27,14 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
         CourseComment::observe(CourseCommentObserver::class);
+
+        // 加载配置
+        if (file_exists(config('meedu.save'))) {
+            $config = json_decode(file_get_contents(config('meedu.save')));
+            foreach ($config as $key => $item) {
+                config(['meedu.'.$key => $item]);
+            }
+        }
     }
 
     /**
