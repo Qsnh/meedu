@@ -11,7 +11,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MemberOrdersPage extends TestCase
+class MemberOrdersTest extends TestCase
 {
 
     public function test_member_orders_page()

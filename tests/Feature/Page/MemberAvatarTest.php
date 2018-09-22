@@ -7,7 +7,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MemberAvatarPageTest extends TestCase
+class MemberAvatarTest extends TestCase
 {
 
     public function test_member_avatar_page()

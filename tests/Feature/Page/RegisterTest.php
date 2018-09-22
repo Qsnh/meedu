@@ -7,7 +7,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RegisterPage extends TestCase
+class RegisterTest extends TestCase
 {
 
     public function test_visit()

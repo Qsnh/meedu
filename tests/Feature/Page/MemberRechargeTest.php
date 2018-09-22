@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MemberRechargePage extends TestCase
+class MemberRechargeTest extends TestCase
 {
 
     public function test_member_recharge_page()
