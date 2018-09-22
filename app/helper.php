@@ -60,6 +60,14 @@ if (! function_exists('menu_is_active')) {
 }
 
 if (! function_exists('exception_response')) {
+    /**
+     * 异常响应.
+     *
+     * @param Exception $exception
+     * @param string    $message
+     *
+     * @return array
+     */
     function exception_response(Exception $exception, string $message = '')
     {
         return [
@@ -70,6 +78,13 @@ if (! function_exists('exception_response')) {
 }
 
 if (! function_exists('notification_name')) {
+    /**
+     * 获取Notification模板名.
+     *
+     * @param $notificationName
+     *
+     * @return string
+     */
     function notification_name($notificationName)
     {
         $arr = explode('\\', $notificationName);
@@ -80,6 +95,14 @@ if (! function_exists('notification_name')) {
 }
 
 if (! function_exists('at_user')) {
+    /**
+     * 艾特某个用户.
+     *
+     * @param $content
+     * @param $fromUser
+     * @param $from
+     * @param $fromType
+     */
     function at_user($content, $fromUser, $from, $fromType)
     {
         preg_match_all('/\s{1}@(.*?)\s{1}/', $content, $result);
@@ -93,6 +116,13 @@ if (! function_exists('at_user')) {
 }
 
 if (! function_exists('at_notification_parse')) {
+    /**
+     * 艾特Notification内容输出.
+     *
+     * @param $notification
+     *
+     * @return string
+     */
     function at_notification_parse($notification)
     {
         $data = $notification->data;
@@ -114,7 +144,12 @@ if (! function_exists('at_notification_parse')) {
 }
 
 if (! function_exists('exception_record')) {
-    function exception_record(Exception $exception)
+    /**
+     * 记录异常.
+     *
+     * @param Exception $exception
+     */
+    function exception_record(Exception $exception): void
     {
         \Log::error([
             'file' => $exception->getFile(),
