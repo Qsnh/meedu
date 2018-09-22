@@ -2,18 +2,26 @@
 
 @section('body')
 
-    @include('components.breadcrumb', ['name' => '公告'])
+    @include('components.breadcrumb', ['name' => 'FAQ分类'])
 
     <el-row>
         <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.announcement.create') }}'" :name="'添加'"></meedu-a>
+            <meedu-a :url="'{{ route('backend.faq.category.create') }}'" :name="'添加'"></meedu-a>
         </el-col>
+
         <el-col :span="24">
-            <el-table :data="announcements" style="width: 100%">
+            <el-table :data="categories" style="width: 100%">
                 <el-table-column
-                        prop="administrator.name"
-                        label="添加人">
+                        prop="id"
+                        label="ID">
                 </el-table-column>
+                <el-table-column
+                        prop="sort"
+                        label="排序值">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="分类名">
                 </el-table-column>
                 <el-table-column
                         prop="updated_at"
@@ -33,16 +41,11 @@
 
 @section('js')
     <script>
-        var Page = new Vue({
+        new Vue({
             el: '#app',
             data: function () {
                 return {
-                    remoteData: @json($announcements),
-                }
-            },
-            computed: {
-                announcements: function () {
-                    return this.remoteData.data;
+                    categories: @json($categories)
                 }
             }
         });

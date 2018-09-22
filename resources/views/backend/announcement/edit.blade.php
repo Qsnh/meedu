@@ -25,7 +25,7 @@
 @section('js')
     <script>
         var announcement = @json($announcement);
-        var Page = new Vue({
+        new Vue({
             el: '#app',
             data: function () {
                 return {
@@ -33,6 +33,5 @@
                 }
             }
         });
-        (new Page).$mount('#app-body');
     </script>
 @endsection

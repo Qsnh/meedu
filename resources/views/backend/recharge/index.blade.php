@@ -99,6 +99,5 @@
                 }
             }
         });
-        (new Page).$mount('#app');
     </script>
 @endsection

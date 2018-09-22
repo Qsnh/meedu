@@ -90,6 +90,17 @@
                         </li>
                     </ul>
                 </dd>
+                <dt>FAQ</dt>
+                <dd>
+                    <ul>
+                        <li class="{{ menu_is_active('backend.faq.category.index') }}">
+                            <a href="{{ route('backend.faq.category.index') }}">分类</a>
+                        </li>
+                        <li class="{{ menu_is_active('backend.faq.article.index') }}">
+                            <a href="{{ route('backend.faq.article.index') }}">文章</a>
+                        </li>
+                    </ul>
+                </dd>
                 <dt>系统</dt>
                 <dd>
                     <ul>

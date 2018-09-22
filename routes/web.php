@@ -147,6 +147,22 @@ Route::group(['prefix' => 'backend', 'namespace' => 'Backend', 'middleware' => [
     Route::get('/setting', 'SettingController@index')->name('backend.setting.index');
     Route::post('/setting', 'SettingController@saveHandler');
 
+    // FAQ分类
+    Route::get('/faq/category', 'FaqCategoryController@index')->name('backend.faq.category.index');
+    Route::get('/faq/category/create', 'FaqCategoryController@create')->name('backend.faq.category.create');
+    Route::post('/faq/category/create', 'FaqCategoryController@store');
+    Route::get('/faq/category/{id}/edit', 'FaqCategoryController@edit')->name('backend.faq.category.edit');
+    Route::put('/faq/category/{id}/edit', 'FaqCategoryController@update');
+    Route::get('/faq/category/{id}/delete', 'FaqCategoryController@destroy')->name('backend.faq.category.destroy');
+
+    // FAQ文章
+    Route::get('/faq/article', 'FaqArticleController@index')->name('backend.faq.article.index');
+    Route::get('/faq/article/create', 'FaqArticleController@create')->name('backend.faq.article.create');
+    Route::post('/faq/article/create', 'FaqArticleController@store');
+    Route::get('/faq/article/{id}/edit', 'FaqArticleController@edit')->name('backend.faq.article.edit');
+    Route::put('/faq/article/{id}/edit', 'FaqArticleController@update');
+    Route::get('/faq/article/{id}/delete', 'FaqArticleController@destroy')->name('backend.faq.article.destroy');
+
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
 

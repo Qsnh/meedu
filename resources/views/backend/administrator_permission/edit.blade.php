@@ -43,7 +43,7 @@
 @section('js')
     <script>
         var selectedMethods = JSON.parse('@json($permission->getMethodArray())');
-        var Page = new Vue({
+        new Vue({
             data: function () {
                 el: '#app',
                 return {
@@ -65,6 +65,5 @@
                 }
             }
         });
-        (new Page).$mount('#app-body');
     </script>
 @endsection

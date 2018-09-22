@@ -41,7 +41,7 @@
 
 @section('js')
     <script>
-        var Page = new Vue({
+        new Vue({
             el: '#app',
             data: function () {
                 return {
@@ -63,6 +63,5 @@
                 }
             }
         });
-        (new Page).$mount('#app-body');
     </script>
 @endsection

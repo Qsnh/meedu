@@ -108,6 +108,5 @@
                 }
             }
         });
-        (new Page).$mount('#app-body');
     </script>
 @endsection
