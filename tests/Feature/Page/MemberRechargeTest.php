@@ -45,7 +45,7 @@ class MemberRechargeTest extends TestCase
         ]));
         $this->actingAs($user)
             ->visit(route('member.recharge_records'))
-            ->dontSee('暂无数据');
+            ->see('暂无数据');
     }
 
 
