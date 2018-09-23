@@ -49,6 +49,7 @@ class CourseBuyTest extends TestCase
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'charge' => mt_rand(1, 1000),
         ]);
         $credit1 = 1000000;
         $user = factory(User::class)->create([
