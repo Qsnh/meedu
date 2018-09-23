@@ -18,7 +18,7 @@
     <header class="backend-header">
         <el-row>
             <el-col :span="12">
-                <span class="backend-header-logo">MeEdu.TV</span>
+                <span class="backend-header-logo">MeEdu</span>
             </el-col>
             <el-col :span="12" class="backend-header-right-section">
                 <el-dropdown class="administrator">

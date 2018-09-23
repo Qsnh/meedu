@@ -7,49 +7,52 @@ li { list-style: none; }
 
 header.backend-header {
     position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-    width: 100%; height: 80px; background-color: #409EFF;
-    line-height: 80px;
+    width: 100%; height: 40px; background-color: rgb(84, 92, 100);
+    line-height: 40px;
 }
 header.backend-header .backend-header-logo {
-    font-size: 2rem; line-height: 80px; color: #ffffff;
+    font-size: 24px; line-height: 40px; color: #ffffff;
     margin-left: 20px;
 }
 header.backend-header .backend-header-right-section {
-    text-align: right; padding-right: 20px; color: #ffffff;
+    text-align: right; padding-right: 20px;
 }
-
+header.backend-header .backend-header-right-section .el-dropdown-link {
+    color: #ffffff;
+}
 section.backend-section {
-    position: absolute; top: 80px; left: 0; right: 0; bottom: 0;
+    position: absolute; top: 40px; left: 0; right: 0; bottom: 0;
     width: 100%; height: auto; display: flex;
 }
 
 /** 左侧菜单 */
 section.backend-section .backend-left-menu {
     width: 210px; height: 100%; overflow-y: auto;
-    background-color: #606266; color: #ffffff;
+    background-color: rgb(84, 92, 100); color: #ffffff;
     overflow-x: hidden;
 }
 section.backend-section .backend-left-menu dt {
-    background-color: #303133; padding-left: 20px;
+    border-bottom: 1px solid rgb(67, 74, 80); padding-left: 20px;
+    border-top: 1px solid rgb(67, 74, 80);
 }
 section.backend-section .backend-left-menu a {
     color: #ffffff;
 }
 section.backend-section .backend-left-menu dt {
-    width: 100%; height: 40px; line-height: 40px;
-    font-size: 1rem;
+    width: 100%; height: 56px; line-height: 56px;
+    font-size: 14px;
 }
 section.backend-section .backend-left-menu dd {
-    width: 100%; height: auto; font-size: .8rem;
+    width: 100%; height: auto; font-size: 14px;
 }
 section.backend-section .backend-left-menu dd li {
-    line-height: 32px; padding-left: 30px;
+    line-height: 50px; padding-left: 30px;
 }
 section.backend-section .backend-left-menu dd li:hover,section.backend-section .backend-left-menu dd li.active {
-    background-color: #409EFF; color: #ffffff;
+    background-color: rgb(67, 74, 80); color: rgb(255, 208, 75);
 }
 section.backend-section .backend-left-menu dd li:hover a,section.backend-section .backend-left-menu dd li.active a {
-    background-color: #409EFF; color: #ffffff;
+    background-color: rgb(67, 74, 80); color: rgb(255, 208, 75);
 }
 section.backend-section .backend-body {
     flex: 1; height: 100%; overflow-y: auto;
