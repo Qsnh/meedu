@@ -34,6 +34,14 @@ class FaqArticle extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function admin()
+    {
+        return $this->belongsTo(Administrator::class, 'admin_id');
+    }
+
+    /**
      * @return string
      */
     public function getEditUrlAttribute()
@@ -48,4 +56,13 @@ class FaqArticle extends Model
     {
         return route('backend.faq.article.destroy', $this);
     }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return (new \Parsedown)->text($this->content);
+    }
+
 }

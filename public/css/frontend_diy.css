@@ -14,6 +14,7 @@ span.label { margin-right: 8px; }
 .lh-30 { line-height: 30px; }
 .font-size-12 { font-size: 12px; }
 .emoji { width: 16px; height: 16px; }
+.list-group .active a { color: #FFFFFF; }
 
 .share-box {
     padding-top: 10px; padding-bottom: 10px;
@@ -389,4 +390,24 @@ footer {
 }
 .pay {
     padding-top:50px; padding-bottom: 50px;
+}
+
+/** FAQ */
+.faq-banner {
+    height: 160px; background-color: orange; color: #FFFFFF;
+}
+.faq-banner h1 {
+    line-height: 160px;
+}
+.faq-body {
+    margin-top: 15px; margin-bottom: 15px;
+}
+.faq-body-list-box li {
+    border-bottom: 1px solid #eeeeee; line-height: 36px;
+}
+.faq-body .article-box {
+    line-height: 30px;
+}
+.faq-body .article-box img {
+    width: 100%;
 }

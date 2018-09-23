@@ -26,6 +26,10 @@ Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler
 
 Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
 
+Route::get('/faq', 'Frontend\FaqController@index')->name('faq');
+Route::get('/faq/category/{id}', 'Frontend\FaqController@showCategoryPage')->name('faq.category.show');
+Route::get('/faq/article/{id}', 'Frontend\FaqController@showArticlePage')->name('faq.article.show');
+
 // 支付回调
 Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
 
