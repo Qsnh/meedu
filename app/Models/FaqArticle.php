@@ -62,7 +62,6 @@ class FaqArticle extends Model
      */
     public function getContent()
     {
-        return (new \Parsedown)->text($this->content);
+        return (new \Parsedown())->text($this->content);
     }
-
 }
