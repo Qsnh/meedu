@@ -13,10 +13,10 @@
     "axios": "^0.17",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.1",
-    "laravel-mix": "^1.0",
-    "vue": "^2.5.7"
-  },
-  "dependencies": {
+    "jquery": "^3.2",
+    "laravel-mix": "^2.0",
+    "lodash": "^4.17.4",
+    "vue": "^2.5.7",
     "element-ui": "^2.4.1",
     "mavon-editor": "^2.6.9"
   }
