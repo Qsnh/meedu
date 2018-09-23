@@ -256,7 +256,7 @@ class User extends Authenticatable
      */
     public function activeRole()
     {
-        return $this->role && time() < strtotime($this->role_expired_at);
+        return time() < strtotime($this->role_expired_at);
     }
 
     /**

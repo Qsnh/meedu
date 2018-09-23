@@ -22,7 +22,8 @@ class UserRoleTest extends TestCase
         $role = factory(Role::class)->create();
         $response = $this->get(route('role.index'));
         $response->assertResponseStatus(200);
-        $response->see($role->name);
+        $response->see($role->name)
+            ->see($role->charge);
     }
 
 }
