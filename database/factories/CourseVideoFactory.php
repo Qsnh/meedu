@@ -6,7 +6,10 @@ $factory->define(\App\Models\Video::class, function (Faker $faker) {
     return [
         'user_id' => 0,
         'course_id' => function () {
-            return factory(\App\Models\Course::class)->create()->id;
+            return factory(\App\Models\Course::class)->create([
+                'is_show' => \App\Models\Course::SHOW_YES,
+                'published_at' => \Carbon\Carbon::now()->subDays(1),
+            ])->id;
         },
         'title' => $faker->name,
         'slug' => $faker->slug(),

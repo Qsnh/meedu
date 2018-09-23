@@ -112,7 +112,7 @@ class CourseController extends FrontendController
 
             flash('购买成功', 'success');
 
-            return redirect($course->seeUrl());
+            return redirect(route('course.show', [$course->id, $course->slug]));
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);

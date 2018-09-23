@@ -19,7 +19,7 @@
                             <div class="col-sm-9 play-box">
                                 @if($user->canSeeThisVideo($video))
                                     <video id="player" playsinline controls>
-                                        <source src="" type="video/mp4">
+                                        <source src="{{$video->url}}" type="video/mp4">
                                     </video>
                                     @else
                                     <div style="padding-top: 200px;">

@@ -63,6 +63,7 @@ class RoleController extends FrontendController
             $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
 
             DB::commit();
+
             flash('购买成功', 'success');
 
             return redirect(route('member'));

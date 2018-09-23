@@ -70,7 +70,7 @@ class VideoController extends FrontendController
         if ($user->credit1 < $video->charge) {
             flash('余额不足，请先充值', 'warning');
 
-            return redirect('member.recharge');
+            return redirect(route('member.recharge'));
         }
 
         DB::beginTransaction();

@@ -13,11 +13,11 @@
                     </p>
                     <p class="nickname">{{ $user->nick_name }}</p>
                     <p class="lh-30">注册于 &nbsp; <span class="color-gray">{{ $user->created_at->diffForHumans() }}</span></p>
+                    @if($user->role)
                     <p class="lh-30">
-                        @if($user->role)
-                            <span class="label label-success">{{$user->role->name}} {{$user->role_expired_at}}</span>
-                        @endif
+                        <span class="label label-success">{{$user->role->name}} {{$user->role_expired_at}}</span>
                     </p>
+                    @endif
                     <p class="lh-30">余额
                         <b>￥{{ $user->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
                     </p>
