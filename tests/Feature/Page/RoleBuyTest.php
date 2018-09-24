@@ -66,15 +66,6 @@ class RoleBuyTest extends TestCase
             ->visit(route('member.orders'))
             ->see($role->name)
             ->see($role->charge);
-        // 可以观看视频
-        $video = factory(Video::class)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $response = $this->actingAs($user)
-            ->visit(route('video.show', [$video->course->id, $video->id, $video->slug]))
-            ->assertResponseStatus(200);
-        $this->assertRegExp("#{$video->url}#", $response->response->getContent());
         // 消息通知
         $this->assertTrue($user->unreadNotifications->count() == 1);
     }
