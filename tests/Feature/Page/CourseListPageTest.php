@@ -62,7 +62,7 @@ class CourseListPageTest extends TestCase
 
     public function test_visit_course_see_pagination()
     {
-        factory(Course::class, 20)->create();
+        factory(Course::class, 100)->create();
         $this->visit(route('courses'))
             ->seeElement('.pagination');
     }
