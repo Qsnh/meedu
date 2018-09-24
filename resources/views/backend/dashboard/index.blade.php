@@ -4,10 +4,18 @@
 
     @include('components.breadcrumb', ['name' => '主面板'])
 
-    <el-row>
-        <el-col :span="24" class="backend-dashboard-banner">
-            <h3 style="line-height: 60px">欢迎使用 MeEdu 在线教育点播系统。在这里，您可以开展自己的在线教育。</h3>
-            <p style="color: gray">MeEdu 是一套开源，免费的系统，您可以无限制的使用它而不用担心任何版权问题！</p>
+    <el-row class="backend-dashboard-banner text-center">
+        <el-col span="8">
+            <h1>今日注册</h1>
+            <h3>{{$todayRegisterUserCount}} <small>位</small></h3>
+        </el-col>
+        <el-col span="8">
+            <h1>今日充值</h1>
+            <h3>{{$todayRechargeCount}} <small>单</small></h3>
+        </el-col>
+        <el-col span="8">
+            <h1>今日充值</h1>
+            <h3>{{$todayRechargeSum}} <small>元</small></h3>
         </el-col>
     </el-row>
 

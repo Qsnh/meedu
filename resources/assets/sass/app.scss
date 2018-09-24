@@ -2,6 +2,16 @@
 @import "variables";
 @import "common";
 
+.backend-dashboard-banner {
+  padding: 10px 20px; background-color: #fbfbfb;
+  h1 {
+    line-height: 60px;
+  }
+  h3 {
+    line-height: 40px;
+  }
+}
+
 .member-detail-left {
   background-color: #eeeeee;
   padding: 10px 20px;

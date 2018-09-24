@@ -12,11 +12,15 @@
 namespace App\Models;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\traits\CreatedAtBetween;
 use Illuminate\Database\Eloquent\Model;
 
 class RechargePayment extends Model
 {
+    use CreatedAtBetween;
+
     const STATUS_NO_PAY = 1;
     const STATUS_PAYED = 9;
 
@@ -101,5 +105,31 @@ class RechargePayment extends Model
     public function statusText()
     {
         return $this->status == self::STATUS_NO_PAY ? '未支付' : '已支付';
+    }
+
+    /**
+     * 今日充值成功数量.
+     *
+     * @return mixed
+     */
+    public static function todaySuccessCount()
+    {
+        return self::success()->createdAtBetween(
+            Carbon::now()->format('Y-m-d'),
+            Carbon::now()->addDays(1)->format('Y-m-d')
+        )->count();
+    }
+
+    /**
+     * 今日充值金额.
+     *
+     * @return mixed
+     */
+    public static function todaySuccessSum()
+    {
+        return self::success()->createdAtBetween(
+            Carbon::now()->format('Y-m-d'),
+            Carbon::now()->addDays(1)->format('Y-m-d')
+        )->sum('money');
     }
 }

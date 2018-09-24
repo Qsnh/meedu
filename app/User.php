@@ -21,12 +21,13 @@ use App\Models\VideoComment;
 use App\Models\CourseComment;
 use App\Models\RechargePayment;
 use App\Models\UserJoinRoleRecord;
+use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, CreatedAtBetween;
 
     const ACTIVE_YES = 1;
     const ACTIVE_NO = -1;
@@ -294,5 +295,18 @@ class User extends Authenticatable
             'started_at' => $startDate,
             'expired_at' => $endDate,
         ]));
+    }
+
+    /**
+     * 今日注册用户数量.
+     *
+     * @return mixed
+     */
+    public static function todayRegisterCount()
+    {
+        return self::createdAtBetween(
+            Carbon::now()->format('Y-m-d'),
+            Carbon::now()->addDays(1)->format('Y-m-d')
+        )->count();
     }
 }
