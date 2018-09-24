@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         if (file_exists(config('meedu.save'))) {
             $config = json_decode(file_get_contents(config('meedu.save')));
             foreach ($config as $key => $item) {
-                config(['meedu.'.$key => $item]);
+                config([$key => $item]);
             }
         }
     }

@@ -1,12 +1,12 @@
 <div class="form-group">
     <label>手机号</label>
-    <input type="text" name="mobile" class="form-control" placeholder="手机号">
+    <input type="text" name="mobile" class="form-control" placeholder="手机号" required>
 </div>
 <div class="form-group">
     <label>验证码</label>
     <div class="row">
         <div class="col-sm-6">
-            <input type="text" name="captcha" placeholder="验证码" class="form-control">
+            <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
         </div>
         <div class="col-sm-6">
             <img src="{{ captcha_src() }}" class="captcha" width="120" height="36">
@@ -17,7 +17,7 @@
     <label>手机验证码</label>
     <div class="row">
         <div class="col-sm-6">
-            <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control">
+            <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control" required>
         </div>
         <div class="col-sm-6">
             <button type="button" class="send-sms-captcha btn btn-primary">发送验证码</button>

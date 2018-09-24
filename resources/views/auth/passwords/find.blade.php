@@ -13,11 +13,11 @@
                             @include('components.frontend.mobile_captcha')
                             <div class="form-group">
                                 <label for="password">密码</label>
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" placeholder="请输入新密码" class="form-control" name="password" required>
                             </div>
                             <div class="form-group">
                                 <label for="password-confirm">确认密码</label>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" placeholder="再输入一次" class="form-control" name="password_confirmation" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">重置密码</button>

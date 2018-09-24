@@ -62,33 +62,7 @@
                    </div>
                    <div class="comment" style="display: none">
 
-                       <div class="col-sm-12">
-                           <div class="alert alert-warning">
-                               <p>1.支持Markdown语法</p>
-                               <p>2.支持 @ 某个人，当你 @ TA的时候我们会发站内消息给TA的</p>
-                               <p>3.支持拖拽图片到评论框上传</p>
-                               <p>4.支持emoji表情</p>
-                           </div>
-                       </div>
-
-                       <div class="col-sm-12 comment-box">
-                           <div class="col-sm-12">
-                               <form action="{{ route('course.comment', $course) }}" method="post" class="form-horizontal">
-                                   {!! csrf_field() !!}
-                                   <div class="form-group">
-                                       <textarea name="content"
-                                                 class="form-control"
-                                                 rows="5"
-                                                 placeholder="评论内容" {{Auth::check() ? '' : 'disabled'}}></textarea>
-                                   </div>
-                                   @if(Auth::check())
-                                   <div class="form-group text-right">
-                                       <button class="btn btn-primary">提交评论</button>
-                                   </div>
-                                   @endif
-                               </form>
-                           </div>
-                       </div>
+                       @include('components.frontend.comment_box', ['submitUrl' => route('course.comment', $course)])
 
                        <div class="col-sm-12">
                            <table class="comment-list-box">
@@ -97,7 +71,12 @@
                                <tr class="comment-list-item">
                                    <td width="70" class="user-info">
                                        <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
-                                       <p class="nickname">{{$comment->user->nick_name}}</p>
+                                       <p class="nickname">
+                                           {{$comment->user->nick_name}}
+                                       </p>
+                                       @if($comment->user->role)
+                                           <p class="nickname">{{$comment->user->role->name}}</p>
+                                       @endif
                                    </td>
                                    <td class="comment-content">
                                        <p>{!! $comment->getContent() !!}</p>
