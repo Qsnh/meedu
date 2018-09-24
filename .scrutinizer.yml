@@ -1,0 +1,9 @@
+build:
+  environment:
+    php:
+      version: 7.1
+  node:
+    meedu-test:
+      tests:
+        override:
+          - composer test
