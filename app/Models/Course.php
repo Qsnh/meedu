@@ -141,7 +141,6 @@ class Course extends Model
     public function getVideos()
     {
         $that = $this;
-
         return Cache::remember("course_{$this->id}_videos", 360, function () use ($that) {
             return $that->videos()
                 ->published()

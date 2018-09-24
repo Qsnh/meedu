@@ -40,25 +40,27 @@
                 </div>
                <div class="tab-content-box">
                    <div class="intro">
-                       <p class="lh-30">{{ $course->short_description }}</p>
-                       <hr>
                        {!! $course->getDescription() !!}
                        <hr>
                        <div class="social-share"></div>
                    </div>
                    <div class="list" style="display: none">
-                       <ul>
+                       <table style="width: 100%">
                            @forelse($course->getVideos() as $video)
-                               <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
-                                   <li>
-                                       <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
-                                       <span class="color-gray float-right">{{ $video->updated_at->diffForHumans() }}</span>
-                                   </li>
-                               </a>
+                               <tr class="lh-30">
+                                   <td>
+                                       <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
+                                           <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
+                                       </a>
+                                   </td>
+                                   <td width="80" class="text-right">{{ $video->updated_at->diffForHumans() }}</td>
+                               </tr>
                            @empty
-                            <p class="text-center color-gray lh-30">暂无视频</p>
+                               <tr>
+                                   <td colspan="2" class="text-center">暂无数据</td>
+                               </tr>
                            @endforelse
-                       </ul>
+                       </table>
                    </div>
                    <div class="comment" style="display: none">
 

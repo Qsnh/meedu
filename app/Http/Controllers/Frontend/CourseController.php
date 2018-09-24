@@ -28,7 +28,6 @@ class CourseController extends FrontendController
             ->published()
             ->orderByDesc('created_at')
             ->paginate(6);
-
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.course_list');
 
         return view('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
