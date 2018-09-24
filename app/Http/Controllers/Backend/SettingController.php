@@ -18,7 +18,10 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $config = config('meedu');
+        $config = [
+            'meedu' => config('meedu'),
+            'sms' => config('sms'),
+        ];
 
         return view('backend.setting.index', compact('config'));
     }

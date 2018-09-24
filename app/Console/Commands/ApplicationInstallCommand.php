@@ -114,5 +114,4 @@ class ApplicationInstallCommand extends Command
             'password' => bcrypt('123123'),
         ]);
     }
-
 }
