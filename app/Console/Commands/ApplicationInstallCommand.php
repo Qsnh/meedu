@@ -108,6 +108,11 @@ class ApplicationInstallCommand extends Command
     {
         Artisan::call('migrate');
         Artisan::call('db:seed');
+        Administrator::create([
+            'name' => '小滕',
+            'email' => '12345@qq.com',
+            'password' => bcrypt('123123'),
+        ]);
     }
 
 }
