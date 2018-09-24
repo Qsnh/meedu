@@ -11,11 +11,11 @@
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="mobile">手机号</label>
-                            <input id="mobile" type="mobile" class="form-control" name="mobile" value="{{ old('mobile') }}" required>
+                            <input id="mobile" type="mobile" class="form-control" placeholder="手机号" name="mobile" value="{{ old('mobile') }}" required>
                         </div>
                         <div class="form-group">
                             <label for="password">密码</label>
-                            <input id="password" type="password" class="form-control" name="password" required>
+                            <input id="password" type="password" class="form-control" placeholder="密码" name="password" required>
                         </div>
                         <div class="form-group">
                             <label>

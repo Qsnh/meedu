@@ -11,19 +11,19 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="nick_name">昵称</label>
-                                <input id="nick_name" type="text" class="form-control" name="nick_name" value="{{ old('nick_name') }}" required>
+                                <input id="nick_name" type="text" class="form-control" placeholder="昵称" name="nick_name" value="{{ old('nick_name') }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="mobile">手机号</label>
-                                <input id="mobile" type="mobile" class="form-control" name="mobile" value="{{ old('mobile') }}" required>
+                                <input id="mobile" type="mobile" class="form-control" placeholder="手机号" name="mobile" value="{{ old('mobile') }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">密码</label>
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" placeholder="密码" name="password" required>
                             </div>
                             <div class="form-group">
                                 <label for="password-confirm">确认密码</label>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" placeholder="再输入一次" name="password_confirmation" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">注册</button>
