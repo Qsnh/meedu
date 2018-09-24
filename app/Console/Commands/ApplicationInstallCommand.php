@@ -13,6 +13,7 @@ namespace App\Console\Commands;
 
 use App\Models\Administrator;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class ApplicationInstallCommand extends Command
 {
@@ -102,4 +103,11 @@ class ApplicationInstallCommand extends Command
 
         $this->info('administrator create success.');
     }
+
+    public function actionDev()
+    {
+        Artisan::call('migrate');
+        Artisan::call('db:seed');
+    }
+
 }

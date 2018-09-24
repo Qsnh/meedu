@@ -278,7 +278,7 @@ class User extends Authenticatable
 
         if ($this->role) {
             $startDate = $this->role_expired_at;
-            $endDate = Carbon::createFromFormat($this->role_expired_at)->addDays($role->expire_days);
+            $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->role_expired_at)->addDays($role->expire_days);
         } else {
             $startDate = Carbon::now();
             $endDate = Carbon::now()->addDays($role->expire_days);

@@ -79,4 +79,37 @@ class RoleBuyTest extends TestCase
         $this->assertTrue($user->unreadNotifications->count() == 1);
     }
 
+    public function test_repeat_buy()
+    {
+        $credit1 = mt_rand(1000, 10000);
+        $user = factory(User::class)->create([
+            'credit1' => $credit1,
+        ]);
+        $role = factory(Role::class)->create([
+            'charge' => mt_rand(1, 1000),
+        ]);
+        $this->actingAs($user)
+            ->visit(route('member.role.buy', $role))
+            ->press('立即购买')
+            ->seePageIs(route('member'));
+        $user = User::find($user->id);
+        $this->actingAs($user)
+            ->visit(route('member'))
+            ->see($user->role->name)
+            ->see($user->role->role_expired_at)
+            ->see($credit1 - $role->charge);
+        $balance = $user->credit1;
+        // 重复购买
+        $this->actingAs($user)
+            ->visit(route('member.role.buy', $role))
+            ->press('立即购买')
+            ->seePageIs(route('member'));
+        $user = User::find($user->id);
+        $this->actingAs($user)
+            ->visit(route('member'))
+            ->see($user->role->name)
+            ->see($user->role->role_expired_at)
+            ->see($balance - $role->charge);
+    }
+
 }
