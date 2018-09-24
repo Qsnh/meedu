@@ -1,2 +1,28 @@
 // Variables
 @import "variables";
+@import "common";
+
+.member-detail-left {
+  background-color: #eeeeee;
+  padding: 10px 20px;
+  ul li {
+    line-height: 45px;
+    border-bottom: 1px solid #dddddd;
+  }
+  ul li.avatar img {
+    border-radius: 50%
+  }
+}
+.member-detail-right {
+  padding: 10px 20px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #eeeeee;
+    th, td {
+      border: 1px solid #eeeeee;
+      text-align: center;
+      line-height: 30px;
+    }
+  }
+}

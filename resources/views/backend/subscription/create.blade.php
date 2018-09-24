@@ -5,6 +5,9 @@
     @include('components.breadcrumb', ['name' => '创建邮件群发'])
 
     <el-row :gutter="20">
+        @component('components.backend.warning')
+            所有订阅过本站的邮箱都将收到邮件！
+        @endcomponent
         <el-form label-position="top" method="post">
             {!! csrf_field() !!}
             <el-col :span="12" :offset="6">
