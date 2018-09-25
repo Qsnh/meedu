@@ -8,7 +8,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MeEDU后台管理系统</title>
     <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/backend_diy.css') }}" rel="stylesheet">
     @yield('css')
 </head>
 <body>

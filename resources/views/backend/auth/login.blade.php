@@ -8,14 +8,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MeEDU后台管理系统</title>
     <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/backend_diy.css') }}" rel="stylesheet">
 </head>
 <body>
 
 <div id="app">
     <el-row>
         <el-col :span="20" :offset="2">
-            <h1 class="login-page-logo" style="color: #409EFF">MeEdu.TV</h1>
+            <h1 class="login-page-logo" style="color: #409EFF">MeEdu</h1>
         </el-col>
         <el-col :span="8" :offset="8" style="margin-top: 50px;">
             <h3 style="text-align: center">登录</h3>
@@ -32,8 +31,8 @@
         </el-col>
         <el-col class="login-page-footer" :span="20" :offset="2">
             <p>
-                CopyRight <a href="https://meedu.tv">MeEDU.TV</a> 2018.
-                <a href="https://github.com/MeEdu/framework">Github</a>
+                CopyRight <a href="https://meedu.tv">MeEdu</a> 2018.
+                <a href="https://github.com/Qsnh/meedu">Github</a>
             </p>
         </el-col>
     </el-row>

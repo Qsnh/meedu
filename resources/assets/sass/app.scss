@@ -2,6 +2,74 @@
 @import "variables";
 @import "common";
 
+* { padding: 0px; margin: 0px; }
+a { text-decoration: none; color: #636b6f }
+li { list-style: none; }
+
+/**登陆界面*/
+.login-page-logo { line-height: 150px; }
+.login-page-footer { line-height: 80px; font-size: .8rem; }
+
+/**后台头部*/
+header.backend-header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+  width: 100%; height: 40px; background-color: rgb(84, 92, 100);
+  line-height: 40px;
+  .backend-header-logo {
+    font-size: 24px; line-height: 40px; color: #ffffff;
+    margin-left: 20px;
+  }
+  .backend-header-right-section {
+    text-align: right; padding-right: 20px;
+    .el-dropdown-link {
+      color: #ffffff;
+    }
+  }
+}
+section.backend-section {
+  position: absolute; top: 40px; left: 0; right: 0; bottom: 0;
+  width: 100%; height: auto; display: flex;
+}
+
+/** 左侧菜单 */
+section.backend-section {
+  .backend-left-menu {
+    width: 210px; height: 100%; overflow-y: auto;
+    background-color: rgb(84, 92, 100); color: #ffffff;
+    overflow-x: hidden;
+    dt {
+      border-bottom: 1px solid rgb(67, 74, 80); padding-left: 20px;
+      border-top: 1px solid rgb(67, 74, 80); width: 100%; height: 56px;
+      line-height: 56px; font-size: 14px;
+    }
+    a {
+      color: #ffffff;
+    }
+    dd {
+      width: 100%; height: auto; font-size: 14px;
+      li {
+        line-height: 50px; padding-left: 30px;
+      }
+      li:hover {
+        background-color: rgb(67, 74, 80); color: rgb(255, 208, 75);
+        a {
+          color: rgb(255, 208, 75);
+        }
+      }
+      li.active {
+        background-color: rgb(67, 74, 80); color: rgb(255, 208, 75);
+        a {
+          color: rgb(255, 208, 75);
+        }
+      }
+    }
+  }
+  .backend-body {
+    flex: 1; height: 100%; overflow-y: auto;
+  }
+}
+
+/**首页Banner*/
 .backend-dashboard-banner {
   padding: 10px 20px; background-color: #fbfbfb;
   h1 {
@@ -12,6 +80,7 @@
   }
 }
 
+/**会员详情页*/
 .member-detail-left {
   background-color: #eeeeee;
   padding: 10px 20px;
