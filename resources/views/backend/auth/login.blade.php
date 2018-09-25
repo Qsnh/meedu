@@ -31,8 +31,7 @@
         </el-col>
         <el-col class="login-page-footer" :span="20" :offset="2">
             <p>
-                CopyRight <a href="https://meedu.tv">MeEdu</a> 2018.
-                <a href="https://github.com/Qsnh/meedu">Github</a>
+                CopyRight <a href="https://github.com/Qsnh/meedu">MeEdu</a> 2018.
             </p>
         </el-col>
     </el-row>
