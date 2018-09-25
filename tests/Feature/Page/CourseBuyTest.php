@@ -28,11 +28,12 @@ class CourseBuyTest extends TestCase
             ->see($user->credit1);
     }
 
-    public function test_visit_sufficient_credit1()
+    public function test_visit_insufficient_credit1()
     {
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'charge' => mt_rand(1, 1000),
         ]);
         $user = factory(User::class)->create([
             'credit1' => 0,

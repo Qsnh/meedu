@@ -31,7 +31,7 @@ class VideoBuyTest extends TestCase
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
-            'charge' => 1,
+            'charge' => mt_rand(1, 1000),
         ]);
         $user = factory(User::class)->create([
             'credit1' => 0,
