@@ -10,7 +10,6 @@
     <title>{{Auth::check() ? Auth::user()->nick_name.' - ' : ''}}{{$title ?? 'MeEdu'}}</title>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ mix('css/frontend.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/frontend_diy.css') }}" rel="stylesheet">
     @yield('css')
 </head>
 <body>
