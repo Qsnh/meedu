@@ -2,6 +2,10 @@
 
 @section('member')
 
+    <div class="row">
+        <h3>消费记录</h3>
+    </div>
+
     <table class="table table-hover">
         <thead>
         <tr>

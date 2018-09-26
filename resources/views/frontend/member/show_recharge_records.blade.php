@@ -1,6 +1,11 @@
 @extends('layouts.member')
 
 @section('member')
+
+    <div class="row">
+        <h3>充值记录</h3>
+    </div>
+
     <table class="table table-hover">
         <thead>
         <tr>

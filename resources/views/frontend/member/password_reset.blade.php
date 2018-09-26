@@ -2,6 +2,10 @@
 
 @section('member')
 
+    <div class="row">
+        <h3>修改密码</h3>
+    </div>
+
     <div class="col-sm-5">
         <form action="" method="post" class="form-horizontal">
             {!! csrf_field() !!}

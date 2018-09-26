@@ -1,6 +1,11 @@
 @extends('layouts.member')
 
 @section('member')
+
+    <div class="row">
+        <h3>我的消息</h3>
+    </div>
+
     <ul class="notifications">
         @forelse($messages as $message)
             <li class="{{ $message->read_at ? 'color-orange' : '' }}">

@@ -1,7 +1,9 @@
 @extends('layouts.member')
 
 @section('member')
-
+    <div class="row">
+        <h3>更换头像</h3>
+    </div>
     <form enctype="multipart/form-data" action="" method="post" class="form-horizontal">
         {!! csrf_field() !!}
         <div class="form-group">
