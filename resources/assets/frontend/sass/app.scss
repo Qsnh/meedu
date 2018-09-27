@@ -88,11 +88,11 @@ footer {
           width: 100%; height: 100%;
           border-top-left-radius: 2px; border-top-right-radius: 2px;
         }
-        .title {
-          width: 100%; height: 50px; float: left;
-          line-height: 50px; font-size: 18px;
-          white-space: nowrap; overflow: hidden;
-        }
+      }
+      .title {
+        width: 100%; height: 50px; float: left;
+        line-height: 50px; font-size: 18px;
+        white-space: nowrap; overflow: hidden;
       }
     }
     .course-item:hover {
