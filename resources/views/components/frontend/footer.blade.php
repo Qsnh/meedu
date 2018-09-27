@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="col-sm-12">
-                        <p>Copyright MeEdu.TV 2018.</p>
+                        <p>Copyright MeEdu 2018.</p>
                     </div>
 
                 </div>
