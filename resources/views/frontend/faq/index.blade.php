@@ -21,7 +21,7 @@
                     <div class="panel-body">
                         <ul>
                             @foreach($category->articles()->orderByDesc('updated_at')->limit(5)->get() as $article)
-                                <li><a href="{{route('faq.article.show', $article)}}">{{$article->title}}</a></li>
+                                <li class="lh-30"><a href="{{route('faq.article.show', $article)}}">{{$article->title}}</a></li>
                             @endforeach
                         </ul>
                     </div>
