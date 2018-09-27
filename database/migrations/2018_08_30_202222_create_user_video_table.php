@@ -17,7 +17,7 @@ class CreateUserVideoTable extends Migration
             $table->integer('user_id');
             $table->integer('video_id');
             $table->integer('charge')->default(0)->comment('收费');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->default(null)->nullable(true);
         });
     }
 
