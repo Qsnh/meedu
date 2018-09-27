@@ -44,12 +44,14 @@
 
 ## FAQ
 
-- [安装教程](docs/installation.md)
-- [邮件配置教程](readme.md)
-- [有赞云支付配置教程](readme.md)
-- [短信配置教程](readme.md)
-- [视频收费规则细节](readme.md)
-- [定时备份配置](readme.md)
+- [安装教程](docs/安装教程.md)
+- [邮件配置教程](docs/邮件配置.md)
+- [有赞云支付配置教程](docs/有赞云配置.md)
+- [短信配置教程](docs/短信配置.md)
+- [视频收费规则细节](docs/收费规则.md)
+- [定时备份配置](docs/定时备份.md)
+- [模板开发细节](docs/模板开发细节.md)
+- [后端依赖介绍](docs/meedu后端依赖介绍.md)
 
 ## License
 
