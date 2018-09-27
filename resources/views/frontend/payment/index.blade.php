@@ -19,9 +19,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 recharge-form-box">
-                <div class="alert alert-warning">
-                    <p><b>注意：</b></p>
-                    <p>1.充值之后无法提现只能在本站消费使用。</p>
+                <div class="row">
+                    <div class="alert alert-warning">
+                        <p><b>注意：</b></p>
+                        <p>1.充值之后无法提现只能在本站消费使用。</p>
+                    </div>
                 </div>
                 <form action="" method="post" class="form-horizontal">
                     {!! csrf_field() !!}
