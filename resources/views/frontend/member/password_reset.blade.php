@@ -6,7 +6,7 @@
         <h3>修改密码</h3>
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-4 col-sm-offset-4" style="margin-top: 50px;">
         <form action="" method="post" class="form-horizontal">
             {!! csrf_field() !!}
             <div class="form-group">
