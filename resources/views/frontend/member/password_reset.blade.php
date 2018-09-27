@@ -11,7 +11,7 @@
             {!! csrf_field() !!}
             <div class="form-group">
                 <label>原密码</label>
-                <input type="password" name="old_password" class="form-control" required>
+                <input type="password" name="old_password" placeholder="原密码" class="form-control" required>
             </div>
             <div class="form-group">
                 <label>新密码</label>
