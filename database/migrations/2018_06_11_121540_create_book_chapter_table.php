@@ -20,7 +20,7 @@ class CreateBookChapterTable extends Migration
             $table->string('title')->comment('章节名');
             $table->text('content')->comment('内容');
             $table->integer('view_num')->default(0)->comment('浏览次数');
-            $table->timestamp('published_at')->comment('发布时间');
+            $table->timestamp('published_at')->default(null)->nullable(true)->comment('发布时间');
             $table->tinyInteger('is_show')->comment('1显示,-1隐藏');
             $table->timestamps();
             $table->softDeletes();

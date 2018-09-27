@@ -28,7 +28,7 @@ class CreateVideoTable extends Migration
             $table->string('seo_keywords')->default('')->comment('SEO关键字');
             $table->string('seo_description')->default('')->comment('SEO描述');
 
-            $table->timestamp('published_at')->comment('上线时间');
+            $table->timestamp('published_at')->default(null)->nullable(true)->comment('上线时间');
             $table->tinyInteger('is_show')->comment('1显示,-1隐藏');
             $table->softDeletes();
             $table->timestamps();
