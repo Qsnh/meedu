@@ -44,7 +44,7 @@
 
 ## FAQ
 
-- [安装教程](readme.md)
+- [安装教程](docs/installation.md)
 - [邮件配置教程](readme.md)
 - [有赞云支付配置教程](readme.md)
 - [短信配置教程](readme.md)
