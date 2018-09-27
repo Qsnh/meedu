@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container all-buy-box">
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <h3 class="text-center">你正在购买课程《{{$course->title}}》</h3>
@@ -32,8 +32,8 @@
                 <p class="lh-30">当前账户余额：<b>￥{{$user->credit1}}</b></p>
 
                 @if($user->credit1 < $course->price)
-                    <p>您的账户余额不足，请先 <a href="{{route('member.recharge')}}">充值(点我)</a></p>
-                    @else
+                    @include('components.frontend.insufficient')
+                @else
                     <form action="" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">

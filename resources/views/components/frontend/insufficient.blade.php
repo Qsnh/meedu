@@ -1,0 +1,1 @@
+<p class="text-center lh-30">您的账户余额不足，请先 <a href="{{route('member.recharge')}}">充值(点我)</a></p>
