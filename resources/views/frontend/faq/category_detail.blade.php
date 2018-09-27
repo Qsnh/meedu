@@ -12,6 +12,12 @@
 
 <div class="container faq-body">
     <div class="row">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="{{route('faq')}}">FAQ</a></li>
+                <li>{{$category->name}}</li>
+            </ol>
+        </div>
         <div class="col-sm-3">
             <ul class="list-group">
                 @foreach($categories as $item)
