@@ -13,3 +13,4 @@ yarn-error.log
 bower_components
 .php_cs.cache
 /storage/meedu_config.json
+.DS_Store
