@@ -11,8 +11,10 @@
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "league/html-to-markdown": "^4.8",
         "maatwebsite/excel": "^3.0",
         "mews/captcha": "^2.2",
+        "mews/purifier": "^2.1",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
         "spatie/laravel-backup": "^3.0.0"

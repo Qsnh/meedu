@@ -172,3 +172,34 @@ if (! function_exists('admin')) {
         return \Illuminate\Support\Facades\Auth::guard('administrator')->user();
     }
 }
+
+if (! function_exists('markdown_to_html')) {
+    /**
+     * markdown转换为html.
+     *
+     * @param $content
+     *
+     * @return string
+     */
+    function markdown_to_html($content)
+    {
+        return (new Parsedown())->parse($content);
+    }
+}
+
+if (! function_exists('markdown_clean')) {
+    /**
+     * 过滤markdown非法字符串.
+     *
+     * @param string $markdownContent
+     *
+     * @return string
+     */
+    function markdown_clean(string $markdownContent)
+    {
+        $html = markdown_to_html($markdownContent);
+        $safeHtml = clean($html);
+
+        return (new \League\HTMLToMarkdown\HtmlConverter())->convert($safeHtml);
+    }
+}
