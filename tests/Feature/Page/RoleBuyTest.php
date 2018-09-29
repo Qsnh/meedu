@@ -77,7 +77,7 @@ class RoleBuyTest extends TestCase
             'credit1' => $credit1,
         ]);
         $role = factory(Role::class)->create([
-            'charge' => mt_rand(1, 1000),
+            'charge' => mt_rand(1, 10),
         ]);
         $this->actingAs($user)
             ->visit(route('member.role.buy', $role))
