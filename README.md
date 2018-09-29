@@ -56,3 +56,8 @@
 ## License
 
 **MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次 开发而不必支付费用。
+
+## 交流群
+
+<img src="https://s1.ax1x.com/2018/09/29/ilrWvt.jpg" width=300>
+<img src="https://s1.ax1x.com/2018/09/29/ilrhKP.png" width=300>
