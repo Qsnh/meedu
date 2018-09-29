@@ -12,7 +12,7 @@
 
     <div class="container faq-body">
         <div class="row">
-            @foreach($categories as $category)
+            @forelse($categories as $category)
             <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
@@ -27,7 +27,11 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+                <div class="col-sm-12">
+                    <p class="color-gray lh-30 text-center">暂无数据</p>
+                </div>
+            @endforelse
         </div>
     </div>
 
