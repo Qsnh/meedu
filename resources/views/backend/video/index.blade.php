@@ -93,7 +93,7 @@
 
 @section('js')
     <script>
-        var pagination = JSON.parse('@json($videos)');
+        var pagination = @json($videos);
         var Page = new Vue({
             el: '#app',
             data: function () {

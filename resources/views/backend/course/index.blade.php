@@ -72,7 +72,7 @@
 
 @section('js')
     <script>
-        var pagination = JSON.parse('@json($courses)');
+        var pagination = @json($courses);
         var Page = new Vue({
             el: '#app',
             data: function () {
