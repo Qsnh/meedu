@@ -6,7 +6,7 @@
         <div class="col-sm-4 col-sm-offset-4">
             <div class="row">
                 <div class="col-sm-12 login-box">
-                    <h3 class="text-center login-box-title">登陆</h3>
+                    <h3 class="text-center login-box-title">登录</h3>
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -23,7 +23,7 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">登陆</button>
+                            <button type="submit" class="btn btn-primary btn-block">登录</button>
                         </div>
                     </form>
                 </div>

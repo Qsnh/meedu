@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-sm-6"></div>
                             <div class="col-sm-6 text-right">
-                                <a class="btn btn-link" href="{{ route('login') }}">登陆</a>
+                                <a class="btn btn-link" href="{{ route('login') }}">登录</a>
                             </div>
                         </div>
                     </div>

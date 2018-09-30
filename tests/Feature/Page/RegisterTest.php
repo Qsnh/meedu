@@ -15,7 +15,7 @@ class RegisterTest extends TestCase
         $response = $this->get(route('register'));
         $response->assertResponseStatus(200);
         $response->see('注册');
-        $response->see('登陆');
+        $response->see('登录');
     }
 
     public function test_register_nick_name_repeat_fail()
