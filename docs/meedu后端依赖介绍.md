@@ -9,3 +9,5 @@
 | [overtrue/easy-sms](https://github.com/overtrue/easy-sms) | 短信发送 |
 | [overtrue/pinyin](https://github.com/overtrue/pinyin) | 汉字转拼音 |
 | [spatie/laravel-backup](https://github.com/spatie/laravel-backup) | 文件和数据库备份 |
+| [mews/purifier](https://github.com/mews/purifier) | 过滤xss |
+| [league/html-to-markdown](https://github.com/league/html-to-markdown) | 将html转换为markdown |
