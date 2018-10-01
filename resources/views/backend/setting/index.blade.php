@@ -10,6 +10,14 @@
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="系统配置" name="sixth">
+                        <el-col :span="24">
+                            <el-form-item label="缓存开关">
+                                <input type="radio" name="meedu*system*cache" v-model="config.meedu.system.cache" value="1"> 开启
+                                <input type="radio" name="meedu*system*cache" v-model="config.meedu.system.cache" value="-1"> 不开启
+                            </el-form-item>
+                        </el-col>
+                    </el-tab-pane>
                     <el-tab-pane label="短信配置" name="fifth">
                         <el-form-item label="阿里云AccessKeyId">
                             <el-input name="sms*gateways*aliyun*access_key_id" v-model="config.sms.gateways.aliyun.access_key_id"></el-input>
