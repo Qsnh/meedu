@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "278bbafba565eeb36146050d65fb54a1",
+    "content-hash": "20c0b2885609bcf5f52d35f4429b37ad",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -656,6 +656,56 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "hyancat/aliyun-direct-mail",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/HyanCat/aliyun-direct-mail.git",
+                "reference": "fb80aad203db9f0a7418bb04af3f469b46e0409c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/HyanCat/aliyun-direct-mail/zipball/fb80aad203db9f0a7418bb04af3f469b46e0409c",
+                "reference": "fb80aad203db9f0a7418bb04af3f469b46e0409c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HyanCat\\DirectMail\\AliyunDirectMailServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HyanCat\\DirectMail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "HyanCat",
+                    "email": "hyancat@live.cn"
+                }
+            ],
+            "description": "阿里云邮件推送 for Laravel.",
+            "time": "2017-10-08T13:56:01+00:00"
         },
         {
             "name": "intervention/image",
@@ -5651,7 +5701,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "hyancat/aliyun-direct-mail": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

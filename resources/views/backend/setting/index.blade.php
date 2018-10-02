@@ -10,6 +10,23 @@
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="邮箱配置" name="seventh">
+                        <el-col :span="24">
+                            <p>下面是阿里云的邮箱配置：</p>
+                            <el-form-item label="阿里云AccessKeyId">
+                                <el-input name="services*directmail*app_key" v-model="config.services.directmail.app_key"></el-input>
+                            </el-form-item>
+                            <el-form-item label="阿里云AccessKeySecret">
+                                <el-input name="services*directmail*app_secret" v-model="config.services.directmail.app_secret"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮件发送用户名">
+                                <el-input name="services*directmail*account*alias" v-model="config.services.directmail.account.alias"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮件发送地址">
+                                <el-input name="services*directmail*account*name" v-model="config.services.directmail.account.name"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-tab-pane>
                     <el-tab-pane label="系统配置" name="sixth">
                         <el-col :span="24">
                             <el-form-item label="缓存开关">

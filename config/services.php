@@ -35,4 +35,14 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'directmail' => [
+        'app_key' => '',
+        'app_secret' => '',
+        'region' => 'cn-beijing',
+        'account' => [
+            'alias' => '',
+            'name' => '',
+        ]
+    ],
+
 ];

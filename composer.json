@@ -9,6 +9,7 @@
         "emojione/emojione": "^3.1",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "~3.3",
+        "hyancat/aliyun-direct-mail": "dev-master",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "league/html-to-markdown": "^4.8",

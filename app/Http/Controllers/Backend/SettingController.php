@@ -21,6 +21,7 @@ class SettingController extends Controller
         $config = [
             'meedu' => config('meedu'),
             'sms' => config('sms'),
+            'services' => config('services'),
         ];
 
         return view('backend.setting.index', compact('config'));
