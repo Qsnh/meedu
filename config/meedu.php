@@ -72,6 +72,9 @@ return [
 
     // 系统配置
     'system' => [
-        'cache' => 0,
+        'cache' => [
+            'status' => 0,
+            'expire' => 360,
+        ],
     ],
 ];

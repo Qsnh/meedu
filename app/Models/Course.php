@@ -132,23 +132,39 @@ class Course extends Model
      */
     public function getDescription()
     {
-        return (new \Parsedown())->text($this->description);
+        return markdown_to_html($this->description);
     }
 
     /**
      * @return mixed
      */
-    public function getVideos()
+    public function getAllPublishedAndShowVideosCache()
     {
+        if (! config('meedu.system.cache.status')) {
+            return $this->getAllPublishedAndShowVideos();
+        }
         $that = $this;
 
-        return Cache::remember("course_{$this->id}_videos", 360, function () use ($that) {
-            return $that->videos()
-                ->published()
-                ->show()
-                ->orderBy('published_at')
-                ->get();
-        });
+        return Cache::remember(
+            "course_{$this->id}_videos",
+            config('meedu.system.cache.expire', 60),
+            function () use ($that) {
+                return $that->getAllPublishedAndShowVideos();
+            });
+    }
+
+    /**
+     * 获取所有已出版且显示的视频.
+     *
+     * @return mixed
+     */
+    public function getAllPublishedAndShowVideos()
+    {
+        return $this->videos()
+            ->published()
+            ->show()
+            ->orderBy('published_at')
+            ->get();
     }
 
     /**
@@ -187,13 +203,16 @@ class Course extends Model
     public function getNewJoinMembersCache()
     {
         $course = $this;
-        if (app()->environment('local')) {
+        if (! config('meedu.system.cache.status')) {
             return $this->getNewJoinMembers();
         }
 
-        return Cache::remember("course:{$course->id}:new_join_member", 60, function () use ($course) {
-            return $course->getNewJoinMembers();
-        });
+        return Cache::remember(
+            "course:{$course->id}:new_join_member",
+            config('member.system.cache.expire', 60),
+            function () use ($course) {
+                return $course->getNewJoinMembers();
+            });
     }
 
     /**

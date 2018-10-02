@@ -3,6 +3,7 @@
 
 + Added:echojs改为本地引入
 + Added:使用Layx作为前台的消息展示
++ Added:缓存开关和单元测试
 
 ## 2018/9/30
 

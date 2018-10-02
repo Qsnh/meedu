@@ -11,22 +11,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Role;
-use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\EmailSubscription;
-use Illuminate\Support\Facades\Cache;
+use App\Repositories\IndexRepository;
 
 class IndexController extends FrontendController
 {
-    public function index()
+    public function index(IndexRepository $repository)
     {
-        $courses = Cache::remember('index_recent_course', 360, function () {
-            return Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
-        });
-        $roles = Cache::remember('index_roles', 360, function () {
-            return Role::orderByDesc('weight')->limit(3)->get();
-        });
+        $courses = $repository->recentPublishedAndShowCourses();
+        $roles = $repository->roles();
+
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
 
         return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description'));
@@ -34,17 +29,7 @@ class IndexController extends FrontendController
 
     public function subscriptionHandler(Request $request)
     {
-        $email = $request->input('email', '');
-        if (! $email) {
-            flash('请输入邮箱', 'warning');
-
-            return back();
-        }
-        $exists = EmailSubscription::whereEmail($email)->exists();
-        if (! $exists) {
-            EmailSubscription::create(compact('email'));
-        }
-        flash('订阅成功', 'success');
+        EmailSubscription::saveFromRequest($request);
 
         return back();
     }

@@ -41,7 +41,7 @@ class Announcement extends Model
      */
     public function getAnnouncementContent()
     {
-        return (new \Parsedown())->text($this->announcement);
+        return markdown_to_html($this->announcement);
     }
 
     /**
@@ -49,9 +49,13 @@ class Announcement extends Model
      */
     public static function recentAnnouncement()
     {
-        return Cache::remember('recent_announcement', 360, function () {
-            return self::orderByDesc('updated_at')->limit(1)->first();
-        });
+        if (config('meedu.system.cache.status')) {
+            return Cache::remember('recent_announcement', 360, function () {
+                return self::orderByDesc('updated_at')->limit(1)->first();
+            });
+        }
+
+        return self::orderByDesc('updated_at')->limit(1)->first();
     }
 
     public function getEditUrlAttribute()

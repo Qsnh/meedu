@@ -40,14 +40,12 @@ class CourseController extends FrontendController
             ->published()
             ->whereId($id)
             ->firstOrFail();
-        $newJoinMembers = $course->getNewJoinMembersCache();
         $title = sprintf('课程《%s》', $course->title);
         $keywords = $course->keywords;
         $description = $course->description;
 
         return view('frontend.course.show', compact(
             'course',
-            'newJoinMembers',
             'title',
             'keywords',
             'description'

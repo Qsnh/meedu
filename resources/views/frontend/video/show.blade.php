@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-sm-3 play-list">
                                 <ul>
-                                    @foreach($video->course->getVideos() as $index => $videoItem)
+                                    @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
                                         <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
                                             <li data-index="{{ $index }}" class="{{ $videoItem->id == $video->id ? 'active' : '' }}">
                                                 <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $videoItem->title }}

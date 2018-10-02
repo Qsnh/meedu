@@ -46,7 +46,7 @@
                    </div>
                    <div class="list" style="display: none">
                        <table style="width: 100%">
-                           @forelse($course->getVideos() as $video)
+                           @forelse($course->getAllPublishedAndShowVideosCache() as $video)
                                <tr class="lh-30">
                                    <td>
                                        <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
@@ -106,7 +106,7 @@
                 <div class="col-sm-12 border news-student">
                     <h4>新加入同学</h4>
                     <ul>
-                        @forelse($newJoinMembers as $member)
+                        @forelse($course->getNewJoinMembersCache() as $member)
                             <li>
                                 <img src="{{ $member->avatar }}" width="24" height="24">
                                 <b>{{ $member->nick_name }}</b>

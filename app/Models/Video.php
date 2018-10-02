@@ -86,6 +86,9 @@ class Video extends Model
         return route('backend.video.destroy', $this);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(VideoComment::class, 'video_id');
@@ -98,6 +101,7 @@ class Video extends Model
      */
     public function buyUsers()
     {
-        return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')->withPivot('charge', 'created_at');
+        return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')
+            ->withPivot('charge', 'created_at');
     }
 }
