@@ -38,8 +38,7 @@ class VideoBuyTest extends TestCase
         ]);
         $this->actingAs($user)
             ->visit(route('member.video.buy', $video))
-            ->press('立即购买')
-            ->seePageIs(route('member.recharge'));
+            ->dontSee('立即购买');
     }
 
     public function test_buy_video_success()

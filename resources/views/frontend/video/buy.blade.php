@@ -24,7 +24,7 @@
                 <p class="lh-30">价格：<b>￥{{$video->charge}}</b></p>
                 <p class="lh-30">当前账户余额：<b>￥{{$user->credit1}}</b></p>
 
-                @if($user->credit1 < $video->price)
+                @if($user->credit1 < $video->charge)
                     @include('components.frontend.insufficient')
                 @else
                     <form action="" method="post">

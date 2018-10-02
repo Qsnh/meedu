@@ -41,8 +41,7 @@ class CourseBuyTest extends TestCase
         $url = route('member.course.buy', $course);
         $this->actingAs($user)
             ->visit($url)
-            ->press('立即购买')
-            ->seePageIs(route('member.recharge'));
+            ->dontSee('立即购买');
     }
 
     public function test_course_buy_success()
