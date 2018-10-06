@@ -70,6 +70,9 @@
                         <el-form-item label="图片存储路径">
                             <el-input name="meedu*upload*image*path" v-model="config.meedu.upload.image.path"></el-input>
                         </el-form-item>
+                        <el-form-item label="图片参数（用于第三方图片存储）">
+                            <el-input name="meedu*upload*image*params" v-model="config.meedu.upload.image.params"></el-input>
+                        </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="会员配置" name="third">
                         <el-col span="24">

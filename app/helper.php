@@ -203,3 +203,16 @@ if (! function_exists('markdown_clean')) {
         return (new \League\HTMLToMarkdown\HtmlConverter())->convert($safeHtml);
     }
 }
+
+if (! function_exists('image_url')) {
+    /**
+     * 给图片添加参数
+     * @param $url
+     * @return string
+     */
+    function image_url($url)
+    {
+        $params = config('meedu.upload.image.params', '');
+        return strstr('?', $url) !== false ? $url.$params : $url.'?'.$params;
+    }
+}

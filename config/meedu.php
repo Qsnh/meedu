@@ -34,6 +34,7 @@ return [
         'image' => [
             'disk' => 'public',
             'path' => 'images',
+            'params' => '',
         ],
     ],
 

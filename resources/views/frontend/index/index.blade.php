@@ -27,7 +27,7 @@
                             <div class="col-sm-4 course text-center">
                                 <div class="course-item border">
                                     <div class="thumb">
-                                        <img data-echo="{{ $course->thumb }}" src="/images/loading.png" width="100%" height="300">
+                                        <img data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png" width="100%" height="300">
                                     </div>
                                     <div class="title">{{ $course->title }}</div>
                                 </div>
