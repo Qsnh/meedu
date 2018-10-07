@@ -36,6 +36,13 @@ return [
             'path' => 'images',
             'params' => '',
         ],
+        'video' => [
+            'aliyun' => [
+                'region' => 'cn-shanghai',
+                'access_key_id' => '',
+                'access_key_secret' => '',
+            ],
+        ],
     ],
 
     // 管理员配置

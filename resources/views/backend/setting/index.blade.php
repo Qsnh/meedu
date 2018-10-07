@@ -10,7 +10,7 @@
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="邮箱配置" name="seventh">
+                    <el-tab-pane label="邮箱配置" name="email">
                         <el-col :span="24">
                             <p>下面是阿里云的邮箱配置：</p>
                             <el-form-item label="阿里云AccessKeyId">
@@ -27,7 +27,7 @@
                             </el-form-item>
                         </el-col>
                     </el-tab-pane>
-                    <el-tab-pane label="系统配置" name="sixth">
+                    <el-tab-pane label="系统配置" name="system">
                         <el-col :span="24">
                             <el-form-item label="缓存开关">
                                 <input type="radio" name="meedu*system*cache*status" v-model="config.meedu.system.cache.status" value="1"> 开启
@@ -38,7 +38,7 @@
                             </el-form-item>
                         </el-col>
                     </el-tab-pane>
-                    <el-tab-pane label="短信配置" name="fifth">
+                    <el-tab-pane label="短信配置" name="sms">
                         <el-form-item label="阿里云AccessKeyId">
                             <el-input name="sms*gateways*aliyun*access_key_id" v-model="config.sms.gateways.aliyun.access_key_id"></el-input>
                         </el-form-item>
@@ -52,7 +52,7 @@
                             <el-input name="sms*gateways*aliyun*template*password_reset" v-model="config.sms.gateways.aliyun.template.password_reset"></el-input>
                         </el-form-item>
                     </el-tab-pane>
-                    <el-tab-pane label="支付网关" name="first">
+                    <el-tab-pane label="支付配置" name="payment">
                         <el-form-item label="有赞ClientId">
                             <el-input name="meedu*payment*youzan*client_id" v-model="config.meedu.payment.youzan.client_id"></el-input>
                         </el-form-item>
@@ -63,7 +63,7 @@
                             <el-input name="meedu*payment*youzan*kdt_id" v-model="config.meedu.payment.youzan.kdt_id"></el-input>
                         </el-form-item>
                     </el-tab-pane>
-                    <el-tab-pane label="上传配置" name="second">
+                    <el-tab-pane label="图片上传配置" name="image">
                         <el-form-item label="图片存储磁盘">
                             <el-input name="meedu*upload*image*disk" v-model="config.meedu.upload.image.disk"></el-input>
                         </el-form-item>
@@ -74,7 +74,19 @@
                             <el-input name="meedu*upload*image*params" v-model="config.meedu.upload.image.params"></el-input>
                         </el-form-item>
                     </el-tab-pane>
-                    <el-tab-pane label="会员配置" name="third">
+                    <el-tab-pane label="视频上传配置" name="video">
+                        <p>下面是阿里云的视频存储配置</p>
+                        <el-form-item label="区域ID">
+                            <el-input name="meedu*upload*video*aliyun*region" v-model="config.meedu.upload.video.aliyun.region"></el-input>
+                        </el-form-item>
+                        <el-form-item label="AccessKeyId">
+                            <el-input name="meedu*upload*video*aliyun*access_key_id" v-model="config.meedu.upload.video.aliyun.access_key_id"></el-input>
+                        </el-form-item>
+                        <el-form-item label="AccessKeySecret">
+                            <el-input name="meedu*upload*video*aliyun*access_key_secret" v-model="config.meedu.upload.video.aliyun.access_key_secret"></el-input>
+                        </el-form-item>
+                    </el-tab-pane>
+                    <el-tab-pane label="会员配置" name="member">
                         <el-col span="24">
                             <el-form-item label="会员注册默认激活">
                                 <input type="radio" name="meedu*member*is_active_default" v-model="config.meedu.member.is_active_default" value="1"> 激活
@@ -89,7 +101,7 @@
                             </el-form-item>
                         </el-col>
                     </el-tab-pane>
-                    <el-tab-pane label="SEO配置" name="fourth">
+                    <el-tab-pane label="SEO配置" name="seo">
                         <el-col span="8">
                             <el-form-item label="首页标题">
                                 <el-input type="textarea" name="meedu*seo*index*title" placeholder="首页标题" v-model="config.meedu.seo.index.title"></el-input>
@@ -144,7 +156,7 @@
             el: '#app',
             data: function () {
                 return {
-                    activeName: 'fourth',
+                    activeName: 'system',
                     config: @json($config)
                 }
             },

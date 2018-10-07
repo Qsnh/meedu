@@ -42,7 +42,8 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "./app/helper.php"
+            "./app/helper.php",
+            "./app/Meedu/Aliyun/aliyun-php-sdk-core/Config.php"
         ]
     },
     "extra": {
