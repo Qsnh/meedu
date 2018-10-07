@@ -22,6 +22,7 @@ return PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'yoda_style' => false,
         'not_operator_with_successor_space' => true,
+        'increment_style' => ['style' => 'post'],
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
