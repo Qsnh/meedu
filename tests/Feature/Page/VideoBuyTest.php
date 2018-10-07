@@ -73,10 +73,6 @@ class VideoBuyTest extends TestCase
             ->visit(route('member.orders'))
             ->see($video->title)
             ->see($video->charge);
-        // 可以观看
-        $response = $this->actingAs($user)
-            ->visit(route('video.show', [$video->course->id, $video->id, $video->slug]));
-        $this->assertRegExp("#{$video->url}#", $response->response->getContent());
     }
 
 }
