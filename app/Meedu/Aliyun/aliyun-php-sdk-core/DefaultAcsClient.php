@@ -98,7 +98,7 @@ class DefaultAcsClient implements IAcsClient
             } else {
                 $httpResponse = HttpHelper::curl($requestUrl, $request->getMethod(), $request->getContent(), $request->getHeaders());
             }
-            ++$retryTimes;
+            $retryTimes++;
         }
 
         return $httpResponse;
