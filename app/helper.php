@@ -230,18 +230,24 @@ if (! function_exists('aliyun_play_auth')) {
      */
     function aliyun_play_auth(\App\Models\Video $video)
     {
-        $profile = \DefaultProfile::getProfile(
-            config('meedu.upload.video.aliyun.region', ''),
-            config('meedu.upload.video.aliyun.access_key_id', ''),
-            config('meedu.upload.video.aliyun.access_key_secret', '')
-        );
-        $client = new \DefaultAcsClient($profile);
-        $request = new \vod\Request\V20170321\GetVideoPlayAuthRequest();
-        $request->setAcceptFormat('JSON');
-        $request->setRegionId(config('meedu.upload.video.aliyun.region', ''));
-        $request->setVideoId($video->aliyun_video_id);
-        $response = $client->getAcsResponse($request);
+        try {
+            $profile = \DefaultProfile::getProfile(
+                config('meedu.upload.video.aliyun.region', ''),
+                config('meedu.upload.video.aliyun.access_key_id', ''),
+                config('meedu.upload.video.aliyun.access_key_secret', '')
+            );
+            $client = new \DefaultAcsClient($profile);
+            $request = new \vod\Request\V20170321\GetVideoPlayAuthRequest();
+            $request->setAcceptFormat('JSON');
+            $request->setRegionId(config('meedu.upload.video.aliyun.region', ''));
+            $request->setVideoId($video->aliyun_video_id);
+            $response = $client->getAcsResponse($request);
 
-        return $response->PlayAuth;
+            return $response->PlayAuth;
+        } catch (Exception $exception) {
+            exception_record($exception);
+
+            return '';
+        }
     }
 }
