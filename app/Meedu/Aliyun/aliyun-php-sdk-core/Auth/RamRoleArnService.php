@@ -1,42 +1,34 @@
 <?php
+
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * This file is part of the Qsnh/meedu.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * (c) XiaoTeng <616896861@qq.com>
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
-define("STS_PRODUCT_NAME", "Sts");
-define("STS_DOMAIN", "sts.aliyuncs.com");
-define("STS_VERSION", "2015-04-01");
-define("STS_ACTION", "AssumeRole");
-define("STS_REGION", "cn-hangzhou");
-define("ROLE_ARN_EXPIRE_TIME", 3600);
+define('STS_PRODUCT_NAME', 'Sts');
+define('STS_DOMAIN', 'sts.aliyuncs.com');
+define('STS_VERSION', '2015-04-01');
+define('STS_ACTION', 'AssumeRole');
+define('STS_REGION', 'cn-hangzhou');
+define('ROLE_ARN_EXPIRE_TIME', 3600);
 
 class AssumeRoleRequest extends RpcAcsRequest
 {
-    function __construct($roleArn, $roleSessionName) {
+    public function __construct($roleArn, $roleSessionName)
+    {
         parent::__construct(STS_PRODUCT_NAME, STS_VERSION, STS_ACTION);
 
-        $this->queryParameters["RoleArn"] = $roleArn;
-        $this->queryParameters["RoleSessionName"] = $roleSessionName;
-        $this->queryParameters["DurationSeconds"] = ROLE_ARN_EXPIRE_TIME;
+        $this->queryParameters['RoleArn'] = $roleArn;
+        $this->queryParameters['RoleSessionName'] = $roleSessionName;
+        $this->queryParameters['DurationSeconds'] = ROLE_ARN_EXPIRE_TIME;
         $this->setRegionId(ROLE_ARN_EXPIRE_TIME);
-        $this->setProtocol("https");
+        $this->setProtocol('https');
 
-        $this->setAcceptFormat("JSON");
+        $this->setAcceptFormat('JSON');
     }
 }
 
@@ -47,7 +39,8 @@ class RamRoleArnService
     private $sessionCredential = null;
     public static $serviceDomain = STS_DOMAIN;
 
-    function __construct($clientProfile) {
+    public function __construct($clientProfile)
+    {
         $this->clientProfile = $clientProfile;
     }
 
@@ -84,8 +77,7 @@ class RamRoleArnService
 
         $httpResponse = HttpHelper::curl($requestUrl, $request->getMethod(), null, $request->getHeaders());
 
-        if (!$httpResponse->isSuccess())
-        {
+        if (! $httpResponse->isSuccess()) {
             return null;
         }
 
@@ -94,6 +86,7 @@ class RamRoleArnService
         $sessionAccessKeyId = $respObj->Credentials->AccessKeyId;
         $sessionAccessKeySecret = $respObj->Credentials->AccessKeySecret;
         $securityToken = $respObj->Credentials->SecurityToken;
+
         return new Credential($sessionAccessKeyId, $sessionAccessKeySecret, $securityToken);
     }
 }

@@ -1,19 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangw
- * Date: 2017/12/19
- * Time: 下午6:39
+
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
+
 namespace UnitTest\Ft;
 
 class TestRoaApiRequest extends \RoaAcsRequest
 {
     public function __construct()
     {
-        parent::__construct("Ft", "2016-01-02", "TestRoaApi");
-        $this->setUriPattern("/web/cloudapi");
-        $this->setMethod("GET");
+        parent::__construct('Ft', '2016-01-02', 'TestRoaApi');
+        $this->setUriPattern('/web/cloudapi');
+        $this->setMethod('GET');
     }
 
     private $queryParam;
@@ -30,7 +34,7 @@ class TestRoaApiRequest extends \RoaAcsRequest
     public function setQueryParam($queryParam)
     {
         $this->queryParam = $queryParam;
-        $this->queryParameters["QueryParam"]=$queryParam;
+        $this->queryParameters['QueryParam'] = $queryParam;
     }
 
     public function getBodyParam()
@@ -41,7 +45,7 @@ class TestRoaApiRequest extends \RoaAcsRequest
     public function setBodyParam($bodyParam)
     {
         $this->bodyParam = $bodyParam;
-        $this->queryParameters["BodyParam"]=$bodyParam;
+        $this->queryParameters['BodyParam'] = $bodyParam;
     }
 
     public function getHeaderParam()
@@ -52,6 +56,6 @@ class TestRoaApiRequest extends \RoaAcsRequest
     public function setHeaderParam($headerParam)
     {
         $this->headerParam = $headerParam;
-        $this->headerParam["HeaderParam"]=$headerParam;
+        $this->headerParam['HeaderParam'] = $headerParam;
     }
 }

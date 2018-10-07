@@ -1,17 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangw
- * Date: 2017/12/19
- * Time: 下午6:39
+
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
+
 namespace UnitTest\Ft;
 
 class TestRpcApiRequest extends \RpcAcsRequest
 {
     public function __construct()
     {
-        parent::__construct("Ft", "2016-01-01", "TestRpcApi");
+        parent::__construct('Ft', '2016-01-01', 'TestRpcApi');
     }
 
     private $queryParam;
@@ -26,7 +30,7 @@ class TestRpcApiRequest extends \RpcAcsRequest
     public function setQueryParam($queryParam)
     {
         $this->queryParam = $queryParam;
-        $this->queryParameters["QueryParam"]=$queryParam;
+        $this->queryParameters['QueryParam'] = $queryParam;
     }
 
     public function getBodyParam()
@@ -37,6 +41,6 @@ class TestRpcApiRequest extends \RpcAcsRequest
     public function setBodyParam($bodyParam)
     {
         $this->bodyParam = $bodyParam;
-        $this->queryParameters["BodyParam"]=$bodyParam;
+        $this->queryParameters['BodyParam'] = $bodyParam;
     }
 }
