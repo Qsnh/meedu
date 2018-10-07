@@ -102,8 +102,8 @@ Route::group(['middleware' => ['backend.login.check']], function () {
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
 
     // 阿里云视频上传
-    Route::get('/video/aliyun/create', 'AliyunVideoUploadController@createVideoToken')->name('video.upload.aliyun.create');
-    Route::get('/video/aliyun/refresh', 'AliyunVideoUploadController@refreshVideoToken')->name('video.upload.aliyun.refresh');
+    Route::post('/video/aliyun/create', 'AliyunVideoUploadController@createVideoToken')->name('video.upload.aliyun.create');
+    Route::post('/video/aliyun/refresh', 'AliyunVideoUploadController@refreshVideoToken')->name('video.upload.aliyun.refresh');
 
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {

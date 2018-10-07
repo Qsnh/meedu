@@ -20,42 +20,6 @@
                 <el-form-item label="描述">
                     <meedu-markdown :markdown="''" field="description"></meedu-markdown>
                 </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="所属课程">
-                    <meedu-course></meedu-course>
-                </el-form-item>
-                <el-form-item label="简短介绍">
-                    <el-input type="textarea"
-                              name="short_description"
-                              placeholder="简短介绍"
-                              value="{{ old('short_description') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="上架时间">
-                    <el-date-picker
-                            v-model="published_at"
-                            type="datetime"
-                            placeholder="选择上线时间"
-                            name="published_at">
-                    </el-date-picker>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
-                </el-form-item>
-
-                <hr>
-
-                <el-form-item label="URL地址">
-                    <el-input name="url" placeholder="视频播放地址" value="{{ old('url') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="是否显示">
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" checked> 是</label>
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}"> 否</label>
-                </el-form-item>
-                <el-form-item label="价格">
-                    <el-input name="charge" placeholder="价格" value="{{ old('charge', 0) }}"></el-input>
-                </el-form-item>
                 <el-form-item label="SEO关键词">
                     <el-input type="textarea"
                               name="seo_keywords"
@@ -67,6 +31,44 @@
                               name="seo_description"
                               placeholder="SEO描述"
                               value="{{ old('seo_description') }}"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="所属课程">
+                    <meedu-course></meedu-course>
+                </el-form-item>
+                <el-form-item label="简短介绍">
+                    <el-input type="textarea"
+                              name="short_description"
+                              placeholder="简短介绍"
+                              rows="4"
+                              value="{{ old('short_description') }}"></el-input>
+                </el-form-item>
+                <el-form-item label="上架时间">
+                    <el-date-picker
+                            v-model="published_at"
+                            type="datetime"
+                            placeholder="选择上线时间"
+                            name="published_at">
+                    </el-date-picker>
+                </el-form-item>
+
+
+                <el-form-item label="价格">
+                    <el-input name="charge" placeholder="价格" value="{{ old('charge', 0) }}"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
+                </el-form-item>
+
+                <hr>
+
+                @include('components.backend.aliyun_upload')
+
+                <el-form-item label="是否显示">
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" checked> 是</label>
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}"> 否</label>
                 </el-form-item>
             </el-col>
         </el-form>
@@ -86,4 +88,5 @@
             }
         });
     </script>
+    @include('components.backend.aliyun_upload_js')
 @endsection
