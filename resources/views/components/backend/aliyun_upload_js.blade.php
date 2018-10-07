@@ -92,6 +92,6 @@
     });
     document.getElementById("stop-upload").addEventListener('click', function (event) {
         uploader.stopUpload();
-        alert('已停止上传');
+        document.getElementById('upload-progress').innerText = document.getElementById('upload-progress').innerText + ',点击开始上传按钮可继续上传';
     });
 </script>

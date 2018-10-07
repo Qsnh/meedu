@@ -41,22 +41,23 @@
                     </el-date-picker>
                 </el-form-item>
 
+                <el-form-item label="价格">
+                    <el-input name="charge" placeholder="价格" v-model="video.charge"></el-input>
+                </el-form-item>
+
                 <el-form-item>
                     <el-button native-type="submit" type="primary" native-button="submit">编辑</el-button>
                 </el-form-item>
 
                 <hr>
 
-                <el-form-item label="URL地址">
-                    <el-input name="url" placeholder="视频播放地址" v-model="video.url"></el-input>
-                </el-form-item>
+                @include('components.backend.aliyun_upload', ['videoId' => $video->aliyun_video_id])
+
                 <el-form-item label="是否显示">
                     <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" v-model="video.is_show"> 是</label>
                     <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}" v-model="video.is_show"> 否</label>
                 </el-form-item>
-                <el-form-item label="价格">
-                    <el-input name="charge" placeholder="价格" v-model="video.charge"></el-input>
-                </el-form-item>
+
                 <el-form-item label="SEO关键词">
                     <el-input type="textarea"
                               name="seo_keywords"
@@ -69,6 +70,7 @@
                               placeholder="SEO描述"
                               v-model="video.seo_description"></el-input>
                 </el-form-item>
+
             </el-col>
         </el-form>
     </el-row>
