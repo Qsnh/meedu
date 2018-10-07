@@ -65,6 +65,7 @@ class CourseVideoRequest extends FormRequest
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
             'url' => $this->input('url', ''),
+            'aliyun_video_id' => $this->input('aliyun_video_id', ''),
             'view_num' => $this->input('view_num', 0),
             'short_description' => $this->input('short_description'),
             'description' => $this->input('description'),

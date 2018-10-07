@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="//cdn.plyr.io/3.4.4/plyr.css">
     <link href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css">
 @endsection
 
 @section('content')
@@ -15,9 +15,31 @@
                         @if(Auth::check())
                             <div class="col-sm-9 play-box">
                                 @if($user->canSeeThisVideo($video))
-                                    <video id="player" playsinline controls>
-                                        <source src="{{$video->url}}" type="video/mp4">
-                                    </video>
+                                    <div id="player"></div>
+                                    <script src="https://g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
+                                    <script>
+                                        var player = new Aliplayer({
+                                            "id": "player",
+                                            "qualitySort": "asc",
+                                            "format": "mp4",
+                                            "mediaType": "video",
+                                            "width": "100%",
+                                            "height": "500px",
+                                            "autoplay": false,
+                                            "isLive": false,
+                                            "rePlay": false,
+                                            "playsinline": true,
+                                            "preload": true,
+                                            "autoPlayDelay": 2,
+                                            "autoPlayDelayDisplayText": '正在加载中...',
+                                            "loadDataTimeout": "",
+                                            "controlBarVisibility": "hover",
+                                            "useH5Prism": true,
+                                            "vid" : '{{$video->aliyun_video_id}}',
+                                            "playauth" : '{{aliyun_play_auth($video)}}',
+                                        },function(player){
+                                        });
+                                    </script>
                                     @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
@@ -130,7 +152,6 @@
 @endsection
 
 @section('js')
-    <script src="//cdn.plyr.io/3.4.4/plyr.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')

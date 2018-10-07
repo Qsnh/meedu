@@ -219,3 +219,29 @@ if (! function_exists('image_url')) {
         return strstr('?', $url) !== false ? $url.$params : $url.'?'.$params;
     }
 }
+
+if (! function_exists('aliyun_play_auth')) {
+    /**
+     * 获取阿里云视频的播放Auth.
+     *
+     * @param \App\Models\Video $video
+     *
+     * @return mixed|SimpleXMLElement
+     */
+    function aliyun_play_auth(\App\Models\Video $video)
+    {
+        $profile = \DefaultProfile::getProfile(
+            config('meedu.upload.video.aliyun.region', ''),
+            config('meedu.upload.video.aliyun.access_key_id', ''),
+            config('meedu.upload.video.aliyun.access_key_secret', '')
+        );
+        $client = new \DefaultAcsClient($profile);
+        $request = new \vod\Request\V20170321\GetVideoPlayAuthRequest();
+        $request->setAcceptFormat('JSON');
+        $request->setRegionId(config('meedu.upload.video.aliyun.region', ''));
+        $request->setVideoId($video->aliyun_video_id);
+        $response = $client->getAcsResponse($request);
+
+        return $response->PlayAuth;
+    }
+}

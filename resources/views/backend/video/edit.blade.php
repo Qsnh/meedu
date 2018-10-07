@@ -89,4 +89,5 @@
             }
         });
     </script>
+    @include('components.backend.aliyun_upload_js')
 @endsection

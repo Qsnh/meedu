@@ -25,7 +25,7 @@ class Video extends Model
         'user_id', 'course_id', 'title', 'slug',
         'url', 'view_num', 'short_description', 'description',
         'seo_keywords', 'seo_description', 'published_at',
-        'is_show', 'charge',
+        'is_show', 'charge', 'aliyun_video_id',
     ];
 
     protected $appends = [
