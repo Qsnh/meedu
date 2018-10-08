@@ -27,6 +27,9 @@ if (! function_exists('get_first_flash')) {
      */
     function get_first_flash($level)
     {
+        if ($level == 'error' && session('errors') && session('errors')->any()) {
+            return session('errors')->all()[0];
+        }
         if (! session()->has($level)) {
             return '';
         }
