@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MeEDU后台管理系统</title>
-    <link href="{{ asset('css/backend.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/backend.css') }}" rel="stylesheet">
     @yield('css')
 </head>
 <body>
@@ -132,7 +132,7 @@
 
 <div id="app1"></div>
 
-<script src="{{ asset('js/backend.js') }}"></script>
+<script src="{{ mix('js/backend.js') }}"></script>
 @yield('js')
 <script>
     new Vue({

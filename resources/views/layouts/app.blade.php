@@ -20,7 +20,7 @@
     </div>
 
     @include('components.frontend.footer')
-    <script src="{{ asset('js/frontend.js') }}"></script>
+    <script src="{{ mix('js/frontend.js') }}"></script>
     <script src="{{ asset('js/layx/layx.min.js') }}"></script>
     <script src="{{ asset('js/echo.min.js') }}"></script>
     <script>

@@ -21,4 +21,6 @@
 
 @endsection
 
+@section('js')
 @include('components.vue_init')
+@endsection
