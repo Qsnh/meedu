@@ -9,8 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-spl_autoload_register('Autoloader::autoload');
-class Autoloader
+spl_autoload_register('AliyunSdkAutoloader::autoload');
+class AliyunSdkAutoloader
 {
     private static $autoloadPathArray = [
         'aliyun-php-sdk-core',

@@ -14,7 +14,7 @@ include_once 'Regions/EndpointConfig.php';
 include_once 'Regions/LocationService.php';
 
 //config sdk auto load path.
-Autoloader::addAutoloadPath('aliyun-php-sdk-vod');
+AliyunSdkAutoloader::addAutoloadPath('aliyun-php-sdk-vod');
 //config http proxy
 define('ENABLE_HTTP_PROXY', false);
 define('HTTP_PROXY_IP', '127.0.0.1');
