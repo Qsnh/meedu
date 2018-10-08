@@ -8,7 +8,7 @@
     <meta name="keywords" content="{{$keywords ?? ''}}">
     <meta name="description" content="{{$description ?? ''}}">
     <title>{{Auth::check() ? Auth::user()->nick_name.' - ' : ''}}{{$title ?? 'MeEdu'}}</title>
-    <link href="https://lib.baomitu.com/font-awesome/5.3.1/web-fonts-with-css/css/fontawesome.min.css" rel="stylesheet">
+    <link href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ mix('css/frontend.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/js/layx/layx.min.css') }}">
     @yield('css')

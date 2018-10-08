@@ -5,6 +5,7 @@
 + Added:前端资源文件版本控制 issue #3
 + Fixed:登录出错没有消息提示 issue #2
 + Fixed:阿里云视频SDK服务默认Autoloader名于其它扩展包冲突导致无法安装 issue #4
++ Added:将laravel框架版本升级到5.6.*
 
 ## 2018/10/7
 
