@@ -60,6 +60,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * 重载passport方法
+     * @param $name
+     * @return mixed
+     */
+    public function findForPassport($name)
+    {
+        return self::whereMobile($name)->first();
+    }
+
+    /**
      * 所属角色.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
