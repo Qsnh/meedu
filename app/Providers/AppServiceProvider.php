@@ -17,6 +17,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CourseCommentObserver;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         CourseComment::observe(CourseCommentObserver::class);
         Paginator::useBootstrapThree();
+        Passport::routes();
 
         // 加载配置
         if (file_exists(config('meedu.save'))) {

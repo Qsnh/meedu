@@ -24,10 +24,11 @@ use App\Models\UserJoinRoleRecord;
 use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, CreatedAtBetween;
+    use Notifiable, CreatedAtBetween, HasApiTokens;
 
     const ACTIVE_YES = 1;
     const ACTIVE_NO = -1;
