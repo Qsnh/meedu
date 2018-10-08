@@ -25,7 +25,7 @@ class IndexRepository
     public function recentPublishedAndShowCourses()
     {
         if (config('meedu.system.cache.status')) {
-            Cache::remember('index_recent_course', config('meedu.system.cache.expire', 60), function () {
+            return Cache::remember('index_recent_course', config('meedu.system.cache.expire', 60), function () {
                 return Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
             });
         }

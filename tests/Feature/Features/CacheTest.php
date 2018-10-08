@@ -21,7 +21,7 @@ class CacheTest extends TestCase
         parent::setUp();
         config([
             'meedu.system.cache.status' => 1,
-            'meedu.system.cache.expire' => 10,
+            'meedu.system.cache.expire' => 100,
         ]);
     }
 
