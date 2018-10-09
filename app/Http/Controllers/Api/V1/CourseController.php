@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Resources\Video;
+use App\Http\Resources\CourseCommentResource;
+use App\Http\Resources\CourseResource;
+use App\Http\Resources\VideoRecourse;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,26 +18,29 @@ class CourseController extends Controller
             ->published()
             ->orderByDesc('created_at')
             ->paginate($request->input('page_size', 10));
-        return \App\Http\Resources\Course::collection($courses);
+        return CourseResource::collection($courses);
     }
 
     public function show($id)
     {
-        $course = Course::show()
-            ->published()
-            ->whereId($id)
-            ->firstOrFail();
-        return new \App\Http\Resources\Course($course);
+        $course = Course::show()->published()->whereId($id)->firstOrFail();
+        return new CourseResource($course);
     }
 
     public function videos($id)
     {
-        $course = Course::show()
-            ->published()
-            ->whereId($id)
-            ->firstOrFail();
+        $course = Course::show()->published()->whereId($id)->firstOrFail();
         $videos = $course->getAllPublishedAndShowVideosCache();
-        return Video::collection($videos);
+        return VideoRecourse::collection($videos);
+    }
+
+    public function comments(Request $request, $id)
+    {
+        $course = Course::show()->published()->whereId($id)->firstOrFail();
+        $comments = $course->comments()
+            ->orderByDesc('created_at')
+            ->paginate($request->input('page_size', 10));
+        return CourseCommentResource::collection($comments);
     }
 
 }

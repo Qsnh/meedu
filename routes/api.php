@@ -16,8 +16,10 @@ use Illuminate\Http\Request;
 Route::get('/courses', 'CourseController@index');
 Route::get('/course/{id}', 'CourseController@show');
 Route::get('/course/{id}/videos', 'CourseController@videos');
+Route::get('/course/{id}/comments', 'CourseController@comments');
 
 Route::get('/video/{id}', 'VideoController@show');
+Route::get('/video/{id}/comments', 'VideoController@comments');
 
 Route::group(['middleware' => ['auth:api']], function () {
     // 请求视频播放地址
