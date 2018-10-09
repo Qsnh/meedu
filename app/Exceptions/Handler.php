@@ -23,6 +23,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         MeeduErrorResponseJsonException::class,
+        ApiV1Exception::class,
     ];
 
     /**
@@ -57,6 +58,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if ($request->wantsJson()) {
+            return exception_response($exception);
+        } else {
+            return parent::render($request, $exception);
+        }
     }
 }

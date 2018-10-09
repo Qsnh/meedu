@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exceptions\ApiV1Exception;
 use Exception;
 use App\Models\Video;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,7 @@ class VideoController extends Controller
             ->firstOrFail();
         $user = Auth::user();
         if (! $user->canSeeThisVideo($video)) {
-            throw new Exception('当前视频无法观看');
+            throw new ApiV1Exception('当前视频无法观看');
         }
 
         return aliyun_play_url($video);

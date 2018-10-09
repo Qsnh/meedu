@@ -73,10 +73,10 @@ if (! function_exists('exception_response')) {
      */
     function exception_response(Exception $exception, string $message = '')
     {
-        return [
+        return response()->json([
             'message' => $message ?: $exception->getMessage(),
             'code' => $exception->getCode() ?: 500,
-        ];
+        ]);
     }
 }
 
