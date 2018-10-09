@@ -23,12 +23,7 @@ class AliyunVideoUploadController extends Controller
         try {
             $title = $request->input('title');
             $filename = $request->input('filename');
-            $profile = \DefaultProfile::getProfile(
-                config('meedu.upload.video.aliyun.region', ''),
-                config('meedu.upload.video.aliyun.access_key_id', ''),
-                config('meedu.upload.video.aliyun.access_key_secret', '')
-            );
-            $client = new \DefaultAcsClient($profile);
+            $client = aliyun_sdk_client();
             $request = new vod\CreateUploadVideoRequest();
             $request->setTitle($title);
             $request->setFileName($filename);
@@ -51,12 +46,7 @@ class AliyunVideoUploadController extends Controller
     {
         try {
             $videoId = $request->input('video_id');
-            $profile = \DefaultProfile::getProfile(
-                config('meedu.upload.video.aliyun.region', ''),
-                config('meedu.upload.video.aliyun.access_key_id', ''),
-                config('meedu.upload.video.aliyun.access_key_secret', '')
-            );
-            $client = new \DefaultAcsClient($profile);
+            $client = aliyun_sdk_client();
             $request = new vod\RefreshUploadVideoRequest();
             $request->setVideoId($videoId);
             $response = $client->getAcsResponse($request);

@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/courses', 'CourseController@index');
+Route::get('/course/{id}', 'CourseController@show');
+Route::get('/course/{id}/videos', 'CourseController@videos');
+
+Route::get('/video/{id}', 'VideoController@show');
+
+Route::group(['middleware' => ['auth:api']], function () {
+    // 请求视频播放地址
+    Route::get('/video/{id}/play_url', 'VideoController@playUrl');
 });
