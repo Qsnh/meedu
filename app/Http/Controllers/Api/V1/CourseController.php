@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exceptions\ApiV1Exception;
+use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Http\Resources\CourseCommentResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\VideoRecourse;
 use App\Models\Course;
+use App\Models\CourseComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -41,6 +44,14 @@ class CourseController extends Controller
             ->orderByDesc('created_at')
             ->paginate($request->input('page_size', 10));
         return CourseCommentResource::collection($comments);
+    }
+
+    public function commentHandler(CourseOrVideoCommentCreateRequest $request, $id)
+    {
+        $course = Course::show()->published()->whereId($id)->firstOrFail();
+        $comment = $course->commentHandler($request->input('content'));
+        throw_if(! $comment, new ApiV1Exception('系统错误'));
+        return new CourseCommentResource($comment);
     }
 
 }

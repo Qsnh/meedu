@@ -55,10 +55,7 @@ class CourseController extends FrontendController
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
     {
         $course = Course::findOrFail($courseId);
-        $comment = $course->comments()->save(new CourseComment([
-            'user_id' => Auth::id(),
-            'content' => $request->input('content'),
-        ]));
+        $comment = $course->commentHandler($request->input('content'));
         $comment ? flash('评论成功', 'success') : flash('评论失败');
 
         return back();

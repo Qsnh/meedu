@@ -13,6 +13,7 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Video extends Model
 {
@@ -104,4 +105,19 @@ class Video extends Model
         return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')
             ->withPivot('charge', 'created_at');
     }
+
+    /**
+     * 评论处理
+     * @param string $content
+     * @return false|Model
+     */
+    public function commentHandler(string $content)
+    {
+        $comment = $this->comments()->save(new VideoComment([
+            'user_id' => Auth::id(),
+            'content' => $content,
+        ]));
+        return $comment;
+    }
+
 }

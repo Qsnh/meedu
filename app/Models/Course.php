@@ -12,6 +12,7 @@
 namespace App\Models;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -224,4 +225,19 @@ class Course extends Model
     {
         return $this->buyUsers()->orderByDesc('pivot_created_at')->limit(10)->get();
     }
+
+    /**
+     * 评论处理
+     * @param string $content
+     * @return false|Model
+     */
+    public function commentHandler(string $content)
+    {
+        $comment = $this->comments()->save(new CourseComment([
+            'user_id' => Auth::id(),
+            'content' => $content,
+        ]));
+        return $comment;
+    }
+
 }

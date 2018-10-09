@@ -39,10 +39,7 @@ class VideoController extends FrontendController
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
         $video = Video::findOrFail($videoId);
-        $comment = $video->comments()->save(new VideoComment([
-            'user_id' => Auth::id(),
-            'content' => $request->input('content'),
-        ]));
+        $comment = $video->commentHandler($request->input('content'));
         $comment ? flash('评论成功', 'success') : flash('评论失败');
 
         return back();

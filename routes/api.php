@@ -24,4 +24,8 @@ Route::get('/video/{id}/comments', 'VideoController@comments');
 Route::group(['middleware' => ['auth:api']], function () {
     // 请求视频播放地址
     Route::get('/video/{id}/play_url', 'VideoController@playUrl');
+    // 课程评论
+    Route::put('/course/{id}/comment', 'CourseController@commentHandler');
+    // 视频评论
+    Route::put('/video/{id}/comment', 'VideoController@commentHandler');
 });
