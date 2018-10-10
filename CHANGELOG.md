@@ -4,6 +4,7 @@
 + Added:视频API接口
 + Added:课程API接口
 + Added:接口文档
++ Added:FAQ接口
 
 ## 2018/10/8
 
