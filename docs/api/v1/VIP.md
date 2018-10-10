@@ -32,3 +32,28 @@
 }
 ```
 
+
+### 购买VIP
+
+接口（POST）：
+
+```angular2html
+/api/v1/role/{id}/buy
+```
+
+请求参数：
+
+```angular2html
+无
+```
+
+返回参数：
+
+下面是错误消息，成功返回空值.
+
+```angular2html
+{
+    "message": "余额不足",
+    "code": 500
+}
+```

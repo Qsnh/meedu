@@ -22,10 +22,11 @@ use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends Controller
 {
-
     /**
-     * 视频详情
+     * 视频详情.
+     *
      * @param $id
+     *
      * @return VideoRecourse
      */
     public function show($id)
@@ -36,9 +37,12 @@ class VideoController extends Controller
     }
 
     /**
-     * 视频的播放路径
+     * 视频的播放路径.
+     *
      * @param $id
+     *
      * @return array
+     *
      * @throws ApiV1Exception
      */
     public function playUrl($id)
@@ -53,9 +57,11 @@ class VideoController extends Controller
     }
 
     /**
-     * 视频下的评论分页列表
+     * 视频下的评论分页列表.
+     *
      * @param Request $request
      * @param $id
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function comments(Request $request, $id)
@@ -69,10 +75,13 @@ class VideoController extends Controller
     }
 
     /**
-     * 视频评论处理
+     * 视频评论处理.
+     *
      * @param CourseOrVideoCommentCreateRequest $request
      * @param $id
+     *
      * @return VideoCommentResource
+     *
      * @throws \Throwable
      */
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $id)

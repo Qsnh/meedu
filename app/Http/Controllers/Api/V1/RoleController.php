@@ -11,17 +11,29 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Role;
+use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
-use App\Models\Role;
+use App\Repositories\RoleRepository;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
-
     public function index()
     {
         $roles = Role::all();
+
         return RoleResource::collection($roles);
     }
 
+    public function buyHandler(RoleRepository $repository, $role_id)
+    {
+        $role = Role::findOrFail($role_id);
+        $user = Auth::user();
+
+        if (! $repository->bulHandler($user, $role)) {
+            throw new ApiV1Exception($repository->errors);
+        }
+    }
 }

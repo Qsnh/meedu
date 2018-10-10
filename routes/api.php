@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,4 +34,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/course/{id}/comment', 'CourseController@commentHandler');
     // 视频评论
     Route::post('/video/{id}/comment', 'VideoController@commentHandler');
+    // VIP购买
+    Route::post('/role/{id}/buy', 'RoleController@buyHandler');
 });

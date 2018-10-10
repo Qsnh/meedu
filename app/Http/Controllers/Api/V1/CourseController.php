@@ -22,10 +22,11 @@ use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends Controller
 {
-
     /**
-     * 课程列表
+     * 课程列表.
+     *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
@@ -39,8 +40,10 @@ class CourseController extends Controller
     }
 
     /**
-     * 课程详情
+     * 课程详情.
+     *
      * @param $id
+     *
      * @return CourseResource
      */
     public function show($id)
@@ -51,8 +54,10 @@ class CourseController extends Controller
     }
 
     /**
-     * 课程下的视频
+     * 课程下的视频.
+     *
      * @param $id
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function videos($id)
@@ -64,9 +69,11 @@ class CourseController extends Controller
     }
 
     /**
-     * 课程下的评论
+     * 课程下的评论.
+     *
      * @param Request $request
      * @param $id
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function comments(Request $request, $id)
@@ -80,10 +87,13 @@ class CourseController extends Controller
     }
 
     /**
-     * 评论处理
+     * 评论处理.
+     *
      * @param CourseOrVideoCommentCreateRequest $request
      * @param $id
+     *
      * @return CourseCommentResource
+     *
      * @throws \Throwable
      */
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $id)
