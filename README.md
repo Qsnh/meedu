@@ -44,6 +44,7 @@
 
 ## FAQ
 
+- [API接口](docs/api/v1/README.md)
 - [安装教程](docs/安装教程.md)
 - [邮件配置教程](docs/邮件配置.md)
 - [有赞云支付配置教程](docs/有赞云配置.md)
