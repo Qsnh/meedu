@@ -27,6 +27,8 @@ Route::get('/faq/category/{id}/articles', 'FaqController@articles');
 Route::get('/faq/article/latest', 'FaqController@latestArticles');
 Route::get('/faq/article/{id}', 'FaqController@article');
 
+Route::get('/roles', 'RoleController@index');
+
 Route::group(['middleware' => ['auth:api']], function () {
     // 请求视频播放地址
     Route::get('/video/{id}/play_url', 'VideoController@playUrl');
