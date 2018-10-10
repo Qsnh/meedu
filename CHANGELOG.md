@@ -1,4 +1,10 @@
 
+## 2018/10/10
+
++ Added:视频API接口
++ Added:课程API接口
++ Added:接口文档
+
 ## 2018/10/8
 
 + Fixed:Font-Awesome的cdn引用修改
