@@ -15,7 +15,7 @@ use App\Models\Announcement;
 use App\Models\UserJoinRoleRecord;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Repositories\MemberRepository;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
@@ -37,19 +37,22 @@ class MemberController extends FrontendController
         return view('frontend.member.password_reset', compact('title'));
     }
 
-    public function passwordResetHandler(MemberPasswordResetRequest $request)
+    /**
+     * 密码修改.
+     *
+     * @param MemberPasswordResetRequest $request
+     * @param MemberRepository           $repository
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function passwordResetHandler(MemberPasswordResetRequest $request, MemberRepository $repository)
     {
         [$oldPassword, $newPassword] = $request->filldata();
-        $user = Auth::user();
-        if (! Hash::check($oldPassword, $user->password)) {
-            flash('原密码不正确');
-
-            return back();
+        if (! $repository->passwordChangeHandler($oldPassword, $newPassword)) {
+            flash($repository->errors);
+        } else {
+            flash('密码修改成功', 'success');
         }
-
-        $user->password = bcrypt($newPassword);
-        $user->save();
-        flash('密码修改成功', 'success');
 
         return back();
     }

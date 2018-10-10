@@ -36,4 +36,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/video/{id}/comment', 'VideoController@commentHandler');
     // VIP购买
     Route::post('/role/{id}/buy', 'RoleController@buyHandler');
+
+    Route::group(['prefix' => '/member'], function () {
+        // 修改密码
+        Route::post('/password/change', 'MemberController@passwordChangeHandler');
+    });
 });
