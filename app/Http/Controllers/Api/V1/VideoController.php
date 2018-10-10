@@ -22,6 +22,12 @@ use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends Controller
 {
+
+    /**
+     * 视频详情
+     * @param $id
+     * @return VideoRecourse
+     */
     public function show($id)
     {
         $video = Video::published()->show()->whereId($id)->firstOrFail();
@@ -29,6 +35,12 @@ class VideoController extends Controller
         return new VideoRecourse($video);
     }
 
+    /**
+     * 视频的播放路径
+     * @param $id
+     * @return array
+     * @throws ApiV1Exception
+     */
     public function playUrl($id)
     {
         $video = Video::published()->show()->whereId($id)->firstOrFail();
@@ -40,6 +52,12 @@ class VideoController extends Controller
         return aliyun_play_url($video);
     }
 
+    /**
+     * 视频下的评论分页列表
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function comments(Request $request, $id)
     {
         $video = Video::published()->show()->whereId($id)->firstOrFail();
@@ -50,6 +68,13 @@ class VideoController extends Controller
         return VideoCommentResource::collection($comments);
     }
 
+    /**
+     * 视频评论处理
+     * @param CourseOrVideoCommentCreateRequest $request
+     * @param $id
+     * @return VideoCommentResource
+     * @throws \Throwable
+     */
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $id)
     {
         $video = Video::published()->show()->whereId($id)->firstOrFail();

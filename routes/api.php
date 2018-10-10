@@ -21,6 +21,12 @@ Route::get('/course/{id}/comments', 'CourseController@comments');
 Route::get('/video/{id}', 'VideoController@show');
 Route::get('/video/{id}/comments', 'VideoController@comments');
 
+Route::get('/faq/categories', 'FaqController@categories');
+Route::get('/faq/category/{id}', 'FaqController@category');
+Route::get('/faq/category/{id}/articles', 'FaqController@articles');
+Route::get('/faq/article/latest', 'FaqController@latestArticles');
+Route::get('/faq/article/{id}', 'FaqController@article');
+
 Route::group(['middleware' => ['auth:api']], function () {
     // 请求视频播放地址
     Route::get('/video/{id}/play_url', 'VideoController@playUrl');

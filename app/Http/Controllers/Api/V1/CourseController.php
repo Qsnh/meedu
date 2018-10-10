@@ -22,6 +22,12 @@ use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends Controller
 {
+
+    /**
+     * 课程列表
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index(Request $request)
     {
         $courses = Course::show()
@@ -32,6 +38,11 @@ class CourseController extends Controller
         return CourseResource::collection($courses);
     }
 
+    /**
+     * 课程详情
+     * @param $id
+     * @return CourseResource
+     */
     public function show($id)
     {
         $course = Course::show()->published()->whereId($id)->firstOrFail();
@@ -39,6 +50,11 @@ class CourseController extends Controller
         return new CourseResource($course);
     }
 
+    /**
+     * 课程下的视频
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function videos($id)
     {
         $course = Course::show()->published()->whereId($id)->firstOrFail();
@@ -47,6 +63,12 @@ class CourseController extends Controller
         return VideoRecourse::collection($videos);
     }
 
+    /**
+     * 课程下的评论
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function comments(Request $request, $id)
     {
         $course = Course::show()->published()->whereId($id)->firstOrFail();
@@ -57,6 +79,13 @@ class CourseController extends Controller
         return CourseCommentResource::collection($comments);
     }
 
+    /**
+     * 评论处理
+     * @param CourseOrVideoCommentCreateRequest $request
+     * @param $id
+     * @return CourseCommentResource
+     * @throws \Throwable
+     */
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $id)
     {
         $course = Course::show()->published()->whereId($id)->firstOrFail();
