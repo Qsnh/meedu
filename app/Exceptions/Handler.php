@@ -60,8 +60,8 @@ class Handler extends ExceptionHandler
     {
         if ($request->wantsJson()) {
             return exception_response($exception);
-        } else {
-            return parent::render($request, $exception);
         }
+
+        return parent::render($request, $exception);
     }
 }

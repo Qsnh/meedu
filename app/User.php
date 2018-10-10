@@ -21,10 +21,10 @@ use App\Models\VideoComment;
 use App\Models\CourseComment;
 use App\Models\RechargePayment;
 use App\Models\UserJoinRoleRecord;
+use Laravel\Passport\HasApiTokens;
 use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -60,8 +60,10 @@ class User extends Authenticatable
     ];
 
     /**
-     * 重载passport方法
+     * 重载passport方法.
+     *
      * @param $name
+     *
      * @return mixed
      */
     public function findForPassport($name)

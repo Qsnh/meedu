@@ -13,11 +13,11 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use App\Models\CourseComment;
+use Laravel\Passport\Passport;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CourseCommentObserver;
-use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {

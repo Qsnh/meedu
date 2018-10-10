@@ -253,7 +253,9 @@ if (! function_exists('aliyun_play_auth')) {
 if (! function_exists('aliyun_play_url')) {
     /**
      * 获取阿里云的视频播放地址
+     *
      * @param \App\Models\Video $video
+     *
      * @return array
      */
     function aliyun_play_url(\App\Models\Video $video)
@@ -265,7 +267,7 @@ if (! function_exists('aliyun_play_url')) {
             $client = aliyun_sdk_client();
             $request = new \vod\Request\V20170321\GetPlayInfoRequest();
             $request->setVideoId($video->aliyun_video_id);
-            $request->setAuthTimeout(3600*3);
+            $request->setAuthTimeout(3600 * 3);
             $request->setAcceptFormat('JSON');
             $response = $client->getAcsResponse($request);
             $list = $response->PlayInfoList->PlayInfo;
@@ -277,6 +279,7 @@ if (! function_exists('aliyun_play_url')) {
                     'duration' => $item->Duration,
                 ];
             }
+
             return $rows;
         } catch (Exception $exception) {
             exception_record($exception);
@@ -298,6 +301,7 @@ if (! function_exists('aliyun_sdk_client')) {
             config('meedu.upload.video.aliyun.access_key_secret', '')
         );
         $client = new \DefaultAcsClient($profile);
+
         return $client;
     }
 }

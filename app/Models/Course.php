@@ -227,8 +227,10 @@ class Course extends Model
     }
 
     /**
-     * 评论处理
+     * 评论处理.
+     *
      * @param string $content
+     *
      * @return false|Model
      */
     public function commentHandler(string $content)
@@ -237,7 +239,7 @@ class Course extends Model
             'user_id' => Auth::id(),
             'content' => $content,
         ]));
+
         return $comment;
     }
-
 }

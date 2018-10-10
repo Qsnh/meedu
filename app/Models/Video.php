@@ -12,8 +12,8 @@
 namespace App\Models;
 
 use App\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
@@ -107,8 +107,10 @@ class Video extends Model
     }
 
     /**
-     * 评论处理
+     * 评论处理.
+     *
      * @param string $content
+     *
      * @return false|Model
      */
     public function commentHandler(string $content)
@@ -117,7 +119,7 @@ class Video extends Model
             'user_id' => Auth::id(),
             'content' => $content,
         ]));
+
         return $comment;
     }
-
 }

@@ -14,7 +14,6 @@ namespace App\Http\Controllers\Frontend;
 use Exception;
 use App\Models\Order;
 use App\Models\Course;
-use App\Models\CourseComment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\SimpleMessageNotification;
