@@ -75,50 +75,79 @@ class MemberController extends FrontendController
         return back();
     }
 
-    public function showJoinRoleRecordsPage()
+    /**
+     * 会员订阅界面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showJoinRoleRecordsPage(MemberRepository $repository)
     {
-        $records = UserJoinRoleRecord::whereUserId(Auth::id())->orderByDesc('expired_at')->paginate(8);
+        $records = $repository->roleBuyRecords();
         $title = 'VIP会员记录';
 
         return view('frontend.member.join_role_records', compact('records', 'title'));
     }
 
-    public function showMessagesPage()
+    /**
+     * 我的消息页面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showMessagesPage(MemberRepository $repository)
     {
-        $messages = new Paginator(Auth::user()->notifications, 10);
-        $messages->setPath(route('member.messages'));
+        $messages = $repository->messages();
         $title = '我的消息';
 
         return view('frontend.member.messages', compact('messages', 'title'));
     }
 
-    public function showBuyCoursePage()
+    /**
+     * 已购买课程页面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBuyCoursePage(MemberRepository $repository)
     {
-        $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(16);
+        $courses = $repository->buyCourses();
         $title = '我的购买的课程';
 
         return view('frontend.member.buy_course', compact('courses', 'title'));
     }
 
-    public function showBuyVideoPage()
+    /**
+     * 已购买视频界面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBuyVideoPage(MemberRepository $repository)
     {
-        $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->paginate(16);
+        $videos = $repository->buyVideos();
         $title = '我购买的视频';
 
         return view('frontend.member.buy_video', compact('videos', 'title'));
     }
 
-    public function showRechargeRecordsPage()
+    /**
+     * 充值记录界面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showRechargeRecordsPage(MemberRepository $repository)
     {
-        $records = Auth::user()->rechargePayments()->success()->orderByDesc('created_at')->paginate(10);
+        $records = $repository->rechargeRecords();
         $title = '我的充值记录';
 
         return view('frontend.member.show_recharge_records', compact('records', 'title'));
     }
 
-    public function showOrdersPage()
+    /**
+     * 我的订单界面
+     * @param MemberRepository $repository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showOrdersPage(MemberRepository $repository)
     {
-        $orders = Auth::user()->orders()->orderByDesc('created_at')->paginate(10);
+        $orders = $repository->orders();
         $title = '我的订单';
 
         return view('frontend.member.show_orders', compact('orders', 'title'));

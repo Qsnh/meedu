@@ -11,6 +11,8 @@
 
 namespace App\Repositories;
 
+use App\Models\UserJoinRoleRecord;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -39,4 +41,81 @@ class MemberRepository
 
         return true;
     }
+
+    /**
+     * 会员的充值记录
+     * @return mixed
+     */
+    public function rechargeRecords()
+    {
+        $records = Auth::user()
+            ->rechargePayments()
+            ->success()
+            ->orderByDesc('created_at')
+            ->paginate(request()->input('page_size', 10));
+        return $records;
+    }
+
+    /**
+     * 已购买的课程
+     * @return mixed
+     */
+    public function buyCourses()
+    {
+        $courses = Auth::user()
+            ->joinCourses()
+            ->orderByDesc('pivot_created_at')
+            ->paginate(request()->input('page_size', 10));
+        return $courses;
+    }
+
+    /**
+     * 已购买视频
+     * @return mixed
+     */
+    public function buyVideos()
+    {
+        $videos = Auth::user()
+            ->buyVideos()
+            ->orderByDesc('pivot_created_at')
+            ->paginate(request()->input('page_size', 10));
+        return $videos;
+    }
+
+    /**
+     * 订单
+     * @return mixed
+     */
+    public function orders()
+    {
+        $orders = Auth::user()
+            ->orders()
+            ->orderByDesc('created_at')
+            ->paginate(request()->input('page_size', 10));
+        return $orders;
+    }
+
+    /**
+     * 会员订阅记录
+     * @return mixed
+     */
+    public function roleBuyRecords()
+    {
+        $records = UserJoinRoleRecord::whereUserId(Auth::id())
+            ->orderByDesc('expired_at')
+            ->paginate(request()->input('page_size', 10));
+        return $records;
+    }
+
+    /**
+     * 我的消息
+     * @return Paginator
+     */
+    public function messages()
+    {
+        $messages = new Paginator(Auth::user()->notifications, 10);
+        $messages->setPath(route('member.messages'));
+        return $messages;
+    }
+
 }

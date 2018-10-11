@@ -13,6 +13,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Member\JoinCourseRecourse;
+use App\Http\Resources\RechargePaymentResource;
 use App\Repositories\MemberRepository;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
@@ -33,4 +35,25 @@ class MemberController extends Controller
             throw new ApiV1Exception($repository->errors);
         }
     }
+
+    /**
+     * 充值记录
+     * @param MemberRepository $repository
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function rechargeRecords(MemberRepository $repository)
+    {
+        return RechargePaymentResource::collection($repository->rechargeRecords());
+    }
+
+    /**
+     * @param MemberRepository $repository
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function joinCourses(MemberRepository $repository)
+    {
+        $records = $repository->buyCourses();
+        return JoinCourseRecourse::collection($records);
+    }
+
 }
