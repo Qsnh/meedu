@@ -9,7 +9,7 @@
     <ul class="notifications">
         @forelse($messages as $message)
             <li class="{{ $message->read_at ? 'color-orange' : '' }}">
-                @include('frontend.member.notifications.' . notification_name($message->type), ['notification' => $message])
+                {!! (new \App\Meedu\NotificationParse())->parseHTML($message) !!}
             </li>
             @if($message->markAsRead())@endif
         @empty

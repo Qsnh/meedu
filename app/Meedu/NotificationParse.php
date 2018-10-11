@@ -1,26 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xiaoteng
- * Date: 2018/10/11
- * Time: 11:17
+
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace App\Meedu;
 
-
 class NotificationParse
 {
-
-    public function parseText($notification):string
+    public function parseText($notification): string
     {
         $method = 'parse'.$this->getTypeName($notification).'Text';
+
         return $this->{$method}($notification);
     }
 
-    public function parseHTML($notification):string
+    public function parseHTML($notification): string
     {
         $method = 'parse'.$this->getTypeName($notification).'HTML';
+
         return $this->{$method}($notification);
     }
 
@@ -29,17 +32,19 @@ class NotificationParse
         $type = $notification->type;
         $arr = explode('\\', $type);
         $name = $arr[count($arr) - 1];
+
         return $name;
     }
 
-    protected function parseAtUserNotificationText($notification):string
+    protected function parseAtUserNotificationText($notification): string
     {
         $data = $notification->data;
         $fromUser = \App\User::find($data['from_user_id']);
+
         return sprintf('用户%s提到您啦', $fromUser->nick_name);
     }
 
-    protected function parseAtUserNotificationHTML($notification):string
+    protected function parseAtUserNotificationHTML($notification): string
     {
         $data = $notification->data;
         $fromUser = \App\User::find($data['from_user_id']);
@@ -58,34 +63,33 @@ class NotificationParse
         return '<a href="'.$url.'">用户&nbsp;<b>'.$fromUser->nick_name.'</b>&nbsp;提到您啦。</a>';
     }
 
-    public function parseMemberRechargeNotificationText($notification):string
+    public function parseMemberRechargeNotificationText($notification): string
     {
         return sprintf('您充值的%s已到账。', $notification->data['money']);
     }
 
-    public function parseMemberRechargeNotificationHTML($notification):string
+    public function parseMemberRechargeNotificationHTML($notification): string
     {
         return sprintf('您充值的%s已到账。', $notification->data['money']);
     }
 
-    public function parseRegisterNotificationText($notification):string
+    public function parseRegisterNotificationText($notification): string
     {
         return '欢迎注册本站！';
     }
 
-    public function parseRegisterNotificationHTML($notification):string
+    public function parseRegisterNotificationHTML($notification): string
     {
         return '欢迎注册本站！';
     }
 
-    public function parseSimpleMessageNotificationText($notification):string
+    public function parseSimpleMessageNotificationText($notification): string
     {
         return $notification->data['message'];
     }
 
-    public function parseSimpleMessageNotificationHTML($notification):string
+    public function parseSimpleMessageNotificationHTML($notification): string
     {
         return $notification->data['message'];
     }
-
 }

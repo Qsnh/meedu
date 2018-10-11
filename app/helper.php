@@ -118,34 +118,6 @@ if (! function_exists('at_user')) {
     }
 }
 
-if (! function_exists('at_notification_parse')) {
-    /**
-     * 艾特Notification内容输出.
-     *
-     * @param $notification
-     *
-     * @return string
-     */
-    function at_notification_parse($notification)
-    {
-        $data = $notification->data;
-        $fromUser = \App\User::find($data['from_user_id']);
-        $model = '\\App\\Models\\'.$data['from_type'];
-        $from = (new $model())->whereId($data['from_id'])->first();
-        $url = 'javascript:void(0)';
-        switch ($data['from_type']) {
-            case 'CourseComment':
-                $url = route('course.show', [$from->course->id, $from->course->slug]);
-                break;
-            case 'VideoComment':
-                $url = route('video.show', [$from->video->course->id, $from->video->id, $from->video->slug]);
-                break;
-        }
-
-        return '<a href="'.$url.'">用户&nbsp;<b>'.$fromUser->nick_name.'</b>&nbsp;提到您啦。</a>';
-    }
-}
-
 if (! function_exists('exception_record')) {
     /**
      * 记录异常.

@@ -1,1 +1,0 @@
-{{$notification->data['message']}}
