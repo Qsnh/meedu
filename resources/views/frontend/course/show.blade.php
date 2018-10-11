@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+    <link href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -128,7 +128,7 @@
 @endsection
 
 @section('js')
-    <script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js"></script>
+    <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
     <script>
