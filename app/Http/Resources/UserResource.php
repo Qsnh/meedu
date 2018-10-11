@@ -37,6 +37,7 @@ class UserResource extends JsonResource
             'nick_name' => $this->nick_name,
             'mobile' => $this->mobile,
             'role' => $role,
+            'unread_notification_num' => $this->unreadNotifications->count(),
         ];
     }
 }
