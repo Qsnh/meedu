@@ -13,6 +13,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
 use App\Http\Resources\Member\OrderResource;
 use App\Http\Resources\Member\MessageResource;
@@ -20,6 +22,7 @@ use App\Http\Resources\Member\RoleBuyResource;
 use App\Http\Resources\RechargePaymentResource;
 use App\Http\Resources\Member\BuyVideosResource;
 use App\Http\Resources\Member\JoinCourseRecourse;
+use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
 class MemberController extends Controller
@@ -118,5 +121,27 @@ class MemberController extends Controller
         $messages = $repository->messages();
 
         return MessageResource::collection($messages);
+    }
+
+    /**
+     * 头像更换.
+     *
+     * @param AvatarChangeRequest $request
+     * @param MemberRepository    $repository
+     */
+    public function avatarChange(AvatarChangeRequest $request, MemberRepository $repository)
+    {
+        [$path, $url] = $request->filldata();
+        $repository->avatarChangeHandler(Auth::user(), $url);
+    }
+
+    /**
+     * 用户资料.
+     *
+     * @return UserResource
+     */
+    public function profile()
+    {
+        return new UserResource(Auth::user());
     }
 }

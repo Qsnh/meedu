@@ -54,5 +54,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/roles', 'MemberController@roleBuyRecords');
         // 我的消息
         Route::get('/messages', 'MemberController@messages');
+        // 修改头像
+        Route::post('/avatar', 'MemberController@avatarChange');
+        // 用户资料
+        Route::get('/profile', 'MemberController@profile');
     });
 });

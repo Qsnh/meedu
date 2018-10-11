@@ -12,7 +12,6 @@
 namespace App\Repositories;
 
 use App\Models\UserJoinRoleRecord;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -118,9 +117,7 @@ class MemberRepository
     }
 
     /**
-     * 我的消息.
-     *
-     * @return Paginator
+     * @return mixed
      */
     public function messages()
     {
@@ -130,5 +127,15 @@ class MemberRepository
             ->paginate(request()->input('page_size', 10));
 
         return $messages;
+    }
+
+    /**
+     * @param $user
+     * @param $avatar
+     */
+    public function avatarChangeHandler($user, $avatar)
+    {
+        $user->avatar = $avatar;
+        $user->save();
     }
 }

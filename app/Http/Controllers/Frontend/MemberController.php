@@ -62,12 +62,18 @@ class MemberController extends FrontendController
         return view('frontend.member.avatar', compact('title'));
     }
 
-    public function avatarChangeHandler(AvatarChangeRequest $request)
+    /**
+     * 头像更换.
+     *
+     * @param AvatarChangeRequest $request
+     * @param MemberRepository    $repository
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function avatarChangeHandler(AvatarChangeRequest $request, MemberRepository $repository)
     {
         [$path, $url] = $request->filldata();
-        $user = Auth::user();
-        $user->avatar = $url;
-        $user->save();
+        $repository->avatarChangeHandler(Auth::user(), $url);
         flash('头像更换成功', 'success');
 
         return back();
