@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Member;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RechargePaymentResource extends JsonResource
+class OrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,8 +25,9 @@ class RechargePaymentResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'money' => $this->money,
-            'pay_method' => $this->pay_method,
+            'goods' => $this->getGoodsTypeText(),
+            'charge' => $this->charge,
+            'status_text' => $this->statusText(),
         ];
     }
 }

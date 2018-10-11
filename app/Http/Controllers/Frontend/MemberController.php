@@ -12,8 +12,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Announcement;
-use App\Models\UserJoinRoleRecord;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
@@ -76,8 +74,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 会员订阅界面
+     * 会员订阅界面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showJoinRoleRecordsPage(MemberRepository $repository)
@@ -89,8 +89,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 我的消息页面
+     * 我的消息页面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showMessagesPage(MemberRepository $repository)
@@ -102,8 +104,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 已购买课程页面
+     * 已购买课程页面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showBuyCoursePage(MemberRepository $repository)
@@ -115,8 +119,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 已购买视频界面
+     * 已购买视频界面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showBuyVideoPage(MemberRepository $repository)
@@ -128,8 +134,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 充值记录界面
+     * 充值记录界面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showRechargeRecordsPage(MemberRepository $repository)
@@ -141,8 +149,10 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 我的订单界面
+     * 我的订单界面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showOrdersPage(MemberRepository $repository)

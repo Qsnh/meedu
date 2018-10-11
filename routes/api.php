@@ -44,5 +44,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/courses', 'MemberController@joinCourses');
         // 已购买视频
         Route::get('/videos', 'MemberController@buyVideos');
+        // 我的订单s
+        Route::get('/orders', 'MemberController@orders');
     });
 });

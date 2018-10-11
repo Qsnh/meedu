@@ -43,7 +43,7 @@ class Order extends Model
      *
      * @return mixed
      */
-    public function getGoodsTypeText()
+    public function getGoodsTypeText(): string
     {
         $method = 'get'.ucfirst(strtolower($this->goods_type)).'GoodsTypeText';
 
@@ -55,29 +55,39 @@ class Order extends Model
      *
      * @return string
      */
-    public function getNotificationContent()
+    public function getNotificationContent(): string
     {
         return '你已经购买了'.$this->getGoodsTypeText().'，花费了'.$this->charge.'元';
     }
 
-    protected function getCourseGoodsTypeText()
+    protected function getCourseGoodsTypeText(): string
     {
         $course = Course::find($this->goods_id);
 
         return "课程《{$course->title}》";
     }
 
-    protected function getVideoGoodsTypeText()
+    protected function getVideoGoodsTypeText(): string
     {
         $video = Video::find($this->goods_id);
 
         return "视频《{$video->title}》";
     }
 
-    protected function getRoleGoodsTypeText()
+    protected function getRoleGoodsTypeText(): string
     {
         $role = Role::find($this->goods_id);
 
         return "VIP《{$role->name}》";
+    }
+
+    /**
+     * 订单状态文本.
+     *
+     * @return string
+     */
+    public function statusText(): string
+    {
+        return $this->status == self::STATUS_PAID ? '已支付' : '未支付';
     }
 }
