@@ -15,6 +15,7 @@ use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
 use App\Repositories\MemberRepository;
 use App\Http\Resources\Member\OrderResource;
+use App\Http\Resources\Member\RoleBuyResource;
 use App\Http\Resources\RechargePaymentResource;
 use App\Http\Resources\Member\BuyVideosResource;
 use App\Http\Resources\Member\JoinCourseRecourse;
@@ -88,5 +89,19 @@ class MemberController extends Controller
         $orders = $repository->orders();
 
         return OrderResource::collection($orders);
+    }
+
+    /**
+     * VIP购买记录.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function roleBuyRecords(MemberRepository $repository)
+    {
+        $records = $repository->roleBuyRecords();
+
+        return RoleBuyResource::collection($records);
     }
 }
