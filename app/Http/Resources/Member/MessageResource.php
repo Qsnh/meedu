@@ -25,6 +25,8 @@ class MessageResource extends JsonResource
      */
     public function toArray($request)
     {
+        // 标记已读
+        $this->markAsRead();
         return [
             'content' => (new NotificationParse())->parseText($this),
         ];
