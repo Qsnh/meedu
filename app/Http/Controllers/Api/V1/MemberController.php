@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Member\MessageResource;
 use App\Repositories\MemberRepository;
 use App\Http\Resources\Member\OrderResource;
 use App\Http\Resources\Member\RoleBuyResource;
@@ -103,5 +104,16 @@ class MemberController extends Controller
         $records = $repository->roleBuyRecords();
 
         return RoleBuyResource::collection($records);
+    }
+
+    /**
+     * 我的消息
+     * @param MemberRepository $repository
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function messages(MemberRepository $repository)
+    {
+        $messages = $repository->messages();
+        return MessageResource::collection($messages);
     }
 }

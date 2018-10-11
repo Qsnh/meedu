@@ -124,8 +124,10 @@ class MemberRepository
      */
     public function messages()
     {
-        $messages = new Paginator(Auth::user()->notifications, 10);
-        $messages->setPath(route('member.messages'));
+        $messages = Auth::user()
+            ->notifications()
+            ->latest()
+            ->paginate(request()->input('page_size', 10));
 
         return $messages;
     }
