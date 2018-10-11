@@ -42,5 +42,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/password/change', 'MemberController@passwordChangeHandler');
         // 我加入的课程
         Route::get('/courses', 'MemberController@joinCourses');
+        // 已购买视频
+        Route::get('/videos', 'MemberController@buyVideos');
     });
 });

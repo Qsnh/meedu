@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Exceptions\ApiV1Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Member\BuyVideosResource;
 use App\Http\Resources\Member\JoinCourseRecourse;
 use App\Http\Resources\RechargePaymentResource;
 use App\Repositories\MemberRepository;
@@ -54,6 +55,17 @@ class MemberController extends Controller
     {
         $records = $repository->buyCourses();
         return JoinCourseRecourse::collection($records);
+    }
+
+    /**
+     * 已购买视频
+     * @param MemberRepository $repository
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function buyVideos(MemberRepository $repository)
+    {
+        $videos = $repository->buyVideos();
+        return BuyVideosResource::collection($videos);
     }
 
 }
