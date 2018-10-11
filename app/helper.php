@@ -80,23 +80,6 @@ if (! function_exists('exception_response')) {
     }
 }
 
-if (! function_exists('notification_name')) {
-    /**
-     * 获取Notification模板名.
-     *
-     * @param $notificationName
-     *
-     * @return string
-     */
-    function notification_name($notificationName)
-    {
-        $arr = explode('\\', $notificationName);
-        $name = $arr[count($arr) - 1];
-
-        return strtolower($name);
-    }
-}
-
 if (! function_exists('at_user')) {
     /**
      * 艾特某个用户.

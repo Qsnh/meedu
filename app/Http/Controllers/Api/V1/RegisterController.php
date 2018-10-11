@@ -11,8 +11,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\RegisterRequest;
 
 class RegisterController extends Controller
 {
+    public function handler(RegisterRequest $request, User $user)
+    {
+        $user->fill($request->filldata())->save();
+    }
 }

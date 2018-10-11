@@ -11,6 +11,8 @@
 |
 */
 
+Route::post('/register', 'RegisterController@handler');
+
 Route::get('/courses', 'CourseController@index');
 Route::get('/course/{id}', 'CourseController@show');
 Route::get('/course/{id}/videos', 'CourseController@videos');
