@@ -15,6 +15,7 @@ $factory->define(\App\Models\Video::class, function (Faker $faker) {
         'slug' => $faker->slug(),
         'url' => $faker->url,
         'view_num' => $faker->randomDigit,
+        'charge' => mt_rand(0, 1000),
         'short_description' => $faker->title,
         'description' => $faker->paragraph,
         'seo_keywords' => $faker->title,
