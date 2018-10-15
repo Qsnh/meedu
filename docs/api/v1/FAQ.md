@@ -110,12 +110,8 @@
     "data": [
         {
             "id": 1,
-            "title": "文章一",
-            "created_at": {
-                "date": "2018-10-10 11:27:11.000000",
-                "timezone_type": 3,
-                "timezone": "PRC"
-            },
+            "title": "我是文章一",
+            "created_at": 1539569104,
             "administrator": {
                 "name": "超级管理员"
             }
@@ -159,13 +155,9 @@
 {
     "data": {
         "id": 1,
-        "title": "文章一",
-        "created_at": {
-            "date": "2018-10-10 11:27:11.000000",
-            "timezone_type": 3,
-            "timezone": "PRC"
-        },
-        "content": "<p>文章一</p>",
+        "title": "我是文章一",
+        "created_at": 1539569104,
+        "content": "<h6>我是文章一</h6>",
         "administrator": {
             "name": "超级管理员"
         }
@@ -195,30 +187,9 @@
 {
     "data": [
         {
-            "id": 2,
-            "title": "文章二",
-            "created_at": {
-                "date": "2018-10-10 11:27:21.000000",
-                "timezone_type": 3,
-                "timezone": "PRC"
-            },
-            "administrator": {
-                "name": "超级管理员"
-            },
-            "category": {
-                "id": 2,
-                "name": "分类二",
-                "sort": 2
-            }
-        },
-        {
             "id": 1,
-            "title": "文章一",
-            "created_at": {
-                "date": "2018-10-10 11:27:11.000000",
-                "timezone_type": 3,
-                "timezone": "PRC"
-            },
+            "title": "我是文章一",
+            "created_at": 1539569104,
             "administrator": {
                 "name": "超级管理员"
             },
@@ -241,8 +212,8 @@
         "last_page": 1,
         "path": "http://127.0.0.1:8000/api/v1/faq/article/latest",
         "per_page": 10,
-        "to": 2,
-        "total": 2
+        "to": 1,
+        "total": 1
     }
 }
 ```
