@@ -31,15 +31,23 @@ class FaqTest extends OriginalTestCase
 
     public function test_articles()
     {
-        $this->assertTrue(true);
-//        $category = factory(FaqCategory::class)->create();
-//        $articles = factory(FaqArticle::class, 8)->create([
-//            'category_id' => $category->id,
-//        ]);
-//        $response = $this->json('GET', '/api/v1/faq/category/'.$category->id.'/articles');
-//        foreach ($articles as $index => $article) {
-//            $response->assertJsonFragment((new FaqArticleResource($article))->toArray(request()));
-//        }
+        $category = factory(FaqCategory::class)->create();
+        $articles = factory(FaqArticle::class, 8)->create([
+            'category_id' => $category->id,
+        ]);
+        $response = $this->json('GET', '/api/v1/faq/category/'.$category->id.'/articles');
+        foreach ($articles as $index => $article) {
+            $response->assertJsonFragment((new FaqArticleResource($article))->toArray(request()));
+        }
+    }
+
+    public function test_latest_articles()
+    {
+        $articles = factory(FaqArticle::class, 8)->create();
+        $response = $this->json('GET', '/api/v1/faq/article/latest');
+        foreach ($articles as $article) {
+            $response->assertJsonFragment((new FaqArticleResource($article))->toArray(request()));
+        }
     }
 
 }
