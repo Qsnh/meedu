@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\V1;
 
 use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\CourseVideoListResource;
 use App\Http\Resources\VideoRecourse;
 use App\Models\Course;
 use App\Models\Video;
@@ -95,7 +96,7 @@ class CourseApiTest extends OriginalTestCase
         $response = $this->json('GET', '/api/v1/course/'.$course->id.'/videos');
         $response->assertStatus(200);
         foreach ($videos as $video) {
-            $response->assertJsonFragment((new VideoRecourse($video))->toArray(request()));
+            $response->assertJsonFragment((new CourseVideoListResource($video))->toArray(request()));
         }
     }
 
