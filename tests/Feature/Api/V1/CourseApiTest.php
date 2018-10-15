@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Http\Resources\CourseListResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\VideoRecourse;
 use App\Models\Course;
@@ -26,7 +27,7 @@ class CourseApiTest extends OriginalTestCase
         ]);
     }
 
-    public function test_course_paginate_api()
+    public function test_courses_paginate()
     {
         $courses = factory(Course::class, 4)->create([
             'is_show' => Course::SHOW_YES,
@@ -35,7 +36,7 @@ class CourseApiTest extends OriginalTestCase
         $response = $this->json('GET', '/api/v1/courses');
         $response->assertStatus(200);
         foreach ($courses as $index => $item) {
-            $response->assertJsonFragment((new CourseResource($item))->toArray(request()));
+            $response->assertJsonFragment((new CourseListResource($item))->toArray(request()));
         }
     }
 
