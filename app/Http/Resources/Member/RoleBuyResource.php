@@ -32,8 +32,8 @@ class RoleBuyResource extends JsonResource
                 'description' => $this->role->descriptionRows(),
             ],
             'charge' => $this->charge,
-            'started_at' => $this->started_at,
-            'expired_at' => $this->expired_at,
+            'started_at' => strtotime($this->started_at),
+            'expired_at' => strtotime($this->expired_at),
         ];
     }
 }

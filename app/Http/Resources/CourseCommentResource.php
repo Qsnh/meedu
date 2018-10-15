@@ -27,7 +27,7 @@ class CourseCommentResource extends JsonResource
         return [
             'user' => new UserResource($this->user),
             'content' => markdown_to_html($this->content),
-            'created_at' => $this->created_at,
+            'created_at' => strtotime($this->created_at),
         ];
     }
 }

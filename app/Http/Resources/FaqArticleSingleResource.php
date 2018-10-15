@@ -27,7 +27,7 @@ class FaqArticleSingleResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->timestamp,
             'administrator' => new AdministratorResource($this->admin),
             'category' => new FaqCategoryResource($this->category),
         ];

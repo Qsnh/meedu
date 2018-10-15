@@ -32,10 +32,10 @@ class BuyVideosResource extends JsonResource
             'view_num' => $this->view_num,
             'charge' => $this->charge,
             'short_description' => markdown_to_html($this->short_description),
-            'published_at' => $this->published_at,
+            'published_at' => strtotime($this->published_at),
             'pivot' => [
                 'charge' => $this->pivot->charge,
-                'created_at' => $this->pivot->created_at,
+                'created_at' => strtotime($this->pivot->created_at),
             ],
         ];
     }

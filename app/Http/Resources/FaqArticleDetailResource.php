@@ -27,7 +27,7 @@ class FaqArticleDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->timestamp,
             'content' => markdown_to_html($this->content),
             'administrator' => new AdministratorResource($this->admin),
         ];
