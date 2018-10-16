@@ -1,24 +1,14 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
     <div class="container">
-        <div class="navbar-header">
+        <a class="navbar-brand" href="{{ url('/') }}">
+            {{ config('app.name', 'MeEdu') }}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-
-            <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ url('/') }}">
-                {{ config('app.name', 'MeEdu') }}
-            </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="app-navbar-collapse">
-            <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav">
+        <ul class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
                 <li>
                     <a class="{{ menu_is_active('index') }}" href="{{ url('/') }}">首页</a>
                 </li>
@@ -33,40 +23,36 @@
                 </li>
             </ul>
 
-            <!-- Right Side Of Navbar -->
-            <ul class="nav navbar-nav navbar-right">
-                <!-- Authentication Links -->
+            <ul class="navbar-nav ml-auto">
                 @guest
-                    <li><a href="{{ route('login') }}">登录</a></li>
-                    <li><a href="{{ route('register') }}">注册</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">注册</a>
+                    </li>
                 @else
-                    @if(Auth::check())
                     <li>
                         <a href="{{ route('member.messages') }}">
-                            @if(count($user->unreadNotifications))
-                                <span class="label label-danger">{{ count($user->unreadNotifications) }}
-                                @else
-                                <span class="label label-default">0</span>
-                            @endif
+                            <span class="badge badge-primary">{{ count($user->unreadNotifications) }}</span>
                         </a>
                     </li>
-                    @endif
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                        <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ $user->nick_name }} <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li class="dropdown-item">
                                 <a href="{{ route('member') }}">会员中心</a>
                             </li>
-                            <li>
+                            <li class="dropdown-item">
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     安全退出
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
+                                    @csrf
                                 </form>
                             </li>
                         </ul>

@@ -17,8 +17,8 @@
     </div>
 
     <div class="container all-buy-box">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
                 <h3 class="text-center">你正在购买VIP <b>{{$role->name}}</b></h3>
                 <ul class="list-group">
                     @foreach($role->descriptionRows() as $row)

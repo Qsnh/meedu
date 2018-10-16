@@ -17,8 +17,8 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 recharge-form-box">
+        <div class="row justify-content-center">
+            <div class="col-sm-4 recharge-form-box">
                 <div class="row">
                     <div class="alert alert-warning">
                         <p><b>注意：</b></p>

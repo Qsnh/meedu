@@ -35,12 +35,16 @@
                 </a>
             </div>
             @endforeach
-
-            <div class="col-sm-12 text-center">
-                {{$courses->render()}}
-            </div>
-
         </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <nav aria-label="Page navigation">
+                    {{$courses->render()}}
+                </nav>
+            </div>
+        </div>
+
     </div>
 
 @endsection

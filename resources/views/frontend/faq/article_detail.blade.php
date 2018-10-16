@@ -13,11 +13,11 @@
     <div class="container faq-body">
         <div class="row">
             <div class="col-sm-12">
-                <ol class="breadcrumb">
-                    <li><a href="{{route('faq')}}">FAQ</a></li>
-                    <li><a href="{{route('faq.category.show', $article->category)}}">{{$article->category->name}}</a></li>
-                    <li class="active">{{$article->title}}</li>
-                </ol>
+                <nav class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('faq')}}">FAQ</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('faq.category.show', $article->category)}}">{{$article->category->name}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$article->title}}</li>
+                </nav>
             </div>
             <div class="col-sm-3">
                 <ul class="list-group">

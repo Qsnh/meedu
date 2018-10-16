@@ -17,8 +17,8 @@
     </div>
 
     <div class="container all-buy-box">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
                 <h3 class="text-center">你正在购买视频《{{$video->title}}》</h3>
                 <p class="lh-30">课程：《{{$video->course->title}}》</p>
                 <p class="lh-30">价格：<b>￥{{$video->charge}}</b></p>

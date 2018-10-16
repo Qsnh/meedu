@@ -14,13 +14,13 @@
                         <div class="col-sm-12">
                             <h2 class="color-fff">{{ $course->title }}</h2>
                             <p class="lh-30">
-                                <span class="label label-default">
+                                <span class="badge badge-primary">
                                     更新于 {{ $course->created_at->diffForHumans() }}
                                 </span>
                                 @if($course->charge)
-                                    <span class="label label-danger">价格 {{$course->charge}}元</span>
+                                    <span class="badge badge-danger">价格 {{$course->charge}}元</span>
                                 @else
-                                    <span class="label label-success">免费</span>
+                                    <span class="badge badge-success">免费</span>
                                 @endif
                             </p>
                         </div>
@@ -46,6 +46,7 @@
                    </div>
                    <div class="list" style="display: none">
                        <table style="width: 100%">
+                           <tbody>
                            @forelse($course->getAllPublishedAndShowVideosCache() as $video)
                                <tr class="lh-30">
                                    <td>
@@ -53,13 +54,14 @@
                                            <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
                                        </a>
                                    </td>
-                                   <td width="80" class="text-right">{{ $video->updated_at->diffForHumans() }}</td>
+                                   <td width="80" class="text-right color-gray">{{ $video->updated_at->diffForHumans() }}</td>
                                </tr>
                            @empty
                                <tr>
                                    <td colspan="2" class="text-center">暂无数据</td>
                                </tr>
                            @endforelse
+                           </tbody>
                        </table>
                    </div>
                    <div class="comment" style="display: none">
@@ -104,7 +106,7 @@
                 </div>
 
                 <div class="col-sm-12 border news-student">
-                    <h4>新加入同学</h4>
+                    <h6 class="lh-30">新加入同学</h6>
                     <ul>
                         @forelse($course->getNewJoinMembersCache() as $member)
                             <li>

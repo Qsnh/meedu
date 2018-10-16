@@ -86,11 +86,11 @@
             <div class="col-sm-9 video-play-comment-box">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                        <div class="card">
+                            <div class="card-header">
                                 {{ $video->title }}
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="col-sm-12" style="margin-bottom: 20px;">
                                     <h3></h3>
                                     <p class="color-gray">{{ $video->short_description }}</p>
@@ -106,12 +106,12 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
+                    <div class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;">
+                        <div class="card">
+                            <div class="card-header">
                                 评论内容
                             </div>
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <table class="comment-list-box">
                                     <tbody>
                                     @forelse($video->comments as $comment)

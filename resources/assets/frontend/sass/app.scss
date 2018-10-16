@@ -1,12 +1,27 @@
+
+/* nunito-regular */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: regular;
+  src: url('//lib.baomitu.com/fonts/nunito/nunito-regular.eot'); /* IE9 Compat Modes */
+  src: local('Nunito'), local('Nunito-Normal'),
+  url('//lib.baomitu.com/fonts/nunito/nunito-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//lib.baomitu.com/fonts/nunito/nunito-regular.woff2') format('woff2'), /* Super Modern Browsers */
+  url('//lib.baomitu.com/fonts/nunito/nunito-regular.woff') format('woff'), /* Modern Browsers */
+  url('//lib.baomitu.com/fonts/nunito/nunito-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+  url('//lib.baomitu.com/fonts/nunito/nunito-regular.svg#Nunito') format('svg'); /* Legacy iOS */
+}
+
 // Variables
-@import "variables";
+@import 'variables';
 
 // Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 * { padding: 0px; margin: 0px; }
 a { text-decoration: none; color: #636b6f; }
-a:hover { text-decoration: none; color: orange }
+a:hover { text-decoration: none; color: #3490dc }
 li { list-style: none; }
 ul { padding: 0px; margin: 0px; }
 p { padding: 0px; margin: 0px; }
@@ -26,12 +41,19 @@ span.label { margin-right: 8px; }
 .all-buy-box { margin-top: 30px; margin-bottom: 30px; }
 
 /** 页头 */
-.navbar {
-  margin-bottom: 0px; background-color: #ffffff; border-bottom: 0px;
-  color: #ffffff;
-  .navbar-nav a.active {
-    color: orange;
+.navbar-laravel {
+  background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  .navbar-nav li {
+    padding-left: 20px; padding-right: 20px;
+    a.active {
+      color: #3490dc;
+    }
   }
+}
+
+/** 分页 */
+.pagination {
+  margin-top: 20px; margin-bottom: 20px; float: right;
 }
 
 /** 页脚 */
@@ -55,25 +77,25 @@ footer {
 
 /** 首页Banner1 */
 .index-banner {
-  background-color: orange; color: #ffffff;
+  background-color: #3490dc; color: #ffffff;
   h1 { line-height: 120px; }
   h4 { line-height: 80px; font-size: 3rem; }
   .button { line-height: 200px; }
   .button a {
     display: inline-block; width: 300px; height: 80px;
     border-radius: 4px; border: 1px solid #ffffff;
-    background-color: orange; line-height: 80px;
+    background-color: #3490dc; line-height: 80px;
     font-size: 26px; color: #ffffff;
   }
   .button a:hover {
     color: #ffffff; background-color: #ffffff;
-    border: 1px solid #eeeeee; color: orange;
+    border: 1px solid #eeeeee; color: #3490dc;
   }
 }
 
 /** 首页Banner2 */
 .index-banner-title h3 {
-  line-height: 100px; font-size: 44px; font-weight: 600;
+  line-height: 100px; font-size: 44px; font-weight: 500;
 }
 .index-banner2 {
   padding-top: 20px; padding-bottom: 50px;
@@ -97,7 +119,7 @@ footer {
       }
     }
     .course-item:hover {
-      box-shadow: orange 0px 2px 10px 0px;
+      box-shadow: #3490dc 0px 2px 10px 0px;
     }
   }
 }
@@ -107,10 +129,10 @@ footer {
   background-color: #ffffff; padding-top: 20px;
   padding-bottom: 50px;
   .title {
-    line-height: 100px; font-size: 44px; font-weight: 600;
+    line-height: 100px; font-size: 44px; font-weight: 500;
   }
   .roles-item {
-    padding-left: 20px; padding-right: 20px;
+    padding-left: 20px; padding-right: 20px; margin-bottom: 20px;
     .roles-item-info {
       box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 10px 0px;
       cursor: pointer;
@@ -121,25 +143,25 @@ footer {
         line-height: 60px; font-size: 20px; font-weight: 300;
       }
       p.price {
-        line-height: 100px; font-size: 40px; font-weight: 600;
+        line-height: 100px; font-size: 40px; font-weight: 500;
       }
       a.buy-button {
         display: inline-block; width: 200px; height: 64px;
-        line-height: 64px; font-size: 24px; color: orange;
-        border: 1px solid orange; border-radius: 2px;
+        line-height: 64px; font-size: 24px; color: #3490dc;
+        border: 1px solid #3490dc; border-radius: 2px;
         margin-top: 20px; margin-bottom: 20px;
       }
     }
     .active {
-      box-shadow: orange 0px 2px 10px 0px; color: orange;
+      box-shadow: #3490dc 0px 2px 10px 0px; color: #3490dc;
       a.buy-button {
-        background-color: orange; color: #ffffff;
+        background-color: #3490dc; color: #ffffff;
       }
     }
     .roles-item-info:hover {
-      box-shadow: orange 0px 2px 10px 0px; color: orange;
+      box-shadow: #3490dc 0px 2px 10px 0px; color: #3490dc;
       a.buy-button {
-        background-color: orange; color: #ffffff;
+        background-color: #3490dc; color: #ffffff;
       }
     }
   }
@@ -154,20 +176,20 @@ footer {
   }
   .input-subscription {
     width: 95%; height: 60px; line-height: 60px; border: 0px;
-    padding-left: 5%; font-size: 2rem;
+    padding-left: 5%; font-size: 1.5rem;
   }
   .btn-subscription {
-    width: 100%; height: 60px; line-height: 60px; background-color: orange;
-    color: #FFFFFF; font-size: 2rem; border: 0px;
+    width: 100%; height: 60px; line-height: 60px; background-color: #3490dc;
+    color: #FFFFFF; font-size: 1.5rem; border: 0px;
   }
 }
 
 
 /** 课程列表页面 */
 .course-index-banner {
-  background-color: orange; color: #ffffff;
+  background-color: #3490dc; color: #ffffff;
   h3 {
-    line-height: 120px; font-size: 36px; font-weight: 600;
+    line-height: 120px; font-size: 36px; font-weight: 500;
   }
 }
 .course-index-box {
@@ -190,14 +212,14 @@ footer {
         text-align: center; overflow: hidden; white-space: nowrap;
       }
       .intro {
-        line-height: 30px; text-align: right; font-size: 14px; color: gray;
+        line-height: 30px; text-align: right; color: gray;
         span {
           margin-right: 10px;
         }
       }
     }
     .course-item-box:hover {
-      box-shadow: orange 0px 2px 10px 0px;
+      box-shadow: #3490dc 0px 2px 10px 0px;
     }
   }
 }
@@ -205,17 +227,17 @@ footer {
 
 /** 课程详情界面 */
 .course-detail-banner {
-  background-color: orange; padding-top: 15px;
+  background-color: #3490dc; padding-top: 15px;
   padding-bottom: 20px;
 }
 .course-show-box {
-  margin-top: 20px; margin-bottom: 20px;
+  margin-top: 20px; margin-bottom: 20px; min-height: 444px;
   .course-video-list-box {
     background-color: #ffffff;
     .course-video-tab {
       border-bottom: 1px solid #eeeeee; text-align: center; line-height: 50px; font-size: 18px;
       .active {
-        color: orange; border-bottom: 1px solid orange;
+        color: #3490dc; border-bottom: 1px solid #3490dc;
       }
       .course-video-tab-item {
         cursor: pointer;
@@ -224,7 +246,7 @@ footer {
     .tab-content-box {
       padding-top: 10px; padding-bottom: 10px;
       .intro {
-        font-size: 1.5rem; line-height: 2rem; font-family: "微软雅黑";
+        font-size: 1rem; line-height: 2rem; font-family: "微软雅黑";
         p {
           margin-top: 5px; margin-bottom: 5px;
         }
@@ -281,11 +303,11 @@ footer {
       background-color: #ffffff; padding-top: 20px; padding-bottom: 20px;
       .join-course-btn {
         display: inline-block; width: 100%; height: 40px; line-height: 40px;
-        font-size: 20px; color: #ffffff; background-color: orange;
+        font-size: 1rem; color: #ffffff; background-color: #3490dc;
         text-align: center; border-radius: 2px;
       }
       .join-course-btn:hover {
-        background-color: #ffffff; color: orange; border: 1px solid orange;
+        background-color: #ffffff; color: #3490dc; border: 1px solid #3490dc;
       }
     }
     .news-student {
@@ -321,7 +343,7 @@ footer {
       font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     li.active {
-      color: orange;
+      color: #3490dc;
     }
   }
   .play-list::-webkit-scrollbar {
@@ -401,7 +423,7 @@ footer {
 
 /** FAQ */
 .faq-banner {
-  height: 160px; background-color: orange; color: #FFFFFF;
+  height: 160px; background-color: #3490dc; color: #FFFFFF;
   h1 {
     line-height: 160px;
   }
@@ -422,7 +444,7 @@ footer {
 
 /** 充值界面 */
 .recharge-banner {
-  background-color: orange; color: #ffffff;
+  background-color: #3490dc; color: #ffffff;
   h3 {
     line-height: 120px; font-size: 36px;
   }

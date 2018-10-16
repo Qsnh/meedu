@@ -4,7 +4,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 index-banner text-center">
+            <div class="col-sm index-banner text-center">
                 <h1>书山有路勤为径，学海无涯苦作舟</h1>
                 <h4>你想要的，这里都有！</h4>
                 <p class="button">
@@ -15,27 +15,25 @@
     </div>
 
     <div class="container">
-        <div class="row">
+        <div class="row index-banner2">
 
-            <div class="col-sm-12 index-banner2">
-                <div class="text-center index-banner-title">
-                    <h3>最新课程</h3>
-                </div>
-                <div class="row">
-                    @foreach($courses as $course)
-                        <a href="{{ route('course.show', [$course->id, $course->slug]) }}">
-                            <div class="col-sm-4 course text-center">
-                                <div class="course-item border">
-                                    <div class="thumb">
-                                        <img data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png" width="100%" height="300">
-                                    </div>
-                                    <div class="title">{{ $course->title }}</div>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+            <div class="col-sm-12 text-center index-banner-title">
+                <h3>最新课程</h3>
             </div>
+
+            @foreach($courses as $course)
+                <div class="col-sm course text-center">
+                    <a href="{{ route('course.show', [$course->id, $course->slug]) }}">
+                        <div class="course-item border">
+                            <div class="thumb">
+                                <img data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png" width="100%" height="300">
+                            </div>
+                            <div class="title">{{ $course->title }}</div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+
         </div>
     </div>
 
@@ -43,17 +41,17 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="container">
-                    <div class="col-sm-12 text-center">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h3 class="title">计划</h3>
-                            </div>
-                            @foreach($roles as $role)
-                            <div class="col-sm-4 roles-item">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h3 class="title">计划</h3>
+                        </div>
+
+                        @foreach($roles as $role)
+                            <div class="col-sm roles-item">
                                 <div class="roles-item-info text-center border">
                                     <h2 class="title">{{$role->name}}</h2>
                                     @foreach($role->descriptionRows() as $row)
-                                    <p>{{$row}}</p>
+                                        <p>{{$row}}</p>
                                     @endforeach
                                     <p class="price">￥{{$role->charge}}</p>
                                     <p>
@@ -61,8 +59,8 @@
                                     </p>
                                 </div>
                             </div>
-                            @endforeach
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
@@ -73,8 +71,8 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-8">
                             <h3 class="text-center">订阅本站获取最新消息</h3>
                             <form action="{{route('subscription.email')}}" method="post">
                                 {!! csrf_field() !!}

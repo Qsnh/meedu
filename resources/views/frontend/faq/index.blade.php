@@ -13,12 +13,12 @@
     <div class="container faq-body">
         <div class="row">
             @forelse($categories as $category)
-            <div class="col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">
+            <div class="col-sm-4" style="margin-top: 15px;">
+                <div class="card">
+                    <div class="card-header text-center">
                         <a href="{{route('faq.category.show', $category)}}">{{$category->name}}</a>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <ul>
                             @foreach($category->articles()->orderByDesc('updated_at')->limit(5)->get() as $article)
                                 <li class="lh-30"><a href="{{route('faq.article.show', $article)}}">{{$article->title}}</a></li>
