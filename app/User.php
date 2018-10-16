@@ -200,7 +200,7 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute($avatar)
     {
-        return $avatar ?: config('meedu.member.default_avatar');
+        return $avatar ?: url(config('meedu.member.default_avatar'));
     }
 
     /**
