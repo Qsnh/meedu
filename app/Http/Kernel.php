@@ -12,6 +12,8 @@
 namespace App\Http;
 
 use App\Http\Middleware\UserShareMiddleware;
+use App\Http\Middleware\CheckSmsCodeMiddleware;
+use App\Http\Middleware\CheckImageCaptchaMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\AdministratorLoginCheckMiddleware;
 
@@ -71,5 +73,7 @@ class Kernel extends HttpKernel
 
         'backend.login.check' => AdministratorLoginCheckMiddleware::class,
         'user.share' => UserShareMiddleware::class,
+        'sms.check' => CheckSmsCodeMiddleware::class,
+        'image.captcha.check' => CheckImageCaptchaMiddleware::class,
     ];
 }

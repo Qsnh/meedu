@@ -8,7 +8,7 @@
                 <h3 class="text-center login-box-title">重置密码</h3>
                 <form class="form-horizontal" method="POST">
                     @csrf
-                    @include('components.frontend.mobile_captcha')
+                    @include('components.frontend.mobile_captcha', ['smsCaptchaKey' => 'password_reset'])
                     <div class="form-group">
                         <label for="password">密码</label>
                         <input id="password" type="password" placeholder="请输入新密码" class="form-control" name="password" required>

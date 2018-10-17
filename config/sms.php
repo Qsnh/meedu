@@ -13,6 +13,7 @@ return [
             'sign_name' => '微菲系统',
             'template' => [
                 'password_reset' => 'SMS_81985082',
+                'register' => 'SMS_81985082',
             ],
         ],
     ],

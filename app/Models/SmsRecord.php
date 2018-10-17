@@ -25,8 +25,8 @@ class SmsRecord extends Model
     {
         $self = new self();
         $self->mobile = $mobile;
-        $self->send_date = $sendData;
-        $self->response_data = $response;
+        $self->send_data = json_encode($sendData);
+        $self->response_data = json_encode($response);
         $self->save();
     }
 }

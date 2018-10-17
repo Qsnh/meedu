@@ -14,8 +14,10 @@
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 
 Auth::routes();
+Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('/register', 'Auth\RegisterController@register')->middleware('sms.check');
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
-Route::post('/password/reset', 'Auth\ForgotPasswordController@handler');
+Route::post('/password/reset', 'Auth\ForgotPasswordController@handler')->middleware('sms.check');
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
