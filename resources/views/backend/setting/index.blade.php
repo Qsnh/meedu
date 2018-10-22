@@ -48,8 +48,11 @@
                         <el-form-item label="阿里云短信签名">
                             <el-input name="sms*gateways*aliyun*sign_name" v-model="config.sms.gateways.aliyun.sign_name"></el-input>
                         </el-form-item>
-                        <el-form-item label="阿里云短信模板ID">
+                        <el-form-item label="密码重置短信模板ID">
                             <el-input name="sms*gateways*aliyun*template*password_reset" v-model="config.sms.gateways.aliyun.template.password_reset"></el-input>
+                        </el-form-item>
+                        <el-form-item label="注册短信模板ID">
+                            <el-input name="sms*gateways*aliyun*template*register" v-model="config.sms.gateways.aliyun.template.register"></el-input>
                         </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="支付配置" name="payment">
