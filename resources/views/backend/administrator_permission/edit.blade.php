@@ -30,7 +30,7 @@
                     </el-select>
                     <input type="hidden" name="method[]" :value="method" v-for="method in selectedMethods" :key="method">
                 </el-form-item>
-                <el-form-item label="请求地址">
+                <el-form-item label="请求地址[支持正则表达式]">
                     <el-input name="url" value="{{ $permission->url }}" placeholder="请输入请求地址"></el-input>
                 </el-form-item>
                 <el-button type="primary" native-type="submit">编辑</el-button>
