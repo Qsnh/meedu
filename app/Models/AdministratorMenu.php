@@ -1,18 +1,39 @@
 <?php
 
-namespace App;
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
-use App\Models\AdministratorPermission;
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class AdministratorMenu extends Model
 {
-
     protected $table = 'administrator_menus';
 
     protected $fillable = [
         'parent_id', 'name', 'url', 'order', 'permission_id',
     ];
+
+    protected $appends = [
+        'edit_url', 'destroy_url',
+    ];
+
+    public function getEditUrlAttribute()
+    {
+        return route('backend.administrator_menu.edit', $this);
+    }
+
+    public function getDestroyUrlAttribute()
+    {
+        return route('backend.administrator_menu.destroy', $this);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -38,4 +59,15 @@ class AdministratorMenu extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    /**
+     * 获取菜单层级列表.
+     *
+     * @return mixed
+     */
+    public function menus()
+    {
+        $parentMenus = self::with('children')->whereParentId(0)->orderBy('order')->get();
+
+        return $parentMenus;
+    }
 }

@@ -115,6 +115,9 @@
                         <li class="{{ menu_is_active('backend.administrator_permission.index') }}">
                             <a href="{{ route('backend.administrator_permission.index') }}">权限</a>
                         </li>
+                        <li class="{{ menu_is_active('backend.administrator_menu.index') }}">
+                            <a href="{{ route('backend.administrator_menu.index') }}">菜单</a>
+                        </li>
                     </ul>
                 </dd>
             </dl>

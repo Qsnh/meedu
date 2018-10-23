@@ -105,6 +105,14 @@ Route::group(['middleware' => ['backend.login.check']], function () {
     Route::post('/video/aliyun/create', 'AliyunVideoUploadController@createVideoToken')->name('video.upload.aliyun.create');
     Route::post('/video/aliyun/refresh', 'AliyunVideoUploadController@refreshVideoToken')->name('video.upload.aliyun.refresh');
 
+    // 后台菜单
+    Route::get('/administrator_menu', 'AdministratorMenuController@index')->name('backend.administrator_menu.index');
+    Route::post('/administrator_menu/create', 'AdministratorMenuController@store')->name('backend.administrator_menu.create');
+    Route::get('/administrator_menu/{id}/edit', 'AdministratorMenuController@edit')->name('backend.administrator_menu.edit');
+    Route::put('/administrator_menu/{id}/edit', 'AdministratorMenuController@update');
+    Route::get('/administrator_menu/{id}/delete', 'AdministratorMenuController@destroy')->name('backend.administrator_menu.destroy');
+    Route::post('/administrator_menu/change/save', 'AdministratorMenuController@saveChange')->name('backend.administrator_menu.save_change');
+
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
         Route::get('/course', 'CourseController@index')->name('backend.ajax.course.index');
