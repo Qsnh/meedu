@@ -130,4 +130,14 @@ class ApplicationInstallCommand extends Command
 
         $this->info('数据初始化成功');
     }
+
+    // 后台菜单
+    public function actionBackendMenu()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\BackendMenuSeeder::class);
+
+        $this->info('数据初始化成功');
+    }
 }
