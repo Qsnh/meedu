@@ -84,7 +84,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($user->joinCourses as $course)
+                        @forelse($member->joinCourses as $course)
                             <tr>
                                 <td><a href="{{ route('course.show', [$course->id, $course->slug]) }}">{{ $course->title }}</a></td>
                                 <td>
