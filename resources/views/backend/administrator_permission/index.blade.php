@@ -44,6 +44,8 @@
         </el-col>
     </el-row>
 
+    <meedu-pagination :pagination="remoteData"></meedu-pagination>
+
 @endsection
 
 @section('js')

@@ -17,7 +17,7 @@
                                name="permission_id[]"
                                value="{{ $permission->id }}"
                                 {{ $role->hasPermission($permission) ? 'checked' : '' }}> {{ $permission->display_name }}
-                    </label>
+                    </label><br>
                 @endforeach
                 <br><br>
                 <el-button type="primary" native-type="submit">授权</el-button>
@@ -27,4 +27,6 @@
 
 @endsection
 
-@include('components.vue_init')
+@section('js')
+    @include('components.vue_init')
+@endsection

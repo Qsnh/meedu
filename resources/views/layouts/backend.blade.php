@@ -40,86 +40,18 @@
     <section class="backend-section">
         <div class="backend-left-menu">
             <dl>
-                <dt>主面板</dt>
+                @foreach(backend_menus() as $menu)
+                <dt>{{$menu->name}}</dt>
                 <dd>
                     <ul>
-                        <li class="{{ menu_is_active('backend.dashboard.index') }}">
-                            <a href="{{ route('backend.dashboard.index') }}">主面板</a>
+                        @foreach($menu->children as $child)
+                        <li>
+                            <a href="{{$child->url}}">{{$child->name}}</a>
                         </li>
+                        @endforeach
                     </ul>
                 </dd>
-                <dt>运营</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.announcement.index') }}">
-                            <a href="{{ route('backend.announcement.index') }}">公告</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.role.index') }}">
-                            <a href="{{ route('backend.role.index') }}">VIP会员</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.subscription.email') }}">
-                            <a href="{{ route('backend.subscription.email') }}">邮件群发</a>
-                        </li>
-                    </ul>
-                </dd>
-                <dt>财务</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.recharge') }}">
-                            <a href="{{ route('backend.recharge') }}">充值记录</a>
-                        </li>
-                    </ul>
-                </dd>
-                <dt>会员</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.member.index') }}">
-                            <a href="{{ route('backend.member.index') }}">会员</a>
-                        </li>
-                    </ul>
-                </dd>
-                <dt>视频</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.course.index') }}">
-                            <a href="{{ route('backend.course.index') }}">课程</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.video.index') }}">
-                            <a href="{{ route('backend.video.index') }}">视频</a>
-                        </li>
-                    </ul>
-                </dd>
-                <dt>FAQ</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.faq.category.index') }}">
-                            <a href="{{ route('backend.faq.category.index') }}">分类</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.faq.article.index') }}">
-                            <a href="{{ route('backend.faq.article.index') }}">文章</a>
-                        </li>
-                    </ul>
-                </dd>
-                <dt>系统</dt>
-                <dd>
-                    <ul>
-                        <li class="{{ menu_is_active('backend.setting.index') }}">
-                            <a href="{{ route('backend.setting.index') }}">全站配置</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.administrator.index') }}">
-                            <a href="{{ route('backend.administrator.index') }}">管理员</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.administrator_role.index') }}">
-                            <a href="{{ route('backend.administrator_role.index') }}">角色</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.administrator_permission.index') }}">
-                            <a href="{{ route('backend.administrator_permission.index') }}">权限</a>
-                        </li>
-                        <li class="{{ menu_is_active('backend.administrator_menu.index') }}">
-                            <a href="{{ route('backend.administrator_menu.index') }}">菜单</a>
-                        </li>
-                    </ul>
-                </dd>
+                @endforeach
             </dl>
         </div>
         <div class="backend-body">

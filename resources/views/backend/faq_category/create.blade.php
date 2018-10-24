@@ -32,13 +32,5 @@
 @endsection
 
 @section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                }
-            }
-        });
-    </script>
+    @include('components.vue_init')
 @endsection

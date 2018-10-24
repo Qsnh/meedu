@@ -20,7 +20,7 @@ class BackendMenuSeeder extends Seeder
             '课程' => '课程列表界面',
             '视频' => '视频列表界面',
             'FAQ分类' => 'FAQ分类列表界面',
-            'FAQ文章' => 'FAQ分类创建界面',
+            'FAQ文章' => 'FAQ文章列表界面',
         ];
 
         $menus = [

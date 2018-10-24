@@ -70,4 +70,35 @@ class AdministratorMenu extends Model
 
         return $parentMenus;
     }
+
+    /**
+     * 作用域：根目录
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRootLevel($query)
+    {
+        return $query->whereParentId(0);
+    }
+
+    /**
+     * 作用域：非超级管理员专属的菜单
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNotSuper($query)
+    {
+        return $query->where('permission_id', '<>', -1);
+    }
+
+    /**
+     * 作用域：升序[order]
+     * @param $query
+     * @return mixed
+     */
+    public function scopeOrderAsc($query)
+    {
+        return $query->orderBy('order');
+    }
+
 }

@@ -110,4 +110,21 @@ class Administrator extends Authenticatable
     {
         return $this->hasMany(Announcement::class, 'admin_id');
     }
+
+    /**
+     * 获取当前管理员用户下的所有权限ID
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function permissionIds()
+    {
+        $roles = $this->roles;
+        if (! $roles) {
+            return [];
+        }
+        $permissionIds = collect([]);
+        foreach ($roles as $role) {
+            $permissionIds = $permissionIds->merge($role->permissions()->select('id')->pluck('id'));
+        }
+        return $permissionIds->unique();
+    }
 }
