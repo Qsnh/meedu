@@ -32,8 +32,10 @@
                 <el-form-item label="链接地址">
                     <el-input name="url" value="{{ old('url') }}" v-model="menu.url" placeholder="请输入链接地址"></el-input>
                 </el-form-item>
-                <el-form-item label="权限" v-model="menu.permission_id">
-                    <select name="permission_id">
+                <el-form-item label="权限">
+                    <select name="permission_id" v-model="menu.permission_id">
+                        <option value="0">无</option>
+                        <option value="-1">超级管理员专属</option>
                         @foreach($permissions as $permission)
                             <option value="{{ $permission->id }}">{{ $permission->display_name }}</option>
                         @endforeach

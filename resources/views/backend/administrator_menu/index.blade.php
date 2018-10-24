@@ -61,6 +61,8 @@
                 </el-form-item>
                 <el-form-item label="权限">
                     <select name="permission_id">
+                        <option value="0">无</option>
+                        <option value="-1">超级管理员专属</option>
                         @foreach($permissions as $permission)
                             <option value="{{ $permission->id }}">{{ $permission->display_name }}</option>
                         @endforeach
