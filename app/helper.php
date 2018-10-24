@@ -263,7 +263,8 @@ if (! function_exists('aliyun_sdk_client')) {
 
 if (! function_exists('backend_menus')) {
     /**
-     * 获取当前管理员的专属菜单
+     * 获取当前管理员的专属菜单.
+     *
      * @return array|mixed
      */
     function backend_menus()
@@ -274,7 +275,7 @@ if (! function_exists('backend_menus')) {
         }
         $isSuper = $user->roles()->whereSlug(config('meedu.administrator.super_slug'))->exists();
         if ($isSuper) {
-            return (new \App\Models\AdministratorMenu)->menus();
+            return (new \App\Models\AdministratorMenu())->menus();
         }
         $permissionIds = $user->permissionIds();
         $permissionIds->push(0);
@@ -289,11 +290,13 @@ if (! function_exists('backend_menus')) {
             }
             $permissionIds = $permissionIds->toArray();
             $children = $menu->children->filter(function ($child) use ($permissionIds) {
-               return in_array($child->permission_id, $permissionIds);
+                return in_array($child->permission_id, $permissionIds);
             });
             $menu->children = $children;
+
             return $children->count() != 0;
         });
+
         return $menus;
     }
 }

@@ -72,8 +72,10 @@ class AdministratorMenu extends Model
     }
 
     /**
-     * 作用域：根目录
+     * 作用域：根目录.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeRootLevel($query)
@@ -82,8 +84,10 @@ class AdministratorMenu extends Model
     }
 
     /**
-     * 作用域：非超级管理员专属的菜单
+     * 作用域：非超级管理员专属的菜单.
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeNotSuper($query)
@@ -92,13 +96,14 @@ class AdministratorMenu extends Model
     }
 
     /**
-     * 作用域：升序[order]
+     * 作用域：升序[order].
+     *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeOrderAsc($query)
     {
         return $query->orderBy('order');
     }
-
 }

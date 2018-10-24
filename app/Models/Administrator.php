@@ -112,7 +112,8 @@ class Administrator extends Authenticatable
     }
 
     /**
-     * 获取当前管理员用户下的所有权限ID
+     * 获取当前管理员用户下的所有权限ID.
+     *
      * @return array|\Illuminate\Support\Collection
      */
     public function permissionIds()
@@ -125,6 +126,7 @@ class Administrator extends Authenticatable
         foreach ($roles as $role) {
             $permissionIds = $permissionIds->merge($role->permissions()->select('id')->pluck('id'));
         }
+
         return $permissionIds->unique();
     }
 }
