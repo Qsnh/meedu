@@ -137,7 +137,7 @@ class AdministratorPermissionSeeder extends Seeder
                 'display_name' => '公告列表界面',
                 'slug' => 'backend.announcement.index',
                 'method' => 'GET',
-                'url' => '/backend/video',
+                'url' => '/backend/announcement',
                 'description' => '',
             ],
             [

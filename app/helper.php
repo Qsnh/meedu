@@ -273,8 +273,7 @@ if (! function_exists('backend_menus')) {
         if (! $user) {
             return collect([]);
         }
-        $isSuper = $user->roles()->whereSlug(config('meedu.administrator.super_slug'))->exists();
-        if ($isSuper) {
+        if ($user->isSuper()) {
             return (new \App\Models\AdministratorMenu())->menus();
         }
         $permissionIds = $user->permissionIds();
