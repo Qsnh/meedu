@@ -57,16 +57,21 @@ Route::group([
 
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
 
-    Route::get('/recharge', 'PaymentController@index')->name('member.recharge');
-    Route::post('/recharge', 'PaymentController@rechargeHandler');
+    // 充值记录
     Route::get('/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
 
+    // 购买课程
     Route::get('/course/{id}/buy', 'CourseController@showBuyPage')->name('member.course.buy');
     Route::post('/course/{id}/buy', 'CourseController@buyHandler');
 
+    // 购买视频
     Route::get('/video/{id}/buy', 'VideoController@showBuyPage')->name('member.video.buy');
     Route::post('/video/{id}/buy', 'VideoController@buyHandler');
 
+    // 购买VIP
     Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
+
+    // 收银台
+    Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
 });

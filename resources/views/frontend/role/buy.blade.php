@@ -18,27 +18,24 @@
 
     <div class="container all-buy-box">
         <div class="row justify-content-center">
-            <div class="col-sm-8">
-                <h3 class="text-center">你正在购买VIP <b>{{$role->name}}</b></h3>
+            <div class="col-sm-5">
+                <h3 style="line-height: 100px;" class="text-center">你正在购买VIP <b>{{$role->name}}</b></h3>
+                <h5>权益如下</h5>
                 <ul class="list-group">
                     @foreach($role->descriptionRows() as $row)
                         <li class="list-group-item">{{$row}}</li>
                     @endforeach
                 </ul>
 
-                <p class="lh-30">价格：<b>￥{{$role->charge}}</b></p>
-                <p class="lh-30">当前账户余额：<b>￥{{$user->credit1}}</b></p>
-
-                @if($user->credit1 < $role->charge)
-                    @include('components.frontend.insufficient')
-                @else
+                <div style="margin-top: 15px;">
+                    <h1 class="text-center">￥{{$role->charge}}</h1>
                     <form action="" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">立即购买</button>
                         </div>
                     </form>
-                @endif
+                </div>
             </div>
         </div>
     </div>

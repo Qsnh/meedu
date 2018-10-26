@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Role;
+use App\Models\Order;
 use App\Repositories\RoleRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +39,8 @@ class RoleController extends FrontendController
         $role = Role::findOrFail($id);
         $user = Auth::user();
 
-        if (! $repository->bulHandler($user, $role)) {
+        $order = $repository->createOrder($user, $role);
+        if (! ($order instanceof Order)) {
             flash($repository->errors, 'error');
 
             return back();
@@ -46,6 +48,6 @@ class RoleController extends FrontendController
 
         flash('购买成功', 'success');
 
-        return redirect(route('member'));
+        return redirect(route('order.show', $order->order_id));
     }
 }

@@ -20,13 +20,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends FrontendController
 {
-    public function index()
-    {
-        $title = '充值中心';
-
-        return view('frontend.payment.index', compact('title'));
-    }
-
     public function rechargeHandler(Request $request)
     {
         $money = abs($request->input('money', 0));

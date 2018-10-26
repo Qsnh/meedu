@@ -20,7 +20,7 @@
                             </p>
                         @endif
                         <p class="lh-30">余额
-                            <b>￥{{ $user->credit1 }}</b>&nbsp; <a href="{{ route('member.recharge') }}">充值</a>
+                            <b>￥{{ $user->credit1 }}</b>
                         </p>
                     </div>
 
@@ -29,11 +29,6 @@
                             <li>
                                 <a href="{{ route('member') }}">
                                     <i class="fa fa-dashboard"></i> 会员中心
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('member.recharge_records') }}">
-                                    <i class="fa fa-credit-card"></i> 充值记录
                                 </a>
                             </li>
                             <li>

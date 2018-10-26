@@ -299,3 +299,21 @@ if (! function_exists('backend_menus')) {
         return $menus;
     }
 }
+
+if (! function_exists('gen_order_no')) {
+    /**
+     * 生成订单号.
+     *
+     * @param \App\User $user
+     *
+     * @return string
+     */
+    function gen_order_no(\App\User $user)
+    {
+        $userId = str_pad($user->id, 10, 0, STR_PAD_LEFT);
+        $time = date('His');
+        $rand = mt_rand(10, 99);
+
+        return $time.$rand.$userId;
+    }
+}

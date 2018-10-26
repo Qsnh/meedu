@@ -11,12 +11,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Exception;
 use App\Models\Order;
 use App\Models\Course;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\SimpleMessageNotification;
+use App\Repositories\CourseRepository;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends FrontendController
@@ -68,50 +66,20 @@ class CourseController extends FrontendController
         return view('frontend.course.buy', compact('course', 'title'));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(CourseRepository $repository, $id)
     {
         $course = Course::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->joinCourses()->whereId($course->id)->first()) {
-            flash('该视频已购买啦', 'success');
-
-            return redirect(route($course->seeUrl()));
-        }
-
-        if ($user->credit1 < $course->charge) {
-            flash('余额不足请先充值');
-
-            return redirect(route('member.recharge'));
-        }
-
-        DB::beginTransaction();
-        try {
-            // 创建订单记录
-            $order = $user->orders()->save(new Order([
-                'goods_id' => $course->id,
-                'goods_type' => Order::GOODS_TYPE_COURSE,
-                'charge' => $course->charge,
-                'status' => Order::STATUS_PAID,
-            ]));
-            // 购买视频
-            $user->joinACourse($course);
-            // 扣除余额
-            $user->credit1Dec($course->charge);
-            // 消息通知
-            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
-
-            DB::commit();
-
-            flash('购买成功', 'success');
-
-            return redirect(route('course.show', [$course->id, $course->slug]));
-        } catch (Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            flash('购买失败');
+        $order = $repository->createOrder($user, $course);
+        if (! ($order instanceof Order)) {
+            flash($order, 'warning');
 
             return back();
         }
+
+        flash('下单成功，请尽快支付', 'success');
+
+        return redirect(route('order.show', $order->order_id));
     }
 }

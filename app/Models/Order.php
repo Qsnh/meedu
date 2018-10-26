@@ -16,18 +16,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    const GOODS_TYPE_COURSE = 'COURSE';
-    const GOODS_TYPE_VIDEO = 'VIDEO';
-    const GOODS_TYPE_ROLE = 'ROLE';
-
     const STATUS_UNPAY = 1;
     const STATUS_PAID = 9;
 
     protected $table = 'orders';
 
     public $fillable = [
-        'user_id', 'goods_id', 'goods_type',
-        'charge', 'status', 'extra',
+        'user_id', 'charge', 'status', 'order_id',
     ];
 
     /**
@@ -39,46 +34,19 @@ class Order extends Model
     }
 
     /**
-     * 获取当前订单的商品名.
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getGoodsTypeText(): string
+    public function goods()
     {
-        $method = 'get'.ucfirst(strtolower($this->goods_type)).'GoodsTypeText';
-
-        return $this->{$method}();
+        return $this->hasMany(OrderGoods::class, 'order_id');
     }
 
     /**
-     * 获取订单的消息通知内容.
-     *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getNotificationContent(): string
+    public function remotePaymentOrders()
     {
-        return '你已经购买了'.$this->getGoodsTypeText().'，花费了'.$this->charge.'元';
-    }
-
-    protected function getCourseGoodsTypeText(): string
-    {
-        $course = Course::find($this->goods_id);
-
-        return "课程《{$course->title}》";
-    }
-
-    protected function getVideoGoodsTypeText(): string
-    {
-        $video = Video::find($this->goods_id);
-
-        return "视频《{$video->title}》";
-    }
-
-    protected function getRoleGoodsTypeText(): string
-    {
-        $role = Role::find($this->goods_id);
-
-        return "VIP《{$role->name}》";
+        return $this->hasMany(OrderRemoteRelation::class, 'order_id');
     }
 
     /**
@@ -89,5 +57,23 @@ class Order extends Model
     public function statusText(): string
     {
         return $this->status == self::STATUS_PAID ? '已支付' : '未支付';
+    }
+
+    /**
+     * 获取订单的消息通知内容.
+     *
+     * @return string
+     */
+    public function getNotificationContent(): string
+    {
+        $goods = $this->goods;
+        if ($goods->isEmpty()) {
+            return '';
+        }
+        if ($goods->count() == 1) {
+            return sprintf('您购买了%s', $goods[0]->getGoodsTypeText());
+        }
+
+        return sprintf('您购买了%s等%d件商品', $goods[0]->getGoodsTypeText(), $goods->count());
     }
 }
