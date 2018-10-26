@@ -46,7 +46,7 @@ class RoleController extends FrontendController
             return back();
         }
 
-        flash('购买成功', 'success');
+        flash('订单创建成功，请尽快支付', 'success');
 
         return redirect(route('order.show', $order->order_id));
     }

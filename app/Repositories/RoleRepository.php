@@ -15,57 +15,10 @@ use Exception;
 use App\Models\Order;
 use App\Models\OrderGoods;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\SimpleMessageNotification;
 
 class RoleRepository
 {
     public $errors = '';
-
-    public function bulHandler($user, $role)
-    {
-        if ($user->credit1 < $role->charge) {
-            $this->errors = '余额不足';
-
-            return false;
-        }
-
-        if (
-            $user->role &&
-            strtotime($user->role_expired_at) > time() &&
-            $user->role->weight != $role->weight
-        ) {
-            $this->errors = '您的账户下面已经有会员啦';
-
-            return false;
-        }
-
-        DB::beginTransaction();
-        try {
-            // 创建订单记录
-            $order = $user->orders()->save(new Order([
-                'goods_id' => $role->id,
-                'goods_type' => Order::GOODS_TYPE_ROLE,
-                'charge' => $role->charge,
-                'status' => Order::STATUS_PAID,
-            ]));
-            // 扣除余额
-            $user->credit1Dec($role->charge);
-            // 购买会员
-            $user->buyRole($role);
-            // 消息通知
-            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
-
-            DB::commit();
-
-            return true;
-        } catch (Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            $this->errors = '系统错误';
-
-            return false;
-        }
-    }
 
     public function createOrder($user, $role)
     {

@@ -24,7 +24,7 @@
                     <img src="{{$pay['pay_qr_code']}}" width="100%">
                 </p>
                 <p style="margin-top: 15px;">
-                    <a href="" class="btn btn-success btn-block">支付成功</a>
+                    <a href="{{route('member.orders')}}" class="btn btn-success btn-block">支付成功</a>
                 </p>
                 <p style="margin-top: 10px;">
                     <a href="{{route('member')}}" class="btn btn-secondary btn-block">取消支付</a>
