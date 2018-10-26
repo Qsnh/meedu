@@ -3,28 +3,22 @@
 @section('member')
 
     <div class="row">
-        <h3>消费记录</h3>
+        <h3>我的订单</h3>
     </div>
 
     <table class="table table-hover">
         <thead>
         <tr>
             <td>价格</td>
-            <td>类型</td>
+            <td>商品</td>
             <td>时间</td>
         </tr>
         </thead>
         <tbody>
         @forelse($orders as $order)
             <tr>
-                <td>
-                    @if($order->charge == 0)
-                        <span class="label label-success">￥0</span>
-                        @else
-                        <span class="label label-danger">￥{{ $order->charge }}</span>
-                    @endif
-                </td>
-                <td>{{ $order->getGoodsTypeText() }}</td>
+                <td><span class="badge badge-danger">￥{{ $order->charge }}</span></td>
+                <td>{{ $order->getOrderListTitle() }}</td>
                 <td>{{ $order->created_at }}</td>
             </tr>
         @empty

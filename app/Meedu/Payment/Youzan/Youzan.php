@@ -37,7 +37,8 @@ class Youzan implements Payment
             $client = new YZTokenClient($this->getToken());
             $params = [
                 'qr_name' => $order->getNotificationContent(),
-                'qr_price' => $order->charge * 100,
+//                'qr_price' => $order->charge * 100,
+                'qr_price' => 1,
                 'qr_type' => 'QR_TYPE_DYNAMIC',
             ];
             $response = $client->post('youzan.pay.qrcode.create', self::VERSION, $params);
@@ -94,7 +95,7 @@ class Youzan implements Payment
                 'TRADE_PAID' === $data['status']
             ) {
                 $msg = json_decode(urldecode($data['msg']), true);
-                event(new PaymentSuccessEvent($msg['qr_info']['qr_id']));
+                event(new PaymentSuccessEvent(OrderRemoteRelation::PAYMENT_YOUZAN, $msg['qr_info']['qr_id']));
             }
         } catch (Exception $exception) {
             exception_record($exception);

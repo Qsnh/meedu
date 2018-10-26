@@ -17,10 +17,12 @@ use App\Models\Role;
 use App\Models\Order;
 use App\Models\Video;
 use App\Models\Course;
+use App\Models\OrderGoods;
 use App\Models\VideoComment;
 use App\Models\CourseComment;
 use App\Models\RechargePayment;
 use App\Models\UserJoinRoleRecord;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
@@ -321,5 +323,47 @@ class User extends Authenticatable
             Carbon::now()->format('Y-m-d'),
             Carbon::now()->addDays(1)->format('Y-m-d')
         )->count();
+    }
+
+    /**
+     * 订单成功的处理.
+     *
+     * @param Order $order
+     *
+     * @return bool
+     *
+     * @throws \Throwable
+     */
+    public function handlerOrderSuccess(Order $order)
+    {
+        $goods = $order->goods;
+        DB::beginTransaction();
+        try {
+            foreach ($goods as $goodsItem) {
+                switch ($goodsItem->goods_type) {
+                    case OrderGoods::GOODS_TYPE_COURSE:
+                        $course = Course::find($goodsItem->goods_id);
+                        $this->joinACourse($course);
+                        break;
+                    case OrderGoods::GOODS_TYPE_VIDEO:
+                        $video = Video::find($goodsItem->goods_id);
+                        $this->buyAVideo($video);
+                        break;
+                    case OrderGoods::GOODS_TYPE_ROLE:
+                        $role = Role::find($goodsItem->goods_id);
+                        $this->buyRole($role);
+                        break;
+                }
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+
+            return false;
+        }
     }
 }

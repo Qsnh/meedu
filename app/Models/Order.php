@@ -76,4 +76,26 @@ class Order extends Model
 
         return sprintf('您购买了%s等%d件商品', $goods[0]->getGoodsTypeText(), $goods->count());
     }
+
+    /**
+     * 订单标题.
+     *
+     * @return string
+     */
+    public function getOrderListTitle(): string
+    {
+        $goods = $this->goods;
+        if ($goods->isEmpty()) {
+            return '';
+        }
+        if ($goods->count() == 1) {
+            return $goods[0]->getGoodsTypeText();
+        }
+
+        $title = array_reduce($goods->toArray(), function ($item) {
+            return $item->getGoodsTypeText().',';
+        });
+
+        return rtrim($title, ',');
+    }
 }

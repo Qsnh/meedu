@@ -11,10 +11,11 @@
 
 namespace App\Listeners;
 
-use App\Models\RechargePayment;
+use Exception;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use App\Events\PaymentSuccessEvent;
-use App\Notifications\MemberRechargeNotification;
+use App\Notifications\SimpleMessageNotification;
 
 class PaymentSuccessListener
 {
@@ -36,22 +37,22 @@ class PaymentSuccessListener
         if (! $payment) {
             return;
         }
+        $order = $payment->order;
 
         DB::beginTransaction();
         try {
             // 修改订单状态
-            $payment->status = RechargePayment::STATUS_PAYED;
-            $payment->save();
+            $order->status = Order::STATUS_PAID;
+            $order->save();
 
-            // 增加用户余额
-            $payment->user->credit1 += $payment->money;
-            $payment->user->save();
+            // 商品归属
+            $order->user->handlerOrderSuccess($order);
 
             // 消息通知
-            $payment->user->notify(new MemberRechargeNotification($payment));
+            $order->user->notify(new SimpleMessageNotification($order->getNotificationContent()));
 
             DB::commit();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
         }

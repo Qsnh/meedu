@@ -33,7 +33,7 @@
                             </li>
                             <li>
                                 <a href="{{ route('member.orders') }}">
-                                    <i class="fa fa-envelope-open-o"></i> 消费记录
+                                    <i class="fa fa-envelope-open-o"></i> 我的订单
                                 </a>
                             </li>
                             <li>
