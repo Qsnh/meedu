@@ -11,7 +11,7 @@
 
 namespace App\Events;
 
-use App\Models\RechargePayment;
+use App\Models\OrderRemoteRelation;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -26,9 +26,11 @@ class PaymentSuccessEvent
     /**
      * Create a new event instance.
      */
-    public function __construct($thirdId)
+    public function __construct($payment, $thirdId)
     {
-        $this->payment = RechargePayment::whereThirdId($thirdId)->first();
+        $this->payment = OrderRemoteRelation::wherePayment($payment)
+            ->whereRemoteId($thirdId)
+            ->first();
     }
 
     /**

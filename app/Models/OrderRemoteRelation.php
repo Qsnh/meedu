@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderRemoteRelation extends Model
 {
+    const PAYMENT_YOUZAN = 'youzan';
+
     protected $table = 'order_remote_relation';
 
     protected $fillable = [

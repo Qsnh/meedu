@@ -13,13 +13,15 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Order;
 use App\Http\Controllers\Controller;
+use App\Repositories\OrderRepository;
 
 class OrderController extends Controller
 {
-    public function show($orderId)
+    public function show(OrderRepository $repository, $orderId)
     {
         $order = Order::whereOrderId($orderId)->firstOrFail();
+        $pay = $repository->payInfo($order);
 
-        return view('order.show', compact('order'));
+        return view('frontend.order.show', compact('order', 'pay'));
     }
 }
