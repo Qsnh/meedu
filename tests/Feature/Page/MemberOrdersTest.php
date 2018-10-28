@@ -2,10 +2,6 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Course;
-use App\Models\Order;
-use App\Models\Role;
-use App\Models\Video;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
