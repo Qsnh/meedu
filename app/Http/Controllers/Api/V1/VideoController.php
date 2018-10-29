@@ -53,7 +53,7 @@ class VideoController extends Controller
             throw new ApiV1Exception('当前视频无法观看');
         }
 
-        return aliyun_play_url($video);
+        return $video->getPlayInfo();
     }
 
     /**

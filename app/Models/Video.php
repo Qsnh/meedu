@@ -122,4 +122,24 @@ class Video extends Model
 
         return $comment;
     }
+
+    /**
+     * 获取视频的播放地址[阿里云|本地].
+     *
+     * @return array
+     */
+    public function getPlayInfo()
+    {
+        if ($this->video_id != '') {
+            return aliyun_play_url($this);
+        }
+
+        return [
+            [
+                'format' => pathinfo($this->url, PATHINFO_EXTENSION),
+                'url' => $this->url,
+                'duration' => 0,
+            ],
+        ];
+    }
 }

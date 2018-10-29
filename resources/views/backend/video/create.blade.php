@@ -51,7 +51,7 @@
 
                 <hr>
 
-                @include('components.backend.aliyun_upload')
+                <meedu-video-upload :video="{url: '', video_id: '1'}"></meedu-video-upload>
 
                 <el-form-item label="是否显示">
                     <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" checked> 是</label>

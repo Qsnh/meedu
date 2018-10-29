@@ -15,31 +15,7 @@
                         @if(Auth::check())
                             <div class="col-sm-9 play-box">
                                 @if($user->canSeeThisVideo($video))
-                                    <div id="player"></div>
-                                    <script src="https://g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
-                                    <script>
-                                        var player = new Aliplayer({
-                                            "id": "player",
-                                            "qualitySort": "asc",
-                                            "format": "mp4",
-                                            "mediaType": "video",
-                                            "width": "100%",
-                                            "height": "500px",
-                                            "autoplay": false,
-                                            "isLive": false,
-                                            "rePlay": false,
-                                            "playsinline": true,
-                                            "preload": true,
-                                            "autoPlayDelay": 2,
-                                            "autoPlayDelayDisplayText": '正在加载中...',
-                                            "loadDataTimeout": "",
-                                            "controlBarVisibility": "hover",
-                                            "useH5Prism": true,
-                                            "vid" : '{{$video->aliyun_video_id}}',
-                                            "playauth" : '{{aliyun_play_auth($video)}}',
-                                        },function(player){
-                                        });
-                                    </script>
+                                    @include('components.frontend.video_play', ['video' => $video])
                                     @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
