@@ -118,4 +118,14 @@ class Book extends Model
     {
         return $this->hasMany(BookChapter::class, 'book_id');
     }
+
+    /**
+     * 获取已出版且显示的章节
+     *
+     * @return mixed
+     */
+    public function showAndPublishedChapter()
+    {
+        return $this->chapters()->published()->show()->orderBy('published_at')->get();
+    }
 }
