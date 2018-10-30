@@ -59,7 +59,7 @@ class BookChapterRequest extends FormRequest
             'user_id' => 0,
             'title' => $this->post('title'),
             'content' => $this->post('content'),
-            'view_num' => $this->post('view_num'),
+            'view_num' => $this->post('view_num', 0),
             'published_at' => $this->post('published_at'),
             'is_show' => $this->post('is_show'),
         ];

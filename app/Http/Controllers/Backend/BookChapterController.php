@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Book;
 use App\Models\BookChapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,19 +19,22 @@ use App\Http\Requests\Backend\BookChapterRequest;
 
 class BookChapterController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $bookId)
     {
-        $books = BookChapter::publishedDesc()->paginate($request->input('page_size', 10));
+        $book = Book::findOrFail($bookId);
+        $chapters = $book->chapters()->publishedDesc()->get();
 
-        return view('backend.book_chapter.index', compact('books'));
+        return view('backend.book_chapter.index', compact('chapters', 'book'));
     }
 
-    public function create()
+    public function create($bookId)
     {
-        return view('backend.book_chapter.create');
+        $book = Book::findOrFail($bookId);
+
+        return view('backend.book_chapter.create', compact('book'));
     }
 
-    public function store(BookChapterRequest $request)
+    public function store(BookChapterRequest $request, $bookId)
     {
         BookChapter::create($request->filldata());
         flash('创建成功', 'success');
@@ -38,14 +42,15 @@ class BookChapterController extends Controller
         return back();
     }
 
-    public function edit($id)
+    public function edit($bookId, $id)
     {
-        $book = BookChapter::findOrFail($id);
+        $book = Book::findOrFail($bookId);
+        $chapter = $book->chapters()->whereId($id)->firstOrFail();
 
-        return view('backend.book_chapter.edit', compact('book'));
+        return view('backend.book_chapter.edit', compact('book', 'chapter'));
     }
 
-    public function update(BookChapterRequest $request, $id)
+    public function update(BookChapterRequest $request, $bookId, $id)
     {
         $book = BookChapter::findOrFail($id);
         $book->fill($request->filldata())->save();
@@ -54,7 +59,7 @@ class BookChapterController extends Controller
         return back();
     }
 
-    public function destroy($id)
+    public function destroy($bookId, $id)
     {
         BookChapter::destroy($id);
         flash('删除成功', 'success');

@@ -38,12 +38,13 @@
                 </el-table-column>
                 <el-table-column
                         prop="published_at"
-                        label="上下时间">
+                        label="上线时间">
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
                         <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
+                        <meedu-a :size="'mini'" :name="'章节'" :type="'primary'" :url="scope.row.chapter_url"></meedu-a>
                     </template>
                 </el-table-column>
             </el-table>

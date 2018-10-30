@@ -32,7 +32,7 @@ class Book extends Model
     ];
 
     protected $appends = [
-        'edit_url', 'destroy_url',
+        'edit_url', 'destroy_url', 'chapter_url',
     ];
 
     protected static function boot()
@@ -57,6 +57,14 @@ class Book extends Model
     public function getDestroyUrlAttribute()
     {
         return route('backend.book.destroy', $this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getChapterUrlAttribute()
+    {
+        return route('backend.book.chapter.index', $this);
     }
 
     /**

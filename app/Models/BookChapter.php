@@ -38,7 +38,7 @@ class BookChapter extends Model
      */
     public function getEditUrlAttribute()
     {
-        return route('backend.book.chapter.edit', $this);
+        return route('backend.book.chapter.edit', [$this->book_id, $this->id]);
     }
 
     /**
@@ -46,7 +46,7 @@ class BookChapter extends Model
      */
     public function getDestroyUrlAttribute()
     {
-        return route('backend.book.chapter.destroy', $this);
+        return route('backend.book.chapter.destroy', [$this->book_id, $this->id]);
     }
 
     /**
