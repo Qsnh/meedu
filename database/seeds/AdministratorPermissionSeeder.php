@@ -102,17 +102,10 @@ class AdministratorPermissionSeeder extends Seeder
 
             // 财务[充值]
             [
-                'display_name' => '充值列表',
-                'slug' => 'backend.recharge',
+                'display_name' => '订单列表',
+                'slug' => 'backend.orders',
                 'method' => 'GET',
-                'url' => '/backend/recharge',
-                'description' => '',
-            ],
-            [
-                'display_name' => '充值记录excel导出',
-                'slug' => 'backend.recharge.export',
-                'method' => 'GET',
-                'url' => '/backend/recharge/export',
+                'url' => '/backend/orders',
                 'description' => '',
             ],
 

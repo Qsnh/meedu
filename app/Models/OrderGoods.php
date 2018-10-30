@@ -27,6 +27,15 @@ class OrderGoods extends Model
         'num', 'charge',
     ];
 
+    protected $appends = [
+        'goods_name',
+    ];
+
+    public function getGoodsNameAttribute()
+    {
+        return $this->getGoodsTypeText();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

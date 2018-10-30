@@ -65,6 +65,9 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/recharge', 'RechargeController@index')->name('backend.recharge');
         Route::get('/recharge/export', 'RechargeController@exportToExcel')->name('backend.recharge.export');
 
+        // 订单
+        Route::get('/orders', 'OrderController@index')->name('backend.orders');
+
         // 会员
         Route::get('/member', 'MemberController@index')->name('backend.member.index');
         Route::get('/member/{id}', 'MemberController@show')->name('backend.member.show');

@@ -15,7 +15,7 @@ class BackendMenuSeeder extends Seeder
             '公告' => '公告列表界面',
             'VIP会员' => 'VIP列表界面',
             '邮件群发' => '邮件群发界面',
-            '充值记录' => '充值列表',
+            '订单列表' => '订单列表',
             '会员' => '会员列表',
             '课程' => '课程列表界面',
             '视频' => '视频列表界面',
@@ -61,8 +61,8 @@ class BackendMenuSeeder extends Seeder
                 'permission_id' => 0,
                 'children' => [
                     [
-                        'name' => '充值记录',
-                        'url' => '/backend/recharge',
+                        'name' => '订单列表',
+                        'url' => '/backend/orders',
                     ],
                 ],
             ],

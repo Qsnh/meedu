@@ -25,6 +25,15 @@ class Order extends Model
         'user_id', 'charge', 'status', 'order_id',
     ];
 
+    protected $appends = [
+        'status_text',
+    ];
+
+    public function getStatusTextAttribute()
+    {
+        return $this->statusText();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -97,5 +106,39 @@ class Order extends Model
         });
 
         return rtrim($title, ',');
+    }
+
+    /**
+     * @param $query
+     * @param $status
+     *
+     * @return mixed
+     */
+    public function scopeStatus($query, $status)
+    {
+        if (! $status) {
+            return $query;
+        }
+
+        return $query->where('status', $status);
+    }
+
+    /**
+     * @param $query
+     * @param $keywords
+     *
+     * @return mixed
+     */
+    public function scopeKeywords($query, $keywords)
+    {
+        if (! $keywords) {
+            return $query;
+        }
+        $memberIds = User::where('nick_name', 'like', "%{$keywords}%")
+            ->orWhere('mobile', 'like', "%{$keywords}%")
+            ->select('id')
+            ->pluck('id');
+
+        return $query->whereIn('user_id', $memberIds);
     }
 }
