@@ -16,6 +16,9 @@
                     <a class="{{ menu_is_active('courses') }}" href="{{ route('courses') }}">课程</a>
                 </li>
                 <li>
+                    <a class="{{ menu_is_active('books') }}" href="{{ route('books') }}">电子书</a>
+                </li>
+                <li>
                     <a class="{{ menu_is_active('role.index') }}" href="{{ route('role.index') }}">订阅本站</a>
                 </li>
                 <li>

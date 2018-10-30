@@ -13,14 +13,31 @@
   url('//lib.baomitu.com/fonts/nunito/nunito-regular.svg#Nunito') format('svg'); /* Legacy iOS */
 }
 
-// Variables
-@import 'variables';
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: "Nunito", sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66D9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
 a { text-decoration: none; color: #636b6f; }
-a:hover { text-decoration: none; color: #3490dc }
+a:hover { text-decoration: none; color: $blue }
 li { list-style: none; }
 ul { padding: 0px; margin: 0px; }
 p { padding: 0px; margin: 0px; }
@@ -48,7 +65,7 @@ span.label { margin-right: 8px; }
   .navbar-nav li {
     padding-left: 20px; padding-right: 20px;
     a.active {
-      color: #3490dc;
+      color: $blue;
     }
   }
 }
@@ -79,19 +96,19 @@ footer {
 
 /** 首页Banner1 */
 .index-banner {
-  background-color: #3490dc; color: #ffffff;
+  background-color: $blue; color: #ffffff;
   h1 { line-height: 120px; }
   h4 { line-height: 80px; font-size: 3rem; }
   .button { line-height: 200px; }
   .button a {
     display: inline-block; width: 300px; height: 80px;
     border-radius: 4px; border: 1px solid #ffffff;
-    background-color: #3490dc; line-height: 80px;
+    background-color: $blue; line-height: 80px;
     font-size: 26px; color: #ffffff;
   }
   .button a:hover {
     color: #ffffff; background-color: #ffffff;
-    border: 1px solid #eeeeee; color: #3490dc;
+    border: 1px solid #eeeeee; color: $blue;
   }
 }
 
@@ -121,7 +138,7 @@ footer {
       }
     }
     .course-item:hover {
-      box-shadow: #3490dc 0px 2px 10px 0px;
+      box-shadow: $blue 0px 2px 10px 0px;
     }
   }
 }
@@ -149,21 +166,21 @@ footer {
       }
       a.buy-button {
         display: inline-block; width: 200px; height: 64px;
-        line-height: 64px; font-size: 24px; color: #3490dc;
-        border: 1px solid #3490dc; border-radius: 2px;
+        line-height: 64px; font-size: 24px; color: $blue;
+        border: 1px solid $blue; border-radius: 2px;
         margin-top: 20px; margin-bottom: 20px;
       }
     }
     .active {
-      box-shadow: #3490dc 0px 2px 10px 0px; color: #3490dc;
+      box-shadow: $blue 0px 2px 10px 0px; color: $blue;
       a.buy-button {
-        background-color: #3490dc; color: #ffffff;
+        background-color: $blue; color: #ffffff;
       }
     }
     .roles-item-info:hover {
-      box-shadow: #3490dc 0px 2px 10px 0px; color: #3490dc;
+      box-shadow: $blue 0px 2px 10px 0px; color: $blue;
       a.buy-button {
-        background-color: #3490dc; color: #ffffff;
+        background-color: $blue; color: #ffffff;
       }
     }
   }
@@ -181,7 +198,7 @@ footer {
 
 /** 课程列表页面 */
 .course-index-banner {
-  background-color: #3490dc; color: #ffffff;
+  background-color: $blue; color: #ffffff;
   h3 {
     line-height: 120px; font-size: 36px; font-weight: 500;
   }
@@ -213,7 +230,7 @@ footer {
       }
     }
     .course-item-box:hover {
-      box-shadow: #3490dc 0px 2px 10px 0px;
+      box-shadow: $blue 0px 2px 10px 0px;
     }
   }
 }
@@ -221,7 +238,7 @@ footer {
 
 /** 课程详情界面 */
 .course-detail-banner {
-  background-color: #3490dc; padding-top: 15px;
+  background-color: $blue; padding-top: 15px;
   padding-bottom: 20px;
 }
 .course-show-box {
@@ -231,7 +248,7 @@ footer {
     .course-video-tab {
       border-bottom: 1px solid #eeeeee; text-align: center; line-height: 50px; font-size: 18px;
       .active {
-        color: #3490dc; border-bottom: 1px solid #3490dc;
+        color: $blue; border-bottom: 1px solid $blue;
       }
       .course-video-tab-item {
         cursor: pointer;
@@ -297,11 +314,11 @@ footer {
       background-color: #ffffff; padding-top: 20px; padding-bottom: 20px;
       .join-course-btn {
         display: inline-block; width: 100%; height: 40px; line-height: 40px;
-        font-size: 1rem; color: #ffffff; background-color: #3490dc;
+        font-size: 1rem; color: #ffffff; background-color: $blue;
         text-align: center; border-radius: 2px;
       }
       .join-course-btn:hover {
-        background-color: #ffffff; color: #3490dc; border: 1px solid #3490dc;
+        background-color: #ffffff; color: $blue; border: 1px solid $blue;
       }
     }
     .news-student {
@@ -337,7 +354,7 @@ footer {
       font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     li.active {
-      color: #3490dc;
+      color: $blue;
     }
   }
   .play-list::-webkit-scrollbar {
@@ -417,7 +434,7 @@ footer {
 
 /** FAQ */
 .faq-banner {
-  height: 160px; background-color: #3490dc; color: #FFFFFF;
+  height: 160px; background-color: $blue; color: #FFFFFF;
   h1 {
     line-height: 160px;
   }
@@ -438,7 +455,7 @@ footer {
 
 /** 充值界面 */
 .recharge-banner {
-  background-color: #3490dc; color: #ffffff;
+  background-color: $blue; color: #ffffff;
   h3 {
     line-height: 120px; font-size: 36px;
   }
