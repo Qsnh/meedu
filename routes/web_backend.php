@@ -119,5 +119,22 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/administrator_menu/{id}/edit', 'AdministratorMenuController@update');
         Route::get('/administrator_menu/{id}/delete', 'AdministratorMenuController@destroy')->name('backend.administrator_menu.destroy');
         Route::post('/administrator_menu/change/save', 'AdministratorMenuController@saveChange')->name('backend.administrator_menu.save_change');
+
+
+        // 图书
+        Route::get('/book', 'BookController@index')->name('backend.book.index');
+        Route::get('/book/create', 'BookController@create')->name('backend.book.create');
+        Route::post('/book/create', 'BookController@store');
+        Route::get('/book/{id}/edit', 'BookController@edit')->name('backend.book.edit');
+        Route::put('/book/{id}/edit', 'BookController@update');
+        Route::get('/book/{id}/delete', 'BookController@destroy')->name('backend.book.destroy');
+
+        // 用户角色
+        Route::get('/book/{book_id}/chapter', 'BookChapterController@index')->name('backend.book.chapter.index');
+        Route::get('/book/{book_id}/chapter/create', 'BookChapterController@create')->name('backend.book.chapter.create');
+        Route::post('/book/{book_id}/chapter/create', 'BookChapterController@store');
+        Route::get('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@edit')->name('backend.book.chapter.edit');
+        Route::put('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@update');
+        Route::get('/book/{book_id}/chapter/{chapter_id}/delete', 'BookChapterController@destroy')->name('backend.book.chapter.destroy');
     });
 });

@@ -11,28 +11,28 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Book;
+use App\Models\BookChapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\BookRequest;
+use App\Http\Requests\Backend\BookChapterRequest;
 
-class BookController extends Controller
+class BookChapterController extends Controller
 {
     public function index(Request $request)
     {
-        $books = Book::latest()->paginate($request->input('page_size', 10));
+        $books = BookChapter::publishedDesc()->paginate($request->input('page_size', 10));
 
-        return view('backend.book.index', compact('books'));
+        return view('backend.book_chapter.index', compact('books'));
     }
 
     public function create()
     {
-        return view('backend.book.create');
+        return view('backend.book_chapter.create');
     }
 
-    public function store(BookRequest $request)
+    public function store(BookChapterRequest $request)
     {
-        Book::create($request->filldata());
+        BookChapter::create($request->filldata());
         flash('创建成功', 'success');
 
         return back();
@@ -40,14 +40,14 @@ class BookController extends Controller
 
     public function edit($id)
     {
-        $book = Book::findOrFail($id);
+        $book = BookChapter::findOrFail($id);
 
-        return view('backend.book.edit', compact('book'));
+        return view('backend.book_chapter.edit', compact('book'));
     }
 
-    public function update(BookRequest $request, $id)
+    public function update(BookChapterRequest $request, $id)
     {
-        $book = Book::findOrFail($id);
+        $book = BookChapter::findOrFail($id);
         $book->fill($request->filldata())->save();
         flash('编辑成功', 'success');
 
@@ -56,7 +56,7 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        Book::destroy($id);
+        BookChapter::destroy($id);
         flash('删除成功', 'success');
 
         return back();
