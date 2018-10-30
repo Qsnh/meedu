@@ -32,6 +32,9 @@ Route::get('/faq', 'Frontend\FaqController@index')->name('faq');
 Route::get('/faq/category/{id}', 'Frontend\FaqController@showCategoryPage')->name('faq.category.show');
 Route::get('/faq/article/{id}', 'Frontend\FaqController@showArticlePage')->name('faq.article.show');
 
+Route::get('/books', 'Frontend\BookController@index')->name('books');
+Route::get('/book/{id}', 'Frontend\BookController@show')->name('book.show');
+
 // 支付回调
 Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class BookSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (app()->environment('local')) {
-            $this->call(BookSeeder::class);
-        }
+        factory(\App\Models\Book::class, 10)->create();
     }
 }

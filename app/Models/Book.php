@@ -76,6 +76,18 @@ class Book extends Model
     }
 
     /**
+     * 作用域：显示.
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeShow($query)
+    {
+        return $query->where('is_show', self::SHOW_YES);
+    }
+
+    /**
      * 作用域：不显示.
      *
      * @param $query

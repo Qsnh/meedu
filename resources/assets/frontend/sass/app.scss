@@ -19,7 +19,6 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-* { padding: 0px; margin: 0px; }
 a { text-decoration: none; color: #636b6f; }
 a:hover { text-decoration: none; color: #3490dc }
 li { list-style: none; }
@@ -39,6 +38,9 @@ span.label { margin-right: 8px; }
 
 .share-box { padding-top: 10px; padding-bottom: 10px; }
 .all-buy-box { margin-top: 30px; margin-bottom: 30px; }
+
+.mt-15 { margin-top: 15px; }
+.mb-15 { margin-bottom: 15px; }
 
 /** 页头 */
 .navbar-laravel {
