@@ -2,11 +2,11 @@
 
 @section('body')
 
-    @include('components.breadcrumb', ['name' => '添加图书'])
+    @include('components.breadcrumb', ['name' => '添加电子书'])
 
     <el-row>
         <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.book.index') }}'" :name="'返回图书列表'"></meedu-a>
+            <meedu-a :url="'{{ route('backend.book.index') }}'" :name="'返回电子书列表'"></meedu-a>
         </el-col>
     </el-row>
 

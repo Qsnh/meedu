@@ -316,6 +316,94 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/faq/article/\d+/delete',
                 'description' => '',
             ],
+
+            // 电子书
+            [
+                'display_name' => '电子书列表',
+                'slug' => 'backend.book.index',
+                'method' => 'GET',
+                'url' => '/backend/book',
+                'description' => '',
+            ],
+            [
+                'display_name' => '电子书创建界面',
+                'slug' => 'backend.book.create',
+                'method' => 'GET',
+                'url' => '/backend/book/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新电子书',
+                'slug' => 'backend.book.create',
+                'method' => 'POST',
+                'url' => '/backend/book/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '电子书编辑界面',
+                'slug' => 'backend.book.edit',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的电子书',
+                'slug' => 'backend.book.edit',
+                'method' => 'PUT',
+                'url' => '/backend/book/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除电子书',
+                'slug' => 'backend.book.destroy',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/delete',
+                'description' => '',
+            ],
+
+            // 电子书章节
+            [
+                'display_name' => '电子书章节列表',
+                'slug' => 'backend.book.chapter.index',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/chapter',
+                'description' => '',
+            ],
+            [
+                'display_name' => '电子书章节创建界面',
+                'slug' => 'backend.book.chapter.create',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/chapter/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新电子书章节',
+                'slug' => 'backend.book.chapter.create',
+                'method' => 'POST',
+                'url' => '/backend/book/\d+/chapter/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '电子书章节编辑界面',
+                'slug' => 'backend.book.chapter.edit',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/chapter/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的电子书章节',
+                'slug' => 'backend.book.chapter.edit',
+                'method' => 'PUT',
+                'url' => '/backend/book/\d+/chapter/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除电子书章节',
+                'slug' => 'backend.book.chapter.destroy',
+                'method' => 'GET',
+                'url' => '/backend/book/\d+/chapter/\d+/delete',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {

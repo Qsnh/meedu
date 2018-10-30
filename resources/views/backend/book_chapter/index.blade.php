@@ -9,7 +9,7 @@
             <meedu-a :url="'{{ route('backend.book.chapter.create', [$book->id]) }}'" :name="'添加'"></meedu-a>
         </el-col>
 
-        <p style="line-height: 46px;">图书 <b>《{{$book->title}}》</b> 的章节</p>
+        <p style="line-height: 46px;">电子书 <b>《{{$book->title}}》</b> 的章节</p>
 
         <el-col :span="24">
             <el-table :data="chapters" style="width: 100%">

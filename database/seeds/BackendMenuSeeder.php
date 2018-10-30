@@ -21,6 +21,7 @@ class BackendMenuSeeder extends Seeder
             '视频' => '视频列表界面',
             'FAQ分类' => 'FAQ分类列表界面',
             'FAQ文章' => 'FAQ文章列表界面',
+            '电子书' => '电子书列表',
         ];
 
         $menus = [
@@ -89,6 +90,17 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '视频',
                         'url' => '/backend/video',
+                    ],
+                ],
+            ],
+            [
+                'name' => '电子书',
+                'url' => '',
+                'permission_id' => 0,
+                'children' => [
+                    [
+                        'name' => '电子书',
+                        'url' => '/backend/book',
                     ],
                 ],
             ],
