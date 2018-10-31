@@ -19,9 +19,9 @@
     <div class="container book-list-box mb-15 mt-15">
         <div class="row">
             @foreach($books as $book)
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="card mt-15 mb-15">
-                        <img class="card-img-top" src="{{$book->thumb}}" alt="{{$book->title}}">
+                        <img class="card-img-top" style="height: 300px;" src="{{$book->thumb}}" alt="{{$book->title}}">
                         <div class="card-body">
                             <h5 class="card-title">{{$book->title}}</h5>
                             <p class="card-text">{{$book->short_description}}</p>
