@@ -140,6 +140,19 @@
                                 <el-input type="textarea" name="meedu*seo*role_list*description" placeholder="订阅页面描述" v-model="config.meedu.seo.role_list.description"></el-input>
                             </el-form-item>
                         </el-col>
+
+                        <el-col span="8">
+                            <el-form-item label="电子书列表页面标题">
+                                <el-input type="textarea" name="meedu*seo*book_list*title" placeholder="电子书列表页面标题" v-model="config.meedu.seo.book_list.title"></el-input>
+                            </el-form-item>
+                            <el-form-item label="电子书列表页面关键字">
+                                <el-input type="textarea" name="meedu*seo*book_list*keywords" placeholder="电子书列表页面关键字" v-model="config.meedu.seo.book_list.keywords"></el-input>
+                            </el-form-item>
+                            <el-form-item label="电子书列表页面描述">
+                                <el-input type="textarea" name="meedu*seo*book_list*description" placeholder="电子书列表页面描述" v-model="config.meedu.seo.book_list.description"></el-input>
+                            </el-form-item>
+                        </el-col>
+
                     </el-tab-pane>
                 </el-tabs>
             </template>

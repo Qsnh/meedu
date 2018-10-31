@@ -26,7 +26,9 @@ class BookController extends Controller
     {
         $books = Book::published()->show()->latest()->paginate(8);
 
-        return view('frontend.book.index', compact('books'));
+        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.book_list');
+
+        return view('frontend.book.index', compact('books', 'title', 'keywords', 'description'));
     }
 
     /**
@@ -38,7 +40,11 @@ class BookController extends Controller
     {
         $book = Book::published()->show()->whereId($id)->firstOrFail();
 
-        return view('frontend.book.show', compact('book'));
+        $title = sprintf('电子书《%s》', $book->title);
+        $keywords = $book->keywords;
+        $description = $book->decsription;
+
+        return view('frontend.book.show', compact('book', 'title', 'keywords', 'description'));
     }
 
     /**
@@ -90,6 +96,8 @@ class BookController extends Controller
         }
         $chapter = $book->chapters()->whereId($chapterId)->firstOrFail();
 
-        return view('frontend.book.chapter', compact('book', 'chapter'));
+        $title = sprintf('章节 %s - 《%s》', $chapter->title, $book->title);
+
+        return view('frontend.book.chapter', compact('book', 'chapter', 'title'));
     }
 }

@@ -76,6 +76,11 @@ return [
             'keywords' => '',
             'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
         ],
+        'book_list' => [
+            'title' => '电子书',
+            'keywords' => '',
+            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+        ],
     ],
 
     // 系统配置
