@@ -6,18 +6,24 @@
         <div class="row">
             <div class="col-sm-12 course-index-banner">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3>《{{$book->title}}》</h3>
-                            <p style="line-height: 46px;">
-                                <span class="badge badge-primary">
-                                    更新于 {{ $book->updated_at->diffForHumans() }}
-                                </span>
+                    <div class="row pt-15 pb-15">
+                        <div class="col-sm-3">
+                            <img src="{{$book->thumb}}" class="img-thumbnail" alt="{{$book->title}}">
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>
+                                《{{$book->title}}》
+                            </h3>
+                            <p>
                                 @if($book->charge)
-                                    <span class="badge badge-danger">价格 {{$book->charge}}元</span>
+                                    <span class="badge badge-danger">{{$book->charge}}元</span>
                                 @else
                                     <span class="badge badge-success">免费</span>
                                 @endif
+                            </p>
+                            <p>{{$book->short_description}}</p>
+                            <p>
+                                <small>更新于 {{ $book->updated_at->diffForHumans() }}</small>
                             </p>
                         </div>
                     </div>
