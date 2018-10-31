@@ -35,7 +35,7 @@
 - [x] 电子书板块
 - [x] FAQ
 - [x] API接口
-- [ ] 微信小程序
+- [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
 - [ ] 基于 seele 的版权保护
 - [ ] seele 区块链支付
 - [ ] 广告系统
