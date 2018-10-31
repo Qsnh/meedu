@@ -10,18 +10,24 @@
         <div class="row">
             <div class="col-sm-12 course-index-banner">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3>《{{$book->title}}》</h3>
-                            <p style="line-height: 46px;">
-                                <span class="badge badge-primary">
-                                    更新于 {{ $book->updated_at->diffForHumans() }}
-                                </span>
+                    <div class="row pt-15 pb-15">
+                        <div class="col-sm-3">
+                            <img src="{{$book->thumb}}" class="img-thumbnail" alt="{{$book->title}}">
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>
+                                《{{$book->title}}》
+                            </h3>
+                            <p>
                                 @if($book->charge)
-                                    <span class="badge badge-danger">价格 {{$book->charge}}元</span>
+                                    <span class="badge badge-danger">{{$book->charge}}元</span>
                                 @else
                                     <span class="badge badge-success">免费</span>
                                 @endif
+                            </p>
+                            <p>{{$book->short_description}}</p>
+                            <p>
+                                <small>更新于 {{ $book->updated_at->diffForHumans() }}</small>
                             </p>
                         </div>
                     </div>
@@ -39,7 +45,7 @@
                         <hr>
                         <ul class="list-group">
                             @foreach($book->showAndPublishedChapter() as $chapter)
-                            <a href="" class="list-group-item">
+                            <a href="{{route('member.book.chapter', [$chapter->book_id, $chapter->id])}}" class="list-group-item">
                                 {{$chapter->title}} <small>更新于：{{$chapter->updated_at->diffForHumans()}}</small>
                                 @if($book->charge > 0)
                                     <span class="badge badge-primary">收费</span>
@@ -59,5 +65,4 @@
 
 @section('js')
     <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script>
-    @include('components.frontend.emoji')
 @endsection

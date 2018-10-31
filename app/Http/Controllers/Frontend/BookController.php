@@ -12,10 +12,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Book;
+use App\Models\Order;
 use App\Http\Controllers\Controller;
+use App\Repositories\BookRepository;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $books = Book::published()->show()->latest()->paginate(8);
@@ -23,6 +29,11 @@ class BookController extends Controller
         return view('frontend.book.index', compact('books'));
     }
 
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show($id)
     {
         $book = Book::published()->show()->whereId($id)->firstOrFail();
@@ -30,14 +41,55 @@ class BookController extends Controller
         return view('frontend.book.show', compact('book'));
     }
 
-    public function buy($id)
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBuyPage($id)
     {
         $book = Book::published()->show()->whereId($id)->firstOrFail();
 
         return view('frontend.book.buy', compact('book'));
     }
 
-    public function chapterShow($bookId, $chapterId)
+    /**
+     * @param BookRepository $repository
+     * @param $id
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function buyHandler(BookRepository $repository, $id)
     {
+        $book = Book::published()->show()->whereId($id)->firstOrFail();
+        $order = $repository->createOrder(Auth::user(), $book);
+        if (! ($order instanceof Order)) {
+            flash($order, 'warning');
+
+            return back();
+        }
+
+        flash('下单成功，请尽快支付', 'success');
+
+        return redirect(route('order.show', $order->order_id));
+    }
+
+    /**
+     * @param $bookId
+     * @param $chapterId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function chapter($bookId, $chapterId)
+    {
+        $book = Book::published()->show()->whereId($bookId)->firstOrFail();
+        if ($book->charge > 0 && ! Auth::user()->canSeeThisBook($book)) {
+            flash('请先购买本书', 'warning');
+
+            return redirect(route('member.book.buy', $book));
+        }
+        $chapter = $book->chapters()->whereId($chapterId)->firstOrFail();
+
+        return view('frontend.book.chapter', compact('book', 'chapter'));
     }
 }

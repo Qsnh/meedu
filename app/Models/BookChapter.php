@@ -102,4 +102,12 @@ class BookChapter extends Model
     {
         return $this->belongsTo(Book::class, 'book_id');
     }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return markdown_to_html($this->content);
+    }
 }

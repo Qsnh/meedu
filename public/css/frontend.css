@@ -10564,6 +10564,14 @@ span.label {
   margin-bottom: 15px;
 }
 
+.pb-15 {
+  padding-bottom: 15px;
+}
+
+.pt-15 {
+  padding-top: 15px;
+}
+
 /** 页头 */
 
 .navbar-laravel {
@@ -11136,5 +11144,15 @@ footer {
 .pay {
   padding-top: 50px;
   padding-bottom: 50px;
+}
+
+/** 电子书阅读界面 */
+
+.book-chapter-content {
+  line-height: 40px;
+}
+
+.book-chapter-content a {
+  color: #3490dc;
 }
 

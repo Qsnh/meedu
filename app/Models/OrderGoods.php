@@ -19,6 +19,7 @@ class OrderGoods extends Model
     const GOODS_TYPE_COURSE = 'COURSE';
     const GOODS_TYPE_VIDEO = 'VIDEO';
     const GOODS_TYPE_ROLE = 'ROLE';
+    const GOODS_TYPE_BOOK = 'BOOK';
 
     protected $table = 'order_goods';
 
@@ -83,5 +84,12 @@ class OrderGoods extends Model
         $role = Role::find($this->goods_id);
 
         return "VIP《{$role->name}》";
+    }
+
+    protected function getBookGoodsTypeText(): string
+    {
+        $book = Book::find($this->goods_id);
+
+        return "电子书《{$book->title}》";
     }
 }

@@ -75,6 +75,11 @@ Route::group([
     Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
 
+    // 购买电子书
+    Route::get('/book/{book_id}/chapter/{chapter_id}', 'BookController@chapter')->name('member.book.chapter');
+    Route::get('/book/{id}/buy', 'BookController@showBuyPage')->name('member.book.buy');
+    Route::post('/book/{id}/buy', 'BookController@buyHandler');
+
     // 收银台
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
 });

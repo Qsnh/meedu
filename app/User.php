@@ -13,6 +13,7 @@ namespace App;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Book;
 use App\Models\Role;
 use App\Models\Order;
 use App\Models\Video;
@@ -284,6 +285,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'user_book', 'user_id', 'book_id');
+    }
+
+    /**
      * @param Role $role
      *
      * @throws \Throwable
@@ -365,5 +374,17 @@ class User extends Authenticatable
 
             return false;
         }
+    }
+
+    /**
+     * 是否可以观看指定电子书.
+     *
+     * @param Book $book
+     *
+     * @return mixed
+     */
+    public function canSeeThisBook(Book $book)
+    {
+        return $this->books()->whereId($book->id)->exists();
     }
 }
