@@ -33,5 +33,11 @@ class BookController extends Controller
     public function buy($id)
     {
         $book = Book::published()->show()->whereId($id)->firstOrFail();
+
+        return view('frontend.book.buy', compact('book'));
+    }
+
+    public function chapterShow($bookId, $chapterId)
+    {
     }
 }

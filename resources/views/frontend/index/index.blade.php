@@ -17,20 +17,20 @@
     <div class="container">
         <div class="row index-banner2">
 
-            <div class="col-sm-12 text-center index-banner-title">
-                <h3>最新课程</h3>
+            <div class="col-sm-12">
+                <h2 class="text-center index-banner-title">最新课程</h2>
             </div>
 
             @foreach($courses as $course)
-                <div class="col-sm course text-center">
-                    <a href="{{ route('course.show', [$course->id, $course->slug]) }}">
-                        <div class="course-item border">
-                            <div class="thumb">
-                                <img data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png" width="100%" height="300">
-                            </div>
-                            <div class="title">{{ $course->title }}</div>
+                <div class="col-sm-4">
+                    <div class="card mt-15 mb-15">
+                        <img class="card-img-top" style="height: 300px;" data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png">
+                        <div class="card-body">
+                            <h5 class="card-title">{{$course->title}}</h5>
+                            <p class="card-text">{{$course->short_description}}</p>
+                            <a href="{{ route('course.show', [$course->id, $course->slug]) }}" class="btn btn-primary">详情</a>
                         </div>
-                    </a>
+                    </div>
                 </div>
             @endforeach
 
@@ -42,8 +42,8 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <h3 class="title">计划</h3>
+                        <div class="col-sm-12">
+                            <h2 class="text-center index-banner-title">计划</h2>
                         </div>
 
                         @foreach($roles as $role)
