@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+    <link href="https://lib.baomitu.com/highlight.js/9.13.1/styles/atelier-seaside-dark.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
     <div class="container-fluid">
@@ -62,4 +66,9 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script src="https://lib.baomitu.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 @endsection
