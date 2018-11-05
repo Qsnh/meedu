@@ -39,7 +39,7 @@
                         @forelse($member->orders as $order)
                             <tr>
                                 <td>￥{{ $order->charge }}</td>
-                                <td>{{ $order->getGoodsTypeText() }}</td>
+                                <td>{{ $order->getOrderListTitle() }}</td>
                                 <td>{{ $order->created_at }}</td>
                             </tr>
                         @empty
