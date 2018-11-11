@@ -54,6 +54,7 @@ Route::group([
     Route::get('/courses', 'MemberController@showBuyCoursePage')->name('member.courses');
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
+    Route::get('/books', 'MemberController@showBooksPage')->name('member.books');
 
     Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
@@ -75,7 +76,7 @@ Route::group([
     Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
 
-    // 购买电子书
+    // 电子书
     Route::get('/book/{book_id}/chapter/{chapter_id}', 'BookController@chapter')->name('member.book.chapter');
     Route::get('/book/{id}/buy', 'BookController@showBuyPage')->name('member.book.buy');
     Route::post('/book/{id}/buy', 'BookController@buyHandler');

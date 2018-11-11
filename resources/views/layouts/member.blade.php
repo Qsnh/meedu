@@ -37,8 +37,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('member.messages') }}">
-                                    <i class="fa fa-comments"></i> 我的消息
+                                <a href="{{ route('member.books') }}">
+                                    <i class="fa fa-book"></i> 我的电子书
                                 </a>
                             </li>
                             <li>
