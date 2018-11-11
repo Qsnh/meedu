@@ -322,6 +322,19 @@ class User extends Authenticatable
     }
 
     /**
+     * 购买书籍处理
+     * @param Book $book
+     * @throws Exception
+     */
+    public function buyBook(Book $book)
+    {
+        if ($this->books()->whereId($book->id)->exists()) {
+            throw new Exception('请勿重复购买');
+        }
+        $this->books()->attach($book->id);
+    }
+
+    /**
      * 今日注册用户数量.
      *
      * @return mixed
@@ -361,6 +374,10 @@ class User extends Authenticatable
                     case OrderGoods::GOODS_TYPE_ROLE:
                         $role = Role::find($goodsItem->goods_id);
                         $this->buyRole($role);
+                        break;
+                    case OrderGoods::GOODS_TYPE_BOOK:
+                        $book = Book::find($goodsItem->goods_id);
+                        $this->buyBook($book);
                         break;
                 }
             }
