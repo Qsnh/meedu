@@ -322,8 +322,10 @@ class User extends Authenticatable
     }
 
     /**
-     * 购买书籍处理
+     * 购买书籍处理.
+     *
      * @param Book $book
+     *
      * @throws Exception
      */
     public function buyBook(Book $book)

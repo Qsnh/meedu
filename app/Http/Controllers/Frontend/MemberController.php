@@ -170,14 +170,16 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 显示我的电子书界面
+     * 显示我的电子书界面.
+     *
      * @param MemberRepository $repository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showBooksPage(MemberRepository $repository)
     {
         $books = $repository->buyBooks();
+
         return view('frontend.member.show_books', compact('books'));
     }
-
 }

@@ -140,13 +140,14 @@ class MemberRepository
     }
 
     /**
-     * 购买的电子书
+     * 购买的电子书.
+     *
      * @return mixed
      */
     public function buyBooks()
     {
         $books = Auth::user()->books()->orderByDesc('created_at')->paginate(10);
+
         return $books;
     }
-
 }
