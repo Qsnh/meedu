@@ -404,6 +404,14 @@ class User extends Authenticatable
      */
     public function canSeeThisBook(Book $book)
     {
+        if ($book->charge <= 0) {
+            return true;
+        }
+
+        if ($this->activeRole()) {
+            return true;
+        }
+
         return $this->books()->whereId($book->id)->exists();
     }
 }
