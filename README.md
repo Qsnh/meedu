@@ -14,6 +14,8 @@
 
 > 小程序在这里：[https://github.com/YTU94/meedu-wxapp](https://github.com/YTU94/meedu-wxapp)
 
+[MeEdu安装视频教程](https://www.bilibili.com/video/av36024146/)
+
 ## 功能
 
 - [x] 视频点播板块
