@@ -1,30 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Listeners;
 
-use App\Events\AdFromEvent;
 use App\Models\AdFrom;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\AdFromEvent;
 use Illuminate\Support\Facades\Cache;
 
 class AdFromListener
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  AdFromEvent  $event
-     * @return void
+     * @param AdFromEvent $event
      */
     public function handle(AdFromEvent $event)
     {
@@ -33,7 +36,7 @@ class AdFromListener
         if (! $adFrom) {
             return;
         }
-        $key = sprintf("ad_from_%s_%s", $key, date('Y-m-d'));
+        $key = sprintf('ad_from_%s_%s', $key, date('Y-m-d'));
         if (! Cache::has($key)) {
             Cache::forever($key, 1);
         } else {

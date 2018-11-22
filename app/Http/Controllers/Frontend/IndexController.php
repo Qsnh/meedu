@@ -18,7 +18,7 @@ use App\Repositories\IndexRepository;
 
 class IndexController extends FrontendController
 {
-    public function index(Request$request, IndexRepository $repository)
+    public function index(Request $request, IndexRepository $repository)
     {
         $courses = $repository->recentPublishedAndShowCourses();
         $roles = $repository->roles();
