@@ -247,7 +247,7 @@ class User extends Authenticatable
     public function canSeeThisVideo(Video $video)
     {
         $course = $video->course;
-        if ($video->charge == 0 && $course->charge == 0) {
+        if ($course->charge == 0 || $video->charge == 0) {
             return true;
         }
 
