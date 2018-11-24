@@ -25,10 +25,10 @@
                         <div class="card-body">
                             <h5 class="card-title">
                                 @if($course->charge > 0)
-                                    <span class="badge badge info">￥{{$course->charge}}</span>
+                                    <span class="badge badge-danger">￥{{$course->charge}}</span>
                                     @else
                                     <span class="badge badge-success">免费</span>
-                                    @endif
+                                @endif
                                 {{$course->title}}
                             </h5>
                             <p class="card-text">{{$course->short_description}}</p>
