@@ -2,7 +2,7 @@
 
 @section('css')
     <link href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css">
+    <link crossorigin="anonymous" integrity="sha384-0c9IokVf3V/GLpXflXkezKv/LOZKzw0J+46w/mcttsxEHeCSdaI+wV/5UM+eZymd" href="https://lib.baomitu.com/plyr/3.4.7/plyr.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -15,7 +15,9 @@
                         @if(Auth::check())
                             <div class="col-sm-9 play-box">
                                 @if($user->canSeeThisVideo($video))
-                                    @include('components.frontend.video_play', ['video' => $video])
+                                    <video id="xiaoteng-player" playsinline controls>
+                                        <source src="{{$video->getPlayUrl()}}" type="video/mp4">
+                                    </video>
                                     @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
@@ -129,6 +131,8 @@
 
 @section('js')
     <script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-+PqEkmFL4qYV1C6IpOzsuEwl0GzEUnDiD0nXzaXbluUsyguHa0nfanWaDbYDXPQW" src="https://lib.baomitu.com/plyr/3.4.7/plyr.min.js"></script>
+    <script>const player = new Plyr('#xiaoteng-player');</script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
 @endsection

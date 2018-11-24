@@ -142,4 +142,13 @@ class Video extends Model
             ],
         ];
     }
+
+    public function getPlayUrl()
+    {
+        if ($this->url) {
+            return $this->url;
+        }
+        $playInfo = aliyun_play_url($this);
+        return $playInfo[0]['url'];
+    }
 }
