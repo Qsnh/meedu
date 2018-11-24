@@ -98,4 +98,13 @@ return [
         'test' => explode(',', env('TEST_MOBILE', '')),
         'js' => '',
     ],
+
+    // 视频鉴权
+    'video' => [
+        'auth' => [
+            'aliyun' => [
+                'private_key' => env('ALIYUN_VIDEO_AUTH_PRIVATE_KEY', ''),
+            ],
+        ],
+    ],
 ];

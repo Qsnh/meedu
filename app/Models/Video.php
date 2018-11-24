@@ -12,6 +12,7 @@
 namespace App\Models;
 
 use App\User;
+use App\Meedu\VideoAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -143,6 +144,11 @@ class Video extends Model
         ];
     }
 
+    /**
+     * 获取视频播放地址
+     *
+     * @return mixed
+     */
     public function getPlayUrl()
     {
         if ($this->url) {
@@ -150,6 +156,6 @@ class Video extends Model
         }
         $playInfo = aliyun_play_url($this);
 
-        return $playInfo[0]['url'];
+        return (new VideoAuth())->handler($playInfo[0]['url'], 'aliyun');
     }
 }
