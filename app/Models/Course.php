@@ -141,7 +141,7 @@ class Course extends Model
      */
     public function getAllPublishedAndShowVideosCache()
     {
-        if (! config('meedu.system.cache.status')) {
+        if (config('meedu.system.cache.status') != 1) {
             return $this->getAllPublishedAndShowVideos();
         }
         $that = $this;
