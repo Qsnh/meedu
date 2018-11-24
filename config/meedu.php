@@ -89,5 +89,11 @@ return [
             'status' => 0,
             'expire' => 360,
         ],
+        'indexMenu' => [
+            'course' => env('INDEX_MENU_COURSE_SHOW', true),
+            'book' => env('INDEX_MENU_BOOK_SHOW', true),
+            'faq' => env('INDEX_MENU_FAQ_SHOW', true),
+            'vip' => env('INDEX_MENU_VIP_SHOW', true),
+        ],
     ],
 ];

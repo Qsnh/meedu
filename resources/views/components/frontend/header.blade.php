@@ -12,18 +12,26 @@
                 <li>
                     <a class="{{ menu_is_active('index') }}" href="{{ url('/') }}">首页</a>
                 </li>
+                @if(config('meedu.system.indexMenu.course'))
                 <li>
                     <a class="{{ menu_is_active('courses') }}" href="{{ route('courses') }}">课程</a>
                 </li>
+                @endif
+                @if(config('meedu.system.indexMenu.book'))
                 <li>
                     <a class="{{ menu_is_active('books') }}" href="{{ route('books') }}">电子书</a>
                 </li>
+                @endif
+                @if(config('meedu.system.indexMenu.vip'))
                 <li>
                     <a class="{{ menu_is_active('role.index') }}" href="{{ route('role.index') }}">订阅本站</a>
                 </li>
+                @endif
+                @if(config('meedu.system.indexMenu.faq'))
                 <li>
                     <a class="{{ menu_is_active('faq') }}" href="{{ route('faq') }}">FAQ</a>
                 </li>
+                @endif
             </ul>
 
             <ul class="navbar-nav ml-auto">
