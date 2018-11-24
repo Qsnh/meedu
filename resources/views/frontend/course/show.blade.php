@@ -34,21 +34,21 @@
         <div class="row">
             <div class="col-sm-9 border course-video-list-box">
                 <div class="row course-video-tab">
-                    <div class="col-sm-4 course-video-tab-item active" data="intro">简介</div>
-                    <div class="col-sm-4 course-video-tab-item" data="list">视频列表</div>
+                    <div class="col-sm-4 course-video-tab-item active" data="list">视频列表</div>
+                    <div class="col-sm-4 course-video-tab-item" data="intro">简介</div>
                     <div class="col-sm-4 course-video-tab-item" data="comment">评论</div>
                 </div>
                <div class="tab-content-box">
-                   <div class="intro">
+                   <div class="intro" style="display: none">
                        {!! $course->getDescription() !!}
                        <hr>
                        <div class="social-share"></div>
                    </div>
-                   <div class="list" style="display: none">
+                   <div class="list">
                        <table style="width: 100%">
                            <tbody>
                            @forelse($course->getAllPublishedAndShowVideosCache() as $video)
-                               <tr class="lh-30">
+                               <tr style="line-height: 36px;">
                                    <td>
                                        <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
                                            <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
