@@ -156,6 +156,6 @@ class Video extends Model
         }
         $playInfo = aliyun_play_url($this);
 
-        return (new VideoAuth())->handler($playInfo[0]['url'], 'aliyun');
+        return $playInfo[0]['url'];
     }
 }
