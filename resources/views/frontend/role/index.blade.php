@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-sm-12 text-center">
                             <h3 class="title">计划</h3>
                         </div>
