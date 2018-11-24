@@ -95,5 +95,6 @@ return [
             'faq' => env('INDEX_MENU_FAQ_SHOW', true),
             'vip' => env('INDEX_MENU_VIP_SHOW', true),
         ],
+        'test' => explode(',', env('TEST_MOBILE', '')),
     ],
 ];

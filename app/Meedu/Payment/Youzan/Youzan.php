@@ -34,11 +34,14 @@ class Youzan implements Payment
     public function create(Order $order): PaymentStatus
     {
         try {
+            $price = $order->charge * 100;
+            // 提供测试
+            in_array($order->user->mobile, config('meedu.system.test')) && $price = 1;
+
             $client = new YZTokenClient($this->getToken());
             $params = [
                 'qr_name' => $order->getNotificationContent(),
-                'qr_price' => $order->charge * 100,
-//                'qr_price' => 1,
+                'qr_price' => $price,
                 'qr_type' => 'QR_TYPE_DYNAMIC',
             ];
             $response = $client->post('youzan.pay.qrcode.create', self::VERSION, $params);
