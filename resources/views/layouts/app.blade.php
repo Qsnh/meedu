@@ -45,6 +45,6 @@
         @endif
     </script>
     @yield('js')
-    {!! config('meedu.system.js') !!}
+    <div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>
 </html>
