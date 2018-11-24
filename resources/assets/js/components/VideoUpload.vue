@@ -25,7 +25,7 @@
             'video',
         ],
         created() {
-            this.video_id = this.video.video_id;
+            this.video_id = this.video.aliyun_video_id;
             this.url = this.video.url;
             this.showTab();
         },
