@@ -16,6 +16,12 @@
 
 [MeEdu安装视频教程](https://www.bilibili.com/video/av36024146/)
 
+## 使用站点
+
+| 站点名 | 地址 |
+| --- | --- |
+| [小滕教学](https://58hualong.com) | `https://58hualong.com` |
+
 ## 功能
 
 - [x] 视频点播板块
