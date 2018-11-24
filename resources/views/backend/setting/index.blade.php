@@ -56,6 +56,7 @@
                         </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="支付配置" name="payment">
+                        <p>支付回调URL：<code>{{route('payment.callback')}}</code></p>
                         <el-form-item label="有赞ClientId">
                             <el-input name="meedu*payment*youzan*client_id" v-model="config.meedu.payment.youzan.client_id"></el-input>
                         </el-form-item>
