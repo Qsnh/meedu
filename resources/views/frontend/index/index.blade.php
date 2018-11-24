@@ -41,13 +41,13 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-sm-12">
                             <h2 class="text-center index-banner-title">计划</h2>
                         </div>
 
                         @foreach($roles as $role)
-                            <div class="col-sm roles-item">
+                            <div class="col-sm-4 roles-item">
                                 <div class="roles-item-info text-center border">
                                     <h2 class="title">{{$role->name}}</h2>
                                     @foreach($role->descriptionRows() as $row)
