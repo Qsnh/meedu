@@ -407,7 +407,9 @@ class AdministratorPermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            $exists = \App\Models\AdministratorPermission::whereSlug($permission['slug'])->exists();
+            $exists = \App\Models\AdministratorPermission::whereSlug($permission['slug'])
+                ->where('method', $permission['method'])
+                ->exists();
             ! $exists && \App\Models\AdministratorPermission::create($permission);
         }
     }
