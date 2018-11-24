@@ -48,7 +48,8 @@
 - [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
 - [ ] 基于 seele 的版权保护
 - [ ] seele 区块链支付
-- [ ] 广告系统
+- [x] 广告系统
+- [x] 友情链接
 - [ ] 邀请推广
 - [ ] 积分系统
 
