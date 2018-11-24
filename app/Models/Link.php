@@ -39,8 +39,9 @@ class Link extends Model
      *
      * @return mixed
      */
-    public function linksCache()
+    public static function linksCache()
     {
+        return self::orderBy('sort')->get();
         return Cache::remember('links', 60, function () {
             return self::orderBy('sort')->get();
         });

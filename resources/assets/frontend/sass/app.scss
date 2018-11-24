@@ -168,6 +168,13 @@ footer {
   }
 }
 
+.index-links {
+  border-bottom: 1px solid #444444; background-color: #333333;
+  padding-top: 20px; padding-bottom: 20px; color: #ffffff;
+  a {
+    margin-right: 10px; color: #ffffff; line-height: 30px;
+  }
+}
 
 /** 课程列表页面 */
 .course-index-banner {

@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Events\AdFromEvent;
+use App\Models\Link;
 use Illuminate\Http\Request;
 use App\Models\EmailSubscription;
 use App\Repositories\IndexRepository;
@@ -28,9 +29,12 @@ class IndexController extends FrontendController
             event(new AdFromEvent($request->input('from')));
         }
 
+        // 友情链接
+        $links = Link::linksCache();
+
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
 
-        return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description'));
+        return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description', 'links'));
     }
 
     public function subscriptionHandler(Request $request)

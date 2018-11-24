@@ -90,4 +90,21 @@
         </div>
     </div>
 
+    @if(!$links->isEmpty())
+    <div class="container-fluid index-links">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h5>友情链接</h5>
+                        @foreach($links as $link)
+                            <a href="{{$link->url}}" target="_blank">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 @endsection
