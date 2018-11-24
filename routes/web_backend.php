@@ -136,5 +136,13 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@edit')->name('backend.book.chapter.edit');
         Route::put('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@update');
         Route::get('/book/{book_id}/chapter/{chapter_id}/delete', 'BookChapterController@destroy')->name('backend.book.chapter.destroy');
+
+        // 友情链接
+        Route::get('/link', 'LinkController@index')->name('backend.link.index');
+        Route::get('/link/create', 'LinkController@create')->name('backend.link.create');
+        Route::post('/link/create', 'LinkController@store');
+        Route::get('/link/{id}/edit', 'LinkController@edit')->name('backend.link.edit');
+        Route::put('/link/{id}/edit', 'LinkController@update');
+        Route::get('/link/{id}/delete', 'LinkController@destroy')->name('backend.link.destroy');
     });
 });
