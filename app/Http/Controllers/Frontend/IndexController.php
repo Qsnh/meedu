@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Events\AdFromEvent;
 use App\Models\Link;
+use App\Events\AdFromEvent;
 use Illuminate\Http\Request;
 use App\Models\EmailSubscription;
 use App\Repositories\IndexRepository;

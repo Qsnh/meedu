@@ -42,6 +42,7 @@ class Link extends Model
     public static function linksCache()
     {
         return self::orderBy('sort')->get();
+
         return Cache::remember('links', 60, function () {
             return self::orderBy('sort')->get();
         });
