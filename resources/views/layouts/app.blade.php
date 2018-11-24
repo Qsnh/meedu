@@ -45,5 +45,6 @@
         @endif
     </script>
     @yield('js')
+    {!! config('meedu.system.js') !!}
 </body>
 </html>

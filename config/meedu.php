@@ -96,5 +96,6 @@ return [
             'vip' => env('INDEX_MENU_VIP_SHOW', true),
         ],
         'test' => explode(',', env('TEST_MOBILE', '')),
+        'js' => '',
     ],
 ];

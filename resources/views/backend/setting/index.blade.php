@@ -10,6 +10,20 @@
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="系统配置" name="system">
+                        <el-col :span="24">
+                            <el-form-item label="缓存开关">
+                                <input type="radio" name="meedu*system*cache*status" v-model="config.meedu.system.cache.status" value="1"> 开启
+                                <input type="radio" name="meedu*system*cache*status" v-model="config.meedu.system.cache.status" value="-1"> 不开启
+                            </el-form-item>
+                            <el-form-item label="缓存有效期（单位：分钟）">
+                                <el-input name="meedu*system*cache*expire" v-model="config.meedu.system.cache.expire"></el-input>
+                            </el-form-item>
+                            <el-form-item label="统计代码">
+                                <el-input type="textarea" placeholder="统计代码" name="meedu*system*js" v-model="config.meedu.system.js"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-tab-pane>
                     <el-tab-pane label="邮箱配置" name="email">
                         <el-col :span="24">
                             <p>下面是阿里云的邮箱配置：</p>
@@ -24,17 +38,6 @@
                             </el-form-item>
                             <el-form-item label="邮件发送地址">
                                 <el-input name="services*directmail*account*name" v-model="config.services.directmail.account.name"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-tab-pane>
-                    <el-tab-pane label="系统配置" name="system">
-                        <el-col :span="24">
-                            <el-form-item label="缓存开关">
-                                <input type="radio" name="meedu*system*cache*status" v-model="config.meedu.system.cache.status" value="1"> 开启
-                                <input type="radio" name="meedu*system*cache*status" v-model="config.meedu.system.cache.status" value="-1"> 不开启
-                            </el-form-item>
-                            <el-form-item label="缓存有效期（单位：分钟）">
-                                <el-input name="meedu*system*cache*expire" v-model="config.meedu.system.cache.expire"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-tab-pane>
