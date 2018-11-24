@@ -51,7 +51,13 @@
                                <tr style="line-height: 36px;">
                                    <td>
                                        <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
-                                           <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $video->title  }}
+                                           <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+                                           @if($video->charge > 0)
+                                           <span class="badge badge-danger">收费</span>
+                                               @else
+                                            <span class="badge badge-success">免费</span>
+                                           @endif
+                                           {{ $video->title  }}
                                        </a>
                                    </td>
                                    <td width="80" class="text-right color-gray">{{ $video->updated_at->diffForHumans() }}</td>
