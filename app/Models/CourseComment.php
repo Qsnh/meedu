@@ -28,7 +28,7 @@ class CourseComment extends Model
 
     public function setContentAttribute($content)
     {
-        $content = markdown_clean($content);
+        $content = htmlspecialchars(strip_tags($content));
         $this->attributes['content'] = Emojione::getClient()->shortnameToUnicode($content);
     }
 
