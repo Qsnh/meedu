@@ -2,6 +2,7 @@
 
 @section('css')
     <link href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" integrity="sha384-GcG0k8M8UyMuMIHkOzVr3jjKRJz5u3bs8fYb3csFVv2B7WtnbkaOn6uLZg+o9GtN" href="https://lib.baomitu.com/highlight.js/9.13.1/styles/atelier-forest-dark.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -137,6 +138,8 @@
 
 @section('js')
     <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-BlPof9RtjBqeJFskKv3sK3dh4Wk70iKlpIe92FeVN+6qxaGUOUu+mZNpALZ+K7ya" src="https://lib.baomitu.com/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
     <script>

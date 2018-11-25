@@ -1,5 +1,4 @@
 <script src="{{ asset('js/vendor/inline-attachment/inline-attachment.js') }}"></script>
-<script src="{{ asset('js/vendor/inline-attachment/jquery.inline-attachment.js') }}"></script>
 <script type="text/javascript">
     $(function() {
         $('textarea[name="content"]').inlineattachment({
