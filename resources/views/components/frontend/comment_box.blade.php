@@ -23,3 +23,13 @@
         @endif
     </form>
 </div>
+
+<script src="{{ asset('js/vendor/inline-attachment/inline-attachment.js') }}"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        $('textarea[name="content"]').inlineattachment({
+            uploadUrl: '{{ route('upload.image') }}',
+            jsonFieldName: 'data'
+        });
+    }
+</script>

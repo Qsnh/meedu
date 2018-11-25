@@ -156,7 +156,6 @@
                                 <el-input type="textarea" name="meedu*seo*book_list*description" placeholder="电子书列表页面描述" v-model="config.meedu.seo.book_list.description"></el-input>
                             </el-form-item>
                         </el-col>
-
                     </el-tab-pane>
                 </el-tabs>
             </template>

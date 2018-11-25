@@ -19,7 +19,7 @@
         @yield('content')
     </div>
 
-    @include('components.frontend.footer')
+    @include(config('meedu.advance.layout_footer'))
     <script src="{{ mix('js/frontend.js') }}"></script>
     <script src="{{ asset('js/layx/layx.min.js') }}"></script>
     <script src="{{ asset('js/echo.min.js') }}"></script>

@@ -107,4 +107,9 @@ return [
             ],
         ],
     ],
+
+    // advance
+    'advance' => [
+        'layout_footer' => env('LAYOUT_FOOTER', 'components.frontend.footer'),
+    ],
 ];

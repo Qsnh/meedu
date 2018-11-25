@@ -86,7 +86,7 @@
                                            {{$comment->user->nick_name}}
                                        </p>
                                        @if($comment->user->role)
-                                           <p class="nickname">{{$comment->user->role->name}}</p>
+                                           <span class="badge badge-danger nickname">{{$comment->user->role->name}}</span>
                                        @endif
                                    </td>
                                    <td class="comment-content">
