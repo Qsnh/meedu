@@ -12,7 +12,6 @@
 namespace App\Models;
 
 use App\User;
-use App\Meedu\VideoAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
