@@ -141,7 +141,7 @@ if (! function_exists('markdown_to_html')) {
      */
     function markdown_to_html($content)
     {
-        $content = (new Parsedown())->parse($content);
+        $content = (new Parsedown())->setBreaksEnabled(true)->parse($content);
         $content = preg_replace('#<table>#', '<table class="table table-hover table-bordered">', $content);
 
         return $content;
