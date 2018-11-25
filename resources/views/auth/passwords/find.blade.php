@@ -4,7 +4,7 @@
 
     <div class="container auth-page">
         <div class="row justify-content-center">
-            <div class="col-4 login-box">
+            <div class="col-sm-4 login-box">
                 <h3 class="text-center login-box-title">重置密码</h3>
                 <form class="form-horizontal" method="POST">
                     @csrf
