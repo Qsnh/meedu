@@ -76,6 +76,13 @@ span.label { margin-right: 8px; }
   margin-top: 20px; margin-bottom: 20px; float: right;
 }
 
+/** 评论框 */
+.comment-alert {
+  p {
+    margin: 0px; padding: 0px; line-height: 2rem;
+  }
+}
+
 /** 页脚 */
 footer {
   background-color: #303133; color: #dddddd;
@@ -244,6 +251,9 @@ footer {
       }
       .avatar {
         width: 50px; height: 50px; border-radius: 50%; margin-top: 20px;
+      }
+      .role-name {
+        margin-bottom: 8px;
       }
     }
     .comment-content {

@@ -82,11 +82,9 @@
                                <tr class="comment-list-item">
                                    <td width="70" class="user-info">
                                        <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
-                                       <p class="nickname">
-                                           {{$comment->user->nick_name}}
-                                       </p>
+                                       <span class="nickname">{{$comment->user->nick_name}}</span>
                                        @if($comment->user->role)
-                                           <span class="badge badge-danger nickname">{{$comment->user->role->name}}</span>
+                                           <span class="badge badge-danger role-name">{{$comment->user->role->name}}</span>
                                        @endif
                                    </td>
                                    <td class="comment-content">
