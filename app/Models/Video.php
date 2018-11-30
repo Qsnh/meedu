@@ -12,6 +12,7 @@
 namespace App\Models;
 
 use App\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -131,7 +132,10 @@ class Video extends Model
     public function getPlayInfo()
     {
         if ($this->video_id != '') {
-            return aliyun_play_url($this);
+            $playInfo = aliyun_play_url($this);
+            Log::info(json_encode($playInfo));
+
+            return $playInfo;
         }
 
         return [
