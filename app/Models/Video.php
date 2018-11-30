@@ -131,7 +131,7 @@ class Video extends Model
      */
     public function getPlayInfo()
     {
-        if ($this->video_id != '') {
+        if ($this->aliyun_video_id != '') {
             $playInfo = aliyun_play_url($this);
             Log::info(json_encode($playInfo));
 
