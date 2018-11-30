@@ -34,7 +34,10 @@ class IndexController extends FrontendController
 
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
 
-        return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description', 'links'));
+        return view(
+            config('meedu.advance.template_index', 'frontend.index.index'),
+            compact('courses', 'roles', 'title', 'keywords', 'description', 'links')
+        );
     }
 
     public function subscriptionHandler(Request $request)

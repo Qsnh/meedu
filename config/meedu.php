@@ -111,5 +111,6 @@ return [
     // advance
     'advance' => [
         'layout_footer' => env('LAYOUT_FOOTER', 'components.frontend.footer'),
+        'template_index' => env('TEMPLATE_INDEX', 'frontend.index.index'),
     ],
 ];
