@@ -17,7 +17,7 @@
         "league/html-to-markdown": "^4.8",
         "maatwebsite/excel": "^3.0",
         "mews/captcha": "^2.2",
-        "mews/purifier": "^2.1",
+        "mews/purifier": "^2.0",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
         "spatie/laravel-backup": "5.10.1"

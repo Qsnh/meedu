@@ -142,6 +142,7 @@ if (! function_exists('markdown_to_html')) {
     function markdown_to_html($content)
     {
         $content = (new Parsedown())->setBreaksEnabled(true)->parse($content);
+        $content = clean($content);
         $content = preg_replace('#<table>#', '<table class="table table-hover table-bordered">', $content);
 
         return $content;
@@ -159,7 +160,7 @@ if (! function_exists('markdown_clean')) {
     function markdown_clean(string $markdownContent)
     {
         $html = markdown_to_html($markdownContent);
-        $safeHtml = clean($html);
+        $safeHtml = clean($html, null);
 
         return (new \League\HTMLToMarkdown\HtmlConverter())->convert($safeHtml);
     }
