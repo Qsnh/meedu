@@ -32,7 +32,12 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
+        $keywords = $request->input('keywords', '');
+
         $courses = Course::show()
+            ->when($keywords, function ($query) use ($keywords) {
+                return $query->where('title', 'like', "%{$keywords}%");
+            })
             ->published()
             ->orderByDesc('created_at')
             ->paginate($request->input('page_size', 10));
