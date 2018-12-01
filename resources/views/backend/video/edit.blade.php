@@ -26,6 +26,10 @@
                     <input type="text" class="form-control" name="title" value="{{$video->title}}" placeholder="视频名">
                 </div>
                 <div class="form-group">
+                    <label>上传视频</label>
+                    @include('components.backend.video', ['video' => $video])
+                </div>
+                <div class="form-group">
                     <label>描述</label>
                     @include('components.backend.editor', ['name' => 'description', 'content' => $video->description])
                 </div>
@@ -72,4 +76,8 @@
         </div>
     </form>
 
+@endsection
+
+@section('js')
+    @include('components.backend.aliyun_upload_js')
 @endsection

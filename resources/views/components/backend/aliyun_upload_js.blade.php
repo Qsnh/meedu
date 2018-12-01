@@ -2,7 +2,6 @@
 <script src="{{asset('/js/aliyun-upload-sdk-1.4.0/lib/aliyun-oss-sdk-5.2.0.min.js')}}"></script>
 <script src="{{asset('/js/aliyun-upload-sdk-1.4.0/aliyun-upload-sdk-1.4.0.min.js')}}"></script>
 <script>
-
     var uploader = new AliyunUpload.Vod({
         partSize: 1048576,
         parallel: 5,
@@ -11,7 +10,6 @@
         // 开始上传
         'onUploadstarted': function (uploadInfo) {
             console.log("onUploadStarted:" + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
-            //上传方式1, 需要根据uploadInfo.videoId是否有值，调用点播的不同接口获取uploadauth和uploadAddress，如果videoId有值，调用刷新视频上传凭证接口，否则调用创建视频上传凭证接口
             // uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress,videoId);
             if (uploadInfo.videoId) {
                 // 刷新
@@ -47,7 +45,7 @@
         // 文件上传成功
         'onUploadSucceed': function (uploadInfo) {
             console.log("onUploadSucceed: " + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
-            document.getElementById('video_id').value = uploadInfo.videoId;
+            document.getElementById('aliyun_video_id').value = uploadInfo.videoId;
             document.getElementById('upload-progress').innerText = "上传成功";
         },
         // 文件上传失败
