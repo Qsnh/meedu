@@ -86,7 +86,7 @@ return [
     // 系统配置
     'system' => [
         'cache' => [
-            'status' => 0,
+            'status' => -1,
             'expire' => 360,
         ],
         'indexMenu' => [
