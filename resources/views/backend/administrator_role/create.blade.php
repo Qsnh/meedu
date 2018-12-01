@@ -4,29 +4,30 @@
 
     @include('components.breadcrumb', ['name' => '添加角色'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator_role.index') }}'" :name="'返回角色列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
-                <el-form-item label="角色名">
-                    <el-input name="display_name" value="{{ old('display_name') }}" placeholder="请输入角色名"></el-input>
-                </el-form-item>
-                <el-form-item label="Slug">
-                    <el-input name="slug" value="{{ old('slug') }}" placeholder="请输入Slug"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input name="description" value="{{ old('description') }}" placeholder="请输入描述"></el-input>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">添加</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator_role.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>角色名</label>
+                    <input type="text" name="display_name" class="form-control" placeholder="请输入角色名">
+                </div>
+                <div class="form-group">
+                    <label>Slug</label>
+                    <input type="text" name="slug" class="form-control" placeholder="Slug">
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <input type="text" name="description" class="form-control" placeholder="描述">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    @include('components.vue_init')
 @endsection
