@@ -144,5 +144,13 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/link/{id}/edit', 'LinkController@edit')->name('backend.link.edit');
         Route::put('/link/{id}/edit', 'LinkController@update');
         Route::get('/link/{id}/delete', 'LinkController@destroy')->name('backend.link.destroy');
+
+        // AdFrom
+        Route::get('/adfrom', 'AdFromController@index')->name('backend.adfrom.index');
+        Route::get('/adfrom/create', 'AdFromController@create')->name('backend.adfrom.create');
+        Route::post('/adfrom/create', 'AdFromController@store');
+        Route::get('/adfrom/{id}/edit', 'AdFromController@edit')->name('backend.adfrom.edit');
+        Route::put('/adfrom/{id}/edit', 'AdFromController@update');
+        Route::get('/adfrom/{id}/delete', 'AdFromController@destroy')->name('backend.adfrom.destroy');
     });
 });
