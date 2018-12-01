@@ -404,6 +404,50 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/book/\d+/chapter/\d+/delete',
                 'description' => '',
             ],
+
+            // 友情链接
+            [
+                'display_name' => '友情链接列表',
+                'slug' => 'backend.link.index',
+                'method' => 'GET',
+                'url' => '/backend/link',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建友情链接界面',
+                'slug' => 'backend.link.create',
+                'method' => 'GET',
+                'url' => '/backend/link/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建友情链接',
+                'slug' => 'backend.link.create',
+                'method' => 'POST',
+                'url' => '/backend/link/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '编辑友情链接界面',
+                'slug' => 'backend.link.edit',
+                'method' => 'GET',
+                'url' => '/backend/link/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '保存友情链接的变动',
+                'slug' => 'backend.link.edit',
+                'method' => 'PUT',
+                'url' => '/backend/link/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除友情链接',
+                'slug' => 'backend.link.destroy',
+                'method' => 'GET',
+                'url' => '/backend/link/\d+/delete',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {

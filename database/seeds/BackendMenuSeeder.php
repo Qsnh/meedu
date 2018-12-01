@@ -22,6 +22,7 @@ class BackendMenuSeeder extends Seeder
             'FAQ分类' => 'FAQ分类列表界面',
             'FAQ文章' => 'FAQ文章列表界面',
             '电子书' => '电子书列表',
+            '友情链接' => '友情链接列表',
         ];
 
         $menus = [
@@ -53,6 +54,10 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '邮件群发',
                         'url' => '/backend/subscription_email',
+                    ],
+                    [
+                        'name' => '友情链接',
+                        'url' => '/backend/link',
                     ],
                 ],
             ],
