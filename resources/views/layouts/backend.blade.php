@@ -15,152 +15,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MeEdu后台管理系统</title>
     <link crossorigin="anonymous" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        /* source-sans-pro-300 */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: normal;
-            font-weight: 300;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Normal'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-300italic */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: italic;
-            font-weight: 300;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Italic'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-300italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-regular */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: normal;
-            font-weight: regular;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Normal'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-regular.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-italic */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: italic;
-            font-weight: regular;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Italic'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-500 */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: normal;
-            font-weight: 500;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Normal'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-500italic */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: italic;
-            font-weight: 500;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Italic'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-500italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-600 */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: normal;
-            font-weight: 600;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Normal'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-600italic */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: italic;
-            font-weight: 600;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Italic'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-600italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-700 */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: normal;
-            font-weight: 700;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Normal'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-
-        /* source-sans-pro-700italic */
-        @font-face {
-            font-family: 'Source Sans Pro';
-            font-style: italic;
-            font-weight: 700;
-            src: url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.eot'); /* IE9 Compat Modes */
-            src: local('Source Sans Pro'), local('SourceSans Pro-Italic'),
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.woff2') format('woff2'), /* Super Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.woff') format('woff'), /* Modern Browsers */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.ttf') format('truetype'), /* Safari, Android, iOS */
-            url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
-        }
-    </style>
     <link rel="stylesheet" href="{{ asset('/js/layx/layx.min.css') }}">
     <script src="/backend/assets/js/require.min.js"></script>
     <script>
         requirejs.config({
-            baseUrl: '.'
+            baseUrl: '/backend/'
         });
     </script>
     <!-- Dashboard Core -->
@@ -168,12 +27,12 @@
     <script src="/backend/assets/js/dashboard.js"></script>
     <!-- Input Mask Plugin -->
     <script src="/backend/assets/plugins/input-mask/plugin.js"></script>
+    <link href="{{ mix('css/backend.css') }}" rel="stylesheet">
     @yield('css')
 </head>
-<body class="">
+<body>
 <div class="page">
-
-    <div class="page-main" id="app">
+    <div class="page-main">
         <div class="header py-4">
             <div class="container">
                 <div class="d-flex">
@@ -225,7 +84,7 @@
         </div>
 
         <div class="my-3 my-md-5">
-            <div class="container">
+            <div class="container" id="app">
                 @yield('body')
             </div>
         </div>
@@ -247,9 +106,9 @@
             </div>
         </div>
     </footer>
-
-    <script src="{{ mix('js/backend.js') }}"></script>
+    
     <script src="{{ asset('js/layx/layx.min.js') }}"></script>
+    <script src="{{ mix('js/backend.js') }}"></script>
     <script>
         @if(get_first_flash('success'))
         layx.msg("{{get_first_flash('success')}}",{dialogIcon:'success'});
