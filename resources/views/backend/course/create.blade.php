@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <label>课程封面</label>
-                    <input type="text" name="thumb" placeholder="封面" class="form-control">
+                    @include('components.backend.image', ['name' => 'thumb', 'title' => '封面'])
                 </div>
                 <div class="form-group">
                     <label>上架时间</label>
