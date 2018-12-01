@@ -13,7 +13,7 @@
                 @csrf
                 <div class="form-group">
                     <label>公告内容</label>
-                    <meedu-markdown :markdown="''" field="announcement"></meedu-markdown>
+                    @include('components.backend.editor', ['name' => 'announcement'])
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">添加</button>
@@ -22,8 +22,4 @@
         </div>
     </div>
 
-@endsection
-
-@section('js')
-    @include('components.vue_init')
 @endsection

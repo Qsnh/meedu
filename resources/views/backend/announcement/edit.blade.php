@@ -14,7 +14,7 @@
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label>公告内容</label>
-                    <meedu-markdown :markdown="announcement.announcement" field="announcement"></meedu-markdown>
+                    @include('components.backend.editor', ['name' => 'announcement', 'content' => $announcement->announcement])
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">保存</button>
