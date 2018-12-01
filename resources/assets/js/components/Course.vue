@@ -1,17 +1,10 @@
 <template>
     <div>
-        <el-row>
-            <el-col :span="24">
-                <el-select v-model="selectCourse">
-                    <el-option v-for="course in courses"
-                    :key="course.id"
-                    :label="course.title"
-                    :value="course.id">
-                    </el-option>
-                </el-select>
-                <input type="hidden" name="course_id" v-model="selectCourse">
-            </el-col>
-        </el-row>
+        <select class="form form-control">
+            <option value="">无</option>
+            <option v-for="course in courses" :value="course.id">{{course.title}}</option>
+        </select>
+        <input type="hidden" name="course_id" v-model="selectCourse">
     </div>
 </template>
 
