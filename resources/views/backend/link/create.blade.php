@@ -4,45 +4,30 @@
 
     @include('components.breadcrumb', ['name' => '添加友情链接'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.link.index') }}'" :name="'返回友情链接列表'"></meedu-a>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.link.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>排序</label>
+                    <input type="text" name="sort" class="form-control" placeholder="排序（升序）">
+                </div>
+                <div class="form-group">
+                    <label>链接名</label>
+                    <input type="text" name="name" class="form-control" placeholder="链接名">
+                </div>
+                <div class="form-group">
+                    <label>链接地址</label>
+                    <input type="text" name="url" class="form-control" placeholder="链接地址">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            {!! csrf_field() !!}
-            <el-col :span="12" :offset="6">
-                <el-form-item label="排序值（整数，小的靠前）">
-                    <el-input name="sort" placeholder="排序值（整数，小的靠前）" value="{{ old('sort') }}"></el-input>
-                </el-form-item>
-
-                <el-form-item label="链接名">
-                    <el-input name="name" placeholder="链接名" value="{{ old('name') }}"></el-input>
-                </el-form-item>
-
-                <el-form-item label="链接地址">
-                    <el-input name="url" placeholder="链接地址" value="{{ old('url') }}"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                }
-            }
-        });
-    </script>
 @endsection

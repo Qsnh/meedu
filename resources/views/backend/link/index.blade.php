@@ -4,54 +4,43 @@
 
     @include('components.breadcrumb', ['name' => '友情链接'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.link.create') }}'" :name="'添加'"></meedu-a>
-        </el-col>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.link.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>排序</th>
+                    <th>链接名</th>
+                    <th>链接地址</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($links as $link)
+                <tr>
+                    <td>{{$link->id}}</td>
+                    <td>{{$link->sort}}</td>
+                    <td>{{$link->name}}</td>
+                    <td>{{$link->url}}</td>
+                    <td>{{$link->created_at}}</td>
+                    <td>
+                        <a href="{{route('backend.link.edit', $link)}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.link.destroy', $link)])
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="6">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <el-col :span="24">
-            <el-table :data="roles" style="width: 100%">
-                <el-table-column
-                        prop="id"
-                        label="ID">
-                </el-table-column>
-                <el-table-column
-                        prop="sort"
-                        label="排序">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="链接名">
-                </el-table-column>
-                <el-table-column
-                        prop="url"
-                        label="链接地址">
-                </el-table-column>
-                <el-table-column
-                        prop="created_at"
-                        label="添加时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    roles: @json($links)
-                }
-            }
-        });
-    </script>
 @endsection

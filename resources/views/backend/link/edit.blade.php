@@ -4,47 +4,31 @@
 
     @include('components.breadcrumb', ['name' => '编辑友情链接'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.link.index') }}'" :name="'返回友情链接列表'"></meedu-a>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.link.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <label>排序</label>
+                    <input type="text" name="sort" value="{{$link->sort}}" class="form-control" placeholder="排序（升序）">
+                </div>
+                <div class="form-group">
+                    <label>链接名</label>
+                    <input type="text" name="name" value="{{$link->name}}" class="form-control" placeholder="链接名">
+                </div>
+                <div class="form-group">
+                    <label>链接地址</label>
+                    <input type="text" name="url" value="{{$link->url}}" class="form-control" placeholder="链接地址">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            {!! csrf_field() !!}
-            <input type="hidden" name="_method" value="PUT">
-            <el-col :span="12" :offset="6">
-                <el-form-item label="排序值（整数，小的靠前）">
-                    <el-input name="sort" placeholder="排序值（整数，小的靠前）" v-model="link.sort"></el-input>
-                </el-form-item>
-
-                <el-form-item label="链接名">
-                    <el-input name="name" placeholder="链接名" v-model="link.name"></el-input>
-                </el-form-item>
-
-                <el-form-item label="链接地址">
-                    <el-input name="url" placeholder="链接地址" v-model="link.url"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">保存</el-button>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    link: @json($link)
-                }
-            }
-        });
-    </script>
 @endsection
