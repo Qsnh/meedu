@@ -9,7 +9,7 @@
              class="input-file-{{$name}}-preview rounded" width="200" height="120">
     </div>
     <div style="display: none">
-        <input type="hidden" name="{{$name}}" value="">
+        <input type="hidden" name="{{$name}}" value="{{$value ?? ''}}">
     </div>
 </div>
 

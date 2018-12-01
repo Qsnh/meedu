@@ -4,83 +4,58 @@
 
     @include('components.breadcrumb', ['name' => '编辑电子书'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.book.index') }}'" :name="'返回电子书列表'"></meedu-a>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.book.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <label>书名</label>
+                    <input type="text" name="title" value="{{$book->title}}" class="form-control" placeholder="请输入书名">
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    @include('components.backend.editor', ['name' => 'description', 'content' => $book->description])
+                </div>
+                <div class="form-group">
+                    <label>一句话描述</label>
+                    <textarea name="short_description" class="form-control"
+                              rows="2" placeholder="简短介绍">{{$book->short_description}}</textarea>
+                </div>
+                @include('components.backend.image', ['name' => 'thumb', 'title' => '封面', 'value' => $book->thumb])
+                <div class="form-group">
+                    <label>上架时间</label>
+                    @include('components.backend.datetime', ['name' => 'published_at', 'value' => $book->published_at])
+                </div>
+                <div class="form-group">
+                    <label>是否显示</label><br>
+                    <label><input type="radio" name="is_show"
+                                  value="{{ \App\Models\Book::SHOW_YES }}"
+                                {{$book->is_show == \App\Models\Book::SHOW_YES ? 'checked' : ''}}>是</label>
+                    <label><input type="radio" name="is_show"
+                                  value="{{ \App\Models\Book::SHOW_NO }}"
+                                {{$book->is_show == \App\Models\Book::SHOW_NO ? 'checked' : ''}}>否</label>
+                </div>
+                <div class="form-group">
+                    <label>价格</label>
+                    <input type="text" name="charge" placeholder="价格" class="form-control" value="{{$book->charge}}">
+                </div>
+                <div class="form-group">
+                    <label>SEO关键字</label>
+                    <textarea name="seo_keywords" class="form-control" rows="2" placeholder="SEO关键字">{{$book->seo_keywords}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>SEO描述</label>
+                    <textarea name="seo_description" class="form-control" rows="2" placeholder="SEO描述">{{$book->seo_description}}</textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            <input type="hidden" name="_method" value="PUT">
-            {!! csrf_field() !!}
-            <el-col :span="12">
-                <el-form-item label="书名">
-                    <el-input name="title" placeholder="书名" v-model="book.title"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <meedu-markdown :markdown="book.description" field="description"></meedu-markdown>
-                </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="简短介绍">
-                    <el-input type="textarea"
-                              name="short_description"
-                              placeholder="简短介绍"
-                              v-model="book.short_description"></el-input>
-                </el-form-item>
-                <el-form-item label="课程封面">
-                    <meedu-upload-image :field="'thumb'" :give-image-url="book.thumb"></meedu-upload-image>
-                </el-form-item>
-                <el-form-item label="上架时间">
-                    <el-date-picker
-                            v-model="book.published_at"
-                            type="datetime"
-                            placeholder="选择上线时间"
-                            name="published_at">
-                    </el-date-picker>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">保存</el-button>
-                </el-form-item>
-
-                <hr>
-
-                <el-form-item label="是否显示">
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" v-model="book.is_show"> 是</label>
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}" v-model="book.is_show"> 否</label>
-                </el-form-item>
-                <el-form-item label="价格">
-                    <el-input name="charge" placeholder="价格" v-model="book.charge"></el-input>
-                </el-form-item>
-                <el-form-item label="SEO关键词">
-                    <el-input type="textarea"
-                              name="seo_keywords"
-                              placeholder="SEO关键词"
-                              v-model="book.seo_keywords"></el-input>
-                </el-form-item>
-                <el-form-item label="SEO描述">
-                    <el-input type="textarea"
-                              name="seo_description"
-                              placeholder="SEO描述"
-                              v-model="book.seo_description"></el-input>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    book: @json($book)
-                }
-            }
-        });
-    </script>
 @endsection

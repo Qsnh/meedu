@@ -25,10 +25,7 @@
                     <label>一句话介绍</label>
                     <textarea name="short_description" class="form-control" rows="2" placeholder="一句话介绍"></textarea>
                 </div>
-                <div class="form-group">
-                    <label>课程封面</label>
-                    @include('components.backend.image', ['name' => 'thumb', 'title' => '封面'])
-                </div>
+                @include('components.backend.image', ['name' => 'thumb', 'title' => '课程封面'])
                 <div class="form-group">
                     <label>上架时间</label>
                     @include('components.backend.datetime', ['name' => 'published_at'])
