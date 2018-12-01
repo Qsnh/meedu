@@ -2,60 +2,52 @@
 
 @section('body')
 
-    @include('components.breadcrumb', ['name' => '用户角色[VIP]'])
+    @include('components.breadcrumb', ['name' => 'VIP会员'])
+
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.role.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>权重</th>
+                    <th>角色名</th>
+                    <th>价格</th>
+                    <th>时长</th>
+                    <th>编辑时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($roles as $role)
+                <tr>
+                    <td>{{$role->id}}</td>
+                    <td>{{$role->weight}}</td>
+                    <td>{{$role->name}}</td>
+                    <td>{{$role->charge}}</td>
+                    <td>{{$role->expire_days}}</td>
+                    <td>{{$role->updated_at}}</td>
+                    <td>
+                        <a href="{{route('backend.role.edit', $role)}}" class="btn btn-warning btn-sm">编辑</a>
+                        <meedu-destroy-button :url="'{{route('backend.role.destroy', $role)}}'"></meedu-destroy-button>
+                    </td>
+                </tr>
+                    @empty
+                    <tr>
+                        <td class="text-center" colspan="7">暂无记录</td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <el-row>
         <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.role.create') }}'" :name="'添加'"></meedu-a>
+            <meedu-a :url="''" :name="'添加'"></meedu-a>
         </el-col>
 
-        <el-col :span="24">
-            <el-table :data="roles" style="width: 100%">
-                <el-table-column
-                        prop="id"
-                        label="ID">
-                </el-table-column>
-                <el-table-column
-                        prop="weight"
-                        label="权重">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="角色名">
-                </el-table-column>
-                <el-table-column
-                        prop="charge"
-                        label="价格">
-                </el-table-column>
-                <el-table-column
-                        prop="expire_days"
-                        label="时长（单位：天）">
-                </el-table-column>
-                <el-table-column
-                        prop="updated_at"
-                        label="最后编辑时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    roles: @json($roles)
-                }
-            }
-        });
-    </script>
 @endsection
