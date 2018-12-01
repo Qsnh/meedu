@@ -4,105 +4,56 @@
 
     @include('components.breadcrumb', ['name' => '会员列表'])
 
-    <el-row>
-        <el-col :span="12" :offset="6">
-            <el-form action="" method="get">
-                <el-form-item label="呢称/手机号">
-                    <el-input name="keywords"
-                              value="{{ request()->input('keywords', '') }}"
-                              placeholder="请输入关键字">
-                    </el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" native-type="submit">搜索</el-button>
-                    <meedu-a :type="'warning'" :name="'重置'" :url="'{{ route('backend.member.index') }}'">
-                    </meedu-a>
-                </el-form-item>
-            </el-form>
-        </el-col>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <form action="" method="get">
+                <div class="form-group">
+                    <label>呢称/手机号</label>
+                    <input type="text" class="form-control" name="keywords" value="{{ request()->input('keywords', '') }}" placeholder="请输入关键字">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">过滤</button>
+                    <a href="{{ route('backend.member.index') }}" class="btn btn-warning">重置</a>
+                </div>
+            </form>
+        </div>
 
-        <el-col :span="24">
-            <el-table :data="administrators" style="width: 100%">
-                <el-table-column type="expand">
-                    @verbatim
-                        <template slot-scope="props">
-                            <div style="line-height: 26px;">
-                                <el-row>
-                                    <el-col :span="24">
-                                        <p>头像</p>
-                                        <p><img :src="props.row.avatar" width="240" height="100" alt=""></p>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <p><b>{{ props.row.credit1_text }}：</b> {{ props.row.credit1 }}</p>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <p><b>{{ props.row.credit2_text }}：</b> {{ props.row.credit2 }}</p>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <p><b>{{ props.row.credit3_text }}：</b> {{ props.row.credit3 }}</p>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                        </template>
-                    @endverbatim
-                </el-table-column>
-                <el-table-column
-                        prop="nick_name"
-                        label="呢称">
-                </el-table-column>
-                <el-table-column
-                        prop="mobile"
-                        label="手机号">
-                </el-table-column>
-                <el-table-column label="激活">
-                    @verbatim
-                        <template slot-scope="scope">
-                            <el-tag :type="scope.row.is_active == 1 ? 'success' : 'warning'"
-                                    disable-transitions>{{scope.row.is_active == 1 ? '是' : '否'}}</el-tag>
-                        </template>
-                    @endverbatim
-                </el-table-column>
-                <el-table-column label="锁定">
-                    @verbatim
-                    <template slot-scope="scope">
-                        <el-tag :type="scope.row.is_lock == 1 ? 'danger' : 'primary'"
-                                disable-transitions>{{scope.row.is_active == 1 ? '是' : '否'}}</el-tag>
-                    </template>
-                    @endverbatim
-                </el-table-column>
-                <el-table-column
-                        prop="created_at"
-                        label="注册时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'详情'" :type="'warning'" :url="scope.row.show_url"></meedu-a>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>ID</th>
+                    <th>手机号</th>
+                    <th>昵称</th>
+                    <th>是否激活</th>
+                    <th>是否锁定</th>
+                    <th>注册时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($members as $member)
+                <tr>
+                    <td><img src="{{$member->avatar}}" class="avatar" width="50" height="50"></td>
+                    <td>{{$member->id}}</td>
+                    <td>{{$member->mobile}}</td>
+                    <td>{{$member->nick_name}}</td>
+                    <td>{{$member->is_active == 1 ? '是' : '否'}}</td>
+                    <td>{{$member->is_lock == 1 ? '是' : '否'}}</td>
+                    <td>{{$member->created_at}}</td>
+                    <td>
+                        <a href="{{route('backend.member.show', $member)}}" class="btn btn-warning btn-sm">详情</a>
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="8">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <meedu-pagination :pagination="remoteData"></meedu-pagination>
-
-@endsection
-
-@section('js')
-    <script>
-        var pagination = @json($members);
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    remoteData: pagination
-                }
-            },
-            computed: {
-                administrators: function () {
-                    var data = this.remoteData.data;
-                    return data;
-                }
-            }
-        });
-    </script>
 @endsection
