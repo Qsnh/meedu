@@ -448,6 +448,50 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/link/\d+/delete',
                 'description' => '',
             ],
+            
+            // 推广链接
+            [
+                'display_name' => '推广链接首页',
+                'slug' => 'backend.adfrom.index',
+                'method' => 'GET',
+                'url' => '/backend/adfrom',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建推广链接界面',
+                'slug' => 'backend.adfrom.create',
+                'method' => 'GET',
+                'url' => '/backend/adfrom/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建推广链接',
+                'slug' => 'backend.adfrom.create',
+                'method' => 'POST',
+                'url' => '/backend/adfrom/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '编辑推广链接界面',
+                'slug' => 'backend.adfrom.edit',
+                'method' => 'GET',
+                'url' => '/backend/adfrom/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '保存推广链接的变动',
+                'slug' => 'backend.adfrom.edit',
+                'method' => 'PUT',
+                'url' => '/backend/adfrom/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除推广链接',
+                'slug' => 'backend.adfrom.destroy',
+                'method' => 'GET',
+                'url' => '/backend/adfrom/\d+/delete',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {
