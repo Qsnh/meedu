@@ -1,0 +1,6 @@
+Route::get('/{{$name}}', '{{$model}}Controller@index')->name('backend.{{$name}}.index');
+Route::get('/{{$name}}/create', '{{$model}}Controller@create')->name('backend.{{$name}}.create');
+Route::post('/{{$name}}/create', '{{$model}}Controller@store');
+Route::get('/{{$name}}/{id}/edit', '{{$model}}Controller@edit')->name('backend.{{$name}}.edit');
+Route::put('/{{$name}}/{id}/edit', '{{$model}}Controller@update');
+Route::get('/{{$name}}/{id}/delete', '{{$model}}Controller@destroy')->name('backend.{{$name}}.destroy');
