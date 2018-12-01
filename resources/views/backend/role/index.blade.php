@@ -32,7 +32,7 @@
                     <td>{{$role->updated_at}}</td>
                     <td>
                         <a href="{{route('backend.role.edit', $role)}}" class="btn btn-warning btn-sm">编辑</a>
-                        <meedu-destroy-button :url="'{{route('backend.role.destroy', $role)}}'"></meedu-destroy-button>
+                        @include('components.backend.destroy', ['url' => route('backend.role.destroy', $role)])
                     </td>
                 </tr>
                     @empty

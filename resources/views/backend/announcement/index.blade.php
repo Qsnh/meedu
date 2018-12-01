@@ -24,7 +24,7 @@
                     <td>{{$announcement->updated_at}}</td>
                     <td>
                         <a href="{{route('backend.announcement.edit', $announcement)}}" class="btn btn-warning btn-sm">编辑</a>
-                        <meedu-destroy-button :url="'{{route('backend.announcement.destroy', $announcement)}}'"></meedu-destroy-button>
+                        @include('components.backend.destroy', ['url' => route('backend.announcement.destroy', $announcement)])
                     </td>
                 </tr>
                     @empty
