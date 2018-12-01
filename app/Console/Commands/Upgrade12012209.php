@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Console\Commands;
 
-use App\Models\AdministratorMenu;
-use App\Models\AdministratorPermission;
 use Illuminate\Console\Command;
+use App\Models\AdministratorMenu;
 use Illuminate\Support\Facades\DB;
+use App\Models\AdministratorPermission;
 
 class Upgrade12012209 extends Command
 {
@@ -25,8 +34,6 @@ class Upgrade12012209 extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
