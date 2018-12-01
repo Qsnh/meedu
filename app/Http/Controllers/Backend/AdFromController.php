@@ -11,11 +11,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Carbon\Carbon;
 use App\Models\AdFrom;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\AdFromRequest;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class AdFromController extends Controller
 {
@@ -76,7 +76,7 @@ class AdFromController extends Controller
                 'value' => $item->num,
             ];
         }
+
         return view('backend.adfrom.number', compact('one', 'rows'));
     }
-
 }
