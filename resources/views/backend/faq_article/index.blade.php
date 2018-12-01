@@ -4,58 +4,44 @@
 
     @include('components.breadcrumb', ['name' => 'FAQ文章'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.faq.article.create') }}'" :name="'添加'"></meedu-a>
-        </el-col>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.faq.article.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>分类</th>
+                    <th>标题</th>
+                    <th>最后编辑时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($articles as $article)
+                <tr>
+                    <td>{{$article->id}}</td>
+                    <td>{{$article->category->name}}</td>
+                    <td>{{$article->title}}</td>
+                    <td>{{$article->updated_at}}</td>
+                    <td>
+                        <a href="{{route('backend.faq.article.edit', $article)}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.faq.article.destroy', $article)])
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="5">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12">
+            {{$articles->render()}}
+        </div>
+    </div>
 
-        <el-col :span="24">
-            <el-table :data="articles" style="width: 100%">
-                <el-table-column
-                        prop="id"
-                        label="ID">
-                </el-table-column>
-                <el-table-column
-                        prop="category.name"
-                        label="分类">
-                </el-table-column>
-                <el-table-column
-                        prop="title"
-                        label="标题">
-                </el-table-column>
-                <el-table-column
-                        prop="updated_at"
-                        label="最后编辑时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
-
-    <meedu-pagination :pagination="remoteData"></meedu-pagination>
-
-@endsection
-
-@section('js')
-    <script>
-        var pagination = @json($articles);
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    remoteData: pagination
-                }
-            },
-            computed: {
-                articles: function () {
-                    return this.remoteData.data;
-                }
-            }
-        });
-    </script>
 @endsection

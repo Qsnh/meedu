@@ -4,52 +4,36 @@
 
     @include('components.breadcrumb', ['name' => '编辑FAQ文章'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.faq.article.index') }}'" :name="'返回列表'"></meedu-a>
-        </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            <input type="hidden" name="_method" value="PUT">
-            {!! csrf_field() !!}
-            <el-col :span="12" :offset="6">
-
-                <el-form-item label="FAQ分类">
-                    <select name="category_id" v-model="article.category_id">
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.faq.article.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <label>分类</label>
+                    <select name="category_id" class="form-control">
+                        <option value="">无</option>
                         @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}" {{$article->category_id == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
                         @endforeach
                     </select>
-                </el-form-item>
+                </div>
+                <div class="form-group">
+                    <label>文章标题</label>
+                    <input type="text" name="title" class="form-control" placeholder="文章标题" value="{{$article->title}}">
+                </div>
+                <div class="form-group">
+                    <label>文章内容</label>
+                    @include('components.backend.editor', ['name' => 'content', 'content' => $article->content])
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                <el-form-item label="文章标题">
-                    <el-input name="title" placeholder="文章标题" v-model="article.title"></el-input>
-                </el-form-item>
-
-                <el-form-item label="文章内容">
-                    <meedu-markdown :markdown="article.content" field="content"></meedu-markdown>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">编辑</el-button>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    article: @json($article)
-                }
-            }
-        });
-    </script>
 @endsection
