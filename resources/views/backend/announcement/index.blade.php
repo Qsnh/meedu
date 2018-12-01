@@ -35,6 +35,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="col-sm-12">
+            {{$announcements->render()}}
+        </div>
     </div>
 
 @endsection

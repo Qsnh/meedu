@@ -321,3 +321,19 @@ if (! function_exists('gen_order_no')) {
         return $time.$rand.$userId;
     }
 }
+
+if (! function_exists('input_equal')) {
+    /**
+     * GET参数是否等于指定值
+     *
+     * @param $field
+     * @param $value
+     * @param string $default
+     *
+     * @return bool
+     */
+    function input_equal($field, $value, $default = '')
+    {
+        return request()->input($field, $default) == $value;
+    }
+}

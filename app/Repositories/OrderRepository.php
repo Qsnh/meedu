@@ -11,6 +11,7 @@
 
 namespace App\Repositories;
 
+use Exception;
 use App\Models\Order;
 use App\Meedu\Payment\Youzan\Youzan;
 
