@@ -54,6 +54,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="col-sm-12">
+            {{$members->render()}}
+        </div>
     </div>
 
 @endsection
