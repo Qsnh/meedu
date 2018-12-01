@@ -4,56 +4,41 @@
 
     @include('components.breadcrumb', ['name' => '章节列表'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.book.chapter.create', [$book->id]) }}'" :name="'添加'"></meedu-a>
-        </el-col>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.book.chapter.create', [$book->id]) }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <h3>电子书 <b>《{{$book->title}}》</b> 的章节</h3>
 
-        <p style="line-height: 46px;">电子书 <b>《{{$book->title}}》</b> 的章节</p>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>章节名</th>
+                    <th>上线时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($chapters as $chapter)
+                <tr>
+                    <td>{{$chapter->id}}</td>
+                    <td>{{$chapter->title}}</td>
+                    <td>{{$chapter->published_at}}</td>
+                    <td>
+                        <a href="{{route('backend.book.chapter.edit', [$chapter->book_id, $chapter->id])}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.book.chapter.destroy', [$chapter->book_id, $chapter->id])])
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td colspan="4" class="text-center">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <el-col :span="24">
-            <el-table :data="chapters" style="width: 100%">
-                <el-table-column
-                        prop="id"
-                        label="ID">
-                </el-table-column>
-                <el-table-column
-                        prop="title"
-                        label="章节名">
-                </el-table-column>
-                <el-table-column
-                        prop="published_at"
-                        label="上线时间">
-                </el-table-column>
-                <el-table-column label="显示">
-                    @verbatim
-                        <template slot-scope="scope">
-                            <el-tag :type="scope.row.is_show == 1 ? 'success' : 'default'"
-                                    disable-transitions>{{scope.row.is_show == 1 ? '显示' : '不显示'}}</el-tag>
-                        </template>
-                    @endverbatim
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    chapters: @json($chapters)
-                }
-            }
-        });
-    </script>
 @endsection

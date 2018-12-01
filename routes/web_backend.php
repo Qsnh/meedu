@@ -129,7 +129,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/book/{id}/edit', 'BookController@update');
         Route::get('/book/{id}/delete', 'BookController@destroy')->name('backend.book.destroy');
 
-        // 用户角色
+        // 图书章节
         Route::get('/book/{book_id}/chapter', 'BookChapterController@index')->name('backend.book.chapter.index');
         Route::get('/book/{book_id}/chapter/create', 'BookChapterController@create')->name('backend.book.chapter.create');
         Route::post('/book/{book_id}/chapter/create', 'BookChapterController@store');

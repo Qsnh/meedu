@@ -27,6 +27,7 @@
                     <td>
                         <a href="{{route('backend.book.edit', $book)}}" class="btn btn-warning btn-sm">编辑</a>
                         @include('components.backend.destroy', ['url' => route('backend.book.destroy', $book)])
+                        <a href="{{route('backend.book.chapter.index', $book->id)}}" class="btn btn-info btn-sm">章节</a>
                     </td>
                 </tr>
                     @empty
