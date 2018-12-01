@@ -2,44 +2,45 @@
 
 @section('body')
 
-    @include('components.breadcrumb', ['name' => '编辑管理员'])
+    @include('components.breadcrumb', ['name' => '添加管理员'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator.index') }}'" :name="'返回管理员列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
                 <input type="hidden" name="_method" value="PUT">
-                <el-form-item label="邮箱">
-                    <el-input name="email" value="{{ $administrator->email }}" placeholder="请输入邮箱" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input name="name" value="{{ $administrator->name }}" placeholder="请输入姓名"></el-input>
-                </el-form-item>
-                <el-form-item label="密码(不修改请不要填写)">
-                    <el-input name="password" type="password" placeholder="请输入密码"></el-input>
-                </el-form-item>
-                <el-form-item label="请再输入一次密码">
-                    <el-input name="password_confirmation" type="password" placeholder="请再输入一次密码"></el-input>
-                </el-form-item>
-                <el-form-item label="角色">
-                    <select name="role_id[]" multiple="multiple">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" name="name" class="form-control" placeholder="请输入姓名" value="{{$administrator->name}}">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" name="email" class="form-control" placeholder="请输入邮箱" value="{{$administrator->email}}" disabled="disabled">
+                </div>
+                <div class="form-group">
+                    <label>密码(可选)</label>
+                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label>请再输入一次密码</label>
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="请再输入一次密码">
+                </div>
+                <div class="form-group">
+                    <label>角色</label>
+                    <select name="role_id[]" multiple="multiple" class="form-control">
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}" {{ $administrator->hasRole($role) ? 'selected' : '' }}>
-                                {{ $role->display_name }}
-                            </option>
+                            <option value="{{ $role->id }}" {{$role->hasAdministrator($administrator) ? 'selected' : ''}}>{{ $role->display_name }}</option>
                         @endforeach
                     </select>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">编辑</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    @include('components.vue_init')
 @endsection

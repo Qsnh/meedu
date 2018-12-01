@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Course;
 use App\Models\Video;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\CourseVideoRequest;
@@ -46,6 +46,7 @@ class CourseVideoController extends Controller
     public function create()
     {
         $courses = Course::all();
+
         return view('backend.video.create', compact('courses'));
     }
 

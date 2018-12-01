@@ -88,4 +88,16 @@ class AdministratorRole extends Model
     {
         return $this->permissions()->where('id', $permission->id)->exists();
     }
+
+    /**
+     * 当前角色是否属于某个用户.
+     *
+     * @param Administrator $administrator
+     *
+     * @return mixed
+     */
+    public function hasAdministrator(Administrator $administrator)
+    {
+        return $this->administrators()->whereId($administrator->id)->exists();
+    }
 }
