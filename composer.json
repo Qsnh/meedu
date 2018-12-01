@@ -65,7 +65,8 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
         ],
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "cs-fixer": "php php-cs-fixer.phar fix"
     },
     "config": {
         "preferred-install": "dist",
