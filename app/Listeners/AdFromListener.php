@@ -36,7 +36,7 @@ class AdFromListener
         if (! $adFrom) {
             return;
         }
-        $key = sprintf('ad_from_%s_%s', $key, date('Y-m-d'));
+        $key = sprintf('ad_from_%s_%s', $adFrom->from_key, date('Y-m-d'));
         if (! Cache::has($key)) {
             Cache::forever($key, 1);
         } else {
