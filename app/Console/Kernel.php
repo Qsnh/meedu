@@ -35,6 +35,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')
             ->dailyAt('05:00')
             ->appendOutputTo(storage_path('logs/backup'));
+
+        // AdFrom 数据同步
+        $schedule->command('adfrom:sync')->everyThirtyMinutes();
     }
 
     /**
