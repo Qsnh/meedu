@@ -11,7 +11,7 @@
         <div class="col-sm-12">
             <form action="" method="get">
                 <div class="form-group">
-                    <label>呢称/手机号</label>
+                    <label>课程标题</label>
                     <input type="text" class="form-control" name="keywords" value="{{ request()->input('keywords', '') }}" placeholder="请输入关键字">
                 </div>
                 <div class="form-group">

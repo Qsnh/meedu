@@ -4,89 +4,70 @@
 
     @include('components.breadcrumb', ['name' => '添加视频'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.video.index') }}'" :name="'返回视频列表'"></meedu-a>
-        </el-col>
-    </el-row>
+    <form action="" method="post">
+        @csrf
+        <div class="row row-cards">
+            <div class="col-sm-12">
+                <a href="{{ route('backend.video.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>课程</label>
+                    <select name="course_id" class="form-control">
+                        <option value="">无</option>
+                        @foreach($courses as $course)
+                        <option value="{{$course->id}}">{{$course->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>课程名</label>
+                    <input type="text" class="form-control" name="title" value="{{old('title')}}" placeholder="视频名">
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    @include('components.backend.editor', ['name' => 'description'])
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>一句话介绍</label>
+                    <textarea name="short_description" class="form-control" rows="2" placeholder="一句话介绍"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>课程封面</label>
+                    @include('components.backend.image', ['name' => 'thumb', 'title' => '封面'])
+                </div>
+                <div class="form-group">
+                    <label>上架时间</label>
+                    @include('components.backend.datetime', ['name' => 'published_at'])
+                </div>
+                <div class="form-group">
+                    <label>是否显示</label><br>
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Video::IS_SHOW_YES }}" checked>是</label>
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Video::IS_SHOW_NO }}">否</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>价格</label>
+                    <input type="text" name="charge" placeholder="价格" class="form-control" value="{{old('charge')}}">
+                </div>
+                <div class="form-group">
+                    <label>SEO关键字</label>
+                    <textarea name="seo_keywords" class="form-control" rows="2" placeholder="SEO关键字"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>SEO描述</label>
+                    <textarea name="seo_description" class="form-control" rows="2" placeholder="SEO描述"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            {!! csrf_field() !!}
-            <el-col :span="12">
-                <el-form-item label="视频名">
-                    <el-input name="title" placeholder="视频名" value="{{ old('title') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <meedu-markdown :markdown="''" field="description"></meedu-markdown>
-                </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="所属课程">
-                    <meedu-course></meedu-course>
-                </el-form-item>
-                <el-form-item label="简短介绍">
-                    <el-input type="textarea"
-                              name="short_description"
-                              placeholder="简短介绍"
-                              rows="4"
-                              value="{{ old('short_description') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="上架时间">
-                    <el-date-picker
-                            v-model="published_at"
-                            type="datetime"
-                            placeholder="选择上线时间"
-                            name="published_at">
-                    </el-date-picker>
-                </el-form-item>
-
-                <el-form-item label="价格">
-                    <el-input name="charge" placeholder="价格" value="{{ old('charge', 0) }}"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
-                </el-form-item>
-
-                <hr>
-
-                <meedu-video-upload :video="{url: '', video_id: '1'}"></meedu-video-upload>
-
-                <el-form-item label="是否显示">
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" checked> 是</label>
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}"> 否</label>
-                </el-form-item>
-
-                <el-form-item label="SEO关键词">
-                    <el-input type="textarea"
-                              name="seo_keywords"
-                              placeholder="SEO关键词"
-                              value="{{ old('seo_keywords') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="SEO描述">
-                    <el-input type="textarea"
-                              name="seo_description"
-                              placeholder="SEO描述"
-                              value="{{ old('seo_description') }}"></el-input>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        var now = new Date();
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    published_at: now
-                }
-            }
-        });
-    </script>
-    @include('components.backend.aliyun_upload_js')
 @endsection
