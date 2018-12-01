@@ -492,6 +492,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/adfrom/\d+/delete',
                 'description' => '',
             ],
+            [
+                'display_name' => '查看推广链接推广效果',
+                'slug' => 'backend.adfrom.number',
+                'method' => 'GET',
+                'url' => '/backend/adfrom/\d+/number',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {

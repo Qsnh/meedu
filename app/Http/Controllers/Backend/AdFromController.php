@@ -14,6 +14,8 @@ namespace App\Http\Controllers\Backend;
 use App\Models\AdFrom;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\AdFromRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AdFromController extends Controller
 {
@@ -60,4 +62,21 @@ class AdFromController extends Controller
 
         return back();
     }
+
+    public function number(Request $request, $id)
+    {
+        $one = AdFrom::findOrFail($id);
+        $startDate = $request->input('start_date', date('Y-m-d', Carbon::now()->subDays(30)->timestamp));
+        $endDate = $request->input('end_date', date('Y-m-d', Carbon::now()->timestamp));
+        $records = $one->numbers()->whereBetween('day', [$startDate, $endDate])->get();
+        $rows = [];
+        foreach ($records as $item) {
+            $rows[] = [
+                'label' => $item->day,
+                'value' => $item->num,
+            ];
+        }
+        return view('backend.adfrom.number', compact('one', 'rows'));
+    }
+
 }

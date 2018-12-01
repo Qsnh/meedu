@@ -152,5 +152,6 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/adfrom/{id}/edit', 'AdFromController@edit')->name('backend.adfrom.edit');
         Route::put('/adfrom/{id}/edit', 'AdFromController@update');
         Route::get('/adfrom/{id}/delete', 'AdFromController@destroy')->name('backend.adfrom.destroy');
+        Route::get('/adfrom/{id}/number', 'AdFromController@number')->name('backend.adfrom.number');
     });
 });
