@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group">
                     <label>上架时间</label>
-                    <input type="text" name="published_at" placeholder="上架时间" value="{{$course->published_at}}" class="form-control">
+                    @include('components.backend.datetime', ['name' => 'published_at', 'value' => $course->published_at])
                 </div>
                 <div class="form-group">
                     <label>是否显示</label><br>
