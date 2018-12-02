@@ -221,14 +221,26 @@ footer {
         }
       }
       .list {
-        ul {
-          li {
-            width: 100%; height: 50px; line-height: 50px; float: left;
-            white-space: nowrap; overflow: hidden; font-size: 16px;
-            border-bottom: 1px solid #eeeeee; cursor: pointer;
+        table {
+          width: 100%;
+          tr {
+            padding-top: 5px; padding-bottom: 5px;
           }
-          li:hover {
-            background-color: #fbfbfb;
+          tr:hover {
+            background-color: #eaf4fa; cursor: pointer;
+            box-shadow: 0 25px 17px -20px rgba(0,0,0,.2);
+          }
+          td.index-td {
+            text-align: center; width: 60px;
+            .index {
+              font-size: 2rem; color: gray; font-weight: 800
+            }
+          }
+          h3.video-title {
+            color: #333333; line-height: 2rem; font-size: 1rem;
+          }
+          .extra {
+            font-size: .8rem; line-height: 1rem; color: gray
           }
         }
       }

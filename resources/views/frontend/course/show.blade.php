@@ -46,22 +46,28 @@
                        <div class="social-share"></div>
                    </div>
                    <div class="list">
-                       <table style="width: 100%">
+                       <table>
                            <tbody>
-                           @forelse($course->getAllPublishedAndShowVideosCache() as $video)
-                               <tr style="line-height: 36px;">
-                                   <td>
-                                       <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
-                                           <i class="fa fa-play-circle-o" aria-hidden="true"></i>
-                                           @if($video->charge > 0)
-                                           <span class="badge badge-danger">收费</span>
-                                               @else
-                                            <span class="badge badge-success">免费</span>
-                                           @endif
-                                           {{ $video->title  }}
-                                       </a>
+                           @forelse($course->getAllPublishedAndShowVideosCache() as $index => $video)
+                               <tr>
+                                   <td class="index-td">
+                                       <span class="index">{{$index+1}}</span>
                                    </td>
-                                   <td width="80" class="text-right color-gray">{{ $video->updated_at->diffForHumans() }}</td>
+                                   <td>
+                                       <h3 class="video-title">
+                                            <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
+                                                {{ $video->title  }}
+                                            </a>
+                                        </h3>
+                                       <p class="extra">
+                                           <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                            @if($video->charge > 0)
+                                            <span class="badge badge-danger">收费</span>
+                                                @else
+                                             <span class="badge badge-success">免费</span>
+                                            @endif
+                                       </p>
+                                   </td>
                                </tr>
                            @empty
                                <tr>
