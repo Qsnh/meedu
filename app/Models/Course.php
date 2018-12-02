@@ -133,7 +133,7 @@ class Course extends Model
      */
     public function getDescription()
     {
-        return markdown_to_html($this->description);
+        return $this->description;
     }
 
     /**

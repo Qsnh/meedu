@@ -30,10 +30,6 @@ class Video extends Model
         'is_show', 'charge', 'aliyun_video_id',
     ];
 
-    protected $appends = [
-        'edit_url', 'destroy_url',
-    ];
-
     /**
      * 所属用户.
      *
@@ -76,16 +72,6 @@ class Video extends Model
     public function scopePublished($query)
     {
         return $query->where('published_at', '<=', date('Y-m-d H:i:s'));
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('backend.video.edit', $this);
-    }
-
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.video.destroy', $this);
     }
 
     /**

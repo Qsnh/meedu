@@ -47,6 +47,10 @@ class AdministratorController extends Controller
 
     public function showLoginForm()
     {
+        if (Auth::guard()->check()) {
+            return \redirect(\route('backend.dashboard.index'));
+        }
+
         return view('backend.auth.login');
     }
 
