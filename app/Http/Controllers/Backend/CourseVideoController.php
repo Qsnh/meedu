@@ -69,6 +69,7 @@ class CourseVideoController extends Controller
 
     public function update(CourseVideoRequest $request, $id)
     {
+        \dd($request->filldata());
         $video = Video::findOrFail($id);
         $video->fill($request->filldata())->save();
         flash('编辑成功', 'success');
