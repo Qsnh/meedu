@@ -24,7 +24,7 @@ class IndexRepository
      */
     public function recentPublishedAndShowCourses()
     {
-        if (config('meedu.system.cache.status', false)) {
+        if (config('meedu.system.cache.status', -1) == 1) {
             return Cache::remember('index_recent_course', config('meedu.system.cache.expire', 60), function () {
                 return Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
             });
@@ -40,7 +40,7 @@ class IndexRepository
      */
     public function roles()
     {
-        if (config('meedu.system.cache.status', false)) {
+        if (config('meedu.system.cache.status', -1) == 1) {
             return Cache::remember('index_roles', config('meedu.system.cache.expire', 60), function () {
                 return Role::orderByDesc('weight')->limit(3)->get();
             });
