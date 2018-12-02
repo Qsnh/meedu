@@ -36,15 +36,28 @@
                                 @endif
                             </div>
                             <div class="col-sm-3 play-list">
-                                <ul>
+                                <table>
                                     @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
-                                        <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
-                                            <li data-index="{{ $index }}" class="{{ $videoItem->id == $video->id ? 'active' : '' }}">
-                                                <i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ $videoItem->title }}
-                                            </li>
-                                        </a>
+                                    <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
+                                        <td class="index">{{$index+1}}</td>
+                                        <td>
+                                            <p class="video-title">
+                                                <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                                    {{ $videoItem->title }}
+                                                </a>
+                                            </p>
+                                            <p class="extra">
+                                                @if($video->charge > 0)
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>   
+                                                    @else
+                                                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                                @endif
+                                                <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                            </p>
+                                        </td>
+                                    </li>
                                     @endforeach
-                                </ul>
+                                </table>
                             </div>
                             @else
                             <div class="col-sm-12 play-box">
