@@ -15,24 +15,26 @@
 </div>
 
 <script>
-    $('#input-file-{{$field}}').change(function () {
-        var files = this.files;
-        var form = new FormData();
-        form.append('file', files[0]);
-        $.ajax({
-            url:"/backend/upload/image",
-            type:"post",
-            data:form,
-            processData:false,
-            contentType:false,
-            success:function(res){
-                $('input[name="{{$name}}"]').val(res.url);
-                $('.input-file-{{$field}}-preview').attr('src', res.url).show();
-            },
-            error:function(err){
-                alert('网络错误');
-                console.log(err);
-            }
-        })
+    $(function () {
+        $('#input-file-{{$field}}').change(function () {
+            var files = this.files;
+            var form = new FormData();
+            form.append('file', files[0]);
+            $.ajax({
+                url:"/backend/upload/image",
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                success:function(res){
+                    $('input[name="{{$name}}"]').val(res.url);
+                    $('.input-file-{{$field}}-preview').attr('src', res.url).show();
+                },
+                error:function(err){
+                    alert('网络错误');
+                    console.log(err);
+                }
+            })
+        });
     });
 </script>
