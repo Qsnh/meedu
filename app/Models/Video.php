@@ -144,7 +144,8 @@ class Video extends Model
             return $this->url;
         }
         $playInfo = aliyun_play_url($this);
+        Log::info('$playInfo');
 
-        return $playInfo[0]['url'];
+        return isset($playInfo[0]) ? $playInfo[0]['url'] : '';
     }
 }
