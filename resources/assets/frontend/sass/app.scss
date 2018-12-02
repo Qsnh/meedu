@@ -319,31 +319,34 @@ footer {
   .play-list {
     padding: 0px;
     background-color: #202026; height: 500px; overflow-y: auto;
-    tr {
-      td.index {
-        font-size: 2rem; text-align: center; width: 50px; color: #d0d0d6;
-      }
-      cursor: pointer;
-      p {
-        margin: 0px; padding: 0px;
-        a,a:hover {
-          color: #d0d0d6
+    table {
+      width: 100%;
+      tr {
+        td.index {
+          font-size: 2rem; text-align: center; width: 50px; color: #d0d0d6;
+        }
+        cursor: pointer;
+        p {
+          margin: 0px; padding: 0px;
+          a,a:hover {
+            color: #d0d0d6
+          }
+        }
+        p.video-title {
+          white-space: break-word; overflow: hidden;
+          line-height: 1.1rem; font-size: .8rem;
+          margin-bottom: 10px; margin-top: 5px;
+        }
+        p.extra {
+          font-size: 10px; line-height: 12px; color: #909096;
+          margin-bottom: 10px;
         }
       }
-      p.video-title {
-        white-space: break-word; overflow: hidden;
-        line-height: 1.1rem; font-size: .8rem;
-        margin-bottom: 5px; margin-top: 5px;
-      }
-      p.extra {
-        font-size: 10px; line-height: 12px; color: #909096;
-        margin-bottom: 10px;
-      }
-    }
-    tr.active,tr:hover {
-      background-color: #101016;
-      a,a:hover,.index {
-        color: #2692ff;
+      tr.active,tr:hover {
+        background-color: #101016;
+        a,a:hover,.index {
+          color: #2692ff;
+        }
       }
     }
   }
