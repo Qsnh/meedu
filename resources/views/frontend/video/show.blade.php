@@ -12,8 +12,8 @@
             <div class="col-sm-12">
                 <div class="container">
                     <div class="row">
-                        @if(Auth::check())
-                            <div class="col-sm-9 play-box">
+                        <div class="col-sm-9 play-box">
+                            @if(Auth::check())
                                 @if($user->canSeeThisVideo($video))
                                     <video id="xiaoteng-player" playsinline controls>
                                         <source src="{{$video->getPlayUrl()}}" type="video/mp4">
@@ -23,49 +23,49 @@
                                         @if($video->charge > 0 && $video->course->charge == 0)
                                             <p class="text-center">
                                                 <a href="{{ route('member.video.buy', $video) }}"
-                                                   class="btn btn-primary">购买此视频 ￥{{$video->charge}}</a>
+                                                class="btn btn-primary">购买此视频 ￥{{$video->charge}}</a>
                                             </p>
                                         @endif
                                         @if($video->course->charge > 0)
                                             <p class="text-center">
                                                 <a href="{{ route('member.course.buy', $video->course->id) }}"
-                                                   class="btn btn-danger">购买此套课程 ￥{{$video->course->charge}}</a>
+                                                class="btn btn-danger">购买此套课程 ￥{{$video->course->charge}}</a>
                                             </p>
                                         @endif
                                     </div>
                                 @endif
-                            </div>
-                            <div class="col-sm-3 play-list">
-                                <table>
-                                    @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
-                                    <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
-                                        <td class="index">{{$index+1}}</td>
-                                        <td>
-                                            <p class="video-title">
-                                                <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
-                                                    {{ $videoItem->title }}
-                                                </a>
-                                            </p>
-                                            <p class="extra">
-                                                @if($video->charge > 0)
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>   
-                                                    @else
-                                                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                                                @endif
-                                                <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
-                                            </p>
-                                        </td>
-                                    </li>
-                                    @endforeach
-                                </table>
-                            </div>
                             @else
-                            <div class="col-sm-12 play-box">
+                            <div class="col-sm-9 play-box">
                                 <h2 class="text-center" style="line-height: 300px;">
                                     <a href="{{ route('login') }}">点我登陆</a>
                                 </h2>
                             </div>
-                        @endif
+                            @endif
+                        </div>
+                        <div class="col-sm-3 play-list">
+                            <table>
+                                @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
+                                <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
+                                    <td class="index">{{$index+1}}</td>
+                                    <td>
+                                        <p class="video-title">
+                                            <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                                {{ $videoItem->title }}
+                                            </a>
+                                        </p>
+                                        <p class="extra">
+                                            @if($video->charge > 0)
+                                                <i class="fa fa-lock" aria-hidden="true"></i>   
+                                                @else
+                                                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                            @endif
+                                            <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                        </p>
+                                    </td>
+                                </li>
+                                @endforeach
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
