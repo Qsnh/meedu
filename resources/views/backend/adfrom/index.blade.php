@@ -15,6 +15,7 @@
                 <th>ID</th>
                 <th>推广链接名</th>
                 <th>推广链接特征值</th>
+                <th>推广链接</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -24,6 +25,7 @@
                 <td>{{$row->id}}</td>
                 <td>{{$row->from_name}}</td>
                 <td>{{$row->from_key}}</td>
+                <td>{{url('/')}}?from={{$row->from_key}}</td>
                 <td>
                     <a href="{{route('backend.adfrom.edit', $row)}}" class="btn btn-warning btn-sm">编辑</a>
                     @include('components.backend.destroy', ['url' => route('backend.adfrom.destroy', $row)])
