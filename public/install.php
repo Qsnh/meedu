@@ -8,8 +8,9 @@ if (file_exists($lockFile)) {
 $phpVersion = PHP_VERSION;
 $phpVersionCould = version_compare($phpVersion, '7.1.3', '>=');
 // 目录权限
-$bootstrapDirWriteable = is_writable('../boostrap');
+$bootstrapDirWriteable = is_writable('../bootstrap');
 $storageDirWriteable = is_writeable('../storage');
+$envWriteable = is_writeable('../.env');
 // 扩展
 $opensslExtension = extension_loaded('openssl');
 $pdoMysqlExtension = extension_loaded('pdo_mysql');
@@ -33,7 +34,7 @@ $extensionRows = [
     'bcmath' => $bcmathExtension,
     'zip' => $zipExtension,
 ];
-$isCross = $phpVersionCould && $storageDirWriteable && $bootstrapDirWriteable;
+$isCross = $phpVersionCould && $storageDirWriteable && $bootstrapDirWriteable && $envWriteable;
 if ($isCross) {
     foreach ($extensionRows as $extensionRow) {
         $isCross = $isCross && $extensionRow;
@@ -58,7 +59,7 @@ if ($isCross) {
             </div>
             <div class="col-sm-12">
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-info"><b>PHP版本检测</b></li>
+                    <li class="list-group-item list-group-item-info"><b>PHP版本检测(要求版本：>=7.1.3)</b></li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <?php echo $phpVersion; ?>
                         <span class="badge badge-<?php echo $phpVersionCould ? 'success' : 'danger' ?> badge-pill">
@@ -78,6 +79,12 @@ if ($isCross) {
                             <?php echo $storageDirWriteable ? '可写' : '不可写' ?>
                         </span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <?php echo realpath('../.env'); ?>
+                        <span class="badge badge-<?php echo $envWriteable ? 'success' : 'danger' ?> badge-pill">
+                            <?php echo $envWriteable ? '可写' : '不可写' ?>
+                        </span>
+                    </li>
                     <li class="list-group-item list-group-item-info"><b>PHP扩展检测</b></li>
                     <?php foreach($extensionRows as $name => $row) { ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -91,7 +98,7 @@ if ($isCross) {
             </div>
             <div class="col-sm-12 text-center" style="line-height: 120px;">
                 <?php if ($isCross) { ?>
-                <a href="" class="btn btn-info">继续安装</a>
+                <a href="/install" class="btn btn-info">继续安装</a>
                 <?php } else { ?>
                     <button disabled class="btn btn-info" type="button">无法继续下去啦</button>
                 <?php } ?>
