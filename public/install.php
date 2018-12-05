@@ -4,6 +4,9 @@ $lockFile = '../storage/install.lock';
 if (file_exists($lockFile)) {
     exit('程序已经安装，请不要重复操作。');
 }
+if (preg_match('/public/', $_SERVER['REQUEST_URI'])) {
+    exit('请apache或nginx的document_root目录配置到项目的public目录下');
+}
 // PHP版本
 $phpVersion = PHP_VERSION;
 $phpVersionCould = version_compare($phpVersion, '7.1.3', '>=');
@@ -22,6 +25,7 @@ $mcryptExtension = extension_loaded('mcrypt');
 $jsonExtension = extension_loaded('json');
 $bcmathExtension = extension_loaded('bcmath');
 $zipExtension = extension_loaded('zip');
+$gdExtension = extension_loaded('gd');
 $extensionRows = [
     'openssl' => $opensslExtension,
     'pdo_mysql' => $pdoMysqlExtension,
@@ -33,6 +37,7 @@ $extensionRows = [
     'json' => $jsonExtension,
     'bcmath' => $bcmathExtension,
     'zip' => $zipExtension,
+    'GD' => $gdExtension,
 ];
 $isCross = $phpVersionCould && $storageDirWriteable && $bootstrapDirWriteable && $envWriteable;
 if ($isCross) {

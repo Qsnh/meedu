@@ -15,3 +15,6 @@ bower_components
 /storage/meedu_config.json
 .DS_Store
 php-cs-fixer.phar
+docker-compose.yml
+docker-nginx.conf
+storage/install.lock

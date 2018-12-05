@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\Administrator;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Connectors\MySqlConnector;
@@ -61,6 +62,8 @@ class InstallController extends Controller
                 'password' => $env['DB_PASSWORD'],
             ];
             try {
+                session(['mysql' => $mysql]);
+
                 (new MySqlConnector())->connect($mysql);
 
                 // 配置写入.env文件
@@ -96,33 +99,48 @@ class InstallController extends Controller
             ]);
 
             $output = new BufferedOutput();
+            $log = [];
             DB::beginTransaction();
             try {
                 // 安装数据表
-                $result = Artisan::call('migrate', [], $output);
-                throw_if(! $result, new \Exception('数据表安装错误，错误信息：'.$output->fetch()));
+                Artisan::call('migrate', [], $output);
+                $logp[] = $output->fetch();
 
                 // 初始化角色
-                $result = Artisan::call('install', ['action' => 'role'], $output);
-                throw_if(! $result, new \Exception('管理员角色初始化失败，错误信息：'.$output->fetch()));
+                Artisan::call('install', ['action' => 'role'], $output);
+                $logp[] = $output->fetch();
 
                 // 初始化后台菜单
-                $result = Artisan::call('install', ['action' => 'backend_menu'], $output);
-                throw_if(! $result, new \Exception('后台菜单初始化失败，错误信息：'.$output->fetch()));
+                Artisan::call('install', ['action' => 'backend_menu'], $output);
+                $logp[] = $output->fetch();
 
                 // 初始化管理员
                 $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
-                $administrator = new Administrator([
-                    'name' => '超级管理员',
-                    'email' => $admin['username'],
-                    'password' => bcrypt($admin['password']),
-                ]);
-                $administrator->save();
-                $administrator->roles()->attach($super->id);
+                if (! Administrator::whereEmail($admin['username'])->exists()) {
+                    $administrator = new Administrator([
+                        'name' => '超级管理员',
+                        'email' => $admin['username'],
+                        'password' => bcrypt($admin['password']),
+                    ]);
+                    $administrator->save();
+                    $administrator->roles()->attach($super->id);
+                }
+
+                // KEY
+                Artisan::call('key:generate', [], $output);
+                $log[] = $output->fetch();
+
+                // 安装锁
+                file_put_contents(storage_path('install.lock'), time());
 
                 DB::commit();
 
-                return redirect()->route('install.step4');
+                flash('安装成功', 'success');
+
+                // 记录安装日志
+                Log::info($log);
+
+                return redirect('/');
             } catch (\Exception $exception) {
                 DB::rollBack();
 
@@ -131,23 +149,5 @@ class InstallController extends Controller
         }
 
         return view('install.step3');
-    }
-
-    public function step4(Request $request)
-    {
-        $output = new BufferedOutput();
-        try {
-            // 软链接
-            $result = Artisan::call('storage:link', [], $output);
-            throw_if(! $result, new \Exception($output->fetch()));
-
-            flash('安装成功');
-
-            file_put_contents(base_path('storage/install.lock'), time());
-
-            return redirect(route('backend.login'));
-        } catch (\Exception $exception) {
-            return redirect()->back()->withErrors($exception->getMessage());
-        }
     }
 }
