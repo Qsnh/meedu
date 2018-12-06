@@ -42,9 +42,13 @@
                             </div>
                             @endif
                         </div>
-                        <div class="col-sm-3 play-list">
+                        <div class="col-sm-3 play-list" id="play-list-box">
                             <table>
+                                @if($position = 0)@endif
                                 @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
+                                    @if($video->id == $videoItem->id)
+                                        @if($position = $index)@endif
+                                    @endif
                                 <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
                                     <td class="index">{{$index+1}}</td>
                                     <td>
@@ -62,7 +66,7 @@
                                             <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
                                         </p>
                                     </td>
-                                </li>
+                                </tr>
                                 @endforeach
                             </table>
                         </div>
@@ -148,4 +152,9 @@
     <script>const player = new Plyr('#xiaoteng-player');</script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
+    <script>
+        window.onload = function () {
+            document.getElementById("play-list-box").scrollTop = {{$position*56}};
+        }
+    </script>
 @endsection
