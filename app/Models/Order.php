@@ -141,4 +141,24 @@ class Order extends Model
 
         return $query->whereIn('user_id', $memberIds);
     }
+
+    /**
+     * 获取今日已支付订单数量.
+     *
+     * @return mixed
+     */
+    public static function todayPaidNum()
+    {
+        return self::where('created_at', '>=', date('Y-m-d'))->count();
+    }
+
+    /**
+     * 获取今日已支付总金额.
+     *
+     * @return mixed
+     */
+    public static function todayPaidSum()
+    {
+        return self::where('created_at', '>=', date('Y-m-d'))->sum('charge');
+    }
 }
