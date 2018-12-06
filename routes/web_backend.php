@@ -153,5 +153,13 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/adfrom/{id}/edit', 'AdFromController@update');
         Route::get('/adfrom/{id}/delete', 'AdFromController@destroy')->name('backend.adfrom.destroy');
         Route::get('/adfrom/{id}/number', 'AdFromController@number')->name('backend.adfrom.number');
+
+        // 课程章节
+        Route::get('/course/{course_id}/coursechapter', 'CourseChapterController@index')->name('backend.coursechapter.index');
+        Route::get('/course/{course_id}/coursechapter/create', 'CourseChapterController@create')->name('backend.coursechapter.create');
+        Route::post('/course/{course_id}/coursechapter/create', 'CourseChapterController@store');
+        Route::get('/coursechapter/{id}/edit', 'CourseChapterController@edit')->name('backend.coursechapter.edit');
+        Route::put('/coursechapter/{id}/edit', 'CourseChapterController@update');
+        Route::get('/coursechapter/{id}/delete', 'CourseChapterController@destroy')->name('backend.coursechapter.destroy');
     });
 });

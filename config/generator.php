@@ -7,33 +7,32 @@
 
 return [
     [
-        'name' => '推广链接',
-        'model' => 'AdFrom',
+        'name' => '课程章节',
+        'model' => 'CourseChapter',
         'request' => [
             'rules' => [
-                'from_name' => 'required',
-                'from_key' => 'required',
+                'course_id' => 'required',
+                'title' => 'required',
             ],
             'messages' => [
-                'from_name.required' => '请输入推广链接名',
-                'from_key.required' => '请输入推广链接特征值',
+                'course_id.required' => '请选择课程',
+                'title.required' => '请输入章节名',
             ],
             'filldata' => [
-                'from_name',
-                'from_key',
+                'course_id',
+                'title',
             ],
         ],
         'template' => [
             'edit' => [
                 'fields' => [
-                    'from_name' => '推广链接名',
-                    'from_key' => '推广链接特征值',
+                    'course_id' => '课程',
+                    'title' => '章节名',
                 ],
             ],
             'index' => [
                 'fields' => [
-                    'from_name' => '推广链接名',
-                    'from_key' => '推广链接特征值',
+                    'title' => '章节名',
                 ],
             ],
         ],

@@ -28,6 +28,7 @@ class Video extends Model
         'url', 'view_num', 'short_description', 'description',
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
+        'chapter_id',
     ];
 
     /**
@@ -80,6 +81,14 @@ class Video extends Model
     public function comments()
     {
         return $this->hasMany(VideoComment::class, 'video_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function chapter()
+    {
+        return $this->belongsTo(CourseChapter::class, 'chapter_id');
     }
 
     /**

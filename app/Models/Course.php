@@ -47,6 +47,14 @@ class Course extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chapters()
+    {
+        return $this->hasMany(CourseChapter::class, 'course_id');
+    }
+
+    /**
      * 购买课程的用户.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
