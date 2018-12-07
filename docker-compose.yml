@@ -1,0 +1,30 @@
+version: '2.0'
+services:
+  nginx:
+    container_name: "meedunginx"
+    image: nginx:1.15.7
+    ports:
+      - "9006:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx:/var/www/html/:rw
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d/:rw
+      - ./docker/nginx/logs:/var/log/nginx/:rw
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    restart: always
+    networks:
+      - meedu-net
+  php:
+    container_name: "meeduphp"
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html/:rw
+    restart: always
+    expose: 
+      - "9000"
+    networks:
+      - meedu-net
+networks:
+  meedu-net:
+    external: true
