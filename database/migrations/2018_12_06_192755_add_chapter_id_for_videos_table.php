@@ -14,7 +14,7 @@ class AddChapterIdForVideosTable extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->integer('chapter_id');
+            $table->integer('chapter_id')->default(0);
         });
     }
 
