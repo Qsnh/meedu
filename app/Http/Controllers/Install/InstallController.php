@@ -118,6 +118,9 @@ class InstallController extends Controller
                     $administrator->roles()->attach($super->id);
                 }
 
+                // 软链接
+                app()->make('files')->link(storage_path('app/public'), public_path('storage'));
+
                 // KEY
                 Artisan::call('key:generate', [], $output);
                 $log[] = $output->fetch();
