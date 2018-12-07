@@ -34,6 +34,9 @@
                 <div class="card">
                     <div class="card-header">阿里云邮箱配置</div>
                     <div class="card-body">
+                        <div class="alert alert-warning">
+                            <a href="https://www.aliyun.com/product/directmail?spm=5176.224200.search.1.67236ed6hjhyN0">阿里云邮件服务</a>
+                        </div>
                         <div class="form-group">
                             <label>阿里云AccessKeyId</label>
                             <input type="text" name="services*directmail*app_key" class="form-control"
@@ -60,6 +63,9 @@
                 <div class="card">
                     <div class="card-header">阿里云短信配置</div>
                     <div class="card-body">
+                        <div class="alert alert-warning">
+                            <a href="https://www.aliyun.com/product/sms?spm=5176.8142029.search.1.e9396d3e9M6zyh">阿里云短信服务</a>
+                        </div>
                         <div class="form-group">
                             <label>阿里云AccessKeyId</label>
                             <input type="text" name="sms*gateways*aliyun*access_key_id" class="form-control"
@@ -93,7 +99,7 @@
                     <div class="card-header">支付配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">
-                            支付回调URL：<code>{{route('payment.callback')}}</code>
+                            <a href="https://www.youzanyun.com/">有赞云收款服务</a>。支付回调URL：<code>{{route('payment.callback')}}</code>
                         </div>
                         <div class="form-group">
                             <label>有赞ClientId</label>
@@ -125,7 +131,7 @@
                             <label>图片存储路径</label>
                             <input type="text" name="meedu*upload*image*path" class="form-control"
                                    value="{{config('meedu.upload.image.path')}}">
-                        </div*
+                        </div>
                         <div class="form-group">
                             <label>图片参数（用于第三方图片存储）</label>
                             <input type="text" name="meedu*upload*image*params" class="form-control"
@@ -137,6 +143,9 @@
                 <div class="card">
                     <div class="card-header">视频上传配置</div>
                     <div class="card-body">
+                        <div class="alert alert-warning">
+                            <a href="https://www.aliyun.com/product/vod?spm=5176.8142029.search.1.e9396d3eFvjBxH">阿里云视频服务</a>
+                        </div>
                         <div class="form-group">
                             <label>区域ID</label>
                             <input type="text" name="meedu*upload*video*aliyun*region" class="form-control"
