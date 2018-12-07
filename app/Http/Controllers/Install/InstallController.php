@@ -62,20 +62,12 @@ class InstallController extends Controller
                 'password' => $env['DB_PASSWORD'],
             ];
             try {
-                session(['mysql' => $mysql]);
-
                 (new MySqlConnector())->connect($mysql);
 
-                // 配置写入.env文件
-                $content = file_get_contents(base_path('.env'));
-                $content = str_replace('APP_NAME=MeEdu', 'APP_NAME='.session('APP_NAME'), $content);
-                $content = str_replace('APP_URL=http://localhost', 'APP_URL='.session('APP_URL'), $content);
-                $content = str_replace('DB_HOST=127.0.0.1', 'DB_HOST='.$env['DB_HOST'], $content);
-                $content = str_replace('DB_PORT=3306', 'DB_PORT='.$env['DB_PORT'], $content);
-                $content = str_replace('DB_DATABASE=homestead', 'DB_DATABASE='.$env['DB_DATABASE'], $content);
-                $content = str_replace('DB_USERNAME=homestead', 'DB_USERNAME='.$env['DB_USERNAME'], $content);
-                $content = str_replace('DB_PASSWORD=secret', 'DB_PASSWORD='.$env['DB_PASSWORD'], $content);
-                file_put_contents(base_path('.env'), $content);
+                $env['APP_NAME'] = session('APP_NAME');
+                $env['APP_URL'] = session('APP_URL');
+                // 配置文件写入
+                env_update($env);
 
                 return redirect()->route('install.step3');
             } catch (\Exception $exception) {

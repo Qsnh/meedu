@@ -337,3 +337,39 @@ if (! function_exists('input_equal')) {
         return request()->input($field, $default) == $value;
     }
 }
+
+if (! function_exists('env_update')) {
+    /**
+     * ENV文件修改.
+     *
+     * @param array $data
+     */
+    function env_update(array $data)
+    {
+        $env = file_get_contents(base_path('.env'));
+        $envRows = explode("\n", $env);
+        $updatedColumns = array_keys($data);
+        $newEnvRows = [];
+        foreach ($envRows as $envRow) {
+            if ($envRow == '') {
+                $newEnvRows[] = '';
+                continue;
+            }
+            [$itemKey, $itemValue] = explode('=', $envRow);
+            if (! in_array($itemKey, $updatedColumns)) {
+                $newEnvRows[] = $envRow;
+                continue;
+            }
+            $updatedValue = $data[$itemKey];
+            $updatedValue = str_replace(' ', '', trim($updatedValue));
+            if (is_numeric($updatedValue)) {
+                $newEnvRows[] = $itemKey.'='.$updatedValue;
+            } elseif (is_bool($updatedValue)) {
+                $newEnvRows[] = $itemKey.'='.$updatedValue ? 'true' : 'false';
+            } else {
+                $newEnvRows[] = $itemKey.'="'.$updatedValue.'"';
+            }
+        }
+        file_put_contents(base_path('.env'), implode("\n", $newEnvRows));
+    }
+}
