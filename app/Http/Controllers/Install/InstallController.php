@@ -96,15 +96,15 @@ class InstallController extends Controller
             try {
                 // 安装数据表
                 Artisan::call('migrate', [], $output);
-                $logp[] = $output->fetch();
+                $log[] = $output->fetch();
 
                 // 初始化角色
                 Artisan::call('install', ['action' => 'role'], $output);
-                $logp[] = $output->fetch();
+                $log[] = $output->fetch();
 
                 // 初始化后台菜单
                 Artisan::call('install', ['action' => 'backend_menu'], $output);
-                $logp[] = $output->fetch();
+                $log[] = $output->fetch();
 
                 // 初始化管理员
                 $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
@@ -126,7 +126,7 @@ class InstallController extends Controller
                 $log[] = $output->fetch();
 
                 // 安装锁
-                file_put_contents(storage_path('install.lock'), time());
+                app()->make('files')->put(storage_path('install.lock'), time());
 
                 DB::commit();
 

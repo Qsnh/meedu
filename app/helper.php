@@ -370,6 +370,6 @@ if (! function_exists('env_update')) {
                 $newEnvRows[] = $itemKey.'="'.$updatedValue.'"';
             }
         }
-        file_put_contents(base_path('.env'), implode("\n", $newEnvRows));
+        app()->make('files')->put(base_path('.env'), implode("\n", $newEnvRows));
     }
 }
