@@ -346,7 +346,7 @@ if (! function_exists('env_update')) {
      */
     function env_update(array $data)
     {
-        $env = file_get_contents(base_path('.env'));
+        $env = app()->make('files')->get(base_path('.env'));
         $envRows = explode("\n", $env);
         $updatedColumns = array_keys($data);
         $newEnvRows = [];
