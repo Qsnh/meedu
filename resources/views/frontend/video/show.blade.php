@@ -2,7 +2,7 @@
 
 @section('css')
     <link href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" integrity="sha384-0c9IokVf3V/GLpXflXkezKv/LOZKzw0J+46w/mcttsxEHeCSdaI+wV/5UM+eZymd" href="https://lib.baomitu.com/plyr/3.4.7/plyr.css" rel="stylesheet">
+    <link crossorigin="anonymous" integrity="sha384-ccp+s0mORr8liSoaAJidjC9nKr4h7Oc6fXmvPdx5d+Lpjc31GfaOKtF8UCCQrEnS" href="https://lib.baomitu.com/video.js/7.4.0/video-js.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -15,7 +15,8 @@
                         <div class="col-sm-9 play-box">
                             @if(Auth::check())
                                 @if($user->canSeeThisVideo($video))
-                                    <video id="xiaoteng-player" playsinline controls>
+                                    <video id="xiaoteng-player" class="video-js vjs-default-skin"
+                                           controls preload="auto" data-setup='{ "playbackRates": [1, 1.5, 2] }'>
                                         <source src="{{$video->getPlayUrl()}}" type="video/mp4">
                                     </video>
                                     @else
@@ -184,13 +185,12 @@
 
 @section('js')
     <script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-+PqEkmFL4qYV1C6IpOzsuEwl0GzEUnDiD0nXzaXbluUsyguHa0nfanWaDbYDXPQW" src="https://lib.baomitu.com/plyr/3.4.7/plyr.min.js"></script>
-    <script>const player = new Plyr('#xiaoteng-player');</script>
+    <script crossorigin="anonymous" integrity="sha384-/e2pbP9gABPxsNYBS/MkAotgW5kbTdaJ4iXyVfbjGNEyvB4Q3p1vUQhLRJBmJqc8" src="https://lib.baomitu.com/video.js/7.4.0/video.min.js"></script>
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
     <script>
-        window.onload = function () {
-            document.getElementById("play-list-box").scrollTop = {{$position*56}};
-        }
+        $(function () {
+            $('#play-list-box').scrollTop = {{$position*56}};
+        });
     </script>
 @endsection
