@@ -74,6 +74,7 @@ class CourseVideoRequest extends FormRequest
             'published_at' => $this->input('published_at'),
             'is_show' => $this->input('is_show'),
             'charge' => $this->input('charge', 0),
+            'chapter_id' => $this->input('chapter_id', 0),
         ];
 
         if ($this->isMethod('post')) {

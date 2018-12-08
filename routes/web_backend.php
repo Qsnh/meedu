@@ -11,10 +11,6 @@ Route::put('/password/update', 'AdministratorController@editPasswordHandle');
 Route::group(['middleware' => ['backend.login.check']], function () {
     // 主面板
     Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard.index');
-    // Ajax
-    Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
-        Route::get('/course', 'CourseController@index')->name('backend.ajax.course.index');
-    });
     // 图片上传
     Route::post('/upload/image', 'UploadController@uploadImageHandle')->name('backend.upload.image');
     // 阿里云视频上传
@@ -162,4 +158,11 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/coursechapter/{id}/edit', 'CourseChapterController@update');
         Route::get('/coursechapter/{id}/delete', 'CourseChapterController@destroy')->name('backend.coursechapter.destroy');
     });
+
+
+    // Ajax
+    Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
+        Route::get('/course/{course_id}/chapters', 'CourseController@chapters')->name('backend.ajax.course.chapters');
+    });
 });
+

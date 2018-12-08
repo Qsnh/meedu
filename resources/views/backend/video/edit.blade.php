@@ -22,6 +22,12 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>章节</label>
+                    <select name="chapter_id" class="form-control">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>课程名</label>
                     <input type="text" class="form-control" name="title" value="{{$video->title}}" placeholder="视频名">
                 </div>
@@ -80,4 +86,26 @@
 
 @section('js')
     @include('components.backend.aliyun_upload_js')
+    <script>
+        $(function () {
+            var selectedChapterId = '{{$video->chapter_id}}';
+
+            var request = function (courseId) {
+                $.getJSON(`/backend/ajax/course/${courseId}/chapters`, function (res) {
+                    var html = '';
+                    $.each(res, function (key, item) {
+                        selected = selectedChapterId == item.id ? 'selected' : '';
+                        html += `<option value='${item.id}' ${selected}>${item.title}</option>`;
+                    });
+                    $('select[name="chapter_id"]').html(html);
+                })
+            };
+
+            $('select[name="course_id"]').change(function () {
+                request($(this).val());
+            });
+
+            request('{{$video->course_id}}');
+        });
+    </script>
 @endsection

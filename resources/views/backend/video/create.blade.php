@@ -14,10 +14,16 @@
                 <div class="form-group">
                     <label>课程</label>
                     <select name="course_id" class="form-control">
-                        <option value="">无</option>
+                        <option value="">请选择</option>
                         @foreach($courses as $course)
                         <option value="{{$course->id}}">{{$course->title}}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>章节</label>
+                    <select name="chapter_id" class="form-control">
+                        <option value="">请选择</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -74,4 +80,18 @@
 
 @section('js')
 @include('components.backend.aliyun_upload_js')
+<script>
+    $(function () {
+        $('select[name="course_id"]').change(function () {
+            var courseId = $(this).val();
+            $.getJSON(`/backend/ajax/course/${courseId}/chapters`, function (res) {
+                var html = '';
+                $.each(res, function (key, item) {
+                    html += `<option value='${item.id}'>${item.title}</option>`;
+                })
+                $('select[name="chapter_id"]').html(html);
+            })
+        });
+    });
+</script>
 @endsection

@@ -63,7 +63,7 @@ class CourseChapterController extends Controller
     {
         $courseChapter = CourseChapter::findOrFail($id);
         if ($courseChapter->videos()->count()) {
-            flash('无法删除，该章节下面存在食品', 'warning');
+            flash('无法删除，该章节下面存在视频', 'warning');
         } else {
             $courseChapter->delete();
             flash('删除成功', 'success');
