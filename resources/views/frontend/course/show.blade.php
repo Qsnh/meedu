@@ -49,14 +49,16 @@
                        <table>
                            <tbody>
                             @if($course->hasChaptersCache())
+                                @if($i=0)@endif
                                 @forelse($course->getChaptersCache() as $chapter)
                                     <tr class="chapter-title">
                                         <td colspan="2"><span>{{$chapter->title}}</span></td>
                                     </tr>
                                     @foreach($chapter->getVideosCache() as $index => $video)
+                                        @if($i++)@endif
                                     <tr>
                                         <td class="index-td">
-                                            <span class="index">{{$index+1}}</span>
+                                            <span class="index">{{$i}}</span>
                                         </td>
                                         <td>
                                             <h3 class="video-title">
