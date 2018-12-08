@@ -177,6 +177,66 @@ class Course extends Model
     }
 
     /**
+     * 章节缓存.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|mixed
+     */
+    public function getChaptersCache()
+    {
+        if (config('meedu.system.cache.status', -1) != 1) {
+            return $this->getChapters();
+        }
+        $that = $this;
+
+        return Cache::remember(
+            "course_{$this->id}_chapter_videos",
+            config('meedu.system.cache.expire', 60),
+            function () use ($that) {
+                return $that->getChapters();
+            });
+    }
+
+    /**
+     * 获取章节
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getChapters()
+    {
+        return $this->chapters()->orderBy('sort')->get();
+    }
+
+    /**
+     * 是否存在缓存.
+     *
+     * @return bool|mixed
+     */
+    public function hasChaptersCache()
+    {
+        if (config('meedu.system.cache.status', -1) != 1) {
+            return $this->hasChapters();
+        }
+        $that = $this;
+
+        return Cache::remember(
+            "course_{$this->id}_has_chapters",
+            config('meedu.system.cache.expire', 60),
+            function () use ($that) {
+                return $that->hasChapters();
+            });
+    }
+
+    /**
+     * 是否存在章节
+     *
+     * @return bool
+     */
+    public function hasChapters()
+    {
+        return $this->chapters()->exists();
+    }
+
+    /**
      * 评论.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

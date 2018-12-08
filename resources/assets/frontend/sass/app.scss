@@ -230,6 +230,13 @@ footer {
             background-color: #eaf4fa; cursor: pointer;
             box-shadow: 0 25px 17px -20px rgba(0,0,0,.2);
           }
+          tr.chapter-title {
+            line-height: 40px; font-size: 1rem; color: gray;
+            background-color: #eaf4fa; font-weight: 800;
+            span {
+              margin-left: 20px;
+            }
+          }
           td.index-td {
             text-align: center; width: 60px;
             .index {

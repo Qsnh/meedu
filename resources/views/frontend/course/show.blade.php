@@ -48,32 +48,68 @@
                    <div class="list">
                        <table>
                            <tbody>
-                           @forelse($course->getAllPublishedAndShowVideosCache() as $index => $video)
-                               <tr>
-                                   <td class="index-td">
-                                       <span class="index">{{$index+1}}</span>
-                                   </td>
-                                   <td>
-                                       <h3 class="video-title">
-                                            <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
-                                                {{ $video->title  }}
-                                            </a>
-                                        </h3>
-                                       <p class="extra">
-                                           <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
-                                            @if($video->charge > 0)
-                                            <span class="badge badge-danger">收费</span>
+                            @if($course->hasChaptersCache())
+                                @forelse($course->getChaptersCache() as $chapter)
+                                    <tr class="chapter-title">
+                                        <td colspan="2"><span>{{$chapter->title}}</span></td>
+                                    </tr>
+                                    @foreach($chapter->getVideosCache() as $index => $video)
+                                    <tr>
+                                        <td class="index-td">
+                                            <span class="index">{{$index+1}}</span>
+                                        </td>
+                                        <td>
+                                            <h3 class="video-title">
+                                                <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
+                                                    {{ $video->title  }}
+                                                </a>
+                                            </h3>
+                                            <p class="extra">
+                                                <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                                @if($video->charge > 0)
+                                                    <span class="badge badge-danger">收费</span>
                                                 @else
-                                             <span class="badge badge-success">免费</span>
-                                            @endif
-                                       </p>
-                                   </td>
-                               </tr>
-                           @empty
-                               <tr>
-                                   <td colspan="2" class="text-center">暂无数据</td>
-                               </tr>
-                           @endforelse
+                                                    <span class="badge badge-success">免费</span>
+                                                @endif
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center">暂无数据</td>
+                                    </tr>
+                                @endforelse
+
+                                @else
+
+                                @forelse($course->getAllPublishedAndShowVideosCache() as $index => $video)
+                                   <tr>
+                                       <td class="index-td">
+                                           <span class="index">{{$index+1}}</span>
+                                       </td>
+                                       <td>
+                                           <h3 class="video-title">
+                                                <a href="{{ route('video.show', [$course->id, $video->id, $video->slug]) }}">
+                                                    {{ $video->title  }}
+                                                </a>
+                                            </h3>
+                                           <p class="extra">
+                                               <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                                @if($video->charge > 0)
+                                                <span class="badge badge-danger">收费</span>
+                                                    @else
+                                                 <span class="badge badge-success">免费</span>
+                                                @endif
+                                           </p>
+                                       </td>
+                                   </tr>
+                                @empty
+                                   <tr>
+                                       <td colspan="2" class="text-center">暂无数据</td>
+                                   </tr>
+                                @endforelse
+                                @endif
                            </tbody>
                        </table>
                    </div>
