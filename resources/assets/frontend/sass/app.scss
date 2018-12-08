@@ -349,10 +349,16 @@ footer {
           margin-bottom: 10px;
         }
       }
-      tr.active,tr:hover {
+      tr.active,tr:hover,tr.chapter-title {
         background-color: #101016;
         a,a:hover,.index {
           color: #2692ff;
+        }
+      }
+      tr.chapter-title {
+        line-height: 36px; font-size: .8rem; color: #909096;
+        span {
+          margin-left: 15px;
         }
       }
     }

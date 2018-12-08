@@ -45,6 +45,39 @@
                         <div class="col-sm-3 play-list" id="play-list-box">
                             <table>
                                 @if($position = 0)@endif
+                                @if($video->course->hasChapters())
+
+                                        @foreach($video->course->getChaptersCache() as $chapter)
+                                            <tr class="chapter-title">
+                                                <td colspan="2"><span>{{$chapter->title}}</span></td>
+                                            </tr>
+                                            @foreach($chapter->getVideosCache() as $index => $videoItem)
+                                                @if($video->id == $videoItem->id)
+                                                    @if($position = $index)@endif
+                                                @endif
+                                            <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
+                                                <td class="index">{{$index+1}}</td>
+                                                <td>
+                                                    <p class="video-title">
+                                                        <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                                            {{ $videoItem->title }}
+                                                        </a>
+                                                    </p>
+                                                    <p class="extra">
+                                                        @if($video->charge > 0)
+                                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                                        @else
+                                                            <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                                        @endif
+                                                        <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @endforeach
+
+                                    @else
+
                                 @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
                                     @if($video->id == $videoItem->id)
                                         @if($position = $index)@endif
@@ -68,6 +101,8 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
+                                    @endif
                             </table>
                         </div>
                     </div>

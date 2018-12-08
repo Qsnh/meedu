@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-12 mt-2">
             <h3>{{$one->from_name}}的推广效果</h3>
-            <div id="mountNode"></div>
+            <div id="mountNode" style="width: 100%; height: 300px;"></div>
         </div>
     </div>
 
