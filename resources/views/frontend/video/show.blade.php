@@ -57,7 +57,7 @@
                                                     @if($position = $i)@endif
                                                 @endif
                                             <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
-                                                <td class="index">{{$i+1}}</td>
+                                                <td class="index">{{$i}}</td>
                                                 <td>
                                                     <p class="video-title">
                                                         <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
