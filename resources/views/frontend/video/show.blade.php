@@ -45,18 +45,19 @@
                         <div class="col-sm-3 play-list" id="play-list-box">
                             <table>
                                 @if($position = 0)@endif
+                                @if($i = 0)@endif
                                 @if($video->course->hasChapters())
-
                                         @foreach($video->course->getChaptersCache() as $chapter)
                                             <tr class="chapter-title">
                                                 <td colspan="2"><span>{{$chapter->title}}</span></td>
                                             </tr>
                                             @foreach($chapter->getVideosCache() as $index => $videoItem)
+                                                @if($i++)@endif
                                                 @if($video->id == $videoItem->id)
-                                                    @if($position = $index)@endif
+                                                    @if($position = $i)@endif
                                                 @endif
                                             <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
-                                                <td class="index">{{$index+1}}</td>
+                                                <td class="index">{{$i+1}}</td>
                                                 <td>
                                                     <p class="video-title">
                                                         <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
