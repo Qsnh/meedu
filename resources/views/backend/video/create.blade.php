@@ -40,7 +40,7 @@
                 </div>
                 <div class="form-group">
                     <label>上架时间</label>
-                    @include('components.backend.datetime', ['name' => 'published_at'])
+                    @include('components.backend.datetime', ['name' => 'published_at', 'value' => date('Y-m-d H:i:s')])
                 </div>
                 <div class="form-group">
                     <label>是否显示</label><br>
