@@ -149,7 +149,7 @@ class Order extends Model
      */
     public static function todayPaidNum()
     {
-        return self::where('created_at', '>=', date('Y-m-d'))->count();
+        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->count();
     }
 
     /**
@@ -159,6 +159,6 @@ class Order extends Model
      */
     public static function todayPaidSum()
     {
-        return self::where('created_at', '>=', date('Y-m-d'))->sum('charge');
+        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->sum('charge');
     }
 }

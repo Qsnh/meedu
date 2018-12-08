@@ -20,6 +20,7 @@
         "mews/purifier": "^2.0",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
+        "spatie/laravel-activitylog": "^3.1",
         "spatie/laravel-backup": "5.10.1"
     },
     "require-dev": {
