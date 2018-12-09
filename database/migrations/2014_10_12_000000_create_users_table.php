@@ -17,8 +17,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
 
             $table->string('avatar')->default('');
-            $table->string('nick_name', 24)->unique();
-            $table->string('mobile', 32)->unique();
+            $table->string('nick_name', 24);
+            $table->string('mobile', 20)->unique();
             $table->string('password');
 
             $table->integer('credit1')->default(0);

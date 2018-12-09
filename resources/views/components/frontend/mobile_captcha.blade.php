@@ -57,7 +57,6 @@
                     $('.captcha').click();
                     return false;
                 }
-                $('.captcha').click();
 
                 SMS_CURRENT_TIME = SMS_CYCLE_TIME;
                 var smsInterval = setInterval(function () {
