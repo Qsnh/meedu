@@ -69,12 +69,12 @@ class AdFromController extends Controller
         $startDate = $request->input('start_date', date('Y-m-d', Carbon::now()->subDays(30)->timestamp));
         $endDate = $request->input('end_date', date('Y-m-d', Carbon::now()->timestamp));
         $records = $one->numbers()->whereBetween('day', [$startDate, $endDate])->get();
-        $rows = [];
+        $rows = collect([]);
         foreach ($records as $item) {
-            $rows[] = [
-                'label' => $item->day,
-                'value' => $item->num,
-            ];
+            $rows->push([
+                'x' => $item->day,
+                'y' => $item->num,
+            ]);
         }
 
         return view('backend.adfrom.number', compact('one', 'rows'));
