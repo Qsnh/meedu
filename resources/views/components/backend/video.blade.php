@@ -18,6 +18,7 @@
                     <button type="button" class="btn btn-info" id="start-upload">开始上传</button>
                     <button type="button" class="btn btn-danger" id="stop-upload">停止上传</button>
                 </div>
+                <input type="hidden" name="aliyun_video_id" id="aliyun_video_id" value="{{isset($video) ? ($video->aliyun_video_id ?? '') : ''}}">
             </div>
             <div class="tab-body-box" id="tab-url">
                 <input type="text" name="url" class="form-control"
