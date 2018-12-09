@@ -40,6 +40,13 @@ class IndexController extends FrontendController
         );
     }
 
+    /**
+     * 邮件订阅.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function subscriptionHandler(Request $request)
     {
         EmailSubscription::saveFromRequest($request);
