@@ -21,7 +21,7 @@
 | 站点名 | 地址 |
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
-| [豌豆课堂](https://peaclass.com/) | `https://peaclass.com/` |
+| [豌豆课堂](https://peaclass.com) | `https://peaclass.com` |
 
 ## 功能
 
