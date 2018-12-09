@@ -38,7 +38,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "MeEdu\\Addons": "addons"
+            "MeEdu\\Addons\\": "addons"
         }
     },
     "autoload-dev": {
