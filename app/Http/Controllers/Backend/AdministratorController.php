@@ -56,11 +56,7 @@ class AdministratorController extends Controller
 
     public function loginHandle(LoginRequest $request)
     {
-        if (
-            ! Auth::guard($this->guard)->attempt(
-                $request->only(['email', 'password'])
-            )
-        ) {
+        if (! Auth::guard($this->guard)->attempt($request->only(['email', 'password'], $request->input('remember_me')))) {
             flash('邮箱或密码错误');
 
             return back()->withInput(['email']);
