@@ -15,7 +15,14 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require __DIR__.'/vendor/autoload.php';
+$loader = require __DIR__.'/vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Addons Loader
+|--------------------------------------------------------------------------
+*/
+require_once __DIR__.'/addons/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 
