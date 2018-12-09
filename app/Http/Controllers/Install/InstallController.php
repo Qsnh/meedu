@@ -106,6 +106,10 @@ class InstallController extends Controller
                 Artisan::call('install', ['action' => 'backend_menu'], $output);
                 $log[] = $output->fetch();
 
+                // Password keys
+                Artisan::call('passport:keys', [], $output);
+                $log[] = $output->fetch();
+
                 // 初始化管理员
                 $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
                 if (! Administrator::whereEmail($admin['username'])->exists()) {
