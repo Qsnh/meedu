@@ -141,3 +141,30 @@
   url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.ttf') format('truetype'), /* Safari, Android, iOS */
   url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
 }
+
+.tab {
+  width: 100%; height: auto; float: left; border: 1px solid #dddddd;
+  border-radius: 2px;
+  .tab-header {
+    ul {
+      width: 100%; height: 46px; float: left; padding: 0px; margin: 0px;
+      border-bottom: 1px solid #dddddd;
+      li {
+        padding: 0px 10px; line-height: 46px; float: left; cursor: pointer;
+        list-style: none; border-right: 1px solid #dddddd;
+      }
+      li.active {
+        background-color: #45aaf2; color: #ffffff; font-weight: 800;
+      }
+    }
+  }
+  .tab-body {
+    padding: 10px 2%; width: 96%; float: left;
+    .tab-body-box {
+      width: 100%; height: auto; float: left; display: none;
+    }
+    .active {
+      display: block;
+    }
+  }
+}

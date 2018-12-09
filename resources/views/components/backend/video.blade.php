@@ -1,20 +1,38 @@
-<div class="pt-2 pb-2" style="background-color: #467fcf">
-    <div class="col-sm-12 mt-1 mb-1">
-        <input type="file" id="video_files"/>
-        <span>上传进度：<span id="upload-progress">暂无</span></span>
-    </div>
-    <div class="col-sm">
-        <div class="input-group">
-            <div class="input-group-append">
-                <button type="button" class="btn btn-info" id="start-upload">开始上传</button>
-                <button type="button" class="btn btn-danger" id="stop-upload">停止上传</button>
+<div class="pt-2 pb-2">
+    <div class="tab">
+        <div class="tab-header">
+            <ul>
+                <li class="active" data-id="tab-aliyun">阿里云视频服务</li>
+                <li data-id="tab-url">视频直链</li>
+            </ul>
+        </div>
+        <div class="tab-body">
+            <div class="tab-body-box active" id="tab-aliyun">
+                <div class="custom-file">
+                    <input type="file" id="video_files">
+                </div>
+                <div class="mt-3 mb-3">
+                    <span>上传进度：<span id="upload-progress">暂无</span></span>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info" id="start-upload">开始上传</button>
+                    <button type="button" class="btn btn-danger" id="stop-upload">停止上传</button>
+                </div>
             </div>
-            <input type="text" class="form-control col-sm-2"
-                   name="aliyun_video_id" id="aliyun_video_id" placeholder="阿里云视频ID"
-            value="{{isset($video) ? ($video->aliyun_video_id ?? '') : ''}}">
-            <input type="text" name="url" class="form-control"
-                   placeholder="如果不使用阿里云视频服务请在这里输入视频的URL地址"
-            value="{{isset($video) ? ($video->url ?? '') : ''}}">
+            <div class="tab-body-box" id="tab-url">
+                <input type="text" name="url" class="form-control"
+                       placeholder="请输入视频直链"
+                       value="{{isset($video) ? ($video->url ?? '') : ''}}">
+            </div>
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $('.tab-header ul li').click(function () {
+            var id = $(this).attr('data-id');
+            $(this).addClass('active').siblings().removeClass('active');
+            $(`#${id}`).addClass('active').siblings().removeClass('active');
+        });
+    });
+</script>
