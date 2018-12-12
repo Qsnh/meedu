@@ -72,6 +72,7 @@
                                                             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                                         @endif
                                                         <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                                        <span>播放次数：{{ $video->view_num }}</span>
                                                     </p>
                                                 </td>
                                             </tr>

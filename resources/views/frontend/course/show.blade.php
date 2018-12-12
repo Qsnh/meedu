@@ -68,6 +68,7 @@
                                             </h3>
                                             <p class="extra">
                                                 <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
+                                                <span>播放次数：{{ $video->view_num }}</span>
                                                 @if($video->charge > 0)
                                                     <span class="badge badge-danger">收费</span>
                                                 @else

@@ -30,6 +30,10 @@ class VideoController extends FrontendController
         $keywords = $video->keywords;
         $description = $video->description;
 
+        // 视频观看次数[UV]
+        $video->view_num++;
+        $video->save();
+
         return v('frontend.video.show', compact('video', 'title', 'keywords', 'description'));
     }
 
