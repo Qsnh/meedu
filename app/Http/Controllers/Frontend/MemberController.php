@@ -182,4 +182,16 @@ class MemberController extends FrontendController
 
         return v('frontend.member.show_books', compact('books'));
     }
+
+    /**
+     * 显示第三方登录界面.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showSocialitePage()
+    {
+        $apps = Auth::user()->socialite()->get();
+
+        return v('frontend.member.socialite', compact('apps'));
+    }
 }

@@ -57,6 +57,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('member.socialite') }}">
+                                    <i class="fa fa-connectdevelop"></i> 快捷登录
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('member.password_reset') }}">
                                     <i class="fa fa-cogs"></i> 修改密码
                                 </a>

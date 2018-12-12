@@ -21,7 +21,7 @@ Route::post('/password/reset', 'Auth\ForgotPasswordController@handler')->middlew
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
 // 第三方登录
-Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider')->name('socialite');
 Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
@@ -59,6 +59,7 @@ Route::group([
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
     Route::get('/books', 'MemberController@showBooksPage')->name('member.books');
+    Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
 
     Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
     Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
