@@ -16,5 +16,9 @@ return [
                 'register' => '',
             ],
         ],
+        'yunpian' => [
+            'api_key' => env('SMS_YUNPIAN_API_KEY', ''),
+            'signature' => '【默认签名】',
+        ],
     ],
 ];
