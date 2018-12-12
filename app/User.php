@@ -18,6 +18,7 @@ use App\Models\Role;
 use App\Models\Order;
 use App\Models\Video;
 use App\Models\Course;
+use App\Models\Socialite;
 use App\Models\OrderGoods;
 use App\Models\VideoComment;
 use App\Models\CourseComment;
@@ -413,5 +414,13 @@ class User extends Authenticatable
         }
 
         return $this->books()->whereId($book->id)->exists();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function socialite()
+    {
+        return $this->hasMany(Socialite::class, 'user_id');
     }
 }

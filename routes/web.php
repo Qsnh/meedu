@@ -20,6 +20,10 @@ Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('p
 Route::post('/password/reset', 'Auth\ForgotPasswordController@handler')->middleware('sms.check');
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
+// 第三方登录
+Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
+
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
