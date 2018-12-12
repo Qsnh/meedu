@@ -10,10 +10,10 @@ return [
         'aliyun' => [
             'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
             'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET', ''),
-            'sign_name' => '微菲系统',
+            'sign_name' => '',
             'template' => [
-                'password_reset' => 'SMS_81985082',
-                'register' => 'SMS_81985082',
+                'password_reset' => '',
+                'register' => '',
             ],
         ],
     ],
