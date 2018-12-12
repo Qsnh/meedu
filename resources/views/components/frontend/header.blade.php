@@ -32,6 +32,11 @@
                     <a class="{{ menu_is_active('faq') }}" href="{{ route('faq') }}">FAQ</a>
                 </li>
                 @endif
+                @foreach($nav as $item)
+                <li>
+                    <a href="{{$item->url}}">{{$item->name}}</a>
+                </li>
+                @endforeach
             </ul>
 
             <ul class="navbar-nav ml-auto">

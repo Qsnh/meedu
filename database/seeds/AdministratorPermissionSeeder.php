@@ -499,10 +499,56 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/adfrom/\d+/number',
                 'description' => '',
             ],
+
+            // 首页导航
+            [
+                'display_name' => '首页导航首页',
+                'slug' => 'backend.nav.index',
+                'method' => 'GET',
+                'url' => '/backend/nav',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建首页导航界面',
+                'slug' => 'backend.nav.create',
+                'method' => 'GET',
+                'url' => '/backend/nav/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '创建首页导航',
+                'slug' => 'backend.nav.create',
+                'method' => 'POST',
+                'url' => '/backend/nav/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '编辑首页导航界面',
+                'slug' => 'backend.nav.edit',
+                'method' => 'GET',
+                'url' => '/backend/nav/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '保存首页导航的变动',
+                'slug' => 'backend.nav.edit',
+                'method' => 'PUT',
+                'url' => '/backend/nav/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除首页导航',
+                'slug' => 'backend.nav.destroy',
+                'method' => 'GET',
+                'url' => '/backend/nav/\d+/delete',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {
-            $exists = \App\Models\AdministratorPermission::where('display_name', $permission['display_name'])->exists();
+            $exists = \App\Models\AdministratorPermission::where('slug', $permission['slug'])
+                ->where('method', $permission['method'])
+                ->exists();
             ! $exists && \App\Models\AdministratorPermission::create($permission);
         }
     }

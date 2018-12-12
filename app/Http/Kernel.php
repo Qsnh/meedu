@@ -11,6 +11,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\NavShareMiddleware;
 use App\Http\Middleware\UserShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\InstallCheckMiddleware;
@@ -76,6 +77,7 @@ class Kernel extends HttpKernel
 
         'backend.login.check' => AdministratorLoginCheckMiddleware::class,
         'user.share' => UserShareMiddleware::class,
+        'nav.share' => NavShareMiddleware::class,
         'sms.check' => CheckSmsCodeMiddleware::class,
         'image.captcha.check' => CheckImageCaptchaMiddleware::class,
         'backend.permission.check' => BackendPermissionCheckMiddleware::class,

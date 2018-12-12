@@ -24,6 +24,7 @@ class BackendMenuSeeder extends Seeder
             '电子书' => '电子书列表',
             '友情链接' => '友情链接列表',
             '推广链接' => '推广链接首页',
+            '首页导航' => '首页导航首页',
         ];
 
         $menus = [
@@ -137,27 +138,26 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '全站配置',
                         'url' => '/backend/setting',
-                        'permission_id' => -1,
                     ],
                     [
                         'name' => '管理员',
                         'url' => '/backend/administrator',
-                        'permission_id' => -1,
                     ],
                     [
                         'name' => '角色',
                         'url' => '/backend/administrator_role',
-                        'permission_id' => -1,
                     ],
                     [
                         'name' => '权限',
                         'url' => '/backend/administrator_permission',
-                        'permission_id' => -1,
                     ],
                     [
                         'name' => '后台菜单',
                         'url' => '/backend/administrator_menu',
-                        'permission_id' => -1,
+                    ],
+                    [
+                        'name' => '首页导航',
+                        'url' => '/backend/nav',
                     ],
                 ],
             ],
@@ -172,12 +172,19 @@ class BackendMenuSeeder extends Seeder
                 'order' => $index,
                 'parent_id' => 0,
             ];
-            $node = \App\Models\AdministratorMenu::create($data);
+            $node = \App\Models\AdministratorMenu::whereName($data['name'])->first();
+            if (! $node) {
+                $node = \App\Models\AdministratorMenu::create($data);
+            }
 
             foreach ($menu['children'] as $i => $item) {
+                if (\App\Models\AdministratorMenu::whereName($item['name'])->exists()) {
+                    continue;
+                }
                 $data = $item;
                 if (! isset($data['permission_id'])) {
-                    $permission = \App\Models\AdministratorPermission::whereDisplayName($map[$item['name']])->first();
+                    $displayName = isset($map[$item['name']]) ? $map[$item['name']] : $item['name'];
+                    $permission = \App\Models\AdministratorPermission::where('display_name', $displayName)->first();
                     $data['permission_id'] = $permission->id;
                 }
                 $data['order'] = $i;

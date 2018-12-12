@@ -159,6 +159,13 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/coursechapter/{id}/delete', 'CourseChapterController@destroy')->name('backend.coursechapter.destroy');
     });
 
+    // 首页导航
+    Route::get('/nav', 'NavController@index')->name('backend.nav.index');
+    Route::get('/nav/create', 'NavController@create')->name('backend.nav.create');
+    Route::post('/nav/create', 'NavController@store');
+    Route::get('/nav/{id}/edit', 'NavController@edit')->name('backend.nav.edit');
+    Route::put('/nav/{id}/edit', 'NavController@update');
+    Route::get('/nav/{id}/delete', 'NavController@destroy')->name('backend.nav.destroy');
 
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
