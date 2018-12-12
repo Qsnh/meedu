@@ -32,10 +32,6 @@ class Course extends Model
         'seo_description', 'published_at', 'is_show',
     ];
 
-    protected $appends = [
-        'edit_url', 'destroy_url',
-    ];
-
     /**
      * 该课程所属用户.
      *
@@ -109,16 +105,6 @@ class Course extends Model
     public function scopePublished($query)
     {
         return $query->where('published_at', '<=', date('Y-m-d H:i:s'));
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('backend.course.edit', $this);
-    }
-
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.course.destroy', $this);
     }
 
     /**
