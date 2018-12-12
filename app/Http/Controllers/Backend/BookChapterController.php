@@ -24,14 +24,14 @@ class BookChapterController extends Controller
         $book = Book::findOrFail($bookId);
         $chapters = $book->chapters()->publishedDesc()->get();
 
-        return view('backend.book_chapter.index', compact('chapters', 'book'));
+        return v('backend.book_chapter.index', compact('chapters', 'book'));
     }
 
     public function create($bookId)
     {
         $book = Book::findOrFail($bookId);
 
-        return view('backend.book_chapter.create', compact('book'));
+        return v('backend.book_chapter.create', compact('book'));
     }
 
     public function store(BookChapterRequest $request, $bookId)
@@ -47,7 +47,7 @@ class BookChapterController extends Controller
         $book = Book::findOrFail($bookId);
         $chapter = $book->chapters()->whereId($id)->firstOrFail();
 
-        return view('backend.book_chapter.edit', compact('book', 'chapter'));
+        return v('backend.book_chapter.edit', compact('book', 'chapter'));
     }
 
     public function update(BookChapterRequest $request, $bookId, $id)

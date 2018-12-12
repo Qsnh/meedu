@@ -21,12 +21,12 @@ class AdministratorPermissionController extends Controller
     {
         $permissions = AdministratorPermission::paginate(10);
 
-        return view('backend.administrator_permission.index', compact('permissions'));
+        return v('backend.administrator_permission.index', compact('permissions'));
     }
 
     public function create()
     {
-        return view('backend.administrator_permission.create');
+        return v('backend.administrator_permission.create');
     }
 
     public function store(
@@ -43,7 +43,7 @@ class AdministratorPermissionController extends Controller
     {
         $permission = AdministratorPermission::findOrFail($id);
 
-        return view('backend.administrator_permission.edit', compact('permission'));
+        return v('backend.administrator_permission.edit', compact('permission'));
     }
 
     public function update(AdministratorPermissionRequest $request, $id)

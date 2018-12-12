@@ -28,7 +28,7 @@ class BookController extends Controller
 
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.book_list');
 
-        return view('frontend.book.index', compact('books', 'title', 'keywords', 'description'));
+        return v('frontend.book.index', compact('books', 'title', 'keywords', 'description'));
     }
 
     /**
@@ -44,7 +44,7 @@ class BookController extends Controller
         $keywords = $book->keywords;
         $description = $book->decsription;
 
-        return view('frontend.book.show', compact('book', 'title', 'keywords', 'description'));
+        return v('frontend.book.show', compact('book', 'title', 'keywords', 'description'));
     }
 
     /**
@@ -56,7 +56,7 @@ class BookController extends Controller
     {
         $book = Book::published()->show()->whereId($id)->firstOrFail();
 
-        return view('frontend.book.buy', compact('book'));
+        return v('frontend.book.buy', compact('book'));
     }
 
     /**
@@ -98,6 +98,6 @@ class BookController extends Controller
 
         $title = sprintf('章节 %s - 《%s》', $chapter->title, $book->title);
 
-        return view('frontend.book.chapter', compact('book', 'chapter', 'title'));
+        return v('frontend.book.chapter', compact('book', 'chapter', 'title'));
     }
 }

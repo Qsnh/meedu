@@ -97,6 +97,7 @@ return [
         ],
         'test' => explode(',', env('TEST_MOBILE', '')),
         'js' => '',
+        'theme' => 'default',
     ],
 
     // 视频鉴权

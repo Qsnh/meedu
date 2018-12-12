@@ -23,12 +23,12 @@ class AdFromController extends Controller
     {
         $rows = AdFrom::orderBy('id')->paginate(10);
 
-        return view('backend.adfrom.index', compact('rows'));
+        return v('backend.adfrom.index', compact('rows'));
     }
 
     public function create()
     {
-        return view('backend.adfrom.create');
+        return v('backend.adfrom.create');
     }
 
     public function store(AdFromRequest $request)
@@ -43,7 +43,7 @@ class AdFromController extends Controller
     {
         $one = AdFrom::findOrFail($id);
 
-        return view('backend.adfrom.edit', compact('one'));
+        return v('backend.adfrom.edit', compact('one'));
     }
 
     public function update(AdFromRequest $request, $id)
@@ -77,6 +77,6 @@ class AdFromController extends Controller
             ]);
         }
 
-        return view('backend.adfrom.number', compact('one', 'rows'));
+        return v('backend.adfrom.number', compact('one', 'rows'));
     }
 }

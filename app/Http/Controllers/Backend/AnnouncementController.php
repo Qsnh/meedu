@@ -21,12 +21,12 @@ class AnnouncementController extends Controller
     {
         $announcements = Announcement::with('administrator')->orderByDesc('created_at')->paginate(10);
 
-        return view('backend.announcement.index', compact('announcements'));
+        return v('backend.announcement.index', compact('announcements'));
     }
 
     public function create()
     {
-        return view('backend.announcement.create');
+        return v('backend.announcement.create');
     }
 
     public function store(AnnouncementRequest $request)
@@ -41,7 +41,7 @@ class AnnouncementController extends Controller
     {
         $announcement = admin()->announcements()->whereId($id)->firstOrFail();
 
-        return view('backend.announcement.edit', compact('announcement'));
+        return v('backend.announcement.edit', compact('announcement'));
     }
 
     public function update(AnnouncementRequest $request, $id)

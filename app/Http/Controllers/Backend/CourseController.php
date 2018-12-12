@@ -29,12 +29,12 @@ class CourseController extends Controller
 
         $courses->appends($request->input());
 
-        return view('backend.course.index', compact('courses'));
+        return v('backend.course.index', compact('courses'));
     }
 
     public function create()
     {
-        return view('backend.course.create');
+        return v('backend.course.create');
     }
 
     public function store(CourseRequest $request, Course $course)
@@ -49,7 +49,7 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
 
-        return view('backend.course.edit', compact('course'));
+        return v('backend.course.edit', compact('course'));
     }
 
     public function update(CourseRequest $request, $id)

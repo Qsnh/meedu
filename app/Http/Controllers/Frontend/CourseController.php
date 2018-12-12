@@ -27,7 +27,7 @@ class CourseController extends FrontendController
             ->paginate(6);
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.course_list');
 
-        return view('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
+        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
     }
 
     public function show($id, $slug)
@@ -41,7 +41,7 @@ class CourseController extends FrontendController
         $keywords = $course->keywords;
         $description = $course->description;
 
-        return view('frontend.course.show', compact(
+        return v('frontend.course.show', compact(
             'course',
             'title',
             'keywords',
@@ -63,7 +63,7 @@ class CourseController extends FrontendController
         $course = Course::findOrFail($id);
         $title = sprintf('购买课程《%s》', $course->title);
 
-        return view('frontend.course.buy', compact('course', 'title'));
+        return v('frontend.course.buy', compact('course', 'title'));
     }
 
     public function buyHandler(CourseRepository $repository, $id)

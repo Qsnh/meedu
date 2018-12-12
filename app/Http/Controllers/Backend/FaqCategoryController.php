@@ -21,12 +21,12 @@ class FaqCategoryController extends Controller
     {
         $categories = FaqCategory::sortAsc()->get();
 
-        return view('backend.faq_category.index', compact('categories'));
+        return v('backend.faq_category.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('backend.faq_category.create');
+        return v('backend.faq_category.create');
     }
 
     public function store(FaqCategoryRequest $request)
@@ -41,7 +41,7 @@ class FaqCategoryController extends Controller
     {
         $category = FaqCategory::findOrFail($id);
 
-        return view('backend.faq_category.edit', compact('category'));
+        return v('backend.faq_category.edit', compact('category'));
     }
 
     public function update(FaqCategoryRequest $request, $id)

@@ -25,11 +25,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // 中文
         Carbon::setLocale('zh');
+        // 数据库
         Schema::defaultStringLength(191);
+        // 模型事件
         CourseComment::observe(CourseCommentObserver::class);
+        // OAuth路由
         Passport::routes();
-
         // 加载配置
         if (file_exists(config('meedu.save'))) {
             $config = json_decode(file_get_contents(config('meedu.save')));
@@ -37,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 config([$key => $item]);
             }
         }
+        // 注册视图默认命名空间
+        $this->loadViewsFrom(resource_path('views'), 'default');
     }
 
     /**

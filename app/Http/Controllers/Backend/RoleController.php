@@ -21,12 +21,12 @@ class RoleController extends Controller
     {
         $roles = Role::orderByDesc('weight')->get();
 
-        return view('backend.role.index', compact('roles'));
+        return v('backend.role.index', compact('roles'));
     }
 
     public function create()
     {
-        return view('backend.role.create');
+        return v('backend.role.create');
     }
 
     public function store(RoleRequest $request)
@@ -41,7 +41,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        return view('backend.role.edit', compact('role'));
+        return v('backend.role.edit', compact('role'));
     }
 
     public function update(RoleRequest $request, $id)

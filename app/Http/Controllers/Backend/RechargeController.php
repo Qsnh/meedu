@@ -26,7 +26,7 @@ class RechargeController extends Controller
         }
         $records = RechargePayment::filter($request)->paginate(10);
 
-        return view('backend.recharge.index', compact('records'));
+        return v('backend.recharge.index', compact('records'));
     }
 
     public function exportToExcel(Request $request)

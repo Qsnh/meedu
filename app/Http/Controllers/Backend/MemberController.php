@@ -29,13 +29,13 @@ class MemberController extends Controller
 
         $members->appends($request->input());
 
-        return view('backend.member.index', compact('members'));
+        return v('backend.member.index', compact('members'));
     }
 
     public function show($id)
     {
         $member = User::findOrFail($id);
 
-        return view('backend.member.show', compact('member'));
+        return v('backend.member.show', compact('member'));
     }
 }

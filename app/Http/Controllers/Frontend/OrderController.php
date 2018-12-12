@@ -22,6 +22,6 @@ class OrderController extends Controller
         $order = Order::whereOrderId($orderId)->firstOrFail();
         $pay = $repository->payInfo($order);
 
-        return view('frontend.order.show', compact('order', 'pay'));
+        return v('frontend.order.show', compact('order', 'pay'));
     }
 }

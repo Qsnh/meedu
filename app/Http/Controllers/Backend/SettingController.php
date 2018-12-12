@@ -24,7 +24,7 @@ class SettingController extends Controller
             'services' => config('services'),
         ];
 
-        return view('backend.setting.index', compact('config'));
+        return v('backend.setting.index', compact('config'));
     }
 
     public function saveHandler(Request $request)

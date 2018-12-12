@@ -19,7 +19,7 @@ class SubscriptionController extends Controller
 {
     public function create()
     {
-        return view('backend.subscription.create');
+        return v('backend.subscription.create');
     }
 
     public function store(EmailSubscriptionRequest $request)

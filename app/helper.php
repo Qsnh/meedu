@@ -373,3 +373,21 @@ if (! function_exists('env_update')) {
         app()->make('files')->put(base_path('.env'), implode("\n", $newEnvRows));
     }
 }
+
+if (! function_exists('v')) {
+    /**
+     * 重写视图.
+     *
+     * @param $viewName
+     * @param array $params
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    function v($viewName, $params = [])
+    {
+        $namespace = config('meedu.system.theme', 'default');
+        $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace.'::'.$viewName;
+
+        return view($viewName, $params);
+    }
+}

@@ -30,7 +30,7 @@ class VideoController extends FrontendController
         $keywords = $video->keywords;
         $description = $video->description;
 
-        return view('frontend.video.show', compact('video', 'title', 'keywords', 'description'));
+        return v('frontend.video.show', compact('video', 'title', 'keywords', 'description'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
@@ -47,7 +47,7 @@ class VideoController extends FrontendController
         $video = Video::findOrFail($id);
         $title = sprintf('购买视频《%s》', $video->title);
 
-        return view('frontend.video.buy', compact('video', compact('title')));
+        return v('frontend.video.buy', compact('video', compact('title')));
     }
 
     public function buyHandler(VideoRepository $repository, $id)

@@ -24,7 +24,7 @@ class AdministratorMenuController extends Controller
         $menus = $administratorMenu->menus();
         $permissions = AdministratorPermission::get();
 
-        return view('backend.administrator_menu.index', compact('menus', 'permissions'));
+        return v('backend.administrator_menu.index', compact('menus', 'permissions'));
     }
 
     public function store(AdministratorMenuRequest $request)
@@ -41,7 +41,7 @@ class AdministratorMenuController extends Controller
         $menus = $administratorMenu->menus();
         $menu = AdministratorMenu::findOrFail($id);
 
-        return view('backend.administrator_menu.edit', compact('menus', 'menu', 'permissions'));
+        return v('backend.administrator_menu.edit', compact('menus', 'menu', 'permissions'));
     }
 
     public function update(AdministratorMenuRequest $request, $id)

@@ -19,7 +19,7 @@ class ForgotPasswordController extends Controller
 {
     public function showPage()
     {
-        return view('auth.passwords.find');
+        return v('auth.passwords.find');
     }
 
     public function handler(PasswordResetRequest $request)
