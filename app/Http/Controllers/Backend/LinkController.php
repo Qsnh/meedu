@@ -21,12 +21,12 @@ class LinkController extends Controller
     {
         $links = Link::orderBy('sort')->get();
 
-        return v('backend.link.index', compact('links'));
+        return view('backend.link.index', compact('links'));
     }
 
     public function create()
     {
-        return v('backend.link.create');
+        return view('backend.link.create');
     }
 
     public function store(LinkRequest $request)
@@ -41,7 +41,7 @@ class LinkController extends Controller
     {
         $link = Link::findOrFail($id);
 
-        return v('backend.link.edit', compact('link'));
+        return view('backend.link.edit', compact('link'));
     }
 
     public function update(LinkRequest $request, $id)

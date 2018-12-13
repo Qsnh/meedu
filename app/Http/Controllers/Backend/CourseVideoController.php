@@ -40,14 +40,14 @@ class CourseVideoController extends Controller
 
         $videos->appends($request->input());
 
-        return v('backend.video.index', compact('videos'));
+        return view('backend.video.index', compact('videos'));
     }
 
     public function create()
     {
         $courses = Course::all();
 
-        return v('backend.video.create', compact('courses'));
+        return view('backend.video.create', compact('courses'));
     }
 
     public function store(CourseVideoRequest $request, Video $video)
@@ -64,7 +64,7 @@ class CourseVideoController extends Controller
 
         $courses = Course::all();
 
-        return v('backend.video.edit', compact('video', 'courses'));
+        return view('backend.video.edit', compact('video', 'courses'));
     }
 
     public function update(CourseVideoRequest $request, $id)

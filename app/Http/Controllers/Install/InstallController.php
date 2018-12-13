@@ -34,7 +34,7 @@ class InstallController extends Controller
             return redirect()->route('install.step2');
         }
 
-        return v('install.step1');
+        return view('install.step1');
     }
 
     public function step2(Request $request)
@@ -75,7 +75,7 @@ class InstallController extends Controller
             }
         }
 
-        return v('install.step2');
+        return view('install.step2');
     }
 
     public function step3(Request $request)
@@ -147,6 +147,6 @@ class InstallController extends Controller
             }
         }
 
-        return v('install.step3');
+        return view('install.step3');
     }
 }

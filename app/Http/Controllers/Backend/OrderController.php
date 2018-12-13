@@ -27,6 +27,6 @@ class OrderController extends Controller
             ->latest()
             ->paginate($request->input('page_size', 10));
 
-        return v('backend.order.index', compact('orders'));
+        return view('backend.order.index', compact('orders'));
     }
 }

@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $todayPaidNum = Order::todayPaidNum();
         $todayPaidSum = Order::todayPaidSum();
 
-        return v('backend.dashboard.index', compact(
+        return view('backend.dashboard.index', compact(
             'todayRegisterUserCount',
             'todayPaidNum',
             'todayPaidSum'

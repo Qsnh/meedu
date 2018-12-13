@@ -24,14 +24,14 @@ class CourseChapterController extends Controller
 
         $rows = $course->chapters()->orderBy('sort')->get();
 
-        return v('backend.coursechapter.index', compact('rows', 'course'));
+        return view('backend.coursechapter.index', compact('rows', 'course'));
     }
 
     public function create($courseId)
     {
         $course = Course::findOrFail($courseId);
 
-        return v('backend.coursechapter.create', compact('course'));
+        return view('backend.coursechapter.create', compact('course'));
     }
 
     public function store(CourseChapterRequest $request, $courseId)
@@ -47,7 +47,7 @@ class CourseChapterController extends Controller
     {
         $one = CourseChapter::findOrFail($id);
 
-        return v('backend.coursechapter.edit', compact('one'));
+        return view('backend.coursechapter.edit', compact('one'));
     }
 
     public function update(CourseChapterRequest $request, $id)

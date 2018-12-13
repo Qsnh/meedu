@@ -22,14 +22,14 @@ class FaqArticleController extends Controller
     {
         $articles = FaqArticle::with('category')->orderByDesc('updated_at')->paginate(15);
 
-        return v('backend.faq_article.index', compact('articles'));
+        return view('backend.faq_article.index', compact('articles'));
     }
 
     public function create()
     {
         $categories = FaqCategory::all();
 
-        return v('backend.faq_article.create', compact('categories'));
+        return view('backend.faq_article.create', compact('categories'));
     }
 
     public function store(FaqArticleRequest $request)
@@ -45,7 +45,7 @@ class FaqArticleController extends Controller
         $article = FaqArticle::findOrFail($id);
         $categories = FaqCategory::all();
 
-        return v('backend.faq_article.edit', compact('article', 'categories'));
+        return view('backend.faq_article.edit', compact('article', 'categories'));
     }
 
     public function update(FaqArticleRequest $request, $id)

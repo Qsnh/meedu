@@ -42,7 +42,7 @@ class AdministratorController extends Controller
         $administrators = Administrator::orderByDesc('created_at')
                                         ->paginate(10);
 
-        return v('backend.administrator.index', compact('administrators'));
+        return view('backend.administrator.index', compact('administrators'));
     }
 
     public function showLoginForm()
@@ -51,7 +51,7 @@ class AdministratorController extends Controller
             return \redirect(\route('backend.dashboard.index'));
         }
 
-        return v('backend.auth.login');
+        return view('backend.auth.login');
     }
 
     public function loginHandle(LoginRequest $request)
@@ -71,7 +71,7 @@ class AdministratorController extends Controller
     {
         $roles = AdministratorRole::all();
 
-        return v('backend.administrator.create', compact('roles'));
+        return view('backend.administrator.create', compact('roles'));
     }
 
     public function store(
@@ -92,7 +92,7 @@ class AdministratorController extends Controller
         $administrator = Administrator::findOrFail($id);
         $roles = AdministratorRole::all();
 
-        return v('backend.administrator.edit', compact('roles', 'administrator'));
+        return view('backend.administrator.edit', compact('roles', 'administrator'));
     }
 
     public function update(AdministratorRequest $request, $id)
@@ -110,7 +110,7 @@ class AdministratorController extends Controller
 
     public function showEditPasswordForm()
     {
-        return v('backend.auth.edit_password');
+        return view('backend.auth.edit_password');
     }
 
     public function editPasswordHandle(EditPasswordRequest $request)

@@ -22,12 +22,12 @@ class BookController extends Controller
     {
         $books = Book::latest()->paginate($request->input('page_size', 10));
 
-        return v('backend.book.index', compact('books'));
+        return view('backend.book.index', compact('books'));
     }
 
     public function create()
     {
-        return v('backend.book.create');
+        return view('backend.book.create');
     }
 
     public function store(BookRequest $request)
@@ -42,7 +42,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        return v('backend.book.edit', compact('book'));
+        return view('backend.book.edit', compact('book'));
     }
 
     public function update(BookRequest $request, $id)

@@ -23,12 +23,12 @@ class AdministratorRoleController extends Controller
     {
         $roles = AdministratorRole::paginate(10);
 
-        return v('backend.administrator_role.index', compact('roles'));
+        return view('backend.administrator_role.index', compact('roles'));
     }
 
     public function create()
     {
-        return v('backend.administrator_role.create');
+        return view('backend.administrator_role.create');
     }
 
     public function store(
@@ -45,7 +45,7 @@ class AdministratorRoleController extends Controller
     {
         $role = AdministratorRole::findOrFail($id);
 
-        return v('backend.administrator_role.edit', compact('role'));
+        return view('backend.administrator_role.edit', compact('role'));
     }
 
     public function update(AdministratorRoleRequest $request, $id)
@@ -75,7 +75,7 @@ class AdministratorRoleController extends Controller
         $role = AdministratorRole::findOrFail($id);
         $permissions = AdministratorPermission::all();
 
-        return v('backend.administrator_role.select_permission', compact('permissions', 'role'));
+        return view('backend.administrator_role.select_permission', compact('permissions', 'role'));
     }
 
     public function handlePermissionSave(Request $request, $id)
