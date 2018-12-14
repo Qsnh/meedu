@@ -38,7 +38,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "MeEdu\\Addons\\": "addons"
+            "MeEdu\\Addons\\": "addons/"
         }
     },
     "autoload-dev": {
@@ -68,7 +68,8 @@
             "@php artisan package:discover"
         ],
         "test": "./vendor/bin/phpunit",
-        "cs-fixer": "php php-cs-fixer.phar fix"
+        "cs-fixer": "php php-cs-fixer.phar fix",
+        "cf": "php-cs-fixer fix"
     },
     "config": {
         "preferred-install": "dist",
