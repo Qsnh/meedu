@@ -1186,16 +1186,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.7.16",
+            "version": "v5.7.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "9acea9e0a356cba7e6a13f8784d5532a82fee92a"
+                "reference": "a15898e2de5f5ae5548a09349c558ef0435d495a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/9acea9e0a356cba7e6a13f8784d5532a82fee92a",
-                "reference": "9acea9e0a356cba7e6a13f8784d5532a82fee92a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a15898e2de5f5ae5548a09349c558ef0435d495a",
+                "reference": "a15898e2de5f5ae5548a09349c558ef0435d495a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1334,7 +1334,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-12-05T14:36:24+00:00"
+            "time": "2018-12-12T14:38:09+00:00"
         },
         {
             "name": "laravel/nexmo-notification-channel",
@@ -1476,16 +1476,16 @@
         },
         {
             "name": "laravel/slack-notification-channel",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/slack-notification-channel.git",
-                "reference": "0ede60acbbf5f91be2e45d0c0b4d95e2f3837252"
+                "reference": "6e164293b754a95f246faf50ab2bbea3e4923cc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/slack-notification-channel/zipball/0ede60acbbf5f91be2e45d0c0b4d95e2f3837252",
-                "reference": "0ede60acbbf5f91be2e45d0c0b4d95e2f3837252",
+                "url": "https://api.github.com/repos/laravel/slack-notification-channel/zipball/6e164293b754a95f246faf50ab2bbea3e4923cc9",
+                "reference": "6e164293b754a95f246faf50ab2bbea3e4923cc9",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1535,7 +1535,7 @@
                 "notifications",
                 "slack"
             ],
-            "time": "2018-12-04T12:58:59+00:00"
+            "time": "2018-12-12T13:12:06+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -3722,16 +3722,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "2.11.1",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "858ea38e341e2e5f74a5b59cc8184c5c7e94b50d"
+                "reference": "61cf73e3b53e163d6e888a0013b9df6bb235752c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/858ea38e341e2e5f74a5b59cc8184c5c7e94b50d",
-                "reference": "858ea38e341e2e5f74a5b59cc8184c5c7e94b50d",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/61cf73e3b53e163d6e888a0013b9df6bb235752c",
+                "reference": "61cf73e3b53e163d6e888a0013b9df6bb235752c",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3774,7 +3774,7 @@
                 "mysqldump",
                 "spatie"
             ],
-            "time": "2018-09-27T06:30:34+00:00"
+            "time": "2018-12-10T10:41:18+00:00"
         },
         {
             "name": "spatie/laravel-backup",
@@ -6308,16 +6308,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.0",
+            "version": "7.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "520723129e2b3fc1dc4c0953e43c9d40e1ecb352"
+                "reference": "c23d78776ad415d5506e0679723cb461d71f488f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/520723129e2b3fc1dc4c0953e43c9d40e1ecb352",
-                "reference": "520723129e2b3fc1dc4c0953e43c9d40e1ecb352",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c23d78776ad415d5506e0679723cb461d71f488f",
+                "reference": "c23d78776ad415d5506e0679723cb461d71f488f",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6394,7 +6394,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-12-07T07:08:12+00:00"
+            "time": "2018-12-12T07:20:32+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

@@ -37,8 +37,6 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-(new \App\Meedu\Autoloader)->load($loader);
-
 /*
 |--------------------------------------------------------------------------
 | Run The Application
