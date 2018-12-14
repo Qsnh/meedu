@@ -16,3 +16,4 @@ bower_components
 .DS_Store
 php-cs-fixer.phar
 /storage/install.lock
+/app/Console/Commands/TestCommand.php
