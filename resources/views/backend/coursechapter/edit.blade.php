@@ -13,12 +13,12 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <label>排序（升序）</label>
-                    <input type="text" name="sort" class="form-control" value="{{$one->sort}}" placeholder="排序（升序：小数靠前）">
+                    <label>排序（升序） @include('components.backend.required')</label>
+                    <input type="text" name="sort" class="form-control" value="{{$one->sort}}" placeholder="排序（升序：小数靠前）" required>
                 </div>
                 <div class="form-group">
-                    <label>章节名</label>
-                    <input type="text" name="title" value="{{$one->title}}" class="form-control" placeholder="章节名">
+                    <label>章节名 @include('components.backend.required')</label>
+                    <input type="text" name="title" value="{{$one->title}}" class="form-control" placeholder="章节名" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">保存</button>

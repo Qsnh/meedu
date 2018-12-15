@@ -25,19 +25,19 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>排序</label>
-                    <input type="text" name="order" class="form-control" placeholder="排序" value="{{$menu->order}}">
+                    <label>排序 @include('components.backend.required')</label>
+                    <input type="text" name="order" class="form-control" placeholder="排序" value="{{$menu->order}}" required>
                 </div>
                 <div class="form-group">
-                    <label>链接名</label>
-                    <input type="text" name="name" class="form-control" placeholder="链接名" value="{{$menu->name}}">
+                    <label>链接名 @include('components.backend.required')</label>
+                    <input type="text" name="name" class="form-control" placeholder="链接名" value="{{$menu->name}}" required>
                 </div>
                 <div class="form-group">
-                    <label>链接地址</label>
-                    <input type="text" name="url" class="form-control" placeholder="链接地址" value="{{$menu->url}}">
+                    <label>链接地址 @include('components.backend.required')</label>
+                    <input type="text" name="url" class="form-control" placeholder="链接地址" value="{{$menu->url}}" required>
                 </div>
                 <div class="form-group">
-                    <label>关联权限</label>
+                    <label>关联权限 @include('components.backend.required')</label>
                     <select name="permission_id" class="form-control">
                         @foreach($permissions as $permission)
                             <option value="{{ $permission->id }}" {{$menu->permission_id == $permission->id ? 'selected' : ''}}>{{ $permission->display_name }}</option>

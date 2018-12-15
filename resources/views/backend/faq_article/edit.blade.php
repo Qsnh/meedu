@@ -13,7 +13,7 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <label>分类</label>
+                    <label>分类 @include('components.backend.required')</label>
                     <select name="category_id" class="form-control">
                         <option value="">无</option>
                         @foreach($categories as $category)
@@ -22,11 +22,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>文章标题</label>
-                    <input type="text" name="title" class="form-control" placeholder="文章标题" value="{{$article->title}}">
+                    <label>文章标题 @include('components.backend.required')</label>
+                    <input type="text" name="title" class="form-control" placeholder="文章标题" value="{{$article->title}}" required>
                 </div>
                 <div class="form-group">
-                    <label>文章内容</label>
+                    <label>文章内容 @include('components.backend.required')</label>
                     @include('components.backend.editor', ['name' => 'content', 'content' => $article->content])
                 </div>
                 <div class="form-group">

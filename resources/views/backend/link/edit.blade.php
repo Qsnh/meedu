@@ -13,16 +13,16 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <label>排序</label>
-                    <input type="text" name="sort" value="{{$link->sort}}" class="form-control" placeholder="排序（升序）">
+                    <label>排序 @include('components.backend.required')</label>
+                    <input type="text" name="sort" value="{{$link->sort}}" class="form-control" placeholder="排序（升序）" required>
                 </div>
                 <div class="form-group">
-                    <label>链接名</label>
-                    <input type="text" name="name" value="{{$link->name}}" class="form-control" placeholder="链接名">
+                    <label>链接名 @include('components.backend.required')</label>
+                    <input type="text" name="name" value="{{$link->name}}" class="form-control" placeholder="链接名" required>
                 </div>
                 <div class="form-group">
-                    <label>链接地址</label>
-                    <input type="text" name="url" value="{{$link->url}}" class="form-control" placeholder="链接地址">
+                    <label>链接地址 @include('components.backend.required')</label>
+                    <input type="text" name="url" value="{{$link->url}}" class="form-control" placeholder="链接地址" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">保存</button>

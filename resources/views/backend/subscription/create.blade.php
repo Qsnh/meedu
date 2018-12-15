@@ -12,11 +12,11 @@
            <form action="" method="post">
                @csrf
                <div class="form-group">
-                   <label>邮件标题</label>
-                   <input type="text" name="title" class="form-control" placeholder="邮件标题" value="{{old('title')}}">
+                   <label>邮件标题 @include('components.backend.required')</label>
+                   <input type="text" name="title" class="form-control" placeholder="邮件标题" value="{{old('title')}}" required>
                </div>
                <div class="form-group">
-                   <label>邮件内容</label>
+                   <label>邮件内容 @include('components.backend.required')</label>
                    @include('components.backend.editor', ['name' => 'content'])
                </div>
                <div class="form-group">

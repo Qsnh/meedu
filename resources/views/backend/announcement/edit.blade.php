@@ -13,7 +13,7 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <label>公告内容</label>
+                    <label>公告内容 @include('components.backend.required')</label>
                     @include('components.backend.editor', ['name' => 'announcement', 'content' => $announcement->announcement])
                 </div>
                 <div class="form-group">

@@ -12,12 +12,12 @@
             <form action="" method="post">
                 @csrf
                 <div class="form-group">
-                    <label>排序值（整数，升序）</label>
-                    <input type="text" name="sort" class="form-control" placeholder="排序值（整数，升序）" value="{{old('sort')}}">
+                    <label>排序值（整数，升序） @include('components.backend.required')</label>
+                    <input type="text" name="sort" class="form-control" placeholder="排序值（整数，升序）" value="{{old('sort')}}" required>
                 </div>
                 <div class="form-group">
-                    <label>分类名</label>
-                    <input type="text" name="name" class="form-control" placeholder="分类名" value="{{old('name')}}">
+                    <label>分类名 @include('components.backend.required')</label>
+                    <input type="text" name="name" class="form-control" placeholder="分类名" value="{{old('name')}}" required>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">创建</button>

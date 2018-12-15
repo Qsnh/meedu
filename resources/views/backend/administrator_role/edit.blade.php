@@ -13,16 +13,16 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <label>角色名</label>
-                    <input type="text" name="display_name" class="form-control" value="{{$role->display_name}}" placeholder="请输入角色名">
+                    <label>角色名  @include('components.backend.required')</label>
+                    <input type="text" name="display_name" class="form-control" value="{{$role->display_name}}" placeholder="请输入角色名" required>
                 </div>
                 <div class="form-group">
-                    <label>Slug</label>
-                    <input type="text" name="slug" value="{{$role->slug}}" class="form-control" placeholder="Slug">
+                    <label>Slug  @include('components.backend.required')</label>
+                    <input type="text" name="slug" value="{{$role->slug}}" class="form-control" placeholder="Slug" required>
                 </div>
                 <div class="form-group">
-                    <label>描述</label>
-                    <input type="text" name="description" value="{{$role->description}}" class="form-control" placeholder="描述">
+                    <label>描述  @include('components.backend.required')</label>
+                    <input type="text" name="description" value="{{$role->description}}" class="form-control" placeholder="描述" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">保存</button>

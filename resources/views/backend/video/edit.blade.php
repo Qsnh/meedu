@@ -13,7 +13,7 @@
             </div>
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label>课程</label>
+                    <label>课程 @include('components.backend.required')</label>
                     <select name="course_id" class="form-control">
                         <option value="">无</option>
                         @foreach($courses as $course)
@@ -28,30 +28,30 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>课程名</label>
-                    <input type="text" class="form-control" name="title" value="{{$video->title}}" placeholder="视频名">
+                    <label>课程名 @include('components.backend.required')</label>
+                    <input type="text" class="form-control" name="title" value="{{$video->title}}" placeholder="视频名" required>
                 </div>
                 <div class="form-group">
-                    <label>上传视频</label>
+                    <label>上传视频 @include('components.backend.required')</label>
                     @include('components.backend.video', ['video' => $video])
                 </div>
                 <div class="form-group">
-                    <label>描述</label>
+                    <label>描述 @include('components.backend.required')</label>
                     @include('components.backend.editor', ['name' => 'description', 'content' => $video->description])
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>一句话介绍</label>
+                    <label>一句话介绍 @include('components.backend.required')</label>
                     <textarea name="short_description" class="form-control"
-                              rows="2" placeholder="一句话介绍">{{$video->short_description}}</textarea>
+                              rows="2" placeholder="一句话介绍" required>{{$video->short_description}}</textarea>
                 </div>
                 <div class="form-group">
-                    <label>上架时间</label>
+                    <label>上架时间 @include('components.backend.required')</label>
                     @include('components.backend.datetime', ['name' => 'published_at', 'value' => $video->published_at])
                 </div>
                 <div class="form-group">
-                    <label>是否显示</label><br>
+                    <label>是否显示 @include('components.backend.required')</label><br>
                     <label><input type="radio" name="is_show"
                                   value="{{ \App\Models\Video::IS_SHOW_YES }}"
                                 {{$video->is_show == \App\Models\Video::IS_SHOW_YES ? 'checked' : ''}}>是</label>
@@ -62,16 +62,16 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>价格</label>
-                    <input type="text" name="charge" placeholder="价格" class="form-control" value="{{$video->charge}}">
+                    <label>价格 @include('components.backend.required')</label>
+                    <input type="text" name="charge" placeholder="价格" class="form-control" value="{{$video->charge}}" required>
                 </div>
                 <div class="form-group">
-                    <label>SEO关键字</label>
-                    <textarea name="seo_keywords" class="form-control" rows="2" placeholder="SEO关键字">{{$video->seo_keywords}}</textarea>
+                    <label>SEO关键字 @include('components.backend.required')</label>
+                    <textarea name="seo_keywords" class="form-control" rows="2" placeholder="SEO关键字" required>{{$video->seo_keywords}}</textarea>
                 </div>
                 <div class="form-group">
-                    <label>SEO描述</label>
-                    <textarea name="seo_description" class="form-control" rows="2" placeholder="SEO描述">{{$video->seo_description}}</textarea>
+                    <label>SEO描述 @include('components.backend.required')</label>
+                    <textarea name="seo_description" class="form-control" rows="2" placeholder="SEO描述" required>{{$video->seo_description}}</textarea>
                 </div>
             </div>
             <div class="col-sm-12">

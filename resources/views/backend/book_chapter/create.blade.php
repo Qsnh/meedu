@@ -13,20 +13,20 @@
                 @csrf
                 <input type="hidden" name="book_id" value="{{$book->id}}">
                 <div class="form-group">
-                    <label>章节名</label>
-                    <input type="text" name="title" class="form-control" placeholder="请输入章节名" value="{{old('title')}}">
+                    <label>章节名 @include('components.backend.required')</label>
+                    <input type="text" name="title" class="form-control" placeholder="请输入章节名" value="{{old('title')}}" required>
                 </div>
                 <div class="form-group">
-                    <label>内容</label>
+                    <label>内容 @include('components.backend.required')</label>
                     @include('components.backend.editor', ['name' => 'content'])
                 </div>
                 <div class="form-group">
-                    <label>是否显示</label><br>
+                    <label>是否显示 @include('components.backend.required')</label><br>
                     <label><input type="radio" name="is_show" value="{{ \App\Models\BookChapter::SHOW_YES }}" checked> 是</label>
                     <label><input type="radio" name="is_show" value="{{ \App\Models\BookChapter::SHOW_NO }}"> 否</label>
                 </div>
                 <div class="form-group">
-                    <label>上架时间</label>
+                    <label>上架时间 @include('components.backend.required')</label>
                     @include('components.backend.datetime', ['name' => 'published_at'])
                 </div>
                 <div class="form-group">
