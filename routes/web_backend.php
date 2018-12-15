@@ -34,6 +34,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/administrator_role/{id}/destroy', 'AdministratorRoleController@destroy')->name('backend.administrator_role.destroy');
         Route::get('/administrator_role/{id}/permission', 'AdministratorRoleController@showSelectPermissionPage')->name('backend.administrator_role.permission');
         Route::post('/administrator_role/{id}/permission', 'AdministratorRoleController@handlePermissionSave');
+
         // 权限
         Route::get('/administrator_permission', 'AdministratorPermissionController@index')->name('backend.administrator_permission.index');
         Route::get('/administrator_permission/create', 'AdministratorPermissionController@create')->name('backend.administrator_permission.create');
@@ -49,6 +50,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/course/{id}/edit', 'CourseController@edit')->name('backend.course.edit');
         Route::put('/course/{id}/edit', 'CourseController@update');
         Route::get('/course/{id}/delete', 'CourseController@destroy')->name('backend.course.destroy');
+
         // 视频
         Route::get('/video', 'CourseVideoController@index')->name('backend.video.index');
         Route::get('/video/create', 'CourseVideoController@create')->name('backend.video.create');

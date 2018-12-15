@@ -12,6 +12,220 @@ class AdministratorPermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
+
+            // 后台菜单
+            [
+                'display_name' => '后台菜单界面',
+                'slug' => 'backend.administrator_menu.index',
+                'method' => 'GET',
+                'url' => '/backend/administrator_menu',
+                'description' => '',
+            ],
+            [
+                'display_name' => '后台菜单创建界面',
+                'slug' => 'backend.administrator_menu.create',
+                'method' => 'GET',
+                'url' => '/backend/administrator_menu/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新后台菜单',
+                'slug' => 'backend.administrator_menu.create',
+                'method' => 'POST',
+                'url' => '/backend/administrator_menu/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '后台菜单编辑界面',
+                'slug' => 'backend.administrator_menu.edit',
+                'method' => 'GET',
+                'url' => '/backend/administrator_menu/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的后台菜单',
+                'slug' => 'backend.administrator_menu.edit',
+                'method' => 'PUT',
+                'url' => '/backend/administrator_menu/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除后台菜单',
+                'slug' => 'backend.administrator_menu.destroy',
+                'method' => 'GET',
+                'url' => '/backend/administrator_menu/\d+/delete',
+                'description' => '',
+            ],
+            [
+                'display_name' => '后台菜单批量修改',
+                'slug' => 'backend.administrator_menu.save_change',
+                'method' => 'GET',
+                'url' => '/backend/administrator_menu/change/save',
+                'description' => '',
+            ],
+
+            // 管理员权限
+            [
+                'display_name' => '管理员权限界面',
+                'slug' => 'backend.administrator_permission.index',
+                'method' => 'GET',
+                'url' => '/backend/administrator_permission',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员权限创建界面',
+                'slug' => 'backend.administrator_permission.create',
+                'method' => 'GET',
+                'url' => '/backend/administrator_permission/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新管理员权限',
+                'slug' => 'backend.administrator_permission.create',
+                'method' => 'POST',
+                'url' => '/backend/administrator_permission/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员权限编辑界面',
+                'slug' => 'backend.administrator_permission.edit',
+                'method' => 'GET',
+                'url' => '/backend/administrator_permission/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的管理员权限',
+                'slug' => 'backend.administrator_permission.edit',
+                'method' => 'PUT',
+                'url' => '/backend/administrator_permission/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除管理员权限',
+                'slug' => 'backend.administrator_permission.destroy',
+                'method' => 'GET',
+                'url' => '/backend/administrator_permission/\d+/destroy',
+                'description' => '',
+            ],
+
+            // 管理员角色
+            [
+                'display_name' => '管理员角色界面',
+                'slug' => 'backend.administrator_role.index',
+                'method' => 'GET',
+                'url' => '/backend/administrator_role',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员角色创建界面',
+                'slug' => 'backend.administrator_role.create',
+                'method' => 'GET',
+                'url' => '/backend/administrator_role/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新管理员角色',
+                'slug' => 'backend.administrator_role.create',
+                'method' => 'POST',
+                'url' => '/backend/administrator_role/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员角色编辑界面',
+                'slug' => 'backend.administrator_role.edit',
+                'method' => 'GET',
+                'url' => '/backend/administrator_role/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的管理员角色',
+                'slug' => 'backend.administrator_role.edit',
+                'method' => 'PUT',
+                'url' => '/backend/administrator_role/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除管理员角色',
+                'slug' => 'backend.administrator_role.destroy',
+                'method' => 'GET',
+                'url' => '/backend/administrator_role/\d+/destroy',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员角色授权页面',
+                'slug' => 'backend.administrator_role.permission',
+                'method' => 'GET',
+                'url' => '/backend/administrator_role/\d+/permission',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员角色授权保存',
+                'slug' => 'backend.administrator_role.permission',
+                'method' => 'POST',
+                'url' => '/backend/administrator_role/\d+/permission',
+                'description' => '',
+            ],
+
+            // 管理员
+            [
+                'display_name' => '管理员界面',
+                'slug' => 'backend.administrator.index',
+                'method' => 'GET',
+                'url' => '/backend/administrator',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员创建界面',
+                'slug' => 'backend.administrator.create',
+                'method' => 'GET',
+                'url' => '/backend/administrator/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以创建新管理员',
+                'slug' => 'backend.administrator.create',
+                'method' => 'POST',
+                'url' => '/backend/administrator/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '管理员编辑界面',
+                'slug' => 'backend.administrator.edit',
+                'method' => 'GET',
+                'url' => '/backend/administrator/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '是否可以保存编辑后的管理员',
+                'slug' => 'backend.administrator.edit',
+                'method' => 'PUT',
+                'url' => '/backend/administrator/\d+/edit',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除管理员',
+                'slug' => 'backend.administrator.destroy',
+                'method' => 'GET',
+                'url' => '/backend/administrator/\d+/destroy',
+                'description' => '',
+            ],
+
+            // 全站配置
+            [
+                'display_name' => '全站配置',
+                'slug' => 'backend.setting.index',
+                'method' => 'GET',
+                'url' => '/backend/setting',
+                'description' => '',
+            ],
+            [
+                'display_name' => '全站配置保存',
+                'slug' => 'backend.setting.index',
+                'method' => 'POST',
+                'url' => '/backend/setting',
+                'description' => '',
+            ],
+
             // 课程
             [
                 'display_name' => '课程列表界面',
