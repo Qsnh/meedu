@@ -111,6 +111,7 @@ class InstallController extends Controller
                 $log[] = $output->fetch();
 
                 // 初始化管理员
+                $super = AdministratorRole::where('slug', config('meedu.administrator.super_slug'))->first();
                 if (! Administrator::where('email', $admin['username'])->exists()) {
                     $administrator = new Administrator([
                         'name' => '超级管理员',
@@ -118,7 +119,7 @@ class InstallController extends Controller
                         'password' => bcrypt($admin['password']),
                     ]);
                     $administrator->save();
-                    $administrator->roles()->attach(1);
+                    $administrator->roles()->attach($super->id);
                 }
 
                 // 软链接

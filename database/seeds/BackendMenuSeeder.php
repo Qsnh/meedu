@@ -185,7 +185,7 @@ class BackendMenuSeeder extends Seeder
                 if (! isset($data['permission_id'])) {
                     $displayName = isset($map[$item['name']]) ? $map[$item['name']] : $item['name'];
                     $permission = \App\Models\AdministratorPermission::where('display_name', $displayName)->first();
-                    $data['permission_id'] = $permission->id;
+                    $data['permission_id'] = $permission ? $permission->id : 0;
                 }
                 $data['order'] = $i;
                 $data['parent_id'] = $node->id;
