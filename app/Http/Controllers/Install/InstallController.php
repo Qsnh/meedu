@@ -172,7 +172,7 @@ class InstallController extends Controller
 
     protected function keyGenerator()
     {
-        $key = 'base64:'.base64_encode(Encrypter::generateKey($this->laravel['config']['app.cipher']));
+        $key = 'base64:'.base64_encode(Encrypter::generateKey('AES-256-CBC'));
         env_update(['APP_KEY' => $key]);
     }
 }
