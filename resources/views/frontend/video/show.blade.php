@@ -61,18 +61,18 @@
                                                 <td class="index">{{$i}}</td>
                                                 <td>
                                                     <p class="video-title">
-                                                        <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                                        <a href="{{ route('video.show', [$videoItem->course->id, $videoItem->id, $videoItem->slug]) }}">
                                                             {{ $videoItem->title }}
                                                         </a>
                                                     </p>
                                                     <p class="extra">
-                                                        @if($video->charge > 0)
+                                                        @if($videoItem->charge > 0)
                                                             <i class="fa fa-lock" aria-hidden="true"></i>
                                                         @else
                                                             <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                                         @endif
-                                                        <span>更新于：{{ $video->created_at->diffForHumans() }}</span>
-                                                        <span>播放次数：{{ $video->view_num }}</span>
+                                                        <span>创建于：{{ $videoItem->created_at->diffForHumans() }}</span>
+                                                        <span>播放次数：{{ $videoItem->view_num }}</span>
                                                     </p>
                                                 </td>
                                             </tr>
@@ -89,18 +89,18 @@
                                     <td class="index">{{$index+1}}</td>
                                     <td>
                                         <p class="video-title">
-                                            <a href="{{ route('video.show', [$video->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                            <a href="{{ route('video.show', [$videoItem->course->id, $videoItem->id, $videoItem->slug]) }}">
                                                 {{ $videoItem->title }}
                                             </a>
                                         </p>
                                         <p class="extra">
-                                            @if($video->charge > 0)
+                                            @if($videoItem->charge > 0)
                                                 <i class="fa fa-lock" aria-hidden="true"></i>   
                                                 @else
                                                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                             @endif
-                                            <span>更新于：{{ $video->created_at->diffForHumans() }}</span>
-                                                <span>播放次数：{{ $video->view_num }}</span>
+                                            <span>创建于：{{ $videoItem->created_at->diffForHumans() }}</span>
+                                                <span>播放次数：{{ $videoItem->view_num }}</span>
                                         </p>
                                     </td>
                                 </tr>
