@@ -19,6 +19,7 @@ use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Connectors\MySqlConnector;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -124,10 +125,12 @@ class InstallController extends Controller
                 }
 
                 // 软链接
-                app()->make('files')->link(storage_path('app/public'), public_path('storage'));
+                if (! app()->make('files')->exists(public_path('storage'))) {
+                    app()->make('files')->link(storage_path('app/public'), public_path('storage'));
+                }
 
                 // KEY
-                app()->make('command.key.generate')->handle();
+                $this->keyGenerator();
 
                 // 安装锁
                 app()->make('files')->put(storage_path('install.lock'), time());
@@ -165,5 +168,11 @@ class InstallController extends Controller
 
         file_put_contents($publicKey, array_get($keys, 'publickey'));
         file_put_contents($privateKey, array_get($keys, 'privatekey'));
+    }
+
+    protected function keyGenerator()
+    {
+        $key = 'base64:'.base64_encode(Encrypter::generateKey($this->laravel['config']['app.cipher']));
+        env_update(['APP_KEY' => $key]);
     }
 }
