@@ -23,10 +23,9 @@
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
 | [豌豆课堂](https://peaclass.com) | `https://peaclass.com` |
 
-## 功能
+## v0.1 功能概览
 
 - [x] 视频点播板块
-- [ ] 视频直播板块
 - [x] 手机号注册
 - [x] 视频收费
 - [x] 视频评论互动
@@ -47,12 +46,13 @@
 - [x] FAQ
 - [x] API接口
 - [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
-- [ ] 基于 seele 的版权保护
-- [ ] seele 区块链支付
 - [x] 广告系统
 - [x] 友情链接
-- [ ] 邀请推广
-- [ ] 积分系统
+
+## 下一步开发计划[构建中，年底前完成]
+
++ 多模板切换系统
++ 插件系统
 
 ## FAQ
 
