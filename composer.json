@@ -37,8 +37,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "App\\": "app/",
-            "MeEdu\\Addons\\": "addons/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
