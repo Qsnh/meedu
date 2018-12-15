@@ -191,8 +191,6 @@
     @include('components.frontend.emoji')
     @include('components.frontend.comment_js')
     <script>
-        $(function () {
-            $('#play-list-box').scrollTop = {{$position*56}};
-        });
+        document.getElementById('play-list-box').scrollTop = {{$position*56}};
     </script>
 @endsection
