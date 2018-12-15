@@ -172,13 +172,13 @@ class BackendMenuSeeder extends Seeder
                 'order' => $index,
                 'parent_id' => 0,
             ];
-            $node = \App\Models\AdministratorMenu::whereName($data['name'])->first();
+            $node = \App\Models\AdministratorMenu::where('name', $data['name'])->where('url', $data['url'])->first();
             if (! $node) {
                 $node = \App\Models\AdministratorMenu::create($data);
             }
 
             foreach ($menu['children'] as $i => $item) {
-                if (\App\Models\AdministratorMenu::whereName($item['name'])->exists()) {
+                if (\App\Models\AdministratorMenu::where('name', $item['name'])->where('url', $item['url'])->exists()) {
                     continue;
                 }
                 $data = $item;
