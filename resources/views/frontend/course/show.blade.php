@@ -67,13 +67,13 @@
                                                 </a>
                                             </h3>
                                             <p class="extra">
-                                                <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
-                                                <span>播放次数：{{ $video->view_num }}</span>
                                                 @if($video->charge > 0)
                                                     <span class="badge badge-danger">收费</span>
                                                 @else
                                                     <span class="badge badge-success">免费</span>
                                                 @endif
+                                                <span>更新于：{{ $video->created_at->diffForHumans() }}</span>
+                                                <span>播放次数：{{ $video->view_num }}</span>
                                             </p>
                                         </td>
                                     </tr>
@@ -98,12 +98,13 @@
                                                 </a>
                                             </h3>
                                            <p class="extra">
+                                               @if($video->charge > 0)
+                                                   <span class="badge badge-danger">收费</span>
+                                               @else
+                                                   <span class="badge badge-success">免费</span>
+                                               @endif
                                                <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
-                                                @if($video->charge > 0)
-                                                <span class="badge badge-danger">收费</span>
-                                                    @else
-                                                 <span class="badge badge-success">免费</span>
-                                                @endif
+                                               <span>播放次数：{{ $video->view_num }}</span>
                                            </p>
                                        </td>
                                    </tr>
