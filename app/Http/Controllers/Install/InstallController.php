@@ -11,8 +11,10 @@
 
 namespace App\Http\Controllers\Install;
 
+use phpseclib\Crypt\RSA;
 use Illuminate\Http\Request;
 use App\Models\Administrator;
+use Laravel\Passport\Passport;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -107,8 +109,7 @@ class InstallController extends Controller
                 $log[] = $output->fetch();
 
                 // Password keys
-                Artisan::call('passport:keys', [], $output);
-                $log[] = $output->fetch();
+                $this->passportKeys();
 
                 // 初始化管理员
                 $super = AdministratorRole::where('slug', config('meedu.administrator.super_slug'))->first();
@@ -126,8 +127,7 @@ class InstallController extends Controller
                 app()->make('files')->link(storage_path('app/public'), public_path('storage'));
 
                 // KEY
-                Artisan::call('key:generate', [], $output);
-                $log[] = $output->fetch();
+                app()->make('command.key.generate')->handle();
 
                 // 安装锁
                 app()->make('files')->put(storage_path('install.lock'), time());
@@ -146,10 +146,24 @@ class InstallController extends Controller
                     'line' => $exception->getLine(),
                     'trace' => $exception->getTrace(),
                 ]));
+
                 return redirect()->back()->withErrors($exception->getMessage());
             }
         }
 
         return view('install.step3');
+    }
+
+    protected function passportKeys()
+    {
+        $keys = app()->make(RSA::class)->createKey(4096);
+
+        list($publicKey, $privateKey) = [
+            Passport::keyPath('oauth-public.key'),
+            Passport::keyPath('oauth-private.key'),
+        ];
+
+        file_put_contents($publicKey, array_get($keys, 'publickey'));
+        file_put_contents($privateKey, array_get($keys, 'privatekey'));
     }
 }
