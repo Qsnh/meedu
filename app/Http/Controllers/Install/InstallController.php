@@ -141,7 +141,10 @@ class InstallController extends Controller
                 return redirect('/');
             } catch (\Exception $exception) {
                 DB::rollBack();
-
+                Log::error(json_encode([
+                    'line' => $exception->getLine(),
+                    'trace' => $exception->getTrace(),
+                ]));
                 return redirect()->back()->withErrors($exception->getMessage());
             }
         }
