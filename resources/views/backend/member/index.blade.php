@@ -5,6 +5,9 @@
     @include('components.breadcrumb', ['name' => '会员列表'])
 
     <div class="row row-cards">
+        <div class="col-sm-12 mb-3">
+            <a href="{{route('backend.member.create')}}" class="btn btn-primary ml-auto">添加会员</a>
+        </div>
         <div class="col-sm-12">
             <form action="" method="get">
                 <div class="form-group">

@@ -68,7 +68,9 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
         // 会员
         Route::get('/member', 'MemberController@index')->name('backend.member.index');
-        Route::get('/member/{id}', 'MemberController@show')->name('backend.member.show');
+        Route::get('/member/{id}/show', 'MemberController@show')->name('backend.member.show');
+        Route::get('/member/create', 'MemberController@create')->name('backend.member.create');
+        Route::post('/member/create', 'MemberController@store');
 
         // 公告
         Route::get('/announcement', 'AnnouncementController@index')->name('backend.announcement.index');
@@ -117,7 +119,6 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/administrator_menu/{id}/edit', 'AdministratorMenuController@update');
         Route::get('/administrator_menu/{id}/delete', 'AdministratorMenuController@destroy')->name('backend.administrator_menu.destroy');
         Route::post('/administrator_menu/change/save', 'AdministratorMenuController@saveChange')->name('backend.administrator_menu.save_change');
-
 
         // 图书
         Route::get('/book', 'BookController@index')->name('backend.book.index');

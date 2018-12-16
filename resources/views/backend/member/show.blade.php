@@ -53,7 +53,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td class="text-center color-gray" colspan="3">暂无数据</td>
+                                <td class="text-center color-gray" colspan="4">暂无数据</td>
                             </tr>
                         @endforelse
                         </tbody>

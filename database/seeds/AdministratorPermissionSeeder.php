@@ -335,7 +335,21 @@ class AdministratorPermissionSeeder extends Seeder
                 'display_name' => '会员详情',
                 'slug' => 'backend.member.show',
                 'method' => 'GET',
-                'url' => '/backend/member/\d+',
+                'url' => '/backend/member/\d+/show',
+                'description' => '',
+            ],
+            [
+                'display_name' => '添加会员页面',
+                'slug' => 'backend.member.create',
+                'method' => 'GET',
+                'url' => '/backend/member/create',
+                'description' => '',
+            ],
+            [
+                'display_name' => '添加会员',
+                'slug' => 'backend.member.create',
+                'method' => 'POST',
+                'url' => '/backend/member/create',
                 'description' => '',
             ],
 
