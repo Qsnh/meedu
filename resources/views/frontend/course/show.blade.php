@@ -152,27 +152,29 @@
             </div>
 
             <div class="col-sm-3 course-show-page-right">
-                <div class="col-sm-12 border option">
-                    <a href="{{ $course->seeUrl() }}" class="join-course-btn">立即学习</a>
+
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{{ $course->seeUrl() }}" class="btn btn-outline-primary btn-block">立即学习</a>
+                    </div>
                 </div>
 
-                <div class="col-sm-12 border news-student">
-                    <h6 class="lh-30">新加入同学</h6>
-                    <ul>
-                        @forelse($course->getNewJoinMembersCache() as $member)
-                            <li>
-                                <img src="{{ $member->avatar }}" width="24" height="24">
-                                <b>{{ $member->nick_name }}</b>
-                                <span class="color-gray font-size-12">{{$member->pivot->created_at}}</span>
-                            </li>
+                <div class="card mt-3">
+                    <div class="card-header">新加入同学</div>
+                    <div class="card-body">
+                        <ul>
+                            @forelse($course->getNewJoinMembersCache() as $member)
+                                <li class="student-avatar">
+                                    <img class="rounded" src="{{ $member->avatar }}" width="36" height="36">
+                                </li>
                             @empty
-                            <li>
-                                <p class="text-center lh-30 color-gray">暂无数据</p>
-                            </li>
-                        @endforelse
-                    </ul>
+                                <li>
+                                    <p class="text-center lh-30 color-gray">暂无数据</p>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
                 </div>
-
             </div>
 
         </div>
