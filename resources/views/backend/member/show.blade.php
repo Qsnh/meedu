@@ -40,6 +40,7 @@
                             <td>时间</td>
                             <td>金额</td>
                             <td>状态</td>
+                            <td>时间</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,35 +48,8 @@
                             <tr>
                                 <td>￥{{ $order->charge }}</td>
                                 <td>{{ $order->getOrderListTitle() }}</td>
+                                <td>{{$order->statusText()}}</td>
                                 <td>{{ $order->created_at }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="text-center color-gray" colspan="3">暂无数据</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">充值记录</div>
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <td>时间</td>
-                            <td>金额</td>
-                            <td>状态</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($member->rechargePayments as $record)
-                            <tr>
-                                <td>{{$record->created_at}}</td>
-                                <td><span class="label label-default">￥{{$record->money}}</span></td>
-                                <td><span class="label label-success">成功</span></td>
                             </tr>
                         @empty
                             <tr>
