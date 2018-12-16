@@ -3,7 +3,7 @@
 return [
     'default' => [
         'gateways' => [
-            'aliyun',
+            'yunpian',
         ],
     ],
     'gateways' => [
@@ -19,6 +19,10 @@ return [
         'yunpian' => [
             'api_key' => env('SMS_YUNPIAN_API_KEY', ''),
             'signature' => '【默认签名】',
+            'template' => [
+                'password_reset' => '',
+                'register' => '',
+            ],
         ],
     ],
 ];

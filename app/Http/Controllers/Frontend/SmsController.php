@@ -62,7 +62,7 @@ class SmsController extends FrontendController
         $config = config('sms');
         $easySms = new EasySms($config);
         $data = [
-            'content' => "您的验证码为：{$code}",
+            'content' => str_replace('#code#', $code, $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId]),
             'template' => $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId],
             'data' => ['code' => $code],
         ];

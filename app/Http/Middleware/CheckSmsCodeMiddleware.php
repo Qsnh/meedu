@@ -25,11 +25,6 @@ class CheckSmsCodeMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (! captcha_check($request->post('captcha', ''))) {
-            flash('图形验证码错误');
-
-            return back();
-        }
         $sessionKey = 'sms_'.$request->post('sms_captcha_key', '');
         $captcha = session($sessionKey);
         if (! $captcha || $captcha != $request->post('sms_captcha', '')) {

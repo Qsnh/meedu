@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-4 login-box">
                 <h3 class="text-center login-box-title">重置密码</h3>
-                <form class="form-horizontal" method="POST">
+                <form action="" class="form-horizontal" method="POST">
                     @csrf
                     @include('components.frontend.mobile_captcha', ['smsCaptchaKey' => 'password_reset'])
                     <div class="form-group">
