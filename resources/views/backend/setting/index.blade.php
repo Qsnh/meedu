@@ -61,6 +61,53 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-header">选择短信服务商</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>短信服务商</label>
+                            <select name="meedu*system*sms" class="form-control">
+                                <option value="aliyun" {{config('meedu.system.sms') == 'aliyun' ? 'selected' : ''}}>阿里云</option>
+                                <option value="yunpian" {{config('meedu.system.sms') == 'yunpian' ? 'selected' : ''}}>云片</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">阿里云短信配置</div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <a href="https://www.aliyun.com/product/sms?spm=5176.8142029.search.1.e9396d3e9M6zyh">阿里云短信服务</a>
+                        </div>
+                        <div class="form-group">
+                            <label>阿里云AccessKeyId</label>
+                            <input type="text" name="sms*gateways*aliyun*access_key_id" class="form-control"
+                                   value="{{config('sms.gateways.aliyun.access_key_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>阿里云AccessKeySecret</label>
+                            <input type="text" name="sms*gateways*aliyun*access_key_secret" class="form-control"
+                                   value="{{config('sms.gateways.aliyun.access_key_secret')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>阿里云短信签名</label>
+                            <input type="text" name="sms*gateways*aliyun*sign_name" class="form-control"
+                                   value="{{config('sms.gateways.aliyun.sign_name')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>密码重置短信模板ID</label>
+                            <input type="text" name="sms*gateways*aliyun*template*password_reset" class="form-control"
+                                   value="{{config('sms.gateways.aliyun.template.password_reset')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>注册短信模板ID</label>
+                            <input type="text" name="sms*gateways*aliyun*template*register" class="form-control"
+                                   value="{{config('sms.gateways.aliyun.template.register')}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-header">云片短信配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">

@@ -98,6 +98,7 @@ return [
         'test' => explode(',', env('TEST_MOBILE', '')),
         'js' => '',
         'theme' => 'default',
+        'sms' => 'yunpian',
     ],
 
     // 视频鉴权

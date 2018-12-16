@@ -40,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 config([$key => $item]);
             }
         }
+        // 短信服务注册
+        config(['sms.default.gateways' => [config('meedu.system.sms')]]);
         // 注册视图默认命名空间
         $this->loadViewsFrom(resource_path('views'), 'default');
     }
