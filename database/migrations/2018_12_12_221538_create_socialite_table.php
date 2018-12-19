@@ -17,7 +17,7 @@ class CreateSocialiteTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('app');
-            $table->string('app_user_id');
+            $table->string('app_user_id', 128);
             $table->string('data', 2222);
             $table->timestamps();
 
