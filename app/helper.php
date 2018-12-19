@@ -91,7 +91,7 @@ if (! function_exists('at_user')) {
      */
     function at_user($content, $fromUser, $from, $fromType)
     {
-        preg_match_all('/\s{1}@(.*?)\s{1}/', $content, $result);
+        preg_match_all('/@(.*?)\s{1}/', $content, $result);
         if (! ($result = optional($result)[1])) {
             return;
         }
