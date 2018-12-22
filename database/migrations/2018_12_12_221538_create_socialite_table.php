@@ -20,8 +20,6 @@ class CreateSocialiteTable extends Migration
             $table->string('app_user_id', 128);
             $table->string('data', 2222);
             $table->timestamps();
-
-            $table->index(['app', 'app_user_id']);
         });
     }
 
