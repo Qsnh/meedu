@@ -72,8 +72,8 @@
                                                 @else
                                                     <span class="badge badge-success">免费</span>
                                                 @endif
-                                                <span>更新于：{{ $video->created_at->diffForHumans() }}</span>
-                                                <span>播放次数：{{ $video->view_num }}</span>
+                                                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{duration_humans($video)}}</span>
+                                                    <span><i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ view_num_humans($video) }}</span>
                                             </p>
                                         </td>
                                     </tr>
@@ -103,8 +103,8 @@
                                                @else
                                                    <span class="badge badge-success">免费</span>
                                                @endif
-                                               <span>更新于：{{ $video->updated_at->diffForHumans() }}</span>
-                                               <span>播放次数：{{ $video->view_num }}</span>
+                                                   <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{duration_humans($video)}}</span>
+                                                   <span><i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ view_num_humans($video) }}</span>
                                            </p>
                                        </td>
                                    </tr>

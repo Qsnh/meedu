@@ -41,6 +41,15 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
+                    <label>视频时长 @include('components.backend.required')</label>
+                    <div class="input-group">
+                        <input type="text" name="duration" class="form-control" placeholder="视频时长" value="0" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">秒</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label>一句话介绍 @include('components.backend.required')</label>
                     <textarea name="short_description" class="form-control" rows="2" placeholder="一句话介绍" required></textarea>
                 </div>

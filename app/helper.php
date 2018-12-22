@@ -391,3 +391,48 @@ if (! function_exists('v')) {
         return view($viewName, $params);
     }
 }
+
+if (! function_exists('duration_humans')) {
+    /**
+     * @param $duration
+     *
+     * @return string
+     */
+    function duration_humans($duration)
+    {
+        if ($duration instanceof \App\Models\Video) {
+            $duration = $duration->duration;
+        }
+        $minute = intdiv($duration, 60);
+        $second = $duration % 60;
+        if ($minute > 60) {
+            $hours = intdiv($minute, 60);
+            $minute = $minute % 60;
+
+            return sprintf('%02d:%02d:%02d', $hours, $minute, $second);
+        }
+
+        return $minute ? sprintf('%02d:%02d', $minute, $second) : sprintf('00:%02d', $second);
+    }
+}
+
+if (! function_exists('view_num_humans')) {
+    /**
+     * @param $num
+     *
+     * @return string
+     */
+    function view_num_humans($num)
+    {
+        if ($num instanceof \App\Models\Video) {
+            $num = $num->view_num;
+        }
+        if ($num < 1000) {
+            return '低于1k次';
+        } elseif ($num < 10000) {
+            return intdiv($num, 1000).'k次';
+        } else {
+            return intdiv($num, 10000).'w次';
+        }
+    }
+}

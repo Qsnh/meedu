@@ -33,6 +33,7 @@ class VideoRecourse extends JsonResource
             'short_description' => markdown_to_html($this->short_description),
             'description' => markdown_to_html($this->description),
             'published_at' => strtotime($this->published_at),
+            'duration' => $this->duration,
         ];
     }
 }
