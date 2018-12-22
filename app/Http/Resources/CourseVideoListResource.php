@@ -32,6 +32,7 @@ class CourseVideoListResource extends JsonResource
             'charge' => (int) $this->charge,
             'short_description' => markdown_to_html($this->short_description),
             'published_at' => strtotime($this->published_at),
+            'duration' => $this->duration,
         ];
     }
 }
