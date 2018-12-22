@@ -254,9 +254,6 @@ if (! function_exists('aliyun_sdk_client')) {
      */
     function aliyun_sdk_client()
     {
-        if ($client = app()->make('aliyun_sdk_client')) {
-            return $client;
-        }
         require_once app_path('Meedu/Aliyun/aliyun-php-sdk-core/Config.php');
         $profile = \DefaultProfile::getProfile(
             config('meedu.upload.video.aliyun.region', ''),
@@ -264,8 +261,6 @@ if (! function_exists('aliyun_sdk_client')) {
             config('meedu.upload.video.aliyun.access_key_secret', '')
         );
         $client = new \DefaultAcsClient($profile);
-
-        app()->instance('aliyun_sdk_client', $client);
 
         return $client;
     }
