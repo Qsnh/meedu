@@ -15,13 +15,14 @@
 > 小程序在这里：[https://github.com/YTU94/meedu-wxapp](https://github.com/YTU94/meedu-wxapp)
 
 [MeEdu安装视频教程](https://www.bilibili.com/video/av36024146/)
+[社区小伙伴 @方块 提供的 MeEdu 超详细视频教程，收费的](http://www.5201102.com/course/1/Meedu-zai-xian-jiao-yu-xi-tong)
 
 ## 使用站点
 
 | 站点名 | 地址 |
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
-| [豌豆课堂](https://peaclass.com) | `https://peaclass.com` |
+| [MKFK](http://www.5201102.com) | `http://www.5201102.com` |
 
 ## v0.1 功能概览
 
