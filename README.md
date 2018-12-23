@@ -14,7 +14,7 @@
 
 > 小程序在这里：[https://github.com/YTU94/meedu-wxapp](https://github.com/YTU94/meedu-wxapp)
 
-[MeEdu安装视频教程](https://www.bilibili.com/video/av36024146/)
+[MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
 [社区小伙伴 @方块 提供的 MeEdu 超详细视频教程，收费的](http://www.5201102.com/course/1/Meedu-zai-xian-jiao-yu-xi-tong)
 
 ## 使用站点
