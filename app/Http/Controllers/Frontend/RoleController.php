@@ -20,7 +20,7 @@ class RoleController extends FrontendController
 {
     public function index()
     {
-        $roles = Role::orderByDesc('weight')->get();
+        $roles = Role::show()->orderByDesc('weight')->get();
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.role_list');
 
         return v('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
@@ -28,7 +28,7 @@ class RoleController extends FrontendController
 
     public function showBuyPage($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::show()->findOrFail($id);
         $title = sprintf('购买VIP《%s》', $role->name);
 
         return v('frontend.role.buy', compact('role', 'title'));
@@ -36,7 +36,7 @@ class RoleController extends FrontendController
 
     public function buyHandler(RoleRepository $repository, $id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::show()->findOrFail($id);
         $user = Auth::user();
 
         $order = $repository->createOrder($user, $role);

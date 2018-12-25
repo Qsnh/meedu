@@ -28,6 +28,11 @@
                     <input type="text" name="weight" value="{{old('weight')}}" class="form-control" placeholder="权重（权重越大，权限越大）" required>
                 </div>
                 <div class="form-group">
+                    <label class="form-label">是否显示 @include('components.backend.required')</label><br>
+                    <label><input type="radio" name="is_show" value="1" checked> 显示</label>
+                    <label><input type="radio" name="is_show" value="0"> 不显示</label>
+                </div>
+                <div class="form-group">
                     <label class="form-label">权限内容(一行一条) @include('components.backend.required')</label>
                     <textarea name="description" class="form-control" rows="5" placeholder="权限内容(一行一条)" required></textarea>
                 </div>

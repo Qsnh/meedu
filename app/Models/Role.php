@@ -16,31 +16,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    const IS_SHOW_YES = 1;
+    const IS_SHOW_NO = 0;
+
     protected $table = 'roles';
 
     protected $fillable = [
         'name', 'charge', 'expire_days', 'weight', 'description',
+        'is_show',
     ];
-
-    protected $appends = [
-        'edit_url', 'destroy_url',
-    ];
-
-    /**
-     * @return string
-     */
-    public function getEditUrlAttribute()
-    {
-        return route('backend.role.edit', $this);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.role.destroy', $this);
-    }
 
     /**
      * 当前会员下的用户.
@@ -58,5 +42,25 @@ class Role extends Model
     public function descriptionRows()
     {
         return explode("\n", $this->getAttribute('description'));
+    }
+
+    /**
+     * 作用域：显示.
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeShow($query)
+    {
+        return $query->where('is_show', self::IS_SHOW_YES);
+    }
+
+    /**
+     * @return string
+     */
+    public function statusText()
+    {
+        return $this->is_show == self::IS_SHOW_YES ? '显示' : '不显示';
     }
 }

@@ -42,10 +42,10 @@ class IndexRepository
     {
         if (config('meedu.system.cache.status', -1) == 1) {
             return Cache::remember('index_roles', config('meedu.system.cache.expire', 60), function () {
-                return Role::orderByDesc('weight')->limit(3)->get();
+                return Role::show()->orderByDesc('weight')->get();
             });
         }
 
-        return Role::orderByDesc('weight')->limit(3)->get();
+        return Role::show()->orderByDesc('weight')->limit(3)->get();
     }
 }

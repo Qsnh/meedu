@@ -17,6 +17,7 @@
                     <th>角色名</th>
                     <th>价格</th>
                     <th>时长</th>
+                    <th>显示</th>
                     <th>编辑时间</th>
                     <th>操作</th>
                 </tr>
@@ -29,6 +30,7 @@
                     <td>{{$role->name}}</td>
                     <td>{{$role->charge}}</td>
                     <td>{{$role->expire_days}}</td>
+                    <td>{{$role->statusText()}}</td>
                     <td>{{$role->updated_at}}</td>
                     <td>
                         <a href="{{route('backend.role.edit', $role)}}" class="btn btn-warning btn-sm">编辑</a>
@@ -37,7 +39,7 @@
                 </tr>
                     @empty
                     <tr>
-                        <td class="text-center" colspan="7">暂无记录</td>
+                        <td class="text-center" colspan="8">暂无记录</td>
                     </tr>
                 @endforelse
                 </tbody>
