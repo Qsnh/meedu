@@ -170,6 +170,11 @@ Route::group(['middleware' => ['backend.login.check']], function () {
     Route::put('/nav/{id}/edit', 'NavController@update');
     Route::get('/nav/{id}/delete', 'NavController@destroy')->name('backend.nav.destroy');
 
+    // 模板
+    Route::get('/template/index', 'TemplateController@index')->name('backend.template.index');
+    Route::get('/template/{template_name}/{version}/install/local', 'TemplateController@installLocal')->name('backend.template.install.local');
+    Route::get('/template/{id}/set/default', 'TemplateController@setDefaultHandler')->name('backend.template.set.default');
+
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
         Route::get('/course/{course_id}/chapters', 'CourseController@chapters')->name('backend.ajax.course.chapters');
