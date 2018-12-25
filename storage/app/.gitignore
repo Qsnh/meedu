@@ -1,3 +1,5 @@
 *
 !public/
+!addons/
+!templates/
 !.gitignore
