@@ -15,6 +15,9 @@ class CreateAddonsVersionTable extends Migration
     {
         Schema::create('addons_version', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('addons_id');
+            $table->string('version');
+            $table->string('path');
             $table->timestamps();
         });
     }

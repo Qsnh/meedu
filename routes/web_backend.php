@@ -175,6 +175,12 @@ Route::group(['middleware' => ['backend.login.check']], function () {
     Route::get('/template/{template_name}/{version}/install/local', 'TemplateController@installLocal')->name('backend.template.install.local');
     Route::get('/template/{id}/set/default', 'TemplateController@setDefaultHandler')->name('backend.template.set.default');
 
+    // 插件
+    Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
+    Route::get('/addons/{addon_name}/{version}/install/local', 'AddonsController@installLocal')->name('backend.addons.install.local');
+    Route::get('/addons/{id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
+    Route::get('/addons/{id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
+
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
         Route::get('/course/{course_id}/chapters', 'CourseController@chapters')->name('backend.ajax.course.chapters');
