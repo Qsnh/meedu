@@ -771,6 +771,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/nav/\d+/delete',
                 'description' => '',
             ],
+
+            // 模板操作
+            [
+                'display_name' => '模板列表',
+                'slug' => 'backend.template.index',
+                'method' => 'GET',
+                'url' => '/template/index',
+                'description' => '',
+            ],
+            [
+                'display_name' => '本地安装模板',
+                'slug' => 'bbackend.template.install.local',
+                'method' => 'GET',
+                'url' => '/template/\w+/\w+/install/local',
+                'description' => '',
+            ],
+            [
+                'display_name' => '设置站点模板',
+                'slug' => 'backend.template.set.default',
+                'method' => 'GET',
+                'url' => '/template/\d+/set/default',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {

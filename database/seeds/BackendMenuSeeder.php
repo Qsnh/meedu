@@ -165,6 +165,17 @@ class BackendMenuSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => '应用',
+                'url' => '',
+                'permission_id' => 0,
+                'children' => [
+                    [
+                        'name' => '多模板',
+                        'url' => '/template/index',
+                    ],
+                ],
+            ],
         ];
 
 
