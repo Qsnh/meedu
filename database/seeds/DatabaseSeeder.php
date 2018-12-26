@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if (app()->environment('local')) {
-            $this->call(BookSeeder::class);
+            $this->call(DefaultTemplateSeeder::class);
         }
     }
 }

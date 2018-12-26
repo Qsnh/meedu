@@ -20,8 +20,9 @@ class TemplateController extends Controller
     public function index()
     {
         $templates = Template::all();
+        $currentTemplate = config('meedu.system.theme.use');
 
-        return view('backend.template.index');
+        return view('backend.template.index', compact('templates', 'currentTemplate'));
     }
 
     public function remoteTemplates()
@@ -116,7 +117,8 @@ class TemplateController extends Controller
         }
 
         $configFileJson = json_decode(file_get_contents(config('meedu.save')), true);
-        $configFileJson['system.system.theme'] = $template->name;
+        $configFileJson['meedu.system.theme.use'] = $template->name;
+        $configFileJson['meedu.system.theme.path'] = $template->path;
         file_put_contents(config('meedu.save'), json_encode($configFileJson));
 
         flash('模板更换成功', 'success');

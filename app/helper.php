@@ -386,7 +386,7 @@ if (! function_exists('v')) {
      */
     function v($viewName, $params = [])
     {
-        $namespace = config('meedu.system.theme', 'default');
+        $namespace = config('meedu.system.theme.use', 'default');
         $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace.'::'.$viewName;
 
         return view($viewName, $params);

@@ -97,7 +97,10 @@ return [
         ],
         'test' => explode(',', env('TEST_MOBILE', '')),
         'js' => '',
-        'theme' => 'default',
+        'theme' => [
+            'use' => 'default',
+            'path' => resource_path('views'),
+        ],
         'sms' => 'yunpian',
     ],
 
