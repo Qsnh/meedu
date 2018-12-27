@@ -161,7 +161,7 @@ class BackendMenuSeeder extends Seeder
                     ],
                     [
                         'name' => '首页导航',
-                        'url' => '/backend/nav',
+                        'url' => '/backend/backend/nav',
                     ],
                 ],
             ],
@@ -172,7 +172,7 @@ class BackendMenuSeeder extends Seeder
                 'children' => [
                     [
                         'name' => '多模板',
-                        'url' => '/template/index',
+                        'url' => '/backend/template/index',
                     ],
                 ],
             ],
