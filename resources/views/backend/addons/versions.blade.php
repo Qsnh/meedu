@@ -34,7 +34,12 @@
                         </td>
                         <td><code>{{$version->path}}</code></td>
                         <td>
-                            暂无
+                            @if($version->id != $addons->current_version_id)
+                            <a href="{{route('backend.addons.version.switch', [$version->addons_id, $version->id])}}"
+                               onclick="return confirm('确定操作？')" class="btn btn-primary btn-sm">切换到这个版本</a>
+                                @else
+                                无
+                            @endif
                         </td>
                     </tr>
                         @endforeach
