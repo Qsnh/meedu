@@ -178,8 +178,10 @@ Route::group(['middleware' => ['backend.login.check']], function () {
     // 插件
     Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
     Route::get('/addons/{addon_name}/{version}/install/local', 'AddonsController@installLocal')->name('backend.addons.install.local');
-    Route::get('/addons/{id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
-    Route::get('/addons/{id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
+    Route::get('/addons/{addons_id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
+    Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
+    Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
+    Route::get('/addons/{addons_id}/dependencies/install', 'AddonsController@submitDependenciesInstallTask')->name('backend.addons.dependencies.install');
 
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {

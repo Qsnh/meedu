@@ -101,19 +101,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/layx/layx.min.js') }}"></script>
     <script src="{{ mix('js/backend.js') }}"></script>
+    <script crossorigin="anonymous" integrity="sha384-RIQuldGV8mnjGdob13cay/K1AJa+LR7VKHqSXrrB5DPGryn4pMUXRLh92Ev8KlGF" src="https://lib.baomitu.com/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-OpRdsqyoNpMsxINrUErWMPDGYcDdgDXG+MefUFBy42yukJGecar+6uS4HBGGWb+e" src="https://lib.baomitu.com/flatpickr/4.5.2/flatpickr.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-uOV94oddoQmmdQhRtBPzXMX7CBxGVw888Cp9gjgRspAq/go5oea3c+cS8OlY+N6C" src="https://lib.baomitu.com/wangEditor/3.1.1/wangEditor.min.js"></script>
     <script>
         @if(get_first_flash('success'))
-        layx.msg("{{get_first_flash('success')}}",{dialogIcon:'success'});
+            swal("成功", "{{get_first_flash('success')}}", "success");
         @endif
         @if(get_first_flash('warning'))
-        layx.msg("{{get_first_flash('warning')}}",{dialogIcon:'warn'});
+        swal("警告", "{{get_first_flash('warning')}}", "warning");
         @endif
         @if(get_first_flash('error'))
-        layx.msg("{{get_first_flash('error')}}",{dialogIcon:'error'});
+        swal("错误", "{{get_first_flash('error')}}", "error");
         @endif
     </script>
     @yield('js')

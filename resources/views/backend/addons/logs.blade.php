@@ -9,7 +9,7 @@
             <a href="{{route('backend.addons.index')}}" class="btn btn-primary ml-auto btn-sm">返回插件列表</a>
         </div>
         <div class="col-sm-12">
-            <h3>{{$addons->name}}的安装日志</h3>
+            <h3>{{$addons->name}}的日志</h3>
             @foreach($logs as $log)
 
                 <div class="card">

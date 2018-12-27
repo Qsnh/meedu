@@ -108,6 +108,10 @@ class AddonsController extends Controller
         }
     }
 
+    /**
+     * @param $addonsId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showLogs($addonsId)
     {
         $addons = Addons::findOrFail($addonsId);
@@ -116,6 +120,10 @@ class AddonsController extends Controller
         return view('backend.addons.logs', compact('addons', 'logs'));
     }
 
+    /**
+     * @param $addonsId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showVersions($addonsId)
     {
         $addons = Addons::findOrFail($addonsId);
@@ -123,4 +131,58 @@ class AddonsController extends Controller
 
         return view('backend.addons.versions', compact('addons', 'versions'));
     }
+
+    /**
+     * @param $addonsId
+     * @param $versionId
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function versionSwitch($addonsId, $versionId)
+    {
+        $addons = Addons::findOrFail($addonsId);
+        if ($addons->current_version_id == $versionId) {
+            flash('参数错误');
+            return back();
+        }
+        $version = $addons->versions()->whereId($versionId)->firstOrFail();
+
+        DB::beginTransaction();
+        try {
+            throw_if(! file_exists($version->path), new \Exception('切换的版本文件丢失'));
+
+            // 修改版本信息
+            $addons->prev_version_id = $addons->current_version_id;
+            $addons->current_version_id = $version->id;
+            $addons->save();
+
+            // 更换软连接
+            if (app()->make('files')->exists($addons->path)) {
+                app()->make('files')->deleteDirectory($addons->path);
+            }
+            app()->make('files')->link($version->path, $addons->path);
+
+            DB::commit();
+            flash('回滚成功', 'success');
+            return back();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+            flash('回滚出现错误，错误信息：'.$exception->getMessage());
+            return back();
+        }
+    }
+
+    /**
+     * @param $addonsId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function submitDependenciesInstallTask($addonsId)
+    {
+        $addons = Addons::findOrFail($addonsId);
+        $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_INSTALL));
+        flash('已提交，请耐心等待，执行结果稍后可以查看日志', 'success');
+        return back();
+    }
+
 }

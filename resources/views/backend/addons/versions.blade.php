@@ -26,10 +26,10 @@
                         <td>
                             {{$version->version}}
                             @if($version->id == $addons->current_version_id)
-                                <span class="badge badge-warning">当前插件使用版本</span>
+                                <span class="badge badge-warning">使用版本</span>
                                 @endif
                             @if($version->id == $addons->prev_version_id)
-                                <span class="badge badge-secondary">当前插件上一个版本</span>
+                                <span class="badge badge-secondary">上一个版本</span>
                             @endif
                         </td>
                         <td><code>{{$version->path}}</code></td>

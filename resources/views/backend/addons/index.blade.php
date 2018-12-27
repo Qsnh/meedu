@@ -28,10 +28,14 @@
                             <p>时间：{{$item->created_at}}</p>
                         </td>
                         <td>
-                            <a href="{{route('backend.addons.logs', $item)}}" class="btn btn-secondary">安装日志</a>
+                            <a href="{{route('backend.addons.logs', $item)}}" class="btn btn-secondary">日志</a>
                             <a href="{{route('backend.addons.versions', $item)}}" class="btn btn-info">历史版本</a>
-                            <a href="" class="btn btn-warning">回滚最近一次的安装</a>
-                            <a href="" class="btn btn-primary">提交依赖安装任务</a>
+                            @if($item->prev_version_id)
+                            <a href="{{route('backend.addons.version.switch', [$item->id, $item->prev_version_id])}}"
+                               onclick="return confirm('确定执行回滚操作？')" class="btn btn-warning">回滚最近一次的安装</a>
+                            @endif
+                            <a href="{{route('backend.addons.dependencies.install', $item)}}"
+                               onclick="return confirm('确定执行此操作？')" class="btn btn-primary">提交依赖安装任务</a>
                         </td>
                     </tr>
                 @endforeach
