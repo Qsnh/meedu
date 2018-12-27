@@ -110,6 +110,7 @@ class AddonsController extends Controller
 
     /**
      * @param $addonsId
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showLogs($addonsId)
@@ -122,6 +123,7 @@ class AddonsController extends Controller
 
     /**
      * @param $addonsId
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showVersions($addonsId)
@@ -135,7 +137,9 @@ class AddonsController extends Controller
     /**
      * @param $addonsId
      * @param $versionId
+     *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Throwable
      */
     public function versionSwitch($addonsId, $versionId)
@@ -143,6 +147,7 @@ class AddonsController extends Controller
         $addons = Addons::findOrFail($addonsId);
         if ($addons->current_version_id == $versionId) {
             flash('参数错误');
+
             return back();
         }
         $version = $addons->versions()->whereId($versionId)->firstOrFail();
@@ -164,17 +169,20 @@ class AddonsController extends Controller
 
             DB::commit();
             flash('回滚成功', 'success');
+
             return back();
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('回滚出现错误，错误信息：'.$exception->getMessage());
+
             return back();
         }
     }
 
     /**
      * @param $addonsId
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function submitDependenciesInstallTask($addonsId)
@@ -182,7 +190,7 @@ class AddonsController extends Controller
         $addons = Addons::findOrFail($addonsId);
         $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_INSTALL));
         flash('已提交，请耐心等待，执行结果稍后可以查看日志', 'success');
+
         return back();
     }
-
 }
