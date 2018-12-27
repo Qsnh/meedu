@@ -17,6 +17,27 @@ $app = new Illuminate\Foundation\Application(
 
 /*
 |--------------------------------------------------------------------------
+| Load Addons ServiceProvider
+|--------------------------------------------------------------------------
+*/
+
+$addons = (new \Illuminate\Filesystem\Filesystem)->directories(__DIR__.'/../addons');
+if ($addons) {
+    array_map(function ($addons) use ($app) {
+        $name = pathinfo($addons, PATHINFO_BASENAME);
+        $serviceProviderFiles = glob($addons.DIRECTORY_SEPARATOR.'*ServiceProvider.php');
+        if ($serviceProviderFiles) {
+            foreach ($serviceProviderFiles as $serviceProviderFile) {
+                $providerName = pathinfo($serviceProviderFile, PATHINFO_FILENAME);
+                $namespace = "\\Addons\\{$name}\\{$providerName}";
+                $app->register($namespace);
+            }
+        }
+    }, $addons);
+}
+
+/*
+|--------------------------------------------------------------------------
 | Bind Important Interfaces
 |--------------------------------------------------------------------------
 |
