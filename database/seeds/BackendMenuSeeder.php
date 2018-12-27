@@ -161,7 +161,7 @@ class BackendMenuSeeder extends Seeder
                     ],
                     [
                         'name' => '首页导航',
-                        'url' => '/backend/backend/nav',
+                        'url' => '/backend/nav',
                     ],
                 ],
             ],
