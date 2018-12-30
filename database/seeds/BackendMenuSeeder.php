@@ -29,6 +29,7 @@ class BackendMenuSeeder extends Seeder
             '角色' => '管理员角色界面',
             '权限' => '管理员权限界面',
             '后台菜单' => '后台菜单界面',
+            '多模板' => '模板列表',
         ];
 
         $menus = [
@@ -173,6 +174,10 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '多模板',
                         'url' => '/backend/template/index',
+                    ],
+                    [
+                        'name' => '插件',
+                        'url' => '/backend/addons/index',
                     ],
                 ],
             ],
