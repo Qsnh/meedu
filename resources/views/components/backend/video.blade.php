@@ -8,6 +8,9 @@
         </div>
         <div class="tab-body">
             <div class="tab-body-box active" id="tab-aliyun">
+                <div class="alert alert-warning">
+                    请确保您配置了阿里云视频服务的参数，否则会上传失败。<a href="{{route('backend.setting.index')}}">点击这里进行配置</a>
+                </div>
                 <div class="custom-file">
                     <input type="file" id="video_files">
                 </div>
