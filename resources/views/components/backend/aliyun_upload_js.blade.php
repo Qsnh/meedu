@@ -7,12 +7,9 @@
         parallel: 5,
         retryCount: 3,
         retryDuration: 2,
-        // 开始上传
         'onUploadstarted': function (uploadInfo) {
             console.log("onUploadStarted:" + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
-            // uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress,videoId);
             if (uploadInfo.videoId) {
-                // 刷新
                 window.axios.post('{{route('video.upload.aliyun.refresh')}}', {
                     video_id: uploadInfo.videoId,
                     _token: '{{csrf_token()}}'
@@ -42,22 +39,18 @@
                 });
             }
         },
-        // 文件上传成功
         'onUploadSucceed': function (uploadInfo) {
             console.log("onUploadSucceed: " + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
             document.getElementById('aliyun_video_id').value = uploadInfo.videoId;
             document.getElementById('upload-progress').innerText = "上传成功";
         },
-        // 文件上传失败
         'onUploadFailed': function (uploadInfo, code, message) {
             console.log("onUploadFailed: file:" + uploadInfo.file.name + ",code:" + code + ", message:" + message);
         },
-        // 文件上传进度，单位：字节
         'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
             console.log("onUploadProgress:file:" + uploadInfo.file.name + ", fileSize:" + totalSize + ", percent:" + Math.ceil(loadedPercent * 100) + "%");
             document.getElementById('upload-progress').innerText = Math.ceil(loadedPercent * 100) + "%";
         },
-        // 上传凭证超时
         'onUploadTokenExpired': function (uploadInfo) {
             console.log("onUploadTokenExpired");
             window.axios.post('{{route('video.upload.aliyun.refresh')}}', {
@@ -70,7 +63,6 @@
             });
             // uploader.resumeUploadWithAuth(uploadAuth);
         },
-        //全部文件上传结束
         'onUploadEnd':function(uploadInfo){
             console.log("onUploadEnd: uploaded all the files");
         }
