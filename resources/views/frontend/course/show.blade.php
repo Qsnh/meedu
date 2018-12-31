@@ -119,33 +119,9 @@
                    </div>
                    <div class="comment" style="display: none">
 
-                       @include('components.frontend.comment_box', ['submitUrl' => route('course.comment', $course)])
+                       @include('components.frontend.comment_box', ['submitUrl' => route('ajax.course.comment', $course)])
 
-                       <div class="col-sm-12">
-                           <table class="comment-list-box">
-                               <tbody>
-                               @forelse($course->comments as $comment)
-                               <tr class="comment-list-item">
-                                   <td width="70" class="user-info">
-                                       <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
-                                       <span class="nickname">{{$comment->user->nick_name}}</span>
-                                       @if($comment->user->role)
-                                           <span class="badge badge-danger role-name">{{$comment->user->role->name}}</span>
-                                       @endif
-                                   </td>
-                                   <td class="comment-content">
-                                       <p>{!! $comment->getContent() !!}</p>
-                                       <p class="text-right color-gray">{{$comment->created_at->diffForHumans()}}</p>
-                                   </td>
-                               </tr>
-                               @empty
-                               <tr>
-                                   <td class="text-center color-gray" colspan="2">0评论</td>
-                               </tr>
-                               @endforelse
-                               </tbody>
-                           </table>
-                       </div>
+                       @include('components.frontend.comment_list', ['comments' => $comments, 'url' => route('ajax.course.comments', $course)])
 
                    </div>
                </div>
@@ -187,7 +163,6 @@
     <script crossorigin="anonymous" integrity="sha384-BlPof9RtjBqeJFskKv3sK3dh4Wk70iKlpIe92FeVN+6qxaGUOUu+mZNpALZ+K7ya" src="https://lib.baomitu.com/highlight.js/9.13.1/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     @include('components.frontend.emoji')
-    @include('components.frontend.comment_js')
     <script>
         $(function () {
             $('.course-video-tab-item').click(function () {

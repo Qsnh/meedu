@@ -59,10 +59,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = [
-        'show_url', 'credit1_text', 'credit2_text', 'credit3_text',
-    ];
-
     /**
      * 重载passport方法.
      *
@@ -125,26 +121,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')
             ->withPivot('created_at', 'charge');
-    }
-
-    public function getShowUrlAttribute()
-    {
-        return route('backend.member.show', $this);
-    }
-
-    public function getCredit1TextAttribute()
-    {
-        return config('meedu.credit.credit1.name');
-    }
-
-    public function getCredit2TextAttribute()
-    {
-        return config('meedu.credit.credit2.name');
-    }
-
-    public function getCredit3TextAttribute()
-    {
-        return config('meedu.credit.credit3.name');
     }
 
     /**

@@ -61,9 +61,6 @@ Route::group([
     Route::get('/books', 'MemberController@showBooksPage')->name('member.books');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
 
-    Route::post('/course/{id}/comment', 'CourseController@commentHandler')->name('course.comment');
-    Route::post('/video/{id}/comment', 'VideoController@commentHandler')->name('video.comment');
-
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
 
     // 充值记录
@@ -88,4 +85,11 @@ Route::group([
 
     // 收银台
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
+
+    Route::group(['prefix' => 'ajax'], function () {
+        Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
+        Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
+        Route::get('/course/{id}/comments', 'AjaxController@courseCommentsPaginate')->name('ajax.course.comments');
+        Route::get('/video/{id}/comments', 'AjaxController@videoCommentsPaginate')->name('ajax.video.comments');
+    });
 });

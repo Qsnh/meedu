@@ -125,60 +125,28 @@
                                 {{ $video->title }}
                             </div>
                             <div class="card-body">
-                                <div class="col-sm-12" style="margin-bottom: 20px;">
+                                <div class="col-sm-12 mt-4">
                                     <h3></h3>
                                     <p class="color-gray">{{ $video->short_description }}</p>
                                 </div>
 
-                                <div class="social-share" style="margin-bottom: 10px;"></div>
+                                <div class="social-share mb-4"></div>
 
                                 <hr>
 
-                                @include('components.frontend.comment_box', ['submitUrl' => route('video.comment', $video)])
+                                @include('components.frontend.comment_box', ['submitUrl' => route('ajax.video.comment', $video)])
 
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12" style="margin-top: 15px; margin-bottom: 15px;">
-                        <div class="card">
-                            <div class="card-header">
-                                评论内容
-                            </div>
-                            <div class="card-body">
-                                <table class="comment-list-box">
-                                    <tbody>
-                                    @forelse($video->comments as $comment)
-                                    <tr class="comment-list-item">
-                                        <td width="70" class="user-info">
-                                            <p><img class="avatar" src="{{$comment->user->avatar}}" width="50" height="50"></p>
-                                            <p class="nickname">{{$comment->user->nick_name}}</p>
-                                            @if($comment->user->role)
-                                            <p class="nickname">{{$comment->user->role->name}}</p>
-                                            @endif
-                                        </td>
-                                        <td class="comment-content">
-                                            <p>{!! $comment->getContent() !!}</p>
-                                            <p class="text-right color-gray">{{$comment->created_at->diffForHumans()}}</p>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                        <tr>
-                                            <td class="text-center color-gray" colspan="2">0评论</td>
-                                        </tr>
-                                    @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    @include('components.frontend.comment_list', ['comments' => $comments, 'url' => route('ajax.video.comments', $video)])
 
                 </div>
 
             </div>
 
             <div class="col-sm-3 video-play-right-box">
-
             </div>
         </div>
     </div>
@@ -189,7 +157,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
     <script crossorigin="anonymous" integrity="sha384-/e2pbP9gABPxsNYBS/MkAotgW5kbTdaJ4iXyVfbjGNEyvB4Q3p1vUQhLRJBmJqc8" src="https://lib.baomitu.com/video.js/7.4.0/video.min.js"></script>
     @include('components.frontend.emoji')
-    @include('components.frontend.comment_js')
     <script>
         document.getElementById('play-list-box').scrollTop = {{$position*56}};
     </script>

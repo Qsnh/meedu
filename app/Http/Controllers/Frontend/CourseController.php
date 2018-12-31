@@ -15,7 +15,6 @@ use App\Models\Order;
 use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\CourseRepository;
-use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class CourseController extends FrontendController
 {
@@ -40,22 +39,15 @@ class CourseController extends FrontendController
         $title = sprintf('课程《%s》', $course->title);
         $keywords = $course->keywords;
         $description = $course->description;
+        $comments = $course->comments()->orderByDesc('created_at')->limit(8)->get();
 
         return v('frontend.course.show', compact(
             'course',
             'title',
             'keywords',
-            'description'
+            'description',
+            'comments'
         ));
-    }
-
-    public function commentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
-    {
-        $course = Course::findOrFail($courseId);
-        $comment = $course->commentHandler($request->input('content'));
-        $comment ? flash('评论成功', 'success') : flash('评论失败');
-
-        return back();
     }
 
     public function showBuyPage($id)
