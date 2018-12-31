@@ -140,4 +140,14 @@ class ApplicationInstallCommand extends Command
 
         $this->info('数据初始化成功');
     }
+
+    // 默认模板
+    public function actionTemplate()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\DefaultTemplateSeeder::class);
+
+        $this->info('数据初始化成功');
+    }
 }

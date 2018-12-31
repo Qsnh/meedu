@@ -109,6 +109,10 @@ class InstallController extends Controller
                 Artisan::call('install', ['action' => 'backend_menu'], $output);
                 $log[] = $output->fetch();
 
+                // 默认模板
+                Artisan::call('install', ['action' => 'template'], $output);
+                $log[] = $output->fetch();
+
                 // Password keys
                 $this->passportKeys();
 
