@@ -12,6 +12,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use App\Meedu\Setting;
 use App\Models\CourseComment;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Schema;
@@ -33,17 +34,9 @@ class AppServiceProvider extends ServiceProvider
         CourseComment::observe(CourseCommentObserver::class);
         // OAuth路由
         Passport::routes();
-        // 加载配置
-        if (file_exists(config('meedu.save'))) {
-            $config = json_decode(file_get_contents(config('meedu.save')));
-            foreach ($config as $key => $item) {
-                config([$key => $item]);
-            }
-        }
-        // 短信服务注册
-        config(['sms.default.gateways' => [config('meedu.system.sms')]]);
-        // 注册视图
-        $this->loadViewsFrom(config('meedu.system.theme.path'), config('meedu.system.theme.use'));
+        // 自定义配置同步
+        $this->app->make(Setting::class)->sync();
+        $this->registerViewNamespace();
     }
 
     /**
@@ -51,5 +44,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+    }
+
+    /**
+     * 注册视图.
+     */
+    protected function registerViewNamespace()
+    {
+        $this->loadViewsFrom(config('meedu.system.theme.path'), config('meedu.system.theme.use'));
     }
 }
