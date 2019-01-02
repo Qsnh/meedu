@@ -1,5 +1,17 @@
-version: '2.0'
+version: '2.2'
 services:
+  php:
+    container_name: "meeduphp"
+    build:
+      context: ./docker
+    volumes:
+    - .:/var/www/html/:rw
+    restart: always
+    expose:
+    - "9000"
+    networks:
+    - meedu-net
+
   nginx:
     container_name: "meedunginx"
     image: nginx:1.15.7
@@ -14,17 +26,9 @@ services:
     restart: always
     networks:
       - meedu-net
-  php:
-    container_name: "meeduphp"
-    build:
-      context: .
-    volumes:
-      - .:/var/www/html/:rw
-    restart: always
-    expose: 
-      - "9000"
-    networks:
-      - meedu-net
+    links:
+      - "meeduphp"
+      
 networks:
   meedu-net:
     external: true
