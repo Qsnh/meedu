@@ -85,20 +85,4 @@ class CourseDetailTest extends TestCase
             ->dontSee($video->title);
     }
 
-    public function test_course_comment()
-    {
-        $content = '我是评论内容';
-        $courseShow = factory(Course::class)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDay(1),
-        ]);
-        $user = factory(User::class)->create();
-        $this->actingAs($user)
-            ->visit(route('course.show', [$courseShow->id, $courseShow->slug]))
-            ->type($content, 'content')
-            ->press('提交评论')
-            ->see($user->nick_name)
-            ->see($user->avatar);
-    }
-
 }
