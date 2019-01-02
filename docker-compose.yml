@@ -28,7 +28,7 @@ services:
       - meedu-net
     links:
       - "meeduphp"
-      
+
 networks:
   meedu-net:
     external: true

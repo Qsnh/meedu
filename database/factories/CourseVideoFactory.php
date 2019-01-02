@@ -22,5 +22,6 @@ $factory->define(\App\Models\Video::class, function (Faker $faker) {
         'seo_description' => $faker->title,
         'published_at' => $faker->dateTime('now'),
         'is_show' => $faker->randomElement([\App\Models\Video::IS_SHOW_NO, \App\Models\Video::IS_SHOW_YES]),
+        'duration' => mt_rand(200, 10000),
     ];
 });

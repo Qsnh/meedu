@@ -15,5 +15,6 @@ $factory->define(\App\Models\Course::class, function (Faker $faker) {
         'seo_description' => $faker->title,
         'published_at' => date('Y-m-d H:i:s'),
         'is_show' => $faker->randomElement([\App\Models\Course::SHOW_NO, \App\Models\Course::SHOW_YES]),
+        'duration' => mt_rand(200, 10000),
     ];
 });
