@@ -7,7 +7,7 @@ services:
       - "9006:80"
       - "443:443"
     volumes:
-      - ./docker/nginx:/var/www/html/:rw
+      - .:/var/www/html/:rw
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/:rw
       - ./docker/nginx/logs:/var/log/nginx/:rw
       - ./docker/nginx/ssl:/etc/nginx/ssl
