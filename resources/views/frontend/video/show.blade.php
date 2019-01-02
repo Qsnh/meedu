@@ -2,7 +2,6 @@
 
 @section('css')
     <link href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
-    <link crossorigin="anonymous" integrity="sha384-ccp+s0mORr8liSoaAJidjC9nKr4h7Oc6fXmvPdx5d+Lpjc31GfaOKtF8UCCQrEnS" href="https://lib.baomitu.com/video.js/7.4.0/video-js.min.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -15,10 +14,23 @@
                         <div class="col-sm-9 play-box">
                             @if(Auth::check())
                                 @if($user->canSeeThisVideo($video))
-                                    <video id="xiaoteng-player" class="video-js vjs-default-skin"
-                                           controls preload="auto" data-setup='{ "playbackRates": [1, 1.5, 2] }'>
-                                        <source src="{{$video->getPlayUrl()}}" type="video/mp4">
-                                    </video>
+                                    <div id="xiaoteng-player"></div>
+                                    <script>
+                                        $(function () {
+                                            var player = new Player({
+                                                id: 'xiaoteng-player',
+                                                url: '{{$video->getPlayUrl()}}',
+                                                fluid: true,
+                                                playbackRate: [0.5, 0.75, 1, 1.5, 2],
+                                                download: false,
+                                                enterLogo:{
+                                                    url: '/images/player-logo.png',
+                                                    width: 231,
+                                                    height: 42
+                                                },
+                                            });
+                                        });
+                                    </script>
                                     @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
@@ -155,7 +167,7 @@
 
 @section('js')
     <script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-    <script crossorigin="anonymous" integrity="sha384-/e2pbP9gABPxsNYBS/MkAotgW5kbTdaJ4iXyVfbjGNEyvB4Q3p1vUQhLRJBmJqc8" src="https://lib.baomitu.com/video.js/7.4.0/video.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/xgplayer@1.1.3/browser/index.js" type="text/javascript"></script>
     @include('components.frontend.emoji')
     <script>
         document.getElementById('play-list-box').scrollTop = {{$position*56}};
