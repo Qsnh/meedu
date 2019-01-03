@@ -42,34 +42,16 @@ class AddonsController extends Controller
      */
     public function installLocal($name, $version)
     {
-        $localFilePath = storage_path("app/addons/{$name}.zip");
-        if (! app()->make('files')->exists($localFilePath)) {
-            flash('文件不存在');
-
-            return back();
-        }
         if (Addons::whereName($name)->exists()) {
             flash('插件已安装');
 
             return back();
         }
-
+        $localFilePath = storage_path("app/addons/{$name}.zip");
         DB::beginTransaction();
         try {
-            // 解压
-            $extractPath = app_path("app/addons/{$name}/{$version}");
-            if (! app()->make('files')->exists($extractPath)) {
-                app()->make('files')->makeDirectory($extractPath, 0755, true);
-            }
-            // 解压文件
-            \Chumper\Zipper\Facades\Zipper::make($localFilePath)->extractTo($extractPath);
-
-            // 创建软连接
-            $linkPath = base_path("addons/{$name}");
-            if (app()->make('files')->exists($linkPath)) {
-                app()->make('files')->deleteDirectory($linkPath);
-            }
-            app()->make('files')->link($extractPath, $linkPath);
+            // 本地处理
+            [$extractPath, $linkPath] = app()->make(\App\Meedu\Addons::class)->install($localFilePath, $name, $version);
 
             // 创建插件
             $addons = Addons::create([
@@ -154,18 +136,12 @@ class AddonsController extends Controller
 
         DB::beginTransaction();
         try {
-            throw_if(! file_exists($version->path), new \Exception('切换的版本文件丢失'));
-
             // 修改版本信息
             $addons->prev_version_id = $addons->current_version_id;
             $addons->current_version_id = $version->id;
             $addons->save();
 
-            // 更换软连接
-            if (app()->make('files')->exists($addons->path)) {
-                app()->make('files')->deleteDirectory($addons->path);
-            }
-            app()->make('files')->link($version->path, $addons->path);
+            app()->make(\App\Meedu\Addons::class)->switchVersion($addons->name, $version->version);
 
             DB::commit();
             flash('回滚成功', 'success');
