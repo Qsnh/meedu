@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.1.3",
         "ext-fileinfo": "*",
+        "ext-json": "*",
         "barryvdh/laravel-cors": "^0.11.2",
         "chumper/zipper": "^1.0",
         "emojione/emojione": "^3.1",

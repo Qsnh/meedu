@@ -26,11 +26,17 @@ class Addons
      */
     protected $files;
 
-    public function __construct()
+    /**
+     * @var bool
+     */
+    protected $forceDelete;
+
+    public function __construct(bool $forceDelete = false)
     {
         $this->linkDist = base_path('addons');
         $this->realDist = storage_path('app/addons');
         $this->files = new Filesystem();
+        $this->forceDelete = $forceDelete;
     }
 
     /**
@@ -61,7 +67,8 @@ class Addons
      */
     public function uninstall(string $name, string $version): void
     {
-        $this->files->deleteDirectory($this->linkDist.DIRECTORY_SEPARATOR.$name);
+        $this->files->deleteDirectory($this->link($name, $version));
+        $this->forceDelete && $this->files->deleteDirectories($this->extract($name, $version));
     }
 
     /**

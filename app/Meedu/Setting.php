@@ -12,31 +12,36 @@
 namespace App\Meedu;
 
 use Illuminate\Http\Request;
+use Illuminate\Filesystem\Filesystem;
 
 class Setting
 {
-    protected $file;
+    protected $files;
+    protected $dist;
 
     public function __construct()
     {
-        $this->file = config('meedu.save');
+        $this->files = new Filesystem();
+        $this->dist = config('meedu.save');
     }
 
     /**
-     * 保存自定义配置.
-     *
-     * @param Request $request
+     * @param $param
      */
-    public function save(Request $request)
+    public function save($param)
     {
-        $settings = collect($request->all())->filter(function ($item, $index) {
+        $data = $param;
+        if ($data instanceof Request) {
+            $data = $param->all();
+        }
+        $setting = collect($data)->filter(function ($item, $index) {
             return preg_match('/\*/', $index);
         })->mapWithKeys(function ($item, $index) {
             $index = str_replace('*', '.', $index);
 
             return [$index => $item];
         })->toArray();
-        file_put_contents($this->file, json_encode($settings));
+        $this->put($setting);
     }
 
     /**
@@ -44,19 +49,46 @@ class Setting
      */
     public function sync()
     {
-        if (file_exists($this->file)) {
-            $config = json_decode(file_get_contents($this->file), true);
-            foreach ($config as $key => $item) {
-                config([$key => $item]);
-            }
-        }
-
+        collect($this->get())->map(function ($item, $key) {
+            config([$key => $item]);
+        });
         $this->specialSync();
     }
 
-    protected function specialSync()
+    /**
+     * 一些特殊配置.
+     */
+    protected function specialSync(): void
     {
         // 短信服务注册
         config(['sms.default.gateways' => [config('meedu.system.sms')]]);
+    }
+
+    /**
+     * 修改配置.
+     *
+     * @param array $setting
+     */
+    public function put(array $setting): void
+    {
+        $this->files->put($this->dist, json_encode($setting));
+    }
+
+    /**
+     * 读取自定义配置.
+     *
+     * @return array
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function get(): array
+    {
+        if (! $this->files->exists($this->dist)) {
+            return [];
+        }
+        $jsonContent = $this->files->get($this->dist);
+        $arrayContent = json_decode($jsonContent, true);
+
+        return $arrayContent;
     }
 }

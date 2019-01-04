@@ -11,7 +11,9 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Meedu\Setting;
 use App\Models\Template;
+use App\Meedu\TemplateView;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -32,47 +34,28 @@ class TemplateController extends Controller
     /**
      * 本地安装.
      *
-     * @param $templateName
+     * @param $name
      * @param $version
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function installLocal($templateName, $version)
+    public function installLocal($name, $version)
     {
-        $templateFilePath = storage_path("app/templates/{$templateName}.zip");
-        if (! file_exists($templateFilePath)) {
-            flash('文件不存在');
-
-            return back();
-        }
-        if (Template::whereName($templateName)->whereCurrentVersion($version)->exists()) {
+        if (Template::whereName($name)->whereCurrentVersion($version)->exists()) {
             flash('该模板已经安装');
 
             return redirect(route('backend.template.index'));
         }
 
+        $sourceFile = storage_path("app/templates/{$name}.zip");
+
         DB::beginTransaction();
         try {
-            // 创建目录
-            $savePath = storage_path("app/templates/{$templateName}/{$version}");
-            if (! file_exists($savePath)) {
-                // 创建目录
-                app()->make('files')->makeDirectory($savePath, 0755, true);
-            }
-
-            // 解压文件
-            \Chumper\Zipper\Facades\Zipper::make($templateFilePath)->extractTo($savePath);
-
-            // 创建软链接
-            $path = base_path("templates/{$templateName}");
-            if (app()->make('files')->exists(public_path('storage'))) {
-                app()->make('files')->deleteDirectory($path);
-            }
-            app()->make('files')->link($savePath, $path);
+            [$savePath, $path] = app()->make(TemplateView::class)->install($sourceFile, $name, $version);
 
             // 创建数据库记录
             Template::create([
-                'name' => $templateName,
+                'name' => $name,
                 'current_version' => $version,
                 'path' => $path,
                 'real_path' => $savePath,
@@ -116,10 +99,10 @@ class TemplateController extends Controller
             return back();
         }
 
-        $configFileJson = json_decode(file_get_contents(config('meedu.save')), true);
-        $configFileJson['meedu.system.theme.use'] = $template->name;
-        $configFileJson['meedu.system.theme.path'] = $template->path;
-        file_put_contents(config('meedu.save'), json_encode($configFileJson));
+        app()->make(Setting::class)->save([
+            'meedu.system.theme.use' => $template->name,
+            'meedu.system.theme.path' => $template->path,
+        ]);
 
         flash('模板更换成功', 'success');
 
