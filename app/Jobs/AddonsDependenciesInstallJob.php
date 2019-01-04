@@ -42,19 +42,10 @@ class AddonsDependenciesInstallJob implements ShouldQueue
      */
     public function handle()
     {
-        // 解析composer.json文件
-        $composerFile = $this->addons->path.DIRECTORY_SEPARATOR.'composer.json';
-        if (! file_exists($composerFile)) {
-            return;
-        }
-
-        $composer = json_decode(file_get_contents($composerFile), true);
-        if (! isset($composer['require']) || count($composer['require']) == 0) {
-            // 无依赖
-            return;
-        }
-
-        $dependencies = $composer['require'];
+        $dependencies = app()->make(\App\Meedu\Addons::class)->parseDependencies(
+            $this->addons->name,
+            $this->addons->currentVersion->version
+        );
         $logs = [];
 
         try {

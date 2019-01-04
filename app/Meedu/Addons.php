@@ -199,4 +199,27 @@ class Addons
             }, $addons);
         }
     }
+
+    /**
+     * @param string $name
+     * @param string $version
+     *
+     * @return array
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function parseDependencies(string $name, string $version): array
+    {
+        $dist = $this->linkDist.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.'composer.json';
+        if (! $this->files->exists($dist)) {
+            return [];
+        }
+        $composerFileContent = json_decode($this->files->get($dist), true);
+        $dependencies = $composerFileContent['require'] ?? [];
+        if (! $dependencies) {
+            return [];
+        }
+
+        return $dependencies;
+    }
 }
