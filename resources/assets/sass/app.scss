@@ -142,6 +142,10 @@
   url('//lib.baomitu.com/fonts/source-sans-pro/source-sans-pro-700italic.svg#SourceSans Pro') format('svg'); /* Legacy iOS */
 }
 
+.w-e-menu {
+  z-index: 100!important;
+}
+
 .tab {
   width: 100%; height: auto; float: left; border: 1px solid #dddddd;
   border-radius: 2px;
