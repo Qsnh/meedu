@@ -429,7 +429,7 @@ if (! function_exists('view_num_humans')) {
             $num = $num->view_num;
         }
         if ($num < 1000) {
-            return '低于1k次';
+            return $num;
         } elseif ($num < 10000) {
             return intdiv($num, 1000).'k次';
         }
