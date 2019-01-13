@@ -118,4 +118,12 @@ return [
         'layout_footer' => env('LAYOUT_FOOTER') ?: 'components.frontend.footer',
         'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
     ],
+
+    // MeEduCloud
+    'cloud' => [
+        'client_id' => env('MEEDU_CLOUD_CLIENT_ID', ''),
+        'client_secret' => env('MEEDU_CLOUD_CLIENT_SECRET', ''),
+        'username' => '',
+        'password' => '',
+    ],
 ];
