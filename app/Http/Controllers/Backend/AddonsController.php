@@ -13,7 +13,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Addons;
 use App\Models\AddonsLog;
-use App\Models\AddonsVersion;
+use App\Jobs\AddonsInstallJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Jobs\AddonsDependenciesInstallJob;
@@ -48,46 +48,20 @@ class AddonsController extends Controller
             return back();
         }
         $localFilePath = storage_path("app/addons/{$name}.zip");
-        DB::beginTransaction();
-        try {
-            // 本地处理
-            [$extractPath, $linkPath] = app()->make(\App\Meedu\Addons::class)->install($localFilePath, $name, $version);
+        $addons = Addons::create([
+            'name' => $name,
+            'thumb' => '',
+            'current_version_id' => 0,
+            'prev_version_id' => 0,
+            'author' => 'meedu',
+            'path' => '',
+            'real_path' => '',
+            'status' => Addons::STATUS_INSTALLING,
+        ]);
+        $this->dispatch(new AddonsInstallJob($addons, $localFilePath));
+        flash('插件安装任务生成成功，已投递到后台处理，请耐心等待。', 'success');
 
-            // 创建插件
-            $addons = Addons::create([
-                'name' => $name,
-                'thumb' => '',
-                'current_version_id' => 0,
-                'prev_version_id' => 0,
-                'author' => '本地安装',
-                'path' => $linkPath,
-                'real_path' => $extractPath,
-            ]);
-
-            // 创建版本
-            $version = $addons->versions()->save(new AddonsVersion([
-                'version' => $version,
-                'path' => $extractPath,
-            ]));
-
-            $addons->current_version_id = $version->id;
-            $addons->save();
-
-            // 解析是否需要安装依赖
-            $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_INSTALL));
-
-            DB::commit();
-
-            flash('安装成功', 'success');
-
-            return redirect(route('backend.addons.index'));
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            flash('安装出现错误，错误信息：'.$exception->getMessage());
-
-            return back();
-        }
+        return back();
     }
 
     /**
@@ -165,7 +139,7 @@ class AddonsController extends Controller
     {
         $addons = Addons::findOrFail($addonsId);
         $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_INSTALL));
-        flash('已提交，请耐心等待，执行结果稍后可以查看日志', 'success');
+        flash('依赖安装任务已创建，请耐心等待后台执行完成，执行结果稍后可以在安装日志查看', 'success');
 
         return back();
     }

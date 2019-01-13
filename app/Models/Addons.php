@@ -15,11 +15,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Addons extends Model
 {
+    const STATUS_INSTALLING = 1;
+    const STATUS_FAIL = 5;
+    const STATUS_SUCCESS = 9;
+    const STATUS_UPGRADING = 3;
+
     protected $table = 'addons';
 
     protected $fillable = [
         'name', 'current_version_id', 'prev_version_id', 'author',
-        'path', 'real_path', 'thumb',
+        'path', 'real_path', 'thumb', 'main_url',
     ];
 
     /**

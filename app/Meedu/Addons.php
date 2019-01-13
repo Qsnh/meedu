@@ -229,4 +229,23 @@ class Addons
 
         return $dependencies;
     }
+
+    /**
+     * 解析插件meedu配置.
+     *
+     * @param $path
+     *
+     * @return array|mixed
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function parseMeedu($path)
+    {
+        $file = $path.DIRECTORY_SEPARATOR.'meedu.json';
+        if (! $this->files->exists($file)) {
+            return [];
+        }
+
+        return json_decode($this->files->get($file), true);
+    }
 }
