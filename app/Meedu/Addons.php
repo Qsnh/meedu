@@ -12,6 +12,7 @@
 namespace App\Meedu;
 
 use Exception;
+use Chumper\Zipper\Zipper;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 
@@ -64,6 +65,8 @@ class Addons
      *
      * @param string $name
      * @param string $version
+     *
+     * @throws \Throwable
      */
     public function uninstall(string $name, string $version): void
     {
@@ -132,7 +135,7 @@ class Addons
         if (! $this->files->exists($extractPath)) {
             $this->files->makeDirectory($extractPath, 0755, true);
         }
-        \Chumper\Zipper\Facades\Zipper::make($version)->extractTo($extractPath);
+        \Chumper\Zipper\Facades\Zipper::make($file)->extractTo($extractPath, ['vendor', '.git'], Zipper::BLACKLIST);
 
         return $extractPath;
     }
