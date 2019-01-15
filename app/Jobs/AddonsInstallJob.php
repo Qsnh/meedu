@@ -72,6 +72,7 @@ class AddonsInstallJob implements ShouldQueue
                 'path' => $linkPath,
                 'real_path' => $extractPath,
                 'main_url' => $meedu['main_url'] ?? '',
+                'status' => Addons::STATUS_SUCCESS,
             ])->save();
 
             // 解析是否需要安装依赖
@@ -81,6 +82,8 @@ class AddonsInstallJob implements ShouldQueue
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
+
+            $this->addons->update(['status' => Addons::STATUS_FAIL]);
         }
     }
 }
