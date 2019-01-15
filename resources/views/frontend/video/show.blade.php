@@ -25,8 +25,8 @@
                                                 download: false,
                                                 enterLogo:{
                                                     url: '/images/player-logo.png',
-                                                    width: 231,
-                                                    height: 42
+                                                    width: 200,
+                                                    height: 100
                                                 },
                                             });
                                         });
