@@ -20,8 +20,7 @@ class OrderController extends Controller
     public function show(OrderRepository $repository, $orderId)
     {
         $order = Order::whereOrderId($orderId)->firstOrFail();
-        $pay = $repository->payInfo($order);
 
-        return v('frontend.order.show', compact('order', 'pay'));
+        return v('frontend.order.show', compact('order'));
     }
 }

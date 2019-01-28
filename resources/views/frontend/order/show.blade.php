@@ -18,16 +18,10 @@
 
     <div class="container all-buy-box">
         <div class="row justify-content-center">
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-4 text-center" style="min-height: 400px;">
                 <p>订单号：{{$order->order_id}} ￥{{$order->charge}}</p>
                 <p style="margin-top: 15px;">
-                    <img src="{{$pay['pay_qr_code']}}" width="100%">
-                </p>
-                <p style="margin-top: 15px;">
-                    <a href="{{route('member.orders')}}" class="btn btn-success btn-block">支付成功</a>
-                </p>
-                <p style="margin-top: 10px;">
-                    <a href="{{route('member')}}" class="btn btn-secondary btn-block">取消支付</a>
+                    暂无支付渠道，请联系站长手动开通【联系方式见页面下方】。
                 </p>
             </div>
         </div>
