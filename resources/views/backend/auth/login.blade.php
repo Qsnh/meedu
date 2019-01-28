@@ -37,7 +37,7 @@
                     <div class="text-center mb-6">
                         <h3>MeEdu</h3>
                     </div>
-                    <form class="card" action="{{route('backend.login')}}" method="post">
+                    <form class="card" action="" method="post">
                         @csrf
                         <div class="card-body p-6">
                             <div class="card-title">登录</div>

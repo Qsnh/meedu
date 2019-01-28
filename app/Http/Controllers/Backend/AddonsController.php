@@ -45,23 +45,42 @@ class AddonsController extends Controller
         if (Addons::whereName($name)->exists()) {
             flash('插件已安装');
 
-            return back();
+            return redirect(route('backend.addons.index'));
         }
-        $localFilePath = storage_path("app/addons/{$name}.zip");
-        $addons = Addons::create([
-            'name' => $name,
-            'thumb' => '',
-            'current_version_id' => 0,
-            'prev_version_id' => 0,
-            'author' => 'meedu',
-            'path' => '',
-            'real_path' => '',
-            'status' => Addons::STATUS_INSTALLING,
-        ]);
-        $this->dispatch(new AddonsInstallJob($addons, $localFilePath));
-        flash('插件安装任务生成成功，已投递到后台处理，请耐心等待。', 'success');
+        $file = request()->get('file');
+        $localFilePath = storage_path("app/addons/{$file}.zip");
+        DB::beginTransaction();
+        try {
+            // 创建插件记录
+            $addons = Addons::create([
+                'name' => $name,
+                'thumb' => '',
+                'current_version_id' => 0,
+                'prev_version_id' => 0,
+                'author' => 'meedu',
+                'path' => '',
+                'real_path' => '',
+                'status' => Addons::STATUS_INSTALLING,
+            ]);
+            // 创建版本记录
+            $addonsVersion = $addons->versions()->create([
+                'version' => $version,
+                'path' => '',
+            ]);
+            // 提交给队列任务处理
+            $this->dispatch(new AddonsInstallJob($addons, $addonsVersion, $localFilePath));
+            flash('插件安装任务生成成功，已投递到后台处理，请耐心等待。', 'success');
 
-        return back();
+            DB::commit();
+
+            return redirect(route('backend.addons.index'));
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            flash('插件安装失败，具体信息请查看日志');
+            exception_record($exception);
+
+            return redirect(route('backend.addons.index'));
+        }
     }
 
     /**
@@ -138,7 +157,7 @@ class AddonsController extends Controller
     public function submitDependenciesInstallTask($addonsId)
     {
         $addons = Addons::findOrFail($addonsId);
-        $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_INSTALL));
+        $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_DEPENDENCY));
         flash('依赖安装任务已创建，请耐心等待后台执行完成，执行结果稍后可以在安装日志查看', 'success');
 
         return back();

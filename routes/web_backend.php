@@ -160,28 +160,29 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/coursechapter/{id}/edit', 'CourseChapterController@edit')->name('backend.coursechapter.edit');
         Route::put('/coursechapter/{id}/edit', 'CourseChapterController@update');
         Route::get('/coursechapter/{id}/delete', 'CourseChapterController@destroy')->name('backend.coursechapter.destroy');
+
+        // 首页导航
+        Route::get('/nav', 'NavController@index')->name('backend.nav.index');
+        Route::get('/nav/create', 'NavController@create')->name('backend.nav.create');
+        Route::post('/nav/create', 'NavController@store');
+        Route::get('/nav/{id}/edit', 'NavController@edit')->name('backend.nav.edit');
+        Route::put('/nav/{id}/edit', 'NavController@update');
+        Route::get('/nav/{id}/delete', 'NavController@destroy')->name('backend.nav.destroy');
+
+        // 模板
+        Route::get('/template/index', 'TemplateController@index')->name('backend.template.index');
+        Route::get('/template/{template_name}/{version}/install/local', 'TemplateController@installLocal')->name('backend.template.install.local');
+        Route::get('/template/{id}/set/default', 'TemplateController@setDefaultHandler')->name('backend.template.set.default');
+
+        // 插件
+        Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
+        Route::get('/addons/{addon_name}/{version}/install/local', 'AddonsController@installLocal')->name('backend.addons.install.local');
+        Route::get('/addons/{addons_id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
+        Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
+        Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
+        Route::get('/addons/{addons_id}/dependencies/install', 'AddonsController@submitDependenciesInstallTask')->name('backend.addons.dependencies.install');
+
     });
-
-    // 首页导航
-    Route::get('/nav', 'NavController@index')->name('backend.nav.index');
-    Route::get('/nav/create', 'NavController@create')->name('backend.nav.create');
-    Route::post('/nav/create', 'NavController@store');
-    Route::get('/nav/{id}/edit', 'NavController@edit')->name('backend.nav.edit');
-    Route::put('/nav/{id}/edit', 'NavController@update');
-    Route::get('/nav/{id}/delete', 'NavController@destroy')->name('backend.nav.destroy');
-
-    // 模板
-    Route::get('/template/index', 'TemplateController@index')->name('backend.template.index');
-    Route::get('/template/{template_name}/{version}/install/local', 'TemplateController@installLocal')->name('backend.template.install.local');
-    Route::get('/template/{id}/set/default', 'TemplateController@setDefaultHandler')->name('backend.template.set.default');
-
-    // 插件
-    Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
-    Route::get('/addons/{addon_name}/{version}/install/local', 'AddonsController@installLocal')->name('backend.addons.install.local');
-    Route::get('/addons/{addons_id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
-    Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
-    Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
-    Route::get('/addons/{addons_id}/dependencies/install', 'AddonsController@submitDependenciesInstallTask')->name('backend.addons.dependencies.install');
 
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
