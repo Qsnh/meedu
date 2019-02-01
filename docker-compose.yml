@@ -5,12 +5,14 @@ services:
     build:
       context: ./docker
     volumes:
-    - .:/var/www/html/:rw
+      - .:/var/www/html/:rw
     restart: always
     expose:
-    - "9000"
+      - "9000"
+    links:
+      - "meedumysql"
     networks:
-    - meedu-net
+      - meedu-net
 
   nginx:
     container_name: "meedunginx"
@@ -28,6 +30,21 @@ services:
       - meedu-net
     links:
       - "meeduphp"
+
+  mysql:
+    container_name: "meedumysql"
+    image: mysql:5.6
+    expose:
+      - "3306"
+    volumes:
+      - ./docker/mysql/conf:/etc/mysql/conf.d/:rw
+      - ./docker/mysql/logs:/logs/:rw
+      - ./docker/mysql/data:/var/lib/mysql/:rw
+    restart: always
+    networks:
+     - meedu-net
+    environment:
+      - MYSQL_ROOT_PASSWORD="123456"
 
 networks:
   meedu-net:
