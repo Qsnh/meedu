@@ -24,9 +24,11 @@
                     <button type="submit" class="btn btn-primary btn-block">登录</button>
                 </div>
                 <div class="form-group text-right">
-                    <a href="{{route('socialite', 'github')}}" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-github" aria-hidden="true"></i> Github登录
+                    @foreach(enabled_socialites() as $socialite)
+                    <a href="{{route('socialite', $socialite['app'])}}" class="btn btn-outline-primary btn-sm">
+                        {!! $socialite['icon'] !!} {{$socialite['name']}}
                     </a>
+                    @endforeach
                 </div>
             </form>
 

@@ -69,7 +69,7 @@ if (! function_exists('exception_response')) {
      * @param Exception $exception
      * @param string    $message
      *
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
     function exception_response(Exception $exception, string $message = '')
     {
@@ -435,5 +435,22 @@ if (! function_exists('view_num_humans')) {
         }
 
         return intdiv($num, 10000).'w次';
+    }
+}
+
+if (! function_exists('enabled_socialites')) {
+    /**
+     * 获取已启用的第三方登录.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    function enabled_socialites()
+    {
+        $socialites = config('meedu.member.socialite', []);
+        $enabled = collect($socialites)->filter(function ($item) {
+            return $item['enabled'];
+        });
+
+        return $enabled;
     }
 }

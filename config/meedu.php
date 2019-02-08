@@ -11,6 +11,16 @@ return [
 
         // 头像
         'default_avatar' => '/images/default_avatar.jpg',
+
+        // Socialite
+        'socialite' => [
+            [
+                'app' => 'github',
+                'name' => 'Github登录',
+                'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+                'enabled' => false,
+            ],
+        ],
     ],
 
     // 系统结算
