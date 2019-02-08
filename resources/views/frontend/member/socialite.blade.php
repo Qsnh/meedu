@@ -8,7 +8,11 @@
 
     <div class="row">
         <div class="col-sm-12 mt-3 mb-3">
-            <a href="{{route('socialite', 'github')}}" class="btn btn-primary btn-sm">绑定Github</a>
+            @foreach(enabled_socialites() as $socialite)
+            <a href="{{route('socialite', $socialite['app'])}}" class="btn btn-primary btn-sm">
+                绑定{{$socialite['name']}}
+            </a>
+            @endforeach
         </div>
     </div>
 

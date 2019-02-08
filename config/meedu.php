@@ -16,7 +16,7 @@ return [
         'socialite' => [
             [
                 'app' => 'github',
-                'name' => 'Github登录',
+                'name' => 'Github',
                 'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
                 'enabled' => false,
             ],
