@@ -25,7 +25,8 @@
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
         "spatie/laravel-backup": "5.10.1",
-        "symfony/process": "^4.2"
+        "symfony/process": "^4.2",
+        "yansongda/laravel-pay": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.3",
