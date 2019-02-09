@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Meedu\MeEduCloud;
 use App\Models\Addons;
 use App\Models\AddonsLog;
 use App\Jobs\AddonsInstallJob;
@@ -30,8 +31,10 @@ class AddonsController extends Controller
         return view('backend.addons.index', compact('addons'));
     }
 
-    public function remoteAddons()
+    public function remote(MeEduCloud $cloud)
     {
+        $addons = $cloud->addons();
+        dd($addons);
     }
 
     /**

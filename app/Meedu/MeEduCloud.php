@@ -96,7 +96,11 @@ class MeEduCloud
      */
     public function addons(): array
     {
-        $response = $this->client->get('/api/addons');
+        $response = $this->client->get('/api/addons', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? [];
@@ -113,7 +117,11 @@ class MeEduCloud
      */
     public function addonsDetail(string $sign)
     {
-        $response = $this->client->get('/api/addons/'.$sign);
+        $response = $this->client->get('/api/addons/'.$sign, [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? [];
@@ -128,7 +136,11 @@ class MeEduCloud
      */
     public function addonsDownloadUrl(string $sign)
     {
-        $response = $this->client->get('/api/addons/'.$sign.'/url');
+        $response = $this->client->get('/api/addons/'.$sign.'/url', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? '';
@@ -143,7 +155,11 @@ class MeEduCloud
      */
     public function templates(): array
     {
-        $response = $this->client->get('/api/templates');
+        $response = $this->client->get('/api/templates', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? [];
@@ -160,7 +176,11 @@ class MeEduCloud
      */
     public function templateDetail(string $sign)
     {
-        $response = $this->client->get('/api/template/'.$sign);
+        $response = $this->client->get('/api/template/'.$sign, [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? [];
@@ -175,7 +195,11 @@ class MeEduCloud
      */
     public function templateDownloadUrl(string $sign)
     {
-        $response = $this->client->get('/api/template/'.$sign.'/url');
+        $response = $this->client->get('/api/template/'.$sign.'/url', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->accessToken(),
+            ],
+        ]);
         $body = json_decode($response->getBody(), true);
 
         return $body['data'] ?? '';
