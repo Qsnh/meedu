@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Meedu\MeEduCloud;
 use App\Models\Addons;
+use App\Meedu\MeEduCloud;
 use App\Models\AddonsLog;
 use App\Jobs\AddonsInstallJob;
 use Illuminate\Support\Facades\DB;
