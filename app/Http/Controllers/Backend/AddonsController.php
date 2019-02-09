@@ -31,10 +31,24 @@ class AddonsController extends Controller
         return view('backend.addons.index', compact('addons'));
     }
 
+    /**
+     * 远程已购买的插件.
+     *
+     * @param MeEduCloud $cloud
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function remote(MeEduCloud $cloud)
     {
-        $addons = $cloud->addons();
-        dd($addons);
+        $addons = collect($cloud->addons());
+        $addonsService = app()->make(\App\Meedu\Addons::class);
+        $addons = $addons->map(function ($item) use ($addonsService) {
+            $item['installed'] = $addonsService->isInstall($item['sign']);
+
+            return $item;
+        });
+
+        return view('backend.addons.remote', compact('addons'));
     }
 
     /**

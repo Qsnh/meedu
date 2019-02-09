@@ -251,4 +251,16 @@ class Addons
 
         return json_decode($this->files->get($file), true);
     }
+
+    /**
+     * 判断插件是否已经安装.
+     *
+     * @param string $sign
+     *
+     * @return bool
+     */
+    public function isInstall(string $sign): bool
+    {
+        return $this->files->exists($this->linkDist.DIRECTORY_SEPARATOR.$sign);
+    }
 }
