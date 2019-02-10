@@ -179,6 +179,10 @@ class BackendMenuSeeder extends Seeder
                         'name' => '插件',
                         'url' => '/backend/addons/index',
                     ],
+                    [
+                        'name' => '云插件',
+                        'url' => '/backend/addons/remote/index',
+                    ],
                 ],
             ],
         ];

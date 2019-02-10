@@ -838,6 +838,20 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/addons/\d+/dependencies/install',
                 'description' => '',
             ],
+            [
+                'display_name' => '云插件',
+                'slug' => 'backend.addons.remote.index',
+                'method' => 'GET',
+                'url' => '/backend/addons/remote/index',
+                'description' => '',
+            ],
+            [
+                'display_name' => '云插件安装',
+                'slug' => 'backend.addons.remote.install',
+                'method' => 'GET',
+                'url' => '/backend/addons/remote/\w+/\w+/install',
+                'description' => '',
+            ],
         ];
 
         foreach ($permissions as $permission) {
