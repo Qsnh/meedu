@@ -1,17 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Http\Controllers\Backend;
 
 use Exception;
-use App\Meedu\MeEduCloud;
 use App\Models\Addons;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Meedu\MeEduCloud;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AddonsCloudController extends Controller
 {
-
     /**
      * 已购买的插件.
      *
@@ -59,13 +66,13 @@ class AddonsCloudController extends Controller
                 'path' => '',
             ]);
             // 提交任务给队列
-            
 
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);
             flash('安装错误');
+
             return back();
         }
     }
@@ -77,8 +84,5 @@ class AddonsCloudController extends Controller
 
             return redirect(route('backend.addons.index'));
         }
-
-
     }
-
 }
