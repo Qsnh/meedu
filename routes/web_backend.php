@@ -184,6 +184,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
         // 云插件
         Route::get('/addons/remote/index', 'AddonsCloudController@index')->name('backend.addons.remote.index');
+        Route::get('/addons/remote/{sign}/{version}/install', 'AddonsCloudController@install')->name('backend.addons.remote.install');
     });
 
     // Ajax

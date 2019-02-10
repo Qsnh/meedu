@@ -23,7 +23,7 @@ class Addons extends Model
     protected $table = 'addons';
 
     protected $fillable = [
-        'name', 'current_version_id', 'prev_version_id', 'author',
+        'name', 'sign', 'current_version_id', 'prev_version_id', 'author',
         'path', 'real_path', 'thumb', 'main_url',
     ];
 

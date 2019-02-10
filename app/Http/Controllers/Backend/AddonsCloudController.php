@@ -14,8 +14,10 @@ namespace App\Http\Controllers\Backend;
 use Exception;
 use App\Models\Addons;
 use App\Meedu\MeEduCloud;
+use App\Models\AddonsVersion;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Jobs\CloudAddonsDownloadJob;
 
 class AddonsCloudController extends Controller
 {
@@ -29,9 +31,17 @@ class AddonsCloudController extends Controller
     public function index(MeEduCloud $cloud)
     {
         $addons = collect($cloud->addons());
-        $addonsService = app()->make(\App\Meedu\Addons::class);
-        $addons = $addons->map(function ($item) use ($addonsService) {
-            $item['installed'] = $addonsService->isInstall($item['sign']);
+        $installedAddons = Addons::whereIn('sign', $addons->pluck('sign')->toArray())->pluck('current_version_id', 'sign');
+        $addons = $addons->map(function ($item) use ($installedAddons) {
+            // 是否已安装
+            $item['installed'] = isset($installedAddons[$item['sign']]);
+
+            // 是否需要升级
+            $item['upgrade'] = false;
+            if ($item['installed']) {
+                $version = AddonsVersion::whereId($installedAddons[$item['sign']])->first();
+                $item['upgrade'] = version_compare($version->version, $item['version'], '<');
+            }
 
             return $item;
         });
@@ -39,6 +49,15 @@ class AddonsCloudController extends Controller
         return view('backend.addons.remote', compact('addons'));
     }
 
+    /**
+     * 安装.
+     *
+     * @param MeEduCloud $cloud
+     * @param string     $sign
+     * @param string     $version
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function install(MeEduCloud $cloud, string $sign, string $version)
     {
         if (Addons::whereName($sign)->exists()) {
@@ -65,9 +84,17 @@ class AddonsCloudController extends Controller
                 'version' => $version,
                 'path' => '',
             ]);
+            // 获取插件下载地址
+            $downloadUrl = $cloud->addonsDownloadUrl($sign);
+
             // 提交任务给队列
+            $this->dispatch(new CloudAddonsDownloadJob($addons, $addonsVersion, $downloadUrl));
 
             DB::commit();
+
+            flash('插件安装任务创建成功，已提交给后台系统处理，请稍候。', 'success');
+
+            return redirect(route('backend.addons.remote.index'));
         } catch (Exception $exception) {
             DB::rollBack();
             exception_record($exception);

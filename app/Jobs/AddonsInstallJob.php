@@ -67,9 +67,9 @@ class AddonsInstallJob implements ShouldQueue
             $this->addons->fill([
                 'name' => $this->addons->name,
                 'thumb' => '',
-                'prev_version_id' => 0,
+                'prev_version_id' => $this->addons->current_version_id,
                 'current_version_id' => $this->version->id,
-                'author' => '本地安装',
+                'author' => '',
                 'path' => $linkPath,
                 'real_path' => $extractPath,
                 'main_url' => $meedu['main_url'] ?? '',

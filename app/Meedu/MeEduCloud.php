@@ -143,7 +143,7 @@ class MeEduCloud
         ]);
         $body = json_decode($response->getBody(), true);
 
-        return $body['data'] ?? '';
+        return $body['url'] ?? '';
     }
 
     /**
