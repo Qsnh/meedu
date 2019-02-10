@@ -22,9 +22,11 @@
                             <img src="{{$item['thumb']}}" width="120" height="60" class="img-thumbnail">
                         </td>
                         <td>
-                            <p><span class="badge badge-info">{{$item['name']}}</span></p>
+                            <p>
+                                <span class="badge badge-info">{{$item['name']}}</span>
+                                <span class="badge badge-info">{{$item['version']}}</span>
+                            </p>
                             <p><span class="badge badge-info">{{$item['sign']}}</span></p>
-                            <p><span class="badge badge-info">{{$item['version']}}</span></p>
                         </td>
                         <td>
                             {{$item['installed'] ? '已安装' : '未安装'}}

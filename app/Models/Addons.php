@@ -58,4 +58,5 @@ class Addons extends Model
     {
         return $this->belongsTo(AddonsVersion::class, 'prev_version_id');
     }
+
 }
