@@ -9,8 +9,6 @@ services:
     restart: always
     expose:
       - "9000"
-    links:
-      - "meedumysql"
     networks:
       - meedu-net
 
@@ -28,8 +26,6 @@ services:
     restart: always
     networks:
       - meedu-net
-    links:
-      - "meeduphp"
 
   mysql:
     container_name: "meedumysql"
