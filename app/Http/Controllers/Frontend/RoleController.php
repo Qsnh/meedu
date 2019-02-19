@@ -13,66 +13,41 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Role;
 use App\Models\Order;
-use Illuminate\Support\Facades\DB;
+use App\Repositories\RoleRepository;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\SimpleMessageNotification;
 
 class RoleController extends FrontendController
 {
     public function index()
     {
-        $roles = Role::orderByDesc('weight')->get();
+        $roles = Role::show()->orderByDesc('weight')->get();
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.role_list');
 
-        return view('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
+        return v('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
     }
 
     public function showBuyPage($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::show()->findOrFail($id);
         $title = sprintf('购买VIP《%s》', $role->name);
 
-        return view('frontend.role.buy', compact('role', 'title'));
+        return v('frontend.role.buy', compact('role', 'title'));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(RoleRepository $repository, $id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::show()->findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role && $user->role->weight != $role->weight) {
-            flash('您的账户下面已经有会员啦');
+        $order = $repository->createOrder($user, $role);
+        if (! ($order instanceof Order)) {
+            flash($repository->errors, 'error');
 
             return back();
         }
 
-        DB::beginTransaction();
-        try {
-            // 创建订单记录
-            $order = $user->orders()->save(new Order([
-                'goods_id' => $role->id,
-                'goods_type' => Order::GOODS_TYPE_ROLE,
-                'charge' => $role->charge,
-                'status' => Order::STATUS_PAID,
-            ]));
-            // 扣除余额
-            $user->credit1Dec($role->charge);
-            // 购买会员
-            $user->buyRole($role);
-            // 消息通知
-            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
+        flash('订单创建成功，请尽快支付', 'success');
 
-            DB::commit();
-
-            flash('购买成功', 'success');
-
-            return redirect(route('member'));
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            flash('系统出错');
-
-            return back();
-        }
+        return redirect(route('order.show', $order->order_id));
     }
 }

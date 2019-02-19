@@ -16,24 +16,21 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+    <div class="container all-buy-box">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
                 <h3 class="text-center">你正在购买视频《{{$video->title}}》</h3>
-                <p class="lh-30">课程：《{{$video->course->title}}》</p>
-                <p class="lh-30">价格：<b>￥{{$video->charge}}</b></p>
-                <p class="lh-30">当前账户余额：<b>￥{{$user->credit1}}</b></p>
+                <p class="lh-30">所属课程：《{{$video->course->title}}》</p>
 
-                @if($user->credit1 < $video->price)
-                    <p>您的账户余额不足，请先 <a href="{{route('member.recharge')}}">充值(点我)</a></p>
-                @else
+                <div style="margin-top: 15px;">
+                    <h1 class="text-center">￥{{$video->charge}}</h1>
                     <form action="" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">立即购买</button>
                         </div>
                     </form>
-                @endif
+                </div>
             </div>
         </div>
     </div>

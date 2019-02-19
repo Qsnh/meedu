@@ -4,77 +4,66 @@
 
     @include('components.breadcrumb', ['name' => '会员详情'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.member.index') }}'" :name="'返回列表'"></meedu-a>
-        </el-col>
-    </el-row>
-
-    <el-row>
-        <el-col span="6" class="member-detail-left">
-            <ul class="text-center">
-                <li class="avatar"><img src="{{$member->avatar}}" width="60" height="60"></li>
-                <li>昵称：{{$member->nick_name}}</li>
-                <li>手机号：{{$member->mobile}}</li>
-                <li>注册时间：{{$member->created_at}}</li>
-                <li>账户余额：{{$member->credit1}}</li>
-                @if($member->role)
-                    <li>VIP：{{$member->role->name}}</li>
-                    <li>到期时间：{{$member->role_expired_at}}</li>
-                @endif
-            </ul>
-        </el-col>
-        <el-col span="18" class="member-detail-right">
-            <el-collapse v-model="activeNames" @change="handleChange">
-                <el-collapse-item title="消费记录" name="1">
-                    <table>
-                        <thead>
-                        <tr>
-                            <td>时间</td>
-                            <td>金额</td>
-                            <td>状态</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($member->orders as $order)
-                            <tr>
-                                <td>￥{{ $order->charge }}</td>
-                                <td>{{ $order->getGoodsTypeText() }}</td>
-                                <td>{{ $order->created_at }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td class="text-center color-gray" colspan="3">暂无数据</td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
-                </el-collapse-item>
-                <el-collapse-item title="充值记录" name="2">
+    <div class="row row-cards">
+        <div class="col-sm-12 mb-3">
+            <a href="{{ route('backend.member.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <span>基础信息</span>
+                </div>
+                <div class="card-body">
+                    <ul class="text-center list-group">
+                        <li class="list-group-item"><img class="avatar" src="{{$member->avatar}}" width="60" height="60"></li>
+                        <li class="list-group-item">昵称：{{$member->nick_name}}</li>
+                        <li class="list-group-item">手机号：{{$member->mobile}}</li>
+                        <li class="list-group-item">注册时间：{{$member->created_at}}</li>
+                        <li class="list-group-item">账户余额：{{$member->credit1}}</li>
+                        @if($member->role)
+                            <li class="list-group-item">VIP：{{$member->role->name}}</li>
+                            <li class="list-group-item">到期时间：{{$member->role_expired_at}}</li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <span>消费记录</span>
+                </div>
+                <div class="card-body">
                     <table class="table table-hover">
                         <thead>
                         <tr>
                             <td>时间</td>
                             <td>金额</td>
                             <td>状态</td>
+                            <td>时间</td>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($member->rechargePayments as $record)
+                        @forelse($member->orders as $order)
                             <tr>
-                                <td>{{$record->created_at}}</td>
-                                <td><span class="label label-default">￥{{$record->money}}</span></td>
-                                <td><span class="label label-success">成功</span></td>
+                                <td>￥{{ $order->charge }}</td>
+                                <td>{{ $order->getOrderListTitle() }}</td>
+                                <td>{{$order->statusText()}}</td>
+                                <td>{{ $order->created_at }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td class="text-center color-gray" colspan="3">暂无数据</td>
+                                <td class="text-center color-gray" colspan="4">暂无数据</td>
                             </tr>
                         @endforelse
                         </tbody>
                     </table>
-                </el-collapse-item>
-                <el-collapse-item title="已购课程" name="3">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">已购课程</div>
+                <div class="card-body">
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -84,7 +73,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($user->joinCourses as $course)
+                        @forelse($member->joinCourses as $course)
                             <tr>
                                 <td><a href="{{ route('course.show', [$course->id, $course->slug]) }}">{{ $course->title }}</a></td>
                                 <td>
@@ -103,8 +92,12 @@
                         @endforelse
                         </tbody>
                     </table>
-                </el-collapse-item>
-                <el-collapse-item title="已购视频" name="4">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">已购视频</div>
+                <div class="card-body">
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -137,8 +130,12 @@
                         @endforelse
                         </tbody>
                     </table>
-                </el-collapse-item>
-                <el-collapse-item title="订阅记录" name="5">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">VIP记录</div>
+                <div class="card-body">
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -163,27 +160,11 @@
                         @endforelse
                         </tbody>
                     </table>
-                </el-collapse-item>
-            </el-collapse>
-        </el-col>
-    </el-row>
+                    </table>
+                </div>
+            </div>
 
-@endsection
+        </div>
+    </div>
 
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    activeNames: ['1']
-                }
-            },
-            methods: {
-                handleChange: function(val) {
-                    console.log(val);
-                }
-            }
-        });
-    </script>
 @endsection

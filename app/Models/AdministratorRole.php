@@ -55,23 +55,49 @@ class AdministratorRole extends Model
         );
     }
 
+    /**
+     * @return string
+     */
     public function getEditUrlAttribute()
     {
         return route('backend.administrator_role.edit', $this);
     }
 
+    /**
+     * @return string
+     */
     public function getDestroyUrlAttribute()
     {
         return route('backend.administrator_role.destroy', $this);
     }
 
+    /**
+     * @return string
+     */
     public function getPermissionUrlAttribute()
     {
         return route('backend.administrator_role.permission', $this);
     }
 
+    /**
+     * @param AdministratorPermission $permission
+     *
+     * @return bool
+     */
     public function hasPermission(AdministratorPermission $permission)
     {
         return $this->permissions()->where('id', $permission->id)->exists();
+    }
+
+    /**
+     * 当前角色是否属于某个用户.
+     *
+     * @param Administrator $administrator
+     *
+     * @return mixed
+     */
+    public function hasAdministrator(Administrator $administrator)
+    {
+        return $this->administrators()->whereId($administrator->id)->exists();
     }
 }

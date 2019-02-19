@@ -16,31 +16,37 @@
         </div>
     </div>
 
-    <div class="container course-index-box">
+    <div class="container">
         <div class="row">
             @foreach($courses as $course)
-            <div class="col-sm-4 course-item">
-                <a href="{{ route('course.show', ['id' => $course->id, 'slug' => $course->slug]) }}">
-                    <div class="course-item-box border">
-                        <p class="thumb">
-                            <img data-echo="{{ $course->thumb }}" src="/images/loading.png" width="100%" height="300" alt="">
-                        </p>
-                        <p class="title">
-                            {{$course->title}}
-                        </p>
-                        <p class="intro">
-                            <span>最后更新时间 {{$course->created_at->diffForHumans()}}</span>
-                        </p>
+                <div class="col-sm-4">
+                    <div class="card mt-15 mb-15">
+                        <img class="card-img-top" style="height: 300px;" data-echo="{{ image_url($course->thumb) }}" src="/images/loading.png">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @if($course->charge > 0)
+                                    <span class="badge badge-danger">￥{{$course->charge}}</span>
+                                    @else
+                                    <span class="badge badge-success">免费</span>
+                                @endif
+                                {{$course->title}}
+                            </h5>
+                            <p class="card-text">{{$course->short_description}}</p>
+                            <a href="{{ route('course.show', [$course->id, $course->slug]) }}" class="btn btn-primary">详情</a>
+                        </div>
                     </div>
-                </a>
-            </div>
+                </div>
             @endforeach
-
-            <div class="col-sm-12 text-center">
-                {{$courses->render()}}
-            </div>
-
         </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <nav aria-label="Page navigation">
+                    {{$courses->render()}}
+                </nav>
+            </div>
+        </div>
+
     </div>
 
 @endsection

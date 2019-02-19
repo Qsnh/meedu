@@ -2,42 +2,39 @@
 
 @section('content')
 <div class="container auth-page">
-    <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-            <div class="row">
-                <div class="col-sm-12 login-box">
-                    <h3 class="text-center login-box-title">登陆</h3>
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="mobile">手机号</label>
-                            <input id="mobile" type="mobile" class="form-control" placeholder="手机号" name="mobile" value="{{ old('mobile') }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">密码</label>
-                            <input id="password" type="password" class="form-control" placeholder="密码" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 记住我
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">登陆</button>
-                        </div>
-                    </form>
+    <div class="row justify-content-center">
+        <div class="col-sm-4 login-box">
+            <h3 class="text-center login-box-title">登录</h3>
+            <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="form-group">
+                    <label for="mobile">手机号</label>
+                    <input id="mobile" type="mobile" class="form-control" placeholder="手机号" name="mobile" value="{{ old('mobile') }}" required>
                 </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input id="password" type="password" class="form-control" placeholder="密码" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 记住我
+                    </label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">登录</button>
+                </div>
+                <div class="form-group text-right">
+                    @foreach(enabled_socialites() as $socialite)
+                    <a href="{{route('socialite', $socialite['app'])}}" class="btn btn-outline-primary btn-sm">
+                        {!! $socialite['icon'] !!} {{$socialite['name']}}
+                    </a>
+                    @endforeach
+                </div>
+            </form>
 
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-link" href="{{ route('register') }}">注册</a>
-                        </div>
-                        <div class="col-sm-6 text-right">
-                            <a class="btn btn-link" href="{{ route('password.request') }}">忘记密码</a>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <a class="btn btn-link" href="{{ route('register') }}">注册</a>
+                <a class="btn btn-link float-right" href="{{ route('password.request') }}">忘记密码</a>
             </div>
         </div>
     </div>

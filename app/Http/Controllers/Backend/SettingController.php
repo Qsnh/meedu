@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Meedu\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -21,6 +22,7 @@ class SettingController extends Controller
         $config = [
             'meedu' => config('meedu'),
             'sms' => config('sms'),
+            'services' => config('services'),
         ];
 
         return view('backend.setting.index', compact('config'));
@@ -28,15 +30,7 @@ class SettingController extends Controller
 
     public function saveHandler(Request $request)
     {
-        $rows = [];
-        foreach ($request->all() as $index => $item) {
-            if (! preg_match('/\*/', $index)) {
-                continue;
-            }
-            $index = str_replace('*', '.', $index);
-            $rows[$index] = $item;
-        }
-        file_put_contents(config('meedu.save'), json_encode($rows));
+        app()->make(Setting::class)->save($request);
         flash('修改成功', 'success');
 
         return back();

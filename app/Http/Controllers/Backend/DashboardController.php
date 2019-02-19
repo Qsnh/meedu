@@ -12,7 +12,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\User;
-use App\Models\RechargePayment;
+use App\Models\Order;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -20,13 +20,13 @@ class DashboardController extends Controller
     public function index()
     {
         $todayRegisterUserCount = User::todayRegisterCount();
-        $todayRechargeCount = RechargePayment::todaySuccessCount();
-        $todayRechargeSum = RechargePayment::todaySuccessSum();
+        $todayPaidNum = Order::todayPaidNum();
+        $todayPaidSum = Order::todayPaidSum();
 
         return view('backend.dashboard.index', compact(
-            'todayRechargeCount',
-            'todayRechargeSum',
-            'todayRegisterUserCount'
+            'todayRegisterUserCount',
+            'todayPaidNum',
+            'todayPaidSum'
         ));
     }
 }

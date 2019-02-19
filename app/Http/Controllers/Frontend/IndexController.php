@@ -11,40 +11,45 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Role;
-use App\Models\Course;
+use App\Models\Link;
+use App\Events\AdFromEvent;
 use Illuminate\Http\Request;
 use App\Models\EmailSubscription;
-use Illuminate\Support\Facades\Cache;
+use App\Repositories\IndexRepository;
 
 class IndexController extends FrontendController
 {
-    public function index()
+    public function index(Request $request, IndexRepository $repository)
     {
-        $courses = Cache::remember('index_recent_course', 360, function () {
-            return Course::published()->show()->orderByDesc('created_at')->limit(3)->get();
-        });
-        $roles = Cache::remember('index_roles', 360, function () {
-            return Role::orderByDesc('weight')->limit(3)->get();
-        });
+        $courses = $repository->recentPublishedAndShowCourses();
+        $roles = $repository->roles();
+
+        // AdFrom
+        if ($request->input('from')) {
+            event(new AdFromEvent($request->input('from')));
+        }
+
+        // 友情链接
+        $links = Link::linksCache();
+
         ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
 
-        return view('frontend.index.index', compact('courses', 'roles', 'title', 'keywords', 'description'));
+        return v(
+            config('meedu.advance.template_index', 'frontend.index.index'),
+            compact('courses', 'roles', 'title', 'keywords', 'description', 'links')
+        );
     }
 
+    /**
+     * 邮件订阅.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function subscriptionHandler(Request $request)
     {
-        $email = $request->input('email', '');
-        if (! $email) {
-            flash('请输入邮箱', 'warning');
-
-            return back();
-        }
-        $exists = EmailSubscription::whereEmail($email)->exists();
-        if (! $exists) {
-            EmailSubscription::create(compact('email'));
-        }
-        flash('订阅成功', 'success');
+        EmailSubscription::saveFromRequest($request);
 
         return back();
     }

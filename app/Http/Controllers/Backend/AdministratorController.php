@@ -47,16 +47,16 @@ class AdministratorController extends Controller
 
     public function showLoginForm()
     {
+        if (Auth::guard($this->guard)->check()) {
+            return \redirect(\route('backend.dashboard.index'));
+        }
+
         return view('backend.auth.login');
     }
 
     public function loginHandle(LoginRequest $request)
     {
-        if (
-            ! Auth::guard($this->guard)->attempt(
-                $request->only(['email', 'password'])
-            )
-        ) {
+        if (! Auth::guard($this->guard)->attempt($request->only(['email', 'password'], $request->input('remember_me')))) {
             flash('邮箱或密码错误');
 
             return back()->withInput(['email']);

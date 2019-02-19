@@ -11,6 +11,16 @@ return [
 
         // 头像
         'default_avatar' => '/images/default_avatar.jpg',
+
+        // Socialite
+        'socialite' => [
+            [
+                'app' => 'github',
+                'name' => 'Github',
+                'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+                'enabled' => false,
+            ],
+        ],
     ],
 
     // 系统结算
@@ -34,6 +44,14 @@ return [
         'image' => [
             'disk' => 'public',
             'path' => 'images',
+            'params' => '',
+        ],
+        'video' => [
+            'aliyun' => [
+                'region' => 'cn-shanghai',
+                'access_key_id' => '',
+                'access_key_secret' => '',
+            ],
         ],
     ],
 
@@ -68,5 +86,54 @@ return [
             'keywords' => '',
             'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
         ],
+        'book_list' => [
+            'title' => '电子书',
+            'keywords' => '',
+            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+        ],
+    ],
+
+    // 系统配置
+    'system' => [
+        'cache' => [
+            'status' => -1,
+            'expire' => 360,
+        ],
+        'indexMenu' => [
+            'course' => env('INDEX_MENU_COURSE_SHOW', true),
+            'book' => env('INDEX_MENU_BOOK_SHOW', true),
+            'faq' => env('INDEX_MENU_FAQ_SHOW', true),
+            'vip' => env('INDEX_MENU_VIP_SHOW', true),
+        ],
+        'test' => explode(',', env('TEST_MOBILE', '')),
+        'js' => '',
+        'theme' => [
+            'use' => 'default',
+            'path' => resource_path('views'),
+        ],
+        'sms' => 'yunpian',
+    ],
+
+    // 视频鉴权
+    'video' => [
+        'auth' => [
+            'aliyun' => [
+                'private_key' => env('ALIYUN_VIDEO_AUTH_PRIVATE_KEY', ''),
+            ],
+        ],
+    ],
+
+    // advance
+    'advance' => [
+        'layout_footer' => env('LAYOUT_FOOTER') ?: 'components.frontend.footer',
+        'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
+    ],
+
+    // MeEduCloud
+    'cloud' => [
+        'client_id' => 2,
+        'client_secret' => 'MUe00r1VZ5PnT3R5vR3Em3W343YEzmAdrB48ZgYG',
+        'username' => env('MEEDU_CLOUD_USERNAME', ''),
+        'password' => env('MEEDU_CLOUD_PASSWORD', ''),
     ],
 ];

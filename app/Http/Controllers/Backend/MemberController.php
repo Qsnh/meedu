@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Backend;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\MemberRequest;
 
 class MemberController extends Controller
 {
@@ -37,5 +38,18 @@ class MemberController extends Controller
         $member = User::findOrFail($id);
 
         return view('backend.member.show', compact('member'));
+    }
+
+    public function create()
+    {
+        return view('backend.member.create');
+    }
+
+    public function store(MemberRequest $request)
+    {
+        User::create($request->filldata());
+        flash('添加成功', 'success');
+
+        return back();
     }
 }

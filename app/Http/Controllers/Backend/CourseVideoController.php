@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Video;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\CourseVideoRequest;
@@ -44,7 +45,9 @@ class CourseVideoController extends Controller
 
     public function create()
     {
-        return view('backend.video.create');
+        $courses = Course::all();
+
+        return view('backend.video.create', compact('courses'));
     }
 
     public function store(CourseVideoRequest $request, Video $video)
@@ -59,7 +62,9 @@ class CourseVideoController extends Controller
     {
         $video = Video::findOrFail($id);
 
-        return view('backend.video.edit', compact('video'));
+        $courses = Course::all();
+
+        return view('backend.video.edit', compact('video', 'courses'));
     }
 
     public function update(CourseVideoRequest $request, $id)

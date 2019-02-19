@@ -11,7 +11,7 @@
 
 namespace App\Meedu\Payment\Contract;
 
-use App\Models\RechargePayment;
+use App\Models\Order;
 
 interface Payment
 {
@@ -22,7 +22,7 @@ interface Payment
      *
      * @return PaymentStatus
      */
-    public function create(RechargePayment $payment): PaymentStatus;
+    public function create(Order $order): PaymentStatus;
 
     /**
      * 主动查询.
@@ -31,7 +31,7 @@ interface Payment
      *
      * @return PaymentStatus
      */
-    public function query(RechargePayment $payment): PaymentStatus;
+    public function query(Order $order): PaymentStatus;
 
     /**
      * 回调.

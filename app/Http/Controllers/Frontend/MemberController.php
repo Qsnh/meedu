@@ -12,10 +12,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Announcement;
-use App\Models\UserJoinRoleRecord;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Repositories\MemberRepository;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
@@ -27,29 +25,32 @@ class MemberController extends FrontendController
         $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->limit(10)->get();
         $title = '会员中心';
 
-        return view('frontend.member.index', compact('announcement', 'videos', 'title'));
+        return v('frontend.member.index', compact('announcement', 'videos', 'title'));
     }
 
     public function showPasswordResetPage()
     {
         $title = '修改密码';
 
-        return view('frontend.member.password_reset', compact('title'));
+        return v('frontend.member.password_reset', compact('title'));
     }
 
-    public function passwordResetHandler(MemberPasswordResetRequest $request)
+    /**
+     * 密码修改.
+     *
+     * @param MemberPasswordResetRequest $request
+     * @param MemberRepository           $repository
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function passwordResetHandler(MemberPasswordResetRequest $request, MemberRepository $repository)
     {
         [$oldPassword, $newPassword] = $request->filldata();
-        $user = Auth::user();
-        if (! Hash::check($oldPassword, $user->password)) {
-            flash('原密码不正确');
-
-            return back();
+        if (! $repository->passwordChangeHandler($oldPassword, $newPassword)) {
+            flash($repository->errors);
+        } else {
+            flash('密码修改成功', 'success');
         }
-
-        $user->password = bcrypt($newPassword);
-        $user->save();
-        flash('密码修改成功', 'success');
 
         return back();
     }
@@ -58,66 +59,139 @@ class MemberController extends FrontendController
     {
         $title = '更换头像';
 
-        return view('frontend.member.avatar', compact('title'));
+        return v('frontend.member.avatar', compact('title'));
     }
 
-    public function avatarChangeHandler(AvatarChangeRequest $request)
+    /**
+     * 头像更换.
+     *
+     * @param AvatarChangeRequest $request
+     * @param MemberRepository    $repository
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function avatarChangeHandler(AvatarChangeRequest $request, MemberRepository $repository)
     {
         [$path, $url] = $request->filldata();
-        $user = Auth::user();
-        $user->avatar = $url;
-        $user->save();
+        $repository->avatarChangeHandler(Auth::user(), $url);
         flash('头像更换成功', 'success');
 
         return back();
     }
 
-    public function showJoinRoleRecordsPage()
+    /**
+     * 会员订阅界面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showJoinRoleRecordsPage(MemberRepository $repository)
     {
-        $records = UserJoinRoleRecord::whereUserId(Auth::id())->orderByDesc('expired_at')->paginate(8);
+        $records = $repository->roleBuyRecords();
         $title = 'VIP会员记录';
 
-        return view('frontend.member.join_role_records', compact('records', 'title'));
+        return v('frontend.member.join_role_records', compact('records', 'title'));
     }
 
-    public function showMessagesPage()
+    /**
+     * 我的消息页面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showMessagesPage(MemberRepository $repository)
     {
-        $messages = new Paginator(Auth::user()->notifications, 10);
-        $messages->setPath(route('member.messages'));
+        $messages = $repository->messages();
         $title = '我的消息';
 
-        return view('frontend.member.messages', compact('messages', 'title'));
+        return v('frontend.member.messages', compact('messages', 'title'));
     }
 
-    public function showBuyCoursePage()
+    /**
+     * 已购买课程页面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBuyCoursePage(MemberRepository $repository)
     {
-        $courses = Auth::user()->joinCourses()->orderByDesc('pivot_created_at')->paginate(16);
+        $courses = $repository->buyCourses();
         $title = '我的购买的课程';
 
-        return view('frontend.member.buy_course', compact('courses', 'title'));
+        return v('frontend.member.buy_course', compact('courses', 'title'));
     }
 
-    public function showBuyVideoPage()
+    /**
+     * 已购买视频界面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBuyVideoPage(MemberRepository $repository)
     {
-        $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->paginate(16);
+        $videos = $repository->buyVideos();
         $title = '我购买的视频';
 
-        return view('frontend.member.buy_video', compact('videos', 'title'));
+        return v('frontend.member.buy_video', compact('videos', 'title'));
     }
 
-    public function showRechargeRecordsPage()
+    /**
+     * 充值记录界面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showRechargeRecordsPage(MemberRepository $repository)
     {
-        $records = Auth::user()->rechargePayments()->success()->orderByDesc('created_at')->paginate(10);
+        $records = $repository->rechargeRecords();
         $title = '我的充值记录';
 
-        return view('frontend.member.show_recharge_records', compact('records', 'title'));
+        return v('frontend.member.show_recharge_records', compact('records', 'title'));
     }
 
-    public function showOrdersPage()
+    /**
+     * 我的订单界面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showOrdersPage(MemberRepository $repository)
     {
-        $orders = Auth::user()->orders()->orderByDesc('created_at')->paginate(10);
+        $orders = $repository->orders();
         $title = '我的订单';
 
-        return view('frontend.member.show_orders', compact('orders', 'title'));
+        return v('frontend.member.show_orders', compact('orders', 'title'));
+    }
+
+    /**
+     * 显示我的电子书界面.
+     *
+     * @param MemberRepository $repository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showBooksPage(MemberRepository $repository)
+    {
+        $books = $repository->buyBooks();
+
+        return v('frontend.member.show_books', compact('books'));
+    }
+
+    /**
+     * 显示第三方登录界面.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showSocialitePage()
+    {
+        $apps = Auth::user()->socialite()->get();
+
+        return v('frontend.member.socialite', compact('apps'));
     }
 }

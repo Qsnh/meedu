@@ -17,8 +17,6 @@ class PasswordResetRequest extends BaseRequest
     {
         return [
             'mobile' => 'required',
-            'captcha' => 'required|captcha',
-            'sms_captcha' => 'required',
             'password' => 'required|min:6|max:16|confirmed',
         ];
     }
@@ -27,9 +25,6 @@ class PasswordResetRequest extends BaseRequest
     {
         return [
             'mobile.required' => '请输入手机号',
-            'captcha.required' => '请输入图形验证码',
-            'captcha.captcha' => '图形验证码错误',
-            'sms_captcha.required' => '请输入短信验证码',
             'password.required' => '请输入密码',
             'password.min' => '密码长度不能小于6个字符',
             'password.max' => '密码长度不能超过16个字符',

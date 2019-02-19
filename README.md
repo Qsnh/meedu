@@ -1,4 +1,4 @@
-<p align="center"><img src="public/images/meedu.png"/></p>
+<p align="center"><img src="public/images/meedu.jpg"/></p>
 
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
@@ -12,10 +12,23 @@
 
 随着知识付费领域的兴起，尤其是知识付费领域的龙头“得到”的成功，知识付费领域俨然成为了新的风口。经过这几年的发展，知识付费领域的基础建设有了很大的进步，市场上面很多知识付费的平台可以在短短几分钟之内搭建一套属于自己的知识付费应用。但是，这并不是我想要的！可能是处于程序员的角度出发，我更在乎的是这套应用是我自己可以完全控制的！所以 *MeEdu* 诞生了。*MeEdu* 寄托了我对当前知识付费领域的期望。我相信未来的每位身负技能的人都可以通过 *MeEdu* 来构建自己的知识付费应用，通过 *MeEdu* 将自己的知识进行变现。
 
-## 功能
+> 小程序在这里：[https://github.com/YTU94/meedu-wxapp](https://github.com/YTU94/meedu-wxapp)
+
+[MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
+[社区小伙伴 @方块 提供的 MeEdu 超详细视频教程，**收费**](https://www.zuli6.cn/course/1/Meedu-zai-xian-jiao-yu-xi-tong)
+
+## 使用站点
+
+| 站点名 | 地址 |
+| --- | --- |
+| [小滕教学](https://58hualong.com) | `https://58hualong.com` |
+| [MKFK](https://www.zuli6.cn/) | `https://www.zuli6.cn` |
+| [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
+| [菜鸟学院](http://ai-python.cn/) | `http://ai-python.cn` |
+
+## v0.1 功能概览
 
 - [x] 视频点播板块
-- [x] 视频直播板块
 - [x] 手机号注册
 - [x] 视频收费
 - [x] 视频评论互动
@@ -32,25 +45,33 @@
 - [x] 数据表格导出
 - [x] SEO优化
 - [x] 数据定时备份
-- [ ] 电子书板块
+- [x] 电子书板块
 - [x] FAQ
-- [ ] API接口
-- [ ] 微信小程序
-- [ ] 基于 seele 的版权保护
-- [ ] seele 区块链支付
-- [ ] 广告系统
-- [ ] 邀请推广
-- [ ] 积分系统
+- [x] API接口
+- [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
+- [x] 广告系统
+- [x] 友情链接
+
+## 下一步开发计划[构建中，年底前完成]
+
++ 多模板切换系统
++ 插件系统
 
 ## FAQ
 
-- [安装教程](readme.md)
-- [邮件配置教程](readme.md)
-- [有赞云支付配置教程](readme.md)
-- [短信配置教程](readme.md)
-- [视频收费规则细节](readme.md)
-- [定时备份配置](readme.md)
+- [API接口](docs/api/v1/README.md)
+- [安装教程](docs/安装教程.md)
+- [视频收费规则细节](docs/收费规则.md)
+- [模板开发细节](docs/模板开发细节.md)
+- [后端依赖介绍](docs/meedu后端依赖介绍.md)
 
 ## License
 
 **MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次 开发而不必支付费用。
+
+## 交流群
+
+<p>
+<img src="https://s1.ax1x.com/2018/09/29/ilrWvt.jpg" width=300>
+<img src="https://s1.ax1x.com/2018/09/29/ilrhKP.png" width=300>
+</p>

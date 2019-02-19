@@ -1,0 +1,63 @@
+<?php
+
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace App\Http\Controllers\Backend;
+
+use App\Models\{{$model}};
+use App\Http\Requests\Backend\{{$request}};
+use App\Http\Controllers\Controller;
+
+class {{$controllerName}} extends Controller
+{
+    public function index()
+    {
+        $rows = {{$model}}::orderBy('id')->paginate(10);
+
+        return view('backend.{{$name}}.index', compact('rows'));
+    }
+
+    public function create()
+    {
+        return view('backend.{{$name}}.create');
+    }
+
+    public function store({{$request}} $request)
+    {
+        {{$model}}::create($request->filldata());
+        flash('添加成功', 'success');
+
+        return back();
+    }
+
+    public function edit($id)
+    {
+        $one = {{$model}}::findOrFail($id);
+
+        return view('backend.{{$name}}.edit', compact('one'));
+    }
+
+    public function update({{$request}} $request, $id)
+    {
+        $one = {{$model}}::findOrFail($id);
+        $one->fill($request->filldata())->save();
+        flash('编辑成功', 'success');
+
+        return back();
+    }
+
+    public function destroy($id)
+    {
+        {{$model}}::destroy($id);
+        flash('删除成功', 'success');
+
+        return back();
+    }
+}

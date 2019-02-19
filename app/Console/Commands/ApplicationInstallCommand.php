@@ -13,6 +13,8 @@ namespace App\Console\Commands;
 
 use App\Models\Administrator;
 use Illuminate\Console\Command;
+use Illuminate\Database\Seeder;
+use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Artisan;
 
 class ApplicationInstallCommand extends Command
@@ -65,14 +67,21 @@ class ApplicationInstallCommand extends Command
 
     public function actionAdministrator()
     {
+        $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
+        if (! $super) {
+            $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据。');
+
+            return;
+        }
+
         $name = '超级管理员';
         $email = '';
         while ($email == '') {
-            $email = $this->ask('please input administrator email:', '');
+            $email = $this->ask('请输入邮箱:', '');
             if ($email != '') {
                 $exists = Administrator::whereEmail($email)->exists();
                 if ($exists) {
-                    $this->warn('email has already exists.');
+                    $this->warn('邮箱已经存在');
                     $email = '';
                 }
             }
@@ -80,16 +89,16 @@ class ApplicationInstallCommand extends Command
 
         $password = '';
         while ($password == '') {
-            $password = $this->ask('please input administrator password:', '');
+            $password = $this->ask('请输入密码:', '');
         }
 
         $passwordRepeat = '';
         while ($passwordRepeat == '') {
-            $passwordRepeat = $this->ask('please input administrator password repeat:', '');
+            $passwordRepeat = $this->ask('请再输入一次:', '');
         }
 
         if ($passwordRepeat != $password) {
-            $this->warn('password not correct.');
+            $this->warn('两次输入密码不一致.');
 
             return;
         }
@@ -100,18 +109,45 @@ class ApplicationInstallCommand extends Command
             'password' => bcrypt($password),
         ]);
         $administrator->save();
+        $administrator->roles()->attach($super->id);
 
-        $this->info('administrator create success.');
+        $this->info('管理员初始化成功.');
     }
 
     public function actionDev()
     {
         Artisan::call('migrate');
         Artisan::call('db:seed');
-        Administrator::create([
-            'name' => '小滕',
-            'email' => '12345@qq.com',
-            'password' => bcrypt('123123'),
-        ]);
+    }
+
+    // 系统权限生成
+    public function actionRole()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\AdministratorSuperSeeder::class);
+        $seeder->call(\AdministratorPermissionSeeder::class);
+
+        $this->info('数据初始化成功');
+    }
+
+    // 后台菜单
+    public function actionBackendMenu()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\BackendMenuSeeder::class);
+
+        $this->info('数据初始化成功');
+    }
+
+    // 默认模板
+    public function actionTemplate()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\DefaultTemplateSeeder::class);
+
+        $this->info('数据初始化成功');
     }
 }

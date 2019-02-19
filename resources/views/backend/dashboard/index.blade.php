@@ -4,21 +4,31 @@
 
     @include('components.breadcrumb', ['name' => '主面板'])
 
-    <el-row class="backend-dashboard-banner text-center">
-        <el-col span="8">
-            <h1>今日注册</h1>
-            <h3>{{$todayRegisterUserCount}} <small>位</small></h3>
-        </el-col>
-        <el-col span="8">
-            <h1>今日充值</h1>
-            <h3>{{$todayRechargeCount}} <small>单</small></h3>
-        </el-col>
-        <el-col span="8">
-            <h1>今日充值</h1>
-            <h3>{{$todayRechargeSum}} <small>元</small></h3>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-6 col-sm-4 col-lg-4">
+            <div class="card">
+                <div class="card-body p-3 text-center">
+                    <div class="h1 m-0">{{$todayRegisterUserCount}}</div>
+                    <div class="text-muted mb-4">今日注册</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-4">
+            <div class="card">
+                <div class="card-body p-3 text-center">
+                    <div class="h1 m-0">{{$todayPaidNum}}</div>
+                    <div class="text-muted mb-4">今日订单</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-4">
+            <div class="card">
+                <div class="card-body p-3 text-center">
+                    <div class="h1 m-0">{{$todayPaidSum}}</div>
+                    <div class="text-muted mb-4">今日收入</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
-
-@include('components.vue_init')

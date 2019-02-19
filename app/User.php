@@ -13,21 +13,26 @@ namespace App;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Book;
 use App\Models\Role;
 use App\Models\Order;
 use App\Models\Video;
 use App\Models\Course;
+use App\Models\Socialite;
+use App\Models\OrderGoods;
 use App\Models\VideoComment;
 use App\Models\CourseComment;
 use App\Models\RechargePayment;
 use App\Models\UserJoinRoleRecord;
+use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, CreatedAtBetween;
+    use Notifiable, CreatedAtBetween, HasApiTokens;
 
     const ACTIVE_YES = 1;
     const ACTIVE_NO = -1;
@@ -54,9 +59,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = [
-        'show_url', 'credit1_text', 'credit2_text', 'credit3_text',
-    ];
+    /**
+     * 重载passport方法.
+     *
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function findForPassport($name)
+    {
+        return self::whereMobile($name)->first();
+    }
 
     /**
      * 所属角色.
@@ -108,26 +121,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')
             ->withPivot('created_at', 'charge');
-    }
-
-    public function getShowUrlAttribute()
-    {
-        return route('backend.member.show', $this);
-    }
-
-    public function getCredit1TextAttribute()
-    {
-        return config('meedu.credit.credit1.name');
-    }
-
-    public function getCredit2TextAttribute()
-    {
-        return config('meedu.credit.credit2.name');
-    }
-
-    public function getCredit3TextAttribute()
-    {
-        return config('meedu.credit.credit3.name');
     }
 
     /**
@@ -187,7 +180,7 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute($avatar)
     {
-        return $avatar ?: config('meedu.member.default_avatar');
+        return $avatar ?: url(config('meedu.member.default_avatar'));
     }
 
     /**
@@ -231,7 +224,7 @@ class User extends Authenticatable
     public function canSeeThisVideo(Video $video)
     {
         $course = $video->course;
-        if ($video->charge == 0 && $course->charge == 0) {
+        if ($course->charge == 0 || $video->charge == 0) {
             return true;
         }
 
@@ -257,7 +250,7 @@ class User extends Authenticatable
      */
     public function activeRole()
     {
-        return time() < strtotime($this->role_expired_at);
+        return $this->role_id && time() < strtotime($this->role_expired_at);
     }
 
     /**
@@ -266,6 +259,14 @@ class User extends Authenticatable
     public function joinRoles()
     {
         return $this->hasMany(UserJoinRoleRecord::class, 'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'user_book', 'user_id', 'book_id');
     }
 
     /**
@@ -298,6 +299,21 @@ class User extends Authenticatable
     }
 
     /**
+     * 购买书籍处理.
+     *
+     * @param Book $book
+     *
+     * @throws Exception
+     */
+    public function buyBook(Book $book)
+    {
+        if ($this->books()->whereId($book->id)->exists()) {
+            throw new Exception('请勿重复购买');
+        }
+        $this->books()->attach($book->id);
+    }
+
+    /**
      * 今日注册用户数量.
      *
      * @return mixed
@@ -308,5 +324,79 @@ class User extends Authenticatable
             Carbon::now()->format('Y-m-d'),
             Carbon::now()->addDays(1)->format('Y-m-d')
         )->count();
+    }
+
+    /**
+     * 订单成功的处理.
+     *
+     * @param Order $order
+     *
+     * @return bool
+     *
+     * @throws \Throwable
+     */
+    public function handlerOrderSuccess(Order $order)
+    {
+        $goods = $order->goods;
+        DB::beginTransaction();
+        try {
+            foreach ($goods as $goodsItem) {
+                switch ($goodsItem->goods_type) {
+                    case OrderGoods::GOODS_TYPE_COURSE:
+                        $course = Course::find($goodsItem->goods_id);
+                        $this->joinACourse($course);
+                        break;
+                    case OrderGoods::GOODS_TYPE_VIDEO:
+                        $video = Video::find($goodsItem->goods_id);
+                        $this->buyAVideo($video);
+                        break;
+                    case OrderGoods::GOODS_TYPE_ROLE:
+                        $role = Role::find($goodsItem->goods_id);
+                        $this->buyRole($role);
+                        break;
+                    case OrderGoods::GOODS_TYPE_BOOK:
+                        $book = Book::find($goodsItem->goods_id);
+                        $this->buyBook($book);
+                        break;
+                }
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+
+            return false;
+        }
+    }
+
+    /**
+     * 是否可以观看指定电子书.
+     *
+     * @param Book $book
+     *
+     * @return mixed
+     */
+    public function canSeeThisBook(Book $book)
+    {
+        if ($book->charge <= 0) {
+            return true;
+        }
+
+        if ($this->activeRole()) {
+            return true;
+        }
+
+        return $this->books()->whereId($book->id)->exists();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function socialite()
+    {
+        return $this->hasMany(Socialite::class, 'user_id');
     }
 }

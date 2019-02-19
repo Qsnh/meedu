@@ -16,19 +16,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    const GOODS_TYPE_COURSE = 'COURSE';
-    const GOODS_TYPE_VIDEO = 'VIDEO';
-    const GOODS_TYPE_ROLE = 'ROLE';
-
     const STATUS_UNPAY = 1;
     const STATUS_PAID = 9;
 
     protected $table = 'orders';
 
     public $fillable = [
-        'user_id', 'goods_id', 'goods_type',
-        'charge', 'status', 'extra',
+        'user_id', 'charge', 'status', 'order_id',
     ];
+
+    protected $appends = [
+        'status_text',
+    ];
+
+    public function getStatusTextAttribute()
+    {
+        return $this->statusText();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -39,15 +43,29 @@ class Order extends Model
     }
 
     /**
-     * 获取当前订单的商品名.
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getGoodsTypeText()
+    public function goods()
     {
-        $method = 'get'.ucfirst(strtolower($this->goods_type)).'GoodsTypeText';
+        return $this->hasMany(OrderGoods::class, 'order_id');
+    }
 
-        return $this->{$method}();
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function remotePaymentOrders()
+    {
+        return $this->hasMany(OrderRemoteRelation::class, 'order_id');
+    }
+
+    /**
+     * 订单状态文本.
+     *
+     * @return string
+     */
+    public function statusText(): string
+    {
+        return $this->status == self::STATUS_PAID ? '已支付' : '未支付';
     }
 
     /**
@@ -55,29 +73,92 @@ class Order extends Model
      *
      * @return string
      */
-    public function getNotificationContent()
+    public function getNotificationContent(): string
     {
-        return '你已经购买了'.$this->getGoodsTypeText().'，花费了'.$this->charge.'元';
+        $goods = $this->goods;
+        if ($goods->isEmpty()) {
+            return '';
+        }
+        if ($goods->count() == 1) {
+            return sprintf('您购买了%s', $goods[0]->getGoodsTypeText());
+        }
+
+        return sprintf('您购买了%s等%d件商品', $goods[0]->getGoodsTypeText(), $goods->count());
     }
 
-    protected function getCourseGoodsTypeText()
+    /**
+     * 订单标题.
+     *
+     * @return string
+     */
+    public function getOrderListTitle(): string
     {
-        $course = Course::find($this->goods_id);
+        $goods = $this->goods;
+        if ($goods->isEmpty()) {
+            return '';
+        }
+        if ($goods->count() == 1) {
+            return $goods[0]->getGoodsTypeText();
+        }
 
-        return "课程《{$course->title}》";
+        $title = array_reduce($goods->toArray(), function ($item) {
+            return $item->getGoodsTypeText().',';
+        });
+
+        return rtrim($title, ',');
     }
 
-    protected function getVideoGoodsTypeText()
+    /**
+     * @param $query
+     * @param $status
+     *
+     * @return mixed
+     */
+    public function scopeStatus($query, $status)
     {
-        $video = Video::find($this->goods_id);
+        if (! $status) {
+            return $query;
+        }
 
-        return "视频《{$video->title}》";
+        return $query->where('status', $status);
     }
 
-    protected function getRoleGoodsTypeText()
+    /**
+     * @param $query
+     * @param $keywords
+     *
+     * @return mixed
+     */
+    public function scopeKeywords($query, $keywords)
     {
-        $role = Role::find($this->goods_id);
+        if (! $keywords) {
+            return $query;
+        }
+        $memberIds = User::where('nick_name', 'like', "%{$keywords}%")
+            ->orWhere('mobile', 'like', "%{$keywords}%")
+            ->select('id')
+            ->pluck('id');
 
-        return "VIP《{$role->name}》";
+        return $query->whereIn('user_id', $memberIds);
+    }
+
+    /**
+     * 获取今日已支付订单数量.
+     *
+     * @return mixed
+     */
+    public static function todayPaidNum()
+    {
+        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->count();
+    }
+
+    /**
+     * 获取今日已支付总金额.
+     *
+     * @return mixed
+     */
+    public static function todayPaidSum()
+    {
+        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->sum('charge');
     }
 }

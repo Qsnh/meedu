@@ -4,86 +4,103 @@
 
     @include('components.breadcrumb', ['name' => '添加视频'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.video.index') }}'" :name="'返回视频列表'"></meedu-a>
-        </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            {!! csrf_field() !!}
-            <el-col :span="12">
-                <el-form-item label="视频名">
-                    <el-input name="title" placeholder="视频名" value="{{ old('title') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <meedu-markdown :markdown="''" field="description"></meedu-markdown>
-                </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="所属课程">
-                    <meedu-course></meedu-course>
-                </el-form-item>
-                <el-form-item label="简短介绍">
-                    <el-input type="textarea"
-                              name="short_description"
-                              placeholder="简短介绍"
-                              value="{{ old('short_description') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="上架时间">
-                    <el-date-picker
-                            v-model="published_at"
-                            type="datetime"
-                            placeholder="选择上线时间"
-                            name="published_at">
-                    </el-date-picker>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
-                </el-form-item>
-
-                <hr>
-
-                <el-form-item label="URL地址">
-                    <el-input name="url" placeholder="视频播放地址" value="{{ old('url') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="是否显示">
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_YES }}" checked> 是</label>
-                    <label><input type="radio" name="is_show" value="{{ \App\Models\Course::SHOW_NO }}"> 否</label>
-                </el-form-item>
-                <el-form-item label="价格">
-                    <el-input name="charge" placeholder="价格" value="{{ old('charge', 0) }}"></el-input>
-                </el-form-item>
-                <el-form-item label="SEO关键词">
-                    <el-input type="textarea"
-                              name="seo_keywords"
-                              placeholder="SEO关键词"
-                              value="{{ old('seo_keywords') }}"></el-input>
-                </el-form-item>
-                <el-form-item label="SEO描述">
-                    <el-input type="textarea"
-                              name="seo_description"
-                              placeholder="SEO描述"
-                              value="{{ old('seo_description') }}"></el-input>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
+    <form action="" method="post">
+        @csrf
+        <div class="row row-cards">
+            <div class="col-sm-12">
+                <a href="{{ route('backend.video.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>课程 @include('components.backend.required')</label>
+                    <select name="course_id" class="form-control">
+                        <option value="">请选择</option>
+                        @foreach($courses as $course)
+                        <option value="{{$course->id}}">{{$course->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>章节</label>
+                    <select name="chapter_id" class="form-control">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>课程名 @include('components.backend.required')</label>
+                    <input type="text" class="form-control" name="title" value="{{old('title')}}" placeholder="视频名" required>
+                </div>
+                <div class="form-group">
+                    <label>上传视频 @include('components.backend.required')</label>
+                    @include('components.backend.video')
+                </div>
+                <div class="form-group">
+                    <label>描述 @include('components.backend.required')</label>
+                    @include('components.backend.editor', ['name' => 'description'])
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>视频时长 @include('components.backend.required')</label>
+                    <div class="input-group">
+                        <input type="text" name="duration" class="form-control" placeholder="视频时长" value="0" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">秒</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>一句话介绍 @include('components.backend.required')</label>
+                    <textarea name="short_description" class="form-control" rows="2" placeholder="一句话介绍" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>上架时间 @include('components.backend.required')</label>
+                    @include('components.backend.datetime', ['name' => 'published_at', 'value' => date('Y-m-d H:i:s')])
+                </div>
+                <div class="form-group">
+                    <label>是否显示 @include('components.backend.required')</label><br>
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Video::IS_SHOW_YES }}" checked>是</label>
+                    <label><input type="radio" name="is_show" value="{{ \App\Models\Video::IS_SHOW_NO }}">否</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>价格 @include('components.backend.required')</label>
+                    <input type="text" name="charge" placeholder="价格" class="form-control" value="{{old('charge')}}" required>
+                </div>
+                <div class="form-group">
+                    <label>SEO关键字 @include('components.backend.required')</label>
+                    <textarea name="seo_keywords" class="form-control" rows="2" placeholder="SEO关键字" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>SEO描述 @include('components.backend.required')</label>
+                    <textarea name="seo_description" class="form-control" rows="2" placeholder="SEO描述" required></textarea>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
 @endsection
 
 @section('js')
-    <script>
-        var now = new Date();
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    published_at: now
-                }
-            }
+@include('components.backend.aliyun_upload_js')
+<script>
+    $(function () {
+        $('select[name="course_id"]').change(function () {
+            var courseId = $(this).val();
+            $.getJSON(`/backend/ajax/course/${courseId}/chapters`, function (res) {
+                var html = '';
+                $.each(res, function (key, item) {
+                    html += `<option value='${item.id}'>${item.title}</option>`;
+                })
+                $('select[name="chapter_id"]').html(html);
+            })
         });
-    </script>
+    });
+</script>
 @endsection

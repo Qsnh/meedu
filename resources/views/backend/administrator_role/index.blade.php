@@ -4,56 +4,42 @@
 
     @include('components.breadcrumb', ['name' => '角色列表'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator_role.create') }}'" :name="'添加'"></meedu-a>
-        </el-col>
-        <el-col :span="24">
-            <el-table :data="administrators" style="width: 100%">
-                <el-table-column
-                        prop="display_name"
-                        label="角色名">
-                </el-table-column>
-                <el-table-column
-                        prop="slug"
-                        label="Slug">
-                </el-table-column>
-                <el-table-column
-                        prop="description"
-                        label="描述">
-                </el-table-column>
-                <el-table-column
-                        prop="created_at"
-                        label="创建时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                        <meedu-a :size="'mini'" :name="'授权'" :type="'primary'" :url="scope.row.permission_url"></meedu-a>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator_role.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>角色名</th>
+                    <th>Slug</th>
+                    <th>描述</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($roles as $role)
+                <tr>
+                    <td>{{$role->display_name}}</td>
+                    <td>{{$role->slug}}</td>
+                    <td>{{$role->description}}</td>
+                    <td>{{$role->created_at}}</td>
+                    <td>
+                        <a href="{{route('backend.administrator_role.edit', $role)}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.administrator_role.destroy', $role)])
+                        <a href="{{route('backend.administrator_role.permission', $role)}}" class="btn btn-info btn-sm">授权</a>
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="5">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    remoteData: @json($roles),
-                }
-            },
-            computed: {
-                administrators: function () {
-                    var roles = this.remoteData.data;
-                    return roles;
-                }
-            }
-        });
-    </script>
 @endsection

@@ -4,37 +4,42 @@
 
     @include('components.breadcrumb', ['name' => '添加管理员'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator.index') }}'" :name="'返回管理员列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
-                <el-form-item label="姓名">
-                    <el-input name="name" value="{{ old('name') }}" placeholder="请输入姓名"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input name="email" value="{{ old('email') }}" placeholder="请输入邮箱"></el-input>
-                </el-form-item>
-                <el-form-item label="密码">
-                    <el-input name="password" type="password" placeholder="请输入密码"></el-input>
-                </el-form-item>
-                <el-form-item label="请再输入一次密码">
-                    <el-input name="password_confirmation" type="password" placeholder="请再输入一次密码"></el-input>
-                </el-form-item>
-                <el-form-item label="角色">
-                    <select name="role_id[]" multiple="multiple">
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>姓名 @include('components.backend.required')</label>
+                    <input type="text" name="name" class="form-control" placeholder="请输入姓名" required>
+                </div>
+                <div class="form-group">
+                    <label>邮箱 @include('components.backend.required')</label>
+                    <input type="text" name="email" class="form-control" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码 @include('components.backend.required')</label>
+                    <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+                </div>
+                <div class="form-group">
+                    <label>请再输入一次密码 @include('components.backend.required')</label>
+                    <input type="password" name="password_confirmation" class="form-control" placeholder="请再输入一次密码" required>
+                </div>
+                <div class="form-group">
+                    <label>角色 @include('components.backend.required')</label>
+                    <select name="role_id[]" multiple="multiple" class="form-control">
                         @foreach($roles as $role)
                             <option value="{{ $role->id }}">{{ $role->display_name }}</option>
                         @endforeach
                     </select>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">添加</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 @endsection
-
-@include('components.vue_init')

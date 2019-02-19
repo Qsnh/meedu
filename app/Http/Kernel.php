@@ -11,12 +11,32 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\NavShareMiddleware;
 use App\Http\Middleware\UserShareMiddleware;
+use App\Http\Middleware\CheckSmsCodeMiddleware;
+use App\Http\Middleware\InstallCheckMiddleware;
+use App\Http\Middleware\CheckImageCaptchaMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\BackendPermissionCheckMiddleware;
 use App\Http\Middleware\AdministratorLoginCheckMiddleware;
 
 class Kernel extends HttpKernel
 {
+    /**
+     * The bootstrap classes for the application.
+     *
+     * @var array
+     */
+    protected $bootstrappers = [
+        \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
+        \Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
+        \Illuminate\Foundation\Bootstrap\HandleExceptions::class,
+        \Illuminate\Foundation\Bootstrap\RegisterFacades::class,
+        \Illuminate\Foundation\Bootstrap\RegisterProviders::class,
+        \Illuminate\Foundation\Bootstrap\BootProviders::class,
+        \App\Meedu\AddonsProvider::class,
+    ];
+
     /**
      * The application's global HTTP middleware stack.
      *
@@ -30,6 +50,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
 //        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**
@@ -71,5 +92,10 @@ class Kernel extends HttpKernel
 
         'backend.login.check' => AdministratorLoginCheckMiddleware::class,
         'user.share' => UserShareMiddleware::class,
+        'nav.share' => NavShareMiddleware::class,
+        'sms.check' => CheckSmsCodeMiddleware::class,
+        'image.captcha.check' => CheckImageCaptchaMiddleware::class,
+        'backend.permission.check' => BackendPermissionCheckMiddleware::class,
+        'install.check' => InstallCheckMiddleware::class,
     ];
 }

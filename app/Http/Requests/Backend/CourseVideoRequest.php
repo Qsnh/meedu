@@ -40,6 +40,7 @@ class CourseVideoRequest extends FormRequest
             'description' => 'required',
             'published_at' => 'required|date',
             'is_show' => 'required',
+            'duration' => 'required|integer',
         ];
     }
 
@@ -55,6 +56,8 @@ class CourseVideoRequest extends FormRequest
             'published_at.required' => '请选择视频上线时间',
             'published_at.date' => '请选择正确的视频上线时间',
             'is_show.required' => '请选择视频是否显示',
+            'duration.required' => '请输入视频时长',
+            'duration.integer' => '视频时长必须为整数',
         ];
     }
 
@@ -65,6 +68,7 @@ class CourseVideoRequest extends FormRequest
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
             'url' => $this->input('url', ''),
+            'aliyun_video_id' => $this->input('aliyun_video_id', ''),
             'view_num' => $this->input('view_num', 0),
             'short_description' => $this->input('short_description'),
             'description' => $this->input('description'),
@@ -73,6 +77,8 @@ class CourseVideoRequest extends FormRequest
             'published_at' => $this->input('published_at'),
             'is_show' => $this->input('is_show'),
             'charge' => $this->input('charge', 0),
+            'chapter_id' => $this->input('chapter_id', 0),
+            'duration' => $this->input('duration'),
         ];
 
         if ($this->isMethod('post')) {

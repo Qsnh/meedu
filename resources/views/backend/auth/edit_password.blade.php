@@ -4,26 +4,28 @@
 
     @include('components.breadcrumb', ['name' => '修改密码'])
 
-    <el-row>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
+    <div class="row row-cards justify-content-center">
+        <div class="col-sm-4">
+            <form action="" method="post">
+                @csrf
                 <input type="hidden" name="_method" value="PUT">
-                <el-form-item label="原密码">
-                    <el-input name="old_password" type="password" placeholder="请输入原密码"></el-input>
-                </el-form-item>
-                <el-form-item label="密码">
-                    <el-input name="new_password" type="password" placeholder="请输入新密码"></el-input>
-                </el-form-item>
-                <el-form-item label="请再输入一次密码">
-                    <el-input name="new_password_confirmation" type="password" placeholder="请再输入一次新密码">
-                    </el-input>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">修改密码</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+                <div class="form-group">
+                    <label>原密码 @include('components.backend.required')</label>
+                    <input type="password" name="old_password" placeholder="请输入原密码" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>新密码 @include('components.backend.required')</label>
+                    <input type="password" name="new_password" placeholder="请输入新密码" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>请再输入一次新密码 @include('components.backend.required')</label>
+                    <input type="password" name="new_password_confirmation" placeholder="请再输入一次新密码" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">修改密码</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 @endsection
-
-@include('components.vue_init')

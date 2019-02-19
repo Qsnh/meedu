@@ -16,11 +16,12 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
-                <h3 class="text-center">你正在购买课程《{{$course->title}}》</h3>
+    <div class="container all-buy-box">
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <h3 style="line-height: 100px;" class="text-center">你正在购买课程《{{$course->title}}》</h3>
                 <ul class="list-group">
+                    <p>视频如下</p>
                     @foreach($course->videos as $video)
                     <li class="list-group-item">
                         <a href="{{route('video.show', [$course->id, $video->id, $video->slug])}}">{{$video->title}}</a>
@@ -28,19 +29,15 @@
                     @endforeach
                 </ul>
 
-                <p class="lh-30">价格：<b>￥{{$course->charge}}</b></p>
-                <p class="lh-30">当前账户余额：<b>￥{{$user->credit1}}</b></p>
-
-                @if($user->credit1 < $course->price)
-                    <p>您的账户余额不足，请先 <a href="{{route('member.recharge')}}">充值(点我)</a></p>
-                    @else
+                <div style="margin-top: 15px;">
+                    <h1 class="text-center">￥{{$course->charge}}</h1>
                     <form action="" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">立即购买</button>
                         </div>
                     </form>
-                @endif
+                </div>
             </div>
         </div>
     </div>

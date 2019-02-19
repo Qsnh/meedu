@@ -1,1 +1,0 @@
-{!! at_notification_parse($notification) !!}

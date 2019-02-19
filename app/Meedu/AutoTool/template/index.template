@@ -1,0 +1,43 @@
+@extends('layouts.backend')
+
+@section('body')
+
+@include('components.breadcrumb', ['name' => '{name}'])
+
+<div class="row row-cards">
+    <div class="col-sm-12">
+        <a href="{{ route('backend.{app}.create') }}" class="btn btn-primary ml-auto">添加</a>
+    </div>
+    <div class="col-sm-12">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                {header}
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            @forelse($rows as $row)
+            <tr>
+                <td>{{$row->id}}</td>
+                {table}
+                <td>
+                    <a href="{{route('backend.{app}.edit', $row)}}" class="btn btn-warning btn-sm">编辑</a>
+                    @include('components.backend.destroy', ['url' => route('backend.{app}.destroy', $row)])
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td class="text-center" colspan="{columnNum}">暂无记录</td>
+            </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-12">
+        {{$rows->render()}}
+    </div>
+</div>
+
+@endsection

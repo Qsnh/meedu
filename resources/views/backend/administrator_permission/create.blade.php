@@ -4,64 +4,42 @@
 
     @include('components.breadcrumb', ['name' => '添加权限'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator_permission.index') }}'" :name="'返回权限列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
-                <el-form-item label="权限名">
-                    <el-input name="display_name" value="{{ old('display_name') }}" placeholder="请输入权限名"></el-input>
-                </el-form-item>
-                <el-form-item label="Slug">
-                    <el-input name="slug" value="{{ old('slug') }}" placeholder="请输入Slug"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input name="description" value="{{ old('description') }}" placeholder="请输入描述"></el-input>
-                </el-form-item>
-                <el-form-item label="请求方法">
-                    <el-select v-model="selectedMethods" placeholder="请选择" :multiple="true">
-                        <el-option v-for="method in methods"
-                                   :key="method.value"
-                                   :label="method.label"
-                                   :value="method.value"></el-option>
-                    </el-select>
-                    <input type="hidden" name="method[]" :value="method" v-for="method in selectedMethods" :key="method">
-                </el-form-item>
-                <el-form-item label="请求地址">
-                    <el-input name="url" value="{{ old('url') }}" placeholder="请输入请求地址"></el-input>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">添加</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator_permission.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>权限名 @include('components.backend.required')</label>
+                    <input type="text" name="display_name" class="form-control" placeholder="请输入权限名" required>
+                </div>
+                <div class="form-group">
+                    <label>Slug @include('components.backend.required')</label>
+                    <input type="text" name="slug" class="form-control" placeholder="请输入Slug" required>
+                </div>
+                <div class="form-group">
+                    <label>描述 @include('components.backend.required')</label>
+                    <input type="text" name="description" class="form-control" placeholder="请输入描述" required>
+                </div>
+                <div class="form-group">
+                    <label>请求方式 @include('components.backend.required')</label>
+                    <select name="method[]" class="form-control" multiple>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>请求地址[支持正则表达式] @include('components.backend.required')</label>
+                    <input type="text" name="url" class="form-control" placeholder="请求地址[支持正则表达式]" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    methods: [
-                        {
-                            value: 'GET',
-                            label: 'GET'
-                        },
-                        {
-                            value: 'POST',
-                            label: 'POST'
-                        },
-                        {
-                            value: 'PUT',
-                            label: 'PUT'
-                        }
-                    ],
-                    selectedMethods: []
-                }
-            }
-        });
-    </script>
 @endsection

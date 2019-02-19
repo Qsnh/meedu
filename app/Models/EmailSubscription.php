@@ -11,6 +11,7 @@
 
 namespace App\Models;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class EmailSubscription extends Model
@@ -20,4 +21,24 @@ class EmailSubscription extends Model
     protected $fillable = [
         'email',
     ];
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function saveFromRequest(Request $request)
+    {
+        $email = $request->post('email', '');
+        if (! $email) {
+            flash('请输入邮箱', 'warning');
+
+            return back();
+        }
+        $exists = EmailSubscription::whereEmail($email)->exists();
+        if (! $exists) {
+            EmailSubscription::create(compact('email'));
+        }
+        flash('订阅成功', 'success');
+    }
 }

@@ -4,27 +4,28 @@
 
     @include('components.breadcrumb', ['name' => '角色授权'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator_role.index') }}'" :name="'返回角色列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
-                @foreach($permissions as $permission)
-                    <label>
-                        <input type="checkbox"
-                               name="permission_id[]"
-                               value="{{ $permission->id }}"
-                                {{ $role->hasPermission($permission) ? 'checked' : '' }}> {{ $permission->display_name }}
-                    </label>
-                @endforeach
-                <br><br>
-                <el-button type="primary" native-type="submit">授权</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator_role.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    @foreach($permissions as $permission)
+                        <label>
+                            <input type="checkbox"
+                                   name="permission_id[]"
+                                   value="{{ $permission->id }}"
+                                    {{ $role->hasPermission($permission) ? 'checked' : '' }}> {{ $permission->display_name }}
+                        </label><br>
+                    @endforeach
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 @endsection
-
-@include('components.vue_init')

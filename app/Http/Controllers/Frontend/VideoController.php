@@ -11,13 +11,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Exception;
 use App\Models\Order;
 use App\Models\Video;
-use App\Models\VideoComment;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\SimpleMessageNotification;
+use App\Repositories\VideoRepository;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends FrontendController
@@ -32,17 +29,19 @@ class VideoController extends FrontendController
         $title = sprintf('视频《%s》', $video->title);
         $keywords = $video->keywords;
         $description = $video->description;
+        $comments = $video->comments()->orderByDesc('created_at')->paginate(8);
 
-        return view('frontend.video.show', compact('video', 'title', 'keywords', 'description'));
+        // 视频观看次数[UV]
+        $video->view_num++;
+        $video->save();
+
+        return v('frontend.video.show', compact('video', 'title', 'keywords', 'description', 'comments'));
     }
 
     public function commentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
         $video = Video::findOrFail($videoId);
-        $comment = $video->comments()->save(new VideoComment([
-            'user_id' => Auth::id(),
-            'content' => $request->input('content'),
-        ]));
+        $comment = $video->commentHandler($request->input('content'));
         $comment ? flash('评论成功', 'success') : flash('评论失败');
 
         return back();
@@ -53,53 +52,23 @@ class VideoController extends FrontendController
         $video = Video::findOrFail($id);
         $title = sprintf('购买视频《%s》', $video->title);
 
-        return view('frontend.video.buy', compact('video', compact('title')));
+        return v('frontend.video.buy', compact('video', compact('title')));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(VideoRepository $repository, $id)
     {
         $video = Video::findOrFail($id);
         $user = Auth::user();
-        $videoUrl = route('video.show', [$video->course->id, $video->id, $video->slug]);
 
-        if ($user->buyVideos()->whereId($video->id)->exists()) {
-            flash('您已经购买过本视频啦', 'success');
-
-            return redirect($videoUrl);
-        }
-        if ($user->credit1 < $video->charge) {
-            flash('余额不足，请先充值', 'warning');
-
-            return redirect(route('member.recharge'));
-        }
-
-        DB::beginTransaction();
-        try {
-            // 创建订单记录
-            $order = $user->orders()->save(new Order([
-                'goods_id' => $video->id,
-                'goods_type' => Order::GOODS_TYPE_VIDEO,
-                'charge' => $video->charge,
-                'status' => Order::STATUS_PAID,
-            ]));
-            // 购买视频
-            $user->buyAVideo($video);
-            // 扣除余额
-            $user->credit1Dec($video->charge);
-            // 消息通知
-            $user->notify(new SimpleMessageNotification($order->getNotificationContent()));
-
-            DB::commit();
-
-            flash('购买成功', 'success');
-
-            return redirect($videoUrl);
-        } catch (Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            flash('购买失败', 'warning');
+        $order = $repository->createOrder($user, $video);
+        if (! ($order instanceof Order)) {
+            flash($order, 'warning');
 
             return back();
         }
+
+        flash('下单成功，请支付', 'success');
+
+        return redirect(route('order.show', $order->order_id));
     }
 }

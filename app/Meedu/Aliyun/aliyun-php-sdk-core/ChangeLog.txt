@@ -1,0 +1,15 @@
+2018-03-13 Version: 1.1.4
+1, Three scene completion StsToken
+
+2017-12-22 Version: 1.2.0
+1, STS token that supports ordinary scenes.
+
+2017-09-30 Version: 1.1.3
+1, fix bug:修改客户端默认时区
+
+2017-09-06 Version: 1.1.4
+1, 修改IoT套件美西和新加坡节点的endpoint
+
+2017-07-25 Version: 1.1.3
+1, 修改IoT套件在华东2个Region上的endpoint。
+

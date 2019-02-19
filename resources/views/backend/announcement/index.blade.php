@@ -4,47 +4,40 @@
 
     @include('components.breadcrumb', ['name' => '公告'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.announcement.create') }}'" :name="'添加'"></meedu-a>
-        </el-col>
-        <el-col :span="24">
-            <el-table :data="announcements" style="width: 100%">
-                <el-table-column
-                        prop="administrator.name"
-                        label="添加人">
-                </el-table-column>
-                </el-table-column>
-                <el-table-column
-                        prop="updated_at"
-                        label="最后编辑时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.announcement.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>添加人</th>
+                    <th>最后编辑时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($announcements as $announcement)
+                <tr>
+                    <td>{{$announcement->administrator->name}}</td>
+                    <td>{{$announcement->updated_at}}</td>
+                    <td>
+                        <a href="{{route('backend.announcement.edit', $announcement)}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.announcement.destroy', $announcement)])
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="3">暂无数据</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12">
+            {{$announcements->render()}}
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    <script>
-        var Page = new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    remoteData: @json($announcements),
-                }
-            },
-            computed: {
-                announcements: function () {
-                    return this.remoteData.data;
-                }
-            }
-        });
-    </script>
 @endsection

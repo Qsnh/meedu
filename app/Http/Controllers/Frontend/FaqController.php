@@ -21,7 +21,7 @@ class FaqController extends Controller
     {
         $categories = FaqCategory::all();
 
-        return view('frontend.faq.index', compact('categories'));
+        return v('frontend.faq.index', compact('categories'));
     }
 
     public function showCategoryPage($categoryId)
@@ -30,7 +30,7 @@ class FaqController extends Controller
         $categories = FaqCategory::all();
         $articles = $category->articles()->orderByDesc('updated_at')->paginate(15);
 
-        return view('frontend.faq.category_detail', compact('category', 'categories', 'articles'));
+        return v('frontend.faq.category_detail', compact('category', 'categories', 'articles'));
     }
 
     public function showArticlePage($articleId)
@@ -38,6 +38,6 @@ class FaqController extends Controller
         $article = FaqArticle::findOrFail($articleId);
         $categories = FaqCategory::all();
 
-        return view('frontend.faq.article_detail', compact('article', 'categories'));
+        return v('frontend.faq.article_detail', compact('article', 'categories'));
     }
 }

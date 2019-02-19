@@ -4,50 +4,35 @@
 
     @include('components.breadcrumb', ['name' => '添加FAQ文章'])
 
-    <el-row>
-        <el-col :span="24" style="margin-bottom: 20px;">
-            <meedu-a :url="'{{ route('backend.faq.article.index') }}'" :name="'返回列表'"></meedu-a>
-        </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-        <el-form label-position="top" method="post">
-            {!! csrf_field() !!}
-            <el-col :span="12" :offset="6">
-
-                <el-form-item label="FAQ分类">
-                    <select name="category_id">
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.faq.article.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>分类 @include('components.backend.required')</label>
+                    <select name="category_id" class="form-control">
+                        <option value="">无</option>
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
                     </select>
-                </el-form-item>
+                </div>
+                <div class="form-group">
+                    <label>文章标题 @include('components.backend.required')</label>
+                    <input type="text" name="title" class="form-control" placeholder="文章标题" value="{{old('title')}}" required>
+                </div>
+                <div class="form-group">
+                    <label>文章内容 @include('components.backend.required')</label>
+                    @include('components.backend.editor', ['name' => 'content'])
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                <el-form-item label="文章标题">
-                    <el-input name="title" placeholder="文章标题" value="{{ old('title') }}"></el-input>
-                </el-form-item>
-
-                <el-form-item label="文章内容">
-                    <meedu-markdown :markdown="''" field="content"></meedu-markdown>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button native-type="submit" type="primary" native-button="submit">添加</el-button>
-                </el-form-item>
-            </el-col>
-        </el-form>
-    </el-row>
-
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                }
-            }
-        });
-    </script>
 @endsection

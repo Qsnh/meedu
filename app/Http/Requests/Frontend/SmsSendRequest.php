@@ -20,7 +20,7 @@ class SmsSendRequest extends BaseRequest
         return [
             'captcha' => 'required|captcha',
             'mobile' => 'required',
-            'method' => ['required', Rule::in(['passwordReset'])],
+            'method' => ['required', Rule::in(['password_reset', 'register'])],
         ];
     }
 
@@ -38,7 +38,7 @@ class SmsSendRequest extends BaseRequest
     {
         return [
             'mobile' => $this->input('mobile'),
-            'method' => ucfirst($this->input('method')),
+            'method' => implode('', array_map('ucfirst', explode('_', $this->input('method')))),
         ];
     }
 }

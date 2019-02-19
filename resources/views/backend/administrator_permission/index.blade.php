@@ -4,63 +4,46 @@
 
     @include('components.breadcrumb', ['name' => '权限列表'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.administrator_permission.create') }}'" :name="'添加'"></meedu-a>
-        </el-col>
-        <el-col :span="24">
-            <el-table :data="administrators" style="width: 100%">
-                <el-table-column
-                        prop="display_name"
-                        label="权限名">
-                </el-table-column>
-                <el-table-column
-                        prop="slug"
-                        label="Slug">
-                </el-table-column>
-                <el-table-column
-                        prop="description"
-                        label="描述">
-                </el-table-column>
-                <el-table-column
-                        prop="method"
-                        label="请求方法">
-                </el-table-column>
-                <el-table-column
-                        prop="url"
-                        label="请求地址">
-                </el-table-column>
-                <el-table-column
-                        prop="created_at"
-                        label="创建时间">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <meedu-a :size="'mini'" :name="'编辑'" :type="'warning'" :url="scope.row.edit_url"></meedu-a>
-                        <meedu-destroy-button :url="scope.row.destroy_url"></meedu-destroy-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a href="{{ route('backend.administrator_permission.create') }}" class="btn btn-primary ml-auto">添加</a>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>权限名</th>
+                    <th>Slug</th>
+                    <th>描述</th>
+                    <th>请求方法</th>
+                    <th>请求地址</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($permissions as $permission)
+                <tr>
+                    <td>{{$permission->display_name}}</td>
+                    <td>{{$permission->slug}}</td>
+                    <td>{{$permission->description}}</td>
+                    <td>{{$permission->method}}</td>
+                    <td><span class="badge badge-info">{{$permission->url}}</span></td>
+                    <td>
+                        <a href="{{route('backend.administrator_permission.edit', $permission)}}" class="btn btn-warning btn-sm">编辑</a>
+                        @include('components.backend.destroy', ['url' => route('backend.administrator_permission.destroy', $permission)])
+                    </td>
+                </tr>
+                    @empty
+                <tr>
+                    <td class="text-center" colspan="6">暂无记录</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-12">
+            {{$permissions->render()}}
+        </div>
+    </div>
 
-@endsection
-
-@section('js')
-    <script>
-        new Vue({
-            el: '#app',
-            data: function () {
-                return {
-                    remoteData: @json($permissions),
-                }
-            },
-            computed: {
-                administrators: function () {
-                    var data = this.remoteData.data;
-                    return data;
-                }
-            }
-        });
-    </script>
 @endsection

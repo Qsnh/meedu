@@ -4,21 +4,22 @@
 
     @include('components.breadcrumb', ['name' => '添加公告'])
 
-    <el-row>
-        <el-col :span="24">
-            <meedu-a :url="'{{ route('backend.announcement.index') }}'" :name="'返回公告列表'"></meedu-a>
-        </el-col>
-        <el-col :span="12" :offset="6">
-            <el-form label-position="top" method="post">
-                {!! csrf_field() !!}
-                <el-form-item label="公告内容">
-                    <meedu-markdown :markdown="''" field="announcement"></meedu-markdown>
-                </el-form-item>
-                <el-button type="primary" native-type="submit">添加</el-button>
-            </el-form>
-        </el-col>
-    </el-row>
+    <div class="row row-cards">
+        <div class="col-sm-12">
+            <a class="btn btn-primary ml-auto" href="{{ route('backend.announcement.index') }}">返回公告列表</a>
+        </div>
+        <div class="col-sm-12">
+            <form action="" method="post">
+                @csrf
+                <div class="form-group">
+                    <label>公告内容 @include('components.backend.required')</label>
+                    @include('components.backend.editor', ['name' => 'announcement'])
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 @endsection
-
-@include('components.vue_init')
