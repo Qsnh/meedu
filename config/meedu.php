@@ -62,11 +62,6 @@ return [
     
     // 支付网关
     'payment' => [
-        'youzan' => [
-            'client_id' => env('YOUZAN_CLIENT_ID', ''),
-            'client_secret' => env('YOUZAN_CLIENT_SECRET', ''),
-            'kdt_id' => env('YOUZAN_CLIENT_KDT_ID', ''),
-        ],
     ],
 
     // SEO
