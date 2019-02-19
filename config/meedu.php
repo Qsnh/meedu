@@ -62,6 +62,13 @@ return [
     
     // 支付网关
     'payment' => [
+        [
+            'handler' => \App\Meedu\Payment\Alipay\Alipay::class,
+            'name' => '支付宝',
+            'sign' => 'alipay',
+            'default_method' => 'web',
+            'pc' => true,
+        ],
     ],
 
     // SEO

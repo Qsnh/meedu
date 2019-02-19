@@ -85,6 +85,7 @@ Route::group([
 
     // 收银台
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
+    Route::post('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
