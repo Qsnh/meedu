@@ -21,5 +21,10 @@ RUN apt update \
     && docker-php-ext-install zip \
     && docker-php-ext-install pdo \
     && docker-php-ext-install pdo_mysql
+#
+#RUN php -r "readfile('https://getcomposer.org/installer');" | php \
+#    && php composer.phar install --no-dev \
+#    && cp .env.example .env \
+#    && php artisan key:generate
 
 EXPOSE 9000

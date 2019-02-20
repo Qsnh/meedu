@@ -5,7 +5,7 @@ services:
     build:
       context: ./docker
     volumes:
-      - .:/var/www/html/:rw
+      - ./:/var/www/html/
     restart: always
     expose:
       - "9000"
@@ -36,6 +36,7 @@ services:
       - ./docker/mysql/conf:/etc/mysql/conf.d/:rw
       - ./docker/mysql/logs:/logs/:rw
       - ./docker/mysql/data:/var/lib/mysql/:rw
+      - ./mysql/init:/docker-entrypoint-initdb.d/
     restart: always
     networks:
      - meedu-net
