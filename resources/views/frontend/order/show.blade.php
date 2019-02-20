@@ -20,7 +20,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-4 text-center" style="min-height: 400px;">
                 <p>订单号：{{$order->order_id}} ￥{{$order->charge}}</p>
-                @if(!$payments)
+                @if($payments->isEmpty())
                 <p class="mt-3">
                     暂无支付渠道，请联系站长手动处理【联系方式见页面下方】。
                 </p>

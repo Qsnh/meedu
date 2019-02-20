@@ -153,6 +153,32 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-header">支付宝配置</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>是否开启</label><br>
+                            <input type="radio" name="meedu*payment*alipay*enabled" value="1"
+                                    {{config('meedu.payment.alipay.enabled') == 1 ? 'checked' : ''}}> 启用
+                            <input type="radio" name="meedu*payment*alipay*enabled" value="0"
+                                    {{config('meedu.payment.alipay.enabled') == 0 ? 'checked' : ''}}> 不启用
+                        </div>
+                        <div class="form-group">
+                            <label>AppId</label>
+                            <input type="text" name="pay*alipay*app_id" class="form-control"
+                                   value="{{config('pay.alipay.app_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>公钥(RSA2加密方式)</label>
+                            <textarea name="pay*alipay*ali_public_key" class="form-control" rows="3">{{config('pay.alipay.ali_public_key')}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>私钥(RSA2加密方式)</label>
+                            <textarea name="pay*alipay*private_key" class="form-control" rows="3">{{config('pay.alipay.private_key')}}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-header">视频上传配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">

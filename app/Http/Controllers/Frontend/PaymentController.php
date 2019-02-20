@@ -20,7 +20,7 @@ class PaymentController extends FrontendController
     {
         $orderId = $request->input('out_trade_no');
         $order = Order::whereOrderId($orderId)->firstOrFail();
-        $payments = collect(config('meedu.payment'))->keyBy('sign');
+        $payments = config('meedu.payment');
         $handler = $payments[$order->payment]['handler'];
 
         return app()->make($handler)->callback($order);

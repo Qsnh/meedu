@@ -31,8 +31,8 @@ class OrderController extends Controller
 
             return back();
         }
-        $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
-            return $payment['pc'] === false;
+        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
+            return $payment['pc'] != 1;
         });
 
         return v('frontend.order.show', compact('order', 'payments'));
@@ -50,8 +50,8 @@ class OrderController extends Controller
     public function pay(Request $request, OrderRepository $repository, $orderId)
     {
         // 获取PC端能支付的网关
-        $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
-            return $payment['pc'] === false;
+        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
+            return $payment['pc'] != 1;
         });
         $payment = $request->post('payment');
         if (! isset($payments[$payment])) {
