@@ -36,9 +36,9 @@ interface Payment
     /**
      * 回调.
      *
-     * @param $data
+     * @param Order $order
      *
-     * @return PaymentStatus
+     * @return mixed
      */
-    public function callback();
+    public function callback(Order $order);
 }

@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderRemoteRelation extends Model
 {
-    const PAYMENT_YOUZAN = 'youzan';
+    const PAYMENT_ALIPAY = 'alipay';
+    const PAYMENT_WECHAT = 'wechat';
 
     protected $table = 'order_remote_relation';
 

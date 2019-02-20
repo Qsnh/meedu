@@ -33,11 +33,7 @@ class PaymentSuccessListener
      */
     public function handle(PaymentSuccessEvent $event)
     {
-        $payment = $event->payment;
-        if (! $payment) {
-            return;
-        }
-        $order = $payment->order;
+        $order = $event->order;
 
         DB::beginTransaction();
         try {

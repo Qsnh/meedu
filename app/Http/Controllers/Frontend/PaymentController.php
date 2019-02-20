@@ -11,12 +11,18 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Meedu\Payment\Youzan\Youzan;
+use App\Models\Order;
+use Illuminate\Http\Request;
 
 class PaymentController extends FrontendController
 {
-    public function callback()
+    public function callback(Request $request)
     {
-        return (new Youzan())->callback();
+        $orderId = $request->input('out_trade_no');
+        $order = Order::whereOrderId($orderId)->firstOrFail();
+        $payments = collect(config('meedu.payment'))->keyBy('sign');
+        $handler = $payments[$order->payment]['handler'];
+
+        return app()->make($handler)->callback($order);
     }
 }

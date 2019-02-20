@@ -76,4 +76,19 @@ class OrderController extends Controller
 
         return $response;
     }
+
+    /**
+     * 支付成功返回界面.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function success(Request $request)
+    {
+        $orderId = $request->input('out_trade_no', '');
+        $order = Order::whereOrderId($orderId)->firstOrFail();
+
+        return v('frontend.order.success', compact('order'));
+    }
 }

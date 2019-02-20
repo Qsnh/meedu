@@ -14,7 +14,7 @@ namespace App\Meedu\Payment\Alipay;
 use Exception;
 use App\Models\Order;
 use Yansongda\Pay\Pay;
-use Illuminate\Support\Facades\Log;
+use App\Events\PaymentSuccessEvent;
 use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
 
@@ -31,7 +31,7 @@ class Alipay implements Payment
     {
         $payOrderData = [
             'out_trade_no' => $order->order_id,
-            'total_amount' => $order->charge,
+            'total_amount' => app()->environment(['dev', 'local']) ? 0.01 : $order->charge,
             'subject' => $order->getOrderListTitle(),
         ];
         $createResult = Pay::alipay(config('pay.alipay'))
@@ -44,13 +44,13 @@ class Alipay implements Payment
     {
     }
 
-    public function callback()
+    public function callback(Order $order)
     {
         $pay = Pay::alipay(config('pay.alipay'));
 
         try {
             $data = $pay->verify();
-            Log::info($data);
+            event(new PaymentSuccessEvent($order));
         } catch (Exception $e) {
             exception_record($e);
         }

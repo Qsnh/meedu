@@ -36,7 +36,7 @@ class Wechat implements Payment
     {
     }
 
-    public function callback()
+    public function callback(Order $order)
     {
         $pay = Pay::alipay(config('pay.wechat'));
 
