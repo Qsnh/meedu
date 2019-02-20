@@ -131,31 +131,6 @@
                     </div>
                 </div>
 
-
-                <div class="card">
-                    <div class="card-header">支付配置</div>
-                    <div class="card-body">
-                        <div class="alert alert-warning">
-                            <a href="https://www.youzanyun.com/">有赞云收款服务</a>。支付回调URL：<code>{{route('payment.callback')}}</code>
-                        </div>
-                        <div class="form-group">
-                            <label>有赞ClientId</label>
-                            <input type="text" name="meedu*payment*youzan*client_id" class="form-control"
-                                   value="{{config('meedu.payment.youzan.client_id')}}">
-                        </div>
-                        <div class="form-group">
-                            <label>有赞ClientSecret</label>
-                            <input type="text" name="meedu*payment*youzan*client_secret" class="form-control"
-                                   value="{{config('meedu.payment.youzan.client_secret')}}">
-                        </div>
-                        <div class="form-group">
-                            <label>有赞KdtId</label>
-                            <input type="text" name="meedu*payment*youzan*kdt_id" class="form-control"
-                                   value="{{config('meedu.payment.youzan.kdt_id')}}">
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card">
                     <div class="card-header">图片上传设置</div>
                     <div class="card-body">

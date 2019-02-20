@@ -12,15 +12,68 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Order;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\OrderRepository;
 
 class OrderController extends Controller
 {
-    public function show(OrderRepository $repository, $orderId)
+    public function show($orderId)
     {
         $order = Order::whereOrderId($orderId)->firstOrFail();
+        if ($order->status == Order::STATUS_CANCELED) {
+            flash('该订单已取消');
 
-        return v('frontend.order.show', compact('order'));
+            return back();
+        }
+        if ($order->status == Order::STATUS_PAID) {
+            flash('该订单已支付', 'success');
+
+            return back();
+        }
+        $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
+            return $payment['pc'] === false;
+        });
+
+        return v('frontend.order.show', compact('order', 'payments'));
+    }
+
+    /**
+     * 创建第三方支付订单.
+     *
+     * @param Request         $request
+     * @param OrderRepository $repository
+     * @param $orderId
+     *
+     * @return bool|\Illuminate\Http\RedirectResponse|mixed
+     */
+    public function pay(Request $request, OrderRepository $repository, $orderId)
+    {
+        // 获取PC端能支付的网关
+        $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
+            return $payment['pc'] === false;
+        });
+        $payment = $request->post('payment');
+        if (! isset($payments[$payment])) {
+            flash('支付网关不存在');
+
+            return back();
+        }
+
+        $order = Order::whereOrderId($orderId)->firstOrFail();
+        if (in_array($order->status, [Order::STATUS_PAID, Order::STATUS_CANCELED])) {
+            flash('该订单已支付或已取消');
+
+            return back();
+        }
+
+        $response = $repository->createRemoteOrder($order, $payment);
+        if ($response === false) {
+            flash('远程支付订单创建失败');
+
+            return back();
+        }
+
+        return $response;
     }
 }

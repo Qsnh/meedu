@@ -17,12 +17,22 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     const STATUS_UNPAY = 1;
+    const STATUS_PAYING = 5;
     const STATUS_PAID = 9;
+    const STATUS_CANCELED = 7;
+
+    const STATUS_TEXT = [
+        self::STATUS_UNPAY => '未支付',
+        self::STATUS_PAYING => '支付中',
+        self::STATUS_PAID => '已支付',
+        self::STATUS_CANCELED => '已取消',
+    ];
 
     protected $table = 'orders';
 
-    public $fillable = [
-        'user_id', 'charge', 'status', 'order_id',
+    protected $fillable = [
+        'user_id', 'charge', 'status', 'order_id', 'payment',
+        'payment_method',
     ];
 
     protected $appends = [
@@ -65,7 +75,7 @@ class Order extends Model
      */
     public function statusText(): string
     {
-        return $this->status == self::STATUS_PAID ? '已支付' : '未支付';
+        return self::STATUS_TEXT[$this->status] ?? '';
     }
 
     /**
@@ -160,5 +170,17 @@ class Order extends Model
     public static function todayPaidSum()
     {
         return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->sum('charge');
+    }
+
+    /**
+     * 获取支付网关名.
+     *
+     * @return string
+     */
+    public function getPaymentText()
+    {
+        $payments = collect(config('meedu.payment'))->keyBy('sign');
+
+        return $payments[$this->payment] ?? '';
     }
 }

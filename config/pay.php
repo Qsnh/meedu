@@ -6,10 +6,10 @@ return [
         'app_id' => env('ALI_APP_ID', ''),
 
         // 支付宝异步通知地址
-        'notify_url' => '',
+        'notify_url' => 'http://localhost:9000',
 
         // 支付成功后同步通知地址
-        'return_url' => '',
+        'return_url' => 'http://localhost:9000',
 
         // 阿里公共密钥，验证签名时使用
         'ali_public_key' => env('ALI_PUBLIC_KEY', ''),

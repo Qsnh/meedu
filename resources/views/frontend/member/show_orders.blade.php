@@ -22,15 +22,9 @@
                 <td><span class="badge badge-danger">￥{{ $order->charge }}</span></td>
                 <td>{{ $order->getOrderListTitle() }}</td>
                 <td>{{ $order->created_at }}</td>
+                <td><span class="label label-primary">{{$order->statusText()}}</span></td>
                 <td>
-                    @if($order->status == 9)
-                        <span class="badge badge-success">已支付</span>
-                        @else
-                        <span class="badge badge-primary">未支付</span>
-                    @endif
-                </td>
-                <td>
-                    @if($order->status != 9)
+                    @if(in_array($order->status, [\App\Models\Order::STATUS_PAYING, \App\Models\Order::STATUS_UNPAY]))
                         <a href="{{route('order.show', $order->order_id)}}" class="btn btn-primary btn-sm">继续支付</a>
                     @endif
                 </td>
