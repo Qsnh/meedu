@@ -22,9 +22,8 @@
 | 站点名 | 地址 |
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
-| [MKFK](https://www.zuli6.cn/) | `https://www.zuli6.cn` |
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
-| [菜鸟学院](http://ai-python.cn/) | `http://ai-python.cn` |
+| [菜鸟学院](http://123.206.64.46/) | `http://ai-python.cn` |
 
 ## v0.1 功能概览
 
