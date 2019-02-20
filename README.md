@@ -69,6 +69,15 @@
 
 **MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次 开发而不必支付费用。
 
+## 鸣谢
+
+感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
+
+| 昵称 | |
+| --- | --- |
+| `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
+| `@QQ23926367` | `@QQ23926367` |
+
 ## 交流群
 
 <p>
