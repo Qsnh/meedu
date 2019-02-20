@@ -14,8 +14,8 @@ class AddPaymentColumnForOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('payment')->comment('支付网关');
-            $table->string('payment_method')->comment('支付方式');
+            $table->string('payment')->default('')->comment('支付网关');
+            $table->string('payment_method')->default('')->comment('支付方式');
         });
     }
 

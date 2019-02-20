@@ -31,14 +31,11 @@ class OrderController extends Controller
 
             return back();
         }
-        if ($order->status == Order::STATUS_UNPAY) {
-            $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
-                return $payment['pc'] === false;
-            });
+        $payments = collect(config('meedu.payment'))->keyBy('sign')->reject(function ($payment) {
+            return $payment['pc'] === false;
+        });
 
-            return v('frontend.order.show', compact('order', 'payments'));
-        }
-        // TODO 已创建支付订单的
+        return v('frontend.order.show', compact('order', 'payments'));
     }
 
     /**

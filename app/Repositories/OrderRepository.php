@@ -29,8 +29,16 @@ class OrderRepository
     {
         DB::beginTransaction();
         try {
-            // 创建对应的订单
             $payments = collect(config('meedu.payment'))->keyBy('sign');
+
+            // 保存用户选择的支付方式并更新状态
+            $order->fill([
+                'payment' => $payment,
+                'payment_method' => $payments[$payment]['default_method'],
+            ]);
+            $order->save();
+
+            // 创建对应的订单
             $paymentHandler = app()->make($payments[$payment]['handler']);
             $createResult = $paymentHandler->create($order);
             if ($createResult->status == false) {
@@ -38,11 +46,7 @@ class OrderRepository
             }
 
             // 保存用户选择的支付方式并更新状态
-            $order->fill([
-                'payment' => $payment,
-                'status' => Order::STATUS_PAYING,
-                'payment_method' => $payments[$payment]['default_method'],
-            ]);
+            $order->fill(['status' => Order::STATUS_PAYING]);
             $order->save();
 
             DB::commit();
