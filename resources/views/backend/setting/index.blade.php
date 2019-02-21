@@ -175,6 +175,48 @@
                             <label>私钥(RSA2加密方式)</label>
                             <textarea name="pay*alipay*private_key" class="form-control" rows="3">{{config('pay.alipay.private_key')}}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label>返回地址</label>
+                            <input type="text" name="pay*alipay*return_url" class="form-control"
+                                   value="{{config('pay.alipay.return_url')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>回调地址</label>
+                            <input type="text" name="pay*alipay*notify_url" class="form-control"
+                                   value="{{config('pay.alipay.notify_url')}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">微信支付配置</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>是否开启</label><br>
+                            <input type="radio" name="meedu*payment*wechat*enabled" value="1"
+                                    {{config('meedu.payment.wechat.enabled') == 1 ? 'checked' : ''}}> 启用
+                            <input type="radio" name="meedu*payment*wechat*enabled" value="0"
+                                    {{config('meedu.payment.wechat.enabled') == 0 ? 'checked' : ''}}> 不启用
+                        </div>
+                        <div class="form-group">
+                            <label>公众号ID</label>
+                            <input type="text" name="pay*wechat*app_id" class="form-control"
+                                   value="{{config('pay.wechat.app_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>商户ID</label>
+                            <input type="text" name="pay*wechat*mch_id" class="form-control"
+                                   value="{{config('pay.wechat.mch_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>密钥</label>
+                            <textarea name="pay*wechat*key" class="form-control" rows="3">{{config('pay.wechat.key')}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>回调地址</label>
+                            <input type="text" name="pay*wechat*notify_url" class="form-control"
+                                   value="{{config('pay.wechat.notify_url')}}">
+                        </div>
                     </div>
                 </div>
 
