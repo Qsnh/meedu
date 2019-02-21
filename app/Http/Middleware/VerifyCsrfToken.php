@@ -23,6 +23,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/backend/upload/image',
         '/member/upload/image',
-        '/payment/callback',
+        '/payment/callback/*',
     ];
 }

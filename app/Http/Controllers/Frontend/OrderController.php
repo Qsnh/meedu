@@ -14,13 +14,15 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\OrderRepository;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
     public function show($orderId)
     {
-        $order = Order::whereOrderId($orderId)->firstOrFail();
+        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
         if ($order->status == Order::STATUS_CANCELED) {
             flash('该订单已取消');
 
@@ -30,6 +32,11 @@ class OrderController extends Controller
             flash('该订单已支付', 'success');
 
             return back();
+        }
+        if ($order->status == Order::STATUS_PAYING) {
+            $handler = config('meedu.payment.'.$order->payment.'.handler');
+
+            return redirect($handler::payUrl($order));
         }
         $payments = collect(config('meedu.payment'))->reject(function ($payment) {
             return $payment['pc'] != 1;
@@ -49,20 +56,20 @@ class OrderController extends Controller
      */
     public function pay(Request $request, OrderRepository $repository, $orderId)
     {
-        // 获取PC端能支付的网关
-        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
-            return $payment['pc'] != 1;
-        });
-        $payment = $request->post('payment');
-        if (! isset($payments[$payment])) {
-            flash('支付网关不存在');
+        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
+        if (in_array($order->status, [Order::STATUS_PAID, Order::STATUS_CANCELED])) {
+            flash('该订单已支付或已取消');
 
             return back();
         }
 
-        $order = Order::whereOrderId($orderId)->firstOrFail();
-        if (in_array($order->status, [Order::STATUS_PAID, Order::STATUS_CANCELED])) {
-            flash('该订单已支付或已取消');
+        // 获取PC端能支付的网关
+        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
+            return $payment['pc'] != 1;
+        });
+        $payment = $order->payment ?: $request->post('payment');
+        if (! isset($payments[$payment])) {
+            flash('支付网关不存在');
 
             return back();
         }
@@ -90,5 +97,29 @@ class OrderController extends Controller
         $order = Order::whereOrderId($orderId)->firstOrFail();
 
         return v('frontend.order.success', compact('order'));
+    }
+
+    /**
+     * 微信扫码支付.
+     *
+     * @param $orderId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function wechat($orderId)
+    {
+        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
+        $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order->order_id));
+        if (! $wechatData) {
+            $order->status = Order::STATUS_CANCELED;
+            $order->save();
+
+            flash('参数丢失');
+
+            return redirect('/');
+        }
+        $qrcodeUrl = $wechatData['code_url'];
+
+        return v('frontend.order.wechat', compact('qrcodeUrl', 'order'));
     }
 }

@@ -40,7 +40,7 @@ Route::get('/books', 'Frontend\BookController@index')->name('books');
 Route::get('/book/{id}', 'Frontend\BookController@show')->name('book.show');
 
 // 支付回调
-Route::post('/payment/callback', 'Frontend\PaymentController@callback')->name('payment.callback');
+Route::post('/payment/callback/{payment}', 'Frontend\PaymentController@callback')->name('payment.callback');
 
 Route::group([
     'prefix' => '/member',
@@ -85,8 +85,9 @@ Route::group([
 
     // 收银台
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
-    Route::post('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
+    Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
+    Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');

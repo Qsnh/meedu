@@ -29,7 +29,7 @@ class OrderRepository
     {
         DB::beginTransaction();
         try {
-            $payments = collect(config('meedu.payment'))->keyBy('sign');
+            $payments = collect(config('meedu.payment'));
 
             // 保存用户选择的支付方式并更新状态
             $order->fill([
@@ -42,7 +42,7 @@ class OrderRepository
             $paymentHandler = app()->make($payments[$payment]['handler']);
             $createResult = $paymentHandler->create($order);
             if ($createResult->status == false) {
-                return false;
+                throw new Exception('远程支付订单创建失败');
             }
 
             // 保存用户选择的支付方式并更新状态

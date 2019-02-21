@@ -36,9 +36,16 @@ interface Payment
     /**
      * 回调.
      *
+     * @return mixed
+     */
+    public function callback();
+
+    /**
+     * 获取继续支付的URL.
+     *
      * @param Order $order
      *
      * @return mixed
      */
-    public function callback(Order $order);
+    public static function payUrl(Order $order): string;
 }

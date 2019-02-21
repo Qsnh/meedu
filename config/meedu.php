@@ -70,6 +70,14 @@ return [
             'pc' => true,
             'enabled' => 1,
         ],
+        'wechat' => [
+            'handler' => \App\Meedu\Payment\Wechat\Wechat::class,
+            'name' => '微信支付',
+            'sign' => 'wechat',
+            'default_method' => 'scan',
+            'pc' => true,
+            'enabled' => 1,
+        ],
     ],
 
     // SEO

@@ -11,18 +11,23 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
-use Illuminate\Http\Request;
-
 class PaymentController extends FrontendController
 {
-    public function callback(Request $request)
+    /**
+     * 支付回调.
+     *
+     * @param $payment
+     *
+     * @return mixed
+     */
+    public function callback($payment)
     {
-        $orderId = $request->input('out_trade_no');
-        $order = Order::whereOrderId($orderId)->firstOrFail();
         $payments = config('meedu.payment');
-        $handler = $payments[$order->payment]['handler'];
+        if (! isset($payments[$payment])) {
+            abort(404);
+        }
+        $handler = $payments[$payment]['handler'];
 
-        return app()->make($handler)->callback($order);
+        return app()->make($handler)->callback();
     }
 }

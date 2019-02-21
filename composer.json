@@ -24,6 +24,7 @@
         "mews/purifier": "^2.0",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
+        "simplesoftwareio/simple-qrcode": "^2.0",
         "spatie/laravel-backup": "5.10.1",
         "symfony/process": "^4.2",
         "yansongda/laravel-pay": "^2.0"

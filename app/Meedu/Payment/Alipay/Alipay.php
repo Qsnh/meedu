@@ -15,6 +15,7 @@ use Exception;
 use App\Models\Order;
 use Yansongda\Pay\Pay;
 use App\Events\PaymentSuccessEvent;
+use Illuminate\Support\Facades\Log;
 use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
 
@@ -44,17 +45,33 @@ class Alipay implements Payment
     {
     }
 
-    public function callback(Order $order)
+    public function callback()
     {
         $pay = Pay::alipay(config('pay.alipay'));
 
         try {
             $data = $pay->verify();
+            Log::info($data);
+
+            $order = Order::whereOrderId($data['out_trade_no'])->firstOrFail();
+
             event(new PaymentSuccessEvent($order));
         } catch (Exception $e) {
             exception_record($e);
         }
 
         return $pay->success();
+    }
+
+    /**
+     * 支付URL.
+     *
+     * @param Order $order
+     *
+     * @return mixed|string
+     */
+    public static function payUrl(Order $order): string
+    {
+        return route('order.pay', [$order->order_id]);
     }
 }

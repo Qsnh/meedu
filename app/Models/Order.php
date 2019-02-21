@@ -179,8 +179,9 @@ class Order extends Model
      */
     public function getPaymentText()
     {
-        $payments = collect(config('meedu.payment'))->keyBy('sign');
+        $payments = collect(config('meedu.payment'));
+        $payment = $payments[$this->payment] ?? [];
 
-        return $payments[$this->payment] ?? '';
+        return $payment['name'] ?? '';
     }
 }
