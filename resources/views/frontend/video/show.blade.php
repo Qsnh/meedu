@@ -31,28 +31,28 @@
                                             });
                                         });
                                     </script>
-                                    @else
+                                @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
                                             <p class="text-center">
                                                 <a href="{{ route('member.video.buy', $video) }}"
-                                                class="btn btn-primary">购买此视频 ￥{{$video->charge}}</a>
+                                                   class="btn btn-primary">购买此视频 ￥{{$video->charge}}</a>
                                             </p>
                                         @endif
                                         @if($video->course->charge > 0)
                                             <p class="text-center">
                                                 <a href="{{ route('member.course.buy', $video->course->id) }}"
-                                                class="btn btn-danger">购买此套课程 ￥{{$video->course->charge}}</a>
+                                                   class="btn btn-danger">购买此套课程 ￥{{$video->course->charge}}</a>
                                             </p>
                                         @endif
                                     </div>
                                 @endif
                             @else
-                            <div class="col-sm-9 play-box">
-                                <h2 class="text-center" style="line-height: 300px;">
-                                    <a href="{{ route('login') }}">点我登陆</a>
-                                </h2>
-                            </div>
+                                <div class="col-sm-9 play-box">
+                                    <h2 class="text-center" style="line-height: 300px;">
+                                        <a href="{{ route('login') }}">点我登陆</a>
+                                    </h2>
+                                </div>
                             @endif
                         </div>
                         <div class="col-sm-3 play-list" id="play-list-box">
@@ -60,15 +60,15 @@
                                 @if($position = 0)@endif
                                 @if($i = 0)@endif
                                 @if($video->course->hasChapters())
-                                        @foreach($video->course->getChaptersCache() as $chapter)
-                                            <tr class="chapter-title">
-                                                <td colspan="2"><span>{{$chapter->title}}</span></td>
-                                            </tr>
-                                            @foreach($chapter->getVideosCache() as $index => $videoItem)
-                                                @if($i++)@endif
-                                                @if($video->id == $videoItem->id)
-                                                    @if($position = $i)@endif
-                                                @endif
+                                    @foreach($video->course->getChaptersCache() as $chapter)
+                                        <tr class="chapter-title">
+                                            <td colspan="2"><span>{{$chapter->title}}</span></td>
+                                        </tr>
+                                        @foreach($chapter->getVideosCache() as $index => $videoItem)
+                                            @if($i++)@endif
+                                            @if($video->id == $videoItem->id)
+                                                @if($position = $i)@endif
+                                            @endif
                                             <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
                                                 <td class="index">{{$i}}</td>
                                                 <td>
@@ -88,37 +88,37 @@
                                                     </p>
                                                 </td>
                                             </tr>
-                                            @endforeach
                                         @endforeach
+                                    @endforeach
 
-                                    @else
+                                @else
 
-                                @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
-                                    @if($video->id == $videoItem->id)
-                                        @if($position = $index)@endif
-                                    @endif
-                                <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
-                                    <td class="index">{{$index+1}}</td>
-                                    <td>
-                                        <p class="video-title">
-                                            <a href="{{ route('video.show', [$videoItem->course->id, $videoItem->id, $videoItem->slug]) }}">
-                                                @if($videoItem->charge > 0)
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>
-                                                @else
-                                                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                                                @endif
-                                                {{ $videoItem->title }}
-                                            </a>
-                                        </p>
-                                        <p class="extra">
-                                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{duration_humans($videoItem)}}</span>
-                                            <span><i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ view_num_humans($videoItem) }}</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                    @foreach($video->course->getAllPublishedAndShowVideosCache() as $index => $videoItem)
+                                        @if($video->id == $videoItem->id)
+                                            @if($position = $index)@endif
+                                        @endif
+                                        <tr class="{{$video->id == $videoItem->id ? 'active' : ''}}">
+                                            <td class="index">{{$index+1}}</td>
+                                            <td>
+                                                <p class="video-title">
+                                                    <a href="{{ route('video.show', [$videoItem->course->id, $videoItem->id, $videoItem->slug]) }}">
+                                                        @if($videoItem->charge > 0)
+                                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                                        @else
+                                                            <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                                        @endif
+                                                        {{ $videoItem->title }}
+                                                    </a>
+                                                </p>
+                                                <p class="extra">
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{duration_humans($videoItem)}}</span>
+                                                    <span><i class="fa fa-play-circle-o" aria-hidden="true"></i> {{ view_num_humans($videoItem) }}</span>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                                    @endif
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -171,5 +171,9 @@
     @include('components.frontend.emoji')
     <script>
         document.getElementById('play-list-box').scrollTop = {{$position*56}};
+        $('#xiaoteng-player').on('contextmenu', function (e) {
+            e.preventDefault();
+            return false;
+        });
     </script>
 @endsection
