@@ -16,7 +16,9 @@
                     <select name="status" class="form-control">
                         <option value="">无</option>
                         <option value="9" {{input_equal('status', 9) ? 'selected' : ''}}>已支付</option>
-                        <option value="1" {{input_equal('status', 1) ? 'selected' : ''}}>未支付</option>
+                        <option value="5" {{input_equal('status', 5) ? 'selected' : ''}}>支付中</option>
+                        <option value="9" {{input_equal('status', 9) ? 'selected' : ''}}>已支付</option>
+                        <option value="7" {{input_equal('status', 7) ? 'selected' : ''}}>已取消</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -30,6 +32,7 @@
                 <thead>
                 <tr>
                     <th>订单号</th>
+                    <th>支付方式</th>
                     <th>商品</th>
                     <th>用户</th>
                     <th>总金额</th>
@@ -41,6 +44,7 @@
                 @forelse($orders as $order)
                 <tr>
                     <td>{{$order->order_id}}</td>
+                    <td>{{$order->getPaymentText()}}</td>
                     <td>
                         @foreach($order->goods as $good)
                             <span class="badge badge-info">{{$good->getGoodsTypeText()}}</span>
@@ -53,7 +57,7 @@
                 </tr>
                     @empty
                 <tr>
-                    <td class="text-center" colspan="6">暂无记录</td>
+                    <td class="text-center" colspan="7">暂无记录</td>
                 </tr>
                 @endforelse
                 </tbody>
