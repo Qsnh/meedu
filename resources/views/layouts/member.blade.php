@@ -2,6 +2,8 @@
 
 @section('content')
 
+    @include('components.frontend.bind_mobile_alert')
+
     <div class="container member">
         <div class="row">
             <div class="col-sm-3 member-left-box">

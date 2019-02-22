@@ -14,6 +14,7 @@ return [
             'template' => [
                 'password_reset' => '',
                 'register' => '',
+                'mobile_bind' => '',
             ],
         ],
         'yunpian' => [
@@ -22,6 +23,7 @@ return [
             'template' => [
                 'password_reset' => '',
                 'register' => '',
+                'mobile_bind' => '',
             ],
         ],
     ],

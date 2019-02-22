@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
+use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
@@ -33,6 +34,27 @@ class MemberController extends FrontendController
         $title = '修改密码';
 
         return v('frontend.member.password_reset', compact('title'));
+    }
+
+    public function showMobileBindPage()
+    {
+        $title = '绑定手机号';
+
+        return v('frontend.member.mobile_bind', compact('title'));
+    }
+
+    public function mobileBindHandler(MobileBindRequest $request)
+    {
+        $user = \auth()->user();
+        if ($user->isBindMobile()) {
+            flash('当前账户已绑定手机号，请勿重复绑定');
+
+            return back();
+        }
+        $user->fill($request->filldata())->save();
+        flash('绑定成功', 'success');
+
+        return redirect(route('member'));
     }
 
     /**

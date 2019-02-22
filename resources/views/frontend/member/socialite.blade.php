@@ -10,7 +10,7 @@
         <div class="col-sm-12 mt-3 mb-3">
             @foreach(enabled_socialites() as $socialite)
             <a href="{{route('socialite', $socialite['app'])}}" class="btn btn-primary btn-sm">
-                绑定{{$socialite['name']}}
+                绑定 {!! $socialite['icon'] ?? '' !!} {{$socialite['name']}}
             </a>
             @endforeach
         </div>

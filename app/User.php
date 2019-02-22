@@ -20,12 +20,14 @@ use App\Models\Video;
 use App\Models\Course;
 use App\Models\Socialite;
 use App\Models\OrderGoods;
+use Illuminate\Support\Str;
 use App\Models\VideoComment;
 use App\Models\CourseComment;
 use App\Models\RechargePayment;
 use App\Models\UserJoinRoleRecord;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -398,5 +400,52 @@ class User extends Authenticatable
     public function socialite()
     {
         return $this->hasMany(Socialite::class, 'user_id');
+    }
+
+    /**
+     * @param string $name
+     * @param string $avatar
+     *
+     * @return mixed
+     */
+    public static function createUser(string $name, string $avatar)
+    {
+        return User::create([
+            'avatar' => $avatar ?: config('meedu.member.default_avatar'),
+            'nick_name' => $name ?? '',
+            'mobile' => mt_rand(2, 9).mt_rand(1000, 9999).mt_rand(1000, 9999),
+            'password' => Hash::make(Str::random(6)),
+            'is_lock' => config('meedu.member.is_lock_default'),
+            'is_active' => config('meedu.member.is_active_default'),
+            'role_id' => 0,
+            'role_expired_at' => Carbon::now(),
+        ]);
+    }
+
+    /**
+     * 绑定Socialite.
+     *
+     * @param $app
+     * @param $socialite
+     *
+     * @return false|\Illuminate\Database\Eloquent\Model
+     */
+    public function bindSocialite($app, $socialite)
+    {
+        return $this->socialite()->save(new Socialite([
+            'app' => $app,
+            'app_user_id' => $socialite->getId(),
+            'data' => serialize($socialite),
+        ]));
+    }
+
+    /**
+     * 判断是否绑定手机.
+     *
+     * @return bool
+     */
+    public function isBindMobile()
+    {
+        return substr($this->mobile, 0, 1) == 1;
     }
 }

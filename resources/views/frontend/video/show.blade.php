@@ -6,6 +6,8 @@
 
 @section('content')
 
+    @include('components.frontend.bind_mobile_alert')
+
     <div class="container-fluid video-box">
         <div class="row">
             <div class="col-sm-12">

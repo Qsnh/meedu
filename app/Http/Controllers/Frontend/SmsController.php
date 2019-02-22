@@ -43,6 +43,11 @@ class SmsController extends FrontendController
         return $this->sendHandler($mobile, 'sms_password_reset', 'password_reset');
     }
 
+    public function sendMobileBind($mobile)
+    {
+        return $this->sendHandler($mobile, 'sms_mobile_bind', 'mobile_bind');
+    }
+
     /**
      * 发送验证码逻辑.
      *

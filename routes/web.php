@@ -49,6 +49,10 @@ Route::group([
 ], function () {
     Route::get('/', 'MemberController@index')->name('member');
 
+    // 绑定手机号
+    Route::get('/mobile/bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
+    Route::post('/mobile/bind', 'MemberController@mobileBindHandler')->middleware('sms.check');
+
     Route::get('/password_reset', 'MemberController@showPasswordResetPage')->name('member.password_reset');
     Route::post('/password_reset', 'MemberController@passwordResetHandler');
     Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');

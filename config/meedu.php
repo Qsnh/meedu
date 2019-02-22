@@ -14,11 +14,11 @@ return [
 
         // Socialite
         'socialite' => [
-            [
+            'github' => [
                 'app' => 'github',
                 'name' => 'Github',
                 'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
-                'enabled' => false,
+                'enabled' => 0,
             ],
         ],
     ],

@@ -11,7 +11,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Socialite;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Socialite as SocialiteModel;
@@ -92,16 +94,23 @@ class LoginController extends Controller
 
         // 未登录，使用第三方账号登录
         $socialite = SocialiteModel::whereApp($app)->whereAppUserId($user->getId())->first();
-        if (! $socialite) {
-            return redirect('login');
-        }
-        if ($socialite->user_id == 0) {
-            return redirect('login');
-        }
-        // 尝试登录
-        Auth::loginUsingId($socialite->user_id, true);
-        flash('登录成功', 'success');
+        DB::beginTransaction();
+        try {
+            // 创建用户
+            $localUser = User::createUser($user->getName(), $user->getAvatar());
+            // 绑定socialite
+            $socialite = $user->bindSocialite($app, $user);
 
-        return redirect('member');
+            // 尝试登录
+            Auth::loginUsingId($localUser->user_id, true);
+            flash('登录成功', 'success');
+
+            return redirect($this->redirectTo);
+        } catch (\Exception $exception) {
+            exception_record($exception);
+            flash('系统错误');
+
+            return back();
+        }
     }
 }
