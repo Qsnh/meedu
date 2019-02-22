@@ -14,13 +14,6 @@
                     <div class="card-header">系统配置</div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Github登录</label><br>
-                            <input type="radio" name="meedu*member*socialite*github*enabled" value="1"
-                                    {{config('meedu.member.socialite.github.enabled') == 1 ? 'checked' : ''}}> 开启
-                            <input type="radio" name="meedu*member*socialite*github*enabled" value="0"
-                                    {{config('meedu.member.socialite.github.enabled') == 0 ? 'checked' : ''}}> 不开启
-                        </div>
-                        <div class="form-group">
                             <label>缓存开关</label><br>
                             <input type="radio" name="meedu*system*cache*status" value="1"
                                     {{config('meedu.system.cache.status') == 1 ? 'checked' : ''}}> 开启
