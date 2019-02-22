@@ -454,3 +454,22 @@ if (! function_exists('enabled_socialites')) {
         return $enabled;
     }
 }
+
+if (! function_exists('get_payments')) {
+    /**
+     * 获取可用的Payment.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    function get_payments()
+    {
+        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
+            $enabled = $payment['enabled'] ?? true;
+            $pc = $payment['pc'] ?? true;
+
+            return $enabled || $pc;
+        });
+
+        return $payments;
+    }
+}

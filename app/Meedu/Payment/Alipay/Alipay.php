@@ -32,7 +32,7 @@ class Alipay implements Payment
     {
         $payOrderData = [
             'out_trade_no' => $order->order_id,
-            'total_amount' => app()->environment(['dev', 'local']) ? 0.01 : $order->charge,
+            'total_amount' => $order->charge,
             'subject' => $order->getOrderListTitle(),
         ];
         $createResult = Pay::alipay(config('pay.alipay'))

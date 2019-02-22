@@ -38,9 +38,7 @@ class OrderController extends Controller
 
             return redirect($handler::payUrl($order));
         }
-        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
-            return $payment['pc'] != 1;
-        });
+        $payments = get_payments();
 
         return v('frontend.order.show', compact('order', 'payments'));
     }
@@ -64,9 +62,7 @@ class OrderController extends Controller
         }
 
         // 获取PC端能支付的网关
-        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
-            return $payment['pc'] != 1;
-        });
+        $payments = get_payments();
         $payment = $order->payment ?: $request->post('payment');
         if (! isset($payments[$payment])) {
             flash('支付网关不存在');

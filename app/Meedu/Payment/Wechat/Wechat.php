@@ -27,7 +27,7 @@ class Wechat implements Payment
         try {
             $payOrderData = [
                 'out_trade_no' => $order->order_id,
-                'total_fee' => app()->environment(['dev', 'local']) ? 1 : $order->charge * 100,
+                'total_fee' => $order->charge * 100,
                 'body' => $order->getOrderListTitle(),
                 'openid' => '',
             ];
