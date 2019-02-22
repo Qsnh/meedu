@@ -96,13 +96,16 @@ class LoginController extends Controller
         $socialite = SocialiteModel::whereApp($app)->whereAppUserId($user->getId())->first();
         DB::beginTransaction();
         try {
-            // 创建用户
-            $localUser = User::createUser($user->getName(), $user->getAvatar());
-            // 绑定socialite
-            $socialite = $user->bindSocialite($app, $user);
-
+            $userId = optional($socialite)->user_id ?? 0;
+            if (! $userId) {
+                // 创建用户
+                $localUser = User::createUser($user->getName(), $user->getAvatar());
+                // 绑定socialite
+                $socialite = $localUser->bindSocialite($app, $user);
+                $userId = $localUser->id;
+            }
             // 尝试登录
-            Auth::loginUsingId($localUser->user_id, true);
+            Auth::loginUsingId($userId, true);
             flash('登录成功', 'success');
 
             return redirect($this->redirectTo);
