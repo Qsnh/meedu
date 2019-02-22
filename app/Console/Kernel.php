@@ -52,6 +52,9 @@ class Kernel extends ConsoleKernel
             ->dailyAt('05:00')
             ->appendOutputTo(storage_path('logs/backup'));
 
+        // 每分钟
+        $schedule->command('order:pay:timeout')->everyMinute()->appendOutputTo(storage_path('logs/order_pay_timeout'));
+
         // AdFrom 数据同步
         $schedule->command('adfrom:sync')->everyThirtyMinutes();
     }
