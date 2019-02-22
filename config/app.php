@@ -181,6 +181,7 @@ return [
         Mews\Captcha\CaptchaServiceProvider::class,
         \Spatie\Backup\BackupServiceProvider::class,
         HyanCat\DirectMail\AliyunDirectMailServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*

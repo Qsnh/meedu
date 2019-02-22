@@ -20,6 +20,12 @@ return [
                 'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
                 'enabled' => 0,
             ],
+            'qq' => [
+                'app' => 'qq',
+                'name' => 'QQ',
+                'icon' => '<i class="fa fa-qq" aria-hidden="true"></i>',
+                'enabled' => 0,
+            ],
         ],
     ],
 

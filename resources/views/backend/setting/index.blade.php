@@ -39,6 +39,51 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-header">第三方登录</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Github登录</label><br>
+                            <input type="radio" name="meedu*member*socialite*github*enabled" value="1"
+                                    {{config('meedu.member.socialite.github.enabled') == 1 ? 'checked' : ''}}> 开启
+                            <input type="radio" name="meedu*member*socialite*github*enabled" value="0"
+                                    {{config('meedu.member.socialite.github.enabled') == 0 ? 'checked' : ''}}> 不开启
+                        </div>
+                        <div class="form-group">
+                            <label>Github ClientId</label>
+                            <input type="text" name="services*github*client_id" class="form-control" value="{{config('services.github.client_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Github ClientSecret</label>
+                            <input type="text" name="services*github*client_secret" class="form-control" value="{{config('services.github.client_secret')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Github ClientSecret</label>
+                            <input type="text" name="services*github*redirect" class="form-control" value="{{config('services.github.redirect')}}">
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>QQ登录</label><br>
+                            <input type="radio" name="meedu*member*socialite*qq*enabled" value="1"
+                                    {{config('meedu.member.socialite.qq.enabled') == 1 ? 'checked' : ''}}> 开启
+                            <input type="radio" name="meedu*member*socialite*qq*enabled" value="0"
+                                    {{config('meedu.member.socialite.qq.enabled') == 0 ? 'checked' : ''}}> 不开启
+                        </div>
+                        <div class="form-group">
+                            <label>QQ ClientId</label>
+                            <input type="text" name="services*qq*client_id" class="form-control" value="{{config('services.qq.client_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>QQ ClientSecret</label>
+                            <input type="text" name="services*qq*client_secret" class="form-control" value="{{config('services.qq.client_secret')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>QQ RedirectUrl</label>
+                            <input type="text" name="services*qq*redirect" class="form-control" value="{{config('services.qq.redirect')}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-header">阿里云邮箱配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">

@@ -51,4 +51,10 @@ return [
         'redirect' => env('GITHUB_CALLBACK_URL', ''),
     ],
 
+    'qq' => [
+        'client_id' => env('QQ_KEY'),
+        'client_secret' => env('QQ_SECRET'),
+        'redirect' => env('QQ_CALLBACK_URL')
+    ],
+
 ];
