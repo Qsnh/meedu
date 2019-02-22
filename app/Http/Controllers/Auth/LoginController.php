@@ -77,7 +77,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             // 已登录，绑定第三方账号
             if (Auth::user()->socialite()->whereApp($app)->whereAppUserId($user->getId())->exists()) {
-                flash('当前用户已经绑定过该应用啦。请不要重复绑定', 'warning');
+                flash('当前用户已经绑定过该应用啦。', 'success');
             } else {
                 Auth::user()->socialite()->save(new SocialiteModel([
                     'app' => $app,

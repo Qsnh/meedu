@@ -61,14 +61,6 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function remotePaymentOrders()
-    {
-        return $this->hasMany(OrderRemoteRelation::class, 'order_id');
-    }
-
-    /**
      * 订单状态文本.
      *
      * @return string
