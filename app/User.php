@@ -403,12 +403,12 @@ class User extends Authenticatable
     }
 
     /**
-     * @param string $name
-     * @param string $avatar
+     * @param $name
+     * @param $avatar
      *
      * @return mixed
      */
-    public static function createUser(string $name, string $avatar)
+    public static function createUser($name, $avatar)
     {
         return User::create([
             'avatar' => $avatar ?: config('meedu.member.default_avatar'),

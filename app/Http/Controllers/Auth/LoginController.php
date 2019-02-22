@@ -78,7 +78,7 @@ class LoginController extends Controller
         $user = Socialite::driver($app)->user();
         if (Auth::check()) {
             // 已登录，绑定第三方账号
-            if (Auth::user()->socialite()->whereApp($app)->whereAppUserId($user->getId())->exists()) {
+            if (Auth::user()->socialite()->whereApp($app)->exists()) {
                 flash('当前用户已经绑定过该应用啦。', 'success');
             } else {
                 Auth::user()->socialite()->save(new SocialiteModel([
@@ -99,7 +99,7 @@ class LoginController extends Controller
             $userId = optional($socialite)->user_id ?? 0;
             if (! $userId) {
                 // 创建用户
-                $localUser = User::createUser($user->getName(), $user->getAvatar());
+                $localUser = User::createUser($user->getNickname(), $user->getAvatar());
                 // 绑定socialite
                 $socialite = $localUser->bindSocialite($app, $user);
                 $userId = $localUser->id;
@@ -108,8 +108,11 @@ class LoginController extends Controller
             Auth::loginUsingId($userId, true);
             flash('登录成功', 'success');
 
+            DB::commit();
+
             return redirect($this->redirectTo);
         } catch (\Exception $exception) {
+            DB::rollBack();
             exception_record($exception);
             flash('系统错误');
 
