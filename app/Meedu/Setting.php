@@ -81,7 +81,7 @@ class Setting
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function get(): array
+    public function get(): array
     {
         if (! $this->files->exists($this->dist)) {
             return [];
