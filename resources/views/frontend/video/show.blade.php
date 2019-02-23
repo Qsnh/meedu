@@ -16,23 +16,7 @@
                         <div class="col-sm-9 play-box">
                             @if(Auth::check())
                                 @if($user->canSeeThisVideo($video))
-                                    <div id="xiaoteng-player"></div>
-                                    <script>
-                                        $(function () {
-                                            var player = new Player({
-                                                id: 'xiaoteng-player',
-                                                url: '{{$video->getPlayUrl()}}',
-                                                fluid: true,
-                                                playbackRate: [0.5, 0.75, 1, 1.5, 2],
-                                                download: false,
-                                                enterLogo:{
-                                                    url: '/images/player-logo.png',
-                                                    width: 200,
-                                                    height: 100
-                                                },
-                                            });
-                                        });
-                                    </script>
+                                    @include('components.frontend.xg_player', ['video' => $video])
                                 @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)
