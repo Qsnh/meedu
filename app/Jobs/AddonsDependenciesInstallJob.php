@@ -43,7 +43,7 @@ class AddonsDependenciesInstallJob implements ShouldQueue
     public function handle()
     {
         $dependencies = app()->make(\App\Meedu\Addons::class)->parseDependencies(
-            $this->addons->name,
+            $this->addons->sign,
             $this->addons->currentVersion->version
         );
         $logs = [];
@@ -56,7 +56,8 @@ class AddonsDependenciesInstallJob implements ShouldQueue
                 }
 
                 // 执行composer安装命令
-                $process = new Process(['composer', 'required', "{$dependencies}={$version}"]);
+                $process = new Process(['composer', 'required', "{$dependency}={$version}"]);
+                $process->setWorkingDirectory(base_path());
                 $process->run();
 
                 if (! $process->isSuccessful()) {
