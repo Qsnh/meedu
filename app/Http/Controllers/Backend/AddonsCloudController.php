@@ -41,7 +41,7 @@ class AddonsCloudController extends Controller
                 $item['upgrade'] = false;
                 if ($item['installed']) {
                     $version = AddonsVersion::whereId($installedAddons[$item['sign']])->first();
-                    $item['upgrade'] = version_compare($version->version, $item['version'], '<');
+                    $version && $item['upgrade'] = version_compare($version->version, $item['version'], '<');
                 }
 
                 return $item;
