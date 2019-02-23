@@ -80,7 +80,7 @@ class AddonsController extends Controller
             $addons->current_version_id = $version->id;
             $addons->save();
 
-            app()->make(\App\Meedu\Addons::class)->switchVersion($addons->sign, $version->version, $version->path);
+            app()->make(\App\Meedu\Addons::class)->switchVersion($addons->sign, $version->version);
 
             DB::commit();
             flash('切换版本成功', 'success');
@@ -104,7 +104,7 @@ class AddonsController extends Controller
     {
         $addons = Addons::findOrFail($addonsId);
         $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_DEPENDENCY));
-        flash('依赖安装任务已创建，请耐心等待后台执行完成，执行结果稍后可以在安装日志查看', 'success');
+        flash('依赖安装任务已创建，执行结果稍后可以在安装日志查看', 'success');
 
         return back();
     }

@@ -54,7 +54,7 @@ class Addons
         $extractPath = $this->extract($name, $version, $path);
         // 创建软连接
         $linkPath = $this->linkDist.DIRECTORY_SEPARATOR.$name;
-        $this->files->exists($linkPath) && $this->files->deleteDirectory($linkPath);
+        $this->files->exists($linkPath) && $this->deleteLink($linkPath);
         $this->files->link($extractPath, $linkPath);
 
         return [$extractPath, $linkPath];
@@ -70,7 +70,7 @@ class Addons
      */
     public function uninstall(string $name, string $version): void
     {
-        $this->files->deleteDirectory($this->link($name, $version));
+        $this->deleteLink($this->link($name, $version));
         $this->forceDelete && $this->files->deleteDirectories($this->extract($name, $version));
     }
 
@@ -149,9 +149,12 @@ class Addons
      */
     protected function link(string $name, string $version): string
     {
+        // 真实的解压目录
         $extractPath = $this->extractPath($name, $version);
+        // 删除已创建的软链接
         $linkPath = $this->linkPath($name, $version);
-        $this->files->exists($linkPath) && $this->files->deleteDirectory($linkPath);
+        $this->files->exists($linkPath) && $this->deleteLink($linkPath);
+        // 重新创建软链接
         $this->files->link($extractPath, $linkPath);
 
         return $linkPath;
@@ -185,6 +188,25 @@ class Addons
         $linkPath = $this->linkDist.DIRECTORY_SEPARATOR.$name;
 
         return $linkPath;
+    }
+
+    /**
+     * @param $path
+     *
+     * @return bool
+     */
+    protected function deleteLink($path)
+    {
+        $eof = substr($path, -1, 1);
+        if ($eof == '/' || $eof == '\\') {
+            $path = substr($path, 0, mb_strlen($path) - 1);
+        }
+
+        if (! windows_os()) {
+            return $this->files->delete($path);
+        }
+
+        exec("rmdir \"{$path}\"");
     }
 
     /**
