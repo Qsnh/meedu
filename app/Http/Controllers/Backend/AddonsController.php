@@ -13,7 +13,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Addons;
 use App\Models\AddonsLog;
-use App\Jobs\AddonsInstallJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Jobs\AddonsDependenciesInstallJob;
@@ -28,55 +27,6 @@ class AddonsController extends Controller
         $addons = Addons::all();
 
         return view('backend.addons.index', compact('addons'));
-    }
-
-    /**
-     * @param $name
-     * @param $version
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function installLocal($name, $version)
-    {
-        if (Addons::whereName($name)->exists()) {
-            flash('插件已安装');
-
-            return redirect(route('backend.addons.index'));
-        }
-        $file = request()->get('file');
-        $localFilePath = storage_path("app/addons/{$file}.zip");
-        DB::beginTransaction();
-        try {
-            // 创建插件记录
-            $addons = Addons::create([
-                'name' => $name,
-                'thumb' => '',
-                'current_version_id' => 0,
-                'prev_version_id' => 0,
-                'author' => 'meedu',
-                'path' => '',
-                'real_path' => '',
-                'status' => Addons::STATUS_INSTALLING,
-            ]);
-            // 创建版本记录
-            $addonsVersion = $addons->versions()->create([
-                'version' => $version,
-                'path' => '',
-            ]);
-            // 提交给队列任务处理
-            $this->dispatch(new AddonsInstallJob($addons, $addonsVersion, $localFilePath));
-            flash('插件安装任务生成成功，已投递到后台处理，请耐心等待。', 'success');
-
-            DB::commit();
-
-            return redirect(route('backend.addons.index'));
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            flash('插件安装失败，具体信息请查看日志');
-            exception_record($exception);
-
-            return redirect(route('backend.addons.index'));
-        }
     }
 
     /**
@@ -130,16 +80,16 @@ class AddonsController extends Controller
             $addons->current_version_id = $version->id;
             $addons->save();
 
-            app()->make(\App\Meedu\Addons::class)->switchVersion($addons->name, $version->version);
+            app()->make(\App\Meedu\Addons::class)->switchVersion($addons->sign, $version->version, $version->path);
 
             DB::commit();
-            flash('回滚成功', 'success');
+            flash('切换版本成功', 'success');
 
             return back();
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
-            flash('回滚出现错误，错误信息：'.$exception->getMessage());
+            flash('切换版本出现错误，错误信息：'.$exception->getMessage());
 
             return back();
         }

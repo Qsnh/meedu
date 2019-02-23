@@ -9,24 +9,21 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>封面</th>
-                    <th>插件</th>
+                    <th class="text-center" width="80">封面</th>
+                    <th width="200">插件</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($addons as $item)
+                @forelse($addons as $item)
                     <tr>
                         <td>
-                            <img src="{{$item['thumb']}}" width="120" height="60" class="img-thumbnail">
+                            <img src="{{$item['thumb']}}" width="60" height="60" class="img-thumbnail">
                         </td>
                         <td>
-                            <p>
-                                <span class="badge badge-info">{{$item['name']}}</span>
-                                <span class="badge badge-info">{{$item['version']}}</span>
-                            </p>
-                            <p><span class="badge badge-info">{{$item['sign']}}</span></p>
+                            <span class="badge badge-info">{{$item['name']}}</span><br>
+                            <span class="badge badge-info">最新版本：{{$item['version']}}</span>
                         </td>
                         <td>
                             {{$item['installed'] ? '已安装' : '未安装'}}
@@ -34,14 +31,22 @@
                         <td>
                             @if($item['installed'])
                                 @if($item['upgrade'])
-                                    <a href="" class="btn btn-info">升级</a>
+                                    <a href="{{route('backend.addons.remote.upgrade', ['sign' => $item['sign'], 'version' => $item['version']])}}"
+                                       class="btn btn-info">升级</a>
                                 @endif
                             @else
-                                <a href="{{route('backend.addons.remote.install', ['sign' => $item['sign'], 'version' => $item['version']])}}" class="btn btn-info">安装</a>
+                                <a href="{{route('backend.addons.remote.install', ['sign' => $item['sign'], 'version' => $item['version']])}}"
+                                   class="btn btn-info">安装</a>
                             @endif
                         </td>
                     </tr>
-                @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            暂无插件，前去挑选 <a href="https://meedu.vip" target="_blank">应用商店</a>
+                        </td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>

@@ -49,6 +49,7 @@ class CloudAddonsDownloadJob implements ShouldQueue
         $savePath = storage_path('app/addons/'.str_random(32).'.zip');
         $response = $client->get($this->downloadUrl, ['save_to' => $savePath]);
         if ($response->getStatusCode() != 200) {
+            // TODO 记录到插件日志
             Log::error('插件下载出错，错误信息：'.$response->getBody());
 
             return;

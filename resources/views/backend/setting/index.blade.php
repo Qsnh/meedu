@@ -397,6 +397,20 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-header">MeeduCloud</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>云账号</label>
+                            <input name="meedu*cloud*username" class="form-control" value="{{config('meedu.cloud.username')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>云密码</label>
+                            <input name="meedu*cloud*password" class="form-control" value="{{config('meedu.cloud.password')}}">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-sm-12">
                     <button class="btn btn-primary" type="submit">保存</button>
                 </div>

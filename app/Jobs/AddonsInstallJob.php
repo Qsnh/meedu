@@ -51,7 +51,7 @@ class AddonsInstallJob implements ShouldQueue
             // 本地处理
             [$extractPath, $linkPath] = $addonsLib->install(
                 $this->compressFile,
-                $this->addons->name,
+                $this->addons->sign,
                 $this->version->version
             );
 
@@ -65,11 +65,8 @@ class AddonsInstallJob implements ShouldQueue
 
             // 更新
             $this->addons->fill([
-                'name' => $this->addons->name,
-                'thumb' => '',
                 'prev_version_id' => $this->addons->current_version_id,
                 'current_version_id' => $this->version->id,
-                'author' => '',
                 'path' => $linkPath,
                 'real_path' => $extractPath,
                 'main_url' => $meedu['main_url'] ?? '',

@@ -15,12 +15,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($addons as $item)
+                @forelse($addons as $item)
                     <tr>
                         <td>
                             <p><img src="{{$item->thumb}}" width="60" height="60" class="img-thumbnail"></p>
                             <p>{{$item->name}}</p>
-                            <p>作者：<author>{{$item->name}}</author></p>
+                            <p>作者：<author>{{$item->author}}</author></p>
                         </td>
                         <td>
                             <p>版本：{{$item->currentVersion ? $item->currentVersion->version : '暂无'}}</p>
@@ -30,15 +30,20 @@
                         <td>
                             <a href="{{route('backend.addons.logs', $item)}}" class="btn btn-secondary">日志</a>
                             <a href="{{route('backend.addons.versions', $item)}}" class="btn btn-info">历史版本</a>
-                            @if($item->prev_version_id)
-                            <a href="{{route('backend.addons.version.switch', [$item->id, $item->prev_version_id])}}"
-                               onclick="return confirm('确定执行回滚操作？')" class="btn btn-warning">回滚最近一次的安装</a>
-                            @endif
                             <a href="{{route('backend.addons.dependencies.install', $item)}}"
                                onclick="return confirm('确定执行此操作？')" class="btn btn-primary">提交依赖安装任务</a>
+                            @if($item->main_url)
+                            <a class="btn btn-primary" href="{{$item->main_url}}">主页</a>
+                            @endif
                         </td>
                     </tr>
-                @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            暂无插件，前去挑选 <a href="https://meedu.vip" target="_blank">应用商店</a>
+                        </td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>

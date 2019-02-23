@@ -105,12 +105,9 @@ class Addons
      *
      * @throws Exception
      */
-    public function switchVersion(string $name, string $version, string $versionPath = ''): string
+    public function switchVersion(string $name, string $version): string
     {
-        if (! $this->files->exists($versionPath)) {
-            throw new Exception(sprintf('文件[%s]不存在', $versionPath));
-        }
-        $linkPath = $this->link($name, $version, $versionPath);
+        $linkPath = $this->link($name, $version);
 
         return $linkPath;
     }
@@ -135,7 +132,11 @@ class Addons
         if (! $this->files->exists($extractPath)) {
             $this->files->makeDirectory($extractPath, 0755, true);
         }
-        \Chumper\Zipper\Facades\Zipper::make($file)->extractTo($extractPath, ['vendor', '.git'], Zipper::BLACKLIST);
+        \Chumper\Zipper\Facades\Zipper::make($file)->extractTo(
+            $extractPath,
+            ['vendor', '.git', 'node_modules'],
+            Zipper::BLACKLIST
+        );
 
         return $extractPath;
     }
@@ -143,14 +144,13 @@ class Addons
     /**
      * @param string $name
      * @param string $version
-     * @param string $distPath
      *
      * @return string
      */
-    protected function link(string $name, string $version, string $distPath = ''): string
+    protected function link(string $name, string $version): string
     {
         $extractPath = $this->extractPath($name, $version);
-        $linkPath = $distPath ?: $this->linkPath($name, $version);
+        $linkPath = $this->linkPath($name, $version);
         $this->files->exists($linkPath) && $this->files->deleteDirectory($linkPath);
         $this->files->link($extractPath, $linkPath);
 

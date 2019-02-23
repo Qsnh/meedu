@@ -88,9 +88,9 @@ class MeEduCloud
     }
 
     /**
-     * 我的插件.
-     *
      * @return array
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/tdvkzn
      */
@@ -107,11 +107,11 @@ class MeEduCloud
     }
 
     /**
-     * 插件详情.
-     *
      * @param string $sign
      *
      * @return array
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/et4awh
      */
@@ -128,9 +128,11 @@ class MeEduCloud
     }
 
     /**
-     * 插件下载地址
-     *
      * @param string $sign
+     *
+     * @return string
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/gdg4gw
      */
@@ -147,9 +149,9 @@ class MeEduCloud
     }
 
     /**
-     * 我的模板
-     *
      * @return array
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/ym1qxc
      */
@@ -166,11 +168,11 @@ class MeEduCloud
     }
 
     /**
-     * 模板详情.
-     *
      * @param string $sign
      *
      * @return array
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/aruocg
      */
@@ -187,9 +189,11 @@ class MeEduCloud
     }
 
     /**
-     * 模板下载地址
-     *
      * @param string $sign
+     *
+     * @return string
+     *
+     * @throws Exception
      *
      * @see https://www.yuque.com/meedu/meedu-cloud/dtxz7k
      */

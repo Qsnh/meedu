@@ -22,31 +22,38 @@ use App\Jobs\CloudAddonsDownloadJob;
 class AddonsCloudController extends Controller
 {
     /**
-     * 已购买的插件.
+     * 已购买插件列表.
      *
      * @param MeEduCloud $cloud
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function index(MeEduCloud $cloud)
     {
-        $addons = collect($cloud->addons());
-        $installedAddons = Addons::whereIn('sign', $addons->pluck('sign')->toArray())->pluck('current_version_id', 'sign');
-        $addons = $addons->map(function ($item) use ($installedAddons) {
-            // 是否已安装
-            $item['installed'] = isset($installedAddons[$item['sign']]);
+        try {
+            $addons = collect($cloud->addons());
+            $installedAddons = Addons::whereIn('sign', $addons->pluck('sign'))->pluck('current_version_id', 'sign');
+            $addons = $addons->map(function ($item) use ($installedAddons) {
+                // 是否已安装
+                $item['installed'] = isset($installedAddons[$item['sign']]);
 
-            // 是否需要升级
-            $item['upgrade'] = false;
-            if ($item['installed']) {
-                $version = AddonsVersion::whereId($installedAddons[$item['sign']])->first();
-                $item['upgrade'] = version_compare($version->version, $item['version'], '<');
-            }
+                // 是否需要升级
+                $item['upgrade'] = false;
+                if ($item['installed']) {
+                    $version = AddonsVersion::whereId($installedAddons[$item['sign']])->first();
+                    $item['upgrade'] = version_compare($version->version, $item['version'], '<');
+                }
 
-            return $item;
-        });
+                return $item;
+            });
 
-        return view('backend.addons.remote', compact('addons'));
+            return view('backend.addons.remote', compact('addons'));
+        } catch (Exception $exception) {
+            exception_record($exception);
+            flash('无法连接MeEduCloud服务');
+
+            return back();
+        }
     }
 
     /**
@@ -60,7 +67,7 @@ class AddonsCloudController extends Controller
      */
     public function install(MeEduCloud $cloud, string $sign, string $version)
     {
-        if (Addons::whereName($sign)->exists()) {
+        if (Addons::whereSign($sign)->exists()) {
             flash('插件已安装');
 
             return redirect(route('backend.addons.index'));
@@ -68,13 +75,17 @@ class AddonsCloudController extends Controller
 
         DB::beginTransaction();
         try {
+            // 远程插件信息
+            $remoteAddons = $cloud->addonsDetail($sign);
+
             // 创建插件记录
             $addons = Addons::create([
-                'name' => $sign,
-                'thumb' => '',
+                'name' => $remoteAddons['name'] ?? '',
+                'sign' => $sign,
+                'thumb' => $remoteAddons['thumb'] ?? '',
                 'current_version_id' => 0,
                 'prev_version_id' => 0,
-                'author' => 'meedu',
+                'author' => $remoteAddons['author'] ?? '',
                 'path' => '',
                 'real_path' => '',
                 'status' => Addons::STATUS_INSTALLING,
@@ -92,7 +103,7 @@ class AddonsCloudController extends Controller
 
             DB::commit();
 
-            flash('插件安装任务创建成功，已提交给后台系统处理，请稍候。', 'success');
+            flash('插件安装任务创建成功，已提交给后台处理，请稍候。', 'success');
 
             return redirect(route('backend.addons.remote.index'));
         } catch (Exception $exception) {
@@ -104,12 +115,56 @@ class AddonsCloudController extends Controller
         }
     }
 
+    /**
+     * 远程插件升级.
+     *
+     * @param MeEduCloud $cloud
+     * @param string     $sign
+     * @param string     $version
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function upgrade(MeEduCloud $cloud, string $sign, string $version)
     {
-        if (! Addons::whereName($sign)->exists()) {
+        $addons = Addons::whereSign($sign)->first();
+        if (! $addons) {
             flash('插件未安装');
 
-            return redirect(route('backend.addons.index'));
+            return redirect(route('backend.addons.remote.index'));
+        }
+
+        DB::beginTransaction();
+        try {
+            $remoteAddons = $cloud->addonsDetail($sign);
+            if (version_compare($addons->currentVersion->version, $remoteAddons['version'], '>=')) {
+                flash('当前插件不需要升级');
+
+                return back();
+            }
+
+            // 创建版本记录
+            $addonsVersion = $addons->versions()->create([
+                'version' => $remoteAddons['version'],
+                'path' => '',
+            ]);
+
+            // 获取插件下载地址
+            $downloadUrl = $cloud->addonsDownloadUrl($sign);
+
+            // 提交任务给队列
+            $this->dispatch(new CloudAddonsDownloadJob($addons, $addonsVersion, $downloadUrl));
+
+            flash('插件升级任务创建成功，已提交给后台处理，请稍后。', 'success');
+
+            DB::commit();
+
+            return redirect(route('backend.addons.remote.index'));
+        } catch (Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+            flash('系统出现错误，错误消息：'.$exception->getMessage());
+
+            return back();
         }
     }
 }
