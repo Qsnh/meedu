@@ -75,7 +75,16 @@
         ],
         "test": "./vendor/bin/phpunit",
         "cs-fixer": "php php-cs-fixer.phar fix",
-        "cf": "php-cs-fixer fix"
+        "cf": "php-cs-fixer fix",
+        "clear-app-cache": [
+            "php artisan route:clear",
+            "php artisan config:clear",
+            "php artisan view:clear"
+        ],
+        "build-app-cache": [
+            "php artisan route:cache",
+            "php artisan config:cache"
+        ]
     },
     "config": {
         "preferred-install": "dist",
