@@ -84,6 +84,11 @@
         "build-app-cache": [
             "php artisan route:cache",
             "php artisan config:cache"
+        ],
+        "restart-supervisor": [
+            "supervisorctl reread",
+            "supervisorctl update",
+            "supervisorctl start meedu:*"
         ]
     },
     "config": {
