@@ -103,7 +103,7 @@ class AddonsController extends Controller
     public function submitDependenciesInstallTask($addonsId)
     {
         $addons = Addons::findOrFail($addonsId);
-        $this->dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_DEPENDENCY));
+        dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_DEPENDENCY));
         flash('依赖安装任务已创建，执行结果稍后可以在安装日志查看', 'success');
 
         return back();

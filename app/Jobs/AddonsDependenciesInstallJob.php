@@ -19,6 +19,7 @@ use Symfony\Component\Process\Process;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class AddonsDependenciesInstallJob implements ShouldQueue
@@ -49,15 +50,24 @@ class AddonsDependenciesInstallJob implements ShouldQueue
         $logs = [];
 
         try {
+            // 设置环境变量
+            $_ENV['COMPOSER_HOME'] = base_path('composer');
+            // 寻找PHP可执行路径
+            $php = (new PhpExecutableFinder())->find();
+            // composer.phar文件路径
+            $composer = base_path('composer.phar');
+
             foreach ($dependencies as $dependency => $version) {
                 if (! preg_match('/\//', $dependency)) {
                     // 不是包依赖
                     continue;
                 }
 
-                // 执行composer安装命令
-                $process = new Process(['composer', 'required', "{$dependency}={$version}"]);
+                // 执行安装命令
+                $process = new Process([$php, $composer, 'require', "{$dependency}={$version}"]);
                 $process->setWorkingDirectory(base_path());
+                // 超时10分钟
+                $process->setTimeout(600);
                 $process->run();
 
                 if (! $process->isSuccessful()) {
