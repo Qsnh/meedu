@@ -74,7 +74,7 @@
 | 昵称 | |
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
-| `@QQ23926367` | `@QQ23926367` |
+| `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
 
 ## 交流群
 
