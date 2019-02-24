@@ -135,28 +135,26 @@ class AddonsCloudController extends Controller
 
         DB::beginTransaction();
         try {
+            // 升级判断
             $remoteAddons = $cloud->addonsDetail($sign);
             if (version_compare($addons->currentVersion->version, $remoteAddons['version'], '>=')) {
                 flash('当前插件不需要升级');
 
                 return back();
             }
-
             // 创建版本记录
             $addonsVersion = $addons->versions()->create([
                 'version' => $remoteAddons['version'],
                 'path' => '',
             ]);
-
             // 获取插件下载地址
             $downloadUrl = $cloud->addonsDownloadUrl($sign);
-
             // 提交任务给队列
             $this->dispatch(new CloudAddonsDownloadJob($addons, $addonsVersion, $downloadUrl));
 
-            flash('插件升级任务创建成功，已提交给后台处理，请稍后。', 'success');
-
             DB::commit();
+
+            flash('插件升级任务创建成功，已提交给后台处理，请稍后。', 'success');
 
             return redirect(route('backend.addons.remote.index'));
         } catch (Exception $exception) {

@@ -16,6 +16,7 @@ use App\Models\AddonsLog;
 use App\Models\AddonsVersion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
+use App\Events\AddonsInstallFailEvent;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,7 +31,11 @@ class AddonsInstallJob implements ShouldQueue
     public $compressFile;
 
     /**
-     * Create a new job instance.
+     * AddonsInstallJob constructor.
+     *
+     * @param Addons        $addons
+     * @param AddonsVersion $version
+     * @param string        $compressFile
      */
     public function __construct(Addons $addons, AddonsVersion $version, string $compressFile)
     {
@@ -46,6 +51,9 @@ class AddonsInstallJob implements ShouldQueue
     {
         DB::beginTransaction();
         try {
+            /**
+             * @var \App\Meedu\Addons
+             */
             $addonsLib = app()->make(\App\Meedu\Addons::class);
 
             // 本地处理
@@ -73,15 +81,15 @@ class AddonsInstallJob implements ShouldQueue
                 'status' => Addons::STATUS_SUCCESS,
             ])->save();
 
+            DB::commit();
+
             // 解析是否需要安装依赖
             dispatch(new AddonsDependenciesInstallJob($this->addons, AddonsLog::TYPE_DEPENDENCY));
-
-            DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
 
-            $this->addons->update(['status' => Addons::STATUS_FAIL]);
+            event(new AddonsInstallFailEvent($this->addons, $this->version, AddonsLog::TYPE_INSTALL, $exception->getMessage()));
         }
     }
 }

@@ -177,6 +177,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         // 插件
         Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
         Route::get('/addons/{addons_id}/logs', 'AddonsController@showLogs')->name('backend.addons.logs');
+        Route::get('/addons/{addons_id}/uninstall', 'AddonsController@uninstall')->name('backend.addons.uninstall');
         Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
         Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
         Route::get('/addons/{addons_id}/dependencies/install', 'AddonsController@submitDependenciesInstallTask')->name('backend.addons.dependencies.install');

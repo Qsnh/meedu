@@ -19,6 +19,7 @@ class AddonsLog extends Model
     const TYPE_UPGRADE = 'UPGRADE';
     const TYPE_ROLLBACK = 'ROLLBACK';
     const TYPE_DEPENDENCY = 'DEPENDENCY_INSTALL';
+    const TYPE_DOWNLOAD = 'DOWNLOAD';
 
     protected $table = 'addons_logs';
 

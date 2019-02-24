@@ -85,7 +85,7 @@ class AddonsDependenciesInstallJob implements ShouldQueue
 
         // 记录日志
         $this->addons->logs()->save(new AddonsLog([
-            'version' => $this->addons->currentVersion ? $this->addons->currentVersion->version : '',
+            'version' => optional($this->addons->currentVersion)->version ?? '',
             'type' => $this->type ?? '',
             'log' => json_encode($logs),
         ]));

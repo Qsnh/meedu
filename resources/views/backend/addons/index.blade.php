@@ -11,6 +11,7 @@
                 <tr>
                     <th>插件</th>
                     <th>基础信息</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -27,6 +28,7 @@
                             <p>路径：<code>{{$item->path}}</code></p>
                             <p>时间：{{$item->created_at}}</p>
                         </td>
+                        <td>{{$item->getStatusText()}}</td>
                         <td>
                             <a href="{{route('backend.addons.logs', $item)}}" class="btn btn-secondary">日志</a>
                             <a href="{{route('backend.addons.versions', $item)}}" class="btn btn-info">历史版本</a>
@@ -35,11 +37,13 @@
                             @if($item->main_url)
                             <a class="btn btn-primary" href="{{$item->main_url}}">主页</a>
                             @endif
+                            <a onclick="return confirm('确定删除？')"
+                               href="{{route('backend.addons.uninstall', $item)}}" class="btn btn-danger">卸载</a>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" class="text-center">
+                        <td colspan="4" class="text-center">
                             暂无插件，前去挑选 <a href="https://meedu.vip" target="_blank">应用商店</a>
                         </td>
                     </tr>

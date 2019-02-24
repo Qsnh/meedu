@@ -20,11 +20,18 @@ class Addons extends Model
     const STATUS_SUCCESS = 9;
     const STATUS_UPGRADING = 3;
 
+    const STATUS_TEXT = [
+        self::STATUS_FAIL => '安装失败',
+        self::STATUS_SUCCESS => '安装成功',
+        self::STATUS_INSTALLING => '安装中',
+        self::STATUS_UPGRADING => '升级中',
+    ];
+
     protected $table = 'addons';
 
     protected $fillable = [
         'name', 'sign', 'current_version_id', 'prev_version_id', 'author',
-        'path', 'real_path', 'thumb', 'main_url',
+        'path', 'real_path', 'thumb', 'main_url', 'status',
     ];
 
     /**
@@ -57,5 +64,15 @@ class Addons extends Model
     public function prevVersion()
     {
         return $this->belongsTo(AddonsVersion::class, 'prev_version_id');
+    }
+
+    /**
+     * 状态文本.
+     *
+     * @return mixed|string
+     */
+    public function getStatusText()
+    {
+        return self::STATUS_TEXT[$this->status] ?? '';
     }
 }

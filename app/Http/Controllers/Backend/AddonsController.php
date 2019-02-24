@@ -108,4 +108,38 @@ class AddonsController extends Controller
 
         return back();
     }
+
+    /**
+     * 插件卸载.
+     *
+     * @param int $addonsId
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function uninstall(int $addonsId)
+    {
+        $addons = Addons::whereId($addonsId)->firstOrFail();
+        DB::beginTransaction();
+        try {
+            // 删除本地软链接
+            app()->make(\App\Meedu\Addons::class)->uninstall($addons->sign, optional($addons->currentVersion)->version ?? '');
+
+            // 删除插件版本
+            $addons->versions()->delete();
+            // 删除插件
+            $addons->delete();
+
+            DB::commit();
+
+            flash('插件卸载成功', 'success');
+
+            return back();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            exception_record($exception);
+            flash('插件卸载失败');
+
+            return back();
+        }
+    }
 }

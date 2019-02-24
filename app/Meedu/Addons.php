@@ -41,7 +41,7 @@ class Addons
     }
 
     /**
-     * @param string $path
+     * @param string $compressFilePath
      * @param string $name
      * @param string $version
      *
@@ -49,11 +49,11 @@ class Addons
      *
      * @throws \Throwable
      */
-    public function install(string $path, string $name, string $version): array
+    public function install(string $compressFilePath, string $name, string $version): array
     {
-        $extractPath = $this->extract($name, $version, $path);
+        $extractPath = $this->extract($name, $version, $compressFilePath);
         // 创建软连接
-        $linkPath = $this->linkDist.DIRECTORY_SEPARATOR.$name;
+        $linkPath = $this->linkPath($name, $version);
         $this->files->exists($linkPath) && $this->deleteLink($linkPath);
         $this->files->link($extractPath, $linkPath);
 
@@ -70,8 +70,8 @@ class Addons
      */
     public function uninstall(string $name, string $version): void
     {
-        $this->deleteLink($this->link($name, $version));
-        $this->forceDelete && $this->files->deleteDirectories($this->extract($name, $version));
+        $this->deleteLink($this->linkPath($name, $version));
+        $this->forceDelete && $this->files->deleteDirectories($this->extractPath($name, $version));
     }
 
     /**
