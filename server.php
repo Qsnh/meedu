@@ -1,5 +1,5 @@
 <?php
-
+/*胡搜胡搜发**/
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
