@@ -190,7 +190,10 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
     // Ajax
     Route::group(['prefix' => 'ajax', 'namespace' => 'Ajax'], function () {
+        // 获取课程章节
         Route::get('/course/{course_id}/chapters', 'CourseController@chapters')->name('backend.ajax.course.chapters');
+        // 获取上传密钥
+        Route::get('/tencent/uploadSignature', 'TencentController@uploadSignature')->name('backend.ajax.tencent.upload.signature');
     });
 });
 
