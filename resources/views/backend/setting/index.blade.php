@@ -276,7 +276,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header">视频上传配置</div>
+                    <div class="card-header">阿里云视频上传配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">
                             <a href="https://www.aliyun.com/product/vod?spm=5176.8142029.search.1.e9396d3eFvjBxH">
@@ -297,6 +297,25 @@
                             <label>AccessKeySecret</label>
                             <input type="text" name="meedu*upload*video*aliyun*access_key_secret" class="form-control"
                                    value="{{config('meedu.upload.video.aliyun.access_key_secret')}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">腾讯云视频上传配置</div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <a href="https://cloud.tencent.com/product/vod">腾讯云视频服务</a>
+                        </div>
+                        <div class="form-group">
+                            <label>AccessKeyId</label>
+                            <input type="text" name="tencent*vod*secret_id" class="form-control"
+                                   value="{{config('tencent.vod.secret_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>AccessKeySecret</label>
+                            <input type="text" name="tencent*vod*secret_key" class="form-control"
+                                   value="{{config('tencent.vod.secret_key')}}">
                         </div>
                     </div>
                 </div>
