@@ -89,6 +89,7 @@
 
 @section('js')
 @include('components.backend.aliyun_upload_js')
+@include('components.backend.vod')
 <script>
     $(function () {
         $('select[name="course_id"]').change(function () {

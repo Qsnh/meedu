@@ -29,7 +29,7 @@
     }
 
     function cancelVideoUpload() {
-        windows.VodUploader.cancel();
+        window.VodUploader.cancel();
         // 已取消
         $('#vod-upload-progress').text('已取消');
     }
@@ -37,7 +37,7 @@
     // 文档[https://cloud.tencent.com/document/product/266/9239]
     $(function () {
         $('#vod-start-upload').click(function () {
-            windows.VodUploader = uploadVideo($('#vod_video_file').files[0]);
+            window.VodUploader = uploadVideo($('#vod_video_file').get(0).files[0]);
         });
         $('#vod-stop-upload').click(function () {
             cancelVideoUpload();
