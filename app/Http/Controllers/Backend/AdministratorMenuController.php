@@ -27,6 +27,14 @@ class AdministratorMenuController extends Controller
         return view('backend.administrator_menu.index', compact('menus', 'permissions'));
     }
 
+    public function create(AdministratorMenu $administratorMenu)
+    {
+        $permissions = AdministratorPermission::get();
+        $menus = $administratorMenu->menus();
+
+        return view('backend.administrator_menu.create', compact('menus', 'permissions'));
+    }
+
     public function store(AdministratorMenuRequest $request)
     {
         AdministratorMenu::create($request->filldata());
