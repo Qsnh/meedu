@@ -92,6 +92,7 @@ Route::group([
     Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
+    Route::get('/order/pay/eshanghu/{order_id}', 'OrderController@eshanghu')->name('order.eshanghu.wechat');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');

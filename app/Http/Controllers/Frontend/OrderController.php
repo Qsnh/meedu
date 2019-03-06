@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\OrderRepository;
 use Illuminate\Support\Facades\Cache;
+use App\Meedu\Payment\Eshanghu\Eshanghu;
 
 class OrderController extends Controller
 {
@@ -117,5 +118,28 @@ class OrderController extends Controller
         $qrcodeUrl = $wechatData['code_url'];
 
         return v('frontend.order.wechat', compact('qrcodeUrl', 'order'));
+    }
+
+    /**
+     * 易商户重新支付.
+     *
+     * @param $orderId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function eshanghu($orderId)
+    {
+        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
+        $codeUrl = Cache::get(sprintf(Eshanghu::CACHE_KEY, $order->order_id));
+        if (! $codeUrl) {
+            $order->status = Order::STATUS_CANCELED;
+            $order->save();
+
+            flash('该订单已过期，请重新下单。');
+
+            return redirect('/');
+        }
+
+        return v('frontend.payment.eshanghu', compact('codeUrl', 'order'));
     }
 }

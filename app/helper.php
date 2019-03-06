@@ -463,9 +463,9 @@ if (! function_exists('get_payments')) {
      */
     function get_payments()
     {
-        $payments = collect(config('meedu.payment'))->reject(function ($payment) {
-            $enabled = $payment['enabled'] ?? true;
-            $pc = $payment['pc'] ?? true;
+        $payments = collect(config('meedu.payment'))->filter(function ($payment) {
+            $enabled = $payment['enabled'] ?? false;
+            $pc = $payment['pc'] ?? false;
 
             return $enabled || $pc;
         });
