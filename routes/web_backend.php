@@ -114,7 +114,8 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
         // 后台菜单
         Route::get('/administrator_menu', 'AdministratorMenuController@index')->name('backend.administrator_menu.index');
-        Route::post('/administrator_menu/create', 'AdministratorMenuController@store')->name('backend.administrator_menu.create');
+        Route::get('/administrator_menu/create', 'AdministratorMenuController@create')->name('backend.administrator_menu.create');
+        Route::post('/administrator_menu/create', 'AdministratorMenuController@store');
         Route::get('/administrator_menu/{id}/edit', 'AdministratorMenuController@edit')->name('backend.administrator_menu.edit');
         Route::put('/administrator_menu/{id}/edit', 'AdministratorMenuController@update');
         Route::get('/administrator_menu/{id}/delete', 'AdministratorMenuController@destroy')->name('backend.administrator_menu.destroy');
