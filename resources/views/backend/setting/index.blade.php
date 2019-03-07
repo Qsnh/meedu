@@ -239,6 +239,7 @@
                             <label>回调地址</label>
                             <input type="text" name="pay*alipay*notify_url" class="form-control"
                                    value="{{config('pay.alipay.notify_url')}}">
+                            <span class="form-text text-muted">示例：http://demo.com/payment/callback/alipay</span>
                         </div>
                     </div>
                 </div>
@@ -271,6 +272,7 @@
                             <label>回调地址</label>
                             <input type="text" name="pay*wechat*notify_url" class="form-control"
                                    value="{{config('pay.wechat.notify_url')}}">
+                            <span class="form-text text-muted">示例：http://demo.com/payment/callback/wechat</span>
                         </div>
                     </div>
                 </div>
@@ -307,6 +309,7 @@
                             <label>回调地址</label>
                             <input type="text" name="eshanghu*notify" class="form-control"
                                    value="{{config('eshanghu.notify')}}">
+                            <span class="form-text text-muted">示例：http://demo.com/payment/callback/eshanghu</span>
                         </div>
                     </div>
                 </div>
