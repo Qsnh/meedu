@@ -467,7 +467,7 @@ if (! function_exists('get_payments')) {
             $enabled = $payment['enabled'] ?? false;
             $pc = $payment['pc'] ?? false;
 
-            return $enabled || $pc;
+            return $enabled && $pc;
         });
 
         return $payments;

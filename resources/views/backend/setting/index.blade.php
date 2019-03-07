@@ -276,6 +276,42 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-header">易商户支付配置</div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <p>个人收款解决方案，申请地址 <a target="_blank" href="https://1shanghu.com">易商户</a></p>
+                        </div>
+                        <div class="form-group">
+                            <label>是否开启</label><br>
+                            <input type="radio" name="meedu*payment*eshanghu*enabled" value="1"
+                                    {{config('meedu.payment.eshanghu.enabled') == 1 ? 'checked' : ''}}> 启用
+                            <input type="radio" name="meedu*payment*eshanghu*enabled" value="0"
+                                    {{config('meedu.payment.eshanghu.enabled') == 0 ? 'checked' : ''}}> 不启用
+                        </div>
+                        <div class="form-group">
+                            <label>AppKey</label>
+                            <input type="text" name="eshanghu*app_key" class="form-control"
+                                   value="{{config('eshanghu.app_key')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>AppSecret</label>
+                            <input type="text" name="eshanghu*app_secret" class="form-control"
+                                   value="{{config('eshanghu.app_secret')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>子商户ID</label>
+                            <input type="text" name="eshanghu*sub_mch_id" class="form-control"
+                                   value="{{config('eshanghu.sub_mch_id')}}">
+                        </div>
+                        <div class="form-group">
+                            <label>回调地址</label>
+                            <input type="text" name="eshanghu*notify" class="form-control"
+                                   value="{{config('eshanghu.notify')}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-header">阿里云视频上传配置</div>
                     <div class="card-body">
                         <div class="alert alert-warning">
