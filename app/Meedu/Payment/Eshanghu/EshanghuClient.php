@@ -89,7 +89,7 @@ class EshanghuClient
             }
             $need[] = "{$key}={$value}";
         }
-        $string = http_build_query($need).$this->appSecret;
+        $string = implode('&', $need).$this->appSecret;
 
         return strtoupper(md5($string));
     }
@@ -104,9 +104,8 @@ class EshanghuClient
     public function verifySign(array $data)
     {
         $sign = $data['sign'];
-        unset($data['sign']);
 
-        return strtoupper($sign) === $this->getSign($sign);
+        return strtoupper($sign) === $this->getSign($data);
     }
 
     /**

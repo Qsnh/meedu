@@ -32,8 +32,8 @@ class Eshanghu implements Payment
 
     public function create(Order $order): PaymentStatus
     {
-        $result = $this->eshanghu->create($order->order_id, $order->getOrderListTitle(), $order->charge * 100);
-//        $result = $this->eshanghu->create($order->order_id, $order->getOrderListTitle(), 1);
+//        $result = $this->eshanghu->create($order->order_id, $order->getOrderListTitle(), $order->charge * 100);
+        $result = $this->eshanghu->create($order->order_id, $order->getOrderListTitle(), 1);
         $codeUrl = $result['code_url'];
 
         // 缓存保存
