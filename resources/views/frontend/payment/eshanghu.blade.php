@@ -19,13 +19,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-sm-4 text-center pay">
+                <p>请扫描下方二维码支付</p>
                 <p>{!! QrCode::size(300)->generate($codeUrl) !!}</p>
                 <p class="lh-30"><b>￥{{$order->charge}}</b></p>
-                <p style="margin-top: 20px;">
-                    <a href="{{ route('member') }}" class="btn btn-success btn-block">支付成功</a>
-                </p>
-                <p style="margin-top: 20px;">
-                    <a href="{{ route('member') }}" class="btn btn-default btn-block">取消支付</a>
+                <p>
+                    <a class="btn btn-primary" href="{{route('member.orders')}}">支付成功</a>
+                    <a class="btn btn-outline-primary" href="{{route('member.orders')}}">取消支付</a>
                 </p>
             </div>
         </div>
