@@ -88,9 +88,9 @@ Route::group([
     Route::post('/book/{id}/buy', 'BookController@buyHandler');
 
     // 收银台
+    Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
     Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
-    Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
     Route::get('/order/pay/eshanghu/{order_id}', 'OrderController@eshanghu')->name('order.eshanghu.wechat');
 
