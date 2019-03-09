@@ -18,7 +18,7 @@ services:
     image: nginx:1.15.7
     ports:
       - "9006:80"
-      - "443:443"
+      - "4430:443"
     volumes:
       - .:/var/www/html/:rw
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/:rw
