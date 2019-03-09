@@ -17,7 +17,8 @@
         "controlBarVisibility": "hover",
         "useH5Prism": true,
         "vid": "{{$video->aliyun_video_id}}",
-        "playauth": "{{aliyun_play_auth($video)}}"
+        "playauth": "{{aliyun_play_auth($video)}}",
+        "encryptType": 1
     },function(player){
     });
 
