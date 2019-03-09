@@ -2,8 +2,9 @@ version: '2.2'
 services:
   php:
     container_name: "meeduphp"
-    build:
-      context: ./docker
+#    build:
+#      context: ./docker
+    image: registry.cn-hangzhou.aliyuncs.com/xiaoteng/meedu-php:v1
     volumes:
       - ./:/var/www/html/
     restart: always
