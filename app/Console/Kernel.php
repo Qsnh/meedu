@@ -55,8 +55,8 @@ class Kernel extends ConsoleKernel
         // PING
         $schedule->command('ping')->dailyAt('06:00');
 
-        // 每分钟
-        $schedule->command('order:pay:timeout')->everyMinute()->appendOutputTo(storage_path('logs/order_pay_timeout'));
+        // 每30分钟
+        $schedule->command('order:pay:timeout')->everyThirtyMinutes()->appendOutputTo(storage_path('logs/order_pay_timeout'));
 
         // AdFrom 数据同步
         $schedule->command('adfrom:sync')->everyThirtyMinutes();

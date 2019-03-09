@@ -50,8 +50,6 @@ class OrderTimeoutHandlerCommand extends Command
         $now = Carbon::now()->addSecond($limit);
         $orders = Order::whereIn('status', [Order::STATUS_PAYING, Order::STATUS_UNPAY])->where('created_at', '<=', $now)->get();
         if ($orders->isEmpty()) {
-            $this->line('无订单需要处理');
-
             return;
         }
         foreach ($orders as $order) {
