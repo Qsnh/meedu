@@ -16,7 +16,8 @@
         "loadDataTimeout": "",
         "controlBarVisibility": "hover",
         "useH5Prism": true,
-        "source": "{{$video->getPlayUrl()}}",
+        "vid": "{{$video->aliyun_video_id}}",
+        "playauth": "{{aliyun_play_auth($video)}}"
     },function(player){
     });
 
