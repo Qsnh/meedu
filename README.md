@@ -12,9 +12,11 @@
 
 随着知识付费领域的兴起，尤其是知识付费领域的龙头“得到”的成功，知识付费领域俨然成为了新的风口。经过这几年的发展，知识付费领域的基础建设有了很大的进步，市场上面很多知识付费的平台可以在短短几分钟之内搭建一套属于自己的知识付费应用。但是，这并不是我想要的！可能是处于程序员的角度出发，我更在乎的是这套应用是我自己可以完全控制的！所以 *MeEdu* 诞生了。*MeEdu* 寄托了我对当前知识付费领域的期望。我相信未来的每位身负技能的人都可以通过 *MeEdu* 来构建自己的知识付费应用，通过 *MeEdu* 将自己的知识进行变现。
 
-> 小程序在这里：[https://github.com/YTU94/meedu-wxapp](https://github.com/YTU94/meedu-wxapp)
+## 常见问题
 
-[MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
+- [MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
+- [使用Docker简单快速的搭建MeEdu（适合小白）](https://www.bilibili.com/video/av44963351/)
+- [MeEdu使用阿里云视频加密服务保障视频安全性(手把手教程)](https://www.bilibili.com/video/av45755754/)
 
 ## 使用站点
 
