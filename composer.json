@@ -2,6 +2,7 @@
     "name": "qsnh/meedu",
     "description": "A video system about edu.",
     "keywords": ["video", "edu", "laravel"],
+    "homepage": "https://meedu.vip",
     "license": "MIT",
     "type": "project",
     "require": {
@@ -24,6 +25,7 @@
         "mews/purifier": "^2.0",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
+        "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^3.0",
         "spatie/laravel-backup": "5.10.1",

@@ -16,7 +16,13 @@
                         <div class="col-sm-9 play-box">
                             @if(Auth::check())
                                 @if($user->canSeeThisVideo($video))
-                                    @include('components.frontend.xg_player', ['video' => $video])
+                                    @if($video->aliyun_video_id)
+                                        @include('components.frontend.aliyun_player', ['video' => $video])
+                                    @elseif($video->tencent_video_id)
+                                        @include('components.frontend.tencent_player', ['video' => $video])
+                                    @else
+                                        @include('components.frontend.xg_player', ['video' => $video])
+                                    @endif
                                 @else
                                     <div style="padding-top: 200px;">
                                         @if($video->charge > 0 && $video->course->charge == 0)

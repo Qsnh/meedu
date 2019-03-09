@@ -1,11 +1,9 @@
+<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.1/skins/default/aliplayer-min.css" />
 <div id="xiaoteng-player"></div>
-<script src="https://g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
+<script src="https://g.alicdn.com/de/prismplayer/2.8.1/aliplayer-h5-min.js"></script>
 <script>
     var player = new Aliplayer({
         "id": "xiaoteng-player",
-        "qualitySort": "asc",
-        "format": "mp4",
-        "mediaType": "video",
         "width": "100%",
         "height": "500px",
         "autoplay": false,

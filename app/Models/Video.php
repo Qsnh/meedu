@@ -28,7 +28,7 @@ class Video extends Model
         'url', 'view_num', 'short_description', 'description',
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
-        'chapter_id', 'duration',
+        'chapter_id', 'duration', 'tencent_video_id',
     ];
 
     /**
@@ -153,7 +153,6 @@ class Video extends Model
             return $this->url;
         }
         $playInfo = aliyun_play_url($this);
-        Log::info($playInfo);
 
         return isset($playInfo[0]) ? $playInfo[0]['url'] : '';
     }
