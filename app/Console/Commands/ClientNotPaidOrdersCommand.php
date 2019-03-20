@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Console\Commands;
 
-use App\Models\Order;
 use Carbon\Carbon;
+use App\Models\Order;
 use Illuminate\Console\Command;
 
 class ClientNotPaidOrdersCommand extends Command
@@ -24,8 +33,6 @@ class ClientNotPaidOrdersCommand extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -41,7 +48,7 @@ class ClientNotPaidOrdersCommand extends Command
     {
         $count = Order::where('status', Order::STATUS_CANCELED)->where('created_at', '<=', Carbon::now()->subDays(3))->delete();
         if ($count) {
-            $this->line('本次删除：' . $count);
+            $this->line('本次删除：'.$count);
         }
     }
 }
