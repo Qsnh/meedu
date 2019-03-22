@@ -60,8 +60,6 @@
 - [API接口](docs/api/v1/README.md)
 - [安装教程](docs/安装教程.md)
 - [视频收费规则细节](docs/收费规则.md)
-- [模板开发细节](docs/模板开发细节.md)
-- [后端依赖介绍](docs/meedu后端依赖介绍.md)
 
 ## License
 
