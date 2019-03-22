@@ -21,7 +21,21 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-$loader = require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+$addonsPath = __DIR__ . '/../addons';
+$files = scandir($addonsPath);
+if ($files) {
+    foreach ($files as $file) {
+        if (in_array($file, ['.', '..', '.git'])) {
+            continue;
+        }
+        $path = $addonsPath . DIRECTORY_SEPARATOR . $file . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        if (file_exists($path)) {
+            require_once $path;
+        }
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +49,7 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
