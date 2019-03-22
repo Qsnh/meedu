@@ -13,7 +13,6 @@ namespace App\Jobs;
 
 use App\Models\Addons;
 use GuzzleHttp\Client;
-use App\Models\AddonsLog;
 use App\Models\AddonsVersion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -51,10 +50,9 @@ class CloudAddonsDownloadJob implements ShouldQueue
         $savePath = storage_path('app/addons/'.str_random(32).'.zip');
         $response = $client->get($this->downloadUrl, ['save_to' => $savePath]);
         if ($response->getStatusCode() != 200) {
-            // TODO 记录到插件日志
             Log::error('插件下载出错，错误信息：'.$response->getBody());
 
-            event(new AddonsInstallFailEvent($this->addons, $this->version, AddonsLog::TYPE_DOWNLOAD, $response->getBody()));
+            event(new AddonsInstallFailEvent($this->addons));
 
             return;
         }

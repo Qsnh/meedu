@@ -12,7 +12,6 @@
 namespace App\Listeners;
 
 use App\Models\Addons;
-use App\Models\AddonsLog;
 use Illuminate\Support\Facades\DB;
 use App\Events\AddonsInstallFailEvent;
 
@@ -33,23 +32,11 @@ class AddonsInstallFailListener
     public function handle(AddonsInstallFailEvent $event)
     {
         $addons = $event->addons;
-        $version = $event->addonsVersion;
-        $actionType = $event->actionType;
-        $message = $event->message;
 
         DB::beginTransaction();
         try {
             // 修改状态
             $addons->update(['status' => Addons::STATUS_FAIL]);
-
-            // 记录日志
-            $addons->logs()->save(new AddonsLog([
-                'version' => $version->version,
-                'type' => $actionType,
-                'log' => $message,
-            ]));
-
-            // TODO 自动回滚
 
             DB::commit();
         } catch (\Exception $exception) {

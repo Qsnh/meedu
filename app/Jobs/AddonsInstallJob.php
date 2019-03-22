@@ -12,7 +12,6 @@
 namespace App\Jobs;
 
 use App\Models\Addons;
-use App\Models\AddonsLog;
 use App\Models\AddonsVersion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -82,14 +81,11 @@ class AddonsInstallJob implements ShouldQueue
             ])->save();
 
             DB::commit();
-
-            // 解析是否需要安装依赖
-            dispatch(new AddonsDependenciesInstallJob($this->addons, AddonsLog::TYPE_DEPENDENCY));
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
 
-            event(new AddonsInstallFailEvent($this->addons, $this->version, AddonsLog::TYPE_INSTALL, $exception->getMessage()));
+            event(new AddonsInstallFailEvent($this->addons));
         }
     }
 }

@@ -23,9 +23,6 @@ class AddonsInstallFailEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $addons;
-    public $addonsVersion;
-    public $actionType;
-    public $message;
 
     /**
      * AddonsInstallFailEvent constructor.
@@ -35,12 +32,9 @@ class AddonsInstallFailEvent
      * @param string        $actionType
      * @param string        $message
      */
-    public function __construct(Addons $addons, AddonsVersion $version, string $actionType, string $message = '')
+    public function __construct(Addons $addons)
     {
         $this->addons = $addons;
-        $this->addonsVersion = $version;
-        $this->actionType = $actionType;
-        $this->message = $message;
     }
 
     /**

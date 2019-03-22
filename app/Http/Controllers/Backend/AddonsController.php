@@ -12,10 +12,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Addons;
-use App\Models\AddonsLog;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Jobs\AddonsDependenciesInstallJob;
 
 class AddonsController extends Controller
 {
@@ -27,19 +25,6 @@ class AddonsController extends Controller
         $addons = Addons::all();
 
         return view('backend.addons.index', compact('addons'));
-    }
-
-    /**
-     * @param $addonsId
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showLogs($addonsId)
-    {
-        $addons = Addons::findOrFail($addonsId);
-        $logs = $addons->logs()->orderByDesc('created_at')->limit(20)->get();
-
-        return view('backend.addons.logs', compact('addons', 'logs'));
     }
 
     /**
@@ -93,20 +78,6 @@ class AddonsController extends Controller
 
             return back();
         }
-    }
-
-    /**
-     * @param $addonsId
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function submitDependenciesInstallTask($addonsId)
-    {
-        $addons = Addons::findOrFail($addonsId);
-        dispatch(new AddonsDependenciesInstallJob($addons, AddonsLog::TYPE_DEPENDENCY));
-        flash('依赖安装任务已创建，执行结果稍后可以在安装日志查看', 'success');
-
-        return back();
     }
 
     /**
