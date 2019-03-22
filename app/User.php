@@ -186,16 +186,6 @@ class User extends Authenticatable
     }
 
     /**
-     * 充值订单.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rechargePayments()
-    {
-        return $this->hasMany(RechargePayment::class, 'user_id');
-    }
-
-    /**
      * 关联订单.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -264,14 +254,6 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function books()
-    {
-        return $this->belongsToMany(Book::class, 'user_book', 'user_id', 'book_id');
-    }
-
-    /**
      * @param Role $role
      *
      * @throws \Throwable
@@ -298,21 +280,6 @@ class User extends Authenticatable
             'started_at' => $startDate,
             'expired_at' => $endDate,
         ]));
-    }
-
-    /**
-     * 购买书籍处理.
-     *
-     * @param Book $book
-     *
-     * @throws Exception
-     */
-    public function buyBook(Book $book)
-    {
-        if ($this->books()->whereId($book->id)->exists()) {
-            throw new Exception('请勿重复购买');
-        }
-        $this->books()->attach($book->id);
     }
 
     /**
@@ -356,10 +323,6 @@ class User extends Authenticatable
                         $role = Role::find($goodsItem->goods_id);
                         $this->buyRole($role);
                         break;
-                    case OrderGoods::GOODS_TYPE_BOOK:
-                        $book = Book::find($goodsItem->goods_id);
-                        $this->buyBook($book);
-                        break;
                 }
             }
 
@@ -372,26 +335,6 @@ class User extends Authenticatable
 
             return false;
         }
-    }
-
-    /**
-     * 是否可以观看指定电子书.
-     *
-     * @param Book $book
-     *
-     * @return mixed
-     */
-    public function canSeeThisBook(Book $book)
-    {
-        if ($book->charge <= 0) {
-            return true;
-        }
-
-        if ($this->activeRole()) {
-            return true;
-        }
-
-        return $this->books()->whereId($book->id)->exists();
     }
 
     /**

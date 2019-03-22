@@ -59,10 +59,6 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/video/{id}/edit', 'CourseVideoController@update');
         Route::get('/video/{id}/delete', 'CourseVideoController@destroy')->name('backend.video.destroy');
 
-        // 充值
-        Route::get('/recharge', 'RechargeController@index')->name('backend.recharge');
-        Route::get('/recharge/export', 'RechargeController@exportToExcel')->name('backend.recharge.export');
-
         // 订单
         Route::get('/orders', 'OrderController@index')->name('backend.orders');
 
@@ -88,29 +84,9 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/role/{id}/edit', 'RoleController@update');
         Route::get('/role/{id}/delete', 'RoleController@destroy')->name('backend.role.destroy');
 
-        // 邮件群发
-        Route::get('/subscription_email', 'SubscriptionController@create')->name('backend.subscription.email');
-        Route::post('/subscription_email', 'SubscriptionController@store');
-
         // 配置
         Route::get('/setting', 'SettingController@index')->name('backend.setting.index');
         Route::post('/setting', 'SettingController@saveHandler');
-
-        // FAQ分类
-        Route::get('/faq/category', 'FaqCategoryController@index')->name('backend.faq.category.index');
-        Route::get('/faq/category/create', 'FaqCategoryController@create')->name('backend.faq.category.create');
-        Route::post('/faq/category/create', 'FaqCategoryController@store');
-        Route::get('/faq/category/{id}/edit', 'FaqCategoryController@edit')->name('backend.faq.category.edit');
-        Route::put('/faq/category/{id}/edit', 'FaqCategoryController@update');
-        Route::get('/faq/category/{id}/delete', 'FaqCategoryController@destroy')->name('backend.faq.category.destroy');
-
-        // FAQ文章
-        Route::get('/faq/article', 'FaqArticleController@index')->name('backend.faq.article.index');
-        Route::get('/faq/article/create', 'FaqArticleController@create')->name('backend.faq.article.create');
-        Route::post('/faq/article/create', 'FaqArticleController@store');
-        Route::get('/faq/article/{id}/edit', 'FaqArticleController@edit')->name('backend.faq.article.edit');
-        Route::put('/faq/article/{id}/edit', 'FaqArticleController@update');
-        Route::get('/faq/article/{id}/delete', 'FaqArticleController@destroy')->name('backend.faq.article.destroy');
 
         // 后台菜单
         Route::get('/administrator_menu', 'AdministratorMenuController@index')->name('backend.administrator_menu.index');
@@ -120,22 +96,6 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/administrator_menu/{id}/edit', 'AdministratorMenuController@update');
         Route::get('/administrator_menu/{id}/delete', 'AdministratorMenuController@destroy')->name('backend.administrator_menu.destroy');
         Route::post('/administrator_menu/change/save', 'AdministratorMenuController@saveChange')->name('backend.administrator_menu.save_change');
-
-        // 图书
-        Route::get('/book', 'BookController@index')->name('backend.book.index');
-        Route::get('/book/create', 'BookController@create')->name('backend.book.create');
-        Route::post('/book/create', 'BookController@store');
-        Route::get('/book/{id}/edit', 'BookController@edit')->name('backend.book.edit');
-        Route::put('/book/{id}/edit', 'BookController@update');
-        Route::get('/book/{id}/delete', 'BookController@destroy')->name('backend.book.destroy');
-
-        // 图书章节
-        Route::get('/book/{book_id}/chapter', 'BookChapterController@index')->name('backend.book.chapter.index');
-        Route::get('/book/{book_id}/chapter/create', 'BookChapterController@create')->name('backend.book.chapter.create');
-        Route::post('/book/{book_id}/chapter/create', 'BookChapterController@store');
-        Route::get('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@edit')->name('backend.book.chapter.edit');
-        Route::put('/book/{book_id}/chapter/{chapter_id}/edit', 'BookChapterController@update');
-        Route::get('/book/{book_id}/chapter/{chapter_id}/delete', 'BookChapterController@destroy')->name('backend.book.chapter.destroy');
 
         // 友情链接
         Route::get('/link', 'LinkController@index')->name('backend.link.index');

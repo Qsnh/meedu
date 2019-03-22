@@ -67,29 +67,6 @@
         </div>
     </div>
 
-    <div class="container-fluid index-subscription">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-sm-6">
-                            <h3 class="text-center">订阅本站获取最新消息</h3>
-                            <form action="{{route('subscription.email')}}" method="post">
-                                @csrf
-                                <div class="input-group">
-                                    <input type="email" name="email" class="form-control" placeholder="请输入邮箱" required>
-                                    <div class="input-group-append">
-                                        <button type="submit" style="width: 100px;" class="btn btn-primary">订阅</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @if(!$links->isEmpty())
     <div class="container-fluid index-links">
         <div class="row">

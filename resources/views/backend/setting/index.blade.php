@@ -438,24 +438,6 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header">电子书列表页面SEO配置</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>电子书列表页面标题</label>
-                            <textarea name="meedu*seo*book_list*title" class="form-control" rows="2">{{config('meedu.seo.book_list.title')}}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>电子书列表页面关键字</label>
-                            <textarea name="meedu*seo*book_list*keywords" class="form-control" rows="2">{{config('meedu.seo.book_list.keywords')}}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>电子书列表页面描述</label>
-                            <textarea name="meedu*seo*book_list*description" class="form-control" rows="2">{{config('meedu.seo.book_list.description')}}</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
                     <div class="card-header">MeeduCloud</div>
                     <div class="card-body">
                         <div class="form-group">

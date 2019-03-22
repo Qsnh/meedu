@@ -28,17 +28,10 @@ Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 
+// 邮件订阅
 Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler')->name('subscription.email');
-
+// VIP
 Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
-
-Route::get('/faq', 'Frontend\FaqController@index')->name('faq');
-Route::get('/faq/category/{id}', 'Frontend\FaqController@showCategoryPage')->name('faq.category.show');
-Route::get('/faq/article/{id}', 'Frontend\FaqController@showArticlePage')->name('faq.article.show');
-
-Route::get('/books', 'Frontend\BookController@index')->name('books');
-Route::get('/book/{id}', 'Frontend\BookController@show')->name('book.show');
-
 // 支付回调
 Route::post('/payment/callback/{payment}', 'Frontend\PaymentController@callback')->name('payment.callback');
 
@@ -62,13 +55,10 @@ Route::group([
     Route::get('/courses', 'MemberController@showBuyCoursePage')->name('member.courses');
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
-    Route::get('/books', 'MemberController@showBooksPage')->name('member.books');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
 
+    // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
-
-    // 充值记录
-    Route::get('/recharge/records', 'MemberController@showRechargeRecordsPage')->name('member.recharge_records');
 
     // 购买课程
     Route::get('/course/{id}/buy', 'CourseController@showBuyPage')->name('member.course.buy');
@@ -81,11 +71,6 @@ Route::group([
     // 购买VIP
     Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
-
-    // 电子书
-    Route::get('/book/{book_id}/chapter/{chapter_id}', 'BookController@chapter')->name('member.book.chapter');
-    Route::get('/book/{id}/buy', 'BookController@showBuyPage')->name('member.book.buy');
-    Route::post('/book/{id}/buy', 'BookController@buyHandler');
 
     // 收银台
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');

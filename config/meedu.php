@@ -29,22 +29,6 @@ return [
         ],
     ],
 
-    // 系统结算
-    'credit' => [
-        'credit1' => [
-            'name' => '余额',
-            'use' => true,
-        ],
-        'credit2' => [
-            'name' => '积分',
-            'use' => true,
-        ],
-        'credit3' => [
-            'name' => '金币',
-            'use' => true,
-        ],
-    ],
-
     // 上传
     'upload' => [
         'image' => [
@@ -111,11 +95,6 @@ return [
             'keywords' => '',
             'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
         ],
-        'book_list' => [
-            'title' => '电子书',
-            'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
-        ],
     ],
 
     // 系统配置
@@ -126,8 +105,6 @@ return [
         ],
         'indexMenu' => [
             'course' => env('INDEX_MENU_COURSE_SHOW', true),
-            'book' => env('INDEX_MENU_BOOK_SHOW', true),
-            'faq' => env('INDEX_MENU_FAQ_SHOW', true),
             'vip' => env('INDEX_MENU_VIP_SHOW', true),
         ],
         'test' => explode(',', env('TEST_MOBILE', '')),

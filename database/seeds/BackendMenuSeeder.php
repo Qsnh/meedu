@@ -14,14 +14,10 @@ class BackendMenuSeeder extends Seeder
         $map = [
             '公告' => '公告列表界面',
             'VIP会员' => 'VIP列表界面',
-            '邮件群发' => '邮件群发界面',
             '订单列表' => '订单列表',
             '会员' => '会员列表',
             '课程' => '课程列表界面',
             '视频' => '视频列表界面',
-            'FAQ分类' => 'FAQ分类列表界面',
-            'FAQ文章' => 'FAQ文章列表界面',
-            '电子书' => '电子书列表',
             '友情链接' => '友情链接列表',
             '推广链接' => '推广链接首页',
             '首页导航' => '首页导航首页',
@@ -57,10 +53,6 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => 'VIP会员',
                         'url' => '/backend/role',
-                    ],
-                    [
-                        'name' => '邮件群发',
-                        'url' => '/backend/subscription_email',
                     ],
                     [
                         'name' => '友情链接',
@@ -106,32 +98,6 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '视频',
                         'url' => '/backend/video',
-                    ],
-                ],
-            ],
-            [
-                'name' => '电子书',
-                'url' => '',
-                'permission_id' => 0,
-                'children' => [
-                    [
-                        'name' => '电子书',
-                        'url' => '/backend/book',
-                    ],
-                ],
-            ],
-            [
-                'name' => 'FAQ',
-                'url' => '',
-                'permission_id' => 0,
-                'children' => [
-                    [
-                        'name' => 'FAQ分类',
-                        'url' => '/backend/faq/category',
-                    ],
-                    [
-                        'name' => 'FAQ文章',
-                        'url' => '/backend/faq/article',
                     ],
                 ],
             ],
