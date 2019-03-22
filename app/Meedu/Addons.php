@@ -99,7 +99,6 @@ class Addons
      *
      * @param string $name
      * @param string $version
-     * @param string $versionPath
      *
      * @return string
      *
@@ -230,26 +229,6 @@ class Addons
                 }
             }, $addons);
         }
-    }
-
-    /**
-     * @param string $name
-     * @param string $version
-     *
-     * @return array
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    public function parseDependencies(string $name, string $version): array
-    {
-        $dist = $this->extractPath($name, $version).DIRECTORY_SEPARATOR.'meedu.json';
-        if (! $this->files->exists($dist)) {
-            return [];
-        }
-        $composerFileContent = json_decode($this->files->get($dist), true);
-        $dependencies = $composerFileContent['require'] ?? [];
-
-        return $dependencies;
     }
 
     /**
