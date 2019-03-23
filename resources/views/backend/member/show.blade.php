@@ -8,7 +8,7 @@
 
     <div class="row row-cards">
         <div class="col-sm-12 mb-3">
-            <a href="{{ route('backend.member.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+            <a href="{{ route('backend.member.index') }}" class="btn btn-primary">返回列表</a>
         </div>
         <div class="col-sm-6">
             <div class="card">

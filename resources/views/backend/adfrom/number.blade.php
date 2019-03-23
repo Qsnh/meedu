@@ -8,33 +8,41 @@
 
     <div class="row row-cards">
         <div class="col-sm-12">
-            <a href="{{ route('backend.adfrom.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+            <a href="{{ route('backend.adfrom.index') }}" class="btn btn-primary">返回列表</a>
         </div>
         <div class="col-sm-12 mt-2">
-            <h3>{{$one->from_name}}的推广效果</h3>
-            <canvas id="chart"></canvas>
+            <div class="card">
+                <h4 class="card-title">{{$one->from_name}}的推广效果</h4>
+                <div class="card-body">
+                    <canvas id="chart" width="280" height="280"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
 @endsection
 
 @section('js')
-    <script crossorigin="anonymous" integrity="sha384-WJu6cbQvbPRsw+66L1nOomDAZzhTALnUlpchFlWHimhJ9o95CMue7xEZXXDRKV2S" src="https://lib.baomitu.com/Chart.js/2.7.3/Chart.min.js"></script>
     <script>
-        var labels = @json($rows->pluck('x'));
-        var data = @json($rows->pluck('y'));
-        var myLineChart = new Chart('chart', {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '点击量',
-                    data: data,
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    fill: false
-                }]
-            }
+        app.ready(function () {
+            new Chart($("#chart"), {
+                type: 'line',
+                data: {
+                    labels: @json($rows->pluck('x')),
+                    datasets: [{
+                        label: '点击量',
+                        data: @json($rows->pluck('y')),
+                        fill: false,
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        borderColor: "#9966ff",
+                        pointBackgroundColor: "#9966ff",
+                        pointBorderColor: "#9966ff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "#9966ff",
+                    }]
+                }
+            });
         });
     </script>
 

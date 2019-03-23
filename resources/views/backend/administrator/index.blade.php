@@ -8,7 +8,7 @@
 
     <div class="row row-cards">
         <div class="col-sm-12">
-            <a href="{{ route('backend.administrator.create') }}" class="btn btn-primary ml-auto">添加</a>
+            <a href="{{ route('backend.administrator.create') }}" class="btn btn-primary">添加</a>
         </div>
         <div class="col-sm-12">
             <table class="table table-hover">

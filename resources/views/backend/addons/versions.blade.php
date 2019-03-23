@@ -8,7 +8,7 @@
 
     <div class="row row-cards">
         <div class="col-sm-12">
-            <a href="{{route('backend.addons.index')}}" class="btn btn-primary ml-auto btn-sm">返回插件列表</a>
+            <a href="{{route('backend.addons.index')}}" class="btn btn-primary btn-sm">返回插件列表</a>
         </div>
         <div class="col-sm-12">
             <h3>{{$addons->name}}的历史版本</h3>

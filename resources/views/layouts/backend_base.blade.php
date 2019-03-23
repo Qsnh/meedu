@@ -83,13 +83,13 @@
     <link href="{{asset('/theadmin/src/assets/css/app.min.css')}}" rel="stylesheet">
     <link href="{{asset('/theadmin/src/assets/css/style.min.css')}}" rel="stylesheet">
     @yield('css')
+    <script src="{{asset('/theadmin/src/assets/js/core.min.js')}}" data-provide="chartjs"></script>
 </head>
 <body>
 
 @yield('base')
 
 <!-- Scripts -->
-<script src="{{asset('/theadmin/src/assets/js/core.min.js')}}"></script>
 <script src="{{asset('/theadmin/src/assets/js/app.min.js')}}"></script>
 <script src="{{asset('/theadmin/src/assets/js/script.min.js')}}"></script>
 <script>

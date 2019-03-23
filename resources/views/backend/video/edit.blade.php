@@ -11,7 +11,7 @@
         <input type="hidden" name="_method" value="PUT">
         <div class="row row-cards">
             <div class="col-sm-12">
-                <a href="{{ route('backend.video.index') }}" class="btn btn-primary ml-auto">返回列表</a>
+                <a href="{{ route('backend.video.index') }}" class="btn btn-primary">返回列表</a>
             </div>
             <div class="col-sm-12">
                 <div class="form-group">

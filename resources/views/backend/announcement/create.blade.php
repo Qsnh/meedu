@@ -8,17 +8,16 @@
 
     <div class="row row-cards">
         <div class="col-sm-12">
-            <a class="btn btn-primary ml-auto" href="{{ route('backend.announcement.index') }}">返回公告列表</a>
+            <a class="btn btn-primary" href="{{ route('backend.announcement.index') }}">返回公告列表</a>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 mt-3">
             <form action="" method="post">
                 @csrf
-                <div class="form-group">
-                    <label>公告内容 @include('components.backend.required')</label>
-                    @include('components.backend.editor', ['name' => 'announcement'])
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">添加</button>
+                <div class="publisher publisher-multi">
+                    <textarea class="publisher-input" name="announcement" rows="3" placeholder="说点什么吧"></textarea>
+                    <div class="flexbox flex-row-reverse">
+                        <button type="submit" class="btn btn-sm btn-bold btn-primary">发布</button>
+                    </div>
                 </div>
             </form>
         </div>

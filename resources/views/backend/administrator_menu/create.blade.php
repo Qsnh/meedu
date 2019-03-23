@@ -8,7 +8,7 @@
 
     <div class="row row-cards">
         <div class="col-sm-12">
-            <a href="{{ route('backend.administrator_menu.index') }}" class="btn btn-primary ml-auto">返回菜单</a>
+            <a href="{{ route('backend.administrator_menu.index') }}" class="btn btn-primary">返回菜单</a>
         </div>
         <div class="col-sm-12">
             <form action="" method="post">
