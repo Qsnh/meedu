@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    添加课程
+@endsection
 
-    @include('components.breadcrumb', ['name' => '添加课程'])
+@section('body')
 
     <form action="" method="post">
         @csrf

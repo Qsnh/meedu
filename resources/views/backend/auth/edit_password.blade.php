@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    修改密码
+@endsection
 
-    @include('components.breadcrumb', ['name' => '修改密码'])
+@section('body')
 
     <div class="row row-cards justify-content-center">
         <div class="col-sm-4">

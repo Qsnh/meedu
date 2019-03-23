@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    编辑视频
+@endsection
 
-    @include('components.breadcrumb', ['name' => '编辑视频'])
+@section('body')
 
     <form action="" method="post">
         @csrf

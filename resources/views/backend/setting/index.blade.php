@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    全站配置
+@endsection
 
-    @include('components.breadcrumb', ['name' => '全站配置'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

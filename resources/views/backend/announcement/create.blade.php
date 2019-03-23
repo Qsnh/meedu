@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    添加公告
+@endsection
 
-    @include('components.breadcrumb', ['name' => '添加公告'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

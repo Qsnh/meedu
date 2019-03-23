@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    角色授权
+@endsection
 
-    @include('components.breadcrumb', ['name' => '角色授权'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    推广效果
+@endsection
 
-    @include('components.breadcrumb', ['name' => '推广链接'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

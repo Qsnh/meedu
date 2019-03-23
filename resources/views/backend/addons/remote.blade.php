@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    云插件
+@endsection
 
-    @include('components.breadcrumb', ['name' => '云插件'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

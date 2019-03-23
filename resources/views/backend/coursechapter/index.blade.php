@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    {{$course->title.'的课程章节'}}
+@endsection
 
-    @include('components.breadcrumb', ['name' => $course->title.'的课程章节'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12 mb-2">

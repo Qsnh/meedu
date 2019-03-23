@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    编辑后台菜单
+@endsection
 
-    @include('components.breadcrumb', ['name' => '添加菜单'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

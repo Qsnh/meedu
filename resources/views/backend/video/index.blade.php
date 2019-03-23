@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    视频列表
+@endsection
 
-    @include('components.breadcrumb', ['name' => '视频'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

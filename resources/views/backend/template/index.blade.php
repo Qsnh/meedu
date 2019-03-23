@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    模板
+@endsection
 
-    @include('components.breadcrumb', ['name' => '模板'])
+@section('body')
 
     <div class="row row-cards">
         @foreach($templates as $template)

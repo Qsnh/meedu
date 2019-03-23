@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    编辑角色
+@endsection
 
-    @include('components.breadcrumb', ['name' => '编辑角色'])
+@section('body')
 
     <div class="row row-cards">
         <div class="col-sm-12">

@@ -1,8 +1,10 @@
 @extends('layouts.backend')
 
-@section('body')
+@section('title')
+    首页导航
+@endsection
 
-@include('components.breadcrumb', ['name' => '首页导航'])
+@section('body')
 
 <div class="row row-cards">
     <div class="col-sm-12">
@@ -14,8 +16,8 @@
             <tr>
                 <th>ID</th>
                 <th>排序值</th>
-<th>链接名</th>
-<th>链接地址</th>
+                <th>链接名</th>
+                <th>链接地址</th>
                 <th>操作</th>
             </tr>
             </thead>
