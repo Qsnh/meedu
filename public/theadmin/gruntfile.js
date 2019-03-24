@@ -161,7 +161,35 @@ module.exports = function(grunt) {
     },
 
 
-
+    concat: {
+      options: {
+        separator: ';'
+      },
+      app: {
+        src: [
+          'src/assets/js/src/app.js', 
+          'src/assets/js/src/app-extra.js', 
+          'src/assets/js/src/jquery-extends.js', 
+          'src/assets/js/src/component/**', 
+          'src/assets/js/src/plugin/**', 
+          'src/assets/js/src/provider/provider.js', 
+          'src/assets/js/src/provider/provider-list.js', 
+          'src/assets/js/src/provider/chart.js', 
+          'src/assets/js/src/provider/code.js', 
+          'src/assets/js/src/provider/editor.js', 
+          'src/assets/js/src/provider/emoji.js', 
+          'src/assets/js/src/provider/form.js', 
+          'src/assets/js/src/provider/icon.js', 
+          'src/assets/js/src/provider/map.js', 
+          'src/assets/js/src/provider/misc.js', 
+          'src/assets/js/src/provider/table.js', 
+          'src/assets/js/src/provider/ui.js', 
+          'src/assets/js/src/provider/upload.js', 
+          'src/assets/js/src/app-init.js'
+        ],
+        dest: 'src/assets/js/app.js'
+      }
+    },
 
 
     // Uglify JS files
@@ -175,7 +203,11 @@ module.exports = function(grunt) {
       script: {
         src:  'src/assets/js/script.js',
         dest: 'src/assets/js/script.min.js'
-      }
+      },
+      app: {
+        src:  'src/assets/js/app.js',
+        dest: 'src/assets/js/app.min.js'
+      },
     },
 
 
@@ -246,7 +278,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask( 'css', ['cssmin', 'postcss'] );
 
-  grunt.registerTask( 'js', ['neuter:js', 'uglify'] );
+  grunt.registerTask( 'js', ['neuter:js', 'concat:app', 'uglify:script', 'uglify:app'] );
 
 
 };

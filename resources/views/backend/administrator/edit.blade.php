@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('title')
-    添加管理员
+    编辑管理员
 @endsection
 
 @section('body')

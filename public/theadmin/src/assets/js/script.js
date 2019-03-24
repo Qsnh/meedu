@@ -34,7 +34,7 @@ app.config({
   |
   */
 
-  googleApiKey: 'AIzaSyDRBLFOTTh2NFM93HpUA4ZrA99yKnCAsto',
+  googleApiKey: '',
 
   /*
   |--------------------------------------------------------------------------
@@ -76,8 +76,6 @@ app.config({
 
 
 });
-
-app.dir.vendor = 'http://localhost:3000/assets/vendor/';
 
 
 

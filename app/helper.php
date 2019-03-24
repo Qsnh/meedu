@@ -46,19 +46,33 @@ if (! function_exists('menu_is_active')) {
      *
      * @return bool
      */
-    function menu_is_active($routeName)
+    function menu_is_active(int $menuId)
     {
-        $routeName = strtolower($routeName);
-        $currentRouteName = strtolower(request()->route()->getName());
-        $isActive = $currentRouteName === $routeName ? 'active' : '';
-        if (! $isActive && str_contains('.', $currentRouteName)) {
-            $currentRouteNameArray = explode('.', $currentRouteName);
-            unset($currentRouteNameArray[count($currentRouteNameArray) - 1]);
-            $currentRouteName = implode('.', $currentRouteNameArray);
-            $isActive = preg_match("/{$currentRouteName}[^_]/", $routeName) ? 'active' : '';
+        $currentUrl = trim(request()->url());
+        $menu = \App\Models\AdministratorMenu::find($menuId);
+        if (! $menu) {
+            return false;
+        }
+        $children = $menu->children;
+        $filter = function (string $url) {
+            $url = str_replace(['index', '/index'], '', $url);
+
+            return trim($url);
+        };
+        if ($children->isEmpty()) {
+            $url = $filter($menu->url);
+
+            return preg_match("#{$url}#", $currentUrl);
+        }
+        foreach ($children as $child) {
+            $url = $filter($child->url);
+            $result = preg_match("#{$url}#", $currentUrl);
+            if ($result) {
+                return true;
+            }
         }
 
-        return $isActive;
+        return false;
     }
 }
 

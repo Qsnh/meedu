@@ -29,8 +29,7 @@
 
 .doc-dropdown .dropdown-menu,
 .doc-dropdown .dropdown-grid {
-  -webkit-transform: scale(1, 1);
-          transform: scale(1, 1);
+  transform: scale(1, 1);
 }
 
 .doc-bg-colors-spacing > [class*="bg-"] {
@@ -44,8 +43,7 @@
 
 .doc-topbar-static .topbar {
   position: static;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
-          box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
 }
 
 .doc-topbar-static .topbar .sidebar-toggler,
@@ -62,14 +60,10 @@
   height: 200px;
   margin: 0 auto 50px;
   background-color: #fff;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.07);
 }
 
 .demo-code-for-media .code-title {
@@ -89,7 +83,6 @@
 }
 
 .demo-icons-list {
-  display: -webkit-box;
   display: flex;
   flex-wrap: wrap;
   list-style: none;
@@ -99,19 +92,15 @@
 }
 
 .demo-icons-list li {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   margin-right: 20px;
   margin-bottom: 20px;
   width: 72px;
   height: 72px;
   text-align: center;
   cursor: pointer;
-  -webkit-transition: .1s;
   transition: .1s;
 }
 
@@ -279,21 +268,16 @@
 }
 
 .demo-color-list li {
-  display: -webkit-inline-box;
   display: inline-flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
+  flex-direction: column;
   margin: 20px;
   margin-right: 0;
   border: 1px solid #f1f2f3;
 }
 
 .demo-color-list li > span {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-flex: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   flex-basis: 100px;
   min-height: 80px;
   min-width: 160px;
@@ -313,3 +297,5 @@
   opacity: 1;
   margin-bottom: 15px;
 }
+
+/*# sourceMappingURL=style.css.map */

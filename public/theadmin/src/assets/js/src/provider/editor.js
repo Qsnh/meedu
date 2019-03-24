@@ -9,11 +9,39 @@
 
   provider.initEditors = function() {
 
-    provider.initSummernote();
+    provider.initWangEditor();
 
   };
 
 
+  provider.initWangEditor = function () {
+    if ( window['wangEditor'] === undefined ) {
+      return;
+    }
+    provider.provide('wangEditor', function(){
+      var o = app.getDataOptions($(this));
+      var options = {
+        customConfig: {
+          uploadImgServer: '/backend/upload/image',
+          withCredentials: true,
+          uploadFileName: 'file',
+          uploadImgHooks: {
+            customInsert: function (insertImg, result, editor) {
+                insertImg(result.url);
+            }
+          },
+          onchange: function (html) {
+            $(o.dom).val(html);
+          }
+        }
+      };
+      // options = $.extend(options, app.getDataOptions( $(this) ));
+
+      var editor = new wangEditor($(this)[0]);
+      editor.customConfig = options.customConfig;
+      editor.create();
+    });
+  };
 
 
 
