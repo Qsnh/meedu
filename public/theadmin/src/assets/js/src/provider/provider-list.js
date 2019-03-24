@@ -147,6 +147,13 @@
       js:       'bootstrap-select/js/bootstrap-select.min.js',
     },
 
+    imageUpload: {
+      selector: 'imageUpload',
+      callback: 'initImageUpload',
+      css:      '',
+      js:       '',
+    },
+
 
     datepicker: {
       selector: 'datepicker',

@@ -226,45 +226,6 @@
   };
 
 
-
-  // Make an element fullscreen
-  //
-  provider.initFullscreen = function() {
-    if ( window['screenfull'] === undefined ) {
-      return;
-    }
-
-    if ( ! screenfull.enabled ) {
-      return;
-    }
-
-    var selector = '[data-provide~="fullscreen"]';
-
-    $(selector).each(function(){
-      $(this).data('fullscreen-default-html', $(this).html());
-    });
-
-    document.addEventListener(screenfull.raw.fullscreenchange, function() {
-      if (screenfull.isFullscreen) {
-        $(selector).each(function(){
-          $(this).addClass('is-fullscreen')
-        });
-      }
-      else {
-        $(selector).each(function(){
-          $(this).removeClass('is-fullscreen')
-        });
-      }
-    });
-
-    $(document).on('click', selector, function(){
-      screenfull.toggle();
-    });
-
-  };
-
-
-
   // Swiper carousel/slider
   //
   provider.initSwiper = function() {

@@ -46,6 +46,32 @@
   };
 
 
+  provider.initImageUpload = function() {
+    provider.provide('imageUpload', function(){
+      var o = app.getDataOptions($(this));
+      $('#input-file-'+o.field).change(function(){
+        var files = this.files;
+        var form = new FormData();
+        form.append('file', files[0]);
+        $.ajax({
+            url: "/backend/upload/image",
+            type: "post",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function(res){
+                $('input[name="'+o.name+'"]').val(res.url);
+                $('.input-file-'+o.field+'-preview').attr('src', res.url).show();
+            },
+            error: function(err){
+                swal('失败', '图片上传失败', 'error');
+                console.log(err);
+            }
+        });
+      }); 
+    });
+  };
+
 
 
   // Datepicker

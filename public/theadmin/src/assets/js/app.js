@@ -2805,8 +2805,6 @@ jQuery.fn.scrollToEnd = function() {
     },
 
 
-
-
     quill: {
       selector: 'quill',
       callback: 'initQuill',
@@ -2846,6 +2844,13 @@ jQuery.fn.scrollToEnd = function() {
       callback: 'initSelectpicker',
       css:      'bootstrap-select/css/bootstrap-select.min.css',
       js:       'bootstrap-select/js/bootstrap-select.min.js',
+    },
+
+    imageUpload: {
+      selector: 'imageUpload',
+      callback: 'initImageUpload',
+      css:      '',
+      js:       '',
     },
 
 
@@ -3930,6 +3935,32 @@ jQuery.fn.scrollToEnd = function() {
   };
 
 
+  provider.initImageUpload = function() {
+    provider.provide('imageUpload', function(){
+      var o = app.getDataOptions($(this));
+      $('#input-file-'+o.field).change(function(){
+        var files = this.files;
+        var form = new FormData();
+        form.append('file', files[0]);
+        $.ajax({
+            url: "/backend/upload/image",
+            type: "post",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function(res){
+                $('input[name="'+o.name+'"]').val(res.url);
+                $('.input-file-'+o.field+'-preview').attr('src', res.url).show();
+            },
+            error: function(err){
+                swal('失败', '图片上传失败', 'error');
+                console.log(err);
+            }
+        });
+      }); 
+    });
+  };
+
 
 
   // Datepicker
@@ -4905,45 +4936,6 @@ jQuery.fn.scrollToEnd = function() {
     });
 
   };
-
-
-
-  // Make an element fullscreen
-  //
-  provider.initFullscreen = function() {
-    if ( window['screenfull'] === undefined ) {
-      return;
-    }
-
-    if ( ! screenfull.enabled ) {
-      return;
-    }
-
-    var selector = '[data-provide~="fullscreen"]';
-
-    $(selector).each(function(){
-      $(this).data('fullscreen-default-html', $(this).html());
-    });
-
-    document.addEventListener(screenfull.raw.fullscreenchange, function() {
-      if (screenfull.isFullscreen) {
-        $(selector).each(function(){
-          $(this).addClass('is-fullscreen')
-        });
-      }
-      else {
-        $(selector).each(function(){
-          $(this).removeClass('is-fullscreen')
-        });
-      }
-    });
-
-    $(document).on('click', selector, function(){
-      screenfull.toggle();
-    });
-
-  };
-
 
 
   // Swiper carousel/slider
