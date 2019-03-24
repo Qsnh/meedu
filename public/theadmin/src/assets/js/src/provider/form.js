@@ -45,7 +45,6 @@
 
   };
 
-
   provider.initImageUpload = function() {
     provider.provide('imageUpload', function(){
       var o = app.getDataOptions($(this));

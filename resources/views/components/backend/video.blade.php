@@ -1,59 +1,196 @@
-<div class="pt-2 pb-2">
-    <div class="tab">
-        <div class="tab-header">
-            <ul>
-                <li class="active" data-id="tab-aliyun">阿里云视频服务</li>
-                <li data-id="tab-vod">腾讯云视频服务</li>
-                <li data-id="tab-url">视频直链</li>
-            </ul>
+<div class="form-group">
+    <ul class="nav nav-tabs nav-tabs-success">
+        @if(!isset($video))
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#video-aliyun">阿里云</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#video-tencent">腾讯云</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#video-url">直链</a>
+        </li>
+            @else
+            <li class="nav-item">
+                <a class="nav-link {{$video->aliyun_video_id ? 'active' : ''}}" data-toggle="tab" href="#video-aliyun">阿里云</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{$video->tencent_video_id ? 'active' : ''}}" data-toggle="tab" href="#video-tencent">腾讯云</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{$video->url ? 'active' : ''}}" data-toggle="tab" href="#video-url">直链</a>
+            </li>
+            @endif
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane fade {{(!isset($video) || $video->aliyun_video_id) ? 'active show' : ''}}" id="video-aliyun">
+            <div class="alert alert-warning">
+                请确保您配置了阿里云视频服务的参数，否则会上传失败。<a href="{{route('backend.setting.index')}}">点击这里进行配置</a>
+            </div>
+            @if(optional($video ?? '')->aliyun_video_id)
+                <ul class="nav nav-process nav-process-circle">
+                    <li class="nav-item aliyun-step1 complete">
+                        <span class="nav-title">选择视频</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-filename">{{$video->name}}</span>
+                    </li>
+                    <li class="nav-item aliyun-step2 complete">
+                        <span class="nav-title">上传视频</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-process">100%</span>
+                    </li>
+                    <li class="nav-item aliyun-step3 complete">
+                        <span class="nav-title">上传成功</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-vid">{{$video->aliyun_video_id}}</span>
+                    </li>
+                </ul>
+            @else
+                <ul class="nav nav-process nav-process-circle">
+                    <li class="nav-item aliyun-step1">
+                        <span class="nav-title">选择视频</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-filename"></span>
+                    </li>
+                    <li class="nav-item aliyun-step2">
+                        <span class="nav-title">上传视频</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-process"></span>
+                    </li>
+                    <li class="nav-item aliyun-step3">
+                        <span class="nav-title">上传成功</span>
+                        <a class="nav-link" href="#"></a>
+                        <span class="aliyun-vid"></span>
+                    </li>
+                </ul>
+            @endif
+            <div class="file-group file-group-inline">
+                <button class="btn btn-primary file-browser" id="aliyun-upload-button" type="button">选择视频文件</button>
+                <input type="file" id="aliyun_video_files">
+                <button class="btn btn-primary" id="aliyun-upload-start-button" type="button">开始上传</button>
+                @if(optional($video ?? '')->aliyun_video_id)
+                <button class="btn btn-warning" onclick="aliyunReset()" type="button">重新上传</button>
+                @endif
+            </div>
         </div>
-        <div class="tab-body">
-            <div class="tab-body-box active" id="tab-aliyun">
-                <div class="alert alert-warning">
-                    请确保您配置了阿里云视频服务的参数，否则会上传失败。<a href="{{route('backend.setting.index')}}">点击这里进行配置</a>
-                </div>
-                <div class="custom-file">
-                    <input type="file" id="video_files">
-                </div>
-                <div class="mt-3 mb-3">
-                    <span>上传进度：<span id="upload-progress">暂无</span></span>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-info" id="start-upload">开始上传</button>
-                    <button type="button" class="btn btn-danger" id="stop-upload">停止上传</button>
-                </div>
-                <input type="hidden" name="aliyun_video_id" id="aliyun_video_id" value="{{optional($video ?? '')->aliyun_video_id ?? ''}}">
+        <div class="tab-pane fade {{(isset($video) && $video->tencent_video_id) ? 'active show' : ''}}" id="video-tencent">
+            <div class="file-group file-group-inline">
+                <button class="btn btn-info file-browser" id="tencent-upload-button" type="button">选择视频文件</button>
+                <input type="file">
             </div>
-            <div class="tab-body-box" id="tab-vod">
-                <div class="alert alert-warning">
-                    请确保您配置了腾讯云视频服务的参数，否则会上传失败。<a href="{{route('backend.setting.index')}}">点击这里进行配置</a>
-                </div>
-                <div class="custom-file">
-                    <input type="file" id="vod_video_file">
-                </div>
-                <div class="mt-3 mb-3">
-                    <span>上传进度：<span id="vod-upload-progress">暂无</span></span>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-info" id="vod-start-upload">开始上传</button>
-                    <button type="button" class="btn btn-danger" id="vod-stop-upload">取消上传</button>
-                </div>
-                <input type="hidden" name="vod_video_id" id="vod_video_id" value="{{optional($video ?? '')->vod_video_id ?? ''}}">
-            </div>
-            <div class="tab-body-box" id="tab-url">
-                <input type="text" name="url" class="form-control"
-                       placeholder="请输入视频直链"
-                       value="{{optional($video ?? '')->url ?? ''}}">
-            </div>
+        </div>
+        <div class="tab-pane fade {{(isset($video) && $video->url) ? 'active show' : ''}}" id="video-url">
+            <input type="text" name="url" class="form-control"
+                   placeholder="请输入视频直链"
+                   value="{{optional($video ?? '')->url ?? ''}}">
         </div>
     </div>
+    <input type="hidden" name="aliyun_video_id" id="aliyun_video_id" value="{{optional($video ?? '')->aliyun_video_id ?? ''}}">
 </div>
+
+<script src="{{asset('/js/aliyun-upload-sdk-1.4.0/lib/es6-promise.min.js')}}"></script>
+<script src="{{asset('/js/aliyun-upload-sdk-1.4.0/lib/aliyun-oss-sdk-5.2.0.min.js')}}"></script>
+<script src="{{asset('/js/aliyun-upload-sdk-1.4.0/aliyun-upload-sdk-1.4.0.min.js')}}"></script>
+<script crossorigin="anonymous" integrity="sha384-U/+EF1mNzvy5eahP9DeB32duTkAmXrePwnRWtuSh1C/bHHhyR1KZCr/aGZBkctpY" src="https://lib.baomitu.com/axios/0.18.0/axios.min.js"></script>
 <script>
-    $(function () {
-        $('.tab-header ul li').click(function () {
-            var id = $(this).attr('data-id');
-            $(this).addClass('active').siblings().removeClass('active');
-            $(`#${id}`).addClass('active').siblings().removeClass('active');
+    var aliyunError = function (message) {
+        $('.aliyun-step2').addClass('processing');
+        $('.aliyun-process').text(message);
+    };
+    var aliyunReset = function () {
+        $('.aliyun-step1').removeClass('complete').removeClass('processing');
+        $('.aliyun-step2').removeClass('complete').removeClass('processing');
+        $('.aliyun-step3').removeClass('complete').removeClass('processing');
+        $('.aliyun-filename').text('');
+        $('.aliyun-process').text('');
+        $('.aliyun-vid').text('');
+    };
+    var aliyunUploader = new AliyunUpload.Vod({
+        'partSize': 1048576,
+        'parallel': 5,
+        'retryCount': 3,
+        'retryDuration': 2,
+        'onUploadstarted': function (uploadInfo) {
+            $('.aliyun-step1').removeClass('processing').addClass('complete');
+            $('.aliyun-step2').addClass('processing');
+            // console.log("onUploadStarted:" + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
+            if (uploadInfo.videoId) {
+                window.axios.post('{{route('video.upload.aliyun.refresh')}}', {
+                    video_id: uploadInfo.videoId,
+                    _token: '{{csrf_token()}}'
+                }).then(function (res) {
+                    if (res.data.code == 500) {
+                        aliyunError(res.data.message);
+                    } else {
+                        aliyunUploader.setUploadAuthAndAddress(uploadInfo, res.data.upload_auth, res.data.upload_address, res.data.video_id);
+                    }
+                }).catch(function (errors) {
+                    aliyunError('request auth error.1');
+                });
+            } else {
+                // 创建
+                window.axios.post('{{route('video.upload.aliyun.create')}}', {
+                    title: uploadInfo.file.name,
+                    filename: uploadInfo.file.name,
+                    _token: '{{csrf_token()}}'
+                }).then(function (res) {
+                    if (res.data.code == 500) {
+                        aliyunError(res.data.message);
+                    } else {
+                        aliyunUploader.setUploadAuthAndAddress(uploadInfo, res.data.upload_auth, res.data.upload_address, res.data.video_id);
+                    }
+                }).catch(function (errors) {
+                    aliyunError('request auth error.2');
+                });
+            }
+        },
+        'onUploadSucceed': function (uploadInfo) {
+            // console.log("onUploadSucceed: " + uploadInfo.file.name + ", endpoint:" + uploadInfo.endpoint + ", bucket:" + uploadInfo.bucket + ", object:" + uploadInfo.object);
+            $('.aliyun-step2').removeClass('processing').addClass('complete');
+            $('.aliyun-step3').addClass('complete');
+            $('.aliyun-process').text('100%');
+            $('.aliyun-vid').text(uploadInfo.videoId);
+            $('#aliyun_video_id').val(uploadInfo.videoId);
+        },
+        'onUploadFailed': function (uploadInfo, code, message) {
+            $('.aliyun-step2').addClass('processing').removeClass('complete');
+            $('.aliyun-process').text('error:' + message);
+            $('.aliyun-step3').removeClass('complete');
+            // console.log("onUploadFailed: file:" + uploadInfo.file.name + ",code:" + code + ", message:" + message);
+        },
+        'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
+            $('.aliyun-step2').addClass('processing').removeClass('complete');
+            $('.aliyun-process').text(Math.ceil(loadedPercent * 100) + "%");
+            // console.log("onUploadProgress:file:" + uploadInfo.file.name + ", fileSize:" + totalSize + ", percent:" + Math.ceil(loadedPercent * 100) + "%");
+        },
+        'onUploadTokenExpired': function (uploadInfo) {
+            window.axios.post('{{route('video.upload.aliyun.refresh')}}', {
+                video_id: uploadInfo.videoId,
+                _token: '{{csrf_token()}}'
+            }).then(function (res) {
+                aliyunUploader.resumeUploadWithAuth(res.data.upload_auth);
+            }).catch(function (errors) {
+                aliyunError('request auth error.3');
+            });
+            // uploader.resumeUploadWithAuth(uploadAuth);
+        },
+        'onUploadEnd':function(uploadInfo){
+        }
+    });
+
+    document.getElementById("aliyun_video_files")
+        .addEventListener('change', function (event) {
+            for(var i=0; i<event.target.files.length; i++) {
+                var file = event.target.files[i];
+                aliyunUploader.addFile(file, null, null, null, '');
+            }
+            $('.aliyun-step1').addClass('processing');
+            $('.aliyun-filename').text(file.name);
         });
+
+    document.getElementById("aliyun-upload-start-button").addEventListener('click', function (event) {
+        aliyunUploader.startUpload();
     });
 </script>
