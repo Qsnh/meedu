@@ -89,19 +89,21 @@
 @yield('base')
 
 <!-- Scripts -->
-<script src="{{asset('/theadmin/src/assets/js/core.min.js')}}"></script>
+<script src="{{asset('/theadmin/src/assets/js/core.min.js')}}" data-provide="sweetalert"></script>
 <script src="{{asset('/theadmin/src/assets/js/app.min.js')}}"></script>
 <script src="{{asset('/theadmin/src/assets/js/script.min.js')}}"></script>
 <script>
-    @if(get_first_flash('success'))
-    app.toast("{{get_first_flash('success')}}");
-    @endif
-    @if(get_first_flash('warning'))
-    app.toast("{{get_first_flash('warning')}}");
-    @endif
-    @if(get_first_flash('error'))
-    app.toast("{{get_first_flash('error')}}");
-    @endif
+    app.ready(function () {
+        @if(get_first_flash('success'))
+        swal('成功', "{{get_first_flash('success')}}", 'success');
+        @endif
+        @if(get_first_flash('warning'))
+        swal('警告', "{{get_first_flash('warning')}}", 'warning');
+        @endif
+        @if(get_first_flash('error'))
+        swal('失败', "{{get_first_flash('error')}}", 'error');
+        @endif
+    });
 </script>
 @yield('js')
 </body>
