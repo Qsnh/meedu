@@ -98,7 +98,12 @@
       js:       'summernote/summernote.min.js',
     },
 
-
+    wangEditor: {
+      selector: 'wangEditor',
+      callback: 'initWangEditor',
+      css:      'wangEditor/wangEditor.min.css',
+      js:       'wangEditor/wangEditor.min.js',
+    },
 
 
     quill: {

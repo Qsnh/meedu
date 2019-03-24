@@ -8,7 +8,7 @@
 //
 +function($, window){
   var app = {
-    name:       'TheAdmin',
+    name:       'MeEdu',
     version:    '1.0.0',
     corejs:     $('script[src*="core.min.js"]').attr('src'),
   };
