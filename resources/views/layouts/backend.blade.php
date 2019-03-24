@@ -22,14 +22,14 @@
         <nav class="sidebar-navigation">
             <ul class="menu">
                 @foreach(backend_menus() as $menu)
-                    <li class="menu-item">
+                    <li class="menu-item {{menu_is_active($menu->id) ? 'active open' : ''}}">
                         <a class="menu-link" href="#">
                             <span class="title">{{$menu->name}}</span>
                             <span class="arrow"></span>
                         </a>
                         <ul class="menu-submenu">
                             @foreach($menu->children as $child)
-                                <li class="menu-item">
+                                <li class="menu-item {{menu_is_active($child->id) ? 'active' : ''}}">
                                     <a class="menu-link" href="{{$child->url}}">
                                         <span class="dot"></span>
                                         <span class="title">{{$child->name}}</span>
