@@ -77,8 +77,6 @@ app.config({
 
 });
 
-app.dir.vendor = 'http://localhost:3000/assets/vendor/';
-
 
 
 
