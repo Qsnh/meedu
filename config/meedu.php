@@ -103,10 +103,6 @@ return [
             'status' => -1,
             'expire' => 360,
         ],
-        'indexMenu' => [
-            'course' => env('INDEX_MENU_COURSE_SHOW', true),
-            'vip' => env('INDEX_MENU_VIP_SHOW', true),
-        ],
         'test' => explode(',', env('TEST_MOBILE', '')),
         'js' => '',
         'theme' => [

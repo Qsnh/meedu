@@ -37,7 +37,17 @@ if (! function_exists('get_first_flash')) {
         return session($level)->first();
     }
 }
-
+if (! function_exists('menu_active')) {
+    /**
+     * @param $routeName
+     *
+     * @return bool
+     */
+    function menu_active($routeName)
+    {
+        return request()->route()->getName() == $routeName ? 'active' : '';
+    }
+}
 if (! function_exists('menu_is_active')) {
     /**
      * 指定路由名是否与当前访问的路由名相同.

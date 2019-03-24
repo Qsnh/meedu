@@ -10,28 +10,14 @@
         <ul class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li>
-                    <a class="{{ menu_is_active('index') }}" href="{{ url('/') }}">首页</a>
+                    <a class="{{menu_active('index')}}" href="{{ url('/') }}">首页</a>
                 </li>
-                @if(config('meedu.system.indexMenu.course'))
                 <li>
-                    <a class="{{ menu_is_active('courses') }}" href="{{ route('courses') }}">课程</a>
+                    <a class="{{menu_active('courses')}}" href="{{ route('courses') }}">课程</a>
                 </li>
-                @endif
-                @if(config('meedu.system.indexMenu.book'))
                 <li>
-                    <a class="{{ menu_is_active('books') }}" href="{{ route('books') }}">电子书</a>
+                    <a class="{{menu_active('role.index')}}" href="{{ route('role.index') }}">订阅本站</a>
                 </li>
-                @endif
-                @if(config('meedu.system.indexMenu.vip'))
-                <li>
-                    <a class="{{ menu_is_active('role.index') }}" href="{{ route('role.index') }}">订阅本站</a>
-                </li>
-                @endif
-                @if(config('meedu.system.indexMenu.faq'))
-                <li>
-                    <a class="{{ menu_is_active('faq') }}" href="{{ route('faq') }}">FAQ</a>
-                </li>
-                @endif
                 @foreach($nav as $item)
                 <li>
                     <a href="{{$item->url}}">{{$item->name}}</a>
