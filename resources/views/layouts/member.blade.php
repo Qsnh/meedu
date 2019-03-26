@@ -39,11 +39,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('member.books') }}">
-                                    <i class="fa fa-book"></i> 我的电子书
-                                </a>
-                            </li>
-                            <li>
                                 <a href="{{ route('member.courses') }}">
                                     <i class="fa fa-file"></i> 已购课程
                                 </a>
