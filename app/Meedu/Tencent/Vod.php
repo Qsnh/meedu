@@ -11,8 +11,6 @@
 
 namespace App\Meedu\Tencent;
 
-use Illuminate\Support\Str;
-
 class Vod
 {
     protected $secretId;

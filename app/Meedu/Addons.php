@@ -133,7 +133,7 @@ class Addons
         }
         \Chumper\Zipper\Facades\Zipper::make($file)->extractTo(
             $extractPath,
-            ['vendor', '.git', 'node_modules'],
+            ['.git', 'node_modules'],
             Zipper::BLACKLIST
         );
 
