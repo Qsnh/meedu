@@ -358,12 +358,12 @@
                     <a href="https://cloud.tencent.com/product/vod">腾讯云视频服务</a>
                 </div>
                 <div class="form-group">
-                    <label>AccessKeyId</label>
+                    <label>SecretId</label>
                     <input type="text" name="tencent*vod*secret_id" class="form-control"
                            value="{{config('tencent.vod.secret_id')}}">
                 </div>
                 <div class="form-group">
-                    <label>AccessKeySecret</label>
+                    <label>SecretKey</label>
                     <input type="text" name="tencent*vod*secret_key" class="form-control"
                            value="{{config('tencent.vod.secret_key')}}">
                 </div>

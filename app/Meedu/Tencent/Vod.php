@@ -36,7 +36,7 @@ class Vod
             'secretId' => $this->secretId,
             'currentTimeStamp' => $currentTime,
             'expireTime' => $currentTime + 86400,
-            'random' => Str::random(12),
+            'random' => mt_rand(0, 100000),
         ];
         $queryString = http_build_query($data);
         $sign = base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true).$queryString);
