@@ -55,14 +55,4 @@ class IndexTest extends TestCase
             ->dontSee($course->title);
     }
 
-    public function test_subscription_on_email()
-    {
-        $email = '12345@qq.com';
-        $this->visit(url('/'))
-            ->type($email, 'email')
-            ->press('订阅')
-            ->assertResponseStatus(200);
-        $this->assertTrue(EmailSubscription::whereEmail($email)->exists());
-    }
-
 }
