@@ -25,8 +25,11 @@ Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider')->name('soc
 Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
+Route::get('/videos', 'Frontend\VideoController@index')->name('videos');
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
+// 搜索
+Route::get('/search', 'Frontend\SearchController@searchHandler')->name('search');
 
 // 邮件订阅
 Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler')->name('subscription.email');

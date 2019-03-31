@@ -17,16 +17,19 @@ use App\Http\Requests\Frontend\SearchRequest;
 
 class SearchController extends Controller
 {
-    public function showPage()
-    {
-        return v('frontend.search.search');
-    }
-
     public function searchHandler(SearchRequest $request)
     {
-        $keywords = $request->post('keywords');
-        $videos = Video::where('name', 'like', "%{$keywords}%")->orderByDesc('created_at')->limit(20);
+        $keywords = $request->input('keywords');
+        $videos = collect([]);
+        if ($keywords) {
+            $videos = Video::where('title', 'like', "%{$keywords}%")
+                ->published()
+                ->show()
+                ->orderByDesc('published_at')
+                ->limit(20)
+                ->get();
+        }
 
-        return v('frontend.search.search', compact('videos'));
+        return v('frontend.search.index', compact('videos'));
     }
 }

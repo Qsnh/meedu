@@ -10,15 +10,15 @@
         </div>
 
         <div class="header-action">
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tab-profile" role="tab">全部课程</a>
+                    <a class="nav-link active" href="{{route('courses')}}" role="tab">全部课程</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab-messages" role="tab">最新视频</a>
+                    <a class="nav-link" href="{{route('videos')}}" role="tab">最新视频</a>
                 </li>
-                <li class="nav-item d-none d-sm-block">
-                    <a class="nav-link" data-toggle="tab" href="#tab-settings" role="tab">搜索结果</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="tab">搜索结果</a>
                 </li>
             </ul>
         </div>

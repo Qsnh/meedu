@@ -19,6 +19,17 @@ use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class VideoController extends FrontendController
 {
+    public function index()
+    {
+        $videos = $video = Video::with(['course'])
+            ->published()
+            ->show()
+            ->orderByDesc('published_at')
+            ->paginate(16);
+
+        return v('frontend.video.index', compact('videos'));
+    }
+
     public function show($courseId, $id, $slug)
     {
         $video = Video::with(['course', 'comments', 'user', 'comments.user'])
