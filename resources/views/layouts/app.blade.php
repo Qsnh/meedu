@@ -74,8 +74,12 @@
                         @endguest
                 </div>
             </li>
+            <li class="d-none d-md-block">
+                <a  href="{{route('member.messages')}}" class="topbar-btn {{ count($user->unreadNotifications) > 0 ? 'has-new' : '' }}">
+                    <i class="ti-bell"></i>
+                </a>
+            </li>
         </ul>
-
     </div>
 </header>
 

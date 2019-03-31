@@ -32,10 +32,13 @@
                             @endforelse
                             </tbody>
                         </table>
-
-                        <div class="text-right">
-                            {{$records->render()}}
-                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 mt-10">
+                <div class="col-sm-12 pt-10">
+                    <div class="text-right">
+                        {{$records->render()}}
                     </div>
                 </div>
             </div>

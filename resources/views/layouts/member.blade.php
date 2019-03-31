@@ -7,7 +7,7 @@
     <header class="header bg-img" style="background-image: url('/frontend/assets/img/bg/user-banner.jpg')">
         <div class="header-info h-250px mb-0">
             <div class="media align-items-end">
-                <img class="avatar avatar-xl avatar-bordered" src="{{$user->avatar}}" alt="...">
+                <a href="{{route('member.avatar')}}"><img class="avatar avatar-xl avatar-bordered" src="{{$user->avatar}}"></a>
                 <div class="media-body">
                     <p class="text-white"><strong>{{$user->nick_name}}</strong></p>
                     <small class="text-white">

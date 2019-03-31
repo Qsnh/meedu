@@ -40,11 +40,12 @@
                             @endforelse
                             </tbody>
                         </table>
-
-                        <div class="text-right">
-                            {{$videos->render()}}
-                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-12 pt-10">
+                <div class="text-right">
+                    {{$videos->render()}}
                 </div>
             </div>
         </div>

@@ -42,11 +42,12 @@
                             @endforelse
                             </tbody>
                         </table>
-
-                        <div class="text-right">
-                            {{$orders->render()}}
-                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-12 mt-10">
+                <div class="text-right">
+                    {{$orders->render()}}
                 </div>
             </div>
         </div>
