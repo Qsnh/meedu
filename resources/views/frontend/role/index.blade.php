@@ -2,48 +2,34 @@
 
 @section('content')
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 recharge-banner">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3>购买VIP</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <header class="header bg-ui-general header-inverse">
+        <div class="header-info">
+            <h1 class="header-title">
+                <strong>订阅计划</strong>
+            </h1>
         </div>
-    </div>
+    </header>
 
-    <div class="container-fluid roles">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-sm-12 text-center">
-                            <h3 class="title">计划</h3>
-                        </div>
-
-                        @foreach($roles as $role)
-                            <div class="col-sm-4 roles-item">
-                                <div class="roles-item-info text-center border">
-                                    <h2 class="title">{{$role->name}}</h2>
-                                    @foreach($role->descriptionRows() as $row)
-                                        <p>{{$row}}</p>
-                                    @endforeach
-                                    <p class="price">￥{{$role->charge}}</p>
-                                    <p>
-                                        <a href="{{route('member.role.buy', $role)}}" class="buy-button">点我订阅</a>
-                                    </p>
-                                </div>
-                            </div>
+    <div class="container pt-40 pb-40">
+        <div class="row gap-y justify-content-center">
+            @foreach($roles as $role)
+                <div class="col-sm-12 col-md-3">
+                    <div class="rounded text-center shadow-1 hover-shadow-3 transition-5s bg-white">
+                        <p class="text-uppercase fs-13 fw-500 bb-1 py-3 ls-2">{{$role->name}}</p>
+                        <br>
+                        <h2 class="fs-60 fw-500"><span class="price-dollar">￥</span> {{$role->charge}}</h2>
+                        <br>
+                        @foreach($role->descriptionRows() as $row)
+                            <p>{{$row}}</p>
                         @endforeach
-
+                        <br>
+                        <a class="btn btn-success" href="{{route('member.role.buy', $role)}}">立即购买</a>
+                        <br><br>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
+
 
 @endsection
