@@ -39,22 +39,41 @@
                         <span class="title">订阅</span>
                     </a>
                 </li>
+                @foreach($nav as $item)
+                    <li class="menu-item">
+                        <a class="menu-link" href="{{$item->url}}"><span class="title">{{$item->name}}</span></a>
+                    </li>
+                @endforeach
             </ul>
         </nav>
     </div>
     <div class="topbar-right">
         <ul class="topbar-btns">
             <li class="dropdown">
-                <span class="topbar-btn" data-toggle="dropdown"><img class="avatar" src="../assets/img/avatar/1.jpg" alt="..."></span>
+                <span class="topbar-btn" data-toggle="dropdown">
+                    @guest
+                    <img class="avatar" src="/frontend/assets/img/avatar/1.jpg">
+                    @else
+                    <img class="avatar" src="{{$user->avatar}}">
+                    @endguest
+                </span>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#"><i class="ti-user"></i> Profile</a>
-                    <a class="dropdown-item" href="#"><i class="ti-settings"></i> Settings</a>
-                    <a class="dropdown-item" href="#"><i class="ti-help"></i> Help</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="ti-power-off"></i> Logout</a>
+                    @guest
+                        <a class="dropdown-item" href="{{ route('login') }}"><i class="ti-user"></i> 登录</a>
+                        <a class="dropdown-item" href="{{ route('register') }}"><i class="ti-user"></i> 注册</a>
+                        @else
+                        <a class="dropdown-item" href="{{ route('member') }}"><i class="ti-user"></i> 会员中心</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                            <i class="ti-power-off"></i> 安全退出
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        @endguest
                 </div>
             </li>
-
         </ul>
 
     </div>
