@@ -132,7 +132,7 @@
 
 
 <!-- Scripts -->
-<script src="{{asset('/frontend/assets/js/core.min.js')}}" data-provide="sweetalert2"></script>
+<script src="{{asset('/frontend/assets/js/core.min.js')}}" data-provide="sweetalert"></script>
 <script src="{{asset('/frontend/assets/js/app.min.js')}}"></script>
 <script src="{{asset('/frontend/assets/js/script.min.js')}}"></script>
 <script>
