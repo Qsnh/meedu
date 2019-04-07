@@ -85,7 +85,5 @@ Route::group([
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
-        Route::get('/course/{id}/comments', 'AjaxController@courseCommentsPaginate')->name('ajax.course.comments');
-        Route::get('/video/{id}/comments', 'AjaxController@videoCommentsPaginate')->name('ajax.video.comments');
     });
 });

@@ -14,7 +14,7 @@
                 @endauth
             </div>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 comment-box">
             @foreach($comments as $comment)
             <div class="card">
                 <div class="card-body">
@@ -22,7 +22,7 @@
                         <img class="avatar avatar-lg" src="{{$comment->user->avatar}}">
                         <div class="media-body">
                             <p>
-                                <strong class="fs-14">{{$comment->user->nickname}}</strong>
+                                <strong class="fs-14">{{$comment->user->nick_name}}</strong>
                                 <time class="float-right text-lighter" datetime="{{$comment->created_at}}">{{$comment->created_at->diffForHumans()}}</time>
                             </p>
                             <p>
@@ -46,12 +46,46 @@
 
 @section('js')
     <script>
-        const submitBtn = document.getElementById('submit-comment');
+        var submitBtn = document.getElementById('submit-comment');
         submitBtn.addEventListener('click', function () {
            var content = document.getElementById('comment-content').value;
            if (content === '') {
                 swal('Oops', '请输入内容', 'error');
+                return;
            }
+            $(this).attr('disabled', true);
+            $.post("{{$submitUrl}}", {
+                'content': $('textarea[name="comment_content"]').val(),
+                '_token': '{{csrf_token()}}'
+            }, function (res) {
+                $('#submit-comment').removeAttr('disabled');
+                if (typeof res.status !== 'undefined' || typeof res.code !== 'undefined') {
+                    swal("失败", res.message, "error");
+                } else {
+                    $('textarea[name="comment_content"]').val('');
+                    $('.comment-box').prepend(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="media bb-1 border-fade">
+                        <img class="avatar avatar-lg" src="${res.user.avatar}">
+                        <div class="media-body">
+                            <p>
+                                <strong class="fs-14">${res.user.nick_name}</strong>
+                                <time class="float-right text-lighter">${res.created_at}</time>
+                            </p>
+                            <p>
+${res.user.role}
+                        </p>
+                    </div>
+                </div>
+                <div class="card-body border-fade">
+${res.content}
+                        </div>
+                    </div>
+                </div>
+`);
+                }
+            }, 'json');
         });
     </script>
     @endsection

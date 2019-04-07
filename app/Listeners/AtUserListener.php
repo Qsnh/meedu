@@ -38,7 +38,9 @@ class AtUserListener
         $commentType = $event->commentType;
 
         $toUser = User::where('nick_name', $toUserNickName)->first();
-
+        if (! $toUser) {
+            return;
+        }
         if ($toUser->id == $fromUser->id) {
             return;
         }

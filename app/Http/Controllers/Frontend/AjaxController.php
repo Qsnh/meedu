@@ -37,6 +37,7 @@ class AjaxController extends Controller
                 'user' => [
                     'nick_name' => $comment->user->nick_name,
                     'avatar' => $comment->user->avatar,
+                    'role' => $comment->user->role ? $comment->user->role->name : '免费会员',
                 ],
             ];
         }
@@ -63,56 +64,11 @@ class AjaxController extends Controller
                 'user' => [
                     'nick_name' => $comment->user->nick_name,
                     'avatar' => $comment->user->avatar,
+                    'role' => $comment->user->role ? $comment->user->role->name : '免费会员',
                 ],
             ];
         }
 
         return ['status' => 500, 'message' => '出现异常'];
-    }
-
-    /**
-     * @param $courseId
-     *
-     * @return mixed
-     */
-    public function courseCommentsPaginate($courseId)
-    {
-        $course = Course::findOrFail($courseId);
-        $comments = $course->comments()->orderByDesc('created_at')->paginate(8);
-        $comments = $comments->map(function ($comment) {
-            return [
-                'content' => $comment->getContent(),
-                'created_at' => $comment->created_at->diffForHumans(),
-                'user' => [
-                    'nick_name' => $comment->user->nick_name,
-                    'avatar' => $comment->user->avatar,
-                ],
-            ];
-        });
-
-        return $comments;
-    }
-
-    /**
-     * @param $courseId
-     *
-     * @return mixed
-     */
-    public function videoCommentsPaginate($videoId)
-    {
-        $video = Video::findOrFail($videoId);
-        $comments = $video->comments()->orderByDesc('created_at')->paginate(8);
-        $comments = $comments->map(function ($comment) {
-            return [
-                'content' => $comment->getContent(),
-                'created_at' => $comment->created_at->diffForHumans(),
-                'user' => [
-                    'nick_name' => $comment->user->nick_name,
-                    'avatar' => $comment->user->avatar,
-                ],
-            ];
-        });
-
-        return $comments;
     }
 }
