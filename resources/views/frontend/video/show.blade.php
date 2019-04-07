@@ -54,7 +54,10 @@
                                     <div class="media-list-body">
                                         @foreach($chapter->getVideosCache() as $videoItem)
                                             <a class="media media-single" href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
-                                                <h5 class="title">{{$videoItem->title}}</h5>
+                                                <h5 class="title">
+                                                    {{$videoItem->title}}
+                                                    @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
+                                                </h5>
                                                 <time datetime="{{$videoItem->published_at}}">{{$videoItem->published_at->diffForHumans()}}</time>
                                             </a>
                                         @endforeach
@@ -67,7 +70,7 @@
                                     <a class="media media-single" href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
                                         <h6 class="title">
                                             {{$videoItem->title}}
-                                            @if($videoItem->charge > 0)<small><span class="badge badge-primary">Pro</span></small>@endif
+                                            @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                         </h6>
                                         <time datetime="{{$videoItem->published_at}}">{{$videoItem->published_at->diffForHumans()}}</time>
                                     </a>

@@ -131,7 +131,7 @@
     </div>
 
     <div class="container pt-70 pb-40">
-        <div class="row">
+        <div class="row justify-content-center">
             @foreach($roles as $index => $role)
                 <div class="col-lg-4">
                     <div class="card">

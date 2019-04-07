@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <h4 class="card-title">搜索结果 <small>最多只显示最近的20条数据</small></h4>
+                    <h4 class="card-title">搜索结果 <small>只显示最近的20条数据</small></h4>
                     <div class="media-list media-list-hover media-list-divided">
                         @foreach($videos as $video)
                             <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
