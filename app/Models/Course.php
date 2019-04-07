@@ -138,13 +138,12 @@ class Course extends Model
         if (config('meedu.system.cache.status', -1) != 1) {
             return $this->getAllPublishedAndShowVideos();
         }
-        $that = $this;
 
         return Cache::remember(
             "course_{$this->id}_videos",
             config('meedu.system.cache.expire', 60),
-            function () use ($that) {
-                return $that->getAllPublishedAndShowVideos();
+            function () {
+                return $this->getAllPublishedAndShowVideos();
             });
     }
 
@@ -172,13 +171,12 @@ class Course extends Model
         if (config('meedu.system.cache.status', -1) != 1) {
             return $this->getChapters();
         }
-        $that = $this;
 
         return Cache::remember(
             "course_{$this->id}_chapter_videos",
             config('meedu.system.cache.expire', 60),
-            function () use ($that) {
-                return $that->getChapters();
+            function () {
+                return $this->getChapters();
             });
     }
 
@@ -202,13 +200,12 @@ class Course extends Model
         if (config('meedu.system.cache.status', -1) != 1) {
             return $this->hasChapters();
         }
-        $that = $this;
 
         return Cache::remember(
             "course_{$this->id}_has_chapters",
             config('meedu.system.cache.expire', 60),
-            function () use ($that) {
-                return $that->hasChapters();
+            function () {
+                return $this->hasChapters();
             });
     }
 

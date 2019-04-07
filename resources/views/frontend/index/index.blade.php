@@ -9,7 +9,7 @@
                     <div class="card p-30 pt-50 text-center">
                         <div>
                             <a class="avatar avatar-xxl status-success mb-3" href="#">
-                                <img src="../assets/img/avatar/1.jpg">
+                                <img src="/frontend/assets/img/avatar/1.jpg">
                             </a>
                         </div>
                         <h5>小滕</h5>

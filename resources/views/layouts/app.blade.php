@@ -12,6 +12,7 @@
     <link href="{{asset('/frontend/assets/css/core.min.css')}}" rel="stylesheet">
     <link href="{{asset('/frontend/assets/css/app.min.css')}}" rel="stylesheet">
     <link href="{{asset('/frontend/assets/css/style.min.css')}}" rel="stylesheet">
+    <link crossorigin="anonymous" integrity="sha384-6SClQBVFSY83VyPkr36mKEIuaHcXN69N5F076i0mYvEIsVK73AlDn/6vL2PyunVW" href="//lib.baomitu.com/limonte-sweetalert2/7.33.1/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body style="padding-top: 64px;">
 
@@ -74,11 +75,13 @@
                         @endguest
                 </div>
             </li>
+            @auth
             <li class="d-none d-md-block">
                 <a  href="{{route('member.messages')}}" class="topbar-btn {{ count($user->unreadNotifications) > 0 ? 'has-new' : '' }}">
                     <i class="ti-bell"></i>
                 </a>
             </li>
+            @endauth
         </ul>
     </div>
 </header>
@@ -155,9 +158,10 @@
 
 
 <!-- Scripts -->
-<script src="{{asset('/frontend/assets/js/core.min.js')}}" data-provide="sweetalert"></script>
+<script src="{{asset('/frontend/assets/js/core.min.js')}}"></script>
 <script src="{{asset('/frontend/assets/js/app.min.js')}}"></script>
 <script src="{{asset('/frontend/assets/js/script.min.js')}}"></script>
+<script crossorigin="anonymous" integrity="sha384-yhphg78T9x4D5MygsNWDAL6NRy6UurEwbp81HAeiKaBIh7rUi1+BIwJMlYJuPBlW" src="//lib.baomitu.com/limonte-sweetalert2/7.33.1/sweetalert2.min.js"></script>
 <script>
     @if(get_first_flash('success'))
     swal("成功", "{{get_first_flash('success')}}", "success");
