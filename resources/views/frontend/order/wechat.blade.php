@@ -2,19 +2,13 @@
 
 @section('content')
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 recharge-banner">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3>微信支付</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <header class="header bg-ui-general header-inverse">
+        <div class="header-info">
+            <h1 class="header-title">
+                <strong>微信支付</strong>
+            </h1>
         </div>
-    </div>
+    </header>
 
     <div class="container all-buy-box">
         <div class="row justify-content-center">

@@ -2,44 +2,42 @@
 
 @section('content')
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12 recharge-banner">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3>收银台</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <header class="header bg-ui-general header-inverse">
+        <div class="header-info">
+            <h1 class="header-title">
+                <strong>收银台</strong>
+            </h1>
         </div>
-    </div>
+    </header>
 
-    <div class="container all-buy-box">
-        <div class="row justify-content-center">
-            <div class="col-sm-4 text-center" style="min-height: 400px;">
-                <p>订单号：{{$order->order_id}} ￥{{$order->charge}}</p>
-                @if($payments->isEmpty())
-                <p class="mt-3">
-                    暂无支付渠道，请联系站长手动处理【联系方式见页面下方】。
-                </p>
-                    @else
-                    <form action="{{route('order.pay', [$order->order_id])}}" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <label>请选择支付方式</label>
-                            <select name="payment" class="form-control">
-                                @foreach($payments as $payment)
-                                <option value="{{$payment['sign']}}">{{$payment['name']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">立即支付</button>
-                        </div>
-                    </form>
-                @endif
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="{{route('order.pay', [$order->order_id])}}" class="card" method="post">
+                    @csrf
+                    <h4 class="card-title"><strong>订单号：{{$order->order_id}} | ￥{{$order->charge}}</strong></h4>
+                    <div class="card-body">
+                        <h6>请选择支付方式</h6>
+                        <br>
+                        @foreach($payments as $payment)
+                            <div class="flexbox">
+                                <div>
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" name="payment" value="{{$payment['sign']}}">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description"><strong>{{$payment['name']}}</strong></span>
+                                    </label>
+                                </div>
+                                {{--<div>--}}
+                                    {{--<img src="../assets/img/icon/paypal.png" alt="...">--}}
+                                {{--</div>--}}
+                            </div>
+                            <br>
+                        @endforeach
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">继续支付 <i class="ti-arrow-right ml-2 fs-9"></i></button>
+                </form>
             </div>
         </div>
     </div>
