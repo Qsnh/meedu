@@ -40,7 +40,7 @@ class VideoController extends FrontendController
         $title = sprintf('视频《%s》', $video->title);
         $keywords = $video->keywords;
         $description = $video->description;
-        $comments = $video->comments()->orderByDesc('created_at')->paginate(8);
+        $comments = $video->comments()->orderByDesc('created_at')->get();
 
         // 视频观看次数[UV]
         $video->view_num++;

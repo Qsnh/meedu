@@ -1,4 +1,4 @@
-@if(auth()->check())
+@auth
     @if(!auth()->user()->isBindMobile())
         <div class="container mt-2 mb-2">
             <div class="col-sm">
@@ -8,4 +8,4 @@
             </div>
         </div>
     @endif
-@endif
+@endauth

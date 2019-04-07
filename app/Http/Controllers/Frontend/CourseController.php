@@ -39,7 +39,7 @@ class CourseController extends FrontendController
         $title = sprintf('课程《%s》', $course->title);
         $keywords = $course->keywords;
         $description = $course->description;
-        $comments = $course->comments()->orderByDesc('created_at')->limit(8)->get();
+        $comments = $course->comments()->orderByDesc('created_at')->get();
 
         return v('frontend.course.show', compact(
             'course',
