@@ -78,16 +78,14 @@
         "test": "./vendor/bin/phpunit",
         "cs-fixer": "php php-cs-fixer.phar fix",
         "cf": "php-cs-fixer fix",
-        "clear-app-cache": [
+        "rebuild": [
             "php artisan route:clear",
             "php artisan config:clear",
-            "php artisan view:clear"
-        ],
-        "build-app-cache": [
+            "php artisan view:clear",
             "php artisan route:cache",
             "php artisan config:cache"
         ],
-        "restart-supervisor": [
+        "restart-sp": [
             "supervisorctl reread",
             "supervisorctl update",
             "supervisorctl start meedu:*"
