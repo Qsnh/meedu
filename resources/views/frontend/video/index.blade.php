@@ -35,7 +35,6 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <h4 class="card-title">最新视频</h4>
                     <div class="media-list media-list-hover media-list-divided">
                         @foreach($videos as $video)
                         <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
