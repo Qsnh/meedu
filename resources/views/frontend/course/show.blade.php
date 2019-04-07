@@ -46,7 +46,7 @@
                                                     <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
                                                         <h5 class="title">
                                                             {{$video->title}}
-                                                            @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
+                                                            @if($video->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                                         </h5>
                                                         <time datetime="{{$video->published_at}}">{{$video->published_at->diffForHumans()}}</time>
                                                     </a>
@@ -60,7 +60,7 @@
                                             <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
                                                 <h6 class="title">
                                                     {{$video->title}}
-                                                    @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
+                                                    @if($video->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                                 </h6>
                                                 <time datetime="{{$video->published_at}}">{{$video->published_at->diffForHumans()}}</time>
                                             </a>
