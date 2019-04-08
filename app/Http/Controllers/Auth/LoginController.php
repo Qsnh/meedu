@@ -41,6 +41,15 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/member';
 
+    protected function redirectTo()
+    {
+        $prevUrl = session()->previousUrl();
+        if ($prevUrl) {
+            return $prevUrl;
+        }
+        return $this->redirectTo;
+    }
+
     /**
      * Create a new controller instance.
      */
@@ -110,7 +119,7 @@ class LoginController extends Controller
 
             DB::commit();
 
-            return redirect($this->redirectTo);
+            return redirect($this->redirectPath());
         } catch (\Exception $exception) {
             DB::rollBack();
             exception_record($exception);
