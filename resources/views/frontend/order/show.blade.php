@@ -19,11 +19,11 @@
                     <div class="card-body">
                         <h6>请选择支付方式</h6>
                         <br>
-                        @foreach($payments as $payment)
+                        @foreach($payments as $index => $payment)
                             <div class="flexbox">
                                 <div>
                                     <label class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" name="payment" value="{{$payment['sign']}}">
+                                        <input type="radio" class="custom-control-input" name="payment" value="{{$payment['sign']}}" {{$index == 0 ? 'checked' : ''}}>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description"><strong>{{$payment['name']}}</strong></span>
                                     </label>
