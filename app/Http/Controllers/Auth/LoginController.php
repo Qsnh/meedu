@@ -40,15 +40,6 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/member';
-    
-    public function redirectPath()
-    {
-        $prevUrl = session()->previousUrl();
-        if ($prevUrl) {
-            return $prevUrl;
-        }
-        return $this->redirectTo;
-    }
 
     /**
      * Create a new controller instance.
