@@ -26,8 +26,8 @@
                                 <time class="float-right text-lighter" datetime="{{$comment->created_at}}">{{$comment->created_at->diffForHumans()}}</time>
                             </p>
                             <p>
-                                @if($user->role)
-                                    <span class="badge badge-primary">{{$user->role->name}}</span>
+                                @if($comment->user->role)
+                                    <span class="badge badge-primary">{{$comment->user->role->name}}</span>
                                 @else
                                     <span class="badge badge-default">免费会员</span>
                                 @endif
