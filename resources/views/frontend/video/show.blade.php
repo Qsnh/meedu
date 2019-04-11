@@ -56,7 +56,7 @@
                                                     {{$videoItem->title}}
                                                     @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                                 </h5>
-                                                <time datetime="{{$videoItem->published_at}}">{{$videoItem->published_at->diffForHumans()}}</time>
+                                                <time>{{duration_humans($videoItem->duration)}}</time>
                                             </a>
                                         @endforeach
                                     </div>
@@ -70,7 +70,7 @@
                                             {{$videoItem->title}}
                                             @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                         </h6>
-                                        <time datetime="{{$videoItem->published_at}}">{{$videoItem->published_at->diffForHumans()}}</time>
+                                        <time>{{duration_humans($videoItem->duration)}}</time>
                                     </a>
                                 @endforeach
 
