@@ -40,9 +40,7 @@
                             @endif
                         @else
                             <div class="col-sm-10 play-box">
-                                <h2 class="text-center" style="line-height: 300px;">
-                                    <a href="{{route('login')}}">前去登录</a>
-                                </h2>
+                                <p class="text-center mt-200"><a class="btn btn-primary" href="{{route('login')}}">前去登录</a></p>
                             </div>
                         @endauth
                     </div>
