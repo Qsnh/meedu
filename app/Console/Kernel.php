@@ -49,6 +49,8 @@ class Kernel extends ConsoleKernel
     {
         // 定时备份[每天凌晨5点]
         $schedule->command('backup:run')
+            ->withoutOverlapping()
+            ->onOneServer()
             ->dailyAt('05:00')
             ->appendOutputTo(storage_path('logs/backup'));
 
