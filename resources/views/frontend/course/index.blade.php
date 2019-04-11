@@ -28,7 +28,7 @@
         <div class="row">
             @foreach($courses as $course)
                 <div class="col-sm-4">
-                    <div class="card">
+                    <div class="card hover-shadow-2">
                         <img class="card-img-top" src="{{ image_url($course->thumb) }}" alt="{{$course->title}}">
                         <div class="card-body">
                             <h4 class="card-title b-0 px-0">

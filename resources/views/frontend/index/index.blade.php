@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <div class="card p-30 pt-50 text-center">
+                    <div class="card p-30 pt-50 text-center hover-shadow-2">
                         <div>
                             <a class="avatar avatar-xxl status-success mb-3" href="#">
                                 <img src="/frontend/assets/img/avatar/1.jpg">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="col-md-8 col-sm-12">
-                    <div class="card">
+                    <div class="card hover-shadow-2">
                         <h4 class="card-title"><strong>关于学习的看法</strong></h4>
                         <div class="card-body text-dark fw-500">
                             <p>
@@ -63,7 +63,7 @@
                 <div class="card-deck">
                     @foreach($courses as $course)
                         <div class="col-sm-4">
-                            <div class="card">
+                            <div class="card hover-shadow-2">
                                 <img class="card-img-top" src="{{ image_url($course->thumb) }}" alt="{{$course->title}}">
                                 <div class="card-body">
                                     <h4 class="card-title b-0 px-0">
@@ -134,7 +134,7 @@
         <div class="row justify-content-center">
             @foreach($roles as $index => $role)
                 <div class="col-lg-4">
-                    <div class="card">
+                    <div class="card hover-shadow-2">
                         <div class="card-body text-center">
                             <h5 class="text-uppercase text-muted">{{$role->name}}</h5>
                             <br>
