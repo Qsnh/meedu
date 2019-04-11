@@ -19,7 +19,7 @@ class BackendPermissionCheckMiddleware
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param \Closure $next
      *
      * @return mixed
      */
@@ -29,8 +29,12 @@ class BackendPermissionCheckMiddleware
         if ($admin->isSuper()) {
             return $next($request);
         }
-        if (! $admin->couldVisited($request)) {
-            abort(401);
+        if (!$admin->couldVisited($request)) {
+            if ($request->wantsJson()) {
+                return response()->json(['code' => 401, 'message' => '无权限']);
+            }
+            flash('无权限', 'error');
+            return back();
         }
 
         return $next($request);
