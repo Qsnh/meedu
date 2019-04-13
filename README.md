@@ -17,6 +17,7 @@
 - [MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
 - [使用Docker简单快速的搭建MeEdu（适合小白）](https://www.bilibili.com/video/av44963351/)
 - [MeEdu使用阿里云视频加密服务保障视频安全性(手把手教程)](https://www.bilibili.com/video/av45755754/)
+- [**一条命令安装MeEdu（Docker方式），由 MeEdu 社区小伙伴提供**](https://github.com/Baiyuetribe/meedu)
 
 ## 使用站点
 
