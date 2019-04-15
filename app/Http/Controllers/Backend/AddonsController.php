@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Addons;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -112,5 +113,27 @@ class AddonsController extends Controller
 
             return back();
         }
+    }
+
+    /**
+     * 插件依赖安装回调.
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function callback(Request $request)
+    {
+        $key = $request->input('key');
+        $addonsSign = $request->input('addons', '');
+        $status = $request->input('status', '');
+        if ($key != config('meedu.addons.api_key')) {
+            abort(401);
+        }
+        $addons = Addons::where('sign', $addonsSign)->firstOrFail();
+        $addons->status == 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
+        $addons->save();
+
+        return $status;
     }
 }

@@ -17,10 +17,11 @@ class Addons extends Model
 {
     const STATUS_INSTALLING = 1;
     const STATUS_DOWNLOAD_FAIL = 2;
-    const STATUS_DOWNLOAD_SUCCESS = 3;
+    const STATUS_DOWNLOAD_SUCCESS = 4;
     const STATUS_FAIL = 5;
     const STATUS_SUCCESS = 9;
     const STATUS_UPGRADING = 3;
+    const STATUS_DEP_INSTALL_FAIL = 6;
 
     const STATUS_TEXT = [
         self::STATUS_FAIL => '安装失败',
@@ -29,6 +30,7 @@ class Addons extends Model
         self::STATUS_UPGRADING => '升级中',
         self::STATUS_DOWNLOAD_FAIL => '下载失败',
         self::STATUS_DOWNLOAD_SUCCESS => '下载成功',
+        self::STATUS_DEP_INSTALL_FAIL => '依赖安装失败',
     ];
 
     protected $table = 'addons';
