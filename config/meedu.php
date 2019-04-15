@@ -49,7 +49,7 @@ return [
     'administrator' => [
         'super_slug' => 'administrator',
     ],
-    
+
     // 支付网关
     'payment' => [
         'alipay' => [
@@ -133,5 +133,10 @@ return [
         'client_secret' => 'MUe00r1VZ5PnT3R5vR3Em3W343YEzmAdrB48ZgYG',
         'username' => env('MEEDU_CLOUD_USERNAME', ''),
         'password' => env('MEEDU_CLOUD_PASSWORD', ''),
+    ],
+
+    'addons' => [
+        'api' => env('ADDONS_INSTALL_API', ''),
+        'api_key' => env('ADDONS_INSTALL_API_KEY', ''),
     ],
 ];

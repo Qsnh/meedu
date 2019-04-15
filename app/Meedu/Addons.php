@@ -12,6 +12,7 @@
 namespace App\Meedu;
 
 use Exception;
+use GuzzleHttp\Client;
 use Chumper\Zipper\Zipper;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
@@ -32,12 +33,19 @@ class Addons
      */
     protected $forceDelete;
 
+    protected $client;
+
     public function __construct(bool $forceDelete = false)
     {
         $this->linkDist = base_path('addons');
         $this->realDist = storage_path('app/addons');
         $this->files = new Filesystem();
         $this->forceDelete = $forceDelete;
+        $this->client = new Client([
+            'verify' => false,
+            'timeout' => 5.0,
+            'base_url' => config('meedu.addons.api'),
+        ]);
     }
 
     /**
@@ -133,7 +141,7 @@ class Addons
         }
         \Chumper\Zipper\Facades\Zipper::make($file)->extractTo(
             $extractPath,
-            ['.git', 'node_modules'],
+            ['.git', 'node_modules', 'vendor'],
             Zipper::BLACKLIST
         );
 
@@ -260,5 +268,71 @@ class Addons
     public function isInstall(string $sign): bool
     {
         return $this->files->exists($this->linkDist.DIRECTORY_SEPARATOR.$sign);
+    }
+
+    /**
+     * 提交插件依赖安装.
+     *
+     * @param string $path
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function submitDepRequire(string $path)
+    {
+        $meeduConfig = $this->parseMeedu($path);
+        if (! $meeduConfig) {
+            return;
+        }
+        $dep = $meeduConfig['require'] ?? [];
+        if (! $dep) {
+            return;
+        }
+        // 提交依赖安装任务
+        foreach ($dep as $pkgName => $pkgVersion) {
+            $params = [
+                'php' => '',
+                'composer' => base_path('/composer.phar'),
+                'action' => 'require',
+                'pkg' => $pkgName.'='.$pkgVersion,
+                'dir' => base_path(),
+                'key' => config('meedu.addons.api_key'),
+                'addons' => '',
+                'notify' => '',
+            ];
+            $this->client->get('/install?'.http_build_query($params));
+        }
+    }
+
+    /**
+     * 提交插件依赖卸载.
+     *
+     * @param string $path
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function submitDepRemove(string $path)
+    {
+        $meeduConfig = $this->parseMeedu($path);
+        if (! $meeduConfig) {
+            return;
+        }
+        $dep = $meeduConfig['require'] ?? [];
+        if (! $dep) {
+            return;
+        }
+        // 提交依赖安装任务
+        foreach ($dep as $pkgName => $pkgVersion) {
+            $params = [
+                'php' => '',
+                'composer' => base_path('/composer.phar'),
+                'action' => 'remove',
+                'pkg' => $pkgName.'='.$pkgVersion,
+                'dir' => base_path(),
+                'key' => config('meedu.addons.api_key'),
+                'addons' => '',
+                'notify' => '',
+            ];
+            $this->client->get('/install?'.http_build_query($params));
+        }
     }
 }
