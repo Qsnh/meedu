@@ -273,25 +273,16 @@ class Addons
     /**
      * 提交插件依赖安装.
      *
-     * @param string $action
-     * @param string $path
      * @param string $addonsName
+     * @param string $action
+     * @param array  $dep
      *
      * @return bool
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function submitDepAction(string $action, string $path, string $addonsName)
+    public function submitDepAction(string $addonsName, string $action, array $dep)
     {
-        $meeduConfig = $this->parseMeedu($path);
-        if (! $meeduConfig) {
-            return true;
-        }
-        $dep = $meeduConfig['require'] ?? [];
-        if (! $dep) {
-            return true;
-        }
-        // 提交依赖安装任务
         $pkgs = [];
         foreach ($dep as $pkgName => $pkgVersion) {
             $pkgs[] = $pkgName.'='.$pkgVersion;

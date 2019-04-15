@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 class Addons extends Model
 {
     const STATUS_INSTALLING = 1;
+    const STATUS_DOWNLOAD_FAIL = 2;
+    const STATUS_DOWNLOAD_SUCCESS = 3;
     const STATUS_FAIL = 5;
     const STATUS_SUCCESS = 9;
     const STATUS_UPGRADING = 3;
@@ -23,8 +25,10 @@ class Addons extends Model
     const STATUS_TEXT = [
         self::STATUS_FAIL => '安装失败',
         self::STATUS_SUCCESS => '安装成功',
-        self::STATUS_INSTALLING => '安装中',
+        self::STATUS_INSTALLING => '初始化',
         self::STATUS_UPGRADING => '升级中',
+        self::STATUS_DOWNLOAD_FAIL => '下载失败',
+        self::STATUS_DOWNLOAD_SUCCESS => '下载成功',
     ];
 
     protected $table = 'addons';

@@ -15,7 +15,6 @@ use App\Models\Addons;
 use App\Models\AddonsVersion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
-use App\Events\AddonsInstallFailEvent;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -50,9 +49,6 @@ class AddonsInstallJob implements ShouldQueue
     {
         DB::beginTransaction();
         try {
-            /**
-             * @var \App\Meedu\Addons
-             */
             $addonsLib = app()->make(\App\Meedu\Addons::class);
 
             // 本地处理
@@ -70,6 +66,13 @@ class AddonsInstallJob implements ShouldQueue
             // 解析meedu配置
             $meedu = $addonsLib->parseMeedu($extractPath);
 
+            // 依赖安装
+            $dep = $meedu['require'];
+            if ($dep) {
+                $result = $addonsLib->submitDepAction($this->addons->sign, 'require', $dep);
+                throw_if(! $result, new \Exception('插件依赖安装任务创建失败'));
+            }
+
             // 更新
             $this->addons->fill([
                 'prev_version_id' => $this->addons->current_version_id,
@@ -85,7 +88,8 @@ class AddonsInstallJob implements ShouldQueue
             DB::rollBack();
             exception_record($exception);
 
-            event(new AddonsInstallFailEvent($this->addons));
+            $this->addons->status = Addons::STATUS_FAIL;
+            $this->addons->save();
         }
     }
 }

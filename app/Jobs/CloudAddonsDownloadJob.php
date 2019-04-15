@@ -16,7 +16,6 @@ use GuzzleHttp\Client;
 use App\Models\AddonsVersion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
-use App\Events\AddonsInstallFailEvent;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -52,11 +51,15 @@ class CloudAddonsDownloadJob implements ShouldQueue
         if ($response->getStatusCode() != 200) {
             Log::error('插件下载出错，错误信息：'.$response->getBody());
 
-            event(new AddonsInstallFailEvent($this->addons));
+            // 插件下载失败
+            $this->addons->status = Addons::STATUS_DOWNLOAD_FAIL;
+            $this->addons->save();
 
             return;
         }
         // 到这里下载成功，接下来是插件的安装或者升级[提交给任务立即处理]
+        $this->addons->status = Addons::STATUS_DOWNLOAD_SUCCESS;
+        $this->addons->save();
         dispatch_now(new AddonsInstallJob($this->addons, $this->version, $savePath));
     }
 }
