@@ -138,5 +138,6 @@ return [
     'addons' => [
         'api' => env('ADDONS_INSTALL_API', ''),
         'api_key' => env('ADDONS_INSTALL_API_KEY', ''),
+        'api_php_path' => env('ADDONS_PHP_PATH', ''),
     ],
 ];

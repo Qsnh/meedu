@@ -8,6 +8,9 @@ Route::get('/logout', 'AdministratorController@logoutHandle')->name('backend.log
 Route::get('/password/update', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
 Route::put('/password/update', 'AdministratorController@editPasswordHandle');
 
+// 插件安装回调
+Route::get('/addons/callback', 'AddonsController@callback')->name('backend.addons.callback');
+
 Route::group(['middleware' => ['backend.login.check']], function () {
     // 主面板
     Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard.index');

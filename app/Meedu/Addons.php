@@ -273,66 +273,44 @@ class Addons
     /**
      * 提交插件依赖安装.
      *
+     * @param string $action
      * @param string $path
+     * @param string $addonsName
+     *
+     * @return bool
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function submitDepRequire(string $path)
+    public function submitDepAction(string $action, string $path, string $addonsName)
     {
         $meeduConfig = $this->parseMeedu($path);
         if (! $meeduConfig) {
-            return;
+            return true;
         }
         $dep = $meeduConfig['require'] ?? [];
         if (! $dep) {
-            return;
+            return true;
         }
         // 提交依赖安装任务
+        $pkgs = [];
         foreach ($dep as $pkgName => $pkgVersion) {
-            $params = [
-                'php' => '',
-                'composer' => base_path('/composer.phar'),
-                'action' => 'require',
-                'pkg' => $pkgName.'='.$pkgVersion,
-                'dir' => base_path(),
-                'key' => config('meedu.addons.api_key'),
-                'addons' => '',
-                'notify' => '',
-            ];
-            $this->client->get('/install?'.http_build_query($params));
+            $pkgs[] = $pkgName.'='.$pkgVersion;
         }
-    }
+        $params = [
+            'php' => config('meedu.addons.api_php_path'),
+            'composer' => base_path('/composer.phar'),
+            'action' => $action,
+            'pkg' => implode('|', $pkgs),
+            'dir' => base_path(),
+            'key' => config('meedu.addons.api_key'),
+            'addons' => $addonsName,
+            'notify' => route('backend.addons.callback'),
+        ];
+        $response = $this->client->get('/install?'.http_build_query($params));
+        if ($response->getStatusCode() != 200) {
+            return false;
+        }
 
-    /**
-     * 提交插件依赖卸载.
-     *
-     * @param string $path
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    public function submitDepRemove(string $path)
-    {
-        $meeduConfig = $this->parseMeedu($path);
-        if (! $meeduConfig) {
-            return;
-        }
-        $dep = $meeduConfig['require'] ?? [];
-        if (! $dep) {
-            return;
-        }
-        // 提交依赖安装任务
-        foreach ($dep as $pkgName => $pkgVersion) {
-            $params = [
-                'php' => '',
-                'composer' => base_path('/composer.phar'),
-                'action' => 'remove',
-                'pkg' => $pkgName.'='.$pkgVersion,
-                'dir' => base_path(),
-                'key' => config('meedu.addons.api_key'),
-                'addons' => '',
-                'notify' => '',
-            ];
-            $this->client->get('/install?'.http_build_query($params));
-        }
+        return true;
     }
 }
