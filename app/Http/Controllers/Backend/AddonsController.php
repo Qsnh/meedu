@@ -83,7 +83,9 @@ class AddonsController extends Controller
 
     /**
      * @param int $addonsId
+     *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Exception
      */
     public function uninstall(int $addonsId)
