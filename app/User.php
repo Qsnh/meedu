@@ -30,6 +30,58 @@ use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * App\User.
+ *
+ * @property int                                                                                                       $id
+ * @property \Illuminate\Config\Repository|mixed                                                                       $avatar
+ * @property string                                                                                                    $nick_name
+ * @property string                                                                                                    $mobile
+ * @property string                                                                                                    $password
+ * @property int                                                                                                       $credit1
+ * @property int                                                                                                       $credit2
+ * @property int                                                                                                       $credit3
+ * @property int                                                                                                       $is_active       1:active,-1:unactive
+ * @property int                                                                                                       $is_lock         1:lock,-1:unlock
+ * @property string|null                                                                                               $remember_token
+ * @property \Illuminate\Support\Carbon|null                                                                           $created_at
+ * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
+ * @property int                                                                                                       $role_id         角色ID
+ * @property string|null                                                                                               $role_expired_at 过期时间
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[]                                              $buyVideos
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[]                                       $clients
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseComment[]                                      $courseComments
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[]                                             $courses
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[]                                             $joinCourses
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\UserJoinRoleRecord[]                                 $joinRoles
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Order[]                                              $orders
+ * @property \App\Models\Role                                                                                          $role
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Socialite[]                                          $socialite
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]                                        $tokens
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\VideoComment[]                                       $videoComments
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User createdAtBetween($startDate, $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredit1($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredit2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCredit3($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereIsLock($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereMobile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNickName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRoleExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRoleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use Notifiable, CreatedAtBetween, HasApiTokens;

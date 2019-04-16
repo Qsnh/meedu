@@ -20,7 +20,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class AddonsInstallJob implements ShouldQueue
+class AddonsUpgradeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class AddonsInstallJob implements ShouldQueue
     public $downloadIUrl;
 
     /**
-     * AddonsInstallJob constructor.
+     * AddonsUpgradeJob constructor.
      *
      * @param Addons        $addons
      * @param AddonsVersion $version
@@ -51,8 +51,7 @@ class AddonsInstallJob implements ShouldQueue
         $savePath = storage_path('app/addons/'.str_random(32).'.zip');
         $downloadResult = download($savePath, $this->downloadIUrl);
         if ($downloadResult === false) {
-            // 插件下载失败
-            $this->addons->status = Addons::STATUS_DOWNLOAD_FAIL;
+            $this->version->delete();
 
             return;
         }
@@ -68,7 +67,7 @@ class AddonsInstallJob implements ShouldQueue
                 $this->version->version
             );
 
-            // 更新版本
+            // 更新版本信息
             $this->version->update([
                 'path' => $extractPath,
             ]);
@@ -90,7 +89,6 @@ class AddonsInstallJob implements ShouldQueue
                 'path' => $linkPath,
                 'real_path' => $extractPath,
                 'main_url' => $meedu['main_url'] ?? '',
-                'status' => Addons::STATUS_SUCCESS,
             ])->save();
 
             DB::commit();
@@ -98,8 +96,8 @@ class AddonsInstallJob implements ShouldQueue
             DB::rollBack();
             exception_record($exception);
 
-            $this->addons->status = Addons::STATUS_FAIL;
-            $this->addons->save();
+            // 安装失败，删除本次version
+            $this->version->delete();
         }
     }
 }

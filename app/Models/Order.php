@@ -14,6 +14,40 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Order.
+ *
+ * @property int                                                               $id
+ * @property int                                                               $user_id
+ * @property int                                                               $charge
+ * @property int                                                               $status         1未处理,9已处理
+ * @property \Illuminate\Support\Carbon|null                                   $created_at
+ * @property \Illuminate\Support\Carbon|null                                   $updated_at
+ * @property string|null                                                       $deleted_at
+ * @property string                                                            $order_id       订单编号
+ * @property string                                                            $payment        支付网关
+ * @property string                                                            $payment_method 支付方式
+ * @property mixed                                                             $status_text
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\OrderGoods[] $goods
+ * @property \App\User                                                         $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order keywords($keywords)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order status($status)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereCharge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePayment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order wherePaymentMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Order extends Model
 {
     const STATUS_UNPAY = 1;

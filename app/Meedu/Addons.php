@@ -304,4 +304,30 @@ class Addons
 
         return true;
     }
+
+    /**
+     * @param string $addonsName
+     * @param array  $dep
+     *
+     * @return bool
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function depRequire(string $addonsName, array $dep)
+    {
+        return $this->submitDepAction($addonsName, 'require', $dep);
+    }
+
+    /**
+     * @param string $addonsName
+     * @param array  $dep
+     *
+     * @return bool
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function depRemove(string $addonsName, array $dep)
+    {
+        return $this->submitDepAction($addonsName, 'remove', $dep);
+    }
 }
