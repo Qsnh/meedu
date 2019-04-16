@@ -58,13 +58,11 @@ class AddonsCloudController extends Controller
     }
 
     /**
-     * 安装.
-     *
      * @param MeEduCloud $cloud
-     * @param string     $sign
-     * @param string     $version
-     *
+     * @param string $sign
+     * @param string $version
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws Exception
      */
     public function install(MeEduCloud $cloud, string $sign, string $version)
     {
@@ -117,13 +115,12 @@ class AddonsCloudController extends Controller
     }
 
     /**
-     * 远程插件升级.
-     *
+     * 远程插件升级
      * @param MeEduCloud $cloud
-     * @param string     $sign
-     * @param string     $version
-     *
+     * @param string $sign
+     * @param string $version
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws Exception
      */
     public function upgrade(MeEduCloud $cloud, string $sign, string $version)
     {

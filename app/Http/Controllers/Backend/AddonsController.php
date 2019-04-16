@@ -82,11 +82,9 @@ class AddonsController extends Controller
     }
 
     /**
-     * 插件卸载.
-     *
      * @param int $addonsId
-     *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function uninstall(int $addonsId)
     {
