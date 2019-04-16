@@ -124,6 +124,7 @@ class AddonsController extends Controller
      */
     public function callback(Request $request)
     {
+        \Log::info($request->input());
         $key = $request->input('key');
         $addonsSign = $request->input('addons', '');
         $status = $request->input('status', '');
@@ -131,9 +132,21 @@ class AddonsController extends Controller
             abort(401);
         }
         $addons = Addons::where('sign', $addonsSign)->firstOrFail();
-        $addons->status == 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
+        $addons->status = $status == 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
         $addons->save();
 
         return $status;
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function generateAutoloadFile()
+    {
+        $addons = Addons::active()->get()->pluck('path');
+        app()->make(\App\Meedu\Addons::class)->generateServiceProviderMapping($addons);
+        flash('操作成功', 'success');
+
+        return back();
     }
 }

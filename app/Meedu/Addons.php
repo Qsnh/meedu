@@ -35,6 +35,11 @@ class Addons
 
     protected $client;
 
+    /**
+     * ServiceProvider MapFile.
+     */
+    protected $mappingFile;
+
     public function __construct(bool $forceDelete = false)
     {
         $this->linkDist = base_path('addons');
@@ -44,8 +49,8 @@ class Addons
         $this->client = new Client([
             'verify' => false,
             'timeout' => 5.0,
-            'base_url' => config('meedu.addons.api'),
         ]);
+        $this->mappingFile = base_path('/addons/addons_service_provider.json');
     }
 
     /**
@@ -220,23 +225,36 @@ class Addons
      * 服务自动发现.
      *
      * @param Application $app
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function serviceProviderLoad(Application $app): void
     {
-        $addons = $this->files->directories($this->linkDist);
-        if ($addons) {
-            array_map(function ($addons) use ($app) {
-                $name = pathinfo($addons, PATHINFO_BASENAME);
-                $serviceProviderFiles = glob($addons.DIRECTORY_SEPARATOR.'*ServiceProvider.php');
-                if ($serviceProviderFiles) {
-                    foreach ($serviceProviderFiles as $serviceProviderFile) {
-                        $providerName = pathinfo($serviceProviderFile, PATHINFO_FILENAME);
-                        $namespace = "\\Addons\\{$name}\\{$providerName}";
-                        $app->register($namespace);
-                    }
-                }
-            }, $addons);
+        if (! file_exists($this->mappingFile)) {
+            return;
         }
+        $arr = json_decode($this->files->get($this->mappingFile), true);
+        if (! $arr) {
+            return;
+        }
+        foreach ($arr as $item) {
+            if (file_exists($item['path'])) {
+                require_once $item['path'];
+                $app->register($item['class']);
+            }
+        }
+    }
+
+    /**
+     * 获取ServiceProvider.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getServiceProvider(string $path)
+    {
+        return glob($path.DIRECTORY_SEPARATOR.'*ServiceProvider.php');
     }
 
     /**
@@ -297,12 +315,18 @@ class Addons
             'addons' => $addonsName,
             'notify' => route('backend.addons.callback'),
         ];
-        $response = $this->client->get('/install?'.http_build_query($params));
-        if ($response->getStatusCode() != 200) {
+        try {
+            $response = $this->client->get(config('meedu.addons.api').'?'.http_build_query($params));
+            if ($response->getStatusCode() != 200) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exception) {
+            exception_record($exception);
+
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -329,5 +353,31 @@ class Addons
     public function depRemove(string $addonsName, array $dep)
     {
         return $this->submitDepAction($addonsName, 'remove', $dep);
+    }
+
+    /**
+     * 服务加载Map.
+     *
+     * @param array $paths
+     */
+    public function generateServiceProviderMapping(array $paths)
+    {
+        if (! $paths) {
+            return;
+        }
+        $rows = [];
+        foreach ($paths as $item) {
+            $serviceProviders = $this->getServiceProvider($item->path);
+            if ($serviceProviders) {
+                $dir = pathinfo($item->path, PATHINFO_BASENAME);
+                foreach ($serviceProviders as $serviceProvider) {
+                    $rows[] = [
+                        'path' => $serviceProvider,
+                        'class' => sprintf('\\Addons\\%s\\%s', $dir, pathinfo($serviceProvider, PATHINFO_FILENAME)),
+                    ];
+                }
+            }
+        }
+        $this->files->put($this->mappingFile, json_encode($rows));
     }
 }

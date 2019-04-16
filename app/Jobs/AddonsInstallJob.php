@@ -90,7 +90,6 @@ class AddonsInstallJob implements ShouldQueue
                 'path' => $linkPath,
                 'real_path' => $extractPath,
                 'main_url' => $meedu['main_url'] ?? '',
-                'status' => Addons::STATUS_SUCCESS,
             ])->save();
 
             DB::commit();
@@ -100,6 +99,8 @@ class AddonsInstallJob implements ShouldQueue
 
             $this->addons->status = Addons::STATUS_FAIL;
             $this->addons->save();
+
+            $this->version->delete();
         }
     }
 }

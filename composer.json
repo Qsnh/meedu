@@ -28,6 +28,7 @@
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^3.0",
+        "socialiteproviders/weixin-web": "dev-master",
         "spatie/laravel-backup": "5.10.1",
         "symfony/process": "^4.2",
         "yansongda/laravel-pay": "^2.0"

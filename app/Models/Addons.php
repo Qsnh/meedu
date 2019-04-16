@@ -109,4 +109,14 @@ class Addons extends Model
     {
         return self::STATUS_TEXT[$this->status] ?? '';
     }
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_SUCCESS);
+    }
 }
