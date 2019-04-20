@@ -25,7 +25,7 @@
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
-| [菜鸟学院](http://123.206.64.46/) | `http://ai-python.cn` |
+
 
 ## v0.1 功能概览
 
