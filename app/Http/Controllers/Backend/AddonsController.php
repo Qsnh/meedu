@@ -93,9 +93,18 @@ class AddonsController extends Controller
         $addons = Addons::whereId($addonsId)->firstOrFail();
         DB::beginTransaction();
         try {
-            // 删除本地软链接
-            app()->make(\App\Meedu\Addons::class)->uninstall($addons->sign, optional($addons->currentVersion)->version ?? '');
+            $addonsLib = app()->make(\App\Meedu\Addons::class);
 
+            // 提交依赖卸载任务
+            $meeduConfig = $addonsLib->parseMeedu($addons->path);
+            $dep = $meeduConfig['require'] ?? [];
+            if ($dep) {
+                $result = $addonsLib->depRemove($addons->sign, $dep);
+                throw_if(! $result, new \Exception('插件依赖卸载任务提交失败'));
+            }
+
+            // 删除本地软链接
+            $addonsLib->uninstall($addons->sign, optional($addons->currentVersion)->version ?? '');
             // 删除插件版本
             $addons->versions()->delete();
             // 删除插件

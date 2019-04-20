@@ -320,8 +320,9 @@ class Addons
             if ($response->getStatusCode() != 200) {
                 return false;
             }
+            $body = $response->getBody();
 
-            return true;
+            return $body == 'success';
         } catch (Exception $exception) {
             exception_record($exception);
 
