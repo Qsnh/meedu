@@ -510,7 +510,7 @@ if (! function_exists('download')) {
     function download($savePath, $url)
     {
         $client = new \GuzzleHttp\Client(['verify' => false]);
-        $response = $client->get($url, ['save_to' => $savePath]);
+        $response = $client->get($url, ['sink' => $savePath]);
 
         return $response->getStatusCode() != 200 ? false : $savePath;
     }

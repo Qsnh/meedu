@@ -104,7 +104,7 @@ class AddonsCloudController extends Controller
 
             DB::commit();
 
-            flash('插件安装任务创建成功，已提交给后台处理，请稍候。', 'success');
+            flash('操作成功，请耐心等待。', 'success');
 
             return redirect(route('backend.addons.remote.index'));
         } catch (Exception $exception) {
@@ -157,7 +157,7 @@ class AddonsCloudController extends Controller
 
             DB::commit();
 
-            flash('插件升级任务创建成功，已提交给后台处理，请稍后。', 'success');
+            flash('操作成功，请耐心等待。', 'success');
 
             return redirect(route('backend.addons.remote.index'));
         } catch (Exception $exception) {

@@ -307,7 +307,7 @@ class Addons
         }
         $params = [
             'php' => config('meedu.addons.api_php_path'),
-            'composer' => base_path('/composer.phar'),
+            'composer' => base_path('composer.phar'),
             'action' => $action,
             'pkg' => implode('|', $pkgs),
             'dir' => base_path(),
@@ -320,9 +320,8 @@ class Addons
             if ($response->getStatusCode() != 200) {
                 return false;
             }
-            $body = $response->getBody();
 
-            return $body == 'success';
+            return true;
         } catch (Exception $exception) {
             exception_record($exception);
 
@@ -368,9 +367,9 @@ class Addons
         }
         $rows = [];
         foreach ($paths as $item) {
-            $serviceProviders = $this->getServiceProvider($item->path);
+            $serviceProviders = $this->getServiceProvider($item);
             if ($serviceProviders) {
-                $dir = pathinfo($item->path, PATHINFO_BASENAME);
+                $dir = pathinfo($item, PATHINFO_BASENAME);
                 foreach ($serviceProviders as $serviceProvider) {
                     $rows[] = [
                         'path' => $serviceProvider,

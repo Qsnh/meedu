@@ -82,11 +82,13 @@ class AddonsController extends Controller
     }
 
     /**
+     * 插件卸载.
+     *
      * @param int $addonsId
      *
      * @return \Illuminate\Http\RedirectResponse
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function uninstall(int $addonsId)
     {
@@ -148,11 +150,18 @@ class AddonsController extends Controller
     }
 
     /**
+     * 生成插件ServiceProvider.
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function generateAutoloadFile()
     {
-        $addons = Addons::active()->get()->pluck('path');
+        $addons = Addons::active()->get()->pluck('path')->toArray();
+        if (! $addons) {
+            flash('无需操作', 'warning');
+
+            return back();
+        }
         app()->make(\App\Meedu\Addons::class)->generateServiceProviderMapping($addons);
         flash('操作成功', 'success');
 
