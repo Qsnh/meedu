@@ -16,9 +16,9 @@ use Illuminate\Contracts\Foundation\Application;
 class AddonsProvider
 {
     /**
-     * Bootstrap the given application.
+     * @param Application $app
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function bootstrap(Application $app)
     {

@@ -7,12 +7,17 @@
 @section('body')
 
     <div class="row row-cards">
+        <div class="col-sm-12 mb-3">
+            <a href="{{route('backend.addons.generateAutoloadFile')}}" class="btn btn-primary">GenerateMap</a>
+        </div>
         <div class="col-sm-12">
             <table class="table">
                 <thead>
                 <tr>
+                    <th>#</th>
+                    <th>作者</th>
                     <th>插件</th>
-                    <th>基础信息</th>
+                    <th>版本</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
@@ -20,16 +25,10 @@
                 <tbody>
                 @forelse($addons as $item)
                     <tr>
-                        <td>
-                            <p><img src="{{$item->thumb}}" width="60" height="60" class="img-thumbnail"></p>
-                            <p>{{$item->name}}</p>
-                            <p>作者：<author>{{$item->author}}</author></p>
-                        </td>
-                        <td>
-                            <p>版本：{{$item->currentVersion ? $item->currentVersion->version : '暂无'}}</p>
-                            <p>路径：<code>{{$item->path}}</code></p>
-                            <p>时间：{{$item->created_at}}</p>
-                        </td>
+                        <td><img src="{{$item->thumb}}" width="30" height="30" class="img-thumbnail"></td>
+                        <td><author>{{$item->author}}</author></td>
+                        <td>{{$item->name}}</td>
+                        <td>{{$item->currentVersion ? $item->currentVersion->version : '暂无'}}</td>
                         <td>{{$item->getStatusText()}}</td>
                         <td>
                             <a href="{{route('backend.addons.versions', $item)}}" class="btn btn-info">历史版本</a>
@@ -42,7 +41,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">
+                        <td colspan="6" class="text-center">
                             暂无插件，前去挑选 <a href="https://meedu.vip" target="_blank">应用商店</a>
                         </td>
                     </tr>

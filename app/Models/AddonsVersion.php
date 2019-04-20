@@ -13,6 +13,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AddonsVersion.
+ *
+ * @property int                             $id
+ * @property int                             $addons_id
+ * @property string                          $version
+ * @property string                          $path
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \App\Models\Addons              $addons
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion whereAddonsId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddonsVersion whereVersion($value)
+ * @mixin \Eloquent
+ */
 class AddonsVersion extends Model
 {
     protected $table = 'addons_version';

@@ -14,6 +14,28 @@ namespace App\Models;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Announcement.
+ *
+ * @property int                             $id
+ * @property int                             $admin_id
+ * @property string                          $announcement
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \App\Models\Administrator       $administrator
+ * @property mixed                           $destroy_url
+ * @property mixed                           $edit_url
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement whereAdminId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement whereAnnouncement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Announcement whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Announcement extends Model
 {
     protected $table = 'announcements';

@@ -14,6 +14,29 @@ namespace App\Models;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\CourseChapter.
+ *
+ * @property int                                                          $id
+ * @property int                                                          $course_id
+ * @property string                                                       $title
+ * @property \Illuminate\Support\Carbon|null                              $created_at
+ * @property \Illuminate\Support\Carbon|null                              $updated_at
+ * @property int                                                          $sort
+ * @property \App\Models\Course                                           $course
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[] $videos
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereCourseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereSort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CourseChapter whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class CourseChapter extends Model
 {
     protected $table = 'course_chapter';

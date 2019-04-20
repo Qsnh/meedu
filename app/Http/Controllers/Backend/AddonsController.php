@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Addons;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -81,11 +82,11 @@ class AddonsController extends Controller
     }
 
     /**
-     * 插件卸载.
-     *
      * @param int $addonsId
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Exception
      */
     public function uninstall(int $addonsId)
     {
@@ -112,5 +113,40 @@ class AddonsController extends Controller
 
             return back();
         }
+    }
+
+    /**
+     * 插件依赖安装回调.
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function callback(Request $request)
+    {
+        \Log::info($request->input());
+        $key = $request->input('key');
+        $addonsSign = $request->input('addons', '');
+        $status = $request->input('status', '');
+        if ($key != config('meedu.addons.api_key')) {
+            abort(401);
+        }
+        $addons = Addons::where('sign', $addonsSign)->firstOrFail();
+        $addons->status = $status == 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
+        $addons->save();
+
+        return $status;
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function generateAutoloadFile()
+    {
+        $addons = Addons::active()->get()->pluck('path');
+        app()->make(\App\Meedu\Addons::class)->generateServiceProviderMapping($addons);
+        flash('操作成功', 'success');
+
+        return back();
     }
 }

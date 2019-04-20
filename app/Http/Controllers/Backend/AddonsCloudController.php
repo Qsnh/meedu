@@ -15,9 +15,10 @@ use Exception;
 use App\Models\Addons;
 use App\Meedu\MeEduCloud;
 use App\Models\AddonsVersion;
+use App\Jobs\AddonsInstallJob;
+use App\Jobs\AddonsUpgradeJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Jobs\CloudAddonsDownloadJob;
 
 class AddonsCloudController extends Controller
 {
@@ -57,13 +58,13 @@ class AddonsCloudController extends Controller
     }
 
     /**
-     * 安装.
-     *
      * @param MeEduCloud $cloud
      * @param string     $sign
      * @param string     $version
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
+     * @throws Exception
      */
     public function install(MeEduCloud $cloud, string $sign, string $version)
     {
@@ -99,7 +100,7 @@ class AddonsCloudController extends Controller
             $downloadUrl = $cloud->addonsDownloadUrl($sign);
 
             // 提交任务给队列
-            $this->dispatch(new CloudAddonsDownloadJob($addons, $addonsVersion, $downloadUrl));
+            $this->dispatch(new AddonsInstallJob($addons, $addonsVersion, $downloadUrl));
 
             DB::commit();
 
@@ -123,6 +124,8 @@ class AddonsCloudController extends Controller
      * @param string     $version
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
+     * @throws Exception
      */
     public function upgrade(MeEduCloud $cloud, string $sign, string $version)
     {
@@ -150,7 +153,7 @@ class AddonsCloudController extends Controller
             // 获取插件下载地址
             $downloadUrl = $cloud->addonsDownloadUrl($sign);
             // 提交任务给队列
-            $this->dispatch(new CloudAddonsDownloadJob($addons, $addonsVersion, $downloadUrl));
+            $this->dispatch(new AddonsUpgradeJob($addons, $addonsVersion, $downloadUrl));
 
             DB::commit();
 
