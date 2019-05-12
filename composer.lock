@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7153c8bcc0868c2a7cc9bc7d7b63718a",
+    "content-hash": "12e740766e1735733dcbe9619aa79171",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4061,6 +4061,49 @@
             ],
             "description": "Qq.com OAuth2 Provider for Laravel Socialite",
             "time": "2018-04-18T04:04:42+00:00"
+        },
+        {
+            "name": "socialiteproviders/weixin-web",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Weixin-Web.git",
+                "reference": "d80bb277f684b5485406e53197a90b9915a1b10b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Weixin-Web/zipball/d80bb277f684b5485406e53197a90b9915a1b10b",
+                "reference": "d80bb277f684b5485406e53197a90b9915a1b10b",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "socialiteproviders/manager": "~2.0 || ~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\WeixinWeb\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "xyxu",
+                    "email": "techxu@gmail.com"
+                }
+            ],
+            "description": "Weixin-Web OAuth2 Provider for Laravel Socialite",
+            "time": "2019-01-11T19:48:14+00:00"
         },
         {
             "name": "spatie/db-dumper",
@@ -8703,7 +8746,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "hyancat/aliyun-direct-mail": 20
+        "hyancat/aliyun-direct-mail": 20,
+        "socialiteproviders/weixin-web": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

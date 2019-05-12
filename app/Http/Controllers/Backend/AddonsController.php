@@ -15,6 +15,7 @@ use App\Models\Addons;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class AddonsController extends Controller
 {
@@ -135,15 +136,15 @@ class AddonsController extends Controller
      */
     public function callback(Request $request)
     {
-        \Log::info($request->input());
+        Log::info($request->input());
         $key = $request->input('key');
         $addonsSign = $request->input('addons', '');
         $status = $request->input('status', '');
-        if ($key != config('meedu.addons.api_key')) {
+        if ($key !== config('meedu.addons.api_key')) {
             abort(401);
         }
         $addons = Addons::where('sign', $addonsSign)->firstOrFail();
-        $addons->status = $status == 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
+        $addons->status = $status === 'success' ? Addons::STATUS_SUCCESS : Addons::STATUS_DEP_INSTALL_FAIL;
         $addons->save();
 
         return $status;
@@ -157,11 +158,6 @@ class AddonsController extends Controller
     public function generateAutoloadFile()
     {
         $addons = Addons::active()->get()->pluck('path')->toArray();
-        if (! $addons) {
-            flash('无需操作', 'warning');
-
-            return back();
-        }
         app()->make(\App\Meedu\Addons::class)->generateServiceProviderMapping($addons);
         flash('操作成功', 'success');
 

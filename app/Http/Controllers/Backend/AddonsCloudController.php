@@ -100,7 +100,7 @@ class AddonsCloudController extends Controller
             $downloadUrl = $cloud->addonsDownloadUrl($sign);
 
             // 提交任务给队列
-            $this->dispatch(new AddonsInstallJob($addons, $addonsVersion, $downloadUrl));
+            $this->dispatchNow(new AddonsInstallJob($addons, $addonsVersion, $downloadUrl));
 
             DB::commit();
 
@@ -153,7 +153,7 @@ class AddonsCloudController extends Controller
             // 获取插件下载地址
             $downloadUrl = $cloud->addonsDownloadUrl($sign);
             // 提交任务给队列
-            $this->dispatch(new AddonsUpgradeJob($addons, $addonsVersion, $downloadUrl));
+            $this->dispatchNow(new AddonsUpgradeJob($addons, $addonsVersion, $downloadUrl));
 
             DB::commit();
 

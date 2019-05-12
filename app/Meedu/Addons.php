@@ -362,9 +362,6 @@ class Addons
      */
     public function generateServiceProviderMapping(array $paths)
     {
-        if (! $paths) {
-            return;
-        }
         $rows = [];
         foreach ($paths as $item) {
             $serviceProviders = $this->getServiceProvider($item);
