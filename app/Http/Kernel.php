@@ -90,12 +90,19 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
+        // 后台登录检测
         'backend.login.check' => AdministratorLoginCheckMiddleware::class,
+        // user变量共享
         'user.share' => UserShareMiddleware::class,
+        // nav变量共享
         'nav.share' => NavShareMiddleware::class,
+        // 短信验证
         'sms.check' => CheckSmsCodeMiddleware::class,
+        // 图形验证码验证
         'image.captcha.check' => CheckImageCaptchaMiddleware::class,
+        // 后台权限校验
         'backend.permission.check' => BackendPermissionCheckMiddleware::class,
+        // 安装检测
         'install.check' => InstallCheckMiddleware::class,
     ];
 }
