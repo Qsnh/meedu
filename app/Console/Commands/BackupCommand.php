@@ -11,25 +11,24 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\Order;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
-class OrderTimeoutHandlerCommand extends Command
+class BackupCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'order:pay:timeout';
+    protected $signature = 'meedu:backup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'order pay timeout.';
+    protected $description = 'backup command.';
 
     /**
      * Create a new command instance.
@@ -46,16 +45,9 @@ class OrderTimeoutHandlerCommand extends Command
      */
     public function handle()
     {
-        $limit = 1800;
-        $now = Carbon::now()->subSeconds($limit);
-        $orders = Order::whereIn('status', [Order::STATUS_PAYING, Order::STATUS_UNPAY])->where('created_at', '<=', $now)->get();
-        if ($orders->isEmpty()) {
-            return;
-        }
-        foreach ($orders as $order) {
-            $this->line($order->order_id);
-            $order->status = Order::STATUS_CANCELED;
-            $order->save();
+        if (config('meedu.system.backup') == 1) {
+            $this->line('running');
+            Artisan::call('backup:run');
         }
     }
 }

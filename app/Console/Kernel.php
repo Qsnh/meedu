@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // 定时备份[每天凌晨5点]
-        $schedule->command('backup:run')
+        $schedule->command('meedu:backup')
             ->withoutOverlapping()
             ->onOneServer()
             ->dailyAt('05:00')
