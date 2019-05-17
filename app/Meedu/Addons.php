@@ -15,7 +15,6 @@ use Illuminate\Filesystem\Filesystem;
 
 class Addons
 {
-
     /**
      * @var 插件存储路径
      */
@@ -36,7 +35,8 @@ class Addons
     }
 
     /**
-     * 获取全部插件
+     * 获取全部插件.
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function addons()
@@ -44,34 +44,36 @@ class Addons
         $dirs = $this->file->directories($this->path);
         $rows = [];
         foreach ($dirs as $dir) {
-            $meeduConfigPath = $dir . DIRECTORY_SEPARATOR . 'meedu.json';
-            if (!$this->file->exists($meeduConfigPath)) {
+            $meeduConfigPath = $dir.DIRECTORY_SEPARATOR.'meedu.json';
+            if (! $this->file->exists($meeduConfigPath)) {
                 continue;
             }
-            $config = $this->file->get($dir . DIRECTORY_SEPARATOR . 'meedu.json');
-            if (!$config) {
+            $config = $this->file->get($dir.DIRECTORY_SEPARATOR.'meedu.json');
+            if (! $config) {
                 continue;
             }
             $rows[$dir] = json_decode($config, true);
         }
+
         return $rows;
     }
 
     /**
-     * 生成ServiceProviderMapping
+     * 生成ServiceProviderMapping.
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function reGenProvidersMap()
     {
         $addons = $this->addons();
-        if (!$addons) {
+        if (! $addons) {
             return;
         }
         $providersBox = [];
         foreach ($addons as $dir => $addon) {
             $sign = pathinfo($dir, PATHINFO_FILENAME);
-            $providers = $this->file->glob($dir . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
-            if (!$providers) {
+            $providers = $this->file->glob($dir.DIRECTORY_SEPARATOR.'*ServiceProvider.php');
+            if (! $providers) {
                 continue;
             }
             foreach ($providers as $provider) {
@@ -80,7 +82,7 @@ class Addons
                 $providersBox[] = $namespace;
             }
         }
-        if (!$providersBox) {
+        if (! $providersBox) {
             return;
         }
         $this->file->put($this->providersMapFile, json_encode($providersBox));
@@ -88,13 +90,15 @@ class Addons
 
     /**
      * @return array|mixed
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function getProvidersMap()
     {
-        if (!$this->file->exists($this->providersMapFile)) {
+        if (! $this->file->exists($this->providersMapFile)) {
             return [];
         }
+
         return json_decode($this->file->get($this->providersMapFile));
     }
 }

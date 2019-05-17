@@ -65,8 +65,10 @@ class Setting
     }
 
     /**
-     * 修改配置
+     * 修改配置.
+     *
      * @param array $setting
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function put(array $setting): void

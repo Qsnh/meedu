@@ -19,6 +19,7 @@ class AddonsController extends Controller
     public function index(Addons $lib)
     {
         $addons = $lib->addons();
+
         return view('backend.addons.index', compact('addons'));
     }
 
@@ -26,6 +27,7 @@ class AddonsController extends Controller
     {
         $lib->reGenProvidersMap();
         flash('成功成功', 'success');
+
         return back();
     }
 }

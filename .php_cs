@@ -10,26 +10,21 @@ with this source code in the file LICENSE.
 EOF;
 
 return PhpCsFixer\Config::create()
-    ->setRiskyAllowed(true)
-    ->setRules([
-        // 遵循PSR2
-        '@PSR2' => true,
-        // 设置数组格式为[]这种格式
-        'array_syntax' => ['syntax' => 'short'],
-        // !后面的没有空格
-        'not_operator_with_space' => false,
-        // 类的use按长度由小到大排序
-        'ordered_imports' => [
-            'sort_algorithm' => 'length',
-        ],
-        // 删除无用的else
-        'no_useless_else' => true,
-        // 删除无用的return
-        'no_useless_return' => true,
-        // 自增样式[放在后面，如：$i++]
-        'increment_style' => ['style' => 'post'],
-    ])
-    ->setFinder(
-        PhpCsFixer\Finder::create()
-            ->in(__DIR__ . '/app')
-    );
+                        ->setRiskyAllowed(true)
+                        ->setRules([
+                            '@Symfony' => true,
+                            'header_comment' => ['header' => $header],
+                            'array_syntax' => ['syntax' => 'short'],
+                            'ordered_imports' => [
+                                'sort_algorithm' => 'length',
+                            ],
+                            'no_useless_else' => true,
+                            'no_useless_return' => true,
+                            'yoda_style' => false,
+                            'not_operator_with_successor_space' => true,
+                            'increment_style' => ['style' => 'post'],
+                        ])
+                        ->setFinder(
+                            PhpCsFixer\Finder::create()
+                                             ->in(__DIR__ . '/app')
+                        );
