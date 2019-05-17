@@ -197,7 +197,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->getAllPublishedAndShowVideos();
-            });
+            }
+        );
     }
 
     /**
@@ -230,7 +231,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->getChapters();
-            });
+            }
+        );
     }
 
     /**
@@ -259,7 +261,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->hasChapters();
-            });
+            }
+        );
     }
 
     /**
@@ -317,7 +320,8 @@ class Course extends Model
             config('member.system.cache.expire', 60),
             function () use ($course) {
                 return $course->getNewJoinMembers();
-            });
+            }
+        );
     }
 
     /**

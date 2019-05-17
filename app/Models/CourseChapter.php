@@ -78,7 +78,8 @@ class CourseChapter extends Model
             config('meedu.system.cache.expire', 60),
             function () use ($that) {
                 return $that->getVideos();
-            });
+            }
+        );
     }
 
     /**

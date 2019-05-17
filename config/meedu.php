@@ -134,18 +134,4 @@ return [
     'advance' => [
         'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
     ],
-
-    // MeEduCloud
-    'cloud' => [
-        'client_id' => '',
-        'client_secret' => '',
-        'username' => env('MEEDU_CLOUD_USERNAME', ''),
-        'password' => env('MEEDU_CLOUD_PASSWORD', ''),
-    ],
-
-    'addons' => [
-        'api' => env('ADDONS_INSTALL_API', ''),
-        'api_key' => env('ADDONS_INSTALL_API_KEY', ''),
-        'api_php_path' => env('ADDONS_PHP_PATH', ''),
-    ],
 ];

@@ -60,6 +60,7 @@ class Nav extends Model
             config('meedu.system.cache.expire', 60),
             function () use ($that) {
                 return $this->orderBy('sort')->get();
-            });
+            }
+        );
     }
 }
