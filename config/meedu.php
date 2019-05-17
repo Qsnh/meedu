@@ -2,6 +2,7 @@
 
 return [
 
+    // 配置文件存储路径
     'save' => storage_path('/meedu_config.json'),
 
     // 会员配置
@@ -14,12 +15,14 @@ return [
 
         // Socialite
         'socialite' => [
+            // Github登录
             'github' => [
                 'app' => 'github',
                 'name' => 'Github',
                 'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
                 'enabled' => 0,
             ],
+            // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
@@ -99,17 +102,23 @@ return [
 
     // 系统配置
     'system' => [
+        // 缓存开关
         'cache' => [
             'status' => -1,
             'expire' => 360,
         ],
+        // 测试手机号
         'test' => explode(',', env('TEST_MOBILE', '')),
+        // 统计代码
         'js' => '',
+        // 主题
         'theme' => [
             'use' => 'default',
             'path' => resource_path('views'),
         ],
         'sms' => 'yunpian',
+        // 备份开关
+        'backup' => 0,
     ],
 
     // 视频鉴权
@@ -123,7 +132,6 @@ return [
 
     // advance
     'advance' => [
-        'layout_footer' => env('LAYOUT_FOOTER') ?: 'components.frontend.footer',
         'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
     ],
 

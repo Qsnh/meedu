@@ -68,15 +68,22 @@
         <div class="tab-content">
             <div class="tab-pane fade active show" id="system">
                 <div class="form-group">
-                    <label>缓存开关</label><br>
+                    <label>缓存开关（缓存开启之后会提高网站性能）</label><br>
                     <input type="radio" name="meedu*system*cache*status" value="1"
                             {{config('meedu.system.cache.status') == 1 ? 'checked' : ''}}> 开启
                     <input type="radio" name="meedu*system*cache*status" value="-1"
-                            {{config('meedu.system.cache.status') == -1 ? 'checked' : ''}}> 不开启
+                            {{config('meedu.system.cache.status') != 1 ? 'checked' : ''}}> 不开启
                 </div>
                 <div class="form-group">
                     <label>缓存时间</label>
                     <input type="text" name="meedu*system*cache*expire" class="form-control" value="{{config('meedu.system.cache.expire')}}">
+                </div>
+                <div class="form-group">
+                    <label>备份开关（将会自动备份网站和数据库数据）</label><br>
+                    <input type="radio" name="meedu*system*backup" value="1"
+                            {{config('meedu.system.backup') == 1 ? 'checked' : ''}}> 开启
+                    <input type="radio" name="meedu*system*backup" value="-1"
+                            {{config('meedu.system.backup') != 1 ? 'checked' : ''}}> 不开启
                 </div>
                 <div class="form-group">
                     <label>统计代码</label>
