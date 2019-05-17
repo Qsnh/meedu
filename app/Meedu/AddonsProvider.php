@@ -22,6 +22,5 @@ class AddonsProvider
      */
     public function bootstrap(Application $app)
     {
-        (new \App\Meedu\Addons())->serviceProviderLoad($app);
     }
 }

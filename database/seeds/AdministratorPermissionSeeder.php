@@ -579,29 +579,6 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/nav/\d+/delete',
                 'description' => '',
             ],
-
-            // 模板操作
-            [
-                'display_name' => '模板列表',
-                'slug' => 'backend.template.index',
-                'method' => 'GET',
-                'url' => '/backend/template/index',
-                'description' => '',
-            ],
-            [
-                'display_name' => '本地安装模板',
-                'slug' => 'bbackend.template.install.local',
-                'method' => 'GET',
-                'url' => '/backend/template/\w+/\w+/install/local',
-                'description' => '',
-            ],
-            [
-                'display_name' => '设置站点模板',
-                'slug' => 'backend.template.set.default',
-                'method' => 'GET',
-                'url' => '/backend/template/\d+/set/default',
-                'description' => '',
-            ],
             
             // 插件操作
             [
@@ -609,55 +586,6 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'backend.addons.index',
                 'method' => 'GET',
                 'url' => '/backend/addons/index',
-                'description' => '',
-            ],
-            [
-                'display_name' => '本地安装插件',
-                'slug' => 'backend.addons.index',
-                'method' => 'GET',
-                'url' => '/backend/addons/\w+/[a-zA-Z0-9\.]+/install/local',
-                'description' => '',
-            ],
-            [
-                'display_name' => '插件日志',
-                'slug' => 'backend.addons.logs',
-                'method' => 'GET',
-                'url' => '/backend/addons/\d+/logs',
-                'description' => '',
-            ],
-            [
-                'display_name' => '插件版本',
-                'slug' => 'backend.addons.versions',
-                'method' => 'GET',
-                'url' => '/backend/addons/\d+/versions',
-                'description' => '',
-            ],
-            [
-                'display_name' => '切换插件版本',
-                'slug' => 'backend.addons.version.switch',
-                'method' => 'GET',
-                'url' => '/backend/addons/\d+/version/\d+/switch',
-                'description' => '',
-            ],
-            [
-                'display_name' => '安装插件依赖',
-                'slug' => 'backend.addons.dependencies.install',
-                'method' => 'GET',
-                'url' => '/backend/addons/\d+/dependencies/install',
-                'description' => '',
-            ],
-            [
-                'display_name' => '云插件',
-                'slug' => 'backend.addons.remote.index',
-                'method' => 'GET',
-                'url' => '/backend/addons/remote/index',
-                'description' => '',
-            ],
-            [
-                'display_name' => '云插件安装',
-                'slug' => 'backend.addons.remote.install',
-                'method' => 'GET',
-                'url' => '/backend/addons/remote/\w+/\w+/install',
                 'description' => '',
             ],
         ];

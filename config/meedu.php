@@ -129,8 +129,8 @@ return [
 
     // MeEduCloud
     'cloud' => [
-        'client_id' => 2,
-        'client_secret' => 'MUe00r1VZ5PnT3R5vR3Em3W343YEzmAdrB48ZgYG',
+        'client_id' => '',
+        'client_secret' => '',
         'username' => env('MEEDU_CLOUD_USERNAME', ''),
         'password' => env('MEEDU_CLOUD_PASSWORD', ''),
     ],

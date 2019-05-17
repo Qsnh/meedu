@@ -8,9 +8,6 @@ Route::get('/logout', 'AdministratorController@logoutHandle')->name('backend.log
 Route::get('/password/update', 'AdministratorController@showEditPasswordForm')->name('backend.edit.password');
 Route::put('/password/update', 'AdministratorController@editPasswordHandle');
 
-// 插件安装回调
-Route::get('/addons/callback', 'AddonsController@callback')->name('backend.addons.callback');
-
 Route::group(['middleware' => ['backend.login.check']], function () {
     // 主面板
     Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard.index');
@@ -142,13 +139,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
         Route::get('/addons/generateAutoloadFile', 'AddonsController@generateAutoloadFile')->name('backend.addons.generateAutoloadFile');
         Route::get('/addons/{addons_id}/uninstall', 'AddonsController@uninstall')->name('backend.addons.uninstall');
-        Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
-        Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
 
-        // 云插件
-        Route::get('/addons/remote/index', 'AddonsCloudController@index')->name('backend.addons.remote.index');
-        Route::get('/addons/remote/{sign}/{version}/install', 'AddonsCloudController@install')->name('backend.addons.remote.install');
-        Route::get('/addons/remote/{sign}/{version}/upgrade', 'AddonsCloudController@upgrade')->name('backend.addons.remote.upgrade');
     });
 
     // Ajax
