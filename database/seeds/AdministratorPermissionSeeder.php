@@ -579,15 +579,6 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/nav/\d+/delete',
                 'description' => '',
             ],
-            
-            // 插件操作
-            [
-                'display_name' => '插件',
-                'slug' => 'backend.addons.index',
-                'method' => 'GET',
-                'url' => '/backend/addons/index',
-                'description' => '',
-            ],
         ];
 
         foreach ($permissions as $permission) {
