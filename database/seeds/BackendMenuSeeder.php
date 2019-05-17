@@ -129,6 +129,10 @@ class BackendMenuSeeder extends Seeder
                         'name' => '首页导航',
                         'url' => '/backend/nav',
                     ],
+                    [
+                        'name' => '插件',
+                        'url' => '/backend/addons/index',
+                    ],
                 ],
             ],
         ];

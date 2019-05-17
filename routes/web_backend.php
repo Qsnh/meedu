@@ -137,9 +137,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
         // 插件
         Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
-        Route::get('/addons/generateAutoloadFile', 'AddonsController@generateAutoloadFile')->name('backend.addons.generateAutoloadFile');
-        Route::get('/addons/{addons_id}/uninstall', 'AddonsController@uninstall')->name('backend.addons.uninstall');
-
+        Route::get('/addons/generateProvidersMap', 'AddonsController@generateProvidersMap')->name('backend.addons.generateProvidersMap');
     });
 
     // Ajax

@@ -11,8 +11,21 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Meedu\Addons;
 use App\Http\Controllers\Controller;
 
 class AddonsController extends Controller
 {
+    public function index(Addons $lib)
+    {
+        $addons = $lib->addons();
+        return view('backend.addons.index', compact('addons'));
+    }
+
+    public function generateProvidersMap(Addons $lib)
+    {
+        $lib->reGenProvidersMap();
+        flash('成功成功', 'success');
+        return back();
+    }
 }

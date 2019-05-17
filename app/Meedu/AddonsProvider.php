@@ -22,5 +22,12 @@ class AddonsProvider
      */
     public function bootstrap(Application $app)
     {
+        $meeduAddons = new Addons();
+        $providers = $meeduAddons->getProvidersMap();
+        if ($providers) {
+            array_map(function ($provider) use ($app) {
+                $app->register($provider);
+            }, $providers);
+        }
     }
 }
