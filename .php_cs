@@ -16,8 +16,6 @@ return PhpCsFixer\Config::create()
         '@PSR2' => true,
         // 设置数组格式为[]这种格式
         'array_syntax' => ['syntax' => 'short'],
-        // return前面不需要有空行
-        'blank_line_before_return' => false,
         // !后面的没有空格
         'not_operator_with_space' => false,
         // 类的use按长度由小到大排序
