@@ -65,12 +65,17 @@ class Setting
     }
 
     /**
-     * 修改配置.
-     *
+     * 修改配置
      * @param array $setting
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function put(array $setting): void
     {
+        $config = $this->files->get($this->dist);
+        if ($config) {
+            $config = json_decode($config, true);
+            $setting = array_merge($config, $setting);
+        }
         $this->files->put($this->dist, json_encode($setting));
     }
 
