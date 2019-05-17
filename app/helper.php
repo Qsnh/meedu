@@ -497,3 +497,21 @@ if (! function_exists('get_payments')) {
         return $payments;
     }
 }
+
+if (! function_exists('download')) {
+    /**
+     * 文件下载.
+     *
+     * @param $savePath
+     * @param $url
+     *
+     * @return bool
+     */
+    function download($savePath, $url)
+    {
+        $client = new \GuzzleHttp\Client(['verify' => false]);
+        $response = $client->get($url, ['sink' => $savePath]);
+
+        return $response->getStatusCode() != 200 ? false : $savePath;
+    }
+}

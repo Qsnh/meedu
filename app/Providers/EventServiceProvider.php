@@ -40,9 +40,6 @@ class EventServiceProvider extends ServiceProvider
         'SocialiteProviders\Manager\SocialiteWasCalled' => [
             'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
         ],
-        'App\Events\AddonsInstallFailEvent' => [
-            'App\Listeners\AddonsInstallFailListener',
-        ],
     ];
 
     /**

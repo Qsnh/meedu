@@ -16,12 +16,18 @@ use Illuminate\Contracts\Foundation\Application;
 class AddonsProvider
 {
     /**
-     * Bootstrap the given application.
+     * @param Application $app
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function bootstrap(Application $app)
     {
-        (new \App\Meedu\Addons())->serviceProviderLoad($app);
+        $meeduAddons = new Addons();
+        $providers = $meeduAddons->getProvidersMap();
+        if ($providers) {
+            array_map(function ($provider) use ($app) {
+                $app->register($provider);
+            }, $providers);
+        }
     }
 }

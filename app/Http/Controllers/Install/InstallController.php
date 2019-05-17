@@ -162,7 +162,7 @@ class InstallController extends Controller
     {
         $keys = app()->make(RSA::class)->createKey(4096);
 
-        list($publicKey, $privateKey) = [
+        [$publicKey, $privateKey] = [
             Passport::keyPath('oauth-public.key'),
             Passport::keyPath('oauth-private.key'),
         ];

@@ -16,7 +16,9 @@ class ShaHmac256SignerTest extends PHPUnit_Framework_TestCase
     public function testShaHmac256Signer()
     {
         $signer = new ShaHmac256Signer();
-        $this->assertEquals('TpF1lE/avV9EHGWGg9Vo/QTd2bLRwFCk9jjo56uRbCo=',
-            $signer->signString('this is a ShaHmac256 test.', 'accessSecret'));
+        $this->assertEquals(
+            'TpF1lE/avV9EHGWGg9Vo/QTd2bLRwFCk9jjo56uRbCo=',
+            $signer->signString('this is a ShaHmac256 test.', 'accessSecret')
+        );
     }
 }
