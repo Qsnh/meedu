@@ -52,7 +52,7 @@ return [
     'administrator' => [
         'super_slug' => 'administrator',
     ],
-    
+
     // 支付网关
     'payment' => [
         'alipay' => [
@@ -133,13 +133,5 @@ return [
     // advance
     'advance' => [
         'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
-    ],
-
-    // MeEduCloud
-    'cloud' => [
-        'client_id' => 2,
-        'client_secret' => 'MUe00r1VZ5PnT3R5vR3Em3W343YEzmAdrB48ZgYG',
-        'username' => env('MEEDU_CLOUD_USERNAME', ''),
-        'password' => env('MEEDU_CLOUD_PASSWORD', ''),
     ],
 ];

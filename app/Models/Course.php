@@ -17,6 +17,59 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Course.
+ *
+ * @property int                                                                  $id
+ * @property int                                                                  $user_id
+ * @property string                                                               $title             名
+ * @property string                                                               $slug              slug
+ * @property string                                                               $thumb             封面
+ * @property int                                                                  $charge            收费
+ * @property string                                                               $short_description 简短介绍
+ * @property string                                                               $description       课程介绍
+ * @property string                                                               $seo_keywords      SEO关键字
+ * @property string                                                               $seo_description   SEO描述
+ * @property string|null                                                          $published_at      上线时间
+ * @property int                                                                  $is_show           1显示,-1隐藏
+ * @property \Illuminate\Support\Carbon|null                                      $created_at
+ * @property \Illuminate\Support\Carbon|null                                      $updated_at
+ * @property string|null                                                          $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\User[]                 $buyUsers
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseChapter[] $chapters
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseComment[] $comments
+ * @property \App\User                                                            $user
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[]         $videos
+ *
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course keywords($keywords)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course notShow()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Course onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course published()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course show()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereCharge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereIsShow($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereSeoDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereSeoKeywords($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereThumb($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Course withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Course withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Course extends Model
 {
     use SoftDeletes;
@@ -144,7 +197,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->getAllPublishedAndShowVideos();
-            });
+            }
+        );
     }
 
     /**
@@ -177,7 +231,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->getChapters();
-            });
+            }
+        );
     }
 
     /**
@@ -206,7 +261,8 @@ class Course extends Model
             config('meedu.system.cache.expire', 60),
             function () {
                 return $this->hasChapters();
-            });
+            }
+        );
     }
 
     /**
@@ -264,7 +320,8 @@ class Course extends Model
             config('member.system.cache.expire', 60),
             function () use ($course) {
                 return $course->getNewJoinMembers();
-            });
+            }
+        );
     }
 
     /**

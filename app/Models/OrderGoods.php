@@ -14,6 +14,36 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\OrderGoods.
+ *
+ * @property int                             $id
+ * @property int                             $user_id
+ * @property string                          $order_id   订单编号
+ * @property int                             $goods_id   商品ID
+ * @property string                          $goods_type 商品类型标识符
+ * @property int                             $num        商品数量
+ * @property int                             $charge     商品价格
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed                           $goods_name
+ * @property \App\Models\Order               $order
+ * @property \App\User                       $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereCharge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereGoodsId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereGoodsType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderGoods whereUserId($value)
+ * @mixin \Eloquent
+ */
 class OrderGoods extends Model
 {
     const GOODS_TYPE_COURSE = 'COURSE';

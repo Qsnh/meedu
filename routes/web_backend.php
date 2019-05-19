@@ -137,14 +137,7 @@ Route::group(['middleware' => ['backend.login.check']], function () {
 
         // 插件
         Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
-        Route::get('/addons/{addons_id}/uninstall', 'AddonsController@uninstall')->name('backend.addons.uninstall');
-        Route::get('/addons/{addons_id}/versions', 'AddonsController@showVersions')->name('backend.addons.versions');
-        Route::get('/addons/{addons_id}/version/{version_id}/switch', 'AddonsController@versionSwitch')->name('backend.addons.version.switch');
-
-        // 云插件
-        Route::get('/addons/remote/index', 'AddonsCloudController@index')->name('backend.addons.remote.index');
-        Route::get('/addons/remote/{sign}/{version}/install', 'AddonsCloudController@install')->name('backend.addons.remote.install');
-        Route::get('/addons/remote/{sign}/{version}/upgrade', 'AddonsCloudController@upgrade')->name('backend.addons.remote.upgrade');
+        Route::get('/addons/generateProvidersMap', 'AddonsController@generateProvidersMap')->name('backend.addons.generateProvidersMap');
     });
 
     // Ajax

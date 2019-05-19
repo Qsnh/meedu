@@ -60,9 +60,6 @@
                     <a class="dropdown-item" data-toggle="tab" href="#seo-vip">订阅页面</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#meedu-cloud">MeeduCloud</a>
-            </li>
         </ul>
 
         <div class="tab-content">
@@ -435,16 +432,6 @@
                 <div class="form-group">
                     <label>订阅页面描述</label>
                     <textarea name="meedu*seo*role_list*description" class="form-control" rows="2">{{config('meedu.seo.role_list.description')}}</textarea>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="meedu-cloud">
-                <div class="form-group">
-                    <label>云账号</label>
-                    <input name="meedu*cloud*username" class="form-control" value="{{config('meedu.cloud.username')}}">
-                </div>
-                <div class="form-group">
-                    <label>云密码</label>
-                    <input name="meedu*cloud*password" class="form-control" value="{{config('meedu.cloud.password')}}">
                 </div>
             </div>
         </div>
