@@ -84,7 +84,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, CreatedAtBetween, HasApiTokens;
+    use Notifiable;
+    use CreatedAtBetween;
+    use HasApiTokens;
 
     const ACTIVE_YES = 1;
     const ACTIVE_NO = -1;

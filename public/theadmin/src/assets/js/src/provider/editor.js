@@ -4,10 +4,10 @@
 // Editor plugins
 // =====================
 //
-+function($){
++function ($) {
 
 
-  provider.initEditors = function() {
+  provider.initEditors = function () {
 
     provider.initWangEditor();
 
@@ -15,19 +15,21 @@
 
 
   provider.initWangEditor = function () {
-    if ( window['wangEditor'] === undefined ) {
+    if (window['wangEditor'] === undefined) {
       return;
     }
-    provider.provide('wangEditor', function(){
+    provider.provide('wangEditor', function () {
+      console.log($(this));
       var o = app.getDataOptions($(this));
       var options = {
         customConfig: {
           uploadImgServer: '/backend/upload/image',
           withCredentials: true,
           uploadFileName: 'file',
+          uploadImgTimeout: 30000,
           uploadImgHooks: {
             customInsert: function (insertImg, result, editor) {
-                insertImg(result.url);
+              insertImg(result.url);
             }
           },
           onchange: function (html) {
@@ -38,28 +40,33 @@
       // options = $.extend(options, app.getDataOptions( $(this) ));
 
       var editor = new wangEditor($(this)[0]);
-      editor.customConfig = options.customConfig;
+      editor.customConfig.uploadImgServer = options.customConfig.uploadImgServer;
+      editor.customConfig.withCredentials = options.customConfig.withCredentials;
+      editor.customConfig.uploadFileName = options.customConfig.uploadFileName;
+      editor.customConfig.uploadImgTimeout = options.customConfig.uploadImgTimeout;
+      editor.customConfig.uploadImgHooks = options.customConfig.uploadImgHooks;
+      editor.customConfig.onchange = options.customConfig.onchange;
       editor.create();
     });
   };
 
 
 
-  provider.initSummernote = function() {
-    if ( ! $.fn.summernote ) {
+  provider.initSummernote = function () {
+    if (!$.fn.summernote) {
       return;
     }
 
 
-    provider.provide('summernote', function(){
+    provider.provide('summernote', function () {
       var options = {
         dialogsInBody: true,
         dialogsFade: true
       };
-      options = $.extend(options, app.getDataOptions( $(this) ));
+      options = $.extend(options, app.getDataOptions($(this)));
 
-      if ( options.toolbar ) {
-        switch( options.toolbar.toLowerCase() ) {
+      if (options.toolbar) {
+        switch (options.toolbar.toLowerCase()) {
           case 'slim':
             options.toolbar = [
               // [groupName, [list of button]]
@@ -93,13 +100,13 @@
 
 
 
-    $(document).on('click', '[data-summernote-edit]', function(){
+    $(document).on('click', '[data-summernote-edit]', function () {
       var target = $(this).data('summernote-edit');
-      $(target).summernote({focus: true});
+      $(target).summernote({ focus: true });
     });
 
 
-    $(document).on('click', '[data-summernote-save]', function(){
+    $(document).on('click', '[data-summernote-save]', function () {
       var target = $(this).data('summernote-save');
       var callback = $(this).data('callback');
       var markup = $(target).summernote('code');
@@ -114,13 +121,13 @@
 
 
 
-  provider.initQuill = function() {
-    if ( window['Quill'] === undefined ) {
+  provider.initQuill = function () {
+    if (window['Quill'] === undefined) {
       return;
     }
 
 
-    provider.provide('quill', function(){
+    provider.provide('quill', function () {
 
       var options = {
         theme: 'snow'
@@ -134,19 +141,19 @@
         ],
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
         [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         [{ 'direction': 'rtl' }, { 'align': [] }],        // text direction
         ['link', 'image', 'video'],
         ['clean']                                         // remove formatting button
       ];
 
-      $.extend(options, app.getDataOptions( $(this) ));
+      $.extend(options, app.getDataOptions($(this)));
 
-      if ( options.toolbar !== undefined ) {
+      if (options.toolbar !== undefined) {
         var toolbar = options.toolbar.toLowerCase();
-        if ( toolbar == 'full' ) {
+        if (toolbar == 'full') {
 
           // TODO:
           // Load highlight js
@@ -167,7 +174,7 @@
         }
       }
 
-      new Quill( $(this)[0], options);
+      new Quill($(this)[0], options);
 
     });
 

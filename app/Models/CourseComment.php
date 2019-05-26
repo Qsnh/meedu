@@ -49,7 +49,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class CourseComment extends Model
 {
-    use SoftDeletes, Scope;
+    use SoftDeletes;
+    use Scope;
 
     protected $table = 'course_comments';
 

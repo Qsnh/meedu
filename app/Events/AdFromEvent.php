@@ -18,7 +18,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class AdFromEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $key;
 

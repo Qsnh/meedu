@@ -49,7 +49,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class VideoComment extends Model
 {
-    use SoftDeletes, Scope;
+    use SoftDeletes;
+    use Scope;
 
     protected $table = 'video_comments';
 

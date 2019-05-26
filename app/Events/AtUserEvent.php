@@ -20,7 +20,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class AtUserEvent implements ShouldQueue
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $fromUser;
 

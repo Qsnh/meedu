@@ -19,7 +19,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class PaymentSuccessEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $order;
 
