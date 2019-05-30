@@ -73,7 +73,7 @@ class Setting
      */
     public function put(array $setting): void
     {
-        $config = $this->files->get($this->dist);
+        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
         if ($config) {
             $config = json_decode($config, true);
             $setting = array_merge($config, $setting);
