@@ -1,8 +1,0 @@
-@mixin rating-colors($color) {
-  .active,
-  :checked ~ label,
-  label:hover,
-  label:hover ~ label {
-    color: $color;
-  }
-}

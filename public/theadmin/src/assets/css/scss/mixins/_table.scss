@@ -1,7 +1,0 @@
-@mixin table-colors($color) {
-  &,
-  > th,
-  > td {
-    background-color: $color;
-  }
-}
