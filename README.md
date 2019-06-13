@@ -25,6 +25,7 @@
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
+| [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn/` |
 
 
 ## v0.1 功能概览
