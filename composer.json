@@ -1,7 +1,11 @@
 {
     "name": "qsnh/meedu",
     "description": "A video system about edu.",
-    "keywords": ["video", "edu", "laravel"],
+    "keywords": [
+        "video",
+        "edu",
+        "laravel"
+    ],
     "homepage": "https://meedu.vip",
     "license": "MIT",
     "type": "project",
@@ -63,8 +67,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
@@ -102,7 +105,7 @@
     "repositories": {
         "packagist": {
             "type": "composer",
-            "url": "https://mirrors.huaweicloud.com/repository/php/"
+            "url": "https://packagist.laravel-china.org"
         }
     }
 }
