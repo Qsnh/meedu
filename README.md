@@ -27,6 +27,19 @@
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
 | [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn/` |
 
+## 有哪些企业在使用
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="middle">
+        <a href="https://video.heyhighschool.com?from=meedu_github" target="_blank" title="上海高育教育科技有限公司">
+          <img width="222px" title="上海高育教育科技有限公司" src="https://user-images.githubusercontent.com/12671205/60409095-92e02780-9bf4-11e9-8cf6-cb6b75a718f3.jpg">
+        </a>
+      </td>
+    </tr><tr></tr>
+  </tbody>
+</table>
 
 ## v0.1 功能概览
 
