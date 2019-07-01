@@ -25,7 +25,8 @@
 | --- | --- |
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
-| [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn/` |
+| [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn` |
+| **生活趣学堂** | 微信公众号搜索：生活趣学堂 |
 
 ## 有哪些企业在使用
 
