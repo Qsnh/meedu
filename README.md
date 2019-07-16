@@ -17,7 +17,7 @@
 - [MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
 - [使用Docker简单快速的搭建MeEdu（适合小白）](https://www.bilibili.com/video/av44963351/)
 - [MeEdu使用阿里云视频加密服务保障视频安全性(手把手教程)](https://www.bilibili.com/video/av45755754/)
-- [**一条命令安装MeEdu（Docker方式），由 MeEdu 社区小伙伴提供**](https://github.com/Baiyuetribe/meedu)
+- [一条命令安装MeEdu（Docker方式），由 MeEdu 社区小伙伴提供](https://github.com/Baiyuetribe/meedu)
 
 ## 使用站点
 
@@ -26,7 +26,7 @@
 | [小滕教学](https://58hualong.com) | `https://58hualong.com` |
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
 | [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn` |
-| **生活趣学堂** | 微信公众号搜索：生活趣学堂 |
+| **生活趣学堂** | 微信公众号：生活趣学堂 |
 
 ## 有哪些企业在使用
 
@@ -42,14 +42,14 @@
   </tbody>
 </table>
 
-## v0.1 功能概览
+## 当前功能概览
 
 - [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
 - [x] 视频在线点播
 - [x] 手机号注册
 - [x] 会员/单独购买两种收费模式
 - [x] 站内消息
-- [x] 支付宝支付/微信支付/个人收款方案（[易商户](https://1shanghu.com)提供的微信小微商户）
+- [x] 支付宝支付/微信支付/个人收款方案(微信小微商户)
 - [x] 单元测试
 - [x] 系统公告
 - [x] SEO优化
@@ -63,7 +63,7 @@
 
 - [API接口](docs/api/v1/README.md)
 - [安装教程](docs/安装教程.md)
-- [视频收费规则细节](docs/收费规则.md)
+- [MeEdu系统视频收费规则细节](docs/收费规则.md)
 
 ## License
 
