@@ -15,7 +15,6 @@ bower_components
 /storage/meedu_config.json
 .DS_Store
 php-cs-fixer.phar
-/storage/install.lock
 /app/Console/Commands/TestCommand.php
 _ide_helper.php
 package-lock.json
