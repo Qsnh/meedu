@@ -20,8 +20,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./docker/mysql/data:/logs/:rw
-      - ./docker/mysql/logs:/var/lib/mysql/:rw
+      - ./docker/mysql/logs:/logs/:rw
+      - ./docker/mysql/data:/var/lib/mysql/:rw
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: meedu
