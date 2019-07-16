@@ -363,42 +363,6 @@ if (! function_exists('input_equal')) {
     }
 }
 
-if (! function_exists('env_update')) {
-    /**
-     * ENV文件修改.
-     *
-     * @param array $data
-     */
-    function env_update(array $data)
-    {
-        $env = app()->make('files')->get(base_path('.env'));
-        $envRows = explode("\n", $env);
-        $updatedColumns = array_keys($data);
-        $newEnvRows = [];
-        foreach ($envRows as $envRow) {
-            if ($envRow == '') {
-                $newEnvRows[] = '';
-                continue;
-            }
-            [$itemKey, $itemValue] = explode('=', $envRow);
-            if (! in_array($itemKey, $updatedColumns)) {
-                $newEnvRows[] = $envRow;
-                continue;
-            }
-            $updatedValue = $data[$itemKey];
-            $updatedValue = str_replace(' ', '', trim($updatedValue));
-            if (is_numeric($updatedValue)) {
-                $newEnvRows[] = $itemKey.'='.$updatedValue;
-            } elseif (is_bool($updatedValue)) {
-                $newEnvRows[] = $itemKey.'='.$updatedValue ? 'true' : 'false';
-            } else {
-                $newEnvRows[] = $itemKey.'="'.$updatedValue.'"';
-            }
-        }
-        app()->make('files')->put(base_path('.env'), implode("\n", $newEnvRows));
-    }
-}
-
 if (! function_exists('v')) {
     /**
      * 重写视图.
@@ -495,23 +459,5 @@ if (! function_exists('get_payments')) {
         });
 
         return $payments;
-    }
-}
-
-if (! function_exists('download')) {
-    /**
-     * 文件下载.
-     *
-     * @param $savePath
-     * @param $url
-     *
-     * @return bool
-     */
-    function download($savePath, $url)
-    {
-        $client = new \GuzzleHttp\Client(['verify' => false]);
-        $response = $client->get($url, ['sink' => $savePath]);
-
-        return $response->getStatusCode() != 200 ? false : $savePath;
     }
 }
