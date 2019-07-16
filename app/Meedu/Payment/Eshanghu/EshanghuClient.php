@@ -39,7 +39,7 @@ class EshanghuClient
      *
      * @param string $outTradeNo
      * @param string $subject
-     * @param int    $totalFee
+     * @param int $totalFee
      * @param string $extra
      *
      * @return mixed
@@ -53,12 +53,13 @@ class EshanghuClient
             'out_trade_no' => $outTradeNo,
             'total_fee' => $totalFee,
             'subject' => $subject,
-            'extra' => $extra.'a',
+            'extra' => sprintf('meedu:%s', $extra),
             'notify_url' => $this->notify,
+            'sub_mch_id' => $this->subMchId,
         ];
         $data['sign'] = $this->getSign($data);
 
-        $response = $this->client->post('https://1shanghu.com/api/wechat/native', [
+        $response = $this->client->post('https://api.1shanghu.com/api/v2/wechat/native', [
             'form_params' => $data,
         ]);
         if ($response->getStatusCode() != 200) {
@@ -84,12 +85,12 @@ class EshanghuClient
         ksort($data);
         $need = [];
         foreach ($data as $key => $value) {
-            if (! $value || $key == 'sign') {
+            if (!$value || $key == 'sign') {
                 continue;
             }
             $need[] = "{$key}={$value}";
         }
-        $string = implode('&', $need).$this->appSecret;
+        $string = implode('&', $need) . $this->appSecret;
 
         return strtoupper(md5($string));
     }
@@ -119,7 +120,7 @@ class EshanghuClient
      */
     public function callback(array $data)
     {
-        if (! $this->verifySign($data)) {
+        if (!$this->verifySign($data)) {
             throw new \Exception('签名校验失败');
         }
 
