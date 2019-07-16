@@ -39,7 +39,7 @@ class EshanghuClient
      *
      * @param string $outTradeNo
      * @param string $subject
-     * @param int $totalFee
+     * @param int    $totalFee
      * @param string $extra
      *
      * @return mixed
@@ -85,12 +85,12 @@ class EshanghuClient
         ksort($data);
         $need = [];
         foreach ($data as $key => $value) {
-            if (!$value || $key == 'sign') {
+            if (! $value || $key == 'sign') {
                 continue;
             }
             $need[] = "{$key}={$value}";
         }
-        $string = implode('&', $need) . $this->appSecret;
+        $string = implode('&', $need).$this->appSecret;
 
         return strtoupper(md5($string));
     }
@@ -120,7 +120,7 @@ class EshanghuClient
      */
     public function callback(array $data)
     {
-        if (!$this->verifySign($data)) {
+        if (! $this->verifySign($data)) {
             throw new \Exception('签名校验失败');
         }
 
