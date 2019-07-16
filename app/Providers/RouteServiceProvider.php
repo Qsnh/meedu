@@ -41,7 +41,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
         $this->mapWebRoutes();
         $this->mapWebBackendRoutes();
-        $this->mapInstallRoutes();
     }
 
     /**
@@ -56,20 +55,15 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/web.php'));
     }
 
+    /**
+     * 加载后台路由
+     */
     protected function mapWebBackendRoutes()
     {
         Route::prefix('backend')
             ->middleware(['web', 'user.share'])
             ->namespace($this->namespace.'\Backend')
-            ->group(base_path('routes/web_backend.php'));
-    }
-
-    protected function mapInstallRoutes()
-    {
-        Route::prefix('install')
-            ->middleware(['web', 'install.check'])
-            ->namespace($this->namespace.'\Install')
-            ->group(base_path('routes/install.php'));
+            ->group(base_path('routes/backend.php'));
     }
 
     /**
