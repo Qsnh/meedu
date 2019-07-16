@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * 加载后台路由
+     * 加载后台路由.
      */
     protected function mapWebBackendRoutes()
     {
