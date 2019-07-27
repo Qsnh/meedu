@@ -19,7 +19,7 @@ services:
   - redis-server
 
 before_script:
-  - phpenv config-rm xdebug.ini || true
+  - php -m
   - printf "\n" | pecl install -f redis-4.3.0
   - mysql -e 'create database if not exists meedu;'
   - travis_retry composer self-update
@@ -28,7 +28,8 @@ before_script:
   - php artisan key:generate
 
 install:
-  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source --dev
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.xml
