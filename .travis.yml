@@ -4,18 +4,9 @@ env:
   global:
     - SETUP=stable
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.1
-    - php: 7.1
-      env: SETUP=lowest
-    - php: 7.2
-    - php: 7.2
-      env: SETUP=lowest
-    - php: 7.3
-    - php: 7.3
-      env: SETUP=lowest
+php:
+  - 7.1
+  - 7.2
 
 sudo: false
 
@@ -33,9 +24,14 @@ before_script:
   - mysql -e 'create database if not exists meedu;'
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction
+  - cp .env.testing .env
+  - php artisan key:generate
 
 install:
-  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
-  - if [[ $SETUP = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 9e51b0b6-e5bf-457a-a116-8b5fdc95da80
