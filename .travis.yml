@@ -19,11 +19,8 @@ services:
   - redis-server
 
 before_script:
-  - php -m
   - printf "\n" | pecl install -f redis-4.3.0
   - mysql -e 'create database if not exists meedu;'
-  - travis_retry composer self-update
-  - travis_retry composer install --no-interaction
   - cp .env.testing .env
   - php artisan key:generate
 
