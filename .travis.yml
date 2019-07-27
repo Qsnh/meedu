@@ -1,18 +1,41 @@
 language: php
 
-php:
-  - 7.1
-  - 7.2
+env:
+  global:
+    - SETUP=stable
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+    - php: 7.1
+      env: SETUP=lowest
+    - php: 7.2
+    - php: 7.2
+      env: SETUP=lowest
+    - php: 7.3
+    - php: 7.3
+      env: SETUP=lowest
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 services:
   - mysql
+  - redis-server
 
 before_script:
+  - phpenv config-rm xdebug.ini || true
+  - printf "\n" | pecl install -f redis-4.3.0
   - mysql -e 'create database if not exists meedu;'
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction
 
-script:
-  - composer test
+install:
+  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
+  - if [[ $SETUP = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+
+script: vendor/bin/phpunit
