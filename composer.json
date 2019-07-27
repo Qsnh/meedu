@@ -83,7 +83,6 @@
             "@php artisan package:discover"
         ],
         "test": "./vendor/bin/phpunit",
-        "cs-fixer": "php php-cs-fixer.phar fix",
         "cf": "php-cs-fixer fix",
         "rebuild": [
             "php artisan route:clear",

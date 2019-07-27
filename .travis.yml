@@ -13,8 +13,6 @@ before_script:
   - mysql -e 'create database if not exists meedu;'
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction
-  - cp .env.test .env
-  - php artisan key:generate
 
 script:
   - composer test
