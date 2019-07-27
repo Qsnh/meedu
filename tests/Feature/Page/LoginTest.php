@@ -3,6 +3,7 @@
 namespace Tests\Feature\Page;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class LoginTest extends TestCase
 {
 
+    // 可以访问登录界面
     public function test_visit_login_page()
     {
         $response = $this->get(route('login'));
@@ -19,11 +21,12 @@ class LoginTest extends TestCase
         $response->see('注册');
     }
 
+    // 正确的手机号和密码登录时可以登录的
     public function test_mock_user_login_success()
     {
         $password = 123456;
         $user = factory(User::class)->create([
-            'password' => bcrypt($password),
+            'password' => Hash::make($password),
         ]);
         $this->visit(route('login'))
             ->type($user->mobile, 'mobile')
@@ -32,6 +35,7 @@ class LoginTest extends TestCase
             ->seePageIs('/member');
     }
 
+    // 错误的密码登录重定向到login界面
     public function test_mock_user_login_fail()
     {
         $user = factory(User::class)->create();

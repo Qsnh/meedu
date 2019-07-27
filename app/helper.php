@@ -278,7 +278,6 @@ if (! function_exists('aliyun_sdk_client')) {
      */
     function aliyun_sdk_client()
     {
-        require_once app_path('Meedu/Aliyun/aliyun-php-sdk-core/Config.php');
         $profile = \DefaultProfile::getProfile(
             config('meedu.upload.video.aliyun.region', ''),
             config('meedu.upload.video.aliyun.access_key_id', ''),

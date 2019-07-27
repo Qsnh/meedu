@@ -31,8 +31,10 @@ class MemberPasswordChangeTest extends TestCase
             ->type($newPassword, 'new_password')
             ->type($newPassword, 'new_password_confirmation')
             ->type($password, 'old_password')
-            ->press('重置')
+            ->press('修改密码')
             ->assertResponseStatus(200);
+
+        // 断言密码修改成功
         $this->assertTrue(Hash::check($newPassword, $user->password));
     }
 

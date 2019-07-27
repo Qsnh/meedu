@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        // 页面加速
+        // 页面加速(包括：去除空格，去除注释等)
         'pagespeed' => [
             \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
             \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,

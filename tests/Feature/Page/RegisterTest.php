@@ -18,20 +18,4 @@ class RegisterTest extends TestCase
         $response->see('登录');
     }
 
-    public function test_register_nick_name_repeat_fail()
-    {
-        $this->assertTrue(true);
-    }
-
-    public function test_register_mobile_repeat_fail()
-    {
-        $this->assertTrue(true);
-    }
-
-    public function register_mock_user_success()
-    {
-        $this->assertTrue(true);
-    }
-
-
 }

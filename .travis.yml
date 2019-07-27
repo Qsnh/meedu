@@ -1,20 +1,35 @@
 language: php
 
+env:
+  global:
+    - SETUP=stable
+
 php:
   - 7.1
   - 7.2
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 services:
   - mysql
+  - redis-server
 
 before_script:
+  - printf "\n" | pecl install -f redis-4.3.0
   - mysql -e 'create database if not exists meedu;'
-  - travis_retry composer self-update
-  - travis_retry composer install --no-interaction
-  - cp .env.test .env
+  - cp .env.testing .env
   - php artisan key:generate
 
+install:
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source --dev
+
 script:
-  - composer test
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 9e51b0b6-e5bf-457a-a116-8b5fdc95da80
