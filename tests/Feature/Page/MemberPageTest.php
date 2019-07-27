@@ -15,8 +15,7 @@ class MemberPageTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user)
             ->visit(route('member'))
-            ->see($user->nick_name)
-            ->see($user->credit1);
+            ->see($user->nick_name);
     }
 
 }
