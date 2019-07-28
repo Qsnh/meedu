@@ -1,0 +1,34 @@
+build:
+  nodes:
+    meedu-test:
+      # 缓存，加快速度
+      cache:
+        directories:
+          - ~/.composer/cache
+
+      # 测试需要的服务
+      services:
+        mysql: 5.6
+        redis: 4
+
+      # 测试环境
+      environment:
+        php:
+          version: 7.1.12
+          pecl_extensions:
+            - redis
+
+      # 依赖
+      dependencies:
+        before:
+          - mysql -e 'create database if not exists meedu;'
+          - cp .env.testing .env
+          - php artisan key:generate
+
+      # 测试
+      tests:
+        override:
+          command: ./vendor/bin/phpunit --coverage-clover=coverage.xml
+          coverage:
+            file: coverage.xml
+            format: php-clover
