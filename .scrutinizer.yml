@@ -1,6 +1,13 @@
 build:
   nodes:
     meedu-test:
+      # 测试环境
+      environment:
+        php:
+          version: 7.1.12
+          pecl_extensions:
+            - redis
+
       # 缓存，加快速度
       cache:
         directories:
@@ -10,13 +17,6 @@ build:
       services:
         mysql: 5.6
         redis: 4
-
-      # 测试环境
-      environment:
-        php:
-          version: 7.1.12
-          pecl_extensions:
-            - redis
 
       # 依赖
       dependencies:
