@@ -15,7 +15,7 @@ class AdministratorSuperSeeder extends Seeder
         $exists = \App\Models\AdministratorRole::whereSlug($superSlug)->exists();
         ! $exists && \App\Models\AdministratorRole::create([
             'display_name' => '超级管理员',
-            'slug' => config('meedu.administrator.super_slug'),
+            'slug' => $superSlug,
             'description' => '创世角色',
         ]);
     }

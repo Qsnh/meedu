@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if (app()->environment('local')) {
-            $this->call(DefaultTemplateSeeder::class);
             $this->call(CourseVideoSeeder::class);
         }
     }

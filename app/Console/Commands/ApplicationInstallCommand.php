@@ -15,6 +15,7 @@ use App\Models\Administrator;
 use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
 use App\Models\AdministratorRole;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 
 class ApplicationInstallCommand extends Command
@@ -75,16 +76,17 @@ class ApplicationInstallCommand extends Command
         }
 
         $name = '超级管理员';
-        $email = '';
-        while ($email == '') {
-            $email = $this->ask('请输入邮箱:', '');
-            if ($email != '') {
-                $exists = Administrator::whereEmail($email)->exists();
-                if ($exists) {
-                    $this->warn('邮箱已经存在');
-                    $email = '';
-                }
-            }
+        $email = $this->ask('请输入邮箱:', '');
+        if (! $email) {
+            $this->warn('邮箱不能空');
+
+            return;
+        }
+        $emailExists = Administrator::whereEmail($email)->exists();
+        if ($emailExists) {
+            $this->warn('邮箱已经存在');
+
+            return;
         }
 
         $password = '';
@@ -106,7 +108,7 @@ class ApplicationInstallCommand extends Command
         $administrator = new Administrator([
             'name' => $name,
             'email' => $email,
-            'password' => bcrypt($password),
+            'password' => Hash::make($password),
         ]);
         $administrator->save();
         $administrator->roles()->attach($super->id);
@@ -137,16 +139,6 @@ class ApplicationInstallCommand extends Command
         $seeder = new class() extends Seeder {
         };
         $seeder->call(\BackendMenuSeeder::class);
-
-        $this->info('数据初始化成功');
-    }
-
-    // 默认模板
-    public function actionTemplate()
-    {
-        $seeder = new class() extends Seeder {
-        };
-        $seeder->call(\DefaultTemplateSeeder::class);
 
         $this->info('数据初始化成功');
     }

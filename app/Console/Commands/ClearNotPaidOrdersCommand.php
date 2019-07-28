@@ -11,23 +11,25 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
+use App\Models\Order;
 use Illuminate\Console\Command;
 
-class InstallLockCommand extends Command
+class ClearNotPaidOrdersCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'install:lock';
+    protected $signature = 'clear:not_paid:orders';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'generate install lock.';
+    protected $description = '';
 
     /**
      * Create a new command instance.
@@ -44,13 +46,9 @@ class InstallLockCommand extends Command
      */
     public function handle()
     {
-        $lockDist = storage_path('install.lock');
-        if (file_exists($lockDist)) {
-            $this->warn('安装锁已经存在');
-
-            return;
+        $count = Order::where('status', Order::STATUS_CANCELED)->where('created_at', '<=', Carbon::now()->subDays(3))->delete();
+        if ($count) {
+            $this->line('本次删除：'.$count);
         }
-        file_put_contents($lockDist, time());
-        $this->info('安装锁生成成功');
     }
 }

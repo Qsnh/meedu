@@ -46,7 +46,7 @@ class OrderTimeoutHandlerCommand extends Command
      */
     public function handle()
     {
-        $limit = 1800;
+        $limit = 30 * 60;
         $now = Carbon::now()->subSeconds($limit);
         $orders = Order::whereIn('status', [Order::STATUS_PAYING, Order::STATUS_UNPAY])->where('created_at', '<=', $now)->get();
         if ($orders->isEmpty()) {
