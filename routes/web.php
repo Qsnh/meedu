@@ -31,8 +31,6 @@ Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@sh
 // 搜索
 Route::get('/search', 'Frontend\SearchController@searchHandler')->name('search');
 
-// 邮件订阅
-Route::post('/subscription/email', 'Frontend\IndexController@subscriptionHandler')->name('subscription.email');
 // VIP
 Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
 // 支付回调
