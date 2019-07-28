@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Console\Command;
 
-class ClientNotPaidOrdersCommand extends Command
+class ClearNotPaidOrdersCommand extends Command
 {
     /**
      * The name and signature of the console command.
