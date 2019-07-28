@@ -15,8 +15,8 @@ use App\Models\Administrator;
 use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
 use App\Models\AdministratorRole;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
 class ApplicationInstallCommand extends Command
 {
@@ -77,13 +77,15 @@ class ApplicationInstallCommand extends Command
 
         $name = '超级管理员';
         $email = $this->ask('请输入邮箱:', '');
-        if (!$email) {
+        if (! $email) {
             $this->warn('邮箱不能空');
+
             return;
         }
         $emailExists = Administrator::whereEmail($email)->exists();
         if ($emailExists) {
             $this->warn('邮箱已经存在');
+
             return;
         }
 
@@ -140,5 +142,4 @@ class ApplicationInstallCommand extends Command
 
         $this->info('数据初始化成功');
     }
-
 }
