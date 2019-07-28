@@ -31,5 +31,5 @@ install:
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.xml
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 9e51b0b6-e5bf-457a-a116-8b5fdc95da80
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash) -t 9e51b0b6-e5bf-457a-a116-8b5fdc95da80
