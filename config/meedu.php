@@ -134,4 +134,12 @@ return [
     'advance' => [
         'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
     ],
+
+    // 其它配置
+    'other' => [
+        // 课程列表页展示条数
+        'course_list_page_size' => 6,
+        // 视频列表页展示条数
+        'video_list_page_size' => 15,
+    ],
 ];

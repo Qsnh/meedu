@@ -60,6 +60,9 @@
                     <a class="dropdown-item" data-toggle="tab" href="#seo-vip">订阅页面</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#other">其它配置</a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -432,6 +435,17 @@
                 <div class="form-group">
                     <label>订阅页面描述</label>
                     <textarea name="meedu*seo*role_list*description" class="form-control" rows="2">{{config('meedu.seo.role_list.description')}}</textarea>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="other">
+                <div class="form-group">
+                    <label>课程列表页展示课程条数</label>
+                    <input type="text" name="meedu*other*course_list_page_size" class="form-control" value="{{config('meedu.other.course_list_page_size')}}">
+                </div>
+                <div class="form-group">
+                    <label>视频列表页面展示视频条数</label>
+                    <input type="text" name="meedu*other*video_list_page_size" class="form-control" value="{{config('meedu.other.video_list_page_size')}}">
                 </div>
             </div>
         </div>
