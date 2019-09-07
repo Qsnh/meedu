@@ -36,9 +36,9 @@ class ApplicationInstallCommandTest extends TestCase
         $password = '123456';
 
         $this->artisan('install', ['action' => 'administrator'])
-            ->expectsQuestion('请输入邮箱:', $email)
-            ->expectsQuestion('请输入密码:', $password)
-            ->expectsQuestion('请再输入一次:', $password)
+            ->expectsQuestion('请输入邮箱(默认：meedu@meedu.meedu):', $email)
+            ->expectsQuestion('请输入密码(默认：meedu123):', $password)
+            ->expectsQuestion('请再输入一次(默认：meedu123):', $password)
             ->expectsOutput('管理员初始化成功.')
             ->assertExitCode(0);
 
@@ -48,19 +48,6 @@ class ApplicationInstallCommandTest extends TestCase
         $this->assertNotNull($adms);
         // 密码正确
         $this->assertTrue(Hash::check($password, $adms->password));
-    }
-
-    public function test_install_administrator_and_empty_email()
-    {
-        AdministratorRole::create([
-            'display_name' => '小滕测试',
-            'slug' => config('meedu.administrator.super_slug'),
-            'description' => '描述',
-        ]);
-
-        $this->artisan('install', ['action' => 'administrator'])
-            ->expectsQuestion('请输入邮箱:', '')
-            ->expectsOutput('邮箱不能空');
     }
 
     // 在执行install administrator的时候
@@ -84,7 +71,7 @@ class ApplicationInstallCommandTest extends TestCase
         ]);
 
         $this->artisan('install', ['action' => 'administrator'])
-            ->expectsQuestion('请输入邮箱:', $email)
+            ->expectsQuestion('请输入邮箱(默认：meedu@meedu.meedu):', $email)
             ->expectsOutput('邮箱已经存在');
     }
 
@@ -100,9 +87,9 @@ class ApplicationInstallCommandTest extends TestCase
         $password = '123456';
 
         $this->artisan('install', ['action' => 'administrator'])
-            ->expectsQuestion('请输入邮箱:', $email)
-            ->expectsQuestion('请输入密码:', $password)
-            ->expectsQuestion('请再输入一次:', Str::random())
+            ->expectsQuestion('请输入邮箱(默认：meedu@meedu.meedu):', $email)
+            ->expectsQuestion('请输入密码(默认：meedu123):', $password)
+            ->expectsQuestion('请再输入一次(默认：meedu123):', Str::random())
             ->expectsOutput('两次输入密码不一致.');
     }
 

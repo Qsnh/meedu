@@ -25,7 +25,7 @@ class VideoController extends FrontendController
             ->published()
             ->show()
             ->orderByDesc('published_at')
-            ->paginate(16);
+            ->paginate(config('meedu.other.video_list_page_size', 16));
 
         return v('frontend.video.index', compact('videos'));
     }
