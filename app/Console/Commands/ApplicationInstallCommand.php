@@ -76,7 +76,7 @@ class ApplicationInstallCommand extends Command
         }
 
         $name = '超级管理员';
-        $email = $this->ask('请输入邮箱:', '');
+        $email = $this->ask('请输入邮箱(默认：meedu@meedu.meedu):', 'meedu@meedu.meedu');
         if (! $email) {
             $this->warn('邮箱不能空');
 
@@ -91,12 +91,12 @@ class ApplicationInstallCommand extends Command
 
         $password = '';
         while ($password == '') {
-            $password = $this->ask('请输入密码:', '');
+            $password = $this->ask('请输入密码(默认：meedu123):', 'meedu123');
         }
 
         $passwordRepeat = '';
         while ($passwordRepeat == '') {
-            $passwordRepeat = $this->ask('请再输入一次:', '');
+            $passwordRepeat = $this->ask('请再输入一次(默认：meedu123):', 'meedu123');
         }
 
         if ($passwordRepeat != $password) {
