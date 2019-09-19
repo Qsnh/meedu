@@ -460,3 +460,37 @@ if (! function_exists('get_payments')) {
         return $payments;
     }
 }
+
+if (! function_exists('app_menu_is_active')) {
+    function app_menu_is_active($menu)
+    {
+        $request = request();
+        $const = [
+            'index' => [
+                'index',
+            ],
+            'courses' => [
+                'courses',
+                'videos',
+                'course.show',
+                'video.show',
+                'search',
+                'member.course.buy',
+                'member.video.buy',
+            ],
+            'role' => [
+                'role.index',
+                'member.role.buy',
+            ],
+        ];
+        $menus = $const[$menu] ?? [];
+        if (! $menus) {
+            return false;
+        }
+        if ($request->routeIs(...$menus)) {
+            return true;
+        }
+
+        return false;
+    }
+}
