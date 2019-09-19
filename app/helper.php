@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-if (!function_exists('flash')) {
+if (! function_exists('flash')) {
     function flash($message, $level = 'warning')
     {
         $message = new \Illuminate\Support\MessageBag([$level => $message]);
@@ -17,7 +17,7 @@ if (!function_exists('flash')) {
     }
 }
 
-if (!function_exists('get_first_flash')) {
+if (! function_exists('get_first_flash')) {
     /**
      * 获取第一条FLASH信息.
      *
@@ -30,14 +30,14 @@ if (!function_exists('get_first_flash')) {
         if ($level == 'error' && session('errors') && session('errors')->any()) {
             return session('errors')->all()[0];
         }
-        if (!session()->has($level)) {
+        if (! session()->has($level)) {
             return '';
         }
 
         return session($level)->first();
     }
 }
-if (!function_exists('menu_active')) {
+if (! function_exists('menu_active')) {
     /**
      * @param $routeName
      *
@@ -48,7 +48,7 @@ if (!function_exists('menu_active')) {
         return request()->route()->getName() == $routeName ? 'active' : '';
     }
 }
-if (!function_exists('menu_is_active')) {
+if (! function_exists('menu_is_active')) {
     /**
      * 指定路由名是否与当前访问的路由名相同.
      *
@@ -60,7 +60,7 @@ if (!function_exists('menu_is_active')) {
     {
         $currentUrl = trim(request()->url());
         $menu = \App\Models\AdministratorMenu::find($menuId);
-        if (!$menu) {
+        if (! $menu) {
             return false;
         }
         $children = $menu->children;
@@ -86,12 +86,12 @@ if (!function_exists('menu_is_active')) {
     }
 }
 
-if (!function_exists('exception_response')) {
+if (! function_exists('exception_response')) {
     /**
      * 异常响应.
      *
      * @param Exception $exception
-     * @param string $message
+     * @param string    $message
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -104,7 +104,7 @@ if (!function_exists('exception_response')) {
     }
 }
 
-if (!function_exists('at_user')) {
+if (! function_exists('at_user')) {
     /**
      * 艾特某个用户.
      *
@@ -116,7 +116,7 @@ if (!function_exists('at_user')) {
     function at_user($content, $fromUser, $from, $fromType)
     {
         preg_match_all('/@(.*?)\s{1}/', $content, $result);
-        if (!($result = optional($result)[1])) {
+        if (! ($result = optional($result)[1])) {
             return;
         }
         foreach ($result as $item) {
@@ -125,7 +125,7 @@ if (!function_exists('at_user')) {
     }
 }
 
-if (!function_exists('exception_record')) {
+if (! function_exists('exception_record')) {
     /**
      * 记录异常.
      *
@@ -143,7 +143,7 @@ if (!function_exists('exception_record')) {
     }
 }
 
-if (!function_exists('admin')) {
+if (! function_exists('admin')) {
     /**
      * 获取当前登录的管理员.
      *
@@ -155,7 +155,7 @@ if (!function_exists('admin')) {
     }
 }
 
-if (!function_exists('markdown_to_html')) {
+if (! function_exists('markdown_to_html')) {
     /**
      * markdown转换为html.
      *
@@ -173,7 +173,7 @@ if (!function_exists('markdown_to_html')) {
     }
 }
 
-if (!function_exists('markdown_clean')) {
+if (! function_exists('markdown_clean')) {
     /**
      * 过滤markdown非法字符串.
      *
@@ -190,7 +190,7 @@ if (!function_exists('markdown_clean')) {
     }
 }
 
-if (!function_exists('image_url')) {
+if (! function_exists('image_url')) {
     /**
      * 给图片添加参数.
      *
@@ -202,11 +202,11 @@ if (!function_exists('image_url')) {
     {
         $params = config('meedu.upload.image.params', '');
 
-        return strstr('?', $url) !== false ? $url . $params : $url . '?' . $params;
+        return strstr('?', $url) !== false ? $url.$params : $url.'?'.$params;
     }
 }
 
-if (!function_exists('aliyun_play_auth')) {
+if (! function_exists('aliyun_play_auth')) {
     /**
      * 获取阿里云视频的播放Auth.
      *
@@ -233,7 +233,7 @@ if (!function_exists('aliyun_play_auth')) {
     }
 }
 
-if (!function_exists('aliyun_play_url')) {
+if (! function_exists('aliyun_play_url')) {
     /**
      * 获取阿里云的视频播放地址
      *
@@ -243,7 +243,7 @@ if (!function_exists('aliyun_play_url')) {
      */
     function aliyun_play_url(\App\Models\Video $video)
     {
-        if (!$video->aliyun_video_id) {
+        if (! $video->aliyun_video_id) {
             return [];
         }
         try {
@@ -272,7 +272,7 @@ if (!function_exists('aliyun_play_url')) {
     }
 }
 
-if (!function_exists('aliyun_sdk_client')) {
+if (! function_exists('aliyun_sdk_client')) {
     /**
      * @return DefaultAcsClient
      */
@@ -289,7 +289,7 @@ if (!function_exists('aliyun_sdk_client')) {
     }
 }
 
-if (!function_exists('backend_menus')) {
+if (! function_exists('backend_menus')) {
     /**
      * 获取当前管理员的专属菜单.
      *
@@ -298,7 +298,7 @@ if (!function_exists('backend_menus')) {
     function backend_menus()
     {
         $user = admin();
-        if (!$user) {
+        if (! $user) {
             return collect([]);
         }
         if ($user->isSuper()) {
@@ -328,7 +328,7 @@ if (!function_exists('backend_menus')) {
     }
 }
 
-if (!function_exists('gen_order_no')) {
+if (! function_exists('gen_order_no')) {
     /**
      * 生成订单号.
      *
@@ -342,11 +342,11 @@ if (!function_exists('gen_order_no')) {
         $time = date('His');
         $rand = mt_rand(10, 99);
 
-        return $time . $rand . $userId;
+        return $time.$rand.$userId;
     }
 }
 
-if (!function_exists('input_equal')) {
+if (! function_exists('input_equal')) {
     /**
      * GET参数是否等于指定值
      *
@@ -362,7 +362,7 @@ if (!function_exists('input_equal')) {
     }
 }
 
-if (!function_exists('v')) {
+if (! function_exists('v')) {
     /**
      * 重写视图.
      *
@@ -374,13 +374,13 @@ if (!function_exists('v')) {
     function v($viewName, $params = [])
     {
         $namespace = config('meedu.system.theme.use', 'default');
-        $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
+        $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace.'::'.$viewName;
 
         return view($viewName, $params);
     }
 }
 
-if (!function_exists('duration_humans')) {
+if (! function_exists('duration_humans')) {
     /**
      * @param $duration
      *
@@ -404,7 +404,7 @@ if (!function_exists('duration_humans')) {
     }
 }
 
-if (!function_exists('view_num_humans')) {
+if (! function_exists('view_num_humans')) {
     /**
      * @param $num
      *
@@ -418,14 +418,14 @@ if (!function_exists('view_num_humans')) {
         if ($num < 1000) {
             return $num;
         } elseif ($num < 10000) {
-            return intdiv($num, 1000) . 'k次';
+            return intdiv($num, 1000).'k次';
         }
 
-        return intdiv($num, 10000) . 'w次';
+        return intdiv($num, 10000).'w次';
     }
 }
 
-if (!function_exists('enabled_socialites')) {
+if (! function_exists('enabled_socialites')) {
     /**
      * 获取已启用的第三方登录.
      *
@@ -442,7 +442,7 @@ if (!function_exists('enabled_socialites')) {
     }
 }
 
-if (!function_exists('get_payments')) {
+if (! function_exists('get_payments')) {
     /**
      * 获取可用的Payment.
      *
@@ -461,7 +461,7 @@ if (!function_exists('get_payments')) {
     }
 }
 
-if (!function_exists('app_menu_is_active')) {
+if (! function_exists('app_menu_is_active')) {
     function app_menu_is_active($menu)
     {
         $request = request();
@@ -484,12 +484,13 @@ if (!function_exists('app_menu_is_active')) {
             ],
         ];
         $menus = $const[$menu] ?? [];
-        if (!$menus) {
+        if (! $menus) {
             return false;
         }
         if ($request->routeIs(...$menus)) {
             return true;
         }
+
         return false;
     }
 }
