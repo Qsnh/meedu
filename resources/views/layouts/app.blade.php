@@ -23,19 +23,19 @@
         <div class="topbar-divider d-none d-xl-block"></div>
         <nav class="topbar-navigation">
             <ul class="menu">
-                <li class="menu-item active">
+                <li class="menu-item {{app_menu_is_active('index') ? 'active' : ''}}">
                     <a class="menu-link" href="{{url('/')}}">
                         <span class="icon ti-home"></span>
                         <span class="title">首页</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{app_menu_is_active('courses') ? 'active' : ''}}">
                     <a class="menu-link" href="{{route('courses')}}">
                         <span class="icon ti-headphone-alt"></span>
                         <span class="title">课程</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{app_menu_is_active('role') ? 'active' : ''}}">
                     <a class="menu-link" href="{{route('role.index')}}">
                         <span class="icon ti-gift"></span>
                         <span class="title">订阅</span>

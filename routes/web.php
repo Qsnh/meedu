@@ -24,9 +24,13 @@ Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider')->name('socialite');
 Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
 
+// 课程列表
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
+// 视频列表
 Route::get('/videos', 'Frontend\VideoController@index')->name('videos');
+// 课程详情
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
+// 视频详情
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 // 搜索
 Route::get('/search', 'Frontend\SearchController@searchHandler')->name('search');
