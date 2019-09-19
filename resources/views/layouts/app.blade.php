@@ -19,7 +19,9 @@
 
 <header class="topbar topbar-unfix">
     <div class="topbar-left">
-        <span class="topbar-brand"><img src="{{asset('/frontend/logo.png')}}" alt="logo-icon"></span>
+        <span class="topbar-brand">
+            <a href="{{route('index')}}"><img src="{{asset('/frontend/logo.png')}}" alt="logo-icon"></a>
+        </span>
         <div class="topbar-divider d-none d-xl-block"></div>
         <nav class="topbar-navigation">
             <ul class="menu">
