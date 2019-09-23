@@ -52,9 +52,9 @@
                                     <h5 class="bl-2 border-primary pl-1 text-primary">{{$chapter->title}}</h5>
                                     <div class="media-list-body">
                                         @foreach($chapter->getVideosCache() as $videoItem)
-                                            <a class="media media-single {{$videoItem->id == $video->id ? 'video-item-active' : ''}}"
+                                            <a class="media media-single"
                                                href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
-                                                <h5 class="title">
+                                                <h5 class="title {{$videoItem->id == $video->id ? 'video-item-active' : ''}}">
                                                     {{$videoItem->title}}
                                                     @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                                 </h5>
@@ -67,9 +67,9 @@
                             @else
 
                                 @foreach($video->course->getAllPublishedAndShowVideosCache() as $videoItem)
-                                    <a class="media media-single {{$videoItem->id == $video->id ? 'video-item-active' : ''}}"
+                                    <a class="media media-single"
                                        href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
-                                        <h6 class="title">
+                                        <h6 class="title {{$videoItem->id == $video->id ? 'video-item-active' : ''}}">
                                             {{$videoItem->title}}
                                             @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
                                         </h6>
