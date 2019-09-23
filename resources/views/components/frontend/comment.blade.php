@@ -8,9 +8,11 @@
                 <p class="no-padding no-margin">4.支持emoji表情</p>
             </div>
             <div class="publisher publisher-multi bg-white b-1 mb-30">
-                <textarea class="publisher-input auto-expand" name="comment_content" id="comment-content" rows="2" placeholder="写点吧"></textarea>
                 @auth
-                <p class="text-right"><button type="button" id="submit-comment" class="btn btn-sm btn-bold btn-primary">评论</button></p>
+                    <textarea class="publisher-input auto-expand" name="comment_content" id="comment-content" rows="2" placeholder="写点吧"></textarea>
+                    <p class="text-right"><button type="button" id="submit-comment" class="btn btn-sm btn-bold btn-primary">评论</button></p>
+                    @elseauth
+                    <textarea class="publisher-input auto-expand bg-dark" name="comment_content" id="comment-content" rows="1" placeholder="请先登录" disabled="disabled"></textarea>
                 @endauth
             </div>
         </div>
