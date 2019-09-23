@@ -161,7 +161,7 @@
                 <div class="col-sm-12">
                     <h5>友情链接</h5>
                     @foreach($links as $link)
-                        <a href="{{$link->url}}" target="_blank">{{$link->name}}</a>
+                        <a href="{{$link->url}}" target="_blank" style="margin-right: 2px; margin-bottom: 2px;">{{$link->name}}</a>
                     @endforeach
                 </div>
             </div>
