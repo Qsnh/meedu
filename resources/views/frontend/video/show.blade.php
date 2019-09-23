@@ -3,6 +3,7 @@
 @section('css')
     <style>
         #xiaoteng-player {width: 100%; height: 500px;}
+        .video-item-active { color: #33cabb; }
     </style>
 @endsection
 
@@ -51,7 +52,8 @@
                                     <h5 class="bl-2 border-primary pl-1 text-primary">{{$chapter->title}}</h5>
                                     <div class="media-list-body">
                                         @foreach($chapter->getVideosCache() as $videoItem)
-                                            <a class="media media-single" href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
+                                            <a class="media media-single {{$videoItem->id == $$video->id ? 'video-item-active' : ''}}"
+                                               href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
                                                 <h5 class="title">
                                                     {{$videoItem->title}}
                                                     @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
@@ -65,7 +67,8 @@
                             @else
 
                                 @foreach($video->course->getAllPublishedAndShowVideosCache() as $videoItem)
-                                    <a class="media media-single" href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
+                                    <a class="media media-single {{$videoItem->id == $$video->id ? 'video-item-active' : ''}}"
+                                       href="{{route('video.show', [$videoItem->course_id, $videoItem->id, $videoItem->slug])}}">
                                         <h6 class="title">
                                             {{$videoItem->title}}
                                             @if($videoItem->charge > 0)<br><span class="badge badge-primary">Pro</span></br>@endif
