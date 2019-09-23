@@ -12,7 +12,7 @@
                     <textarea class="publisher-input auto-expand" name="comment_content" id="comment-content" rows="2" placeholder="写点吧"></textarea>
                     <p class="text-right"><button type="button" id="submit-comment" class="btn btn-sm btn-bold btn-primary">评论</button></p>
                     @else
-                    <textarea class="publisher-input auto-expand bg-dark" name="comment_content" id="comment-content" rows="1" placeholder="请先登录" disabled="disabled"></textarea>
+                    <textarea class="publisher-input auto-expand" name="comment_content" id="comment-content" rows="1" placeholder="请先登录" disabled="disabled"></textarea>
                 @endif
             </div>
         </div>
