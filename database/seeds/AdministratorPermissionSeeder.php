@@ -270,6 +270,22 @@ class AdministratorPermissionSeeder extends Seeder
                 'description' => '',
             ],
 
+            // 课程评论
+            [
+                'display_name' => '课程评论列表界面',
+                'slug' => 'backend.course.comment.index',
+                'method' => 'GET',
+                'url' => '/backend/course/comment/index',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除课程评论',
+                'slug' => 'backend.course.comment.destroy',
+                'method' => 'GET',
+                'url' => '/backend/course/comment/\d+/destroy',
+                'description' => '',
+            ],
+
             // 视频
             [
                 'display_name' => '视频列表界面',
@@ -311,6 +327,22 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'backend.video.destroy',
                 'method' => 'GET',
                 'url' => '/backend/video/\d+/delete',
+                'description' => '',
+            ],
+
+            // 视频评论
+            [
+                'display_name' => '视频评论列表界面',
+                'slug' => 'backend.video.comment.index',
+                'method' => 'GET',
+                'url' => '/backend/video/comment/index',
+                'description' => '',
+            ],
+            [
+                'display_name' => '删除视频评论',
+                'slug' => 'backend.video.comment.destroy',
+                'method' => 'GET',
+                'url' => '/backend/video/comment/\d+/destroy',
                 'description' => '',
             ],
 

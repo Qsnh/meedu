@@ -50,6 +50,9 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/course/{id}/edit', 'CourseController@edit')->name('backend.course.edit');
         Route::put('/course/{id}/edit', 'CourseController@update');
         Route::get('/course/{id}/delete', 'CourseController@destroy')->name('backend.course.destroy');
+        // 课程评论
+        Route::get('/course/comment/index', 'CourseCommentController@index')->name('backend.course.comment.index');
+        Route::get('/course/comment/{id}/destroy', 'CourseCommentController@destroy')->name('backend.course.comment.destroy');
 
         // 视频
         Route::get('/video', 'CourseVideoController@index')->name('backend.video.index');
@@ -58,6 +61,9 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::get('/video/{id}/edit', 'CourseVideoController@edit')->name('backend.video.edit');
         Route::put('/video/{id}/edit', 'CourseVideoController@update');
         Route::get('/video/{id}/delete', 'CourseVideoController@destroy')->name('backend.video.destroy');
+        // 视频评论
+        Route::get('/video/comment/index', 'VideoCommentController@index')->name('backend.video.comment.index');
+        Route::get('/video/comment/{id}/destroy', 'VideoCommentController@destroy')->name('backend.video.comment.destroy');
 
         // 订单
         Route::get('/orders', 'OrderController@index')->name('backend.orders');
