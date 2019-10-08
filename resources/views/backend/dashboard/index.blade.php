@@ -25,7 +25,7 @@
         <div class="col-6 col-lg-4">
             <div class="card card-body text-center bg-danger">
                 <div class="fs-40 fw-100">+{{$todayPaidNum}}</div>
-                <div>今日订单</div>
+                <div>今日支付订单</div>
             </div>
         </div>
 

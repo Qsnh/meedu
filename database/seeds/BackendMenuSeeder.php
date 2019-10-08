@@ -17,6 +17,8 @@ class BackendMenuSeeder extends Seeder
             '订单列表' => '订单列表',
             '会员' => '会员列表',
             '课程' => '课程列表界面',
+            '课程评论' => '课程评论列表界面',
+            '视频评论' => '视频评论列表界面',
             '视频' => '视频列表界面',
             '友情链接' => '友情链接列表',
             '推广链接' => '推广链接首页',
@@ -60,6 +62,14 @@ class BackendMenuSeeder extends Seeder
                     [
                         'name' => '推广链接',
                         'url' => '/backend/adfrom',
+                    ],
+                    [
+                        'name' => '课程评论',
+                        'url' => '/backend/course/comment/index',
+                    ],
+                    [
+                        'name' => '视频评论',
+                        'url' => '/backend/video/comment/index',
                     ],
                 ],
             ],
