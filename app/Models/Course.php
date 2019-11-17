@@ -350,4 +350,14 @@ class Course extends Model
 
         return $comment;
     }
+
+    /**
+     * 获取是否显示状态，显示返回真
+     *
+     * @return bool
+     */
+    public function getIsShow()
+    {
+        return $this->is_show == self::SHOW_YES;
+    }
 }
