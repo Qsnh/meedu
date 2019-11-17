@@ -51,13 +51,17 @@ class NotificationParse
         $model = '\\App\\Models\\'.$data['from_type'];
         $from = (new $model())->whereId($data['from_id'])->first();
         $url = 'javascript:void(0)';
-        switch ($data['from_type']) {
-            case 'CourseComment':
-                $url = route('course.show', [$from->course->id, $from->course->slug]);
-                break;
-            case 'VideoComment':
-                $url = route('video.show', [$from->video->course->id, $from->video->id, $from->video->slug]);
-                break;
+        try {
+            switch ($data['from_type']) {
+                case 'CourseComment':
+                    $url = route('course.show', [$from->course->id, $from->course->slug]);
+                    break;
+                case 'VideoComment':
+                    $url = route('video.show', [$from->video->course->id, $from->video->id, $from->video->slug]);
+                    break;
+            }
+        } catch (\Exception $e) {
+            return '数据丢失';
         }
 
         return '<a href="'.$url.'">用户&nbsp;<b>'.$fromUser->nick_name.'</b>&nbsp;提到您啦。</a>';
