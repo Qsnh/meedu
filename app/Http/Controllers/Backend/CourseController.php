@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Video;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,9 +55,20 @@ class CourseController extends Controller
 
     public function update(CourseRequest $request, $id)
     {
+        $data = $request->filldata();
+        /**
+         * @var Course
+         */
         $course = Course::findOrFail($id);
-        $course->fill($request->filldata())->save();
+        $originIsShow = $course->is_show;
+        $course->fill($data)->save();
         flash('课程编辑成功', 'success');
+
+        // 判断是否修改了显示的状态
+        if ($originIsShow != $data['is_show']) {
+            // 修改下面的视频
+            Video::where('course_id', $course->id)->update(['is_show' => $data['is_show']]);
+        }
 
         return back();
     }

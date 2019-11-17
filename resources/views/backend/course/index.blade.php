@@ -37,8 +37,15 @@
                 @forelse($courses as $course)
                     <tr>
                         <td>{{$course->id}}</td>
-                        <td>{{$course->title}}</td>
-                        <td><span class="badge badge-info">{{$course->charge}}</span></td>
+                        <td>
+                            @if($course->getIsShow())
+                                <span class="badge badge-success">显示</span>
+                            @else
+                                <span class="badge badge-brown">不显示</span>
+                                @endif
+                            <span class="ml-1">{{$course->title}}</span>
+                        </td>
+                        <td><span class="badge badge-info">￥{{$course->charge}}</span></td>
                         <td>{{$course->created_at}}</td>
                         <td>
                             <a href="{{route('backend.course.edit', $course)}}" class="btn btn-warning btn-sm">编辑</a>
