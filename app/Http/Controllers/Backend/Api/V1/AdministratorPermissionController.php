@@ -9,24 +9,19 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Http\Controllers\Controller;
+use App\Constant\BackendApiConstant;
 use App\Models\AdministratorPermission;
 use App\Http\Requests\Backend\AdministratorPermissionRequest;
 
-class AdministratorPermissionController extends Controller
+class AdministratorPermissionController extends BaseController
 {
     public function index()
     {
-        $permissions = AdministratorPermission::paginate(10);
+        $permissions = AdministratorPermission::orderByDesc('id')->paginate(10);
 
-        return view('backend.administrator_permission.index', compact('permissions'));
-    }
-
-    public function create()
-    {
-        return view('backend.administrator_permission.create');
+        return $this->successData($permissions);
     }
 
     public function store(
@@ -34,37 +29,33 @@ class AdministratorPermissionController extends Controller
         AdministratorPermission $permission
     ) {
         $permission->fill($request->filldata())->save();
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit($id)
     {
         $permission = AdministratorPermission::findOrFail($id);
 
-        return view('backend.administrator_permission.edit', compact('permission'));
+        return $this->successData($permission);
     }
 
     public function update(AdministratorPermissionRequest $request, $id)
     {
         $permission = AdministratorPermission::findOrFail($id);
         $permission->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
     {
         $permission = AdministratorPermission::findOrFail($id);
         if ($permission->roles()->exists()) {
-            flash('该权限下还有角色，请先删除该角色');
-        } else {
-            $permission->delete();
-            flash('删除成功', 'success');
+            return $this->error(BackendApiConstant::PERMISSION_BAN_DELETE_FOR_CHILDREN);
         }
+        $permission->delete();
 
-        return back();
+        return $this->success();
     }
 }

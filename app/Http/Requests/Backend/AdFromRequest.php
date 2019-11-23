@@ -33,24 +33,24 @@ class AdFromRequest extends FormRequest
     public function rules()
     {
         return [
-        'from_name' => 'required',
-'from_key' => 'required',
+            'from_name' => 'required',
+            'from_key' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-        'from_name.required' => '请输入推广链接名',
-'from_key.required' => '请输入推广链接特征值',
+            'from_name.required' => '请输入推广链接名',
+            'from_key.required' => '请输入推广链接特征值',
         ];
     }
 
     public function filldata()
     {
         return [
-        'from_name' => $this->input('from_name'),
-'from_key' => $this->input('from_key'),
+            'from_name' => $this->input('from_name'),
+            'from_key' => $this->input('from_key'),
         ];
     }
 }

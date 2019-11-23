@@ -9,25 +9,23 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\CourseComment;
-use App\Http\Controllers\Controller;
 
-class CourseCommentController extends Controller
+class CourseCommentController extends BaseController
 {
     public function index()
     {
-        $comments = CourseComment::orderByDesc('created_at')->paginate(20);
+        $links = CourseComment::orderByDesc('id')->paginate(12);
 
-        return view('backend.course.comment.index', compact('comments'));
+        return $links;
     }
 
     public function destroy($id)
     {
         CourseComment::destroy($id);
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

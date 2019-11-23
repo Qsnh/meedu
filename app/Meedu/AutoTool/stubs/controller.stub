@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers\Backend\Api\V1;
+
+use App\Http\Requests\Backend\|request|;
+use App\Models\|model|;
+
+class |controller| extends BaseController
+{
+
+    public function index()
+    {
+        $links = |model|::orderByDesc('id')->paginate(12);
+        return $links;
+    }
+
+    public function store(|request| $request)
+    {
+        |model|::create($request->filldata());
+        return $this->success();
+    }
+
+    public function edit($id)
+    {
+        $info = |model|::findOrFail($id);
+        return $this->successData($info);
+    }
+
+    public function update(|request| $request, $id)
+    {
+        $role = |model|::findOrFail($id);
+        $role->fill($request->filldata())->save();
+        return $this->success();
+    }
+
+    public function destroy($id)
+    {
+        |model|::destroy($id);
+        return $this->success();
+    }
+
+}

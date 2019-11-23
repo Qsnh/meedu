@@ -9,13 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\User;
 use App\Models\Order;
-use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
     public function index()
     {

@@ -9,13 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Meedu\Setting;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class SettingController extends Controller
+class SettingController extends BaseController
 {
     public function index()
     {
@@ -25,14 +24,13 @@ class SettingController extends Controller
             'services' => config('services'),
         ];
 
-        return view('backend.setting.index', compact('config'));
+        return $this->successData($config);
     }
 
     public function saveHandler(Request $request)
     {
         app()->make(Setting::class)->save($request);
-        flash('修改成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

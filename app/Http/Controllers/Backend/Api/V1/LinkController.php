@@ -9,55 +9,46 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Link;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\LinkRequest;
 
-class LinkController extends Controller
+class LinkController extends BaseController
 {
     public function index()
     {
-        $links = Link::orderBy('sort')->get();
+        $links = Link::orderBy('sort')->paginate(12);
 
-        return view('backend.link.index', compact('links'));
-    }
-
-    public function create()
-    {
-        return view('backend.link.create');
+        return $links;
     }
 
     public function store(LinkRequest $request)
     {
         Link::create($request->filldata());
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit($id)
     {
         $link = Link::findOrFail($id);
 
-        return view('backend.link.edit', compact('link'));
+        return $this->successData($link);
     }
 
     public function update(LinkRequest $request, $id)
     {
         $role = Link::findOrFail($id);
         $role->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
     {
         Link::destroy($id);
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

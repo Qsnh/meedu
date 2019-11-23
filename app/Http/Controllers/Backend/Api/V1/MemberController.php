@@ -9,14 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\MemberRequest;
 
-class MemberController extends Controller
+class MemberController extends BaseController
 {
     public function index(Request $request)
     {
@@ -26,30 +25,24 @@ class MemberController extends Controller
             return $query->where('nick_name', 'like', "%{$keywords}%")
                 ->orWhere('mobile', 'like', "%{$keywords}%");
         })->orderByDesc('created_at')
-            ->paginate($request->input('page_size', 15));
+            ->paginate($request->input('page_size', 12));
 
         $members->appends($request->input());
 
-        return view('backend.member.index', compact('members'));
+        return $this->successData($members);
     }
 
     public function show($id)
     {
         $member = User::findOrFail($id);
 
-        return view('backend.member.show', compact('member'));
-    }
-
-    public function create()
-    {
-        return view('backend.member.create');
+        return $this->successData($member);
     }
 
     public function store(MemberRequest $request)
     {
         User::create($request->filldata());
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

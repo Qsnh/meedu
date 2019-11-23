@@ -9,13 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Backend\ImageUploadRequest;
 
-class UploadController extends Controller
+class UploadController extends BaseController
 {
     public function uploadImageHandle(ImageUploadRequest $request)
     {

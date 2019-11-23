@@ -9,66 +9,55 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Course;
 use App\Models\CourseChapter;
-use App\Http\Controllers\Controller;
+use App\Constant\BackendApiConstant;
 use App\Http\Requests\Backend\CourseChapterRequest;
 
-class CourseChapterController extends Controller
+class CourseChapterController extends BaseController
 {
     public function index($courseId)
     {
         $course = Course::findOrFail($courseId);
 
-        $rows = $course->chapters()->orderBy('sort')->get();
+        $chapters = $course->chapters()->orderBy('sort')->get();
 
-        return view('backend.coursechapter.index', compact('rows', 'course'));
-    }
-
-    public function create($courseId)
-    {
-        $course = Course::findOrFail($courseId);
-
-        return view('backend.coursechapter.create', compact('course'));
+        return $this->successData(compact('course', 'chapters'));
     }
 
     public function store(CourseChapterRequest $request, $courseId)
     {
         $course = Course::findOrFail($courseId);
         $course->chapters()->save(new CourseChapter($request->filldata()));
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit($id)
     {
-        $one = CourseChapter::findOrFail($id);
+        $chapter = CourseChapter::findOrFail($id);
 
-        return view('backend.coursechapter.edit', compact('one'));
+        return $this->successData($chapter);
     }
 
     public function update(CourseChapterRequest $request, $id)
     {
         $one = CourseChapter::findOrFail($id);
         $one->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
     {
         $courseChapter = CourseChapter::findOrFail($id);
         if ($courseChapter->videos()->count()) {
-            flash('无法删除，该章节下面存在视频', 'warning');
-        } else {
-            $courseChapter->delete();
-            flash('删除成功', 'success');
+            return $this->error(BackendApiConstant::COURSE_CHAPTER_BAN_DELETE_FOR_VIDEOS);
         }
+        $courseChapter->delete();
 
-        return back();
+        return $this->success();
     }
 }

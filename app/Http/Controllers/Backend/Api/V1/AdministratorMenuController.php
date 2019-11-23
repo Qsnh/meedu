@@ -9,38 +9,28 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Models\AdministratorMenu;
-use App\Http\Controllers\Controller;
 use App\Models\AdministratorPermission;
 use App\Http\Requests\Backend\AdministratorMenuRequest;
 
-class AdministratorMenuController extends Controller
+class AdministratorMenuController extends BaseController
 {
     public function index(AdministratorMenu $administratorMenu)
     {
         $menus = $administratorMenu->menus();
         $permissions = AdministratorPermission::get();
 
-        return view('backend.administrator_menu.index', compact('menus', 'permissions'));
-    }
-
-    public function create(AdministratorMenu $administratorMenu)
-    {
-        $permissions = AdministratorPermission::get();
-        $menus = $administratorMenu->menus();
-
-        return view('backend.administrator_menu.create', compact('menus', 'permissions'));
+        return $this->successData(compact('menus', 'permissions'));
     }
 
     public function store(AdministratorMenuRequest $request)
     {
         AdministratorMenu::create($request->filldata());
-        flash('创建成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit(AdministratorMenu $administratorMenu, $id)
@@ -49,16 +39,15 @@ class AdministratorMenuController extends Controller
         $menus = $administratorMenu->menus();
         $menu = AdministratorMenu::findOrFail($id);
 
-        return view('backend.administrator_menu.edit', compact('menus', 'menu', 'permissions'));
+        return $this->successData(compact('menus', 'menu', 'permissions'));
     }
 
     public function update(AdministratorMenuRequest $request, $id)
     {
         $menu = AdministratorMenu::findOrFail($id);
         $menu->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
@@ -66,9 +55,8 @@ class AdministratorMenuController extends Controller
         $menu = AdministratorMenu::findOrFail($id);
         AdministratorMenu::whereParentId($menu->id)->update(['parent_id' => 0]);
         $menu->delete();
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function saveChange(Request $request)
@@ -84,8 +72,7 @@ class AdministratorMenuController extends Controller
                 }
             }
         }
-        flash('保存成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

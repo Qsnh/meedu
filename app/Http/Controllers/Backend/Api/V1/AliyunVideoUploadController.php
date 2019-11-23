@@ -9,14 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
 use Illuminate\Http\Request;
 use vod\Request\V20170321 as vod;
-use App\Http\Controllers\Controller;
 
-class AliyunVideoUploadController extends Controller
+class AliyunVideoUploadController extends BaseController
 {
     public function createVideoToken(Request $request)
     {

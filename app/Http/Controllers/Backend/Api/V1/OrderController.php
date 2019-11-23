@@ -9,13 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class OrderController extends Controller
+class OrderController extends BaseController
 {
     public function index(Request $request)
     {
@@ -25,8 +24,8 @@ class OrderController extends Controller
             ->status($status)
             ->keywords($keywords)
             ->latest()
-            ->paginate($request->input('page_size', 10));
+            ->paginate($request->input('page_size', 12));
 
-        return view('backend.order.index', compact('orders'));
+        return $this->successData($orders);
     }
 }

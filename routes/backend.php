@@ -136,11 +136,6 @@ Route::group(['middleware' => ['backend.login.check']], function () {
         Route::put('/nav/{id}/edit', 'NavController@update');
         Route::get('/nav/{id}/delete', 'NavController@destroy')->name('backend.nav.destroy');
 
-        // 模板
-        Route::get('/template/index', 'TemplateController@index')->name('backend.template.index');
-        Route::get('/template/{template_name}/{version}/install/local', 'TemplateController@installLocal')->name('backend.template.install.local');
-        Route::get('/template/{id}/set/default', 'TemplateController@setDefaultHandler')->name('backend.template.set.default');
-
         // 插件
         Route::get('/addons/index', 'AddonsController@index')->name('backend.addons.index');
         Route::get('/addons/generateProvidersMap', 'AddonsController@generateProvidersMap')->name('backend.addons.generateProvidersMap');

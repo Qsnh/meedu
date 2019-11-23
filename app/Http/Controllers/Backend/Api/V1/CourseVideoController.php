@@ -9,15 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Video;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\CourseVideoRequest;
 
-class CourseVideoController extends Controller
+class CourseVideoController extends BaseController
 {
     public function index(Request $request)
     {
@@ -36,26 +35,18 @@ class CourseVideoController extends Controller
                 'published_at', 'is_show', 'created_at',
                 'updated_at',
             ])
-            ->paginate($request->input('page_size', 10));
+            ->paginate($request->input('page_size', 12));
 
         $videos->appends($request->input());
 
-        return view('backend.video.index', compact('videos'));
-    }
-
-    public function create()
-    {
-        $courses = Course::all();
-
-        return view('backend.video.create', compact('courses'));
+        return $this->successData($videos);
     }
 
     public function store(CourseVideoRequest $request, Video $video)
     {
         $video->fill($request->filldata())->save();
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit($id)
@@ -64,23 +55,21 @@ class CourseVideoController extends Controller
 
         $courses = Course::all();
 
-        return view('backend.video.edit', compact('video', 'courses'));
+        return $this->successData(compact('video', 'courses'));
     }
 
     public function update(CourseVideoRequest $request, $id)
     {
         $video = Video::findOrFail($id);
         $video->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
     {
         Video::destroy($id);
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }

@@ -9,66 +9,57 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use App\Models\AdFrom;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\AdFromRequest;
 
-class AdFromController extends Controller
+class AdFromController extends BaseController
 {
     public function index()
     {
-        $rows = AdFrom::orderBy('id')->paginate(10);
+        $links = AdFrom::orderByDesc('id')->paginate(12);
 
-        return view('backend.adfrom.index', compact('rows'));
-    }
-
-    public function create()
-    {
-        return view('backend.adfrom.create');
+        return $links;
     }
 
     public function store(AdFromRequest $request)
     {
         AdFrom::create($request->filldata());
-        flash('添加成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function edit($id)
     {
-        $one = AdFrom::findOrFail($id);
+        $info = AdFrom::findOrFail($id);
 
-        return view('backend.adfrom.edit', compact('one'));
+        return $this->successData($info);
     }
 
     public function update(AdFromRequest $request, $id)
     {
-        $one = AdFrom::findOrFail($id);
-        $one->fill($request->filldata())->save();
-        flash('编辑成功', 'success');
+        $role = AdFrom::findOrFail($id);
+        $role->fill($request->filldata())->save();
 
-        return back();
+        return $this->success();
     }
 
     public function destroy($id)
     {
         AdFrom::destroy($id);
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 
     public function number(Request $request, $id)
     {
-        $one = AdFrom::findOrFail($id);
+        $ad = AdFrom::findOrFail($id);
         $startDate = $request->input('start_date', date('Y-m-d', Carbon::now()->subDays(30)->timestamp));
         $endDate = $request->input('end_date', date('Y-m-d', Carbon::now()->timestamp));
-        $records = $one->numbers()->whereBetween('day', [$startDate, $endDate])->get();
+        $records = $ad->numbers()->whereBetween('day', [$startDate, $endDate])->get();
         $rows = collect([]);
         foreach ($records as $item) {
             $rows->push([
@@ -77,6 +68,6 @@ class AdFromController extends Controller
             ]);
         }
 
-        return view('backend.adfrom.number', compact('one', 'rows'));
+        return $this->successData(compact('ad', 'rows'));
     }
 }

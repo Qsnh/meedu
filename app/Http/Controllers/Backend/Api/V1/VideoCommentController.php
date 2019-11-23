@@ -9,25 +9,23 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\VideoComment;
-use App\Http\Controllers\Controller;
 
-class VideoCommentController extends Controller
+class VideoCommentController extends BaseController
 {
     public function index()
     {
-        $comments = VideoComment::orderByDesc('created_at')->paginate(20);
+        $links = VideoComment::orderByDesc('id')->paginate(12);
 
-        return view('backend.video.comment.index', compact('comments'));
+        return $links;
     }
 
     public function destroy($id)
     {
         VideoComment::destroy($id);
-        flash('删除成功', 'success');
 
-        return back();
+        return $this->success();
     }
 }
