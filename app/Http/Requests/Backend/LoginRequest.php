@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Requests\Backend\Administrator;
+namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Constant\BackendApiConstant;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ];
     }
@@ -41,9 +41,16 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => '请输入邮箱',
-            'email.email' => '请输入有效的邮箱',
-            'password.required' => '请输入密码',
+            'username.required' => BackendApiConstant::LOGIN_USERNAME_REQUIRED,
+            'password.required' => BackendApiConstant::LOGIN_PASSWORD_REQUIRED,
+        ];
+    }
+
+    public function filldata()
+    {
+        return [
+            'username' => $this->post('username'),
+            'password' => $this->post('password'),
         ];
     }
 }

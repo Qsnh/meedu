@@ -36,6 +36,7 @@
         "socialiteproviders/weixin-web": "dev-master",
         "spatie/laravel-backup": "5.10.1",
         "symfony/process": "^4.2",
+        "tymon/jwt-auth": "^0.5.12",
         "yansongda/laravel-pay": "^2.0"
     },
     "require-dev": {

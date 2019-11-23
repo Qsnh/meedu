@@ -12,6 +12,7 @@
 namespace App\Models;
 
 use Illuminate\Http\Request;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -50,6 +51,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Administrator extends Authenticatable
 {
     use Notifiable;
+    use HasApiTokens;
 
     protected $table = 'administrators';
 

@@ -19,4 +19,10 @@ class BackendApiConstant
     const ROLE_BAN_DELETE_FOR_ADMINISTRATOR = '该角色下还存在管理员，请先删除相应的管理员';
     const COURSE_CHAPTER_BAN_DELETE_FOR_VIDEOS = '无法删除，该章节下面存在视频';
     const COURSE_BAN_DELETE_FOR_VIDEOS = '该课程下存在视频，无法删除';
+
+    const LOGIN_USERNAME_REQUIRED = '请输入用户名';
+    const LOGIN_PASSWORD_REQUIRED = '请输入密码';
+    const LOGIN_PASSWORD_ERROR = '密码错误';
+
+    const ADMINISTRATOR_NOT_EXISTS = '用户名不存在';
 }

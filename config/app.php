@@ -182,6 +182,7 @@ return [
         \Spatie\Backup\BackupServiceProvider::class,
         HyanCat\DirectMail\AliyunDirectMailServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
+        \Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
     ],
 
     /*
@@ -233,6 +234,8 @@ return [
 
         // Third
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 
 ];
