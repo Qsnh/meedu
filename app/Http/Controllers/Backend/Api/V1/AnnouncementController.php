@@ -12,18 +12,20 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Announcement;
-use App\Http\Requests\Backend\AnnoucementRequest;
+use App\Http\Requests\Backend\AnnouncementRequest;
 
 class AnnouncementController extends BaseController
 {
     public function index()
     {
-        $links = Announcement::orderByDesc('id')->paginate(12);
+        $announcements = Announcement::with(['administrator'])
+            ->orderByDesc('id')
+            ->paginate(request()->input('size', 12));
 
-        return $links;
+        return $this->successData($announcements);
     }
 
-    public function store(AnnoucementRequest $request)
+    public function store(AnnouncementRequest $request)
     {
         Announcement::create($request->filldata());
 
@@ -37,7 +39,7 @@ class AnnouncementController extends BaseController
         return $this->successData($info);
     }
 
-    public function update(AnnoucementRequest $request, $id)
+    public function update(AnnouncementRequest $request, $id)
     {
         $role = Announcement::findOrFail($id);
         $role->fill($request->filldata())->save();

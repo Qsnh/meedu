@@ -20,9 +20,9 @@ class AdFromController extends BaseController
 {
     public function index()
     {
-        $links = AdFrom::orderByDesc('id')->paginate(12);
+        $links = AdFrom::orderByDesc('id')->paginate(\request()->input('size', 12));
 
-        return $links;
+        return $this->successData($links);
     }
 
     public function store(AdFromRequest $request)

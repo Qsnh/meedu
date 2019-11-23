@@ -18,9 +18,9 @@ class RoleController extends BaseController
 {
     public function index()
     {
-        $links = Role::orderByDesc('id')->paginate(12);
+        $roles = Role::orderByDesc('id')->paginate(request()->input('size', 12));
 
-        return $links;
+        return $this->successData($roles);
     }
 
     public function store(RoleRequest $request)

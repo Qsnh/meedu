@@ -13,6 +13,8 @@ namespace App\Constant;
 
 class BackendApiConstant
 {
+    const GUARD = 'administrator';
+
     const OLD_PASSWORD_ERROR = '原密码错误';
     const ADMINISTRATOR_ACCOUNT_CANT_DELETE = '当前用户是超级管理员账户无法删除';
     const PERMISSION_BAN_DELETE_FOR_CHILDREN = '该权限下还有角色，请先删除该角色';

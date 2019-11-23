@@ -22,6 +22,11 @@ class UploadController extends BaseController
         $path = $file->store(config('meedu.upload.image.path'), config('meedu.upload.image.disk'));
         $url = Storage::disk(config('meedu.upload.image.disk'))->url($path);
 
-        return ['path' => $path, 'url' => $url];
+        return [
+            'errno' => 0,
+            'data' => [
+                $url,
+            ],
+        ];
     }
 }

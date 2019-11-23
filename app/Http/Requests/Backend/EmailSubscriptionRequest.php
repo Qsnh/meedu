@@ -11,9 +11,7 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class EmailSubscriptionRequest extends FormRequest
+class EmailSubscriptionRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

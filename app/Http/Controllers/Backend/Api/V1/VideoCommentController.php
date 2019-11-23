@@ -17,9 +17,11 @@ class VideoCommentController extends BaseController
 {
     public function index()
     {
-        $links = VideoComment::orderByDesc('id')->paginate(12);
+        $comments = VideoComment::with(['user', 'video.course'])
+            ->orderByDesc('id')
+            ->paginate(request()->input('size', 12));
 
-        return $links;
+        return $this->successData($comments);
     }
 
     public function destroy($id)

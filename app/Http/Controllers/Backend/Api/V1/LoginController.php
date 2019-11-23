@@ -12,8 +12,8 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Administrator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Constant\BackendApiConstant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\LoginRequest;
 
@@ -31,8 +31,15 @@ class LoginController extends BaseController
         if (! Hash::check($password, $admin->password)) {
             return $this->error(BackendApiConstant::LOGIN_PASSWORD_ERROR);
         }
-        $token = JWTAuth::fromUser($admin);
+        $token = Auth::guard('administrator')->login($admin);
 
         return $this->successData(compact('token'));
+    }
+
+    public function user()
+    {
+        $admin = Auth::guard(self::GUARD)->user();
+
+        return $this->successData($admin);
     }
 }

@@ -13,9 +13,8 @@ namespace App\Http\Requests\Backend;
 
 use App\Models\Course;
 use Overtrue\Pinyin\Pinyin;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class CourseRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

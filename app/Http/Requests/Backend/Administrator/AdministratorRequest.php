@@ -11,9 +11,9 @@
 
 namespace App\Http\Requests\Backend\Administrator;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Backend\BaseRequest;
 
-class AdministratorRequest extends FormRequest
+class AdministratorRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

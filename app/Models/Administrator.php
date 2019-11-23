@@ -13,6 +13,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -48,7 +49,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Administrator extends Authenticatable
+class Administrator extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasApiTokens;
@@ -64,9 +65,15 @@ class Administrator extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $appends = [
-        'edit_url', 'destroy_url',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * 从Request上创建管理员用户.
@@ -113,16 +120,6 @@ class Administrator extends Authenticatable
     public function couldDestroy()
     {
         return $this->roles()->where('slug', config('meedu.administrator.super_slug'))->exists();
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('backend.administrator.edit', $this);
-    }
-
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.administrator.destroy', $this);
     }
 
     /**

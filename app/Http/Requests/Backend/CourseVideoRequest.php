@@ -12,9 +12,8 @@
 namespace App\Http\Requests\Backend;
 
 use Overtrue\Pinyin\Pinyin;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CourseVideoRequest extends FormRequest
+class CourseVideoRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -18,9 +18,9 @@ class NavController extends BaseController
 {
     public function index()
     {
-        $links = Nav::orderByDesc('id')->paginate(12);
+        $navs = Nav::orderByDesc('id')->paginate(12);
 
-        return $links;
+        return $this->successData($navs);
     }
 
     public function store(NavRequest $request)

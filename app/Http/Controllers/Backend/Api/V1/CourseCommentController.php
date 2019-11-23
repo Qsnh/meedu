@@ -17,9 +17,11 @@ class CourseCommentController extends BaseController
 {
     public function index()
     {
-        $links = CourseComment::orderByDesc('id')->paginate(12);
+        $comments = CourseComment::with(['user', 'course'])
+            ->orderByDesc('id')
+            ->paginate(request()->input('size', 12));
 
-        return $links;
+        return $this->successData($comments);
     }
 
     public function destroy($id)

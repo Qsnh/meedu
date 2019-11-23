@@ -18,9 +18,9 @@ class LinkController extends BaseController
 {
     public function index()
     {
-        $links = Link::orderBy('sort')->paginate(12);
+        $links = Link::orderBy('sort')->paginate(request()->input('size', 12));
 
-        return $links;
+        return $this->successData($links);
     }
 
     public function store(LinkRequest $request)
