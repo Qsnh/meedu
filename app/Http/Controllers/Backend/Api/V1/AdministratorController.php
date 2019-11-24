@@ -23,7 +23,7 @@ class AdministratorController extends BaseController
 {
     public function index()
     {
-        $administrators = Administrator::orderByDesc('created_at')->paginate(10);
+        $administrators = Administrator::orderByDesc('created_at')->paginate(request()->input('size', 12));
 
         return $this->successData($administrators);
     }
@@ -42,9 +42,8 @@ class AdministratorController extends BaseController
     public function edit($id)
     {
         $administrator = Administrator::findOrFail($id);
-        $roles = AdministratorRole::all();
 
-        return $this->success(compact('administrator', 'roles'));
+        return $this->successData($administrator);
     }
 
     public function update(AdministratorRequest $request, $id)
