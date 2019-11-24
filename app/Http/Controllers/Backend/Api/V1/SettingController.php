@@ -22,6 +22,9 @@ class SettingController extends BaseController
             'meedu' => config('meedu'),
             'sms' => config('sms'),
             'services' => config('services'),
+            'pay' => config('pay'),
+            'eshanghu' => config('eshanghu'),
+            'tencent' => config('tencent'),
         ];
 
         return $this->successData($config);
