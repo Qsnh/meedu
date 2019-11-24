@@ -35,14 +35,14 @@ class CourseChapterController extends BaseController
         return $this->success();
     }
 
-    public function edit($id)
+    public function edit($courseId, $id)
     {
         $chapter = CourseChapter::findOrFail($id);
 
         return $this->successData($chapter);
     }
 
-    public function update(CourseChapterRequest $request, $id)
+    public function update(CourseChapterRequest $request, $courseId, $id)
     {
         $one = CourseChapter::findOrFail($id);
         $one->fill($request->filldata())->save();
@@ -50,7 +50,7 @@ class CourseChapterController extends BaseController
         return $this->success();
     }
 
-    public function destroy($id)
+    public function destroy($courseId, $id)
     {
         $courseChapter = CourseChapter::findOrFail($id);
         if ($courseChapter->videos()->count()) {

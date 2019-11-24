@@ -21,10 +21,11 @@ class MemberController extends BaseController
     {
         $keywords = $request->input('keywords', '');
 
-        $members = User::when($keywords, function ($query) use ($keywords) {
-            return $query->where('nick_name', 'like', "%{$keywords}%")
-                ->orWhere('mobile', 'like', "%{$keywords}%");
-        })->orderByDesc('created_at')
+        $members = User::with(['role'])
+            ->when($keywords, function ($query) use ($keywords) {
+                return $query->where('nick_name', 'like', "%{$keywords}%")
+                    ->orWhere('mobile', 'like', "%{$keywords}%");
+            })->orderByDesc('created_at')
             ->paginate($request->input('page_size', 12));
 
         $members->appends($request->input());

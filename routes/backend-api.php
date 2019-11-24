@@ -128,6 +128,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}', 'CourseVideoController@edit');
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
+        Route::get('/create/params', 'CourseVideoController@createParams');
     });
 
     // 会员
@@ -141,6 +142,11 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::group(['prefix' => 'setting'], function () {
         Route::get('/', 'SettingController@index');
         Route::post('/', 'SettingController@saveHandler');
+    });
+
+    // 订单
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/', 'OrderController@index');
     });
 
     Route::post('/upload/image', 'UploadController@uploadImageHandle');

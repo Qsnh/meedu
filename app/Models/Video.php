@@ -12,7 +12,6 @@
 namespace App\Models;
 
 use App\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -89,11 +88,6 @@ class Video extends Model
         'is_show', 'charge', 'aliyun_video_id',
         'chapter_id', 'duration', 'tencent_video_id',
     ];
-
-    public function getPublishedAtAttribute($publishedAt)
-    {
-        return Carbon::parse($publishedAt);
-    }
 
     /**
      * 所属用户.

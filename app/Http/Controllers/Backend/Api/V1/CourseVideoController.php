@@ -22,24 +22,23 @@ class CourseVideoController extends BaseController
     {
         $keywords = $request->input('keywords', '');
 
-        $videos = Video::with(['course'])
+        $videos = Video::with(['course'], ['chapter'])
             ->when($keywords, function ($query) use ($keywords) {
-                return $query->where('title', 'like', "%{$keywords}%");
+                return $query->where('title', 'like', "{$keywords}%");
             })
             ->orderByDesc('published_at')
-            ->select([
-                'id', 'user_id', 'course_id', 'title',
-                'slug', 'url', 'charge', 'view_num',
-                'short_description', 'description',
-                'seo_keywords', 'seo_description',
-                'published_at', 'is_show', 'created_at',
-                'updated_at',
-            ])
-            ->paginate($request->input('page_size', 12));
+            ->paginate($request->input('size', 12));
 
         $videos->appends($request->input());
 
         return $this->successData($videos);
+    }
+
+    public function createParams()
+    {
+        $courses = Course::select(['id', 'title'])->orderByDesc('published_at')->get();
+
+        return $this->successData(compact('courses'));
     }
 
     public function store(CourseVideoRequest $request, Video $video)
