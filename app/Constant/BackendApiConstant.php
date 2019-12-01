@@ -19,6 +19,7 @@ class BackendApiConstant
     const ADMINISTRATOR_ACCOUNT_CANT_DELETE = '当前用户是超级管理员账户无法删除';
     const PERMISSION_BAN_DELETE_FOR_CHILDREN = '该权限下还有角色，请先删除该角色';
     const ROLE_BAN_DELETE_FOR_ADMINISTRATOR = '该角色下还存在管理员，请先删除相应的管理员';
+    const ROLE_BAN_DELETE_FOR_INIT_ADMINISTRATOR = '超管角色无法删除';
     const COURSE_CHAPTER_BAN_DELETE_FOR_VIDEOS = '无法删除，该章节下面存在视频';
     const COURSE_BAN_DELETE_FOR_VIDEOS = '该课程下存在视频，无法删除';
 

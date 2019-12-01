@@ -20,7 +20,7 @@ class AdministratorRoleController extends BaseController
 {
     public function index()
     {
-        $roles = AdministratorRole::orderByDesc('id')->paginate(10);
+        $roles = AdministratorRole::orderByDesc('id')->paginate(\request()->input('size', 12));
 
         return $this->successData($roles);
     }
@@ -54,6 +54,9 @@ class AdministratorRoleController extends BaseController
         $role = AdministratorRole::findOrFail($id);
         if ($role->administrators()->exists()) {
             return $this->error(BackendApiConstant::ROLE_BAN_DELETE_FOR_ADMINISTRATOR);
+        }
+        if ($role->slug === config('meedu.administrator.super_slug')) {
+            return $this->error(BackendApiConstant::ROLE_BAN_DELETE_FOR_INIT_ADMINISTRATOR);
         }
         $role->delete();
 

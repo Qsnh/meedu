@@ -22,10 +22,10 @@ class DashboardController extends BaseController
         $todayPaidNum = Order::todayPaidNum();
         $todayPaidSum = Order::todayPaidSum();
 
-        return view('backend.dashboard.index', compact(
-            'todayRegisterUserCount',
-            'todayPaidNum',
-            'todayPaidSum'
-        ));
+        return $this->successData([
+            'today_register_user_count' => $todayRegisterUserCount,
+            'today_paid_num' => $todayPaidNum,
+            'today_paid_sum' => $todayPaidSum,
+        ]);
     }
 }

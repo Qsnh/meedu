@@ -6,6 +6,8 @@ Route::group(['middleware' => ['auth:administrator']], function () {
 
     Route::get('/user', 'LoginController@user');
 
+    Route::get('/dashboard', 'DashboardController@index');
+
     // 友情链接
     Route::group(['prefix' => 'link'], function () {
         Route::get('/', 'LinkController@index');
@@ -20,6 +22,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/', 'AdFromController@index');
         Route::post('/', 'AdFromController@store');
         Route::get('/{id}', 'AdFromController@edit');
+        Route::get('/{id}/number', 'AdFromController@number');
         Route::put('/{id}', 'AdFromController@update');
         Route::delete('/{id}', 'AdFromController@destroy');
     });
@@ -65,13 +68,13 @@ Route::group(['middleware' => ['auth:administrator']], function () {
 
     // 管理员
     Route::group(['prefix' => 'administrator'], function () {
+        Route::put('/password', 'AdministratorController@editPasswordHandle');
         Route::get('/', 'AdministratorController@index');
         Route::get('/user', 'AdministratorController@user');
         Route::post('/', 'AdministratorController@store');
         Route::get('/{id}', 'AdministratorController@edit');
         Route::put('/{id}', 'AdministratorController@update');
         Route::delete('/{id}', 'AdministratorController@destroy');
-        Route::put('/password', 'AdministratorController@editPasswordHandle');
     });
 
     // 权限

@@ -12,7 +12,6 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Administrator;
-use App\Models\AdministratorRole;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +58,7 @@ class AdministratorController extends BaseController
 
     public function editPasswordHandle(EditPasswordRequest $request)
     {
-        $administrator = Auth::guard($this->guard)->user();
+        $administrator = Auth::guard(BackendApiConstant::GUARD)->user();
         if (
         ! Hash::check(
             $request->input('old_password'),

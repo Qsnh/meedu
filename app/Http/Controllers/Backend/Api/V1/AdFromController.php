@@ -60,14 +60,17 @@ class AdFromController extends BaseController
         $startDate = $request->input('start_date', date('Y-m-d', Carbon::now()->subDays(30)->timestamp));
         $endDate = $request->input('end_date', date('Y-m-d', Carbon::now()->timestamp));
         $records = $ad->numbers()->whereBetween('day', [$startDate, $endDate])->get();
-        $rows = collect([]);
+        $labels = [];
+        $dataset = [];
         foreach ($records as $item) {
-            $rows->push([
-                'x' => $item->day,
-                'y' => $item->num,
-            ]);
+            $labels[] = $item->day;
+            $dataset[] = $item->num;
         }
 
-        return $this->successData(compact('ad', 'rows'));
+        return $this->successData([
+            'ad' => $ad,
+            'labels' => $labels,
+            'dataset' => $dataset,
+        ]);
     }
 }

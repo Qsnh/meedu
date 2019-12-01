@@ -50,10 +50,6 @@ class AdministratorPermission extends Model
         'method', 'url',
     ];
 
-    protected $appends = [
-        'edit_url', 'destroy_url',
-    ];
-
     /**
      * 权限下的角色.
      *
@@ -67,16 +63,6 @@ class AdministratorPermission extends Model
             'permission_id',
             'role_id'
         );
-    }
-
-    public function getEditUrlAttribute()
-    {
-        return route('backend.administrator_permission.edit', $this);
-    }
-
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.administrator_permission.destroy', $this);
     }
 
     /**
