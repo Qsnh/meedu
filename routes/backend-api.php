@@ -8,6 +8,12 @@ Route::group(['middleware' => ['auth:administrator']], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
 
+    Route::group(['prefix' => 'video/token'], function () {
+        Route::post('/tencent', 'VideoUploadController@tencentToken');
+        Route::post('/aliyun/refresh', 'VideoUploadController@aliyunRefreshVideoToken');
+        Route::post('/aliyun/create', 'VideoUploadController@aliyunCreateVideoToken');
+    });
+
     // 友情链接
     Route::group(['prefix' => 'link'], function () {
         Route::get('/', 'LinkController@index');

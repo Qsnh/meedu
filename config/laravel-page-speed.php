@@ -57,6 +57,7 @@ return [
         '*.torrent',
         // 跳过二维码支付界面，如果压缩可能导致二维码无法展示
         'member/order/pay/*',
+        'backend/*'
     ],
 
 ];
