@@ -18,7 +18,6 @@ class ValidateException extends \Exception
         return response()->json([
             'status' => 406,
             'message' => $this->message,
-            'data' => [],
         ]);
     }
 }

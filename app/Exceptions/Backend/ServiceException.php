@@ -15,4 +15,11 @@ use Exception;
 
 class ServiceException extends Exception
 {
+    public function render()
+    {
+        return response()->json([
+            'status' => 500,
+            'message' => $this->message,
+        ]);
+    }
 }
