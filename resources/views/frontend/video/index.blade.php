@@ -39,7 +39,7 @@
                         @foreach($videos as $video)
                         <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
                             <h5 class="title">[{{$video->course->title}}] &nbsp; {{$video->title}}</h5>
-                            <time datetime="{{$video->published_at}}">{{$video->published_at->diffForHumans()}}</time>
+                            <time datetime="{{$video->published_at}}">{{date('Y/m/d', strtotime($video->published_at))}}</time>
                         </a>
                         @endforeach
                     </div>
