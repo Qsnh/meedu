@@ -28,6 +28,7 @@
 | [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
 | [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn` |
 | **生活趣学堂** | 微信公众号：生活趣学堂 |
+| [Seekdeer(K线教学)](http://www.seekdeer.com/) | `http://www.seekdeer.com/` |
 
 ## 有哪些企业在使用
 
