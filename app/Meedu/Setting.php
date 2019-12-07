@@ -16,6 +16,7 @@ use Illuminate\Filesystem\Filesystem;
 
 class Setting
 {
+    const VERSION = 1;
     protected $files;
     protected $dist;
 
@@ -34,14 +35,8 @@ class Setting
         if ($data instanceof Request) {
             $data = $param->all();
         }
-        $setting = collect($data)->filter(function ($item, $index) {
-            return preg_match('/\*/', $index);
-        })->mapWithKeys(function ($item, $index) {
-            $index = str_replace('*', '.', $index);
-
-            return [$index => $item];
-        })->toArray();
-        $this->put($setting);
+        $data['version'] = self::VERSION;
+        $this->put($data);
     }
 
     /**
@@ -49,9 +44,18 @@ class Setting
      */
     public function sync()
     {
-        collect($this->get())->map(function ($item, $key) {
-            config([$key => $item]);
-        });
+        $saveConfig = $this->get();
+        if (! isset($saveConfig['version'])) {
+            // 老版本的配置保存方式
+            collect($this->get())->map(function ($item, $key) {
+                config([$key => $item]);
+            });
+        } else {
+            // v1版本的配置保存方式
+            if ($saveConfig['version'] == self::VERSION) {
+                config($saveConfig);
+            }
+        }
         $this->specialSync();
     }
 
@@ -73,11 +77,11 @@ class Setting
      */
     public function put(array $setting): void
     {
-        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
-        if ($config) {
-            $config = json_decode($config, true);
-            $setting = array_merge($config, $setting);
-        }
+//        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
+//        if ($config) {
+//            $config = json_decode($config, true);
+//            $setting = array_merge($config, $setting);
+//        }
         $this->files->put($this->dist, json_encode($setting));
     }
 

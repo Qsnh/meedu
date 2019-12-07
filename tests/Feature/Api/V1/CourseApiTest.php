@@ -62,9 +62,8 @@ class CourseApiTest extends OriginalTestCase
         ]);
         $this->json('GET', '/api/v1/course/'.$course->id)
             ->assertStatus(200)
-            ->assertExactJson([
+            ->assertJson([
                 'message' => 'No query results for model [App\\Models\\Course].',
-                'code' => 500,
             ]);
     }
 
@@ -76,9 +75,8 @@ class CourseApiTest extends OriginalTestCase
         ]);
         $this->json('get', '/api/v1/course/'.$course->id)
             ->assertStatus(200)
-            ->assertExactJson([
+            ->assertJson([
                 'message' => 'No query results for model [App\\Models\\Course].',
-                'code' => 500,
             ]);
     }
 

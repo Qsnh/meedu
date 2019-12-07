@@ -133,12 +133,17 @@ if (! function_exists('exception_record')) {
      */
     function exception_record(Exception $exception): void
     {
+        $request = request();
         \Log::error([
             'file' => $exception->getFile(),
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
             'line' => $exception->getLine(),
             'trace' => $exception->getTraceAsString(),
+            'params' => $request->all(),
+            'url' => $request->url(),
+            'method' => $request->method(),
+            'ip' => $request->getClientIps(),
         ]);
     }
 }

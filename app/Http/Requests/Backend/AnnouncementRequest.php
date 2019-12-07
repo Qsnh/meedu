@@ -11,9 +11,10 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Constant\BackendApiConstant;
+use Illuminate\Support\Facades\Auth;
 
-class AnnouncementRequest extends FormRequest
+class AnnouncementRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -47,6 +48,7 @@ class AnnouncementRequest extends FormRequest
     public function filldata()
     {
         return [
+            'admin_id' => Auth::guard(BackendApiConstant::GUARD)->user()->id,
             'announcement' => $this->input('announcement'),
         ];
     }

@@ -42,7 +42,7 @@ return [
         ],
 
         'administrator' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'administrators',
         ],
 

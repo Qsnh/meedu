@@ -47,10 +47,6 @@ class AdministratorRole extends Model
         'display_name', 'slug', 'description',
     ];
 
-    protected $appends = [
-        'edit_url', 'destroy_url', 'permission_url',
-    ];
-
     /**
      * 角色下的管理员.
      *
@@ -79,30 +75,6 @@ class AdministratorRole extends Model
             'role_id',
             'permission_id'
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getEditUrlAttribute()
-    {
-        return route('backend.administrator_role.edit', $this);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDestroyUrlAttribute()
-    {
-        return route('backend.administrator_role.destroy', $this);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPermissionUrlAttribute()
-    {
-        return route('backend.administrator_role.permission', $this);
     }
 
     /**

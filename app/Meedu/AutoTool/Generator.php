@@ -13,189 +13,97 @@ namespace App\Meedu\AutoTool;
 
 class Generator
 {
-    protected $config = [];
+    protected $name;
+    protected $controller;
+    protected $model;
+    protected $request;
 
-    public function __construct()
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        $this->config = config('generator');
+        return $this->name;
     }
 
-    public function render()
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
     {
-        foreach ($this->config as $item) {
-            $this->run($item);
-        }
+        $this->name = $name;
+
+        return $this;
     }
 
-    public function run($config)
+    /**
+     * @return mixed
+     */
+    public function getController()
     {
-        echo "生成Request\n";
-        $this->request($config);
-
-        echo "生成Controller\n";
-        $this->controller($config);
-
-        echo "生成create\n";
-        $this->create($config);
-
-        echo "生成edit\n";
-        $this->edit($config);
-
-        echo "生成index\n";
-        $this->index($config);
-
-        echo "生成router\n";
-        $this->router($config);
+        return $this->controller;
     }
 
-    public function request($config)
+    /**
+     * @param mixed $controller
+     */
+    public function setController($controller)
     {
-        $viewPath = app_path('Meedu/AutoTool/template/request.template');
-        $viewContent = file_get_contents($viewPath);
+        $this->controller = $controller;
 
-        $request = $config['model'].'Request';
-        $viewContent = str_replace('{request}', $request, $viewContent);
-
-        $rules = [];
-        foreach ($config['request']['rules'] as $key => $rule) {
-            $rules[] = "'{$key}' => '{$rule}'";
-        }
-        $viewContent = str_replace('{rules}', implode(",\n", $rules), $viewContent);
-
-        $messages = [];
-        foreach ($config['request']['messages'] as $key => $rule) {
-            $messages[] = "'{$key}' => '{$rule}'";
-        }
-        $viewContent = str_replace('{messages}', implode(",\n", $messages), $viewContent);
-
-        $filldata = [];
-        foreach ($config['request']['filldata'] as $rule) {
-            $filldata[] = "'{$rule}' => \$this->input('{$rule}')";
-        }
-        $viewContent = str_replace('{filldata}', implode(",\n", $filldata), $viewContent);
-
-        $dist = app_path('Http/Requests/Backend/'.$request.'.php');
-        ! file_exists($dist) && file_put_contents($dist, $viewContent);
-
-        echo "request生成完成\n";
+        return $this;
     }
 
-    public function controller($config)
+    /**
+     * @return mixed
+     */
+    public function getModel()
     {
-        $viewPath = app_path('Meedu/AutoTool/template/controller.template');
-        $viewContent = file_get_contents($viewPath);
-
-        $controller = $config['model'].'Controller';
-        $viewContent = str_replace('{{$controllerName}}', $controller, $viewContent);
-        $viewContent = str_replace('{{$model}}', $config['model'], $viewContent);
-        $viewContent = str_replace('{{$request}}', $config['model'].'Request', $viewContent);
-        $viewContent = str_replace('{{$name}}', strtolower($config['model']), $viewContent);
-
-        $dist = app_path('Http/Controllers/Backend/'.$controller.'.php');
-        ! file_exists($dist) && file_put_contents($dist, $viewContent);
-
-        echo "controller生成完成\n";
+        return $this->model;
     }
 
-    public function router($config)
+    /**
+     * @param mixed $model
+     */
+    public function setModel($model)
     {
-        $viewPath = app_path('Meedu/AutoTool/template/router.template');
-        $viewContent = file_get_contents($viewPath);
+        $this->model = $model;
 
-        $viewContent = str_replace('{{$model}}', $config['model'], $viewContent);
-        $viewContent = str_replace('{{$name}}', strtolower($config['model']), $viewContent);
-
-        echo $viewContent;
+        return $this;
     }
 
-    public function create($config)
+    /**
+     * @return mixed
+     */
+    public function getRequest()
     {
-        $viewPath = app_path('Meedu/AutoTool/template/create.template');
-        $viewContent = file_get_contents($viewPath);
-
-        $viewContent = str_replace('{name}', $config['name'], $viewContent);
-        $viewContent = str_replace('{app}', strtolower($config['model']), $viewContent);
-
-        $form = [];
-        foreach ($config['template']['edit']['fields'] as $field => $name) {
-            $template = <<<EOF
-<div class="form-group">
-    <label>{$name}</label>
-    <input type="text" name="{$field}" class="form-control" placeholder="{$name}">
-</div>
-EOF;
-            $form[] = $template;
-        }
-        $viewContent = str_replace('{form}', implode("\n", $form), $viewContent);
-
-        $distPath = resource_path('views/backend/'.strtolower($config['model']));
-        if (! is_dir($distPath)) {
-            mkdir($distPath, 0777, true);
-        }
-        $dist = $distPath.'/create.blade.php';
-        ! file_exists($dist) && file_put_contents($dist, $viewContent);
-
-        echo "create生成完成\n";
+        return $this->request;
     }
 
-    public function edit($config)
+    /**
+     * @param mixed $request
+     */
+    public function setRequest($request)
     {
-        $viewPath = app_path('Meedu/AutoTool/template/edit.template');
-        $viewContent = file_get_contents($viewPath);
+        $this->request = $request;
 
-        $viewContent = str_replace('{name}', $config['name'], $viewContent);
-        $viewContent = str_replace('{app}', strtolower($config['model']), $viewContent);
-
-        $form = [];
-        foreach ($config['template']['edit']['fields'] as $field => $name) {
-            $template = <<<EOF
-<div class="form-group">
-    <label>{$name}</label>
-    <input type="text" name="{$field}" value="{{\$one->$field}}" class="form-control" placeholder="{$name}">
-</div>
-EOF;
-            $form[] = $template;
-        }
-        $viewContent = str_replace('{form}', implode("\n", $form), $viewContent);
-
-        $distPath = resource_path('views/backend/'.strtolower($config['model']));
-        if (! is_dir($distPath)) {
-            mkdir($distPath, 0777, true);
-        }
-        $dist = $distPath.'/edit.blade.php';
-        ! file_exists($dist) && file_put_contents($dist, $viewContent);
-
-        echo "edit生成完成\n";
+        return $this;
     }
 
-    public function index($config)
+    public function genController()
     {
-        $viewPath = app_path('Meedu/AutoTool/template/index.template');
-        $viewContent = file_get_contents($viewPath);
+        $stub = file_get_contents(base_path('./app/Meedu/AutoTool/stubs/controller.stub'));
+        $stub = str_replace('|request|', $this->request, $stub);
+        $stub = str_replace('|controller|', $this->controller, $stub);
+        $stub = str_replace('|model|', $this->model, $stub);
+        file_put_contents(base_path('app/Http/Controllers/Backend/Api/V1/'.$this->controller.'.php'), $stub);
+    }
 
-        $viewContent = str_replace('{name}', $config['name'], $viewContent);
-        $viewContent = str_replace('{app}', strtolower($config['model']), $viewContent);
-
-        $fields = $config['template']['index']['fields'];
-        $viewContent = str_replace('{columnNum}', count($fields) + 2, $viewContent);
-
-        $header = [];
-        $table = [];
-        foreach ($fields as $field => $name) {
-            $header[] = "<th>{$name}</th>";
-            $table[] = "<td>{{\$row->$field}}</td>";
-        }
-
-        $viewContent = str_replace('{header}', implode("\n", $header), $viewContent);
-        $viewContent = str_replace('{table}', implode("\n", $table), $viewContent);
-
-        $distPath = resource_path('views/backend/'.strtolower($config['model']));
-        if (! is_dir($distPath)) {
-            mkdir($distPath, 0777, true);
-        }
-        $dist = $distPath.'/index.blade.php';
-        ! file_exists($dist) && file_put_contents($dist, $viewContent);
-
-        echo "index生成完成\n";
+    public function genRoute()
+    {
+        $stub = file_get_contents(base_path('./app/Meedu/AutoTool/stubs/route.stub'));
+        $stub = str_replace('|controller|', $this->controller, $stub);
+        $stub = str_replace('|name|', $this->name, $stub);
+        echo $stub;
     }
 }

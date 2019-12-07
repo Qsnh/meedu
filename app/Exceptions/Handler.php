@@ -12,6 +12,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -59,6 +60,16 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($request->wantsJson()) {
+            if (Str::start($request->getUri(), '/backend')) {
+                // 后台的异常错误
+                exception_record($exception);
+
+                return response()->json([
+                    'status' => 500,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+
             return exception_response($exception);
         }
 

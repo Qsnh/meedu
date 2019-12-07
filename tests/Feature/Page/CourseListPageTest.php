@@ -56,7 +56,8 @@ class CourseListPageTest extends TestCase
     // 可以看到分页组件
     public function test_visit_course_see_pagination()
     {
-        factory(Course::class, 100)->create();
+        config(['meedu.other.course_list_page_size' => 3]);
+        factory(Course::class, 15)->create();
         $this->visit(route('courses'))
             ->seeElement('.pagination');
     }

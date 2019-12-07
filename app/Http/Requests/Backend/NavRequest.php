@@ -11,9 +11,7 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class NavRequest extends FormRequest
+class NavRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

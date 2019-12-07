@@ -12,9 +12,8 @@
 namespace App\Http\Requests\Backend;
 
 use Overtrue\Pinyin\Pinyin;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CourseVideoRequest extends FormRequest
+class CourseVideoRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -67,9 +66,9 @@ class CourseVideoRequest extends FormRequest
             'user_id' => $this->input('user_id', 0),
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
-            'url' => $this->input('url', ''),
-            'aliyun_video_id' => $this->input('aliyun_video_id', ''),
-            'tencent_video_id' => $this->input('tencent_video_id', ''),
+            'url' => $this->input('url', '') ?? '',
+            'aliyun_video_id' => $this->input('aliyun_video_id', '') ?? '',
+            'tencent_video_id' => $this->input('tencent_video_id', '') ?? '',
             'view_num' => $this->input('view_num', 0),
             'short_description' => $this->input('short_description'),
             'description' => $this->input('description'),
