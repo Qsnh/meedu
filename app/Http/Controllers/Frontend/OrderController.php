@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Exceptions\SystemException;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
@@ -43,10 +44,8 @@ class OrderController extends Controller
     /**
      * @param Request $request
      * @param $orderId
-     *
      * @return mixed
-     *
-     * @throws ServiceException
+     * @throws SystemException
      */
     public function pay(Request $request, $orderId)
     {
@@ -56,14 +55,14 @@ class OrderController extends Controller
         $payment = $order['payment'] ?: $request->post('payment');
         $paymentMethod = $payments[$payment][FrontendConstant::PAYMENT_SCENE_PC] ?? '';
         if (! $paymentMethod) {
-            throw new ServiceException(__('payment method not exists'));
+            throw new SystemException(__('payment method not exists'));
         }
 
         // 创建远程订单
         $paymentHandler = app()->make($payments[$payment]['handler']);
         $createResult = $paymentHandler->create($order);
         if ($createResult->status == false) {
-            throw new ServiceException(__('remote order create failed'));
+            throw new SystemException(__('remote order create failed'));
         }
 
         // 更新订单的支付方式
