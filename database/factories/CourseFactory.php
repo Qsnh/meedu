@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\Course::class, function (Faker $faker) {
+$factory->define(\App\Services\Course\Models\Course::class, function (Faker $faker) {
     return [
         'user_id' => 0,
         'title' => $faker->name,
@@ -10,7 +10,8 @@ $factory->define(\App\Models\Course::class, function (Faker $faker) {
         'thumb' => $faker->imageUrl(),
         'charge' => $faker->randomDigit,
         'short_description' => $faker->title,
-        'description' => $faker->paragraph(),
+        'original_desc' => $faker->paragraph(),
+        'render_desc' => $faker->paragraph(),
         'seo_keywords' => $faker->title,
         'seo_description' => $faker->title,
         'published_at' => date('Y-m-d H:i:s'),

@@ -11,13 +11,38 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Video;
-use App\Models\Course;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Member\Services\UserService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\VideoCommentService;
+use App\Services\Course\Services\CourseCommentService;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 
 class AjaxController extends Controller
 {
+    protected $videoCommentService;
+    protected $courseCommentService;
+    protected $userService;
+    protected $courseService;
+    protected $videoService;
+
+    public function __construct(
+        VideoCommentService $videoCommentService,
+        CourseCommentService $courseCommentService,
+        UserService $userService,
+        VideoService $videoService,
+        CourseService $courseService
+    ) {
+        $this->videoCommentService = $videoCommentService;
+        $this->courseCommentService = $courseCommentService;
+        $this->userService = $userService;
+        $this->videoService = $videoService;
+        $this->courseService = $courseService;
+    }
+
     /**
      * 课程评论.
      *
@@ -28,21 +53,20 @@ class AjaxController extends Controller
      */
     public function courseCommentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
     {
-        $course = Course::findOrFail($courseId);
-        $comment = $course->commentHandler($request->input('content'));
-        if ($comment) {
-            return [
-                'content' => $comment->getContent(),
-                'created_at' => $comment->created_at->diffForHumans(),
-                'user' => [
-                    'nick_name' => $comment->user->nick_name,
-                    'avatar' => $comment->user->avatar,
-                    'role' => $comment->user->role ? $comment->user->role->name : '免费会员',
-                ],
-            ];
-        }
+        $course = $this->courseService->find($courseId);
+        ['content' => $content] = $request->filldata();
+        $comment = $this->courseCommentService->create(Auth::id(), $course['id'], $content);
+        $user = $this->userService->find(Auth::id(), ['role']);
 
-        return ['status' => 500, 'message' => '出现异常'];
+        return [
+            'content' => $comment['render_content'],
+            'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
+            'user' => [
+                'nick_name' => $user['nick_name'],
+                'avatar' => $user['avatar'],
+                'role' => $user['role'] ? $user['role']['name'] : '免费会员',
+            ],
+        ];
     }
 
     /**
@@ -55,20 +79,19 @@ class AjaxController extends Controller
      */
     public function videoCommentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
-        $video = Video::findOrFail($videoId);
-        $comment = $video->commentHandler($request->input('content'));
-        if ($comment) {
-            return [
-                'content' => $comment->getContent(),
-                'created_at' => $comment->created_at->diffForHumans(),
-                'user' => [
-                    'nick_name' => $comment->user->nick_name,
-                    'avatar' => $comment->user->avatar,
-                    'role' => $comment->user->role ? $comment->user->role->name : '免费会员',
-                ],
-            ];
-        }
+        $video = $this->videoService->find($videoId);
+        ['content' => $content] = $request->filldata();
+        $comment = $this->videoCommentService->create(Auth::id(), $video['id'], $content);
+        $user = $this->userService->find(Auth::id(), ['role']);
 
-        return ['status' => 500, 'message' => '出现异常'];
+        return [
+            'content' => $comment['render_content'],
+            'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
+            'user' => [
+                'nick_name' => $user['nick_name'],
+                'avatar' => $user['avatar'],
+                'role' => $user['role'] ? $user['role']['name'] : '免费会员',
+            ],
+        ];
     }
 }

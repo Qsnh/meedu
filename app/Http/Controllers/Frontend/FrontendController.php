@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\BaseController;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FrontendController extends BaseController
 {
@@ -22,5 +23,18 @@ class FrontendController extends BaseController
             'message' => $message,
             'data' => $data,
         ];
+    }
+
+    /**
+     * @param $list
+     * @param $total
+     * @param $page
+     * @param $pageSize
+     *
+     * @return LengthAwarePaginator
+     */
+    protected function paginator($list, $total, $page, $pageSize)
+    {
+        return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => request()->path()]);
     }
 }

@@ -11,6 +11,6 @@ class CourseVideoSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Video::class, 50)->create();
+        factory(\App\Services\Course\Models\Video::class, 20)->create();
     }
 }

@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\Services\Member\Services\UserService;
 use App\Http\Requests\Frontend\PasswordResetRequest;
 
 class ForgotPasswordController extends Controller
@@ -22,19 +22,16 @@ class ForgotPasswordController extends Controller
         return v('auth.passwords.find');
     }
 
-    public function handler(PasswordResetRequest $request)
+    public function handler(PasswordResetRequest $request, UserService $userService)
     {
-        $user = User::whereMobile($request->post('mobile'))->first();
-        if (! $user) {
-            flash('用户不存在');
+        [
+            'mobile' => $mobile,
+            'password' => $password,
+        ] = $request->filldata();
 
-            return back();
-        }
+        $userService->findPassword($mobile, $password);
 
-        $user->password = bcrypt($request->post('password'));
-        $user->save();
-
-        flash('密码修改成功', 'success');
+        flash(__('password change success'), 'success');
 
         return redirect(route('login'));
     }

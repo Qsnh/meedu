@@ -4,7 +4,7 @@
 <video id="xiaoteng-player" preload="auto" playsinline webkit-playsinline></video>
 <script>
     TCPlayer('xiaoteng-player', {
-        fileID: '{{$video->tencent_video_id}}',
+        fileID: '{{$video['tencent_video_id']}}',
         appID: '{{config('tencent.vod.secret_id')}}'
     });
 </script>

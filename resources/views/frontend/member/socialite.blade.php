@@ -18,8 +18,8 @@
                             <tbody>
                             @forelse($apps as $app)
                                 <tr class="text-center">
-                                    <td>{{$app->app}}</td>
-                                    <td>{{$app->created_at}}</td>
+                                    <td>{{$app['app']}}</td>
+                                    <td>{{$app['created_at']}}</td>
                                 </tr>
                             @empty
                                 <tr>

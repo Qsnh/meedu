@@ -12,75 +12,99 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Announcement;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Member\Services\RoleService;
+use App\Services\Member\Services\SocialiteService;
+use App\Services\Order\Services\OrderService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
+use App\Services\Member\Services\UserService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
 class MemberController extends FrontendController
 {
+    protected $userService;
+    protected $courseService;
+    protected $videoService;
+    protected $roleService;
+    protected $orderService;
+    protected $socialiteService;
+
+    public function __construct(
+        UserService $userService,
+        CourseService $courseService,
+        VideoService $videoService,
+        RoleService $roleService,
+        OrderService $orderService,
+        SocialiteService $socialiteService
+    )
+    {
+        $this->userService = $userService;
+        $this->courseService = $courseService;
+        $this->videoService = $videoService;
+        $this->roleService = $roleService;
+        $this->orderService = $orderService;
+        $this->socialiteService = $socialiteService;
+    }
+
     public function index()
     {
-        $announcement = Announcement::recentAnnouncement();
-        $videos = Auth::user()->buyVideos()->orderByDesc('pivot_created_at')->limit(10)->get();
-        $title = '会员中心';
+        $title = __('page_title_member_index');
 
-        return v('frontend.member.index', compact('announcement', 'videos', 'title'));
+        return v('frontend.member.index', compact('announcement', 'title'));
     }
 
     public function showPasswordResetPage()
     {
-        $title = '修改密码';
+        $title = __('title.member.password.change');
 
         return v('frontend.member.password_reset', compact('title'));
     }
 
     public function showMobileBindPage()
     {
-        $title = '绑定手机号';
+        $title = __('title.member.bind.mobile');
 
         return v('frontend.member.mobile_bind', compact('title'));
     }
 
+    /**
+     * @param MobileBindRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \App\Exceptions\ServiceException
+     */
     public function mobileBindHandler(MobileBindRequest $request)
     {
-        $user = \auth()->user();
-        if ($user->isBindMobile()) {
-            flash('当前账户已绑定手机号，请勿重复绑定');
-
-            return back();
-        }
-        $user->fill($request->filldata())->save();
-        flash('绑定成功', 'success');
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->bindMobile(Auth::id(), $mobile);
+        flash(__('success'), 'success');
 
         return redirect(route('member'));
     }
 
     /**
-     * 密码修改.
-     *
      * @param MemberPasswordResetRequest $request
-     * @param MemberRepository           $repository
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Exception
      */
-    public function passwordResetHandler(MemberPasswordResetRequest $request, MemberRepository $repository)
+    public function passwordResetHandler(MemberPasswordResetRequest $request)
     {
-        [$oldPassword, $newPassword] = $request->filldata();
-        if (! $repository->passwordChangeHandler($oldPassword, $newPassword)) {
-            flash($repository->errors);
-        } else {
-            flash('密码修改成功', 'success');
-        }
+        ['old_password' => $oldPassword, 'new_password' => $newPassword] = $request->filldata();
+        $this->userService->resetPassword(Auth::id(), $oldPassword, $newPassword);
+        flash(__('success'), 'success');
 
         return back();
     }
 
     public function showAvatarChangePage()
     {
-        $title = '更换头像';
-
+        $title = __('title.member.avatar');
         return v('frontend.member.avatar', compact('title'));
     }
 
@@ -88,132 +112,122 @@ class MemberController extends FrontendController
      * 头像更换.
      *
      * @param AvatarChangeRequest $request
-     * @param MemberRepository    $repository
+     * @param MemberRepository $repository
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function avatarChangeHandler(AvatarChangeRequest $request, MemberRepository $repository)
+    public function avatarChangeHandler(AvatarChangeRequest $request)
     {
-        [$path, $url] = $request->filldata();
-        $repository->avatarChangeHandler(Auth::user(), $url);
-        flash('头像更换成功', 'success');
+        ['url' => $url] = $request->filldata();
+        $this->userService->updateAvatar(Auth::id(), $url);
+        flash(__('success'), 'success');
 
         return back();
     }
 
     /**
-     * 会员订阅界面.
-     *
-     * @param MemberRepository $repository
-     *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showJoinRoleRecordsPage(MemberRepository $repository)
+    public function showJoinRoleRecordsPage(Request $request)
     {
-        $records = $repository->roleBuyRecords();
-        $title = 'VIP会员记录';
+        $page = $request->input('page', 1);
+        $pageSize = 10;
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->roleService->userRolePaginate(Auth::id(), $page, $pageSize);
+        $records = $this->paginator($list, $total, $page, $pageSize);
+        $title = __('title.member.vip');
 
         return v('frontend.member.join_role_records', compact('records', 'title'));
     }
 
     /**
-     * 我的消息页面.
-     *
-     * @param MemberRepository $repository
-     *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showMessagesPage(MemberRepository $repository)
+    public function showMessagesPage(Request $request)
     {
-        $messages = $repository->messages();
-        $title = '我的消息';
+        $page = $request->input('page', 1);
+        $pageSize = 10;
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->userService->messagePaginate(Auth::id(), $page, $pageSize);
+        $messages = $this->paginator($list, $total, $page, $pageSize);
+        $title = __('title.member.notification');
 
         return v('frontend.member.messages', compact('messages', 'title'));
     }
 
     /**
-     * 已购买课程页面.
-     *
-     * @param MemberRepository $repository
-     *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showBuyCoursePage(MemberRepository $repository)
+    public function showBuyCoursePage(Request $request)
     {
-        $courses = $repository->buyCourses();
-        $title = '我的购买的课程';
+        $page = $request->input('page', 1);
+        $pageSize = 10;
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->userService->getUserBuyCourses(Auth::id(), $page, $pageSize);
+        $records = $this->paginator($list, $total, $page, $pageSize);
+        $courses = $this->courseService->getList(array_column($list, 'course_id'));
+        $courses = array_column($courses, null, 'id');
 
-        return v('frontend.member.buy_course', compact('courses', 'title'));
+        $title = __('title.member.courses');
+        return v('frontend.member.buy_course', compact('records', 'title', 'courses'));
     }
 
     /**
-     * 已购买视频界面.
-     *
-     * @param MemberRepository $repository
-     *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showBuyVideoPage(MemberRepository $repository)
+    public function showBuyVideoPage(Request $request)
     {
-        $videos = $repository->buyVideos();
-        $title = '我购买的视频';
+        $page = $request->input('page', 1);
+        $pageSize = 10;
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->userService->getUserBuyVideos(Auth::id(), $page, $pageSize);
+        $records = $this->paginator($list, $total, $page, $pageSize);
+        $videos = $this->videoService->getList(array_column($list, 'video_id'));
+        $videos = array_column($videos, null, 'id');
 
-        return v('frontend.member.buy_video', compact('videos', 'title'));
+        $title = __('title.member.videos');
+
+        return v('frontend.member.buy_video', compact('videos', 'title', 'records'));
     }
 
     /**
-     * 充值记录界面.
-     *
-     * @param MemberRepository $repository
-     *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showRechargeRecordsPage(MemberRepository $repository)
+    public function showOrdersPage(Request $request)
     {
-        $records = $repository->rechargeRecords();
-        $title = '我的充值记录';
-
-        return v('frontend.member.show_recharge_records', compact('records', 'title'));
-    }
-
-    /**
-     * 我的订单界面.
-     *
-     * @param MemberRepository $repository
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showOrdersPage(MemberRepository $repository)
-    {
-        $orders = $repository->orders();
-        $title = '我的订单';
+        $page = $request->input('page', 1);
+        $pageSize = 10;
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->orderService->userOrdersPaginate($page, $pageSize);
+        $orders = $this->paginator($list, $total, $page, $pageSize);
+        $title = __('title.member.orders');
 
         return v('frontend.member.show_orders', compact('orders', 'title'));
     }
 
     /**
-     * 显示我的电子书界面.
-     *
-     * @param MemberRepository $repository
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showBooksPage(MemberRepository $repository)
-    {
-        $books = $repository->buyBooks();
-
-        return v('frontend.member.show_books', compact('books'));
-    }
-
-    /**
-     * 显示第三方登录界面.
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showSocialitePage()
     {
-        $apps = Auth::user()->socialite()->get();
+        $apps = $this->socialiteService->userSocialites(Auth::id());
+        $title = __('title.member.socialite');
 
-        return v('frontend.member.socialite', compact('apps'));
+        return v('frontend.member.socialite', compact('apps', 'title'));
     }
 }

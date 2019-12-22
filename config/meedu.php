@@ -60,7 +60,7 @@ return [
             'name' => '支付宝',
             'sign' => 'alipay',
             'default_method' => 'web',
-            'pc' => true,
+            'pc' => 'web',
             'enabled' => 0,
         ],
         'wechat' => [
@@ -68,16 +68,8 @@ return [
             'name' => '微信支付',
             'sign' => 'wechat',
             'default_method' => 'scan',
-            'pc' => true,
+            'pc' => 'scan',
             'enabled' => 0,
-        ],
-        'eshanghu' => [
-            'handler' => \App\Meedu\Payment\Eshanghu\Eshanghu::class,
-            'name' => '微信扫码支付',
-            'sign' => 'eshanghu',
-            'default_method' => 'scan',
-            'pc' => true,
-            'enabled' => 1,
         ],
     ],
 
@@ -119,6 +111,8 @@ return [
         'sms' => 'yunpian',
         // 备份开关
         'backup' => 0,
+        // editor
+        'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
     ],
 
     // 视频鉴权

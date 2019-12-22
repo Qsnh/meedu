@@ -11,24 +11,24 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Video;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\SearchRequest;
+use App\Services\Course\Services\VideoService;
 
 class SearchController extends Controller
 {
+    protected $videoService;
+
+    public function __construct(VideoService $videoService)
+    {
+        $this->videoService = $videoService;
+    }
+
     public function searchHandler(SearchRequest $request)
     {
-        $keywords = $request->input('keywords');
-        $videos = collect([]);
-        if ($keywords) {
-            $videos = Video::where('title', 'like', "%{$keywords}%")
-                ->published()
-                ->show()
-                ->orderByDesc('published_at')
-                ->limit(20)
-                ->get();
-        }
+        ['keywords' => $keywords] = $request->filldata();
+        $videos = [];
+        $keywords && $videos = $this->videoService->titleSearch($keywords, 20);
 
         return v('frontend.search.index', compact('videos'));
     }

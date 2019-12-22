@@ -1,0 +1,6 @@
+{
+  "old_password_error": "old password error.",
+  "socialite_account_has_bind_user": "socialite account has bind user",
+  "ban_bind_repeat": "ban bind repeat",
+  "cant bind mobile": "cant bind mobile"
+}

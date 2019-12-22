@@ -30,8 +30,8 @@ class MobileBindRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => '请输入手机号',
-            'mobile.unique' => '手机号已经存在',
+            'mobile.required' => __('mobile.required'),
+            'mobile.unique' => __('mobile.unique'),
         ];
     }
 

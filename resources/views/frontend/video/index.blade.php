@@ -37,9 +37,9 @@
                 <div class="card">
                     <div class="media-list media-list-hover media-list-divided">
                         @foreach($videos as $video)
-                        <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
-                            <h5 class="title">[{{$video->course->title}}] &nbsp; {{$video->title}}</h5>
-                            <time datetime="{{$video->published_at}}">{{date('Y/m/d', strtotime($video->published_at))}}</time>
+                        <a class="media media-single" href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}">
+                            <h5 class="title">[{{$video['course']['title']}}] &nbsp; {{$video['title']}}</h5>
+                            <time datetime="{{$video['published_at']}}">{{date('Y/m/d', strtotime($video['published_at']))}}</time>
                         </a>
                         @endforeach
                     </div>

@@ -12,27 +12,33 @@
 namespace App\Http\Requests\Frontend;
 
 use Illuminate\Support\Facades\Storage;
+use App\Services\Base\Services\ConfigService;
 
 class UploadImageRequest extends BaseRequest
 {
     public function rules()
     {
         return [
-            'file' => 'required|image',
+            'file' => 'required|image|size:2048',
         ];
     }
 
     public function messages()
     {
         return [
-            'file.required' => '请上传文件',
-            'file.image' => '请上传图片文件',
+            'file.required' => __('file.required'),
+            'file.image' => __('file.image'),
+            'file.size' => __('file.size', ['size' => '2M']),
         ];
     }
 
     public function filldata()
     {
-        $disk = config('filesystems.default');
+        /**
+         * @var ConfigService
+         */
+        $configService = app()->make(ConfigService::class);
+        $disk = $configService->getDefaultStorageDisk();
         $path = $this->file('file')->store('images', compact('disk'));
 
         return [$path, Storage::disk($disk)->url($path)];

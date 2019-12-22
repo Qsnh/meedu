@@ -11,9 +11,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Member\Services\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -38,12 +38,15 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/member';
 
+    protected $userService;
+
     /**
      * Create a new controller instance.
      */
-    public function __construct()
+    public function __construct(UserService $userService)
     {
         $this->middleware('guest');
+        $this->userService = $userService;
     }
 
     /**
@@ -60,32 +63,24 @@ class RegisterController extends Controller
             'mobile' => 'bail|required|unique:users',
             'password' => 'bail|required|min:6|max:16|confirmed',
         ], [
-            'nick_name.required' => '请输入呢称',
-            'nick_name.unique' => '呢称已经存在',
-            'mobile.required' => '请输入手机号',
-            'mobile.unique' => '手机号已经存在',
-            'password.required' => '请输入密码',
-            'password.min' => '密码长度不能小于6个字符',
-            'password.max' => '密码长度不能超过16个字符',
-            'password.confirmed' => '两次输入的密码不一致',
+            'nick_name.required' => __('nick_name.required'),
+            'nick_name.unique' => __('nick_name.unique'),
+            'mobile.required' => __('mobile.required'),
+            'mobile.unique' => __('mobile.unique'),
+            'password.required' => __('password.required'),
+            'password.min' => __('password.min'),
+            'password.max' => __('password.max'),
+            'password.confirmed' => __('password.confirmed'),
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
      * @param array $data
      *
-     * @return \App\User
+     * @return array
      */
     protected function create(array $data)
     {
-        return User::create([
-            'nick_name' => $data['nick_name'] ?? User::randomNickName(),
-            'mobile' => $data['mobile'],
-            'password' => bcrypt($data['password']),
-            'is_active' => config('meedu.member.is_active_default'),
-            'is_lock' => config('meedu.member.is_lock_default'),
-        ]);
+        return $this->userService->createWithMobile($data['mobile'], $data['password'], $data['nick_name']);
     }
 }

@@ -43,9 +43,9 @@
                         <span class="title">订阅</span>
                     </a>
                 </li>
-                @foreach($nav as $item)
+                @foreach($gNavs as $item)
                     <li class="menu-item">
-                        <a class="menu-link" href="{{$item->url}}"><span class="title">{{$item->name}}</span></a>
+                        <a class="menu-link" href="{{$item['url']}}"><span class="title">{{$item['name']}}</span></a>
                     </li>
                 @endforeach
             </ul>
@@ -58,7 +58,7 @@
                     @guest
                     <img class="avatar" src="/frontend/assets/img/avatar/1.jpg">
                     @else
-                    <img class="avatar" src="{{$user->avatar}}">
+                    <img class="avatar" src="{{$user['avatar']}}">
                     @endguest
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -80,7 +80,7 @@
             </li>
             @auth
             <li class="d-none d-md-block">
-                <a  href="{{route('member.messages')}}" class="topbar-btn {{ count($user->unreadNotifications) > 0 ? 'has-new' : '' }}">
+                <a  href="{{route('member.messages')}}" class="topbar-btn {{ count([]) > 0 ? 'has-new' : '' }}">
                     <i class="ti-bell"></i>
                 </a>
             </li>
@@ -97,8 +97,8 @@
             <div class="col-md-3 col-sm-12">
                 <h5 class="text-uppercase fs-14 ls-1">关于我们</h5>
                 <p class="text-justify">
-                    MeEdu 是一款转为个人开发的开源免费的在线点播系统。依靠 MeEdu 可以在短短几分钟之内搭建一个功能完善的在线教育系统。MeEdu 专注与视频
-                    的付费点播，结合数百款插件足以满足您的任何要求。
+                    MeEdu 是专为为个人开发的开源免费的在线点播系统。使用 MeEdu 你可以在短短几分钟之内搭建一个功能完善的在线教育系统。MeEdu 专注视频
+                    的付费点播，结合丰富插件足以满足您的任何要求。
                 </p>
             </div>
 

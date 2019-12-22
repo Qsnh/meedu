@@ -11,75 +11,92 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
-use App\Models\Video;
+use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\VideoRepository;
-use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\VideoCommentService;
 
 class VideoController extends FrontendController
 {
-    public function index()
+    protected $videoService;
+    protected $configService;
+    protected $videoCommentService;
+    protected $userService;
+    protected $courseService;
+    protected $businessState;
+    protected $orderService;
+
+    public function __construct(
+        VideoService $videoService,
+        ConfigService $configService,
+        VideoCommentService $videoCommentService,
+        UserService $userService,
+        CourseService $courseService,
+        BusinessState $businessState,
+        OrderService $orderService
+    ) {
+        $this->videoService = $videoService;
+        $this->configService = $configService;
+        $this->videoCommentService = $videoCommentService;
+        $this->userService = $userService;
+        $this->courseService = $courseService;
+        $this->businessState = $businessState;
+        $this->orderService = $orderService;
+    }
+
+    public function index(Request $request)
     {
-        $videos = $video = Video::with(['course'])
-            ->published()
-            ->show()
-            ->orderByDesc('published_at')
-            ->paginate(config('meedu.other.video_list_page_size', 16));
+        $page = $request->input('page', 1);
+        $pageSize = $this->configService->getVideoListPageSize();
+        [
+            'list' => $list,
+            'total' => $total
+        ] = $this->videoService->simplePage($page, $pageSize);
+        $videos = $this->paginator($list, $total, $page, $pageSize);
 
         return v('frontend.video.index', compact('videos'));
     }
 
     public function show($courseId, $id, $slug)
     {
-        $video = Video::with(['course', 'comments', 'user', 'comments.user'])
-            ->published()
-            ->show()
-            ->whereId($id)
-            ->firstOrFail();
-        $title = sprintf('视频《%s》', $video->title);
-        $keywords = $video->keywords;
-        $description = $video->description;
-        $comments = $video->comments()->orderByDesc('created_at')->get();
+        $video = $this->videoService->find($id);
+        $comments = $this->videoCommentService->videoComments($video['id']);
+        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'));
+        $commentUsers = array_column($commentUsers, null, 'id');
+        $chapters = $this->courseService->chapters($video['course_id']);
+        $videos = $this->videoService->courseVideos($video['course_id']);
+        $canSeeVideo = $this->businessState->canSeeVideo(Auth::user(), $video['course'], $video);
 
-        // 视频观看次数[UV]
-        $video->view_num++;
-        $video->save();
+        $keywords = $video['seo_keywords'];
+        $description = $video['seo_description'];
 
-        return v('frontend.video.show', compact('video', 'title', 'keywords', 'description', 'comments'));
-    }
-
-    public function commentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
-    {
-        $video = Video::findOrFail($videoId);
-        $comment = $video->commentHandler($request->input('content'));
-        $comment ? flash('评论成功', 'success') : flash('评论失败');
-
-        return back();
+        return v('frontend.video.show', compact(
+            'video', 'title', 'keywords', 'description',
+            'comments', 'commentUsers', 'videos', 'chapters',
+            'canSeeVideo'
+        ));
     }
 
     public function showBuyPage($id)
     {
-        $video = Video::findOrFail($id);
-        $title = sprintf('购买视频《%s》', $video->title);
+        $video = $this->videoService->find($id);
+        $title = sprintf('购买视频《%s》', $video['title']);
 
         return v('frontend.video.buy', compact('video', compact('title')));
     }
 
-    public function buyHandler(VideoRepository $repository, $id)
+    public function buyHandler($id)
     {
-        $video = Video::findOrFail($id);
-        $user = Auth::user();
+        $video = $this->videoService->find($id);
+        $order = $this->orderService->createVideoOrder(Auth::id(), $video);
 
-        $order = $repository->createOrder($user, $video);
-        if (! ($order instanceof Order)) {
-            flash($order, 'warning');
+        flash(__('order successfully, please pay'), 'success');
 
-            return back();
-        }
-
-        flash('下单成功，请支付', 'success');
-
-        return redirect(route('order.show', $order->order_id));
+        return redirect(route('order.show', $order['order_id']));
     }
 }

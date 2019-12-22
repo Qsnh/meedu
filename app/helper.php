@@ -134,7 +134,7 @@ if (! function_exists('exception_record')) {
     function exception_record(Exception $exception): void
     {
         $request = request();
-        \Log::error([
+        $data = [
             'file' => $exception->getFile(),
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
@@ -144,7 +144,8 @@ if (! function_exists('exception_record')) {
             'url' => $request->url(),
             'method' => $request->method(),
             'ip' => $request->getClientIps(),
-        ]);
+        ];
+        \Log::error('exception', json_encode($data));
     }
 }
 
@@ -226,7 +227,7 @@ if (! function_exists('aliyun_play_auth')) {
             $request = new \vod\Request\V20170321\GetVideoPlayAuthRequest();
             $request->setAcceptFormat('JSON');
             $request->setRegionId(config('meedu.upload.video.aliyun.region', ''));
-            $request->setVideoId($video->aliyun_video_id);
+            $request->setVideoId($video['aliyun_video_id']);
             $response = $client->getAcsResponse($request);
 
             return $response->PlayAuth;
@@ -453,11 +454,15 @@ if (! function_exists('get_payments')) {
      *
      * @return \Illuminate\Support\Collection
      */
-    function get_payments()
+    function get_payments($scene)
     {
-        $payments = collect(config('meedu.payment'))->filter(function ($payment) {
+        /**
+         * @var \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Services\ConfigService::class);
+        $payments = collect($configService->getPayments())->filter(function ($payment) use ($scene) {
             $enabled = $payment['enabled'] ?? false;
-            $pc = $payment['pc'] ?? false;
+            $pc = $payment[$scene] ?? false;
 
             return $enabled && $pc;
         });

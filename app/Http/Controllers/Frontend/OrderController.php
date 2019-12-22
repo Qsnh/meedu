@@ -11,79 +11,72 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Constant\FrontendConstant;
+use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Repositories\OrderRepository;
 use Illuminate\Support\Facades\Cache;
-use App\Meedu\Payment\Eshanghu\Eshanghu;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Order\Services\OrderService;
 
 class OrderController extends Controller
 {
+    protected $orderService;
+    protected $configService;
+
+    public function __construct(
+        OrderService $orderService,
+        ConfigService $configService
+    ) {
+        $this->orderService = $orderService;
+        $this->configService = $configService;
+    }
+
     public function show($orderId)
     {
-        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
-        if ($order->status == Order::STATUS_CANCELED) {
-            flash('该订单已取消');
-
-            return back();
-        }
-        if ($order->status == Order::STATUS_PAID) {
-            flash('该订单已支付', 'success');
-
-            return back();
-        }
-        if ($order->status == Order::STATUS_PAYING) {
-            $handler = config('meedu.payment.'.$order->payment.'.handler');
-
-            return redirect($handler::payUrl($order));
-        }
-        $payments = get_payments();
+        $order = $this->orderService->findNoPaid($orderId);
+        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
 
         return v('frontend.order.show', compact('order', 'payments'));
     }
 
     /**
-     * 创建第三方支付订单.
-     *
-     * @param Request         $request
-     * @param OrderRepository $repository
+     * @param Request $request
      * @param $orderId
      *
-     * @return bool|\Illuminate\Http\RedirectResponse|mixed
+     * @return mixed
+     *
+     * @throws ServiceException
      */
-    public function pay(Request $request, OrderRepository $repository, $orderId)
+    public function pay(Request $request, $orderId)
     {
-        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
-        if (in_array($order->status, [Order::STATUS_PAID, Order::STATUS_CANCELED])) {
-            flash('该订单已支付或已取消');
+        $order = $this->orderService->findNoPaid($orderId);
 
-            return back();
+        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
+        $payment = $order['payment'] ?: $request->post('payment');
+        $paymentMethod = $payments[$payment][FrontendConstant::PAYMENT_SCENE_PC] ?? '';
+        if (! $paymentMethod) {
+            throw new ServiceException(__('payment method not exists'));
         }
 
-        // 获取PC端能支付的网关
-        $payments = get_payments();
-        $payment = $order->payment ?: $request->post('payment');
-        if (! isset($payments[$payment])) {
-            flash('支付网关不存在');
-
-            return back();
+        // 创建远程订单
+        $paymentHandler = app()->make($payments[$payment]['handler']);
+        $createResult = $paymentHandler->create($order);
+        if ($createResult->status == false) {
+            throw new ServiceException(__('remote order create failed'));
         }
 
-        $response = $repository->createRemoteOrder($order, $payment);
-        if ($response === false) {
-            flash('远程支付订单创建失败');
+        // 更新订单的支付方式
+        $updateData = [
+            'payment' => $payment,
+            'payment_method' => $paymentMethod,
+        ];
+        $this->orderService->change2Paying($order['id'], $updateData);
 
-            return back();
-        }
-
-        return $response;
+        return $createResult->data;
     }
 
     /**
-     * 支付成功返回界面.
-     *
      * @param Request $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -91,55 +84,29 @@ class OrderController extends Controller
     public function success(Request $request)
     {
         $orderId = $request->input('out_trade_no', '');
-        $order = Order::whereOrderId($orderId)->firstOrFail();
+        $order = $this->orderService->find($orderId);
 
         return v('frontend.order.success', compact('order'));
     }
 
     /**
-     * 微信扫码支付.
-     *
      * @param $orderId
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function wechat($orderId)
     {
-        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
-        $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order->order_id));
+        $order = $this->orderService->find($orderId);
+        $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']));
         if (! $wechatData) {
-            $order->status = Order::STATUS_CANCELED;
-            $order->save();
-
-            flash('参数丢失');
+            $this->orderService->cancel($order['id']);
+            flash(__('error'));
 
             return redirect('/');
         }
+
         $qrcodeUrl = $wechatData['code_url'];
 
         return v('frontend.order.wechat', compact('qrcodeUrl', 'order'));
-    }
-
-    /**
-     * 易商户重新支付.
-     *
-     * @param $orderId
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
-    public function eshanghu($orderId)
-    {
-        $order = Auth::user()->orders()->whereOrderId($orderId)->firstOrFail();
-        $codeUrl = Cache::get(sprintf(Eshanghu::CACHE_KEY, $order->order_id));
-        if (! $codeUrl) {
-            $order->status = Order::STATUS_CANCELED;
-            $order->save();
-
-            flash('该订单已过期，请重新下单。');
-
-            return redirect('/');
-        }
-
-        return v('frontend.payment.eshanghu', compact('codeUrl', 'order'));
     }
 }

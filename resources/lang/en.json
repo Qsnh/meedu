@@ -1,0 +1,14 @@
+{
+  "socialite bind success": "socialite bind success",
+  "login success": "login success",
+  "success": "success",
+  "password change success": "密码修改成功",
+  "password.confirm": "两次输入密码不一致",
+  "password.max": "密码长度不能超过16位",
+  "password.min": "密码长度不能小于6位",
+  "password.required": "请输入密码",
+  "mobile.unique": "手机号已经存在",
+  "mobile.required": "请输入手机号",
+  "nick_name.unique": "昵称已经存在",
+  "nick_name.required": "请输入昵称"
+}

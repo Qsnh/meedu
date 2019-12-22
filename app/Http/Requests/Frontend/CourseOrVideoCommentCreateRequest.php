@@ -23,8 +23,13 @@ class CourseOrVideoCommentCreateRequest extends BaseRequest
     public function messages()
     {
         return [
-            'content.required' => '请输入评论内容',
-            'content.min' => '评论内容不能少于6个字',
+            'content.required' => __('comment.content.required'),
+            'content.min' => __('comment.content.min', ['count' => 6]),
         ];
+    }
+
+    public function filldata()
+    {
+        return ['content' => $this->post('content')];
     }
 }

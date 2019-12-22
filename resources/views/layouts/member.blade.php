@@ -7,12 +7,12 @@
     <header class="header bg-img" style="background-image: url('/frontend/assets/img/bg/user-banner.jpg')">
         <div class="header-info h-250px mb-0">
             <div class="media align-items-end">
-                <a href="{{route('member.avatar')}}"><img class="avatar avatar-xl avatar-bordered" src="{{$user->avatar}}"></a>
+                <a href="{{route('member.avatar')}}"><img class="avatar avatar-xl avatar-bordered" src="{{$user['avatar']}}"></a>
                 <div class="media-body">
-                    <p class="text-white"><strong>{{$user->nick_name}}</strong></p>
+                    <p class="text-white"><strong>{{$user['nick_name']}}</strong></p>
                     <small class="text-white">
-                        @if($user->role)
-                            <span class="badge badge-primary"><b>{{$user->role->name}}</b> {{$user->role_expired_at}}</span>
+                        @if($user['role'] ?? [])
+                            <span class="badge badge-primary"><b>{{$user['role']['name']}}</b> {{$user['role_expired_at']}}</span>
                             @else
                             <span class="badge badge-default">免费会员</span>
                         @endif

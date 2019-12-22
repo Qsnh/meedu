@@ -38,9 +38,9 @@
                     <h4 class="card-title">搜索结果 <small>只显示最近的20条数据</small></h4>
                     <div class="media-list media-list-hover media-list-divided">
                         @foreach($videos as $video)
-                            <a class="media media-single" href="{{route('video.show', [$video->course_id, $video->id, $video->slug])}}">
-                                <h5 class="title">{{$video->title}}</h5>
-                                <time datetime="{{$video->published_at}}">{{$video->published_at->diffForHumans()}}</time>
+                            <a class="media media-single" href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}">
+                                <h5 class="title">{{$video['title']}}</h5>
+                                <time datetime="{{$video['published_at']}}">{{$video['published_at']}}</time>
                             </a>
                         @endforeach
                     </div>

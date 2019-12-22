@@ -13,6 +13,7 @@ namespace App\Http\Requests\Frontend\Member;
 
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Frontend\BaseRequest;
+use App\Services\Base\Services\ConfigService;
 
 class AvatarChangeRequest extends BaseRequest
 {
@@ -26,18 +27,23 @@ class AvatarChangeRequest extends BaseRequest
     public function messages()
     {
         return [
-            'file.required' => '请上传头像',
-            'file.image' => '请上传有效头像文件',
-            'file.size' => '头像不能超过1M',
+            'file.required' => __('file.required'),
+            'file.image' => __('file.image'),
+            'file.size' => __('file.size', ['size' => '1M']),
         ];
     }
 
     public function filldata()
     {
+        /**
+         * @var ConfigService
+         */
+        $configService = app()->make(ConfigService::class);
+
         $file = $this->file('file');
         $path = $file->store('/avatar');
-        $url = Storage::disk(config('filesystems.default'))->url($path);
+        $url = Storage::disk($configService->getDefaultStorageDisk())->url($path);
 
-        return [$path, $url];
+        return compact('path', 'url');
     }
 }

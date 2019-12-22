@@ -11,12 +11,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use Socialite;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Socialite as SocialiteModel;
+use App\Services\Member\Services\SocialiteService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -53,6 +51,11 @@ class LoginController extends Controller
         );
     }
 
+    /**
+     * @override
+     *
+     * @return string
+     */
     protected function username()
     {
         return 'mobile';
@@ -69,54 +72,36 @@ class LoginController extends Controller
     }
 
     /**
-     * Obtain the user information from GitHub.
+     * @param SocialiteService $socialiteService
+     * @param $app
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
+     * @throws \App\Exceptions\ServiceException
      */
-    public function handleProviderCallback($app)
+    public function handleProviderCallback(SocialiteService $socialiteService, $app)
     {
         $user = Socialite::driver($app)->user();
+        $appId = $user->getId();
+
         if (Auth::check()) {
-            // 已登录，绑定第三方账号
-            if (Auth::user()->socialite()->whereApp($app)->exists()) {
-                flash('当前用户已经绑定过该应用啦。', 'success');
-            } else {
-                Auth::user()->socialite()->save(new SocialiteModel([
-                    'app' => $app,
-                    'app_user_id' => $user->getId(),
-                    'data' => serialize($user),
-                ]));
-                flash('绑定成功', 'success');
-            }
+            $socialiteService->bindApp(Auth::id(), $app, $appId, $user);
+            flash(__('socialite bind success'), 'success');
 
             return redirect('member');
         }
 
-        // 未登录，使用第三方账号登录
-        $socialite = SocialiteModel::whereApp($app)->whereAppUserId($user->getId())->first();
-        DB::beginTransaction();
-        try {
-            $userId = optional($socialite)->user_id ?? 0;
-            if (! $userId) {
-                // 创建用户
-                $localUser = User::createUser($user->getNickname(), $user->getAvatar());
-                // 绑定socialite
-                $socialite = $localUser->bindSocialite($app, $user);
-                $userId = $localUser->id;
-            }
-            // 尝试登录
-            Auth::loginUsingId($userId, true);
-            flash('登录成功', 'success');
-
-            DB::commit();
+        if ($bindUserId = $socialiteService->getBindUserId($app, $appId)) {
+            Auth::loginUsingId($bindUserId);
+            flash('login success', 'success');
 
             return redirect($this->redirectPath());
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            flash('系统错误');
-
-            return back();
         }
+
+        $userId = $socialiteService->bindAppWithNewUser($app, $appId, $user);
+        Auth::loginUsingId($userId, true);
+        flash('login success', 'success');
+
+        return redirect($this->redirectPath());
     }
 }
