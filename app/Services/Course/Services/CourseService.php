@@ -84,6 +84,7 @@ class CourseService
 
     /**
      * @param array $ids
+     *
      * @return array
      */
     public function getList(array $ids): array

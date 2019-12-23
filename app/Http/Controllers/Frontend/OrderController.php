@@ -11,10 +11,9 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Exceptions\SystemException;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
-use App\Exceptions\ServiceException;
+use App\Exceptions\SystemException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Base\Services\ConfigService;
@@ -44,7 +43,9 @@ class OrderController extends Controller
     /**
      * @param Request $request
      * @param $orderId
+     *
      * @return mixed
+     *
      * @throws SystemException
      */
     public function pay(Request $request, $orderId)

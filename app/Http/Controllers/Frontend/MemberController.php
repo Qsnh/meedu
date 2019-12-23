@@ -11,16 +11,15 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Announcement;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Member\Services\RoleService;
-use App\Services\Member\Services\SocialiteService;
-use App\Services\Order\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
+use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
@@ -41,8 +40,7 @@ class MemberController extends FrontendController
         RoleService $roleService,
         OrderService $orderService,
         SocialiteService $socialiteService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -74,7 +72,9 @@ class MemberController extends FrontendController
 
     /**
      * @param MobileBindRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
      * @throws \App\Exceptions\ServiceException
      */
     public function mobileBindHandler(MobileBindRequest $request)
@@ -105,6 +105,7 @@ class MemberController extends FrontendController
     public function showAvatarChangePage()
     {
         $title = __('title.member.avatar');
+
         return v('frontend.member.avatar', compact('title'));
     }
 
@@ -112,7 +113,7 @@ class MemberController extends FrontendController
      * 头像更换.
      *
      * @param AvatarChangeRequest $request
-     * @param MemberRepository $repository
+     * @param MemberRepository    $repository
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -127,6 +128,7 @@ class MemberController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showJoinRoleRecordsPage(Request $request)
@@ -145,6 +147,7 @@ class MemberController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showMessagesPage(Request $request)
@@ -163,6 +166,7 @@ class MemberController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showBuyCoursePage(Request $request)
@@ -178,11 +182,13 @@ class MemberController extends FrontendController
         $courses = array_column($courses, null, 'id');
 
         $title = __('title.member.courses');
+
         return v('frontend.member.buy_course', compact('records', 'title', 'courses'));
     }
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showBuyVideoPage(Request $request)
@@ -204,6 +210,7 @@ class MemberController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showOrdersPage(Request $request)

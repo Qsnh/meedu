@@ -11,9 +11,9 @@
 
 namespace App\Services\Order\Models;
 
-use App\Services\Base\Services\ConfigService;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Models\scopes\UserScope;
 
 class Order extends Model
@@ -88,7 +88,7 @@ class Order extends Model
      */
     public function scopeStatus($query, $status)
     {
-        if (!$status) {
+        if (! $status) {
             return $query;
         }
 
@@ -103,7 +103,7 @@ class Order extends Model
      */
     public function scopeKeywords($query, $keywords)
     {
-        if (!$keywords) {
+        if (! $keywords) {
             return $query;
         }
         $memberIds = User::where('nick_name', 'like', "%{$keywords}%")
@@ -142,10 +142,11 @@ class Order extends Model
     public function getPaymentText()
     {
         /**
-         * @var $configService ConfigService
+         * @var ConfigService
          */
         $configService = app()->make(ConfigService::class);
         $payments = collect($configService->getPayments());
+
         return $payments[$this->payment]['name'] ?? '';
     }
 }

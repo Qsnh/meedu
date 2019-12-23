@@ -12,8 +12,8 @@
 namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +41,7 @@ class UserService
     }
 
     /**
-     * @param int $userId
+     * @param int    $userId
      * @param string $oldPassword
      * @param string $newPassword
      *
@@ -50,7 +50,7 @@ class UserService
     public function resetPassword(int $userId, string $oldPassword, string $newPassword): void
     {
         $user = User::findOrFail($userId);
-        if (!Hash::check($oldPassword, $user->password)) {
+        if (! Hash::check($oldPassword, $user->password)) {
             throw new ServiceException(__('old_password_error'));
         }
         $user->password = Hash::make($newPassword);
@@ -81,7 +81,7 @@ class UserService
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $name ?? Str::random(16),
-            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
+            'mobile' => mt_rand(2, 9).mt_rand(1000, 9999).mt_rand(1000, 9999),
             'password' => Hash::make(Str::random(16)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
@@ -152,7 +152,7 @@ class UserService
     }
 
     /**
-     * @param int $id
+     * @param int   $id
      * @param array $with
      *
      * @return array
@@ -166,6 +166,7 @@ class UserService
      * @param int $id
      * @param int $page
      * @param int $pageSize
+     *
      * @return array
      */
     public function messagePaginate(int $id, int $page, int $pageSize): array
@@ -184,6 +185,7 @@ class UserService
      * @param int $id
      * @param int $page
      * @param int $pageSize
+     *
      * @return array
      */
     public function getUserBuyCourses(int $id, int $page, int $pageSize): array
@@ -200,6 +202,7 @@ class UserService
      * @param int $id
      * @param int $page
      * @param int $pageSize
+     *
      * @return array
      */
     public function getUserBuyVideos(int $id, int $page, int $pageSize): array
@@ -210,5 +213,18 @@ class UserService
         $list = $query->forPage($page, $pageSize)->get()->toArray();
 
         return compact('list', 'total');
+    }
+
+    /**
+     * @param int    $userId
+     * @param int    $roleId
+     * @param Carbon $expiredAt
+     */
+    public function changeRole(int $userId, int $roleId, Carbon $expiredAt): void
+    {
+        User::whereId($userId)->update([
+            'role_id' => $roleId,
+            'role_expired_at' => $expiredAt,
+        ]);
     }
 }

@@ -13,11 +13,10 @@ namespace App\Exceptions;
 
 class ServiceException extends \Exception
 {
-
     public function render()
     {
         flash($this->getMessage(), 'error');
+
         return back();
     }
-
 }

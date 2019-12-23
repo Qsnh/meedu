@@ -11,9 +11,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\AdFrom;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use App\Services\Other\Services\AdFromService;
 
 class AdFromSyncCommand extends Command
 {
@@ -31,12 +31,17 @@ class AdFromSyncCommand extends Command
      */
     protected $description = 'adfrom data sync.';
 
+    protected $adFromService;
+
     /**
-     * Create a new command instance.
+     * AdFromSyncCommand constructor.
+     *
+     * @param AdFromService $adFromService
      */
-    public function __construct()
+    public function __construct(AdFromService $adFromService)
     {
         parent::__construct();
+        $this->adFromService = $adFromService;
     }
 
     /**
@@ -46,22 +51,21 @@ class AdFromSyncCommand extends Command
      */
     public function handle()
     {
-        $adFroms = AdFrom::all();
-        foreach ($adFroms as $from) {
+        $adFrom = $this->adFromService->all();
+        foreach ($adFrom as $from) {
             $date = date('Y-m-d');
-            $key = sprintf('ad_from_%s_%s', $from->from_key, $date);
+            $key = sprintf('ad_from_%s_%s', $from['from_key'], $date);
             if (! Cache::has($key)) {
                 continue;
             }
-            $record = $from->numbers()->where('day', $date)->first();
+            $record = $this->adFromService->getDay($from['id'], $date);
             $num = Cache::get($key, 0);
             if ($record) {
-                $record->update(['num' => $record->num + $num]);
-            } else {
-                $from->numbers()->create([
-                    'day' => $date,
-                    'num' => $num,
+                $this->adFromService->updateDay($record['id'], [
+                    'num' => $record['num'] + $num,
                 ]);
+            } else {
+                $this->adFromService->createDay($from['id'], $date, intval($num));
             }
             Cache::forget($key);
         }

@@ -27,12 +27,12 @@ class OrderService
     }
 
     /**
-     * @param int $userId
+     * @param int   $userId
      * @param array $course
      *
      * @return mixed
      */
-    public function createCourseOrder(int $userId, array $course)
+    public function createCourseOrder(int $userId, array $course): array
     {
         return DB::transaction(function () use ($userId, $course) {
             $order = Order::create([
@@ -55,12 +55,12 @@ class OrderService
     }
 
     /**
-     * @param int $userId
+     * @param int   $userId
      * @param array $video
      *
      * @return mixed
      */
-    public function createVideoOrder(int $userId, array $video)
+    public function createVideoOrder(int $userId, array $video): array
     {
         return DB::transaction(function () use ($userId, $video) {
             $order = Order::create([
@@ -83,12 +83,12 @@ class OrderService
     }
 
     /**
-     * @param int $userId
+     * @param int   $userId
      * @param array $role
      *
      * @return mixed
      */
-    public function createRoleOrder(int $userId, array $role)
+    public function createRoleOrder(int $userId, array $role): array
     {
         return DB::transaction(function () use ($userId, $role) {
             $order = Order::create([
@@ -111,7 +111,7 @@ class OrderService
     }
 
     /**
-     * @param int $userId
+     * @param int    $userId
      * @param string $type
      *
      * @return string
@@ -121,7 +121,7 @@ class OrderService
         $time = date('His');
         $rand = mt_rand(10, 99);
 
-        return strtolower($type) . $userId . $time . $rand;
+        return strtolower($type).$userId.$time.$rand;
     }
 
     /**
@@ -156,9 +156,19 @@ class OrderService
 
     /**
      * @param int $id
+     *
+     * @return array
+     */
+    public function findWithoutScopeById(int $id): array
+    {
+        return Order::withoutGlobalScope(UserScope::class)->whereId($id)->firstOrFail()->toArray();
+    }
+
+    /**
+     * @param int   $id
      * @param array $data
      */
-    public function change2Paying(int $id, array $data)
+    public function change2Paying(int $id, array $data): void
     {
         $data['status'] = Order::STATUS_PAYING;
         Order::whereId($id)->update($data);
@@ -167,7 +177,7 @@ class OrderService
     /**
      * @param int $orderId
      */
-    public function cancel(int $orderId)
+    public function cancel(int $orderId): void
     {
         Order::whereId($orderId)->update(['status' => Order::STATUS_CANCELED]);
     }
@@ -175,6 +185,7 @@ class OrderService
     /**
      * @param int $page
      * @param int $pageSize
+     *
      * @return array
      */
     public function userOrdersPaginate(int $page, int $pageSize): array
@@ -182,7 +193,29 @@ class OrderService
         $query = Order::query();
         $total = $query->count();
         $list = $query->with(['goods'])->orderByDesc('created_at')->forPage($page, $pageSize)->get()->toArray();
+
         return compact('total', 'list');
     }
 
+    /**
+     * @param int $id
+     */
+    public function changePaid(int $id): void
+    {
+        $order = $this->findWithoutScopeById($id);
+        if ($order['status'] != Order::STATUS_PAYING) {
+            return;
+        }
+        Order::whereId($id)->update(['status' => Order::STATUS_PAID]);
+    }
+
+    /**
+     * @param int $orderId
+     *
+     * @return array
+     */
+    public function getOrderProducts(int $orderId): array
+    {
+        return OrderGoods::whereOrderId($orderId)->get()->toArray();
+    }
 }

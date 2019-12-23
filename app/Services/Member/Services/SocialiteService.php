@@ -36,10 +36,10 @@ class SocialiteService
     }
 
     /**
-     * @param int $userId
+     * @param int    $userId
      * @param string $app
      * @param string $appId
-     * @param array $data
+     * @param array  $data
      *
      * @throws ServiceException
      */
@@ -60,7 +60,7 @@ class SocialiteService
     /**
      * @param string $app
      * @param string $appId
-     * @param array $data
+     * @param array  $data
      *
      * @return int
      */
@@ -81,6 +81,7 @@ class SocialiteService
 
     /**
      * @param int $userId
+     *
      * @return array
      */
     public function userSocialites(int $userId): array

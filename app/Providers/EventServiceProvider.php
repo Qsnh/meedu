@@ -11,7 +11,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -32,7 +31,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\AtUserListener',
         ],
         'App\Events\PaymentSuccessEvent' => [
-            'App\Listeners\PaymentSuccessListener',
+            \App\Listeners\OrderPaidDeliverListener::class,
+            \App\Services\Member\Listeners\OrderPaidNotificationListener::class,
+            \App\Services\Order\Listeners\OrderPaidStatusChangeListener::class,
         ],
         'App\Events\AdFromEvent' => [
             'App\Listeners\AdFromListener',

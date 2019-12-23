@@ -25,7 +25,9 @@ class PaymentSuccessEvent
     public $order;
 
     /**
-     * Create a new event instance.
+     * PaymentSuccessEvent constructor.
+     *
+     * @param array $order
      */
     public function __construct(array $order)
     {

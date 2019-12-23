@@ -17,19 +17,19 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Order.
  *
- * @property int $id
- * @property int $user_id
- * @property int $charge
- * @property int $status         1未处理,9已处理
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property string $order_id       订单编号
- * @property string $payment        支付网关
- * @property string $payment_method 支付方式
- * @property mixed $status_text
+ * @property int                                                               $id
+ * @property int                                                               $user_id
+ * @property int                                                               $charge
+ * @property int                                                               $status         1未处理,9已处理
+ * @property \Illuminate\Support\Carbon|null                                   $created_at
+ * @property \Illuminate\Support\Carbon|null                                   $updated_at
+ * @property string|null                                                       $deleted_at
+ * @property string                                                            $order_id       订单编号
+ * @property string                                                            $payment        支付网关
+ * @property string                                                            $payment_method 支付方式
+ * @property mixed                                                             $status_text
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\OrderGoods[] $goods
- * @property \App\User $user
+ * @property \App\User                                                         $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order keywords($keywords)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
@@ -77,7 +77,7 @@ class Order extends Model
     {
         return $this->statusText();
     }
-    
+
     public function getContinuePayAttribute()
     {
         return in_array($this->status, [self::STATUS_UNPAY, self::STATUS_PAYING]);
@@ -143,7 +143,7 @@ class Order extends Model
         }
 
         $title = array_reduce($goods->toArray(), function ($item) {
-            return $item->getGoodsTypeText() . ',';
+            return $item->getGoodsTypeText().',';
         });
 
         return rtrim($title, ',');
@@ -157,7 +157,7 @@ class Order extends Model
      */
     public function scopeStatus($query, $status)
     {
-        if (!$status) {
+        if (! $status) {
             return $query;
         }
 
@@ -172,7 +172,7 @@ class Order extends Model
      */
     public function scopeKeywords($query, $keywords)
     {
-        if (!$keywords) {
+        if (! $keywords) {
             return $query;
         }
         $memberIds = User::where('nick_name', 'like', "%{$keywords}%")

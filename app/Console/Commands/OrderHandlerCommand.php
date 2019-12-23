@@ -11,11 +11,9 @@
 
 namespace App\Console\Commands;
 
-use Exception;
-use App\Models\Order;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use App\Notifications\SimpleMessageNotification;
+use App\Events\PaymentSuccessEvent;
+use App\Services\Order\Services\OrderService;
 
 class OrderHandlerCommand extends Command
 {
@@ -33,53 +31,28 @@ class OrderHandlerCommand extends Command
      */
     protected $description = 'order handler tool.';
 
+    protected $orderService;
+
     /**
-     * Create a new command instance.
+     * OrderHandlerCommand constructor.
+     *
+     * @param OrderService $orderService
      */
-    public function __construct()
+    public function __construct(OrderService $orderService)
     {
         parent::__construct();
+        $this->orderService = $orderService;
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @throws \Throwable
      */
     public function handle()
     {
         $orderId = $this->argument('order_id');
-        $order = Order::whereOrderId($orderId)->first();
-        if (! $order) {
-            $this->warn('订单不存在');
+        $order = $this->orderService->findWithoutScope($orderId);
 
-            return;
-        }
-        if ($order->status == Order::STATUS_PAID) {
-            $this->warn('该订单已支付');
-
-            return;
-        }
-
-        DB::beginTransaction();
-        try {
-            // 修改订单状态
-            $order->status = Order::STATUS_PAID;
-            $order->save();
-
-            // 商品归属
-            $order->user->handlerOrderSuccess($order);
-
-            // 消息通知
-            $order->user->notify(new SimpleMessageNotification($order->getNotificationContent()));
-
-            DB::commit();
-
-            $this->line('处理成功');
-        } catch (Exception $exception) {
-            DB::rollBack();
-            exception_record($exception);
-            $this->warn($exception->getMessage());
-        }
+        event(new PaymentSuccessEvent($order));
+        $this->line('success');
     }
 }

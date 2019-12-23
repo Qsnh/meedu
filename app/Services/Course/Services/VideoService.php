@@ -61,7 +61,7 @@ class VideoService
 
     /**
      * @param string $keyword
-     * @param int $limit
+     * @param int    $limit
      *
      * @return array
      */
@@ -82,6 +82,7 @@ class VideoService
 
     /**
      * @param array $ids
+     *
      * @return array
      */
     public function getList(array $ids): array
