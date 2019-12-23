@@ -78,7 +78,7 @@ class RoleService
                 'expired_at' => $expiredAt,
             ]);
             // 修改user表
-            $this->userService->changeRole($user['id'], $role['id'], $expiredAt);
+            $this->userService->changeRole($user['id'], $role['id'], $expiredAt->toString());
         });
     }
 
@@ -97,7 +97,7 @@ class RoleService
                 'expired_at' => $expiredAt,
             ]);
             // 修改user表
-            $this->userService->changeRole($user['id'], $role['id'], $expiredAt);
+            $this->userService->changeRole($user['id'], $role['id'], $expiredAt->toString());
         });
     }
 }

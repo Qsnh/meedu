@@ -218,4 +218,16 @@ class OrderService
     {
         return OrderGoods::whereOrderId($orderId)->get()->toArray();
     }
+
+    /**
+     * @param string $date
+     *
+     * @return array
+     */
+    public function getTimeoutOrders(string $date): array
+    {
+        return Order::whereIn('status', [Order::STATUS_UNPAY, Order::STATUS_PAYING])
+            ->where('created_at', '<=', $date)
+            ->get()->toArray();
+    }
 }

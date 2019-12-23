@@ -218,13 +218,13 @@ class UserService
     /**
      * @param int    $userId
      * @param int    $roleId
-     * @param Carbon $expiredAt
+     * @param string $expiredAt
      */
-    public function changeRole(int $userId, int $roleId, Carbon $expiredAt): void
+    public function changeRole(int $userId, int $roleId, string $expiredAt): void
     {
         User::whereId($userId)->update([
             'role_id' => $roleId,
-            'role_expired_at' => $expiredAt,
+            'role_expired_at' => Carbon::parse($expiredAt),
         ]);
     }
 }
