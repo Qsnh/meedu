@@ -11,6 +11,7 @@
 
 namespace App\Console\Commands;
 
+use App\Businesses\BusinessState;
 use Illuminate\Console\Command;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Order\Services\OrderService;
@@ -33,15 +34,18 @@ class OrderHandlerCommand extends Command
 
     protected $orderService;
 
+    protected $businessState;
+
     /**
      * OrderHandlerCommand constructor.
      *
      * @param OrderService $orderService
      */
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, BusinessState $businessState)
     {
         parent::__construct();
         $this->orderService = $orderService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -51,6 +55,10 @@ class OrderHandlerCommand extends Command
     {
         $orderId = $this->argument('order_id');
         $order = $this->orderService->findWithoutScope($orderId);
+        if ($this->businessState->orderIsPaid($order)) {
+            $this->warn('order has paid.');
+            return;
+        }
 
         event(new PaymentSuccessEvent($order));
         $this->line('success');

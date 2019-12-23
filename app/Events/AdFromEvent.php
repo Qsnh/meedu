@@ -25,7 +25,8 @@ class AdFromEvent
     public $key;
 
     /**
-     * Create a new event instance.
+     * AdFromEvent constructor.
+     * @param string $key
      */
     public function __construct(string $key)
     {

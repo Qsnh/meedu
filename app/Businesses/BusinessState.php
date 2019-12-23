@@ -11,6 +11,8 @@
 
 namespace App\Businesses;
 
+use App\Constant\FrontendConstant;
+
 class BusinessState
 {
     public function canSeeVideo($user, array $course, array $video): bool
@@ -20,5 +22,16 @@ class BusinessState
         if ($video['charge'] == 0) {
             return true;
         }
+    }
+
+    /**
+     * 订单是否支付
+     *
+     * @param array $order
+     * @return bool
+     */
+    public function orderIsPaid(array $order): bool
+    {
+        return $order['status'] == FrontendConstant::ORDER_PAID;
     }
 }

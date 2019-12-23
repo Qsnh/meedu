@@ -41,12 +41,6 @@ class Order extends Model
         'status_text', 'payment_text', 'continue_pay',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new UserScope());
-    }
-
     public function getStatusTextAttribute()
     {
         return $this->statusText();

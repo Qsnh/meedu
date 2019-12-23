@@ -202,10 +202,6 @@ class OrderService
      */
     public function changePaid(int $id): void
     {
-        $order = $this->findWithoutScopeById($id);
-        if ($order['status'] != Order::STATUS_PAYING) {
-            return;
-        }
         Order::whereId($id)->update(['status' => Order::STATUS_PAID]);
     }
 

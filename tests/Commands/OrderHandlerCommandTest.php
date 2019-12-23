@@ -3,9 +3,8 @@
 
 namespace Tests\Commands;
 
-
-use App\Models\Order;
-use App\User;
+use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Str;
@@ -16,10 +15,12 @@ class OrderHandlerCommandTest extends TestCase
 
     use CreatesApplication, DatabaseMigrations;
 
+    /**
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     public function test_order_handler()
     {
-        $this->artisan('order:success', ['order_id' => Str::random()])
-            ->expectsOutput('订单不存在');
+        $this->artisan('order:success', ['order_id' => Str::random()]);
     }
 
     public function test_order_handler_with_order()
@@ -35,8 +36,7 @@ class OrderHandlerCommandTest extends TestCase
             'payment_method' => '123',
         ]);
 
-        $this->artisan('order:success', ['order_id' => $order->order_id])
-            ->expectsOutput('处理成功');
+        $this->artisan('order:success', ['order_id' => $order->order_id])->expectsOutput('success');
 
         $order->refresh();
         $this->assertEquals(Order::STATUS_PAID, $order->status);
@@ -54,7 +54,7 @@ class OrderHandlerCommandTest extends TestCase
         ]);
 
         $this->artisan('order:success', ['order_id' => $order->order_id])
-            ->expectsOutput('该订单已支付');
+            ->expectsOutput('order has paid.');
     }
 
 }

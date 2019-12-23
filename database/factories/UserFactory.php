@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Services\Member\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
         'avatar' => $faker->imageUrl(),
         'nick_name' => $faker->firstName . mt_rand(0, 100),
@@ -22,7 +23,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'credit1' => mt_rand(0, 10000),
         'credit2' => mt_rand(0, 10000),
         'credit3' => mt_rand(0, 10000),
-        'is_active' => $faker->randomElement([\App\User::ACTIVE_NO, \App\User::ACTIVE_YES]),
-        'is_lock' => $faker->randomElement([\App\User::LOCK_NO, \App\User::LOCK_YES]),
+        'is_active' => $faker->randomElement([User::ACTIVE_NO, User::ACTIVE_YES]),
+        'is_lock' => $faker->randomElement([User::LOCK_NO, User::LOCK_YES]),
     ];
 });

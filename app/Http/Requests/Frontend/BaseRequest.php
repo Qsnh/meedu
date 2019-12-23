@@ -31,7 +31,7 @@ class BaseRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         if ($this->expectsJson()) {
-            throw new MeeduErrorResponseJsonException($validator->errors()->all()[0]);
+            throw new MeeduErrorResponseJsonException(implode(',', $validator->errors()->all()));
         }
         parent::failedValidation($validator);
     }
