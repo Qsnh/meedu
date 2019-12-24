@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\Order::class, function (Faker $faker) {
+$factory->define(\App\Services\Order\Models\Order::class, function (Faker $faker) {
     return [
         'user_id' => function () {
             return factory(\App\User::class)->create()->id;

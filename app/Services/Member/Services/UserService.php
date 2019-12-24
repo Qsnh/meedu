@@ -11,6 +11,8 @@
 
 namespace App\Services\Member\Services;
 
+use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserVideo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -176,7 +178,7 @@ class UserService
             ->latest();
 
         $total = $query->count();
-        $list = $query->forPage($page, $pageSize)->get();
+        $list = $query->forPage($page, $pageSize)->get()->toArray();
 
         return compact('list', 'total');
     }
@@ -190,7 +192,7 @@ class UserService
      */
     public function getUserBuyCourses(int $id, int $page, int $pageSize): array
     {
-        $query = DB::table('user_course')->where('user_id', $id)->orderByDesc('created_at');
+        $query = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at');
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -207,7 +209,7 @@ class UserService
      */
     public function getUserBuyVideos(int $id, int $page, int $pageSize): array
     {
-        $query = DB::table('user_video')->where('user_id', $id)->orderByDesc('created_at');
+        $query = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at');
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();

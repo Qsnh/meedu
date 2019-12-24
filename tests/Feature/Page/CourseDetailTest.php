@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Course;
-use App\Models\Video;
-use App\User;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseChapter;
+use App\Services\Course\Models\Video;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -52,13 +52,41 @@ class CourseDetailTest extends TestCase
 
     // 创建课程，并在该课程下创建视频
     // 断言是可以看到该课程下的视频的
-    public function test_see_course_videos()
+    public function test_see_course_videos_no_chapter()
     {
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subMinutes(1),
+        ]);
         $video = factory(Video::class)->create([
+            'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
+            'chapter_id' => 0,
         ]);
-        $this->visit(route('course.show', [$video->course->id, $video->course->slug]))
+        $this->visit(route('course.show', [$course->id, $course->slug]))
+            ->see($video->title);
+    }
+
+    // 创建课程，创建了课程的章节，创建了该章节的视频
+    // 访问课程界面可以看到该章节和视频
+    public function test_see_course_videos_with_chapter()
+    {
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subMinutes(1),
+        ]);
+        $chapter = factory(CourseChapter::class)->create([
+            'course_id' => $course->id,
+        ]);
+        $video = factory(Video::class)->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDay(1),
+            'chapter_id' => $chapter->id,
+        ]);
+        $this->visit(route('course.show', [$course->id, $course->slug]))
+            ->see($chapter->title)
             ->see($video->title);
     }
 

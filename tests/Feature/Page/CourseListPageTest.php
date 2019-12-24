@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Course;
+use App\Services\Course\Models\Course;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -56,8 +56,13 @@ class CourseListPageTest extends TestCase
     // 可以看到分页组件
     public function test_visit_course_see_pagination()
     {
+        // 配置每页显示3个
         config(['meedu.other.course_list_page_size' => 3]);
-        factory(Course::class, 15)->create();
+        // 创建10个
+        factory(Course::class, 10)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
         $this->visit(route('courses'))
             ->seeElement('.pagination');
     }

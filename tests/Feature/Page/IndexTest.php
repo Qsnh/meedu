@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Course;
-use App\Models\EmailSubscription;
-use App\Models\Link;
-use App\Models\Role;
+use App\Services\Course\Models\Course;
+use App\Services\Other\Models\Link;
+use App\Services\Member\Models\Role;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

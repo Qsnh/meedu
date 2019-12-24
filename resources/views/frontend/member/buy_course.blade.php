@@ -26,11 +26,7 @@
                                         <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{ $course['title'] }}</a>
                                     </td>
                                     <td>
-                                        @if($record['charge'] > 0)
-                                            <span class="label label-danger">{{ $record['charge'] }} 元</span>
-                                        @else
-                                            <span class="label label-success">免费</span>
-                                        @endif
+                                        <span class="label label-danger">{{ $record['charge'] }} 元</span>
                                     </td>
                                     <td>{{$record['created_at']}}</td>
                                 </tr>

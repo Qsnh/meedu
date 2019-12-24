@@ -33,8 +33,8 @@ class CourseService
     public function simplePage(int $page, int $pageSize): array
     {
         $query = Course::show()->published()->orderByDesc('published_at');
-        $list = $query->forPage($page, $pageSize)->get()->toArray();
         $total = $query->count();
+        $list = $query->forPage($page, $pageSize)->get()->toArray();
 
         return compact('list', 'total');
     }

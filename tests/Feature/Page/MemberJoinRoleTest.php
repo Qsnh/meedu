@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Role;
-use App\Models\UserJoinRoleRecord;
-use App\User;
+use App\Services\Member\Models\Role;
+use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Models\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -25,12 +25,13 @@ class MemberJoinRoleTest extends TestCase
     {
         $role = factory(Role::class)->create();
         $user = factory(User::class)->create();
-        $record = $user->joinRoles()->save(new UserJoinRoleRecord([
+        $record = UserJoinRoleRecord::create([
+            'user_id' => $user->id,
             'role_id' => $role->id,
             'charge' => mt_rand(1, 100),
             'start_date' => Carbon::now(),
             'expired_date' => Carbon::now()->addDays(30),
-        ]));
+        ]);
         $this->actingAs($user)
             ->visit(route('member.join_role_records'))
             ->see($record->charge)
