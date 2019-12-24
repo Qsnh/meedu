@@ -34,7 +34,7 @@ class OrderController extends Controller
 
     public function show($orderId)
     {
-        $order = $this->orderService->findNoPaid($orderId);
+        $order = $this->orderService->findUserNoPaid($orderId);
         $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
 
         return v('frontend.order.show', compact('order', 'payments'));
@@ -50,7 +50,7 @@ class OrderController extends Controller
      */
     public function pay(Request $request, $orderId)
     {
-        $order = $this->orderService->findNoPaid($orderId);
+        $order = $this->orderService->findUserNoPaid($orderId);
 
         $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
         $payment = $order['payment'] ?: $request->post('payment');
@@ -84,7 +84,7 @@ class OrderController extends Controller
     public function success(Request $request)
     {
         $orderId = $request->input('out_trade_no', '');
-        $order = $this->orderService->find($orderId);
+        $order = $this->orderService->findUser($orderId);
 
         return v('frontend.order.success', compact('order'));
     }
@@ -96,7 +96,7 @@ class OrderController extends Controller
      */
     public function wechat($orderId)
     {
-        $order = $this->orderService->find($orderId);
+        $order = $this->orderService->findUser($orderId);
         $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']));
         if (! $wechatData) {
             $this->orderService->cancel($order['id']);

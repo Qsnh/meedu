@@ -25,9 +25,10 @@ class BusinessState
     }
 
     /**
-     * 订单是否支付
+     * 订单是否支付.
      *
      * @param array $order
+     *
      * @return bool
      */
     public function orderIsPaid(array $order): bool

@@ -27,6 +27,7 @@ class AdministratorLoginSuccessEvent
 
     /**
      * AdministratorLoginSuccessEvent constructor.
+     *
      * @param Administrator $administrator
      */
     public function __construct(Administrator $administrator)

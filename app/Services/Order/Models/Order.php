@@ -14,7 +14,6 @@ namespace App\Services\Order\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Base\Services\ConfigService;
-use App\Services\Order\Models\scopes\UserScope;
 
 class Order extends Model
 {

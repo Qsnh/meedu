@@ -83,7 +83,7 @@ class Wechat implements Payment
             $data = $pay->verify();
             Log::info($data);
 
-            $order = $this->orderService->findWithoutScope($data['out_trade_no']);
+            $order = $this->orderService->find($data['out_trade_no']);
 
             event(new PaymentSuccessEvent($order));
 

@@ -13,9 +13,9 @@ namespace App\Services\Order\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Services\Order\Models\Order;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\OrderGoods;
 use App\Services\Base\Services\ConfigService;
-use App\Services\Order\Models\scopes\UserScope;
 
 class OrderService
 {
@@ -139,6 +139,19 @@ class OrderService
      *
      * @return array
      */
+    public function findUserNoPaid(string $orderId): array
+    {
+        return Order::whereUserId(Auth::id())
+            ->whereStatus(Order::STATUS_UNPAY)
+            ->whereOrderId($orderId)
+            ->firstOrFail()->toArray();
+    }
+
+    /**
+     * @param string $orderId
+     *
+     * @return array
+     */
     public function find(string $orderId): array
     {
         return Order::whereOrderId($orderId)->firstOrFail()->toArray();
@@ -149,9 +162,9 @@ class OrderService
      *
      * @return array
      */
-    public function findWithoutScope(string $orderId): array
+    public function findUser(string $orderId): array
     {
-        return Order::withoutGlobalScope(UserScope::class)->whereOrderId($orderId)->firstOrFail()->toArray();
+        return Order::whereUserId(Auth::id())->whereOrderId($orderId)->firstOrFail()->toArray();
     }
 
     /**
@@ -159,9 +172,19 @@ class OrderService
      *
      * @return array
      */
-    public function findWithoutScopeById(int $id): array
+    public function findId(int $id): array
     {
-        return Order::withoutGlobalScope(UserScope::class)->whereId($id)->firstOrFail()->toArray();
+        return Order::whereId($id)->firstOrFail()->toArray();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return array
+     */
+    public function findUserId(int $id): array
+    {
+        return Order::whereId($id)->whereUserId(Auth::id())->firstOrFail()->toArray();
     }
 
     /**

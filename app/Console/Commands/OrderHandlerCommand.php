@@ -11,8 +11,8 @@
 
 namespace App\Console\Commands;
 
-use App\Businesses\BusinessState;
 use Illuminate\Console\Command;
+use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Order\Services\OrderService;
 
@@ -54,9 +54,10 @@ class OrderHandlerCommand extends Command
     public function handle()
     {
         $orderId = $this->argument('order_id');
-        $order = $this->orderService->findWithoutScope($orderId);
+        $order = $this->orderService->find($orderId);
         if ($this->businessState->orderIsPaid($order)) {
             $this->warn('order has paid.');
+
             return;
         }
 
