@@ -11,6 +11,8 @@
 
 namespace App\Services\Base\Services;
 
+use App\Constant\FrontendConstant;
+
 class ConfigService
 {
     /**
@@ -111,5 +113,20 @@ class ConfigService
     public function getAlipayPay(): array
     {
         return config('pay.alipay');
+    }
+
+    public function getCacheStatus(): bool
+    {
+        return config('meedu.system.cache.status') == FrontendConstant::YES;
+    }
+
+    public function getCacheExpire(): int
+    {
+        return config('meedu.system.cache.expire');
+    }
+
+    public function getSmsLimiter(): array
+    {
+        return config('meedu.system.limiter.sms');
     }
 }

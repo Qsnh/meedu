@@ -9,17 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Other\Services;
+namespace App\Services\Course\Providers;
 
-use App\Services\Other\Models\Nav;
+use Illuminate\Support\ServiceProvider;
 
-class NavService
+class ServiceRegisterProvider extends ServiceProvider
 {
-    /**
-     * @return array
-     */
-    public function all(): array
+    public function register()
     {
-        return Nav::orderBy('sort')->get()->toArray();
     }
 }

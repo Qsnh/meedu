@@ -20,4 +20,6 @@ class FrontendConstant
     const PAYMENT_SCENE_WECHAT_MINI = 'wechatmini';
 
     const ORDER_PAID = 9;
+
+    const YES = 1;
 }

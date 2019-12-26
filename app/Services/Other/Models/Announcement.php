@@ -18,6 +18,6 @@ class Announcement extends Model
     protected $table = 'announcements';
 
     protected $fillable = [
-        'admin_id', 'announcement',
+        'admin_id', 'announcement', 'created_at',
     ];
 }

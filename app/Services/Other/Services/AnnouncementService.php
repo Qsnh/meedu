@@ -17,7 +17,7 @@ class AnnouncementService
 {
     public function latest(): array
     {
-        $a = Announcement::orderByDesc('created_at')->first();
+        $a = Announcement::query()->latest()->first();
 
         return $a ? $a->toArray() : [];
     }

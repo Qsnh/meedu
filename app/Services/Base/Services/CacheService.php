@@ -11,6 +11,22 @@
 
 namespace App\Services\Base\Services;
 
+use Illuminate\Support\Facades\Cache;
+
 class CacheService
 {
+    public function put($key, $value, $expire)
+    {
+        Cache::put($key, $value, $expire);
+    }
+
+    public function pull($key, $default = null)
+    {
+        return Cache::pull($key, $default);
+    }
+
+    public function lock($name, $seconds)
+    {
+        return Cache::lock($name, $seconds);
+    }
 }

@@ -23,7 +23,7 @@ class AdFromService
 
     public function getDay(int $id, string $day): array
     {
-        $day = AdFromNumber::whereFromId($id)->whereDay($day)->first();
+        $day = AdFromNumber::whereFromId($id)->where('day', $day)->first();
 
         return $day ? $day->toArray() : [];
     }

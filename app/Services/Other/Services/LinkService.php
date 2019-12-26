@@ -17,6 +17,6 @@ class LinkService
 {
     public function all(): array
     {
-        return Link::all()->toArray();
+        return Link::orderBy('sort')->get()->toArray();
     }
 }

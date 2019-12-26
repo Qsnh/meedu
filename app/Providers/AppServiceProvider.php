@@ -18,6 +18,7 @@ use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CourseCommentObserver;
+use App\Services\Other\Providers\OtherServiceRegisterProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,9 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment(['dev'])) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+
+        // 注册服务
+        $this->app->register(OtherServiceRegisterProvider::class);
     }
 
     /**

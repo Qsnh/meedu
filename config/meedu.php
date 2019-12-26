@@ -99,6 +99,13 @@ return [
             'status' => -1,
             'expire' => 360,
         ],
+        // 短信频率
+        'limiter' => [
+            'sms' => [
+                'times' => 1,
+                'minutes' => 1,
+            ]
+        ],
         // 测试手机号
         'test' => explode(',', env('TEST_MOBILE', '')),
         // 统计代码

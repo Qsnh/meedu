@@ -157,7 +157,7 @@ class MemberController extends FrontendController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->messagePaginate(Auth::id(), $page, $pageSize);
+        ] = $this->userService->messagePaginate($page, $pageSize);
         $messages = $this->paginator($list, $total, $page, $pageSize);
         $title = __('title.member.notification');
 
@@ -176,7 +176,7 @@ class MemberController extends FrontendController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->getUserBuyCourses(Auth::id(), $page, $pageSize);
+        ] = $this->userService->getUserBuyCourses($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
         $courses = array_column($courses, null, 'id');
@@ -198,7 +198,7 @@ class MemberController extends FrontendController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->getUserBuyVideos(Auth::id(), $page, $pageSize);
+        ] = $this->userService->getUserBuyVideos($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         $videos = $this->videoService->getList(array_column($list, 'video_id'));
         $videos = array_column($videos, null, 'id');

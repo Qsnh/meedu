@@ -11,14 +11,14 @@
 
 namespace App\Services\Member\Services;
 
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserVideo;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
 
 class UserService
@@ -165,17 +165,14 @@ class UserService
     }
 
     /**
-     * @param int $id
      * @param int $page
      * @param int $pageSize
      *
      * @return array
      */
-    public function messagePaginate(int $id, int $page, int $pageSize): array
+    public function messagePaginate(int $page, int $pageSize): array
     {
-        $query = User::find($id)
-            ->notifications()
-            ->latest();
+        $query = User::find(Auth::id())->notifications()->latest();
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -184,15 +181,14 @@ class UserService
     }
 
     /**
-     * @param int $id
      * @param int $page
      * @param int $pageSize
      *
      * @return array
      */
-    public function getUserBuyCourses(int $id, int $page, int $pageSize): array
+    public function getUserBuyCourses(int $page, int $pageSize): array
     {
-        $query = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at');
+        $query = UserCourse::query()->whereUserId(Auth::id())->orderByDesc('created_at');
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -201,15 +197,14 @@ class UserService
     }
 
     /**
-     * @param int $id
      * @param int $page
      * @param int $pageSize
      *
      * @return array
      */
-    public function getUserBuyVideos(int $id, int $page, int $pageSize): array
+    public function getUserBuyVideos(int $page, int $pageSize): array
     {
-        $query = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at');
+        $query = UserVideo::query()->whereUserId(Auth::id())->orderByDesc('created_at');
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
