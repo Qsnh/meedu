@@ -11,11 +11,9 @@
 
 namespace App\Services\Other\Providers;
 
-use App\Services\Other\Interfaces\AdFromServiceInterface;
-use App\Services\Other\Interfaces\UploadServiceInterface;
+use Illuminate\Support\ServiceProvider;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Other\Services\UploadService;
-use Illuminate\Support\ServiceProvider;
 use App\Services\Other\Proxies\NavServiceProxy;
 use App\Services\Other\Proxies\SmsServiceProxy;
 use App\Services\Other\Proxies\LinkServiceProxy;
@@ -23,6 +21,8 @@ use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Proxies\AnnouncementServiceProxy;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
+use App\Services\Other\Interfaces\UploadServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider

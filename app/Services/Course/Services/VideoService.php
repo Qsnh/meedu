@@ -62,7 +62,7 @@ class VideoService implements VideoServiceInterface
 
     /**
      * @param string $keyword
-     * @param int $limit
+     * @param int    $limit
      *
      * @return array
      */
@@ -71,7 +71,7 @@ class VideoService implements VideoServiceInterface
         return Video::with(['course'])
             ->show()
             ->published()
-            ->where('title', 'like', '%' . $keyword . '%')
+            ->where('title', 'like', '%'.$keyword.'%')
             ->orderByDesc('published_at')
             ->limit($limit)->get()->toArray();
     }

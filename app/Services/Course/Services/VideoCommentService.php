@@ -11,10 +11,10 @@
 
 namespace App\Services\Course\Services;
 
+use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\VideoComment;
 use App\Services\Base\Interfaces\RenderServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
-use Illuminate\Support\Facades\Auth;
 
 class VideoCommentService implements VideoCommentServiceInterface
 {

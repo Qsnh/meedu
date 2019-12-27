@@ -11,7 +11,6 @@
 
 namespace App\Services\Course\Models;
 
-use Emojione\Emojione;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseComment extends Base
