@@ -12,6 +12,7 @@
 namespace App\Services\Order\Services;
 
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\ServiceException;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\OrderGoods;
@@ -44,7 +45,9 @@ class OrderService implements OrderServiceInterface
             ]);
             OrderGoods::create([
                 'user_id' => $userId,
-                'order_id' => $order['id'],
+                'oid' => $order['id'],
+                // todo 即将废弃
+                'order_id' => '',
                 'num' => 1,
                 'charge' => $course['charge'],
                 'goods_id' => $course['id'],
@@ -72,7 +75,9 @@ class OrderService implements OrderServiceInterface
             ]);
             OrderGoods::create([
                 'user_id' => $userId,
-                'order_id' => $order['id'],
+                'oid' => $order['id'],
+                // todo 即将废弃
+                'order_id' => '',
                 'num' => 1,
                 'charge' => $video['charge'],
                 'goods_id' => $video['id'],
@@ -100,7 +105,9 @@ class OrderService implements OrderServiceInterface
             ]);
             OrderGoods::create([
                 'user_id' => $userId,
-                'order_id' => $order['id'],
+                'oid' => $order['id'],
+                // todo 即将废弃
+                'order_id' => '',
                 'num' => 1,
                 'charge' => $role['charge'],
                 'goods_id' => $role['id'],
@@ -191,19 +198,31 @@ class OrderService implements OrderServiceInterface
     /**
      * @param int   $id
      * @param array $data
+     *
+     * @throws ServiceException
      */
     public function change2Paying(int $id, array $data): void
     {
+        $order = Order::findOrFail($id);
+        if ($order->status != Order::STATUS_UNPAY) {
+            throw new ServiceException('order status error');
+        }
         $data['status'] = Order::STATUS_PAYING;
-        Order::whereId($id)->update($data);
+        $order->update($data);
     }
 
     /**
-     * @param int $orderId
+     * @param int $id
+     *
+     * @throws ServiceException
      */
-    public function cancel(int $orderId): void
+    public function cancel(int $id): void
     {
-        Order::whereId($orderId)->update(['status' => Order::STATUS_CANCELED]);
+        $order = Order::findOrFail($id);
+        if (! in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
+            throw new ServiceException('order status error');
+        }
+        $order->update(['status' => Order::STATUS_CANCELED]);
     }
 
     /**
@@ -216,27 +235,37 @@ class OrderService implements OrderServiceInterface
     {
         $query = Order::query();
         $total = $query->count();
-        $list = $query->with(['goods'])->orderByDesc('created_at')->forPage($page, $pageSize)->get()->toArray();
+        $list = $query
+            ->with(['goods'])
+            ->whereUserId(Auth::id())
+            ->latest()
+            ->forPage($page, $pageSize)->get()->toArray();
 
         return compact('total', 'list');
     }
 
     /**
      * @param int $id
+     *
+     * @throws ServiceException
      */
     public function changePaid(int $id): void
     {
-        Order::whereId($id)->update(['status' => Order::STATUS_PAID]);
+        $order = Order::findOrFail($id);
+        if ($order->status != Order::STATUS_PAYING) {
+            throw new ServiceException('order status error');
+        }
+        $order->update(['status' => Order::STATUS_PAID]);
     }
 
     /**
-     * @param int $orderId
+     * @param int $id
      *
      * @return array
      */
-    public function getOrderProducts(int $orderId): array
+    public function getOrderProducts(int $id): array
     {
-        return OrderGoods::whereOrderId($orderId)->get()->toArray();
+        return OrderGoods::where('oid', $id)->get()->toArray();
     }
 
     /**

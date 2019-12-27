@@ -12,7 +12,6 @@
 namespace App\Services\Order\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Order\Models\scopes\UserScope;
 
 class OrderGoods extends Model
 {
@@ -24,8 +23,10 @@ class OrderGoods extends Model
     protected $table = 'order_goods';
 
     protected $fillable = [
-        'user_id', 'goods_id', 'goods_type', 'order_id',
+        'user_id', 'goods_id', 'goods_type', 'oid',
         'num', 'charge',
+        // todo 即将废弃
+        'order_id',
     ];
 
     protected $appends = [
@@ -37,17 +38,11 @@ class OrderGoods extends Model
         return __($this->goods_type);
     }
 
-    public static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new UserScope());
-    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'oid');
     }
 }

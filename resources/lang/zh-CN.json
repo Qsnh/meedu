@@ -38,5 +38,6 @@
   "remote order create failed": "远程订单创建失败",
   "page_title_member_index": "会员中心",
   "mobile has exists": "手机号已存在",
-  "cant bind mobile": "该账号已绑定手机号"
+  "cant bind mobile": "该账号已绑定手机号",
+  "order status error": "订单状态错误"
 }
