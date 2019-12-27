@@ -19,6 +19,9 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class SocialiteService implements SocialiteServiceInterface
 {
+    /**
+     * @var UserService
+     */
     protected $userService;
 
     public function __construct(UserServiceInterface $userService)

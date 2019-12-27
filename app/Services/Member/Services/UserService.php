@@ -126,6 +126,9 @@ class UserService implements UserServiceInterface
      */
     public function bindMobile(int $userId, string $mobile): void
     {
+        if (User::whereMobile($mobile)->where('id', '<>', $userId)->exists()) {
+            throw new ServiceException(__('mobile has exists'));
+        }
         $user = User::findOrFail($userId);
         if (substr($user->mobile, 0, 1) == 1) {
             throw new ServiceException(__('cant bind mobile'));

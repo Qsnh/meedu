@@ -19,7 +19,7 @@ $factory->define(User::class, function (Faker $faker) {
         'avatar' => $faker->imageUrl(),
         'nick_name' => $faker->firstName . mt_rand(0, 100),
         'mobile' => $faker->randomElement(['136', '188', '159']) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
-        'password' => bcrypt('12346'),
+        'password' => \Illuminate\Support\Facades\Hash::make('123456'),
         'credit1' => mt_rand(0, 10000),
         'credit2' => mt_rand(0, 10000),
         'credit3' => mt_rand(0, 10000),

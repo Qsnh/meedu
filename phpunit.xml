@@ -9,6 +9,14 @@
          processIsolation="false"
          stopOnFailure="true">
     <testsuites>
+        <testsuite name="Commands">
+            <directory suffix="Test.php">./tests/Commands</directory>
+        </testsuite>
+
+        <testsuite name="Services">
+            <directory suffix="Test.php">./tests/Services</directory>
+        </testsuite>
+
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
@@ -21,10 +29,10 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
             <exclude>
-                <directory suffix=".php">./app/Console</directory>
                 <directory suffix=".php">./app/Repositories</directory>
                 <directory suffix=".php">./app/Notifications</directory>
                 <directory suffix=".php">./app/Models</directory>
+                <directory suffix=".php">./app/Services/*/Models</directory>
             </exclude>
         </whitelist>
     </filter>

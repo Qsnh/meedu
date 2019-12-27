@@ -138,7 +138,7 @@ class MemberController extends FrontendController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->roleService->userRolePaginate(Auth::id(), $page, $pageSize);
+        ] = $this->roleService->userRolePaginate($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         $title = __('title.member.vip');
 

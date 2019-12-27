@@ -14,6 +14,7 @@ namespace App\Services\Member\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -43,16 +44,15 @@ class RoleService implements RoleServiceInterface
     }
 
     /**
-     * @param int $userId
      * @param int $page
      * @param int $pageSize
      *
      * @return array
      */
-    public function userRolePaginate(int $userId, int $page, int $pageSize): array
+    public function userRolePaginate(int $page, int $pageSize): array
     {
         $query = UserJoinRoleRecord::with(['user', 'role'])
-            ->whereUserId($userId)
+            ->whereUserId(Auth::id())
             ->orderByDesc('created_at');
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -72,7 +72,7 @@ class RoleService implements RoleServiceInterface
             $now = Carbon::now();
             $expiredAt = $now->addDays($role['expire_days']);
             // 创建购买记录
-            DB::table('user_join_role_records')->create([
+            UserJoinRoleRecord::create([
                 'user_id' => $user['id'],
                 'role_id' => $role['id'],
                 'charge' => $charge,
@@ -84,14 +84,14 @@ class RoleService implements RoleServiceInterface
         });
     }
 
-    public function userContinueRole(array $user, array $role, int $charge): array
+    public function userContinueRole(array $user, array $role, int $charge): void
     {
         // 用户续费套餐
         DB::transaction(function () use ($user, $role, $charge) {
             $startAt = Carbon::parse($user['role_expired_at']);
             $expiredAt = $startAt->addDays($role['expire_days']);
             // 创建购买记录
-            DB::table('user_join_role_records')->create([
+            UserJoinRoleRecord::create([
                 'user_id' => $user['id'],
                 'role_id' => $role['id'],
                 'charge' => $charge,
