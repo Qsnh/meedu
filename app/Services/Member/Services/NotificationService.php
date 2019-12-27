@@ -12,6 +12,7 @@
 namespace App\Services\Member\Services;
 
 use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
@@ -28,5 +29,13 @@ class NotificationService implements NotificationServiceInterface
          */
         $user = User::findOrFail($id);
         $user->notify(new SimpleMessageNotification(__('notification_content_order_paid', ['orderId' => $orderId])));
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnreadCount(): int
+    {
+        return User::find(Auth::id())->unreadNotifications()->count();
     }
 }

@@ -12,7 +12,8 @@
 namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
@@ -37,7 +38,7 @@ class DeliverService implements DeliverServiceInterface
      */
     public function deliverCourse(int $userId, int $courseId, int $charge): void
     {
-        DB::table('user_course')->create([
+        UserCourse::create([
             'user_id' => $userId,
             'course_id' => $courseId,
             'charge' => $charge,
@@ -54,7 +55,7 @@ class DeliverService implements DeliverServiceInterface
      */
     public function deliverVideo(int $userId, int $videoId, int $charge): void
     {
-        DB::table('user_video')->create([
+        UserVideo::create([
             'user_id' => $userId,
             'video_id' => $videoId,
             'charge' => $charge,
