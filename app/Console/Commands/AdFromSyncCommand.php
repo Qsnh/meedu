@@ -14,6 +14,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Other\Services\AdFromService;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 
 class AdFromSyncCommand extends Command
 {
@@ -36,9 +37,9 @@ class AdFromSyncCommand extends Command
     /**
      * AdFromSyncCommand constructor.
      *
-     * @param AdFromService $adFromService
+     * @param AdFromServiceInterface $adFromService
      */
-    public function __construct(AdFromService $adFromService)
+    public function __construct(AdFromServiceInterface $adFromService)
     {
         parent::__construct();
         $this->adFromService = $adFromService;

@@ -14,8 +14,9 @@ namespace App\Services\Other\Proxies;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\NavService;
+use App\Services\Other\Interfaces\NavServiceInterface;
 
-class NavServiceProxy extends ServiceProxy
+class NavServiceProxy extends ServiceProxy implements NavServiceInterface
 {
     public function __construct(NavService $service)
     {

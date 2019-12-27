@@ -13,6 +13,7 @@ namespace App\Http\Requests\Frontend;
 
 use Illuminate\Support\Facades\Storage;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class UploadImageRequest extends BaseRequest
 {
@@ -37,7 +38,7 @@ class UploadImageRequest extends BaseRequest
         /**
          * @var ConfigService
          */
-        $configService = app()->make(ConfigService::class);
+        $configService = app()->make(ConfigServiceInterface::class);
         $disk = $configService->getDefaultStorageDisk();
         $path = $this->file('file')->store('images', compact('disk'));
 

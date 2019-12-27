@@ -3,12 +3,24 @@
 
 namespace Tests\Services\Other;
 
+use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Models\Nav;
 use App\Services\Other\Services\NavService;
 use Tests\TestCase;
 
 class NavServiceTest extends TestCase
 {
+
+    /**
+     * @var NavService
+     */
+    protected $service;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->service = $this->app->make(NavServiceInterface::class);
+    }
 
     public function test_all_with_cache()
     {
@@ -17,11 +29,7 @@ class NavServiceTest extends TestCase
 
         $nav = factory(Nav::class)->create(['sort' => 1]);
 
-        /**
-         * @var NavService $navService
-         */
-        $navService = $this->app->make(NavService::class);
-        $all = $navService->all();
+        $all = $this->service->all();
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->sort, $all[0]['sort']);
@@ -30,7 +38,7 @@ class NavServiceTest extends TestCase
 
         // 再创建一个
         $nav1 = factory(Nav::class)->create(['sort' => 2]);
-        $all = $navService->all();
+        $all = $this->service->all();
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->name, $all[0]['name']);
@@ -43,11 +51,7 @@ class NavServiceTest extends TestCase
 
         $nav = factory(Nav::class)->create(['sort' => 1]);
 
-        /**
-         * @var NavService $navService
-         */
-        $navService = $this->app->make(NavService::class);
-        $all = $navService->all();
+        $all = $this->service->all();
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->sort, $all[0]['sort']);
@@ -57,7 +61,7 @@ class NavServiceTest extends TestCase
         // 再创建一个
         $nav2 = factory(Nav::class)->create(['sort' => 2]);
 
-        $all = $navService->all();
+        $all = $this->service->all();
 
         $this->assertEquals(2, count($all));
         // sort升序

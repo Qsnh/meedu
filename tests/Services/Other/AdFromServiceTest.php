@@ -4,6 +4,7 @@
 namespace Tests\Services\Other;
 
 
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Models\AdFrom;
 use App\Services\Other\Models\AdFromNumber;
 use App\Services\Other\Services\AdFromService;
@@ -21,7 +22,7 @@ class AdFromServiceTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->service = $this->app->make(AdFromService::class);
+        $this->service = $this->app->make(AdFromServiceInterface::class);
     }
 
     public function test_all()

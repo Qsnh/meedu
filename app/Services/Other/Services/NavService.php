@@ -12,8 +12,9 @@
 namespace App\Services\Other\Services;
 
 use App\Services\Other\Models\Nav;
+use App\Services\Other\Interfaces\NavServiceInterface;
 
-class NavService
+class NavService implements NavServiceInterface
 {
     /**
      * @return array

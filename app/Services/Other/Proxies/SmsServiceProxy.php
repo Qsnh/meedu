@@ -14,8 +14,9 @@ namespace App\Services\Other\Proxies;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Services\Other\Services\SmsService;
 use App\Meedu\ServiceProxy\Limiter\LimiterInfo;
+use App\Services\Other\Interfaces\SmsServiceInterface;
 
-class SmsServiceProxy extends ServiceProxy
+class SmsServiceProxy extends ServiceProxy implements SmsServiceInterface
 {
     public function __construct(SmsService $service)
     {

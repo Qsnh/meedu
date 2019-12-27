@@ -11,37 +11,38 @@
 
 namespace App\Services\Course\Services;
 
-use App\Services\Base\Services\RenderService;
 use App\Services\Course\Models\CourseComment;
+use App\Services\Base\Interfaces\RenderServiceInterface;
+use App\Services\Course\Interfaces\CourseCommentServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
-class CourseCommentService
+class CourseCommentService implements CourseCommentServiceInterface
 {
     protected $renderService;
 
-    public function __construct(RenderService $renderService)
+    public function __construct(RenderServiceInterface $renderService)
     {
         $this->renderService = $renderService;
     }
 
     public function courseComments(int $courseId): array
     {
-        $comments = CourseComment::whereCourseId($courseId)->orderBy('id')->get()->toArray();
+        $comments = CourseComment::query()->whereCourseId($courseId)->orderBy('id')->get()->toArray();
 
         return $comments;
     }
 
     /**
-     * @param int    $userId
      * @param int    $courseId
      * @param string $originalContent
      *
      * @return array
      */
-    public function create(int $userId, int $courseId, string $originalContent): array
+    public function create(int $courseId, string $originalContent): array
     {
         $renderContent = $this->renderService->render($originalContent);
         $comment = CourseComment::create([
-            'user_id' => $userId,
+            'user_id' => Auth::id(),
             'course_id' => $courseId,
             'original_content' => $originalContent,
             'render_content' => $renderContent,

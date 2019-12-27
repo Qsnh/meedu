@@ -14,6 +14,7 @@ namespace App\Http\Requests\Frontend\Member;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Frontend\BaseRequest;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class AvatarChangeRequest extends BaseRequest
 {
@@ -38,7 +39,7 @@ class AvatarChangeRequest extends BaseRequest
         /**
          * @var ConfigService
          */
-        $configService = app()->make(ConfigService::class);
+        $configService = app()->make(ConfigServiceInterface::class);
 
         $file = $this->file('file');
         $path = $file->store('/avatar');

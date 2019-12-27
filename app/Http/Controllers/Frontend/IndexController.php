@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Services\Other\Services\LinkService;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 
 class IndexController extends FrontendController
 {
@@ -20,7 +20,7 @@ class IndexController extends FrontendController
     protected $configService;
 
     public function __construct(
-        LinkService $linkService,
+        LinkServiceInterface $linkService,
         ConfigService $configService
     ) {
         $this->linkService = $linkService;

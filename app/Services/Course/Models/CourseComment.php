@@ -28,11 +28,6 @@ class CourseComment extends Base
         'deleted_at',
     ];
 
-//    public function setContentAttribute($content)
-//    {
-//        $this->attributes['content'] = Emojione::getClient()->shortnameToUnicode($content);
-//    }
-
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');

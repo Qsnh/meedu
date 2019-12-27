@@ -15,12 +15,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
-class RoleService
+class RoleService implements RoleServiceInterface
 {
     protected $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }

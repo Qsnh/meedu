@@ -14,8 +14,9 @@ namespace App\Services\Other\Proxies;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\LinkService;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 
-class LinkServiceProxy extends ServiceProxy
+class LinkServiceProxy extends ServiceProxy implements LinkServiceInterface
 {
     public function __construct(LinkService $service)
     {

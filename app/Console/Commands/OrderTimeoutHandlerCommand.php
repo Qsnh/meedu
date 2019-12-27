@@ -14,6 +14,7 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Services\Order\Services\OrderService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderTimeoutHandlerCommand extends Command
 {
@@ -36,9 +37,9 @@ class OrderTimeoutHandlerCommand extends Command
     /**
      * OrderTimeoutHandlerCommand constructor.
      *
-     * @param OrderService $orderService
+     * @param OrderServiceInterface $orderService
      */
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderServiceInterface $orderService)
     {
         parent::__construct();
         $this->orderService = $orderService;

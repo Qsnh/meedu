@@ -11,23 +11,29 @@
 
 namespace App\Services\Other\Providers;
 
+use App\Services\Other\Interfaces\AdFromServiceInterface;
+use App\Services\Other\Interfaces\UploadServiceInterface;
+use App\Services\Other\Services\AdFromService;
+use App\Services\Other\Services\UploadService;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Other\Services\NavService;
-use App\Services\Other\Services\SmsService;
-use App\Services\Other\Services\LinkService;
 use App\Services\Other\Proxies\NavServiceProxy;
 use App\Services\Other\Proxies\SmsServiceProxy;
 use App\Services\Other\Proxies\LinkServiceProxy;
-use App\Services\Other\Services\AnnouncementService;
+use App\Services\Other\Interfaces\NavServiceInterface;
+use App\Services\Other\Interfaces\SmsServiceInterface;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Proxies\AnnouncementServiceProxy;
+use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->instance(NavService::class, $this->app->make(NavServiceProxy::class));
-        $this->app->instance(AnnouncementService::class, $this->app->make(AnnouncementServiceProxy::class));
-        $this->app->instance(LinkService::class, $this->app->make(LinkServiceProxy::class));
-        $this->app->instance(SmsService::class, $this->app->make(SmsServiceProxy::class));
+        $this->app->instance(AdFromServiceInterface::class, $this->app->make(AdFromService::class));
+        $this->app->instance(NavServiceInterface::class, $this->app->make(NavServiceProxy::class));
+        $this->app->instance(AnnouncementServiceInterface::class, $this->app->make(AnnouncementServiceProxy::class));
+        $this->app->instance(LinkServiceInterface::class, $this->app->make(LinkServiceProxy::class));
+        $this->app->instance(SmsServiceInterface::class, $this->app->make(SmsServiceProxy::class));
+        $this->app->instance(UploadServiceInterface::class, $this->app->make(UploadService::class));
     }
 }

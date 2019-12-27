@@ -9,13 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Member\Providers;
+namespace App\Services\Other\Interfaces;
 
-use Illuminate\Support\ServiceProvider;
-
-class ServiceRegisterProvider extends ServiceProvider
+interface UploadServiceInterface
 {
-    public function register()
-    {
-    }
 }

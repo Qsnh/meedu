@@ -9,13 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Course\Providers;
+namespace App\Services\Member\Interfaces;
 
-use Illuminate\Support\ServiceProvider;
-
-class ServiceRegisterProvider extends ServiceProvider
+interface UserServiceInterface
 {
-    public function register()
-    {
-    }
 }

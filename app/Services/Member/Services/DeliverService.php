@@ -13,13 +13,16 @@ namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\DeliverServiceInterface;
 
-class DeliverService
+class DeliverService implements DeliverServiceInterface
 {
     protected $userService;
     protected $roleService;
 
-    public function __construct(UserService $userService, RoleService $roleService)
+    public function __construct(UserServiceInterface $userService, RoleServiceInterface $roleService)
     {
         $this->userService = $userService;
         $this->roleService = $roleService;

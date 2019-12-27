@@ -12,8 +12,9 @@
 namespace App\Services\Other\Services;
 
 use App\Services\Other\Models\Link;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 
-class LinkService
+class LinkService implements LinkServiceInterface
 {
     public function all(): array
     {

@@ -12,8 +12,9 @@
 namespace App\Services\Base\Services;
 
 use App\Constant\FrontendConstant;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-class ConfigService
+class ConfigService implements ConfigServiceInterface
 {
     /**
      * @return string

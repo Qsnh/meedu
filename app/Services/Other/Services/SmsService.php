@@ -13,13 +13,14 @@ namespace App\Services\Other\Services;
 
 use Overtrue\EasySms\EasySms;
 use App\Services\Other\Models\SmsRecord;
-use App\Services\Base\Services\ConfigService;
+use App\Services\Other\Interfaces\SmsServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-class SmsService
+class SmsService implements SmsServiceInterface
 {
     protected $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }
@@ -32,7 +33,7 @@ class SmsService
      * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
      * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
-    public function sendCode($mobile, $code, $templateId)
+    public function sendCode($mobile, $code, $templateId): void
     {
         $config = $this->configService->getSms();
         $easySms = new EasySms($config);

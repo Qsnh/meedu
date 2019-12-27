@@ -11,11 +11,14 @@
 
 namespace App\Services\Base\Services;
 
-class RenderService
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Base\Interfaces\RenderServiceInterface;
+
+class RenderService implements RenderServiceInterface
 {
     private $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }

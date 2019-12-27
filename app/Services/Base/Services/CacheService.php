@@ -12,20 +12,21 @@
 namespace App\Services\Base\Services;
 
 use Illuminate\Support\Facades\Cache;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 
-class CacheService
+class CacheService implements CacheServiceInterface
 {
-    public function put($key, $value, $expire)
+    public function put(string $key, $value, $expire)
     {
         Cache::put($key, $value, $expire);
     }
 
-    public function pull($key, $default = null)
+    public function pull(string $key, $default = null)
     {
         return Cache::pull($key, $default);
     }
 
-    public function lock($name, $seconds)
+    public function lock(string $name, int $seconds)
     {
         return Cache::lock($name, $seconds);
     }

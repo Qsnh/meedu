@@ -12,13 +12,15 @@
 namespace App\Services\Course\Services;
 
 use App\Services\Course\Models\VideoComment;
-use App\Services\Base\Services\RenderService;
+use App\Services\Base\Interfaces\RenderServiceInterface;
+use App\Services\Course\Interfaces\VideoCommentServiceInterface;
+use Illuminate\Support\Facades\Auth;
 
-class VideoCommentService
+class VideoCommentService implements VideoCommentServiceInterface
 {
     protected $renderService;
 
-    public function __construct(RenderService $renderService)
+    public function __construct(RenderServiceInterface $renderService)
     {
         $this->renderService = $renderService;
     }
@@ -31,17 +33,16 @@ class VideoCommentService
     }
 
     /**
-     * @param int    $userId
      * @param int    $videoId
      * @param string $originalContent
      *
      * @return array
      */
-    public function create(int $userId, int $videoId, string $originalContent): array
+    public function create(int $videoId, string $originalContent): array
     {
         $renderContent = $this->renderService->render($originalContent);
         $comment = VideoComment::create([
-            'user_id' => $userId,
+            'user_id' => Auth::id(),
             'video_id' => $videoId,
             'original_content' => $originalContent,
             'render_content' => $renderContent,

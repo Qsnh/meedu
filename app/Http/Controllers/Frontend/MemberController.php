@@ -14,14 +14,14 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\MemberRepository;
-use App\Services\Member\Services\RoleService;
-use App\Services\Member\Services\UserService;
-use App\Services\Order\Services\OrderService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
 class MemberController extends FrontendController
@@ -34,12 +34,12 @@ class MemberController extends FrontendController
     protected $socialiteService;
 
     public function __construct(
-        UserService $userService,
-        CourseService $courseService,
-        VideoService $videoService,
-        RoleService $roleService,
-        OrderService $orderService,
-        SocialiteService $socialiteService
+        UserServiceInterface $userService,
+        CourseServiceInterface $courseService,
+        VideoServiceInterface $videoService,
+        RoleServiceInterface $roleService,
+        OrderServiceInterface $orderService,
+        SocialiteServiceInterface $socialiteService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;

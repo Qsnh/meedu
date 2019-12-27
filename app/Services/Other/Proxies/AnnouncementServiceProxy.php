@@ -14,8 +14,9 @@ namespace App\Services\Other\Proxies;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\AnnouncementService;
+use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
-class AnnouncementServiceProxy extends ServiceProxy
+class AnnouncementServiceProxy extends ServiceProxy implements AnnouncementServiceInterface
 {
     public function __construct(AnnouncementService $service)
     {

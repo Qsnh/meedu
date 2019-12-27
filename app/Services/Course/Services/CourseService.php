@@ -12,14 +12,15 @@
 namespace App\Services\Course\Services;
 
 use App\Services\Course\Models\Course;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 
-class CourseService
+class CourseService implements CourseServiceInterface
 {
     protected $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }

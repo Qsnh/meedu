@@ -16,8 +16,8 @@ use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends Controller
 {
@@ -25,8 +25,8 @@ class OrderController extends Controller
     protected $configService;
 
     public function __construct(
-        OrderService $orderService,
-        ConfigService $configService
+        OrderServiceInterface $orderService,
+        ConfigServiceInterface $configService
     ) {
         $this->orderService = $orderService;
         $this->configService = $configService;

@@ -11,13 +11,13 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class PaymentController extends FrontendController
 {
     protected $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }

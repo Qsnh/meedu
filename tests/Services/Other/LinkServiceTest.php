@@ -4,12 +4,20 @@
 namespace Tests\Services\Other;
 
 
+use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Models\Link;
-use App\Services\Other\Services\LinkService;
 use Tests\TestCase;
 
 class LinkServiceTest extends TestCase
 {
+
+    protected $service;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->service = $this->app->make(LinkServiceInterface::class);
+    }
 
     public function test_link_all_with_cache()
     {
@@ -19,11 +27,7 @@ class LinkServiceTest extends TestCase
             'sort' => 1,
         ]);
 
-        /**
-         * @var $linkService LinkService
-         */
-        $linkService = $this->app->make(LinkService::class);
-        $links = $linkService->all();
+        $links = $this->service->all();
 
         $this->assertEquals(1, count($links));
         $this->assertEquals($link->sort, $links[0]['sort']);
@@ -33,7 +37,7 @@ class LinkServiceTest extends TestCase
         $link1 = factory(Link::class)->create([
             'sort' => 2,
         ]);
-        $links = $linkService->all();
+        $links = $this->service->all();
 
         $this->assertEquals(1, count($links));
         $this->assertEquals($link->name, $links[0]['name']);
@@ -47,11 +51,7 @@ class LinkServiceTest extends TestCase
             'sort' => 1,
         ]);
 
-        /**
-         * @var $linkService LinkService
-         */
-        $linkService = $this->app->make(LinkService::class);
-        $links = $linkService->all();
+        $links = $this->service->all();
 
         $this->assertEquals(1, count($links));
         $this->assertEquals($link->sort, $links[0]['sort']);
@@ -61,7 +61,7 @@ class LinkServiceTest extends TestCase
         $link1 = factory(Link::class)->create([
             'sort' => 2,
         ]);
-        $links = $linkService->all();
+        $links = $this->service->all();
 
         $this->assertEquals(2, count($links));
         $this->assertEquals($link->name, $links[0]['name']);

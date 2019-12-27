@@ -12,8 +12,8 @@
 namespace App\Listeners;
 
 use App\Events\PaymentSuccessEvent;
-use App\Services\Order\Services\OrderService;
-use App\Services\Member\Services\DeliverService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Member\Interfaces\DeliverServiceInterface;
 
 class OrderPaidDeliverListener
 {
@@ -21,8 +21,8 @@ class OrderPaidDeliverListener
     protected $deliverService;
 
     public function __construct(
-        OrderService $orderService,
-        DeliverService $deliverService
+        OrderServiceInterface $orderService,
+        DeliverServiceInterface $deliverService
     ) {
         $this->orderService = $orderService;
         $this->deliverService = $deliverService;

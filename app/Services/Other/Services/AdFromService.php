@@ -13,8 +13,9 @@ namespace App\Services\Other\Services;
 
 use App\Services\Other\Models\AdFrom;
 use App\Services\Other\Models\AdFromNumber;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 
-class AdFromService
+class AdFromService implements AdFromServiceInterface
 {
     public function all(): array
     {
@@ -28,7 +29,7 @@ class AdFromService
         return $day ? $day->toArray() : [];
     }
 
-    public function updateDay(int $id, array $data)
+    public function updateDay(int $id, array $data): void
     {
         AdFromNumber::whereId($id)->update($data);
     }

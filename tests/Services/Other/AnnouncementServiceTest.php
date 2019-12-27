@@ -4,6 +4,7 @@
 namespace Tests\Services\Other;
 
 
+use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 use App\Services\Other\Models\Announcement;
 use App\Services\Other\Services\AnnouncementService;
 use Carbon\Carbon;
@@ -12,6 +13,17 @@ use Tests\TestCase;
 class AnnouncementServiceTest extends TestCase
 {
 
+    /**
+     * @var AnnouncementService
+     */
+    protected $service;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->service = $this->app->make(AnnouncementServiceInterface::class);
+    }
+
     public function test_latest_with_cache()
     {
         config(['meedu.system.cache.status' => 1]);
@@ -19,11 +31,8 @@ class AnnouncementServiceTest extends TestCase
         $announce = factory(Announcement::class)->create([
             'admin_id' => 0,
         ]);
-        /**
-         * @var $service AnnouncementService
-         */
-        $service = $this->app->make(AnnouncementService::class);
-        $latest = $service->latest();
+
+        $latest = $this->service->latest();
 
         $this->assertEquals($announce['admin_id'], $latest['admin_id']);
         $this->assertEquals($announce['announcement'], $latest['announcement']);
@@ -31,7 +40,7 @@ class AnnouncementServiceTest extends TestCase
         $newAnnouncement = factory(Announcement::class)->create([
             'admin_id' => 1,
         ]);
-        $latest = $service->latest();
+        $latest = $this->service->latest();
 
         $this->assertEquals($announce['admin_id'], $latest['admin_id']);
         $this->assertEquals($announce['announcement'], $latest['announcement']);
@@ -45,11 +54,8 @@ class AnnouncementServiceTest extends TestCase
             'admin_id' => 0,
             'created_at' => Carbon::now()->subDays(1),
         ]);
-        /**
-         * @var $service AnnouncementService
-         */
-        $service = $this->app->make(AnnouncementService::class);
-        $latest = $service->latest();
+
+        $latest = $this->service->latest();
 
         $this->assertEquals($announce['admin_id'], $latest['admin_id']);
         $this->assertEquals($announce['announcement'], $latest['announcement']);
@@ -57,7 +63,7 @@ class AnnouncementServiceTest extends TestCase
         $newAnnouncement = factory(Announcement::class)->create([
             'admin_id' => 1,
         ]);
-        $latest = $service->latest();
+        $latest = $this->service->latest();
 
         $this->assertEquals($newAnnouncement->admin_id, $latest['admin_id']);
         $this->assertEquals($newAnnouncement->announcement, $latest['announcement']);

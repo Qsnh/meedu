@@ -12,9 +12,10 @@
 namespace App\Services\Member\Services;
 
 use App\Services\Member\Models\User;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
-class NotificationService
+class NotificationService implements NotificationServiceInterface
 {
     /**
      * @param int    $id

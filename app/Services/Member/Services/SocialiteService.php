@@ -14,12 +14,14 @@ namespace App\Services\Member\Services;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\Socialite;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
-class SocialiteService
+class SocialiteService implements SocialiteServiceInterface
 {
     protected $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }

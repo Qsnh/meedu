@@ -12,15 +12,13 @@
 namespace App\Services\Order\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\Order\Services\OrderService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
-class ServiceRegisterProvider extends ServiceProvider
+class OrderServiceRegisterProvider extends ServiceProvider
 {
-    public function __construct($app)
-    {
-        parent::__construct($app);
-    }
-
     public function register()
     {
+        $this->app->instance(OrderServiceInterface::class, $this->app->make(OrderService::class));
     }
 }

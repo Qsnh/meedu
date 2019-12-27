@@ -18,7 +18,11 @@ use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CourseCommentObserver;
+use App\Services\Base\Providers\BaseServiceRegisterProvider;
+use App\Services\Order\Providers\OrderServiceRegisterProvider;
 use App\Services\Other\Providers\OtherServiceRegisterProvider;
+use App\Services\Course\Providers\CourseServiceRegisterProvider;
+use App\Services\Member\Providers\MemberServiceRegisterProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,7 +54,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // 注册服务
+        $this->app->register(BaseServiceRegisterProvider::class);
+        $this->app->register(MemberServiceRegisterProvider::class);
+        $this->app->register(CourseServiceRegisterProvider::class);
         $this->app->register(OtherServiceRegisterProvider::class);
+        $this->app->register(OrderServiceRegisterProvider::class);
     }
 
     /**

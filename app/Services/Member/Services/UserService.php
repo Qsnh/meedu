@@ -19,13 +19,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
-use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     protected $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }
@@ -123,7 +124,7 @@ class UserService
      *
      * @throws ServiceException
      */
-    public function bindMobile($userId, $mobile): void
+    public function bindMobile(int $userId, string $mobile): void
     {
         $user = User::findOrFail($userId);
         if (substr($user->mobile, 0, 1) == 1) {
@@ -137,7 +138,7 @@ class UserService
      * @param $userId
      * @param $avatar
      */
-    public function updateAvatar($userId, $avatar): void
+    public function updateAvatar(int $userId, string $avatar): void
     {
         User::whereId($userId)->update(['avatar' => $avatar]);
     }

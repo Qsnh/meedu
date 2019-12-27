@@ -11,6 +11,8 @@
 
 namespace App\Http\Requests\Frontend;
 
+use Illuminate\Support\Facades\Hash;
+
 class RegisterRequest extends BaseRequest
 {
     /**
@@ -46,7 +48,7 @@ class RegisterRequest extends BaseRequest
         return [
             'nick_name' => $this->post('nick_name'),
             'mobile' => $this->post('mobile'),
-            'password' => bcrypt($this->post('password')),
+            'password' => Hash::make($this->post('password')),
             'is_active' => config('meedu.member.is_active_default'),
             'is_lock' => config('meedu.member.is_lock_default'),
         ];

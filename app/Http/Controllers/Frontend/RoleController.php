@@ -12,9 +12,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Member\Services\RoleService;
-use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class RoleController extends FrontendController
 {
@@ -23,9 +23,9 @@ class RoleController extends FrontendController
     protected $orderService;
 
     public function __construct(
-        RoleService $roleService,
-        ConfigService $configService,
-        OrderService $orderService
+        RoleServiceInterface $roleService,
+        ConfigServiceInterface $configService,
+        OrderServiceInterface $orderService
     ) {
         $this->roleService = $roleService;
         $this->configService = $configService;

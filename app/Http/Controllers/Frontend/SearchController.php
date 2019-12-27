@@ -13,13 +13,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\SearchRequest;
-use App\Services\Course\Services\VideoService;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class SearchController extends Controller
 {
     protected $videoService;
 
-    public function __construct(VideoService $videoService)
+    public function __construct(VideoServiceInterface $videoService)
     {
         $this->videoService = $videoService;
     }

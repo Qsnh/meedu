@@ -12,8 +12,9 @@
 namespace App\Services\Other\Services;
 
 use App\Services\Other\Models\Announcement;
+use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
-class AnnouncementService
+class AnnouncementService implements AnnouncementServiceInterface
 {
     public function latest(): array
     {

@@ -15,6 +15,7 @@ use Illuminate\Console\Command;
 use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Order\Services\OrderService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderHandlerCommand extends Command
 {
@@ -39,9 +40,10 @@ class OrderHandlerCommand extends Command
     /**
      * OrderHandlerCommand constructor.
      *
-     * @param OrderService $orderService
+     * @param OrderServiceInterface $orderService
+     * @param BusinessState         $businessState
      */
-    public function __construct(OrderService $orderService, BusinessState $businessState)
+    public function __construct(OrderServiceInterface $orderService, BusinessState $businessState)
     {
         parent::__construct();
         $this->orderService = $orderService;

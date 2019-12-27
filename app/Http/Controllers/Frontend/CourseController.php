@@ -13,12 +13,12 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Member\Services\UserService;
-use App\Services\Order\Services\OrderService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\CourseCommentService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseController extends FrontendController
 {
@@ -30,12 +30,12 @@ class CourseController extends FrontendController
     protected $orderService;
 
     public function __construct(
-        CourseService $courseService,
-        ConfigService $configService,
-        CourseCommentService $courseCommentService,
-        UserService $userService,
-        VideoService $videoService,
-        OrderService $orderService
+        CourseServiceInterface $courseService,
+        ConfigServiceInterface $configService,
+        CourseCommentServiceInterface $courseCommentService,
+        UserServiceInterface $userService,
+        VideoServiceInterface $videoService,
+        OrderServiceInterface $orderService
     ) {
         $this->courseService = $courseService;
         $this->configService = $configService;

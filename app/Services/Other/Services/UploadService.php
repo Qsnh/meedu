@@ -11,6 +11,8 @@
 
 namespace App\Services\Other\Services;
 
-class UploadService
+use App\Services\Other\Interfaces\UploadServiceInterface;
+
+class UploadService implements UploadServiceInterface
 {
 }

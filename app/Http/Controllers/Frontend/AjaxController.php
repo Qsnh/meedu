@@ -14,12 +14,12 @@ namespace App\Http\Controllers\Frontend;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Member\Services\UserService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\VideoCommentService;
-use App\Services\Course\Services\CourseCommentService;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
+use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class AjaxController extends Controller
 {
@@ -30,11 +30,11 @@ class AjaxController extends Controller
     protected $videoService;
 
     public function __construct(
-        VideoCommentService $videoCommentService,
-        CourseCommentService $courseCommentService,
-        UserService $userService,
-        VideoService $videoService,
-        CourseService $courseService
+        VideoCommentServiceInterface $videoCommentService,
+        CourseCommentServiceInterface $courseCommentService,
+        UserServiceInterface $userService,
+        VideoServiceInterface $videoService,
+        CourseServiceInterface $courseService
     ) {
         $this->videoCommentService = $videoCommentService;
         $this->courseCommentService = $courseCommentService;
@@ -55,7 +55,7 @@ class AjaxController extends Controller
     {
         $course = $this->courseService->find($courseId);
         ['content' => $content] = $request->filldata();
-        $comment = $this->courseCommentService->create(Auth::id(), $course['id'], $content);
+        $comment = $this->courseCommentService->create($course['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
         return [
@@ -81,7 +81,7 @@ class AjaxController extends Controller
     {
         $video = $this->videoService->find($videoId);
         ['content' => $content] = $request->filldata();
-        $comment = $this->videoCommentService->create(Auth::id(), $video['id'], $content);
+        $comment = $this->videoCommentService->create($video['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
         return [

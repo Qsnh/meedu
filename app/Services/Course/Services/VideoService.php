@@ -12,8 +12,9 @@
 namespace App\Services\Course\Services;
 
 use App\Services\Course\Models\Video;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 
-class VideoService
+class VideoService implements VideoServiceInterface
 {
     /**
      * @param int $courseId
@@ -61,13 +62,18 @@ class VideoService
 
     /**
      * @param string $keyword
-     * @param int    $limit
+     * @param int $limit
      *
      * @return array
      */
     public function titleSearch(string $keyword, int $limit): array
     {
-        return Video::with(['course'])->show()->published()->orderByDesc('published_at')->limit($limit)->get()->toArray();
+        return Video::with(['course'])
+            ->show()
+            ->published()
+            ->where('title', 'like', '%' . $keyword . '%')
+            ->orderByDesc('published_at')
+            ->limit($limit)->get()->toArray();
     }
 
     /**

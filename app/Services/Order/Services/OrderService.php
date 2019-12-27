@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\OrderGoods;
-use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
-class OrderService
+class OrderService implements OrderServiceInterface
 {
     protected $configService;
 
-    public function __construct(ConfigService $configService)
+    public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }
