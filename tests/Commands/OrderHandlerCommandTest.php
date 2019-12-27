@@ -30,7 +30,7 @@ class OrderHandlerCommandTest extends TestCase
         $order = Order::create([
             'user_id' => $user->id,
             'charge' => 100,
-            'status' => Order::STATUS_UNPAY,
+            'status' => Order::STATUS_PAYING,
             'order_id' => Str::random(),
             'payment' => '123',
             'payment_method' => '123',

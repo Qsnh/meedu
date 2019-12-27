@@ -252,7 +252,7 @@ class OrderService implements OrderServiceInterface
     public function changePaid(int $id): void
     {
         $order = Order::findOrFail($id);
-        if ($order->status != Order::STATUS_PAYING) {
+        if (! in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
             throw new ServiceException('order status error');
         }
         $order->update(['status' => Order::STATUS_PAID]);

@@ -232,7 +232,7 @@ class OrderServiceTest extends TestCase
     public function test_changePaid_with_error_status()
     {
         $order = factory(Order::class)->create([
-            'status' => Order::STATUS_UNPAY,
+            'status' => Order::STATUS_PAID,
         ]);
 
         $this->service->changePaid($order->id);
