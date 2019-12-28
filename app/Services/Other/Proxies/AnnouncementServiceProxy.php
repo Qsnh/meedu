@@ -22,7 +22,7 @@ class AnnouncementServiceProxy extends ServiceProxy implements AnnouncementServi
     {
         parent::__construct($service);
         $this->cache['latest'] = function () {
-            return new CacheInfo('anm:latest', $this->configService->getCacheExpire());
+            return new CacheInfo('os:as', $this->configService->getCacheExpire());
         };
     }
 }

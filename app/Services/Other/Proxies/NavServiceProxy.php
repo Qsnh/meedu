@@ -22,7 +22,7 @@ class NavServiceProxy extends ServiceProxy implements NavServiceInterface
     {
         parent::__construct($service);
         $this->cache['all'] = function () {
-            return new CacheInfo('nav:all', $this->configService->getCacheExpire());
+            return new CacheInfo('os:na', $this->configService->getCacheExpire());
         };
     }
 }

@@ -44,7 +44,24 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int    $userId
+     * @param string $mobile
+     * @param string $password
+     * @return array
+     */
+    public function passwordLogin(string $mobile, string $password): array
+    {
+        $user = User::whereMobile($mobile)->first();
+        if (!$user) {
+            return [];
+        }
+        if (!Hash::check($password, $user->password)) {
+            return [];
+        }
+        return $user->toArray();
+    }
+
+    /**
+     * @param int $userId
      * @param string $oldPassword
      * @param string $newPassword
      *
@@ -53,7 +70,7 @@ class UserService implements UserServiceInterface
     public function resetPassword(int $userId, string $oldPassword, string $newPassword): void
     {
         $user = User::findOrFail($userId);
-        if (! Hash::check($oldPassword, $user->password)) {
+        if (!Hash::check($oldPassword, $user->password)) {
             throw new ServiceException(__('old_password_error'));
         }
         $user->password = Hash::make($newPassword);
@@ -84,7 +101,7 @@ class UserService implements UserServiceInterface
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $name ?? Str::random(16),
-            'mobile' => mt_rand(2, 9).mt_rand(1000, 9999).mt_rand(1000, 9999),
+            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
             'password' => Hash::make(Str::random(16)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
@@ -158,7 +175,7 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int   $id
+     * @param int $id
      * @param array $with
      *
      * @return array
@@ -217,8 +234,8 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int    $userId
-     * @param int    $roleId
+     * @param int $userId
+     * @param int $roleId
      * @param string $expiredAt
      */
     public function changeRole(int $userId, int $roleId, string $expiredAt): void

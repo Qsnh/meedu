@@ -24,7 +24,7 @@ class SmsServiceProxy extends ServiceProxy implements SmsServiceInterface
         $this->limit['sendCode'] = function ($mobile, $code, $templateId) {
             ['times' => $times, 'minutes' => $minutes] = $this->configService->getSmsLimiter();
 
-            return new LimiterInfo('sms:'.$mobile, $times, $minutes);
+            return new LimiterInfo('os:sms:'.$mobile, $times, $minutes);
         };
     }
 }

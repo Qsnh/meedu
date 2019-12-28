@@ -41,6 +41,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
+        "darkaonline/l5-swagger": "5.7.*",
         "doctrine/dbal": "^2.9",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",

@@ -50,6 +50,11 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+
+        'apiv2' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -72,7 +77,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => \App\Services\Member\Models\User::class,
         ],
 
         'administrators' => [

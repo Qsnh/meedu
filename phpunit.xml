@@ -29,7 +29,6 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
             <exclude>
-                <directory suffix=".php">./app/Repositories</directory>
                 <directory suffix=".php">./app/Notifications</directory>
                 <directory suffix=".php">./app/Models</directory>
                 <directory suffix=".php">./app/Services/*/Models</directory>

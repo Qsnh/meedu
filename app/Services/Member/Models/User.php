@@ -14,8 +14,9 @@ namespace App\Services\Member\Models;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasApiTokens;
@@ -35,6 +36,16 @@ class User extends Authenticatable
         'avatar', 'nick_name', 'mobile', 'password',
         'is_lock', 'is_active', 'role_id', 'role_expired_at',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * The attributes that should be hidden for arrays.

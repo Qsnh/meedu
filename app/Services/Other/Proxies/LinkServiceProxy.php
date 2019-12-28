@@ -22,7 +22,7 @@ class LinkServiceProxy extends ServiceProxy implements LinkServiceInterface
     {
         parent::__construct($service);
         $this->cache['all'] = function () {
-            return new CacheInfo('link:all', $this->configService->getCacheExpire());
+            return new CacheInfo('os:la', $this->configService->getCacheExpire());
         };
     }
 }
