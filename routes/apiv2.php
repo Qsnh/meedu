@@ -25,3 +25,14 @@ Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(
 
 // 套餐
 Route::get('/roles', 'RoleController@roles');
+
+Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
+    Route::get('detail', 'MemberController@detail');
+    Route::post('detail/password', 'MemberController@passwordChange');
+    Route::post('detail/avatar', 'MemberController@avatarChange');
+    Route::get('courses', 'MemberController@courses');
+    Route::get('videos', 'MemberController@videos');
+    Route::get('orders', 'MemberController@orders');
+    Route::get('roles', 'MemberController@roles');
+    Route::get('messages', 'MemberController@messages');
+});
