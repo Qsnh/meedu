@@ -13,6 +13,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Support\Str;
+use App\Constant\ApiV2Constant;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -73,8 +75,10 @@ class Handler extends ExceptionHandler
             if (!($exception instanceof ApiV2Exception)) {
                 // apiV2异常错误
                 if (Str::contains($request->getUri(), '/api/v2')) {
+                    $code = ApiV2Constant::ERROR_CODE;
+                    $exception instanceof AuthenticationException && $code = ApiV2Constant::ERROR_NO_AUTH_CODE;
                     return response()->json([
-                        'code' => 1,
+                        'code' => $code,
                         'message' => __('error'),
                     ]);
                 }

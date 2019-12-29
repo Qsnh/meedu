@@ -24,4 +24,7 @@ class ApiV2Constant
 
     const SMS_CODE_EXPIRE = 60;
     const MOBILE_CODE_CACHE_KEY = 'm:%s';
+
+    const ERROR_CODE = 1;
+    const ERROR_NO_AUTH_CODE = 401;
 }

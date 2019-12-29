@@ -62,7 +62,7 @@ class RegisterController extends BaseController
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if ($user) {
-            return $this->error(__(ApiV2Constant::USER_MOBILE_NOT_EXISTS));
+            return $this->error(__(ApiV2Constant::MOBILE_HAS_EXISTS));
         }
         $this->userService->createWithMobile($mobile, Str::random(), Str::random(3) . substr($mobile, 0, 9));
         return $this->success();

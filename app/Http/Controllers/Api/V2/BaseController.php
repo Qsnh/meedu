@@ -94,7 +94,7 @@ class BaseController
         $mobile = request()->input('mobile');
         $mobileCode = request()->input('mobile_code');
         if (!$mobileCode) {
-            throw new ApiV2Exception(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
+            throw new ApiV2Exception(__(ApiV2Constant::MOBILE_CODE_ERROR));
         }
         /**
          * @var $cacheService CacheService
@@ -105,7 +105,7 @@ class BaseController
         // 取出来只有就删除，防止恶意碰撞攻击
         $code && $cacheService->forget($key);
         if ($code != $mobileCode) {
-            throw new ApiV2Exception(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
+            throw new ApiV2Exception(__(ApiV2Constant::MOBILE_CODE_ERROR));
         }
     }
 }

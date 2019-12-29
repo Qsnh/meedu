@@ -16,7 +16,7 @@ class PasswordLoginRequest extends BaseRequest
     public function rules()
     {
         return [
-            'mobile' => 'required',
+            'mobile' => 'bail|required',
             'password' => 'required',
         ];
     }

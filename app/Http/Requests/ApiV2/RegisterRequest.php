@@ -17,6 +17,7 @@ class RegisterRequest extends BaseRequest
     {
         return [
             'mobile' => 'required',
+            'mobile_code' => 'required',
         ];
     }
 
@@ -24,6 +25,7 @@ class RegisterRequest extends BaseRequest
     {
         return [
             'mobile.required' => __('mobile.required'),
+            'mobile_code.required' => __('mobile_code.required'),
         ];
     }
 

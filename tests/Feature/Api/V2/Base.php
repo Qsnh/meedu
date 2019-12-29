@@ -9,6 +9,11 @@ use Tests\TestCase;
 class Base extends TestCase
 {
 
+    protected function user($user)
+    {
+        return $this->actingAs($user, 'apiv2');
+    }
+
     protected function assertResponseError($response, $message = '')
     {
         $c = $response->response->getContent();
@@ -16,6 +21,15 @@ class Base extends TestCase
         $c = json_decode($c, true);
         $this->assertNotEquals(0, $c['code']);
         $message && $this->assertEquals($message, $c['message']);
+    }
+
+    protected function assertResponseSuccess($response)
+    {
+        $c = $response->response->getContent();
+        dump($c);
+        $c = json_decode($c, true);
+        $this->assertEquals(0, $c['code']);
+        return $c;
     }
 
 }

@@ -3,7 +3,9 @@
 
 namespace Tests\Feature\Api\V2;
 
+use App\Constant\ApiV2Constant;
 use Mews\Captcha\Captcha;
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class CaptchaSmsTest extends Base
@@ -31,13 +33,13 @@ class CaptchaSmsTest extends Base
             'image_key' => 'image_key',
             'image_captcha' => 'image_captcha',
         ]);
-        $this->assertResponseError($response, __('image_captcha_error'));
+        $this->assertResponseError($response, __(ApiV2Constant::IMAGE_CAPTCHA_ERROR));
     }
 
     public function test_captcha_sms_with_no_correct_image_captcha()
     {
         // mock
-        $captchaMock = \Mockery::mock(Captcha::class);
+        $captchaMock = Mockery::mock(Captcha::class);
         $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
         $this->app->instance(Captcha::class, $captchaMock);
 
