@@ -37,8 +37,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         // 模型事件
         CourseComment::observe(CourseCommentObserver::class);
-        // OAuth路由
-        Passport::routes();
         // 自定义配置同步
         $this->app->make(Setting::class)->sync();
         $this->registerViewNamespace();

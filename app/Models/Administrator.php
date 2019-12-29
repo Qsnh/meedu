@@ -52,7 +52,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Administrator extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-    use HasApiTokens;
 
     protected $table = 'administrators';
 

@@ -46,11 +46,6 @@ return [
             'provider' => 'administrators',
         ],
 
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
-
         'apiv2' => [
             'driver' => 'jwt',
             'provider' => 'users',

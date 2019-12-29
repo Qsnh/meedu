@@ -20,7 +20,6 @@
         "fideloper/proxy": "^4.0",
         "hyancat/aliyun-direct-mail": "dev-master",
         "laravel/framework": "5.7.*",
-        "laravel/passport": "^7.0",
         "laravel/socialite": "^3.2",
         "laravel/tinker": "~1.0",
         "league/html-to-markdown": "^4.8",
