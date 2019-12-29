@@ -30,4 +30,9 @@ class CacheService implements CacheServiceInterface
     {
         return Cache::lock($name, $seconds);
     }
+
+    public function forget(string $name): void
+    {
+        return Cache::forget($name);
+    }
 }

@@ -243,4 +243,9 @@ class VideoController extends BaseController
             'users' => $commentUsers,
         ]);
     }
+
+    public function playInfo()
+    {
+        // todo 视频播放信息
+    }
 }

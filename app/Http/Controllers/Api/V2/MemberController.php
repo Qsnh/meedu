@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
@@ -91,11 +92,12 @@ class MemberController extends BaseController
      * )
      *
      * @param PasswordChangeRequest $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiV2Exception
      */
     public function passwordChange(PasswordChangeRequest $request)
     {
+        $this->mobileCodeCheck();
         ['password' => $password] = $request->filldata();
         $this->userService->changePassword($this->id(), $password);
 

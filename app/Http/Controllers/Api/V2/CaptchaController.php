@@ -95,7 +95,7 @@ class CaptchaController extends BaseController
         ];
         $templateId = $templateIdFuncs[$scene]();
         $this->smsService->sendCode($mobile, $code, $templateId);
-        $this->cacheService->put(sprintf('m:%s', $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
+        $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
         $this->success();
     }
 }

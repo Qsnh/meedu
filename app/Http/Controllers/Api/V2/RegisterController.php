@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
+use App\Exceptions\ApiV2Exception;
 use App\Http\Requests\ApiV2\RegisterRequest;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -53,9 +54,11 @@ class RegisterController extends BaseController
      * )
      * @param RegisterRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiV2Exception
      */
     public function mobileRegister(RegisterRequest $request)
     {
+        $this->mobileCodeCheck();
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if ($user) {

@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Constant\ApiV2Constant;
+use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
@@ -64,7 +65,7 @@ class LoginController extends BaseController
             'password' => $password,
         ] = $request->filldata();
         $user = $this->userService->passwordLogin($mobile, $password);
-        if (! $user) {
+        if (!$user) {
             return $this->error(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
         }
         $token = Auth::guard($this->guard)->tokenById($user['id']);
@@ -93,14 +94,15 @@ class LoginController extends BaseController
      * )
      *
      * @param MobileLoginRequest $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws ApiV2Exception
      */
     public function mobileLogin(MobileLoginRequest $request)
     {
+        $this->mobileCodeCheck();
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
-        if (! $user) {
+        if (!$user) {
             return $this->error(__(ApiV2Constant::USER_MOBILE_NOT_EXISTS));
         }
         $token = Auth::guard($this->guard)->tokenById($user['id']);
