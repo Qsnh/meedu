@@ -4,8 +4,10 @@
 // 图形验证码
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 
-// 登录
+// 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');
+// 手机号注册
+Route::post('/register/mobile', 'RegisterController@mobileRegister');
 
 // 课程
 Route::get('/courses', 'CourseController@paginate');
