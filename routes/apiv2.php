@@ -3,6 +3,8 @@
 
 // 图形验证码
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
+// 发送手机验证码
+Route::post('/captcha/sms', 'CaptchaController@sentSms');
 
 // 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');

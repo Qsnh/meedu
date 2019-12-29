@@ -140,4 +140,27 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.upload.image.path');
     }
+
+    public function getRegisterSmsTemplateId(): string
+    {
+        return $this->getTemplateId('register');
+    }
+
+    public function getLoginSmsTemplateId(): string
+    {
+        return $this->getTemplateId('login');
+    }
+
+    public function getPasswordResetSmsTemplateId(): string
+    {
+        return $this->getTemplateId('password_reset');
+    }
+
+    protected function getTemplateId($scene): string
+    {
+        $supplier = config('meedu.system.sms');
+        $gateways = config('sms.gateways');
+        $supplierConfig = $gateways[$supplier] ?? [];
+        return $supplierConfig['template'][$scene];
+    }
 }

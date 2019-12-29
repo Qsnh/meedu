@@ -39,5 +39,8 @@
   "page_title_member_index": "会员中心",
   "mobile has exists": "手机号已存在",
   "cant bind mobile": "该账号已绑定手机号",
-  "order status error": "订单状态错误"
+  "order status error": "订单状态错误",
+  "image_captcha.required": "请输入图片验证码",
+  "image_key.required": "验证码参数错误",
+  "sms_scene_error": "手机验证码参数错误"
 }

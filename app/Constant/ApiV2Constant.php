@@ -20,4 +20,6 @@ class ApiV2Constant
     const USER_MOBILE_NOT_EXISTS = '手机号不存在';
     const MOBILE_HAS_EXISTS = '手机号已经存在';
     const MOBILE_OR_PASSWORD_ERROR = '手机号不存在或密码错误';
+
+    const SMS_CODE_EXPIRE = 60;
 }
