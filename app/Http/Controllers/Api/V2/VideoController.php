@@ -34,15 +34,15 @@ use App\Services\Course\Interfaces\VideoCommentServiceInterface;
  *         schema="Video",
  *         type="object",
  *         title="视频",
- *         @OA\Property(property="id",type="int64",description="视频ID"),
+ *         @OA\Property(property="id",type="integer",description="视频ID"),
  *         @OA\Property(property="title",type="string",description="视频标题"),
  *         @OA\Property(property="slug",type="string",description="slug"),
- *         @OA\Property(property="charge",type="int32",description="视频价格"),
- *         @OA\Property(property="view_num",type="int64",description="观看次数"),
+ *         @OA\Property(property="charge",type="integer",description="视频价格"),
+ *         @OA\Property(property="view_num",type="integer",description="观看次数"),
  *         @OA\Property(property="short_description",type="string",description="简短介绍"),
  *         @OA\Property(property="render_desc",type="string",description="详细介绍"),
  *         @OA\Property(property="published_at",type="string",description="上线时间"),
- *         @OA\Property(property="duration",type="int32",description="视频时长，单位：秒"),
+ *         @OA\Property(property="duration",type="integer",description="视频时长，单位：秒"),
  *     ),
  *     @OA\Schema(
  *         schema="VideoPlay",
@@ -55,7 +55,7 @@ use App\Services\Course\Interfaces\VideoCommentServiceInterface;
  *         schema="VideoComment",
  *         type="object",
  *         title="视频评论",
- *         @OA\Property(property="user_id",type="int64",description="用户id"),
+ *         @OA\Property(property="user_id",type="integer",description="用户id"),
  *         @OA\Property(property="content",type="string",description="评论内容"),
  *     ),
  * )
@@ -119,16 +119,16 @@ class VideoController extends BaseController
      * @OA\Get(
      *     path="/videos",
      *     summary="视频列表",
-     *     @OA\Parameter(in="query",name="page",description="页码",required=false),
-     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false),
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="Arrays",description="",
-     *                 @OA\Property(property="total",type="int64",description="总数"),
-     *                 @OA\Property(property="data",type="Arrays",description="数据列表",ref="#/components/schemas/Video"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="数据列表",@OA\Items(ref="#/components/schemas/Video")),
      *             ),
      *         )
      *     )
@@ -152,16 +152,17 @@ class VideoController extends BaseController
     /**
      * @OA\Get(
      *     path="/video/{id}",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
      *     summary="视频信息",
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="Object",description="",
-     *                 @OA\Property(property="video",type="Object",description="视频详情",ref="#/components/schemas/Video"),
-     *                 @OA\Property(property="chapters",type="Arrays",description="课程章节",ref="#/components/schemas/CourseChapter"),
-     *                 @OA\Property(property="videos",type="Arrays",description="视频列表",ref="#/components/schemas/Video"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="video",type="object",description="视频详情",ref="#/components/schemas/Video"),
+     *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
+     *                 @OA\Property(property="videos",type="array",description="视频列表",@OA\Items(ref="#/components/schemas/Video")),
      *             ),
      *         )
      *     )
@@ -185,6 +186,7 @@ class VideoController extends BaseController
     /**
      * @OA\Post(
      *     path="/video/{id}/comment",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
      *     summary="视频评论",
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="content",description="评论内容",type="string"),
@@ -212,15 +214,16 @@ class VideoController extends BaseController
     /**
      * @OA\Get(
      *     path="/video/{id}/comments",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
      *     summary="视频评论列表",
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="Object",description="",
-     *                 @OA\Property(property="comments",type="Arrays",description="评论",ref="#/components/schemas/VideoComment"),
-     *                 @OA\Property(property="users",type="Arrays",description="评论用户",ref="#/components/schemas/User"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="comments",type="array",description="评论",@OA\Items(ref="#/components/schemas/VideoComment")),
+     *                 @OA\Property(property="users",type="array",description="评论用户",@OA\Items(ref="#/components/schemas/User")),
      *             ),
      *         )
      *     )

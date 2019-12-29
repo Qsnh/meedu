@@ -24,10 +24,10 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
  *         schema="Role",
  *         type="object",
  *         title="会员套餐",
- *         @OA\Property(property="id",type="int64",description="套餐id"),
+ *         @OA\Property(property="id",type="integer",description="套餐id"),
  *         @OA\Property(property="name",type="string",description="套餐名"),
- *         @OA\Property(property="charge",type="int32",description="套餐价格"),
- *         @OA\Property(property="expire_days",type="int32",description="套餐天数"),
+ *         @OA\Property(property="charge",type="integer",description="套餐价格"),
+ *         @OA\Property(property="expire_days",type="integer",description="套餐天数"),
  *         @OA\Property(property="description",type="string",description="套餐描述"),
  *     ),
  * )
@@ -72,7 +72,7 @@ class RoleController extends BaseController
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="Arrays",description="",ref="#/components/schemas/Role"),
+     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/Role")),
      *         )
      *     )
      * )
