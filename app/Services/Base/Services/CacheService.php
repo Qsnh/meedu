@@ -33,6 +33,6 @@ class CacheService implements CacheServiceInterface
 
     public function forget(string $name): void
     {
-        return Cache::forget($name);
+        Cache::forget($name);
     }
 }
