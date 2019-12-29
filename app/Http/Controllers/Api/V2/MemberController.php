@@ -31,14 +31,6 @@ use App\Services\Member\Interfaces\UserServiceInterface;
  *         @OA\Property(property="role_expired_at",type="string",description="会员套餐到期时间"),
  *         @OA\Property(property="role",type="object",ref="#/components/schemas/Role"),
  *     ),
- *     @OA\Schema(
- *         schema="Role",
- *         type="object",
- *         title="会员套餐",
- *         @OA\Property(property="id",type="int32",description="套餐id"),
- *         @OA\Property(property="name",type="string",description="套餐名"),
- *         @OA\Property(property="description",type="string",description="套餐描述"),
- *     ),
  * )
  */
 
