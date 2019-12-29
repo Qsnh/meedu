@@ -13,6 +13,12 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\CourseCommentService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -22,11 +28,29 @@ use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseController extends FrontendController
 {
+    /**
+     * @var CourseService
+     */
     protected $courseService;
+    /**
+     * @var ConfigService
+     */
     protected $configService;
+    /**
+     * @var CourseCommentService
+     */
     protected $courseCommentService;
+    /**
+     * @var UserService
+     */
     protected $userService;
+    /**
+     * @var VideoService
+     */
     protected $videoService;
+    /**
+     * @var OrderService
+     */
     protected $orderService;
 
     public function __construct(

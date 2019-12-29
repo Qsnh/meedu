@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Api\V2;
 use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 
 /**
@@ -67,5 +68,18 @@ class BaseController
     protected function id()
     {
         return Auth::guard($this->guard)->id();
+    }
+
+    /**
+     * @param $list
+     * @param $total
+     * @param $page
+     * @param $pageSize
+     *
+     * @return LengthAwarePaginator
+     */
+    protected function paginator($list, $total, $page, $pageSize)
+    {
+        return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => request()->path()]);
     }
 }
