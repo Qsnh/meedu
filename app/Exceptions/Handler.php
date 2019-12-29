@@ -23,8 +23,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        MeeduErrorResponseJsonException::class,
         ApiV1Exception::class,
+        ApiV2Exception::class,
         ServiceException::class,
     ];
 
