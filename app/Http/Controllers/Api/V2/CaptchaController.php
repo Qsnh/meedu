@@ -47,6 +47,24 @@ class CaptchaController extends BaseController
         $this->cacheService = $cacheService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/captcha/image",
+     *     summary="图形验证码",
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="key",type="string",description="key"),
+     *                 @OA\Property(property="img",type="string",description="图片内容"),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function imageCaptcha()
     {
         $data = Captcha::create('default', true);
