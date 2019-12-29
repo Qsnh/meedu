@@ -47,23 +47,23 @@
 ## 当前功能概览
 
 - [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
-- [x] 视频在线点播
+- [x] 视频在线点播/视频加密播放
 - [x] 手机号注册
-- [x] 会员/单独购买两种收费模式
+- [x] 会员/课程单独购买两种收费模式
 - [x] 站内消息
-- [x] 支付宝支付/微信支付/个人收款方案(微信小微商户)
+- [x] 支付宝支付/微信支付/手动转账
 - [x] 单元测试
 - [x] 系统公告
 - [x] SEO优化
 - [x] 数据定时备份
 - [x] 友情链接
-- [x] QQ登录
-- [x] Github登录
+- [x] QQ登录/Github登录/微信登录
 - [x] 插件系统
+- [x] Swagger Api文档管理
 
 ## FAQ
 
-- [API接口](docs/api/v1/README.md)
+- [API接口](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [安装教程](docs/安装教程.md)
 - [MeEdu系统视频收费规则细节](docs/收费规则.md)
 - 如果您需要修改后台的界面，请关注这里 [后台Vue项目](https://github.com/Meedu/backend)

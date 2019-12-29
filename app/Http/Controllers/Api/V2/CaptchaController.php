@@ -12,7 +12,6 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Mews\Captcha\Captcha;
-use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Http\Requests\ApiV2\SmsRequest;
 use App\Services\Other\Services\SmsService;
