@@ -156,11 +156,16 @@ class ConfigService implements ConfigServiceInterface
         return $this->getTemplateId('password_reset');
     }
 
+    public function getMobileBindSmsTemplateId(): string
+    {
+        return $this->getTemplateId('mobile_bind');
+    }
+
     protected function getTemplateId($scene): string
     {
         $supplier = config('meedu.system.sms');
         $gateways = config('sms.gateways');
         $supplierConfig = $gateways[$supplier] ?? [];
-        return $supplierConfig['template'][$scene];
+        return $supplierConfig['template'][$scene] ?? '';
     }
 }

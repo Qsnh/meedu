@@ -54,15 +54,15 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $exception
+     * @param \Exception $exception
      *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
         if ($request->wantsJson()) {
-            if (Str::start($request->getUri(), '/backend')) {
-                // 后台的异常错误
+            // 后台的异常错误
+            if (Str::contains($request->getUri(), '/backend/api/v1')) {
                 exception_record($exception);
 
                 return response()->json([
@@ -70,8 +70,15 @@ class Handler extends ExceptionHandler
                     'message' => $exception->getMessage(),
                 ]);
             }
-
-            return exception_response($exception);
+            if (!($exception instanceof ApiV2Exception)) {
+                // apiV2异常错误
+                if (Str::contains($request->getUri(), '/api/v2')) {
+                    return response()->json([
+                        'code' => 1,
+                        'message' => __('error'),
+                    ]);
+                }
+            }
         }
 
         return parent::render($request, $exception);

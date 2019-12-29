@@ -64,11 +64,11 @@ class CaptchaController extends BaseController
      * )
      * @return \Illuminate\Http\JsonResponse
      */
-    public function imageCaptcha()
+    public function imageCaptcha(Captcha $captcha)
     {
-        $data = Captcha::create('default', true);
+        $data = $captcha->create('default', true);
 
-        return $this->success($data);
+        return $this->data($data);
     }
 
     /**
@@ -99,19 +99,7 @@ class CaptchaController extends BaseController
         $this->checkImageCaptcha();
         ['mobile' => $mobile, 'scene' => $scene] = $request->filldata();
         $code = str_pad(mt_rand(0, 999999), 6, 0, STR_PAD_LEFT);
-        $templateIdFuncs = [
-            'register' => function () {
-                return $this->configService->getRegisterSmsTemplateId();
-            },
-            'login' => function () {
-                return $this->configService->getLoginSmsTemplateId();
-            },
-            'password_reset' => function () {
-                return $this->configService->getPasswordResetSmsTemplateId();
-            },
-        ];
-        $templateId = $templateIdFuncs[$scene]();
-        $this->smsService->sendCode($mobile, $code, $templateId);
+        $this->smsService->sendCode($mobile, $code, $scene);
         $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
         $this->success();
     }

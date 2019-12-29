@@ -145,7 +145,7 @@ if (! function_exists('exception_record')) {
             'method' => $request->method(),
             'ip' => $request->getClientIps(),
         ];
-        \Log::error('exception', json_encode($data));
+        \Log::error('exception', $data);
     }
 }
 

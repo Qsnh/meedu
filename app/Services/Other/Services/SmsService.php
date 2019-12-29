@@ -13,11 +13,15 @@ namespace App\Services\Other\Services;
 
 use Overtrue\EasySms\EasySms;
 use App\Services\Other\Models\SmsRecord;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class SmsService implements SmsServiceInterface
 {
+    /**
+     * @var ConfigService
+     */
     protected $configService;
 
     public function __construct(ConfigServiceInterface $configService)
@@ -28,22 +32,43 @@ class SmsService implements SmsServiceInterface
     /**
      * @param $mobile
      * @param $code
-     * @param $templateId
+     * @param $scene
      *
      * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
      * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
-    public function sendCode($mobile, $code, $templateId): void
+    public function sendCode($mobile, $code, $scene): void
     {
-        $config = $this->configService->getSms();
-        $easySms = new EasySms($config);
+        $sceneMethod = sprintf('get%sSceneTemplateId', ucfirst(snake_case($scene)));
+        $templateId = $this->$sceneMethod();
+        $easySms = new EasySms($this->configService->getSms());
         $data = [
-            'content' => str_replace('#code#', $code, $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId]),
-            'template' => $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId],
+            'content' => str_replace('#code#', $code, $templateId),
+            'template' => $templateId,
             'data' => ['code' => $code],
         ];
         $sendResponse = $easySms->send($mobile, $data);
 
         SmsRecord::createData($mobile, $data, $sendResponse);
+    }
+
+    protected function getLoginSceneTemplateId()
+    {
+        return $this->configService->getLoginSmsTemplateId();
+    }
+
+    protected function getRegisterSceneTemplateId()
+    {
+        return $this->configService->getRegisterSmsTemplateId();
+    }
+
+    protected function getPasswordResetSceneTemplateId()
+    {
+        return $this->configService->getPasswordResetSmsTemplateId();
+    }
+
+    protected function getMobileBindSceneTemplateId()
+    {
+        return $this->configService->getMobileBindSmsTemplateId();
     }
 }

@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Mews\Captcha\Captcha;
 use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class BaseController
             throw new ApiV2Exception(__(ApiV2Constant::PLEASE_INPUT_IMAGE_CAPTCHA));
         }
         $imageCaptcha = request()->input('image_captcha', '');
-        if (!captcha_api_check($imageCaptcha, $imageKey)) {
+        if (!app()->make(Captcha::class)->check_api($imageCaptcha, $imageKey)) {
             throw new ApiV2Exception(__(ApiV2Constant::IMAGE_CAPTCHA_ERROR));
         }
     }
