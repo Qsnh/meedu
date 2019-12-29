@@ -13,14 +13,14 @@ namespace App\Constant;
 
 class ApiV2Constant
 {
-    const PARAMS_ERROR = '参数错误';
-    const PLEASE_INPUT_IMAGE_CAPTCHA = '请输入图片验证码';
-    const IMAGE_CAPTCHA_ERROR = '图片验证码错误';
+    const PARAMS_ERROR = 'params error';
+    const PLEASE_INPUT_IMAGE_CAPTCHA = 'image_captcha.required';
+    const IMAGE_CAPTCHA_ERROR = 'image_captcha_error';
 
-    const USER_MOBILE_NOT_EXISTS = '手机号不存在';
-    const MOBILE_HAS_EXISTS = '手机号已经存在';
-    const MOBILE_OR_PASSWORD_ERROR = '手机号不存在或密码错误';
-    const MOBILE_CODE_ERROR = '手机验证码错误';
+    const USER_MOBILE_NOT_EXISTS = 'mobile not exists';
+    const MOBILE_HAS_EXISTS = 'mobile has exists';
+    const MOBILE_OR_PASSWORD_ERROR = 'mobile not exists or password error';
+    const MOBILE_CODE_ERROR = 'mobile code error';
 
     const SMS_CODE_EXPIRE = 60;
     const MOBILE_CODE_CACHE_KEY = 'm:%s';
