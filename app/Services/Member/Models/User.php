@@ -12,9 +12,9 @@
 namespace App\Services\Member\Models;
 
 use Laravel\Passport\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -33,7 +33,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'avatar', 'nick_name', 'mobile', 'password',
+        'avatar', 'nick_name', 'c', 'password', 'mobile',
         'is_lock', 'is_active', 'role_id', 'role_expired_at',
     ];
 

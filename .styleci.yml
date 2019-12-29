@@ -1,4 +1,4 @@
-preset: laravel
+preset: psr2
 
 risky: false
 

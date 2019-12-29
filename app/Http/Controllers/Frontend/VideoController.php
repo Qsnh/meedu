@@ -76,8 +76,14 @@ class VideoController extends FrontendController
         $description = $video['seo_description'];
 
         return v('frontend.video.show', compact(
-            'video', 'title', 'keywords', 'description',
-            'comments', 'commentUsers', 'videos', 'chapters',
+            'video',
+            'title',
+            'keywords',
+            'description',
+            'comments',
+            'commentUsers',
+            'videos',
+            'chapters',
             'canSeeVideo'
         ));
     }

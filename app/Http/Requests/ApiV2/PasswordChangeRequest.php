@@ -11,12 +11,11 @@
 
 namespace App\Http\Requests\ApiV2;
 
-class PasswordLoginRequest extends BaseRequest
+class PasswordChangeRequest extends BaseRequest
 {
     public function rules()
     {
         return [
-            'mobile' => 'required',
             'password' => 'required',
         ];
     }
@@ -24,15 +23,13 @@ class PasswordLoginRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => '请输入手机号',
-            'password.required' => '请输入密码',
+            'password.required' => __('password.required'),
         ];
     }
 
     public function filldata()
     {
         return [
-            'mobile' => $this->post('mobile'),
             'password' => $this->post('password'),
         ];
     }

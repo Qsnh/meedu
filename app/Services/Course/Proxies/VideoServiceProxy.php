@@ -13,8 +13,8 @@ namespace App\Services\Course\Proxies;
 
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
-use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Services\VideoService;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoServiceProxy extends ServiceProxy implements VideoServiceInterface
 {

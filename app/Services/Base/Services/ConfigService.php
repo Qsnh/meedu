@@ -130,4 +130,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.system.limiter.sms');
     }
+
+    public function getImageStorageDisk(): string
+    {
+        return config('meedu.upload.image.disk');
+    }
+
+    public function getImageStoragePath(): string
+    {
+        return config('meedu.upload.image.path');
+    }
 }

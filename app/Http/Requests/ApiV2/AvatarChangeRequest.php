@@ -9,18 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Requests\Frontend;
+namespace App\Http\Requests\ApiV2;
 
 use Illuminate\Support\Facades\Storage;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-class UploadImageRequest extends BaseRequest
+class AvatarChangeRequest extends BaseRequest
 {
     public function rules()
     {
         return [
-            'file' => 'required|image|size:2048',
+            'file' => 'required|image|size:1024',
         ];
     }
 
@@ -29,7 +29,7 @@ class UploadImageRequest extends BaseRequest
         return [
             'file.required' => __('file.required'),
             'file.image' => __('file.image'),
-            'file.size' => __('file.size', ['size' => '2M']),
+            'file.size' => __('file.size', ['size' => '1M']),
         ];
     }
 
@@ -39,9 +39,13 @@ class UploadImageRequest extends BaseRequest
          * @var ConfigService
          */
         $configService = app()->make(ConfigServiceInterface::class);
-        $disk = $configService->getImageStorageDisk();
-        $path = $this->file('file')->store($configService->getImageStoragePath(), compact('disk'));
+        $path = $this->file('file')->store($configService->getImageStoragePath(), [
+            'disk' => $configService->getImageStorageDisk(),
+        ]);
 
-        return [$path, Storage::disk($disk)->url($path)];
+        return [
+            'path' => $path,
+            'url' => Storage::disk($configService->getImageStorageDisk())->url($path),
+        ];
     }
 }

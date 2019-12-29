@@ -13,8 +13,8 @@ namespace App\Services\Course\Proxies;
 
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
-use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Services\CourseService;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class CourseServiceProxy extends ServiceProxy implements CourseServiceInterface
 {
