@@ -11,23 +11,24 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Illuminate\Http\Request;
+use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Member\Services\RoleService;
-use App\Services\Member\Services\UserService;
-use App\Services\Order\Services\OrderService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
-use App\Services\Member\Services\SocialiteService;
-use App\Services\Member\Interfaces\RoleServiceInterface;
-use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Services\RoleService;
+use App\Services\Member\Services\SocialiteService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Order\Services\OrderService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @OpenApi\Annotations\Schemas(
@@ -130,7 +131,8 @@ class MemberController extends BaseController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -167,6 +169,7 @@ class MemberController extends BaseController
      *     path="/member/password",
      *     summary="修改密码",
      *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="mobile_code",description="手机短信验证码",type="string"),
      *         @OA\Property(property="password",description="密码",type="string"),
      *     )),
@@ -187,7 +190,11 @@ class MemberController extends BaseController
     public function passwordChange(PasswordChangeRequest $request)
     {
         $this->mobileCodeCheck();
-        ['password' => $password] = $request->filldata();
+        ['password' => $password, 'mobile' => $mobile] = $request->filldata();
+        $user = $this->userService->find($this->id());
+        if ($user['mobile'] != $mobile) {
+            return $this->error(ApiV2Constant::MOBILE_CODE_ERROR);
+        }
         $this->userService->changePassword($this->id(), $password);
 
         return $this->success();

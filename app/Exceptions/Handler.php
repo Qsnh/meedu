@@ -11,11 +11,11 @@
 
 namespace App\Exceptions;
 
-use Exception;
-use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
 {

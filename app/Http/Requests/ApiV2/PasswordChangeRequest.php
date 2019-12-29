@@ -16,6 +16,8 @@ class PasswordChangeRequest extends BaseRequest
     public function rules()
     {
         return [
+            'mobile' => 'required',
+            'mobile_code' => 'required',
             'password' => 'required',
         ];
     }
@@ -23,6 +25,8 @@ class PasswordChangeRequest extends BaseRequest
     public function messages()
     {
         return [
+            'mobile.required' => __('mobile.required'),
+            'mobile_code.required' => __('mobile_code.required'),
             'password.required' => __('password.required'),
         ];
     }
@@ -31,6 +35,7 @@ class PasswordChangeRequest extends BaseRequest
     {
         return [
             'password' => $this->post('password'),
+            'mobile' => $this->post('mobile'),
         ];
     }
 }

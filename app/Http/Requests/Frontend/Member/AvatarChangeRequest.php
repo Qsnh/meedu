@@ -21,7 +21,7 @@ class AvatarChangeRequest extends BaseRequest
     public function rules()
     {
         return [
-            'file' => 'required|image|size:1024',
+            'file' => 'required|image|max:1024',
         ];
     }
 
@@ -30,7 +30,7 @@ class AvatarChangeRequest extends BaseRequest
         return [
             'file.required' => __('file.required'),
             'file.image' => __('file.image'),
-            'file.size' => __('file.size', ['size' => '1M']),
+            'file.max' => __('file.max', ['size' => '1M']),
         ];
     }
 

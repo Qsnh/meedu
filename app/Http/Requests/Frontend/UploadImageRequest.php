@@ -20,7 +20,7 @@ class UploadImageRequest extends BaseRequest
     public function rules()
     {
         return [
-            'file' => 'required|image|size:2048',
+            'file' => 'required|image|max:2048',
         ];
     }
 
@@ -29,7 +29,7 @@ class UploadImageRequest extends BaseRequest
         return [
             'file.required' => __('file.required'),
             'file.image' => __('file.image'),
-            'file.size' => __('file.size', ['size' => '2M']),
+            'file.max' => __('file.max', ['size' => '2M']),
         ];
     }
 

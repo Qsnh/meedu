@@ -19,7 +19,7 @@
   "mobile not exists or password error": "手机号不存在或密码错误",
   "file.required": "请选择文件",
   "file.image": "请上传有效图片",
-  "file.size": "文件大小不能超过 :size",
+  "file.max": "文件大小不能超过 :size",
   "title.member.password.change": "修改密码",
   "title.member.bind.mobile": "绑定手机号",
   "title.member.avatar": "更换头像",
