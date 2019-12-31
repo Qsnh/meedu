@@ -48,43 +48,6 @@ if (! function_exists('menu_active')) {
         return request()->route()->getName() == $routeName ? 'active' : '';
     }
 }
-if (! function_exists('menu_is_active')) {
-    /**
-     * 指定路由名是否与当前访问的路由名相同.
-     *
-     * @param $routeName
-     *
-     * @return bool
-     */
-    function menu_is_active(int $menuId)
-    {
-        $currentUrl = trim(request()->url());
-        $menu = \App\Models\AdministratorMenu::find($menuId);
-        if (! $menu) {
-            return false;
-        }
-        $children = $menu->children;
-        $filter = function (string $url) {
-            $url = str_replace(['index', '/index'], '', $url);
-
-            return trim($url);
-        };
-        if ($children->isEmpty()) {
-            $url = $filter($menu->url);
-
-            return preg_match("#{$url}#", $currentUrl);
-        }
-        foreach ($children as $child) {
-            $url = $filter($child->url);
-            $result = preg_match("#{$url}#", $currentUrl);
-            if ($result) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
 
 if (! function_exists('exception_response')) {
     /**
@@ -295,79 +258,6 @@ if (! function_exists('aliyun_sdk_client')) {
     }
 }
 
-if (! function_exists('backend_menus')) {
-    /**
-     * 获取当前管理员的专属菜单.
-     *
-     * @return array|mixed
-     */
-    function backend_menus()
-    {
-        $user = admin();
-        if (! $user) {
-            return collect([]);
-        }
-        if ($user->isSuper()) {
-            return (new \App\Models\AdministratorMenu())->menus();
-        }
-        $permissionIds = $user->permissionIds();
-        $permissionIds->push(0);
-        $menus = \App\Models\AdministratorMenu::with('children')
-            ->whereIn('permission_id', $permissionIds)
-            ->rootLevel()
-            ->orderAsc()
-            ->get();
-        $menus = $menus->filter(function ($menu) use ($permissionIds) {
-            if ($menu->children->isEmpty()) {
-                return false;
-            }
-            $permissionIds = $permissionIds->toArray();
-            $children = $menu->children->filter(function ($child) use ($permissionIds) {
-                return in_array($child->permission_id, $permissionIds);
-            });
-            $menu->children = $children;
-
-            return $children->count() != 0;
-        });
-
-        return $menus;
-    }
-}
-
-if (! function_exists('gen_order_no')) {
-    /**
-     * 生成订单号.
-     *
-     * @param \App\User $user
-     *
-     * @return string
-     */
-    function gen_order_no(\App\User $user)
-    {
-        $userId = str_pad($user->id, 10, 0, STR_PAD_LEFT);
-        $time = date('His');
-        $rand = mt_rand(10, 99);
-
-        return $time.$rand.$userId;
-    }
-}
-
-if (! function_exists('input_equal')) {
-    /**
-     * GET参数是否等于指定值
-     *
-     * @param $field
-     * @param $value
-     * @param string $default
-     *
-     * @return bool
-     */
-    function input_equal($field, $value, $default = '')
-    {
-        return request()->input($field, $default) == $value;
-    }
-}
-
 if (! function_exists('v')) {
     /**
      * 重写视图.
@@ -407,27 +297,6 @@ if (! function_exists('duration_humans')) {
         }
 
         return $minute ? sprintf('%02d:%02d', $minute, $second) : sprintf('00:%02d', $second);
-    }
-}
-
-if (! function_exists('view_num_humans')) {
-    /**
-     * @param $num
-     *
-     * @return string
-     */
-    function view_num_humans($num)
-    {
-        if ($num instanceof \App\Models\Video) {
-            $num = $num->view_num;
-        }
-        if ($num < 1000) {
-            return $num;
-        } elseif ($num < 10000) {
-            return intdiv($num, 1000).'k次';
-        }
-
-        return intdiv($num, 10000).'w次';
     }
 }
 
