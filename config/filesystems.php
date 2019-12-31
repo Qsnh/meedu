@@ -63,6 +63,21 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'domains' => [
+                'default' => env('QINIU_DOMAIN'),
+                'https' => env('QINIU_DOMAIN'),
+                'custom' => '',
+            ],
+            'access_key' => env('QINIU_ACCESS_KEY'),
+            'secret_key' => env('QINIU_SECRET_KEY'),
+            'bucket' => env('QINIU_BUCKET'),
+            'notify_url' => '',
+            'access' => 'public',
+            'hotlink_prevention_key' => null,
+        ],
+
     ],
 
 ];

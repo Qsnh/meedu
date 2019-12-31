@@ -36,7 +36,8 @@
         "spatie/laravel-backup": "5.10.1",
         "symfony/process": "^4.2",
         "tymon/jwt-auth": "1.0.0-rc.5",
-        "yansongda/laravel-pay": "^2.0"
+        "yansongda/laravel-pay": "^2.0",
+        "zgldh/qiniu-laravel-storage": "^0.10.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
