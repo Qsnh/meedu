@@ -13,11 +13,8 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use App\Meedu\Setting;
-use App\Models\CourseComment;
-use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use App\Observers\CourseCommentObserver;
 use App\Services\Base\Providers\BaseServiceRegisterProvider;
 use App\Services\Order\Providers\OrderServiceRegisterProvider;
 use App\Services\Other\Providers\OtherServiceRegisterProvider;
@@ -35,10 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('zh');
         // 数据库
         Schema::defaultStringLength(191);
-        // 模型事件
-        CourseComment::observe(CourseCommentObserver::class);
         // 自定义配置同步
         $this->app->make(Setting::class)->sync();
+        // 多模板注册
         $this->registerViewNamespace();
     }
 
@@ -47,11 +43,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->environment(['dev'])) {
+        if ($this->app->environment(['dev', 'local'])) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
-        // 注册服务
+        // 服务注册
         $this->app->register(BaseServiceRegisterProvider::class);
         $this->app->register(MemberServiceRegisterProvider::class);
         $this->app->register(CourseServiceRegisterProvider::class);
