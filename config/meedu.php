@@ -71,6 +71,15 @@ return [
             'pc' => 'scan',
             'enabled' => 0,
         ],
+        'handPay' => [
+            'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
+            'name' => '手动打款',
+            'sign' => 'handPay',
+            'default_method' => 'hand',
+            'pc' => 'hand',
+            'enabled' => 0,
+            'introduction' => '',
+        ],
     ],
 
     // SEO

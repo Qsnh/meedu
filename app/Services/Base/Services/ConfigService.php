@@ -168,4 +168,9 @@ class ConfigService implements ConfigServiceInterface
         $supplierConfig = $gateways[$supplier] ?? [];
         return $supplierConfig['template'][$scene] ?? '';
     }
+
+    public function getHandPayIntroducation(): string
+    {
+        return config('meedu.payment.hand.introduction') ?? '';
+    }
 }

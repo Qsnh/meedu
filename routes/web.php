@@ -89,7 +89,7 @@ Route::group([
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
     Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
-    Route::get('/order/pay/eshanghu/{order_id}', 'OrderController@eshanghu')->name('order.eshanghu.wechat');
+    Route::get('/order/pay/handPay/{order_id}', 'OrderController@handPay')->name('order.pay.handPay');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');

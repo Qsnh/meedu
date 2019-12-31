@@ -16,12 +16,20 @@ use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends Controller
 {
+    /**
+     * @var OrderService
+     */
     protected $orderService;
+    /**
+     * @var ConfigService
+     */
     protected $configService;
 
     public function __construct(
@@ -43,10 +51,9 @@ class OrderController extends Controller
     /**
      * @param Request $request
      * @param $orderId
-     *
      * @return mixed
-     *
      * @throws SystemException
+     * @throws \App\Exceptions\ServiceException
      */
     public function pay(Request $request, $orderId)
     {
@@ -55,7 +62,7 @@ class OrderController extends Controller
         $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
         $payment = $order['payment'] ?: $request->post('payment');
         $paymentMethod = $payments[$payment][FrontendConstant::PAYMENT_SCENE_PC] ?? '';
-        if (! $paymentMethod) {
+        if (!$paymentMethod) {
             throw new SystemException(__('payment method not exists'));
         }
 
@@ -91,14 +98,14 @@ class OrderController extends Controller
 
     /**
      * @param $orderId
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     * @throws \App\Exceptions\ServiceException
      */
     public function wechat($orderId)
     {
         $order = $this->orderService->findUser($orderId);
         $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']));
-        if (! $wechatData) {
+        if (!$wechatData) {
             $this->orderService->cancel($order['id']);
             flash(__('error'));
 
@@ -108,5 +115,16 @@ class OrderController extends Controller
         $qrcodeUrl = $wechatData['code_url'];
 
         return v('frontend.order.wechat', compact('qrcodeUrl', 'order'));
+    }
+
+    /**
+     * @param $orderId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function handPay($orderId)
+    {
+        $order = $this->orderService->findUser($orderId);
+        $intro = $this->configService->getHandPayIntroducation();
+        return v('frontend.order.hand_pay', compact('order', 'intro'));
     }
 }

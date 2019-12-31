@@ -28,12 +28,7 @@
                                     <td>{{ implode(',', array_column($order['goods'] ?? [], 'goods_text')) }}</td>
                                     <td>{{ $order['created_at'] }}</td>
                                     <td>
-                                        @if($order['continue_pay'])
-                                            <a href="{{route('order.show', [$order['order_id']])}}"
-                                               class="btn btn-primary btn-sm">继续支付</a>
-                                        @else
-                                            <span class="badge badge-default">{{$order['status_text']}}</span>
-                                        @endif
+                                        <span class="badge badge-default">{{$order['status_text']}}</span>
                                     </td>
                                 </tr>
                             @empty

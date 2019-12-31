@@ -11,11 +11,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
-use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class FrontendController extends BaseController
 {
@@ -38,7 +38,7 @@ class FrontendController extends BaseController
      */
     protected function paginator($list, $total, $page, $pageSize)
     {
-        return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => request()->path()]);
+        return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => sprintf('/%s', request()->path())]);
     }
 
     protected function user()
