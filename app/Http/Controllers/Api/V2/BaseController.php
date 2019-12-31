@@ -43,14 +43,7 @@ class BaseController
     protected $guard = 'apiv2';
 
     /**
-     * @OA\Get(
-     *     path="/captcha/image",
-     *     summary="图形验证码",
-     *     @OA\Response(
-     *         description="",response=200,
-     *     )
-     * )
-     *
+     * 图形验证码校验
      * @throws ApiV2Exception
      */
     protected function checkImageCaptcha()
@@ -102,7 +95,7 @@ class BaseController
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile);
         $code = $cacheService->pull($key, null);
-        // 取出来只有就删除，防止恶意碰撞攻击
+        // 取出来就删除，防止恶意碰撞攻击
         $code && $cacheService->forget($key);
         if ($code != $mobileCode) {
             throw new ApiV2Exception(__(ApiV2Constant::MOBILE_CODE_ERROR));
