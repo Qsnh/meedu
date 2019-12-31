@@ -29,6 +29,13 @@ return [
                 'icon' => '<i class="fa fa-qq" aria-hidden="true"></i>',
                 'enabled' => 0,
             ],
+            // 微信登录
+            'weixinweb' => [
+                'app' => 'weixin',
+                'name' => 'Wechat',
+                'icon' => '<i class="fa fa-weixin" aria-hidden="true"></i>',
+                'enabled' => 0,
+            ],
         ],
     ],
 

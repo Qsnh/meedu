@@ -8,7 +8,7 @@
 
 return [
     'vod' => [
-        'secret_id'  => '',
+        'secret_id' => '',
         'secret_key' => '',
     ],
 ];

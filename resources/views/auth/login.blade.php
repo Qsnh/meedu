@@ -35,7 +35,7 @@
             <div class="divider">使用下面账号登录</div>
             <div class="text-center">
                 @foreach(enabled_socialites() as $socialite)
-                    <a class="btn btn-square btn-dark" href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
+                    <a class="btn btn-square btn-dark mr-2" href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
                 @endforeach
             </div>
             @endif

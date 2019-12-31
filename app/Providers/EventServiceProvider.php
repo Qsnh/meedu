@@ -32,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         'SocialiteProviders\Manager\SocialiteWasCalled' => [
             'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
         ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            'SocialiteProviders\\WeixinWeb\\WeixinWebExtendSocialite@handle',
+        ],
         'App\Events\CourseCommentEvent' => [
             'App\Listeners\CourseCommentEvent\NotifyOwnerListener',
             'App\Listeners\CourseCommentEvent\AtEventListener',
