@@ -80,3 +80,18 @@
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
 | `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
+
+## 捐赠
+
+<p>
+<img src="/docs/contact/BTC钱包.png" width=200>
+<img src="/docs/contact/ETH钱包.png" width=200>
+<img src="/docs/contact/EOS钱包.png" width=200>
+</p>
+
+## 联系我们
+
+<p>
+<img src="/docs/contact/qq群.png" width=200>
+<img src="/docs/contact/wechat.png" width=200>
+</p>
