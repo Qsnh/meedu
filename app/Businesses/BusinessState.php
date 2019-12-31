@@ -11,17 +11,43 @@
 
 namespace App\Businesses;
 
+use Carbon\Carbon;
 use App\Constant\FrontendConstant;
+use App\Services\Member\Services\UserService;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class BusinessState
 {
-    public function canSeeVideo($user, array $course, array $video): bool
+
+    /**
+     * @param array $user
+     * @param array $course
+     * @param array $video
+     * @return bool
+     */
+    public function canSeeVideo(array $user, array $course, array $video): bool
     {
-        return false;
-        // todo
+        /**
+         * @var $userService UserService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        // 如果video的价格为0那么可以直接观看
         if ($video['charge'] == 0) {
             return true;
         }
+        // 如果用户买了课程可以直接观看
+        if ($userService->hasCourse($user['id'], $course['id'])) {
+            return true;
+        }
+        // 如果用户买了当前视频可以直接观看
+        if ($userService->hasVideo($user['id'], $video['id'])) {
+            return true;
+        }
+        // 如果用户买了会员可以直接观看
+        if ($user['role_id'] && Carbon::now()->lt($user['role_expired_at'])) {
+            return true;
+        }
+        return false;
     }
 
     /**

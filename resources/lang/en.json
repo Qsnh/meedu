@@ -59,5 +59,6 @@
   "course": "Course",
   "video": "Video",
   "role": "Package",
-  "register success": "register success"
+  "register success": "register success",
+  "text_trans_need_bind_mobile": "mobile not bind，please  <a href=':link'><b>bind</b></a>"
 }

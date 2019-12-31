@@ -59,5 +59,6 @@
   "course": "课程",
   "video": "视频",
   "role": "套餐",
-  "register success": "注册成功"
+  "register success": "注册成功",
+  "text_trans_need_bind_mobile": "您未绑定手机号，请 <a href=':link'><b>点击绑定</b></a>"
 }

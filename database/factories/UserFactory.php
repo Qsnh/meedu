@@ -25,5 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'credit3' => mt_rand(0, 10000),
         'is_active' => $faker->randomElement([User::ACTIVE_NO, User::ACTIVE_YES]),
         'is_lock' => $faker->randomElement([User::LOCK_NO, User::LOCK_YES]),
+        'role_id' => 0,
+        'role_expired_at' => \Carbon\Carbon::now(),
     ];
 });

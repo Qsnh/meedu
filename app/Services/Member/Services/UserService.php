@@ -251,6 +251,16 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @param int $userId
+     * @param int $courseId
+     * @return bool
+     */
+    public function hasCourse(int $userId, int $courseId): bool
+    {
+        return UserCourse::whereUserId($userId)->whereCourseId($courseId)->exists();
+    }
+
+    /**
      * @param int $page
      * @param int $pageSize
      *
@@ -264,6 +274,16 @@ class UserService implements UserServiceInterface
         $list = $query->forPage($page, $pageSize)->get()->toArray();
 
         return compact('list', 'total');
+    }
+
+    /**
+     * @param int $userId
+     * @param int $videoId
+     * @return bool
+     */
+    public function hasVideo(int $userId, int $videoId): bool
+    {
+        return UserVideo::whereUserId($userId)->whereVideoId($videoId)->exists();
     }
 
     /**

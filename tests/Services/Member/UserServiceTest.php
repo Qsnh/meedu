@@ -4,6 +4,8 @@
 namespace Tests\Services\Member;
 
 
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\Video;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
@@ -211,6 +213,40 @@ class UserServiceTest extends TestCase
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
         $this->assertEquals($expiredAt->toDateTimeString(), $user->role_expired_at);
+    }
+
+    public function test_hasCourse()
+    {
+        $user = factory(User::class)->create([
+            'role_id' => 0,
+        ]);
+        $course = factory(Course::class)->create();
+
+        $this->assertFalse($this->service->hasCourse($user->id, $course->id));
+
+        factory(UserCourse::class)->create([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+        ]);
+
+        $this->assertTrue($this->service->hasCourse($user->id, $course->id));
+    }
+
+    public function test_hasVideo()
+    {
+        $user = factory(User::class)->create([
+            'role_id' => 0,
+        ]);
+        $video = factory(Video::class)->create();
+
+        $this->assertFalse($this->service->hasVideo($user->id, $video->id));
+
+        factory(UserVideo::class)->create([
+            'user_id' => $user->id,
+            'video_id' => $video->id,
+        ]);
+
+        $this->assertTrue($this->service->hasVideo($user->id, $video->id));
     }
 
 }

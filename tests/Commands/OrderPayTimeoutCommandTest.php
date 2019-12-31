@@ -6,15 +6,11 @@ namespace Tests\Commands;
 
 use App\Models\Order;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Str;
-use Tests\CreatesApplication;
+use Tests\OriginalTestCase;
 
-class OrderPayTimeoutCommandTest extends TestCase
+class OrderPayTimeoutCommandTest extends OriginalTestCase
 {
-
-    use CreatesApplication, DatabaseMigrations;
 
     public function test_order_pay_timeout()
     {

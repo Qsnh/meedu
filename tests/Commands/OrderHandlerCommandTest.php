@@ -5,15 +5,11 @@ namespace Tests\Commands;
 
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Str;
-use Tests\CreatesApplication;
+use Tests\OriginalTestCase;
 
-class OrderHandlerCommandTest extends TestCase
+class OrderHandlerCommandTest extends OriginalTestCase
 {
-
-    use CreatesApplication, DatabaseMigrations;
 
     /**
      * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
