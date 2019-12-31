@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="{{$keywords ?? ''}}">
     <meta name="description" content="{{$description ?? ''}}">
-    <title>{{Auth::check() ? Auth::user()->nick_name.' - ' : ''}}{{$title ?? 'MeEdu'}}</title>
+    <title>{{Auth::check() ? $user['nick_name'].' - ' : ''}}{{$title ?? 'MeEdu'}}</title>
     <!-- Styles -->
     <link href="{{asset('/frontend/assets/css/core.min.css')}}" rel="stylesheet">
     <link href="{{asset('/frontend/assets/css/app.min.css')}}" rel="stylesheet">
