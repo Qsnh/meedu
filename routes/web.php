@@ -19,7 +19,7 @@ Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middlewa
 Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
 Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['throttle:5,1', 'sms.check']);
 
-Route::get('/logout', 'Frontend\LoginController@logout')->name('logout');
+Route::post('/logout', 'Frontend\LoginController@logout')->name('logout');
 
 Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->name('password.request');
 Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:5,1', 'sms.check']);

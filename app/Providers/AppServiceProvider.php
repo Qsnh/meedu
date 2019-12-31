@@ -28,8 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 中文
-        Carbon::setLocale('zh');
         // 数据库
         Schema::defaultStringLength(191);
         // 自定义配置同步

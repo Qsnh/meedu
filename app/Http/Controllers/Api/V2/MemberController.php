@@ -89,7 +89,7 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
  *         schema="Notification",
  *         type="object",
  *         title="消息",
- *         @OA\Property(property="content",type="string",description="消息内容"),
+ *         @OA\Property(property="message",type="string",description="消息内容"),
  *     ),
  * )
  */

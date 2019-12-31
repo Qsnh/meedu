@@ -20,6 +20,14 @@ use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Other\Services\AnnouncementService;
+use App\Services\Member\Services\NotificationService;
+use App\Services\Other\Interfaces\NavServiceInterface;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Other\Interfaces\AnnouncementServiceInterface;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class GlobalShareMiddleware
 {
@@ -27,40 +35,48 @@ class GlobalShareMiddleware
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param \Closure $next
      *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         /**
-         * @var UserService
+         * @var $userService UserService
          */
-        $userService = app()->make(UserService::class);
+        $userService = app()->make(UserServiceInterface::class);
         /**
-         * @var NavService
+         * @var $navService NavService
          */
-        $navService = app()->make(NavService::class);
+        $navService = app()->make(NavServiceInterface::class);
         /**
-         * @var CourseService
+         * @var $courseService CourseService
          */
-        $courseService = app()->make(CourseService::class);
+        $courseService = app()->make(CourseServiceInterface::class);
         /**
-         * @var VideoService
+         * @var $videoServices VideoService
          */
-        $videoServices = app()->make(VideoService::class);
+        $videoServices = app()->make(VideoServiceInterface::class);
         /**
-         * @var RoleService
+         * @var $roleServices RoleService
          */
-        $roleServices = app()->make(RoleService::class);
+        $roleServices = app()->make(RoleServiceInterface::class);
         /**
-         * @var AnnouncementService
+         * @var $announcementService AnnouncementService
          */
-        $announcementService = app()->make(AnnouncementService::class);
+        $announcementService = app()->make(AnnouncementServiceInterface::class);
+        /**
+         * @var $notificationService NotificationService
+         */
+        $notificationService = app()->make(NotificationServiceInterface::class);
 
         // user变量共享
         $user = Auth::check() ? $userService->find(Auth::id(), ['role']) : [];
         View::share('user', $user);
+
+        // 未读消息数量
+        $unreadMessageCount = Auth::check() ? $notificationService->getUnreadCount() : 0;
+        View::share('gUnreadMessageCount', $unreadMessageCount);
 
         // nav
         $navs = $navService->all();

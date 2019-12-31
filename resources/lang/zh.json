@@ -54,7 +54,7 @@
   "ban_bind_repeat": "请勿重复绑定",
   "notification_content_order_paid": "订单 :orderId 已支付",
   "notification_content_register": "感谢您注册成为本站会员",
-  "notification_content_at": "用户 :atUser 在 :scene 提到您了，<a href=':link'>点击查看</a>",
+  "notification_content_at": "用户 :atUser 在 <a href=':link'>:scene</a> 提到了您",
   "notification_content_bind_mobile": "请绑定手机号",
   "course": "课程",
   "video": "视频",

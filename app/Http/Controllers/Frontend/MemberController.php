@@ -13,7 +13,12 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\MemberRepository;
+use App\Services\Member\Services\RoleService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -26,11 +31,29 @@ use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
 class MemberController extends FrontendController
 {
+    /**
+     * @var UserService
+     */
     protected $userService;
+    /**
+     * @var CourseService
+     */
     protected $courseService;
+    /**
+     * @var VideoService
+     */
     protected $videoService;
+    /**
+     * @var RoleService
+     */
     protected $roleService;
+    /**
+     * @var OrderService
+     */
     protected $orderService;
+    /**
+     * @var SocialiteService
+     */
     protected $socialiteService;
 
     public function __construct(
@@ -113,7 +136,7 @@ class MemberController extends FrontendController
      * 头像更换.
      *
      * @param AvatarChangeRequest $request
-     * @param MemberRepository    $repository
+     * @param MemberRepository $repository
      *
      * @return \Illuminate\Http\RedirectResponse
      */

@@ -80,7 +80,7 @@
             </li>
             @auth
             <li class="d-none d-md-block">
-                <a  href="{{route('member.messages')}}" class="topbar-btn {{ count([]) > 0 ? 'has-new' : '' }}">
+                <a  href="{{route('member.messages')}}" class="topbar-btn {{ $gUnreadMessageCount > 0 ? 'has-new' : '' }}">
                     <i class="ti-bell"></i>
                 </a>
             </li>

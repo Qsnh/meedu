@@ -13,16 +13,18 @@ namespace App\Services\Member\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class SimpleMessageNotification extends Notification
+class SimpleMessageNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public $message;
 
     /**
-     * Create a new notification instance.
+     * SimpleMessageNotification constructor.
+     * @param string $message
      */
     public function __construct(string $message)
     {
