@@ -272,4 +272,13 @@ class UserService implements UserServiceInterface
             'role_expired_at' => Carbon::parse($expiredAt),
         ]);
     }
+
+    /**
+     * @param array $nicknames
+     * @return array
+     */
+    public function getUsersInNicknames(array $nicknames): array
+    {
+        return User::whereIn('nick_name', $nicknames)->get(['id', 'nick_name'])->keyBy('nick_name')->toArray();
+    }
 }

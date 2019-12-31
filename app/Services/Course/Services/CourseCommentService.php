@@ -57,4 +57,13 @@ class CourseCommentService implements CourseCommentServiceInterface
 
         return $comment->toArray();
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function find(int $id): array
+    {
+        return CourseComment::findOrFail($id)->toArray();
+    }
 }

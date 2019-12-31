@@ -15,8 +15,10 @@ use App\Events\CourseCommentEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyOwnerListener
+class NotifyOwnerListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *
@@ -35,6 +37,6 @@ class NotifyOwnerListener
      */
     public function handle(CourseCommentEvent $event)
     {
-        //
+        // todo
     }
 }

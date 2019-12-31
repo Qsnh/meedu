@@ -14,27 +14,35 @@ namespace App\Listeners\UserRegisterEvent;
 use App\Events\UserRegisterEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Services\Member\Services\NotificationService;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
-class WelcomeMessageListener
+class WelcomeMessageListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * @var NotificationService
      */
-    public function __construct()
+    protected $notificationService;
+
+    /**
+     * WelcomeMessageListener constructor.
+     * @param NotificationServiceInterface $notificationService
+     */
+    public function __construct(NotificationServiceInterface $notificationService)
     {
-        //
+        $this->notificationService = $notificationService;
     }
 
     /**
      * Handle the event.
      *
-     * @param  UserRegisterEvent  $event
+     * @param UserRegisterEvent $event
      * @return void
      */
     public function handle(UserRegisterEvent $event)
     {
-        //
+        $this->notificationService->notifyRegisterMessage($event->userId);
     }
 }

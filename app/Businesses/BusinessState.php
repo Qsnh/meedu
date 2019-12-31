@@ -35,4 +35,15 @@ class BusinessState
     {
         return $order['status'] == FrontendConstant::ORDER_PAID;
     }
+
+    /**
+     * 是否需要绑定手机号
+     *
+     * @param array $user
+     * @return bool
+     */
+    public function isNeedBindMobile(array $user): bool
+    {
+        return substr($user['mobile'], 0, 1) != 1;
+    }
 }

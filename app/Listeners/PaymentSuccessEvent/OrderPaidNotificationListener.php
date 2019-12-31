@@ -12,11 +12,15 @@
 namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Events\PaymentSuccessEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 
-class OrderPaidNotificationListener
+class OrderPaidNotificationListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * @var NotificationService
      */

@@ -15,8 +15,10 @@ use App\Events\UserLoginEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SafeAlertListener
+class SafeAlertListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *
@@ -35,6 +37,6 @@ class SafeAlertListener
      */
     public function handle(UserLoginEvent $event)
     {
-        //
+        // todo
     }
 }

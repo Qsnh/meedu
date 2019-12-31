@@ -18,6 +18,7 @@ use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class NotificationService implements NotificationServiceInterface
 {
+
     /**
      * @param int $id
      * @param string $orderId
@@ -41,6 +42,15 @@ class NotificationService implements NotificationServiceInterface
     }
 
     /**
+     * @param int $id
+     */
+    public function notifyBindMobileMessage(int $id): void
+    {
+        $user = User::findOrFail($id);
+        $user->notify(new SimpleMessageNotification(__('notification_content_bind_mobile')));
+    }
+
+    /**
      * @param int $userId
      * @param int $atUserId
      * @param string $scene
@@ -50,8 +60,8 @@ class NotificationService implements NotificationServiceInterface
     {
         $user = User::findOrFail($userId);
         $atUser = User::findOrFail($atUserId);
-        $user->notify(new SimpleMessageNotification(__('notification_content_at', [
-            'atUser' => $atUser->nick_name,
+        $atUser->notify(new SimpleMessageNotification(__('notification_content_at', [
+            'atUser' => $user->nick_name,
             'scene' => $scene,
             'link' => $link,
         ])));
@@ -67,8 +77,18 @@ class NotificationService implements NotificationServiceInterface
 
     /**
      * @param int $userId
+     * @return int
+     */
+    public function getUserUnreadCount(int $userId): int
+    {
+        return User::findOrFail($userId)->unreadNotifications()->count();
+    }
+
+    /**
+     * @param int $userId
      */
     public function markAllRead(int $userId): void
     {
+        User::find($userId)->unreadNotifications->markAsRead();
     }
 }

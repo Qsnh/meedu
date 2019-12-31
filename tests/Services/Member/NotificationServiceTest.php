@@ -25,7 +25,7 @@ class NotificationServiceTest extends TestCase
         $this->service = $this->app->make(NotificationServiceInterface::class);
     }
 
-    public function test_notifyOrderPaidMessage()
+    public function test_notify()
     {
         $user = factory(User::class)->create();
         Auth::login($user);
@@ -34,11 +34,15 @@ class NotificationServiceTest extends TestCase
         $unreadCount = $this->service->getUnreadCount();
         $this->assertEquals(1, $unreadCount);
 
-        $this->service->notifyOrderPaidMessage($user->id, Str::random());
-        $this->service->notifyOrderPaidMessage($user->id, Str::random());
-        $this->service->notifyOrderPaidMessage($user->id, Str::random());
+        $this->service->notifyRegisterMessage($user->id);
+        $this->service->notifyBindMobileMessage($user->id);
+        $this->service->notifyAtNotification($user->id, $user->id, 'course', 'link');
         $unreadCount = $this->service->getUnreadCount();
         $this->assertEquals(4, $unreadCount);
+        $this->assertEquals(4, $this->service->getUserUnreadCount($user->id));
+
+        $this->service->markAllRead($user->id);
+        $this->assertEquals(0, $this->service->getUnreadCount());
     }
 
 }

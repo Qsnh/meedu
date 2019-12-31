@@ -12,13 +12,17 @@
 namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Events\PaymentSuccessEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Order\Services\OrderService;
 use App\Services\Member\Services\DeliverService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
 
-class OrderPaidDeliverListener
+class OrderPaidDeliverListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * @var OrderService
      */

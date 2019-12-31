@@ -20,18 +20,18 @@ class VideoCommentEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $courseId;
+    public $videoId;
 
     public $commentId;
 
     /**
      * CourseCommentEvent constructor.
-     * @param int $courseId
+     * @param int $videoId
      * @param int $commentId
      */
-    public function __construct(int $courseId, int $commentId)
+    public function __construct(int $videoId, int $commentId)
     {
-        $this->courseId = $courseId;
+        $this->videoId = $videoId;
         $this->commentId = $commentId;
     }
 

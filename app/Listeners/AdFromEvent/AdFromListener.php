@@ -13,11 +13,14 @@ namespace App\Listeners\AdFromEvent;
 
 use App\Events\AdFromEvent;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 
-class AdFromListener
+class AdFromListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var AdFromService

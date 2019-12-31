@@ -57,4 +57,13 @@ class VideoCommentService implements VideoCommentServiceInterface
 
         return $comment->toArray();
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function find(int $id): array
+    {
+        return VideoComment::findOrFail($id)->toArray();
+    }
 }
