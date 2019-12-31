@@ -12,11 +12,15 @@
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
+use App\Services\Other\Services\SmsService;
 use App\Http\Requests\Frontend\SmsSendRequest;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 
 class SmsController extends FrontendController
 {
+    /**
+     * @var SmsService
+     */
     protected $smsService;
 
     public function __construct(SmsServiceInterface $smsService)

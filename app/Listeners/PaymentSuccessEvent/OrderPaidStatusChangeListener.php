@@ -9,22 +9,27 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Order\Listeners;
+namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Events\PaymentSuccessEvent;
 use App\Services\Order\Services\OrderService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderPaidStatusChangeListener
 {
+    /**
+     * @var OrderService
+     */
     protected $orderService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderServiceInterface $orderService)
     {
         $this->orderService = $orderService;
     }
 
     /**
      * @param $event PaymentSuccessEvent
+     * @throws \App\Exceptions\ServiceException
      */
     public function handle($event)
     {

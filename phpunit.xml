@@ -32,6 +32,7 @@
                 <directory suffix=".php">./app/Notifications</directory>
                 <directory suffix=".php">./app/Models</directory>
                 <directory suffix=".php">./app/Services/*/Models</directory>
+                <file>./app/User.php</file>
             </exclude>
         </whitelist>
     </filter>

@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\AdFromEvent;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 
@@ -36,6 +37,10 @@ class IndexController extends FrontendController
             'keywords' => $keywords,
             'description' => $description
         ] = $this->configService->getSeoIndexPage();
+
+        if ($fromKey = request()->input('from_key')) {
+            event(new AdFromEvent($fromKey));
+        }
 
         return v(
             'frontend.index.index',

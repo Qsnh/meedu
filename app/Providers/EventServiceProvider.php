@@ -21,25 +21,31 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\AdministratorLoginSuccessEvent' => [
-            'App\Listeners\AdministratorLoginSuccessListener',
-        ],
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\Frontend\UserRegisterSuccess',
-        ],
-        'App\Events\AtUserEvent' => [
-            'App\Listeners\AtUserListener',
-        ],
         'App\Events\PaymentSuccessEvent' => [
-            \App\Listeners\OrderPaidDeliverListener::class,
-            \App\Services\Member\Listeners\OrderPaidNotificationListener::class,
-            \App\Services\Order\Listeners\OrderPaidStatusChangeListener::class,
+            '\App\Listeners\PaymentSuccessEvent\OrderPaidDeliverListener',
+            '\App\Listeners\PaymentSuccessEvent\OrderPaidNotificationListener',
+            '\App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
         ],
         'App\Events\AdFromEvent' => [
-            'App\Listeners\AdFromListener',
+            'App\Listeners\AdFromEvent\AdFromListener',
         ],
         'SocialiteProviders\Manager\SocialiteWasCalled' => [
             'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
+        ],
+        'App\Events\CourseCommentEvent' => [
+            'App\Listeners\CourseCommentEvent\NotifyOwnerListener',
+            'App\Listeners\CourseCommentEvent\AtEventListener',
+        ],
+        'App\Events\VideoCommentEvent' => [
+            'App\Listeners\VideoCommentEvent\NotifyOwnerListener',
+            'App\Listeners\VideoCommentEvent\AtEventListener',
+        ],
+        'App\Events\UserRegisterEvent' => [
+            'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
+        ],
+        'App\Events\UserLoginEvent' => [
+            'App\Listeners\UserLoginEvent\SafeAlertListener',
+            'App\Listeners\UserLoginEvent\BindMobileListener',
         ],
     ];
 

@@ -11,24 +11,24 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Member\Services\RoleService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
-use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Course\Interfaces\VideoServiceInterface;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Member\Interfaces\RoleServiceInterface;
-use App\Services\Member\Interfaces\SocialiteServiceInterface;
-use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\SocialiteService;
-use App\Services\Member\Services\UserService;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Services\Order\Services\OrderService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 /**
  * @OpenApi\Annotations\Schemas(
@@ -131,8 +131,7 @@ class MemberController extends BaseController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;

@@ -9,27 +9,39 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\Frontend\PasswordResetRequest;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class ForgotPasswordController extends Controller
 {
+
+    /**
+     * @var UserService
+     */
+    protected $userService;
+
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function showPage()
     {
         return v('auth.passwords.find');
     }
 
-    public function handler(PasswordResetRequest $request, UserService $userService)
+    public function handler(PasswordResetRequest $request)
     {
         [
             'mobile' => $mobile,
             'password' => $password,
         ] = $request->filldata();
 
-        $userService->findPassword($mobile, $password);
+        $this->userService->findPassword($mobile, $password);
 
         flash(__('password change success'), 'success');
 

@@ -19,7 +19,7 @@ use App\Services\Member\Notifications\SimpleMessageNotification;
 class NotificationService implements NotificationServiceInterface
 {
     /**
-     * @param int    $id
+     * @param int $id
      * @param string $orderId
      */
     public function notifyOrderPaidMessage(int $id, string $orderId): void
@@ -32,10 +32,43 @@ class NotificationService implements NotificationServiceInterface
     }
 
     /**
+     * @param int $id
+     */
+    public function notifyRegisterMessage(int $id): void
+    {
+        $user = User::findOrFail($id);
+        $user->notify(new SimpleMessageNotification(__('notification_content_register')));
+    }
+
+    /**
+     * @param int $userId
+     * @param int $atUserId
+     * @param string $scene
+     * @param string $link
+     */
+    public function notifyAtNotification(int $userId, int $atUserId, string $scene, string $link): void
+    {
+        $user = User::findOrFail($userId);
+        $atUser = User::findOrFail($atUserId);
+        $user->notify(new SimpleMessageNotification(__('notification_content_at', [
+            'atUser' => $atUser->nick_name,
+            'scene' => $scene,
+            'link' => $link,
+        ])));
+    }
+
+    /**
      * @return int
      */
     public function getUnreadCount(): int
     {
         return User::find(Auth::id())->unreadNotifications()->count();
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function markAllRead(int $userId): void
+    {
     }
 }

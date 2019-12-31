@@ -9,15 +9,23 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Listeners;
+namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Events\PaymentSuccessEvent;
+use App\Services\Order\Services\OrderService;
+use App\Services\Member\Services\DeliverService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
 
 class OrderPaidDeliverListener
 {
+    /**
+     * @var OrderService
+     */
     protected $orderService;
+    /**
+     * @var DeliverService
+     */
     protected $deliverService;
 
     public function __construct(
@@ -38,7 +46,7 @@ class OrderPaidDeliverListener
         // 发货
         $orderProducts = $this->orderService->getOrderProducts($order['id']);
         foreach ($orderProducts as $orderProduct) {
-            $method = 'deliver'.ucfirst(strtolower($orderProduct['goods_type']));
+            $method = 'deliver' . ucfirst(strtolower($orderProduct['goods_type']));
             $this->deliverService->$method($order['user_id'], $order['goods_id'], $order['charge']);
         }
     }

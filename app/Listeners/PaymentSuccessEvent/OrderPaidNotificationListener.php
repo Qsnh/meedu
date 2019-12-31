@@ -9,16 +9,20 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Member\Listeners;
+namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Events\PaymentSuccessEvent;
 use App\Services\Member\Services\NotificationService;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class OrderPaidNotificationListener
 {
+    /**
+     * @var NotificationService
+     */
     protected $notificationService;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(NotificationServiceInterface $notificationService)
     {
         $this->notificationService = $notificationService;
     }

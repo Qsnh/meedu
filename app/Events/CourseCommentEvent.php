@@ -11,28 +11,28 @@
 
 namespace App\Events;
 
-use App\Models\Administrator;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class AdministratorLoginSuccessEvent
+class CourseCommentEvent
 {
-    use Dispatchable;
-    use InteractsWithSockets;
-    use SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $administrator;
+    public $courseId;
+
+    public $commentId;
 
     /**
-     * AdministratorLoginSuccessEvent constructor.
-     *
-     * @param Administrator $administrator
+     * CourseCommentEvent constructor.
+     * @param int $courseId
+     * @param int $commentId
      */
-    public function __construct(Administrator $administrator)
+    public function __construct(int $courseId, int $commentId)
     {
-        $this->administrator = $administrator;
+        $this->courseId = $courseId;
+        $this->commentId = $commentId;
     }
 
     /**

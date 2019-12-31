@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Services;
 
+use App\Events\CourseCommentEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Base\Interfaces\RenderServiceInterface;
@@ -25,6 +26,10 @@ class CourseCommentService implements CourseCommentServiceInterface
         $this->renderService = $renderService;
     }
 
+    /**
+     * @param int $courseId
+     * @return array
+     */
     public function courseComments(int $courseId): array
     {
         $comments = CourseComment::query()->whereCourseId($courseId)->orderBy('id')->get()->toArray();
@@ -33,7 +38,7 @@ class CourseCommentService implements CourseCommentServiceInterface
     }
 
     /**
-     * @param int    $courseId
+     * @param int $courseId
      * @param string $originalContent
      *
      * @return array
@@ -47,6 +52,8 @@ class CourseCommentService implements CourseCommentServiceInterface
             'original_content' => $originalContent,
             'render_content' => $renderContent,
         ]);
+
+        event(new CourseCommentEvent($courseId, $comment['id']));
 
         return $comment->toArray();
     }

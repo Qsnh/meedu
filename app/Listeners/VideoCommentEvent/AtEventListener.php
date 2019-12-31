@@ -9,28 +9,32 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Listeners\Frontend;
+namespace App\Listeners\VideoCommentEvent;
 
-use Illuminate\Auth\Events\Registered;
-use App\Notifications\RegisterNotification;
+use App\Events\VideoCommentEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserRegisterSuccess
+class AtEventListener
 {
     /**
      * Create the event listener.
+     *
+     * @return void
      */
     public function __construct()
     {
+        //
     }
 
     /**
      * Handle the event.
      *
-     * @param Registered $event
+     * @param  VideoCommentEvent  $event
+     * @return void
      */
-    public function handle(Registered $event)
+    public function handle(VideoCommentEvent $event)
     {
-        $user = $event->user;
-        $user->notify(new RegisterNotification($user));
+        //
     }
 }

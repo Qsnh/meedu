@@ -13,16 +13,23 @@
 
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 
-Auth::routes();
-Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('/register', 'Auth\RegisterController@register')->middleware('sms.check');
-Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
-Route::post('/password/reset', 'Auth\ForgotPasswordController@handler')->middleware('sms.check');
-Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
+Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
+Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:5,1']);
+
+Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
+Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['throttle:5,1', 'sms.check']);
+
+Route::get('/logout', 'Frontend\LoginController@logout')->name('logout');
+
+Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->name('password.request');
+Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:5,1', 'sms.check']);
+
+// 发送短信
+Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send')->middleware(['throttle:5,1']);
 
 // 第三方登录
-Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider')->name('socialite');
-Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/login/{app}', 'Frontend\LoginController@socialLogin')->name('socialite');
+Route::get('/login/{app}/callback', 'Frontend\LoginController@socialiteLoginCallback');
 
 // 课程列表
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');

@@ -11,36 +11,24 @@
 
 namespace App\Events;
 
-use App\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class AtUserEvent implements ShouldQueue
+class UserRegisterEvent
 {
-    use Dispatchable;
-    use InteractsWithSockets;
-    use SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $fromUser;
-
-    public $toUserNickName;
-
-    public $comment;
-
-    public $commentType;
+    public $userId;
 
     /**
-     * Create a new event instance.
+     * UserRegisterEvent constructor.
+     * @param int $userId
      */
-    public function __construct(User $fromUser, $toUserNickName, $comment, $commentType)
+    public function __construct(int $userId)
     {
-        $this->fromUser = $fromUser;
-        $this->toUserNickName = $toUserNickName;
-        $this->comment = $comment;
-        $this->commentType = $commentType;
+        $this->userId = $userId;
     }
 
     /**

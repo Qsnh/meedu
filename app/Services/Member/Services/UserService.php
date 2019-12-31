@@ -13,6 +13,7 @@ namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Events\UserRegisterEvent;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,17 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @param string $nickname
+     * @return array
+     */
+    public function findNickname(string $nickname): array
+    {
+        $user = User::whereNickName($nickname)->first();
+
+        return $user ? $user->toArray() : [];
+    }
+
+    /**
      * @param string $mobile
      * @param string $password
      *
@@ -52,10 +64,10 @@ class UserService implements UserServiceInterface
     public function passwordLogin(string $mobile, string $password): array
     {
         $user = User::whereMobile($mobile)->first();
-        if (! $user) {
+        if (!$user) {
             return [];
         }
-        if (! Hash::check($password, $user->password)) {
+        if (!Hash::check($password, $user->password)) {
             return [];
         }
 
@@ -63,7 +75,7 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $oldPassword
      * @param string $newPassword
      *
@@ -72,7 +84,7 @@ class UserService implements UserServiceInterface
     public function resetPassword(int $userId, string $oldPassword, string $newPassword): void
     {
         $user = User::findOrFail($userId);
-        if (! Hash::check($oldPassword, $user->password)) {
+        if (!Hash::check($oldPassword, $user->password)) {
             throw new ServiceException(__('old_password_error'));
         }
         $user->password = Hash::make($newPassword);
@@ -93,7 +105,7 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $password
      */
     public function changePassword(int $userId, string $password): void
@@ -112,14 +124,16 @@ class UserService implements UserServiceInterface
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $name ?? Str::random(16),
-            'mobile' => mt_rand(2, 9).mt_rand(1000, 9999).mt_rand(1000, 9999),
+            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
             'password' => Hash::make(Str::random(16)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
         ]);
-        // todo 用户创建事件
+
+        event(new UserRegisterEvent($user->id));
+
         return $user->toArray();
     }
 
@@ -142,7 +156,9 @@ class UserService implements UserServiceInterface
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
         ]);
-        // todo 用户创建事件
+
+        event(new UserRegisterEvent($user->id));
+
         return $user->toArray();
     }
 
@@ -186,7 +202,7 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int   $id
+     * @param int $id
      * @param array $with
      *
      * @return array
@@ -245,8 +261,8 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int    $userId
-     * @param int    $roleId
+     * @param int $userId
+     * @param int $roleId
      * @param string $expiredAt
      */
     public function changeRole(int $userId, int $roleId, string $expiredAt): void

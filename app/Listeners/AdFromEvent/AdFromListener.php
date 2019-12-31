@@ -9,19 +9,28 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Listeners;
+namespace App\Listeners\AdFromEvent;
 
-use App\Models\AdFrom;
 use App\Events\AdFromEvent;
 use Illuminate\Support\Facades\Cache;
+use App\Services\Other\Services\AdFromService;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 
 class AdFromListener
 {
+
     /**
-     * Create the event listener.
+     * @var AdFromService
      */
-    public function __construct()
+    protected $adFromService;
+
+    /**
+     * AdFromListener constructor.
+     * @param AdFromServiceInterface $adFromService
+     */
+    public function __construct(AdFromServiceInterface $adFromService)
     {
+        $this->adFromService = $adFromService;
     }
 
     /**
@@ -32,12 +41,12 @@ class AdFromListener
     public function handle(AdFromEvent $event)
     {
         $key = $event->key;
-        $adFrom = AdFrom::whereFromKey($key)->first();
-        if (! $adFrom) {
+        $adFrom = $this->adFromService->findFromKey($key);
+        if (!$adFrom) {
             return;
         }
         $key = sprintf('ad_from_%s_%s', $adFrom->from_key, date('Y-m-d'));
-        if (! Cache::has($key)) {
+        if (!Cache::has($key)) {
             Cache::forever($key, 1);
         } else {
             Cache::increment($key);

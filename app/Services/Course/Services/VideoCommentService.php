@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Services;
 
+use App\Events\VideoCommentEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\VideoComment;
 use App\Services\Base\Interfaces\RenderServiceInterface;
@@ -25,6 +26,10 @@ class VideoCommentService implements VideoCommentServiceInterface
         $this->renderService = $renderService;
     }
 
+    /**
+     * @param int $courseId
+     * @return array
+     */
     public function videoComments(int $courseId): array
     {
         $comments = VideoComment::whereVideoId($courseId)->orderBy('id')->get()->toArray();
@@ -33,7 +38,7 @@ class VideoCommentService implements VideoCommentServiceInterface
     }
 
     /**
-     * @param int    $videoId
+     * @param int $videoId
      * @param string $originalContent
      *
      * @return array
@@ -47,6 +52,8 @@ class VideoCommentService implements VideoCommentServiceInterface
             'original_content' => $originalContent,
             'render_content' => $renderContent,
         ]);
+
+        event(new VideoCommentEvent($videoId, $comment['id']));
 
         return $comment->toArray();
     }
