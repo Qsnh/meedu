@@ -78,6 +78,18 @@ return [
             'hotlink_prevention_key' => null,
         ],
 
+        'oss' => [
+            'driver' => 'oss',
+            'access_id' => env('ALI_OSS_ACCESS_ID'),
+            'access_key' => env('ALI_OSS_ACCESS_KEY'),
+            'bucket' => env('ALI_OSS_BUCKET'),
+            'endpoint' => env('ALI_OSS_ENDPOINT'),
+            'cdnDomain' => '',
+            'ssl' => true,
+            'isCName' => false,
+            'debug' => false
+        ],
+
     ],
 
 ];
