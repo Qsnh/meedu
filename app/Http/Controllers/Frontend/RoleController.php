@@ -59,7 +59,7 @@ class RoleController extends FrontendController
     public function showBuyPage($id)
     {
         $role = $this->roleService->find($id);
-        $title = sprintf('购买VIP《%s》', $role['name']);
+        $title = __('buy role', ['role' => $role['name']]);
 
         return v('frontend.role.buy', compact('role', 'title'));
     }

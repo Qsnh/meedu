@@ -60,5 +60,9 @@
   "video": "Video",
   "role": "Package",
   "register success": "register success",
-  "text_trans_need_bind_mobile": "mobile not bind，please  <a href=':link'><b>bind</b></a>"
+  "text_trans_need_bind_mobile": "mobile not bind，please  <a href=':link'><b>bind</b></a>",
+  "all videos": "All Videos",
+  "buy course": "buy course :course",
+  "buy video": "buy video :video",
+  "buy role": "buy role package :role"
 }

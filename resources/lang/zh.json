@@ -60,5 +60,9 @@
   "video": "视频",
   "role": "套餐",
   "register success": "注册成功",
-  "text_trans_need_bind_mobile": "您未绑定手机号，请 <a href=':link'><b>点击绑定</b></a>"
+  "text_trans_need_bind_mobile": "您未绑定手机号，请 <a href=':link'><b>点击绑定</b></a>",
+  "all videos": "全部视频",
+  "buy course": "购买课程《:course》",
+  "buy video": "购买视频《:video》",
+  "buy role": "购买套餐《:role》"
 }

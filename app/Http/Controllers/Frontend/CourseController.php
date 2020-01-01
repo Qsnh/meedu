@@ -96,7 +96,7 @@ class CourseController extends FrontendController
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
 
-        $title = sprintf('课程《%s》', $course['title']);
+        $title = $course['title'];
         $keywords = $course['seo_keywords'];
         $description = $course['seo_description'];
 
@@ -115,7 +115,7 @@ class CourseController extends FrontendController
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);
-        $title = sprintf('购买课程《%s》', $course['title']);
+        $title = __('buy course', ['course' => $course['title']]);
 
         return v('frontend.course.buy', compact('course', 'title'));
     }

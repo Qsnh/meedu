@@ -65,6 +65,14 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * @return array
+     */
+    public function getSeoVideoListPage(): array
+    {
+        return config('meedu.seo.video_list');
+    }
+
+    /**
      * @return int
      */
     public function getVideoListPageSize(): int

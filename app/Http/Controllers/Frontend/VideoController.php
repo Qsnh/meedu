@@ -85,8 +85,9 @@ class VideoController extends FrontendController
             'total' => $total
         ] = $this->videoService->simplePage($page, $pageSize);
         $videos = $this->paginator($list, $total, $page, $pageSize);
+        $title = __('all videos');
 
-        return v('frontend.video.index', compact('videos'));
+        return v('frontend.video.index', compact('videos', 'title'));
     }
 
     public function show($courseId, $id, $slug)
@@ -102,6 +103,7 @@ class VideoController extends FrontendController
             $canSeeVideo = $this->businessState->canSeeVideo($this->user(), $video['course'], $video);
         }
 
+        $title = $video['title'];
         $keywords = $video['seo_keywords'];
         $description = $video['seo_description'];
 
@@ -121,7 +123,7 @@ class VideoController extends FrontendController
     public function showBuyPage($id)
     {
         $video = $this->videoService->find($id);
-        $title = sprintf('购买视频《%s》', $video['title']);
+        $title = __('buy video', ['video' => $video['title']]);
 
         return v('frontend.video.buy', compact('video', compact('title')));
     }
