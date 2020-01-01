@@ -76,7 +76,7 @@ class MemberController extends FrontendController
     {
         $title = __('page_title_member_index');
 
-        return v('frontend.member.index', compact('announcement', 'title'));
+        return v('frontend.member.index', compact('title'));
     }
 
     public function showPasswordResetPage()
