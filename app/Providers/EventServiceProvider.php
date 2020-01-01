@@ -29,11 +29,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AdFromEvent' => [
             'App\Listeners\AdFromEvent\AdFromListener',
         ],
-        'SocialiteProviders\Manager\SocialiteWasCalled' => [
-            'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
-        ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\\WeixinWeb\\WeixinWebExtendSocialite@handle',
+            'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
         ],
         'App\Events\CourseCommentEvent' => [
             'App\Listeners\CourseCommentEvent\NotifyOwnerListener',
