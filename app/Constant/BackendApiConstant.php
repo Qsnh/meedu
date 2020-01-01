@@ -28,4 +28,7 @@ class BackendApiConstant
     const LOGIN_PASSWORD_ERROR = '密码错误';
 
     const ADMINISTRATOR_NOT_EXISTS = '用户名不存在';
+
+    const ERROR_CODE = 500;
+    const NO_AUTH_CODE = 401;
 }

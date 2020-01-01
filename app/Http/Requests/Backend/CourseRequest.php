@@ -37,7 +37,7 @@ class CourseRequest extends BaseRequest
             'title' => 'required|max:120',
             'thumb' => 'required',
             'short_description' => 'required',
-            'description' => 'required',
+            'original_desc' => 'required',
             'published_at' => 'required',
         ];
     }
@@ -49,7 +49,7 @@ class CourseRequest extends BaseRequest
             'title.max' => '课程标题的长度不能超过120个字符',
             'thumb.required' => '请上传课程封面',
             'short_description.required' => '请输入课程的简短介绍',
-            'description.required' => '请输入课程详情介绍',
+            'original_desc.required' => '请输入课程详情介绍',
             'published_at' => '请输入课程发布时间',
         ];
     }
@@ -62,7 +62,8 @@ class CourseRequest extends BaseRequest
             'thumb' => $this->input('thumb'),
             'charge' => $this->input('charge', 0),
             'short_description' => $this->input('short_description'),
-            'description' => $this->input('description'),
+            'original_desc' => $this->input('original_desc'),
+            'render_desc' => $this->input('render_desc'),
             'seo_keywords' => $this->input('seo_keywords', ''),
             'seo_description' => $this->input('seo_description', ''),
             'published_at' => $this->input('published_at'),

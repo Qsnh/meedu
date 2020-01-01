@@ -25,6 +25,7 @@ class SettingController extends BaseController
             'pay' => config('pay'),
             'eshanghu' => config('eshanghu'),
             'tencent' => config('tencent'),
+            'filesystems' => config('filesystems'),
         ];
 
         return $this->successData($config);

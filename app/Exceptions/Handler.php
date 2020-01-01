@@ -14,6 +14,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
+use App\Constant\BackendApiConstant;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -65,10 +66,10 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson()) {
             // 后台的异常错误
             if (Str::contains($request->getUri(), '/backend/api/v1')) {
-                exception_record($exception);
-
+                $code = BackendApiConstant::ERROR_CODE;
+                $exception instanceof AuthenticationException && $code = BackendApiConstant::NO_AUTH_CODE;
                 return response()->json([
-                    'status' => 500,
+                    'status' => $code,
                     'message' => $exception->getMessage(),
                 ]);
             }
