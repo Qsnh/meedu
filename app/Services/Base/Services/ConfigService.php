@@ -179,6 +179,6 @@ class ConfigService implements ConfigServiceInterface
 
     public function getHandPayIntroducation(): string
     {
-        return config('meedu.payment.hand.introduction') ?? '';
+        return config('meedu.payment.handPay.introduction') ?? '';
     }
 }
