@@ -13,6 +13,7 @@ namespace App\Services\Member\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
@@ -41,10 +42,10 @@ class SocialiteService implements SocialiteServiceInterface
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $app
      * @param string $appId
-     * @param array  $data
+     * @param array $data
      *
      * @throws ServiceException
      */
@@ -65,7 +66,7 @@ class SocialiteService implements SocialiteServiceInterface
     /**
      * @param string $app
      * @param string $appId
-     * @param array  $data
+     * @param array $data
      *
      * @return int
      */
@@ -92,5 +93,17 @@ class SocialiteService implements SocialiteServiceInterface
     public function userSocialites(int $userId): array
     {
         return Socialite::whereUserId($userId)->get()->toArray();
+    }
+
+    /**
+     * @param string $app
+     */
+    public function cancelBind(string $app): void
+    {
+        $bindApps = Socialite::whereUserId(Auth::id())->get()->keyBy('app')->toArray();
+        if (!isset($bindApps[$app])) {
+            return;
+        }
+        Socialite::whereId($bindApps[$app]['id'])->delete();
     }
 }

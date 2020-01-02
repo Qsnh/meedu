@@ -68,6 +68,7 @@ Route::group([
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
+    Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');

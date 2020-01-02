@@ -23,7 +23,7 @@ class MobileBindRequest extends BaseRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|unique:users',
+            'mobile' => 'required',
         ];
     }
 
@@ -31,7 +31,6 @@ class MobileBindRequest extends BaseRequest
     {
         return [
             'mobile.required' => __('mobile.required'),
-            'mobile.unique' => __('mobile.unique'),
         ];
     }
 

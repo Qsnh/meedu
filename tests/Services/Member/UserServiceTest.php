@@ -107,7 +107,8 @@ class UserServiceTest extends TestCase
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
-        $this->service->bindMobile($user->id, '13909098080');
+        Auth::login($user);
+        $this->service->bindMobile('13909098080');
     }
 
     public function test_bindMobile_with_need()
@@ -116,7 +117,8 @@ class UserServiceTest extends TestCase
             'mobile' => '23090909090',
             'password' => Hash::make('123456'),
         ]);
-        $this->service->bindMobile($user->id, '13909098080');
+        Auth::login($user);
+        $this->service->bindMobile('13909098080');
 
         $oldMobile = $this->service->findMobile('23090909090');
         $newMobile = $this->service->findMobile('13909098080');
@@ -138,7 +140,8 @@ class UserServiceTest extends TestCase
             'mobile' => '13090909091',
             'password' => Hash::make('123456'),
         ]);
-        $this->service->bindMobile($user->id, $user2->mobile);
+        Auth::login($user);
+        $this->service->bindMobile($user2->mobile);
     }
 
     public function test_updateAvatar()

@@ -16,10 +16,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($apps as $app)
+                            @forelse($enabledApps as $app)
                                 <tr class="text-center">
                                     <td>{{$app['app']}}</td>
-                                    <td>{{$app['created_at']}}</td>
+                                    <td>
+                                        @if(isset($apps[$app['app']]))
+                                            <span class="mr-2">已绑定</span>
+                                            <a href="javascript:void(0)" onclick="document.getElementById('delete-socialite-{{$app['app']}}').submit();">取消</a>
+                                            <form id="delete-socialite-{{$app['app']}}" action="{{route('member.socialite.delete', [$app['app']])}}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        @else
+                                            <a target="_blank" href="{{route('socialite', [$app['app']])}}">绑定</a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
@@ -33,5 +43,4 @@
             </div>
         </div>
     </div>
-
 @endsection

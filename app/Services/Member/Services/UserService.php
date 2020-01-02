@@ -13,6 +13,7 @@ namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
@@ -26,10 +27,12 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 class UserService implements UserServiceInterface
 {
     protected $configService;
+    protected $businessState;
 
-    public function __construct(ConfigServiceInterface $configService)
+    public function __construct(ConfigServiceInterface $configService, BusinessState $businessState)
     {
         $this->configService = $configService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -163,19 +166,17 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param $userId
-     * @param $mobile
-     *
+     * @param string $mobile
      * @throws ServiceException
      */
-    public function bindMobile(int $userId, string $mobile): void
+    public function bindMobile(string $mobile): void
     {
-        if (User::whereMobile($mobile)->where('id', '<>', $userId)->exists()) {
-            throw new ServiceException(__('mobile has exists'));
-        }
-        $user = User::findOrFail($userId);
-        if (substr($user->mobile, 0, 1) == 1) {
+        $user = User::findOrFail(Auth::id());
+        if (!$this->businessState->isNeedBindMobile($user->toArray())) {
             throw new ServiceException(__('cant bind mobile'));
+        }
+        if (User::whereMobile($mobile)->exists()) {
+            throw new ServiceException(__('mobile has exists'));
         }
         $user->mobile = $mobile;
         $user->save();

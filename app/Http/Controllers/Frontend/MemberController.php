@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -20,6 +21,7 @@ use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -55,6 +57,10 @@ class MemberController extends FrontendController
      * @var SocialiteService
      */
     protected $socialiteService;
+    /**
+     * @var ConfigService
+     */
+    protected $configService;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -62,7 +68,8 @@ class MemberController extends FrontendController
         VideoServiceInterface $videoService,
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
-        SocialiteServiceInterface $socialiteService
+        SocialiteServiceInterface $socialiteService,
+        ConfigServiceInterface $configService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -70,6 +77,7 @@ class MemberController extends FrontendController
         $this->roleService = $roleService;
         $this->orderService = $orderService;
         $this->socialiteService = $socialiteService;
+        $this->configService = $configService;
     }
 
     public function index()
@@ -103,7 +111,7 @@ class MemberController extends FrontendController
     public function mobileBindHandler(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();
-        $this->userService->bindMobile(Auth::id(), $mobile);
+        $this->userService->bindMobile($mobile);
         flash(__('success'), 'success');
 
         return redirect(route('member'));
@@ -255,9 +263,22 @@ class MemberController extends FrontendController
      */
     public function showSocialitePage()
     {
+        $enabledApps = $this->configService->getEnabledSocialiteApps();
         $apps = $this->socialiteService->userSocialites(Auth::id());
+        $apps = array_column($apps, null, 'app');
         $title = __('title.member.socialite');
 
-        return v('frontend.member.socialite', compact('apps', 'title'));
+        return v('frontend.member.socialite', compact('apps', 'title', 'enabledApps'));
+    }
+
+    /**
+     * @param $app
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function cancelBindSocialite($app)
+    {
+        $this->socialiteService->cancelBind($app);
+        flash(__('success'), 'success');
+        return back();
     }
 }

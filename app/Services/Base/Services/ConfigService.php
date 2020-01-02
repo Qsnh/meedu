@@ -181,4 +181,17 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.payment.handPay.introduction') ?? '';
     }
+
+    public function getEnabledSocialiteApps(): array
+    {
+        $apps = config('meedu.member.socialite');
+        $list = [];
+        foreach ($apps as $app) {
+            if (!($app['enabled'] ?? false)) {
+                continue;
+            }
+            $list[] = $app;
+        }
+        return $list;
+    }
 }
