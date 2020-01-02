@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Course;
-use App\User;
+use App\Services\Course\Models\Course;
+use App\Services\Member\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,12 +23,17 @@ class MemberCourseTest extends TestCase
 
     public function test_member_course_see_some_records()
     {
-        $course = factory(Course::class)->create();
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
         $user = factory(User::class)->create();
         $charge = mt_rand(1, 100);
-        $user->joinCourses()->attach($course, [
+        DB::table('user_course')->insert([
+            'course_id' => $course->id,
             'charge' => $charge,
             'created_at' => Carbon::now(),
+            'user_id' => $user->id,
         ]);
         $this->actingAs($user)
             ->visit(route('member.courses'))

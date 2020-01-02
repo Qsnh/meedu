@@ -40,7 +40,14 @@ class SearchRequest extends FormRequest
     public function messages()
     {
         return [
-            'keywords.required' => '请输入搜索关键字',
+            'keywords.required' => __('keywords.required'),
+        ];
+    }
+
+    public function filldata()
+    {
+        return [
+            'keywords' => $this->input('keywords'),
         ];
     }
 }

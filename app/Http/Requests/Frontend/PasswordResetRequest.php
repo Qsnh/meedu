@@ -24,11 +24,19 @@ class PasswordResetRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => '请输入手机号',
-            'password.required' => '请输入密码',
-            'password.min' => '密码长度不能小于6个字符',
-            'password.max' => '密码长度不能超过16个字符',
-            'password.confirmed' => '两次输入的密码不一致',
+            'mobile.required' => __('mobile.required'),
+            'password.required' => __('password.required'),
+            'password.min' => __('password.min'),
+            'password.max' => __('password.max'),
+            'password.confirmed' => __('password.confirmed'),
+        ];
+    }
+
+    public function filldata()
+    {
+        return [
+            'mobile' => $this->input('mobile'),
+            'password' => $this->input('password'),
         ];
     }
 }

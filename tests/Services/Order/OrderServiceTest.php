@@ -1,0 +1,265 @@
+<?php
+
+
+namespace Tests\Services\Order;
+
+
+use App\Exceptions\ServiceException;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\Video;
+use App\Services\Member\Models\Role;
+use App\Services\Member\Models\User;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Order\Models\Order;
+use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Services\OrderService;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
+
+class OrderServiceTest extends TestCase
+{
+
+    /**
+     * @var OrderService
+     */
+    protected $service;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->service = $this->app->make(OrderServiceInterface::class);
+    }
+
+    public function test_createCourseOrder()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create();
+
+        $order = $this->service->createCourseOrder($user->id, $course->toArray());
+        $this->assertNotEmpty($order);
+    }
+
+    public function test_createVideoOrder()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create();
+
+        $order = $this->service->createVideoOrder($user->id, $video->toArray());
+        $this->assertNotEmpty($order);
+    }
+
+    public function test_createRoleOrder()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $order = $this->service->createRoleOrder($user->id, $role->toArray());
+        $this->assertNotEmpty($order);
+    }
+
+    /**
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function test_findNoPaid()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+        $order1 = factory(Order::class)->create([
+            'status' => Order::STATUS_CANCELED,
+        ]);
+
+        $this->assertNotEmpty($this->service->findNoPaid($order->order_id));
+        $this->service->findNoPaid($order1->order_id);
+    }
+
+    /**
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function test_findUserNoPaid()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+            'user_id' => $user->id,
+        ]);
+        $order1 = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $this->assertNotEmpty($this->service->findUserNoPaid($order->order_id));
+        $this->service->findUserNoPaid($order1->order_id);
+    }
+
+    public function test_find()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $this->assertNotEmpty($this->service->find($order->order_id));
+    }
+
+    /**
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function test_findUser()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+            'user_id' => $user->id,
+        ]);
+        $order1 = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $this->assertNotEmpty($this->service->findUser($order->order_id));
+        $this->service->findUser($order1->order_id);
+    }
+
+    public function test_findId()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $o = $this->service->findId($order->id);
+        $this->assertNotEmpty($order->order_id, $o['order_id']);
+    }
+
+    /**
+     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function test_findUserId()
+    {
+        $user = factory(User::class)->create();
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+            'user_id' => $user->id,
+        ]);
+        $order1 = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $o = $this->service->findId($order->id);
+        $this->assertNotEmpty($order->order_id, $o['order_id']);
+
+        $this->service->findUserId($order1->id);
+    }
+
+    public function test_change2Paying()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $this->service->change2Paying($order->id, []);
+        $order->refresh();
+        $this->assertEquals($order->status, Order::STATUS_PAYING);
+    }
+
+    /**
+     * @expectedException \App\Exceptions\ServiceException
+     */
+    public function test_change2Paying_with_error_status()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_PAYING,
+        ]);
+
+        $this->service->change2Paying($order->id, []);
+    }
+
+    public function test_cancel()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_UNPAY,
+        ]);
+
+        $this->service->cancel($order->id);
+        $order->refresh();
+        $this->assertEquals($order->status, Order::STATUS_CANCELED);
+    }
+
+    /**
+     * @expectedException \App\Exceptions\ServiceException
+     */
+    public function test_cancel_with_error_status()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_PAID,
+        ]);
+
+        $this->service->cancel($order->id);
+    }
+
+    public function test_userOrdersPaginate()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+
+        $orders = factory(Order::class, 10)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $list = $this->service->userOrdersPaginate(2, 4);
+
+        $this->assertEquals(10, $list['total']);
+        $this->assertEquals(4, count($list['list']));
+    }
+
+    public function test_changePaid()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_PAYING,
+        ]);
+
+        $this->service->changePaid($order->id);
+        $order->refresh();
+        $this->assertEquals($order->status, Order::STATUS_PAID);
+    }
+
+    /**
+     * @expectedException \App\Exceptions\ServiceException
+     */
+    public function test_changePaid_with_error_status()
+    {
+        $order = factory(Order::class)->create([
+            'status' => Order::STATUS_PAID,
+        ]);
+
+        $this->service->changePaid($order->id);
+    }
+
+    public function test_getOrderProducts()
+    {
+        $order = factory(Order::class)->create();
+        $orderGoods = factory(OrderGoods::class, 11)->create([
+            'oid' => $order->id,
+            'user_id' => 1,
+        ]);
+
+        $list = $this->service->getOrderProducts($order->id);
+
+        $this->assertEquals(11, count($list));
+    }
+
+    public function test_getTimeoutOrders()
+    {
+        factory(Order::class)->create(['status' => Order::STATUS_PAYING]);
+        factory(Order::class)->create(['status' => Order::STATUS_PAID]);
+        factory(Order::class)->create(['status' => Order::STATUS_UNPAY]);
+
+        $list = $this->service->getTimeoutOrders(Carbon::now()->addDays(10));
+
+        $this->assertEquals(2, count($list));
+    }
+
+}

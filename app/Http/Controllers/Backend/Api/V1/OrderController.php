@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Events\PaymentSuccessEvent;
 
 class OrderController extends BaseController
 {
@@ -27,5 +28,12 @@ class OrderController extends BaseController
             ->paginate($request->input('page_size', 12));
 
         return $this->successData($orders);
+    }
+
+    public function finishOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        event(new PaymentSuccessEvent($order->toArray()));
+        return $this->success();
     }
 }

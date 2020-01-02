@@ -3,13 +3,10 @@
 
 namespace Tests\Commands;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestCase;
-use Tests\CreatesApplication;
+use Tests\OriginalTestCase;
 
-class AdFromSyncCommandTest extends TestCase
+class AdFromSyncCommandTest extends OriginalTestCase
 {
-    use CreatesApplication, DatabaseMigrations;
 
     public function test_ad_from_sync_command()
     {

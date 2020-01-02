@@ -19,8 +19,8 @@
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "hyancat/aliyun-direct-mail": "dev-master",
+        "jacobcyl/ali-oss-storage": "^2.1",
         "laravel/framework": "5.7.*",
-        "laravel/passport": "^7.0",
         "laravel/socialite": "^3.2",
         "laravel/tinker": "~1.0",
         "league/html-to-markdown": "^4.8",
@@ -37,10 +37,12 @@
         "spatie/laravel-backup": "5.10.1",
         "symfony/process": "^4.2",
         "tymon/jwt-auth": "1.0.0-rc.5",
-        "yansongda/laravel-pay": "^2.0"
+        "yansongda/laravel-pay": "^2.0",
+        "zgldh/qiniu-laravel-storage": "^0.10.3"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
+        "darkaonline/l5-swagger": "5.7.*",
         "doctrine/dbal": "^2.9",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
@@ -97,7 +99,8 @@
             "supervisorctl reread",
             "supervisorctl update",
             "supervisorctl start meedu:*"
-        ]
+        ],
+        "apidoc": "@php artisan l5-swagger:generate"
     },
     "config": {
         "preferred-install": "dist",

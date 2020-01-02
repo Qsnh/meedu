@@ -9,6 +9,14 @@
          processIsolation="false"
          stopOnFailure="true">
     <testsuites>
+        <testsuite name="Commands">
+            <directory suffix="Test.php">./tests/Commands</directory>
+        </testsuite>
+
+        <testsuite name="Services">
+            <directory suffix="Test.php">./tests/Services</directory>
+        </testsuite>
+
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
@@ -20,6 +28,11 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
+            <exclude>
+                <directory suffix=".php">./app/Models</directory>
+                <directory suffix=".php">./app/Services/*/Models</directory>
+                <file>./app/User.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <logging>
@@ -27,7 +40,7 @@
              highLowerBound="70"/>
     </logging>
     <php>
-<!--        <env name="APP_ENV" value="testing"/>-->
+        <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>

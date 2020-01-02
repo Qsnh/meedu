@@ -11,14 +11,10 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\NavShareMiddleware;
-use App\Http\Middleware\UserShareMiddleware;
+use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
-use App\Http\Middleware\InstallCheckMiddleware;
 use App\Http\Middleware\CheckImageCaptchaMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use App\Http\Middleware\BackendPermissionCheckMiddleware;
-use App\Http\Middleware\AdministratorLoginCheckMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -101,19 +97,11 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        // 后台登录检测
-        'backend.login.check' => AdministratorLoginCheckMiddleware::class,
-        // user变量共享
-        'user.share' => UserShareMiddleware::class,
-        // nav变量共享
-        'nav.share' => NavShareMiddleware::class,
+        // global变量共享
+        'global.share' => GlobalShareMiddleware::class,
         // 短信验证
         'sms.check' => CheckSmsCodeMiddleware::class,
         // 图形验证码验证
         'image.captcha.check' => CheckImageCaptchaMiddleware::class,
-        // 后台权限校验
-        'backend.permission.check' => BackendPermissionCheckMiddleware::class,
-        // 安装检测
-        'install.check' => InstallCheckMiddleware::class,
     ];
 }

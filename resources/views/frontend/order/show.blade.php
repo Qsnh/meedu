@@ -13,9 +13,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <form action="{{route('order.pay', [$order->order_id])}}" class="card" method="post">
+                <form action="{{route('order.pay', [$order['order_id']])}}" class="card" method="post">
                     @csrf
-                    <h4 class="card-title"><strong>订单号：{{$order->order_id}} | ￥{{$order->charge}}</strong></h4>
+                    <h4 class="card-title"><strong>订单号：{{$order['order_id']}} | ￥{{$order['charge']}}</strong></h4>
                     <div class="card-body">
                         <h6>请选择支付方式</h6>
                         <br>

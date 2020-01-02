@@ -29,12 +29,12 @@
             @foreach($courses as $course)
                 <div class="col-sm-4">
                     <div class="card hover-shadow-2">
-                        <img class="card-img-top" src="{{ image_url($course->thumb) }}" alt="{{$course->title}}">
+                        <img class="card-img-top" src="{{ image_url($course['thumb']) }}" alt="{{$course['title']}}">
                         <div class="card-body">
                             <h4 class="card-title b-0 px-0">
-                                <a href="{{ route('course.show', [$course->id, $course->slug]) }}">{{$course->title}}</a>
+                                <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{$course['title']}}</a>
                             </h4>
-                            <p><small>最后更新：{{$course->updated_at->diffForHumans()}}</small></p>
+                            <p><small>最后更新：{{$course['updated_at']}}</small></p>
                         </div>
                     </div>
                 </div>

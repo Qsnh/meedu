@@ -8,15 +8,12 @@ use App\Models\Administrator;
 use App\Models\AdministratorMenu;
 use App\Models\AdministratorPermission;
 use App\Models\AdministratorRole;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Tests\CreatesApplication;
+use Tests\OriginalTestCase;
 
-class ApplicationInstallCommandTest extends TestCase
+class ApplicationInstallCommandTest extends OriginalTestCase
 {
-    use CreatesApplication, DatabaseMigrations;
 
     public function test_install_administrator()
     {
@@ -32,7 +29,7 @@ class ApplicationInstallCommandTest extends TestCase
             'description' => '描述',
         ]);
 
-        $email = Str::random().'@gmail.com';
+        $email = Str::random() . '@gmail.com';
         $password = '123456';
 
         $this->artisan('install', ['action' => 'administrator'])
@@ -61,7 +58,7 @@ class ApplicationInstallCommandTest extends TestCase
             'description' => '描述',
         ]);
 
-        $email = Str::random().'@gmail.com';
+        $email = Str::random() . '@gmail.com';
         $password = '123456';
 
         Administrator::create([
@@ -83,7 +80,7 @@ class ApplicationInstallCommandTest extends TestCase
             'description' => '描述',
         ]);
 
-        $email = Str::random().'@gmail.com';
+        $email = Str::random() . '@gmail.com';
         $password = '123456';
 
         $this->artisan('install', ['action' => 'administrator'])

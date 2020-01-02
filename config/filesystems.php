@@ -51,7 +51,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -61,6 +61,33 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
+        ],
+
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'domains' => [
+                'default' => env('QINIU_DOMAIN'),
+                'https' => env('QINIU_DOMAIN'),
+                'custom' => '',
+            ],
+            'access_key' => env('QINIU_ACCESS_KEY'),
+            'secret_key' => env('QINIU_SECRET_KEY'),
+            'bucket' => env('QINIU_BUCKET'),
+            'notify_url' => '',
+            'access' => 'public',
+            'hotlink_prevention_key' => null,
+        ],
+
+        'oss' => [
+            'driver' => 'oss',
+            'access_id' => env('ALI_OSS_ACCESS_ID'),
+            'access_key' => env('ALI_OSS_ACCESS_KEY'),
+            'bucket' => env('ALI_OSS_BUCKET'),
+            'endpoint' => env('ALI_OSS_ENDPOINT'),
+            'cdnDomain' => '',
+            'ssl' => true,
+            'isCName' => false,
+            'debug' => false
         ],
 
     ],

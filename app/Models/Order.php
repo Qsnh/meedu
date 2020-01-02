@@ -70,12 +70,17 @@ class Order extends Model
     ];
 
     protected $appends = [
-        'status_text',
+        'status_text', 'continue_pay',
     ];
 
     public function getStatusTextAttribute()
     {
         return $this->statusText();
+    }
+
+    public function getContinuePayAttribute()
+    {
+        return in_array($this->status, [self::STATUS_UNPAY, self::STATUS_PAYING]);
     }
 
     /**

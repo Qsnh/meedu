@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\Role::class, function (Faker $faker) {
+$factory->define(\App\Services\Member\Models\Role::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'charge' => $faker->randomDigit,

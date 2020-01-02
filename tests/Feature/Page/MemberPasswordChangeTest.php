@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Page;
 
-use App\User;
+use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,7 +23,7 @@ class MemberPasswordChangeTest extends TestCase
     {
         $password = '123456';
         $user = factory(User::class)->create([
-            'password' => bcrypt($password),
+            'password' => Hash::make($password),
         ]);
         $newPassword = '123456789';
         $this->actingAs($user)
@@ -35,6 +35,7 @@ class MemberPasswordChangeTest extends TestCase
             ->assertResponseStatus(200);
 
         // 断言密码修改成功
+        $user->refresh();
         $this->assertTrue(Hash::check($newPassword, $user->password));
     }
 

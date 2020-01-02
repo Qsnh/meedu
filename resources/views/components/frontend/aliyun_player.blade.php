@@ -17,13 +17,13 @@
         "loadDataTimeout": "",
         "controlBarVisibility": "hover",
         "useH5Prism": true,
-        "vid": "{{$video->aliyun_video_id}}",
+        "vid": "{{$video['aliyun_video_id']}}",
         "playauth": "{{aliyun_play_auth($video)}}",
         "encryptType": 1,
         components: [{
             name: 'BulletScreenComponent',
             type: AliPlayerComponent.BulletScreenComponent,
-            args: ['{{$user ? sprintf('会员%s', $user->mobile) : config('app.name')}}', {fontSize: '16px', color: '#000000'}, 'random']
+            args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {fontSize: '16px', color: '#000000'}, 'random']
         }]
     },function(player){
     });

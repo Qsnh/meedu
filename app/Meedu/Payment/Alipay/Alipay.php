@@ -18,9 +18,20 @@ use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\Log;
 use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Order\Services\OrderService;
 
 class Alipay implements Payment
 {
+    protected $configService;
+    protected $orderService;
+
+    public function __construct(ConfigService $configService, OrderService $orderService)
+    {
+        $this->configService = $configService;
+        $this->orderService = $orderService;
+    }
+
     /**
      * 创建支付宝订单.
      *
@@ -28,50 +39,54 @@ class Alipay implements Payment
      *
      * @return PaymentStatus
      */
-    public function create(Order $order): PaymentStatus
+    public function create(array $order): PaymentStatus
     {
         $payOrderData = [
-            'out_trade_no' => $order->order_id,
-            'total_amount' => $order->charge,
-            'subject' => $order->getOrderListTitle(),
+            'out_trade_no' => $order['order_id'],
+            'total_amount' => $order['charge'],
+            'subject' => $order['order_id'],
         ];
-        $createResult = Pay::alipay(config('pay.alipay'))
-                           ->{$order->payment_method}($payOrderData);
+        $createResult = Pay::alipay($this->configService->getAlipayPay())->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);
     }
 
-    public function query(Order $order): PaymentStatus
+    /**
+     * @param array $order
+     *
+     * @return PaymentStatus
+     */
+    public function query(array $order): PaymentStatus
     {
     }
 
     public function callback()
     {
-        $pay = Pay::alipay(config('pay.alipay'));
+        $pay = Pay::alipay($this->configService->getAlipayPay());
 
         try {
             $data = $pay->verify();
             Log::info($data);
 
-            $order = Order::whereOrderId($data['out_trade_no'])->firstOrFail();
+            $order = $this->orderService->find($data['out_trade_no']);
 
             event(new PaymentSuccessEvent($order));
+
+            return $pay->success();
         } catch (Exception $e) {
             exception_record($e);
-        }
 
-        return $pay->success();
+            return $e->getMessage();
+        }
     }
 
     /**
-     * 支付URL.
+     * @param array $order
      *
-     * @param Order $order
-     *
-     * @return mixed|string
+     * @return string
      */
-    public static function payUrl(Order $order): string
+    public static function payUrl(array $order): string
     {
-        return route('order.pay', [$order->order_id]);
+        return route('order.pay', [$order['order_id']]);
     }
 }

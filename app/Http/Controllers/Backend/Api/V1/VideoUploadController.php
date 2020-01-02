@@ -35,12 +35,12 @@ class VideoUploadController extends BaseController
             $request->setFileName($filename);
             $response = $client->getAcsResponse($request);
 
-            return [
+            return $this->successData([
                 'upload_auth' => $response->UploadAuth,
                 'upload_address' => $response->UploadAddress,
                 'video_id' => $response->VideoId,
                 'request_id' => $response->RequestId,
-            ];
+            ]);
         } catch (Exception $exception) {
             exception_record($exception);
 

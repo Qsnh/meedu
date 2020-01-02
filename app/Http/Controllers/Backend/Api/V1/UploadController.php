@@ -29,4 +29,13 @@ class UploadController extends BaseController
             ],
         ];
     }
+
+    public function tinymceImageUpload(ImageUploadRequest $request)
+    {
+        $file = $request->filldata();
+        $path = $file->store(config('meedu.upload.image.path'), config('meedu.upload.image.disk'));
+        $url = Storage::disk(config('meedu.upload.image.disk'))->url($path);
+
+        return ['location' => $url];
+    }
 }

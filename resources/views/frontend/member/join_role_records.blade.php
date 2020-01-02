@@ -20,10 +20,10 @@
                             <tbody>
                             @forelse($records as $record)
                                 <tr class="text-center">
-                                    <td>{{$record->started_at}}</td>
-                                    <td>{{$record->expired_at}}</td>
-                                    <td><span class="label label-default">￥{{$record->charge}}</span></td>
-                                    <td>{{$record->role->name}}</td>
+                                    <td>{{$record['started_at']}}</td>
+                                    <td>{{$record['expired_at']}}</td>
+                                    <td><span class="label label-default">￥{{$record['charge']}}</span></td>
+                                    <td>{{$record['role']['name']}}</td>
                                 </tr>
                             @empty
                                 <tr>

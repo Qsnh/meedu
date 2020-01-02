@@ -17,17 +17,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($courses as $course)
+                            @forelse($records as $record)
+                                @if(!($course = $courses[$record['course_id']] ?? []))
+                                    @continue
+                                @endif
                                 <tr class="text-center">
-                                    <td><a href="{{ route('course.show', [$course->id, $course->slug]) }}">{{ $course->title }}</a></td>
                                     <td>
-                                        @if($course->pivot->charge > 0)
-                                            <span class="label label-danger">{{ $course->pivot->charge }} 元</span>
-                                        @else
-                                            <span class="label label-success">免费</span>
-                                        @endif
+                                        <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{ $course['title'] }}</a>
                                     </td>
-                                    <td>{{$course->pivot->created_at}}</td>
+                                    <td>
+                                        <span class="label label-danger">{{ $record['charge'] }} 元</span>
+                                    </td>
+                                    <td>{{$record['created_at']}}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -41,7 +42,7 @@
             </div>
             <div class="col-sm-12 pt-10">
                 <div class="text-right">
-                    {{$courses->render()}}
+                    {{$records->render()}}
                 </div>
             </div>
         </div>

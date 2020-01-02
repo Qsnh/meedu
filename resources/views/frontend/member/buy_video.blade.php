@@ -18,20 +18,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($videos as $video)
+                            @forelse($records as $record)
+                                @if(!($video = $videos[$record['video_id']] ?? []))
+                                    @continue
+                                @endif
                                 <tr class="text-center">
-                                    <td><a href="{{ route('course.show', [$video->course->id, $video->course->slug]) }}">{{ $video->course->title }}</a></td>
                                     <td>
-                                        <a href="{{ route('video.show', [$video->course->id, $video->id, $video->slug]) }}">{{$video->title}}</a>
+                                        <a href="{{ route('course.show', [$video['course']['id'], $video['course']['slug']]) }}">{{ $video['course']['title'] }}</a>
                                     </td>
                                     <td>
-                                        @if($video->pivot->charge > 0)
-                                            <span class="label label-danger">{{ $video->pivot->charge }} 元</span>
+                                        <a href="{{ route('video.show', [$video['course']['id'], $video['id'], $video['slug']]) }}">{{$video['title']}}</a>
+                                    </td>
+                                    <td>
+                                        @if($record['charge'] > 0)
+                                            <span class="label label-danger">{{ $record['charge'] }} 元</span>
                                         @else
                                             <span class="label label-success">免费</span>
                                         @endif
                                     </td>
-                                    <td>{{$video->pivot->created_at}}</td>
+                                    <td>{{$record['created_at']}}</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -45,7 +50,7 @@
             </div>
             <div class="col-sm-12 pt-10">
                 <div class="text-right">
-                    {{$videos->render()}}
+                    {{$records->render()}}
                 </div>
             </div>
         </div>

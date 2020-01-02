@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Page;
 
-use App\User;
+use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -32,7 +32,7 @@ class LoginTest extends TestCase
             ->type($user->mobile, 'mobile')
             ->type($password, 'password')
             ->press('登录')
-            ->seePageIs('/member');
+            ->seePageIs('/');
     }
 
     // 错误的密码登录重定向到login界面

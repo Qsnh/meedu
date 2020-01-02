@@ -12,24 +12,32 @@
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
-use App\Models\SmsRecord;
-use Overtrue\EasySms\EasySms;
+use App\Services\Other\Services\SmsService;
 use App\Http\Requests\Frontend\SmsSendRequest;
+use App\Services\Other\Interfaces\SmsServiceInterface;
 
 class SmsController extends FrontendController
 {
+    /**
+     * @var SmsService
+     */
+    protected $smsService;
+
+    public function __construct(SmsServiceInterface $smsService)
+    {
+        $this->smsService = $smsService;
+    }
+
     public function send(SmsSendRequest $request)
     {
         $data = $request->filldata();
         $method = 'send'.$data['method'];
         try {
-            throw_if(! method_exists($this, $method), new Exception('参数错误'));
-
             return $this->{$method}($data['mobile']);
         } catch (Exception $exception) {
             exception_record($exception);
 
-            return exception_response($exception, '短信验证码发送失败');
+            return exception_response($exception, __('error'));
         }
     }
 
@@ -49,8 +57,6 @@ class SmsController extends FrontendController
     }
 
     /**
-     * 发送验证码逻辑.
-     *
      * @param $mobile
      * @param $sessionKey
      * @param $templateId
@@ -64,17 +70,9 @@ class SmsController extends FrontendController
     {
         $code = mt_rand(1000, 10000);
         session([$sessionKey => $code]);
-        $config = config('sms');
-        $easySms = new EasySms($config);
-        $data = [
-            'content' => str_replace('#code#', $code, $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId]),
-            'template' => $config['gateways'][$config['default']['gateways'][0]]['template'][$templateId],
-            'data' => ['code' => $code],
-        ];
-        $sendResponse = $easySms->send($mobile, $data);
-        // Log
-        SmsRecord::createData($mobile, $data, $sendResponse);
 
-        return $this->success('验证码发送成功');
+        $this->smsService->sendCode($mobile, $code, $templateId);
+
+        return $this->success(__('success'));
     }
 }

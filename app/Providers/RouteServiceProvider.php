@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
+        $this->mapApiV2Routes();
         $this->mapWebRoutes();
         $this->mapBackendApiRoutes();
     }
@@ -50,22 +50,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web', 'user.share', 'nav.share', 'pagespeed'])
+        Route::middleware(['web', 'global.share', 'pagespeed'])
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
 
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     */
-    protected function mapApiRoutes()
+    protected function mapApiV2Routes()
     {
-        Route::prefix('/api/v1')
+        Route::prefix('/api/v2')
             ->middleware('api')
-            ->namespace($this->namespace.'\Api\V1')
-            ->group(base_path('routes/api.php'));
+            ->namespace($this->namespace.'\Api\V2')
+            ->group(base_path('routes/apiv2.php'));
     }
 
     protected function mapBackendApiRoutes()

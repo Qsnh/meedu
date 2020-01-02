@@ -1,1 +1,0 @@
-<p>用户{{$fromUser->nick_name}}@您啦。</p>

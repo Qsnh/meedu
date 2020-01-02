@@ -18,7 +18,8 @@
 - [MeEdu 作者录制的简单安装视频教程](https://www.bilibili.com/video/av36024146/)  
 - [使用Docker简单快速的搭建MeEdu（适合小白）](https://www.bilibili.com/video/av44963351/)
 - [MeEdu使用阿里云视频加密服务保障视频安全性(手把手教程)](https://www.bilibili.com/video/av45755754/)
-- [一条命令安装MeEdu（Docker方式），由 MeEdu 社区小伙伴提供](https://github.com/Baiyuetribe/meedu)
+
+> 作者提供收费安装/升级服务，一次安装/升级的价格为27元=一杯咖啡。如果您有需要加我微信，备注"安装meedu"，我会及时与您联系。联系方式下拉到底部。
 
 ## 使用站点
 
@@ -47,26 +48,25 @@
 ## 当前功能概览
 
 - [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
-- [x] 视频在线点播
+- [x] 视频在线点播/视频加密播放
 - [x] 手机号注册
-- [x] 会员/单独购买两种收费模式
+- [x] 会员/课程单独购买两种收费模式
 - [x] 站内消息
-- [x] 支付宝支付/微信支付/个人收款方案(微信小微商户)
+- [x] 支付宝支付/微信支付/手动转账
 - [x] 单元测试
 - [x] 系统公告
 - [x] SEO优化
 - [x] 数据定时备份
 - [x] 友情链接
-- [x] QQ登录
-- [x] Github登录
+- [x] QQ登录/Github登录/微信登录
 - [x] 插件系统
+- [x] Swagger Api文档管理
 
 ## FAQ
 
-- [API接口](docs/api/v1/README.md)
+- [API接口](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [安装教程](docs/安装教程.md)
-- [MeEdu系统视频收费规则细节](docs/收费规则.md)
-- 如果您需要修改后台的界面，请关注这里 [后台Vue项目](https://github.com/Meedu/backend)
+- [MeEdu使用教程](docs/使用教程.md)
 
 ## License
 
@@ -80,3 +80,18 @@
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
 | `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
+
+## 捐赠
+
+<p>
+<img src="/docs/contact/BTC钱包.png" width=200>
+<img src="/docs/contact/ETH钱包.png" width=200>
+<img src="/docs/contact/EOS钱包.png" width=200>
+</p>
+
+## 联系我们
+
+<p>
+<img src="/docs/contact/qq群.png" width=200>
+<img src="/docs/contact/wechat.png" width=200>
+</p>

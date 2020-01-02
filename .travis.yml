@@ -5,7 +5,6 @@ env:
     - SETUP=stable
 
 php:
-  - 7.1
   - 7.2
 
 sudo: false
@@ -20,7 +19,7 @@ services:
 
 before_script:
   - printf "\n" | pecl install -f redis-4.3.0
-  - mysql -e 'create database if not exists meedu;'
+  - mysql -e 'create database if not exists meedutest;'
   - cp .env.testing .env
   - php artisan key:generate
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Page;
 
-use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

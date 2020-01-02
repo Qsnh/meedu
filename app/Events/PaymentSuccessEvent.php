@@ -11,7 +11,6 @@
 
 namespace App\Events;
 
-use App\Models\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -26,9 +25,11 @@ class PaymentSuccessEvent
     public $order;
 
     /**
-     * Create a new event instance.
+     * PaymentSuccessEvent constructor.
+     *
+     * @param array $order
      */
-    public function __construct(Order $order)
+    public function __construct(array $order)
     {
         $this->order = $order;
     }

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Page;
 
-use App\Models\Video;
+use App\Services\Course\Models\Video;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

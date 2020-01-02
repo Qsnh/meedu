@@ -10,21 +10,23 @@ with this source code in the file LICENSE.
 EOF;
 
 return PhpCsFixer\Config::create()
-                        ->setRiskyAllowed(true)
-                        ->setRules([
-                            '@Symfony' => true,
-                            'header_comment' => ['header' => $header],
-                            'array_syntax' => ['syntax' => 'short'],
-                            'ordered_imports' => [
-                                'sort_algorithm' => 'length',
-                            ],
-                            'no_useless_else' => true,
-                            'no_useless_return' => true,
-                            'yoda_style' => false,
-                            'not_operator_with_successor_space' => true,
-                            'increment_style' => ['style' => 'post'],
-                        ])
-                        ->setFinder(
-                            PhpCsFixer\Finder::create()
-                                             ->in(__DIR__ . '/app')
-                        );
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PSR2' => true,
+        'header_comment' => ['header' => $header],
+        'array_syntax' => ['syntax' => 'short'],
+        'ordered_imports' => [
+            'sort_algorithm' => 'length',
+        ],
+        'not_operator_with_successor_space' => false,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'yoda_style' => false,
+        'increment_style' => ['style' => 'post'],
+        // 三元运算符的空格
+        'ternary_operator_spaces' => true,
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__ . '/app')
+    );

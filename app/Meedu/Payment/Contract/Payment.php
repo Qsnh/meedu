@@ -11,41 +11,31 @@
 
 namespace App\Meedu\Payment\Contract;
 
-use App\Models\Order;
-
 interface Payment
 {
     /**
-     * 创建订单.
-     *
-     * @param $data
+     * @param array $order
      *
      * @return PaymentStatus
      */
-    public function create(Order $order): PaymentStatus;
+    public function create(array $order): PaymentStatus;
 
     /**
-     * 主动查询.
-     *
-     * @param $orderId
+     * @param array $order
      *
      * @return PaymentStatus
      */
-    public function query(Order $order): PaymentStatus;
+    public function query(array $order): PaymentStatus;
 
     /**
-     * 回调.
-     *
      * @return mixed
      */
     public function callback();
 
     /**
-     * 获取继续支付的URL.
+     * @param array $order
      *
-     * @param Order $order
-     *
-     * @return mixed
+     * @return string
      */
-    public static function payUrl(Order $order): string;
+    public static function payUrl(array $order): string;
 }

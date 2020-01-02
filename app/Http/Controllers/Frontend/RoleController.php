@@ -11,43 +11,66 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Role;
-use App\Models\Order;
-use App\Repositories\RoleRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Services\RoleService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Member\Interfaces\RoleServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class RoleController extends FrontendController
 {
+    /**
+     * @var RoleService
+     */
+    protected $roleService;
+    /**
+     * @var ConfigService
+     */
+    protected $configService;
+    /**
+     * @var OrderService
+     */
+    protected $orderService;
+
+    public function __construct(
+        RoleServiceInterface $roleService,
+        ConfigServiceInterface $configService,
+        OrderServiceInterface $orderService
+    ) {
+        $this->roleService = $roleService;
+        $this->configService = $configService;
+        $this->orderService = $orderService;
+    }
+
     public function index()
     {
-        $roles = Role::show()->orderByDesc('weight')->get();
-        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.role_list');
+        $roles = $this->roleService->all();
+        [
+            'title' => $title,
+            'keywords' => $keywords,
+            'description' => $description
+        ] = $this->configService->getSeoRoleListPage();
 
         return v('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
     }
 
     public function showBuyPage($id)
     {
-        $role = Role::show()->findOrFail($id);
-        $title = sprintf('购买VIP《%s》', $role->name);
+        $role = $this->roleService->find($id);
+        $title = __('buy role', ['role' => $role['name']]);
 
         return v('frontend.role.buy', compact('role', 'title'));
     }
 
-    public function buyHandler(RoleRepository $repository, $id)
+    public function buyHandler($id)
     {
-        $role = Role::show()->findOrFail($id);
-        $user = Auth::user();
+        $role = $this->roleService->find($id);
+        $order = $this->orderService->createRoleOrder(Auth::id(), $role);
 
-        $order = $repository->createOrder($user, $role);
-        if (! ($order instanceof Order)) {
-            flash($repository->errors, 'error');
+        flash(__('order successfully, please pay'), 'success');
 
-            return back();
-        }
-
-        flash('订单创建成功，请尽快支付', 'success');
-
-        return redirect(route('order.show', $order->order_id));
+        return redirect(route('order.show', $order['order_id']));
     }
 }

@@ -23,8 +23,8 @@ class SettingController extends BaseController
             'sms' => config('sms'),
             'services' => config('services'),
             'pay' => config('pay'),
-            'eshanghu' => config('eshanghu'),
             'tencent' => config('tencent'),
+            'filesystems' => config('filesystems'),
         ];
 
         return $this->successData($config);

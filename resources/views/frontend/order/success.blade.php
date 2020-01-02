@@ -16,8 +16,8 @@
                 <p class="mt-5 mb-5 text-primary">
                     <i class="fa fa-check fa-5x" aria-hidden="true"></i>
                 </p>
-                <p>订单号：{{$order->order_id}}</p>
-                <p>支付金额：￥{{$order->charge}}</p>
+                <p>订单号：{{$order['order_id']}}</p>
+                <p>支付金额：￥{{$order['charge']}}</p>
                 <p><a class="btn btn-primary" href="{{route('member.orders')}}">我的订单</a></p>
             </div>
         </div>

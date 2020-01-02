@@ -11,31 +11,40 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Link;
 use App\Events\AdFromEvent;
-use Illuminate\Http\Request;
-use App\Repositories\IndexRepository;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 
 class IndexController extends FrontendController
 {
-    public function index(Request $request, IndexRepository $repository)
-    {
-        $courses = $repository->recentPublishedAndShowCourses();
-        $roles = $repository->roles();
+    protected $linkService;
+    protected $configService;
 
-        // AdFrom
-        if ($request->input('from')) {
-            event(new AdFromEvent($request->input('from')));
+    public function __construct(
+        LinkServiceInterface $linkService,
+        ConfigService $configService
+    ) {
+        $this->linkService = $linkService;
+        $this->configService = $configService;
+    }
+
+    public function index()
+    {
+        $links = $this->linkService->all();
+
+        [
+            'title' => $title,
+            'keywords' => $keywords,
+            'description' => $description
+        ] = $this->configService->getSeoIndexPage();
+
+        if ($fromKey = request()->input('from_key')) {
+            event(new AdFromEvent($fromKey));
         }
 
-        // 友情链接
-        $links = Link::linksCache();
-
-        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.index');
-
         return v(
-            config('meedu.advance.template_index', 'frontend.index.index'),
-            compact('courses', 'roles', 'title', 'keywords', 'description', 'links')
+            'frontend.index.index',
+            compact('title', 'keywords', 'description', 'links')
         );
     }
 }

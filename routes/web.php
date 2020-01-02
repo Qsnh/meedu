@@ -13,16 +13,23 @@
 
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 
-Auth::routes();
-Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('/register', 'Auth\RegisterController@register')->middleware('sms.check');
-Route::get('/password/reset', 'Auth\ForgotPasswordController@showPage')->name('password.request');
-Route::post('/password/reset', 'Auth\ForgotPasswordController@handler')->middleware('sms.check');
-Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
+Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
+Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:5,1']);
+
+Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
+Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['throttle:5,1', 'sms.check']);
+
+Route::post('/logout', 'Frontend\LoginController@logout')->name('logout');
+
+Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->name('password.request');
+Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:5,1', 'sms.check']);
+
+// 发送短信
+Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send')->middleware(['image.captcha.check', 'throttle:5,1']);
 
 // 第三方登录
-Route::get('/login/{app}', 'Auth\LoginController@redirectToProvider')->name('socialite');
-Route::get('/login/{app}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/login/{app}', 'Frontend\LoginController@socialLogin')->name('socialite');
+Route::get('/login/{app}/callback', 'Frontend\LoginController@socialiteLoginCallback');
 
 // 课程列表
 Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
@@ -61,6 +68,7 @@ Route::group([
     Route::get('/course/videos', 'MemberController@showBuyVideoPage')->name('member.course.videos');
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
+    Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
@@ -82,16 +90,10 @@ Route::group([
     Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
     Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
-    Route::get('/order/pay/eshanghu/{order_id}', 'OrderController@eshanghu')->name('order.eshanghu.wechat');
+    Route::get('/order/pay/handPay/{order_id}', 'OrderController@handPay')->name('order.pay.handPay');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
     });
-});
-
-
-Route::group(['prefix' => '/backend', 'namespace' => 'Backend'], function () {
-    Route::get('/video/upload/aliyun', 'VideoUploadController@aliyun');
-    Route::get('/video/upload/tencent', 'VideoUploadController@tencent');
 });

@@ -29,6 +29,13 @@ return [
                 'icon' => '<i class="fa fa-qq" aria-hidden="true"></i>',
                 'enabled' => 0,
             ],
+            // 微信登录
+            'weixinweb' => [
+                'app' => 'weixinweb',
+                'name' => 'Wechat',
+                'icon' => '<i class="fa fa-weixin" aria-hidden="true"></i>',
+                'enabled' => 0,
+            ],
         ],
     ],
 
@@ -60,7 +67,7 @@ return [
             'name' => '支付宝',
             'sign' => 'alipay',
             'default_method' => 'web',
-            'pc' => true,
+            'pc' => 'web',
             'enabled' => 0,
         ],
         'wechat' => [
@@ -68,16 +75,17 @@ return [
             'name' => '微信支付',
             'sign' => 'wechat',
             'default_method' => 'scan',
-            'pc' => true,
+            'pc' => 'scan',
             'enabled' => 0,
         ],
-        'eshanghu' => [
-            'handler' => \App\Meedu\Payment\Eshanghu\Eshanghu::class,
-            'name' => '微信扫码支付',
-            'sign' => 'eshanghu',
-            'default_method' => 'scan',
-            'pc' => true,
-            'enabled' => 1,
+        'handPay' => [
+            'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
+            'name' => '手动打款',
+            'sign' => 'handPay',
+            'default_method' => 'hand',
+            'pc' => 'hand',
+            'enabled' => 0,
+            'introduction' => '',
         ],
     ],
 
@@ -107,6 +115,13 @@ return [
             'status' => -1,
             'expire' => 360,
         ],
+        // 短信频率
+        'limiter' => [
+            'sms' => [
+                'times' => 1,
+                'minutes' => 1,
+            ]
+        ],
         // 测试手机号
         'test' => explode(',', env('TEST_MOBILE', '')),
         // 统计代码
@@ -119,6 +134,8 @@ return [
         'sms' => 'yunpian',
         // 备份开关
         'backup' => 0,
+        // editor
+        'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
     ],
 
     // 视频鉴权

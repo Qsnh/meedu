@@ -23,16 +23,12 @@
                             <tbody>
                             @forelse($orders as $order)
                                 <tr class="text-center">
-                                    <td><span class="badge badge-secondary">{{$order->getPaymentText()}}</span></td>
-                                    <td><span class="badge badge-success">￥{{ $order->charge }}</span></td>
-                                    <td>{{ $order->getOrderListTitle() }}</td>
-                                    <td>{{ $order->created_at }}</td>
+                                    <td><span class="badge badge-secondary">{{$order['payment_text']}}</span></td>
+                                    <td><span class="badge badge-success">￥{{ $order['charge'] }}</span></td>
+                                    <td>{{ implode(',', array_column($order['goods'] ?? [], 'goods_text')) }}</td>
+                                    <td>{{ $order['created_at'] }}</td>
                                     <td>
-                                        @if(in_array($order->status, [\App\Models\Order::STATUS_PAYING, \App\Models\Order::STATUS_UNPAY]))
-                                            <a href="{{route('order.show', [$order->order_id])}}" class="btn btn-primary btn-sm">继续支付</a>
-                                        @else
-                                            <span class="badge badge-default">{{$order->statusText()}}</span>
-                                        @endif
+                                        <span class="badge badge-default">{{$order['status_text']}}</span>
                                     </td>
                                 </tr>
                             @empty

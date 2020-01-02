@@ -11,67 +11,122 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Order;
-use App\Models\Course;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\CourseRepository;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\CourseCommentService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseController extends FrontendController
 {
-    public function index()
+    /**
+     * @var CourseService
+     */
+    protected $courseService;
+    /**
+     * @var ConfigService
+     */
+    protected $configService;
+    /**
+     * @var CourseCommentService
+     */
+    protected $courseCommentService;
+    /**
+     * @var UserService
+     */
+    protected $userService;
+    /**
+     * @var VideoService
+     */
+    protected $videoService;
+    /**
+     * @var OrderService
+     */
+    protected $orderService;
+
+    public function __construct(
+        CourseServiceInterface $courseService,
+        ConfigServiceInterface $configService,
+        CourseCommentServiceInterface $courseCommentService,
+        UserServiceInterface $userService,
+        VideoServiceInterface $videoService,
+        OrderServiceInterface $orderService
+    ) {
+        $this->courseService = $courseService;
+        $this->configService = $configService;
+        $this->courseCommentService = $courseCommentService;
+        $this->userService = $userService;
+        $this->videoService = $videoService;
+        $this->orderService = $orderService;
+    }
+
+    public function index(Request $request)
     {
-        $courses = Course::show()
-            ->published()
-            ->orderByDesc('created_at')
-            ->paginate(config('meedu.other.course_list_page_size', 6));
-        ['title' => $title, 'keywords' => $keywords, 'description' => $description] = config('meedu.seo.course_list');
+        $page = $request->input('page', 1);
+        $pageSize = $this->configService->getCourseListPageSize();
+        [
+            'total' => $total,
+            'list' => $list
+        ] = $this->courseService->simplePage($page, $pageSize);
+        $courses = $this->paginator($list, $total, $page, $pageSize);
+        [
+            'title' => $title,
+            'keywords' => $keywords,
+            'description' => $description,
+        ] = $this->configService->getSeoCourseListPage();
 
         return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
     }
 
     public function show($id, $slug)
     {
-        $course = Course::with(['comments', 'user', 'comments.user'])
-            ->show()
-            ->published()
-            ->whereId($id)
-            ->firstOrFail();
-        $title = sprintf('课程《%s》', $course->title);
-        $keywords = $course->keywords;
-        $description = $course->description;
-        $comments = $course->comments()->orderByDesc('created_at')->get();
+        $course = $this->courseService->find($id);
+        $chapters = $this->courseService->chapters($course['id']);
+        $videos = $this->videoService->courseVideos($course['id']);
+        $comments = $this->courseCommentService->courseComments($course['id']);
+        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
+        $commentUsers = array_column($commentUsers, null, 'id');
+
+        $title = $course['title'];
+        $keywords = $course['seo_keywords'];
+        $description = $course['seo_description'];
 
         return v('frontend.course.show', compact(
             'course',
             'title',
             'keywords',
             'description',
-            'comments'
+            'comments',
+            'commentUsers',
+            'videos',
+            'chapters'
         ));
     }
 
     public function showBuyPage($id)
     {
-        $course = Course::findOrFail($id);
-        $title = sprintf('购买课程《%s》', $course->title);
+        $course = $this->courseService->find($id);
+        $title = __('buy course', ['course' => $course['title']]);
 
         return v('frontend.course.buy', compact('course', 'title'));
     }
 
-    public function buyHandler(CourseRepository $repository, $id)
+    public function buyHandler($id)
     {
-        $course = Course::findOrFail($id);
-        $user = Auth::user();
+        $course = $this->courseService->find($id);
+        $order = $this->orderService->createCourseOrder(Auth::id(), $course);
 
-        $order = $repository->createOrder($user, $course);
-        if (! ($order instanceof Order)) {
-            flash($order, 'warning');
+        flash(__('order successfully, please pay'), 'success');
 
-            return back();
-        }
-
-        flash('下单成功，请尽快支付', 'success');
-
-        return redirect(route('order.show', $order->order_id));
+        return redirect(route('order.show', $order['order_id']));
     }
 }

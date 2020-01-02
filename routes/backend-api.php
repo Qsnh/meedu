@@ -156,7 +156,9 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 订单
     Route::group(['prefix' => 'order'], function () {
         Route::get('/', 'OrderController@index');
+        Route::get('/{id}/finish', 'OrderController@finishOrder');
     });
 
     Route::post('/upload/image', 'UploadController@uploadImageHandle');
+    Route::post('/upload/image/tinymce', 'UploadController@tinymceImageUpload');
 });

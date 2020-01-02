@@ -1,9 +1,9 @@
 @auth
-    @if(!auth()->user()->isBindMobile())
+    @if(app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
         <div class="container mt-2 mb-2">
             <div class="col-sm">
                 <div class="alert alert-info">
-                    您未绑定手机号，请 <a href="{{route('member.mobile.bind')}}"><b>点击绑定</b></a>
+                    {!! __('text_trans_need_bind_mobile', ['link' => route('member.mobile.bind')]) !!}
                 </div>
             </div>
         </div>

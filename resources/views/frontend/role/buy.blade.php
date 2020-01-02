@@ -27,19 +27,19 @@
                         <div class="media-list media-list-divided bb-1 border-light">
                             <div class="media align-items-center p-40">
                                 <div class="media-body">
-                                    <h4>{{$role->name}}</h4>
-                                    @foreach($role->descriptionRows() as $row)
+                                    <h4>{{$role['name']}}</h4>
+                                    @foreach(explode("\n", $role['description']) as $row)
                                         <p class="text-muted">{{$row}}</p>
                                     @endforeach
                                 </div>
-                                <h4 class="text-primary fw-500">￥{{$role->charge}}</h4>
+                                <h4 class="text-primary fw-500">￥{{$role['charge']}}</h4>
                             </div>
                         </div>
                         <br><br>
                         <div class="p-40 text-right">
                             <div>
                                 <small class="text-uppercase text-muted">总价</small>
-                                <span class="w-150px d-inline-block fw-400">￥{{$role->charge}}</span>
+                                <span class="w-150px d-inline-block fw-400">￥{{$role['charge']}}</span>
                             </div>
                             <div>
                                 <small class="text-uppercase text-muted">折扣</small>
@@ -51,7 +51,7 @@
                             <h4 class="text-uppercase">
                                 <strong class="fs-14">总计</strong>
                                 <div class="w-150px d-inline-block text-primary">
-                                    <span class="fw-500 fs-20">￥{{$role->charge}}</span>
+                                    <span class="fw-500 fs-20">￥{{$role['charge']}}</span>
                                     <span class="fs-10 fw-300 opacity-70">CNY</span>
                                 </div>
                             </h4>

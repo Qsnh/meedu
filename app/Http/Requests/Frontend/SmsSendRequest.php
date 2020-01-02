@@ -27,10 +27,10 @@ class SmsSendRequest extends BaseRequest
     public function messages()
     {
         return [
-            'captcha.required' => '请输入验证码',
-            'captcha.captcha' => '验证码错误',
-            'mobile.required' => '请输入手机号',
-            'method.*' => '参数错误',
+            'captcha.required' => __('captcha.required'),
+            'captcha.captcha' => __('captcha.captcha'),
+            'mobile.required' => __('mobile.required'),
+            'method.*' => __('method.*'),
         ];
     }
 

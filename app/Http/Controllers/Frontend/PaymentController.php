@@ -11,8 +11,17 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+
 class PaymentController extends FrontendController
 {
+    protected $configService;
+
+    public function __construct(ConfigServiceInterface $configService)
+    {
+        $this->configService = $configService;
+    }
+
     /**
      * 支付回调.
      *
@@ -22,7 +31,7 @@ class PaymentController extends FrontendController
      */
     public function callback($payment)
     {
-        $payments = config('meedu.payment');
+        $payments = $this->configService->getPayments();
         if (! isset($payments[$payment])) {
             abort(404);
         }

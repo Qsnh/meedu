@@ -13,10 +13,9 @@
                             @forelse($messages as $message)
                                 <tr>
                                     <td>
-                                        {!! (new \App\Meedu\NotificationParse())->parseHTML($message) !!}
+                                        {!! $message['message'] !!}
                                     </td>
                                 </tr>
-                                @if($message->markAsRead())@endif
                             @empty
                                 <tr><td>暂无数据</td></tr>
                             @endforelse

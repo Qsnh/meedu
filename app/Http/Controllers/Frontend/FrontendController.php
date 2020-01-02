@@ -11,7 +11,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
+use App\Services\Member\Services\UserService;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class FrontendController extends BaseController
 {
@@ -22,5 +26,30 @@ class FrontendController extends BaseController
             'message' => $message,
             'data' => $data,
         ];
+    }
+
+    /**
+     * @param $list
+     * @param $total
+     * @param $page
+     * @param $pageSize
+     *
+     * @return LengthAwarePaginator
+     */
+    protected function paginator($list, $total, $page, $pageSize)
+    {
+        return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => sprintf('/%s', request()->path())]);
+    }
+
+    protected function user()
+    {
+        if (Auth::check()) {
+            /**
+             * @var $userService UserService
+             */
+            $userService = app()->make(UserServiceInterface::class);
+            return $userService->find(Auth::id(), ['role']);
+        }
+        return [];
     }
 }
