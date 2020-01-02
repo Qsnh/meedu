@@ -65,8 +65,7 @@
 
 - [API接口](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [安装教程](docs/安装教程.md)
-- [MeEdu系统视频收费规则细节](docs/收费规则.md)
-- 如果您需要修改后台的界面，请关注这里 [后台Vue项目](https://github.com/Meedu/backend)
+- [MeEdu使用教程](docs/使用教程.md)
 
 ## License
 
