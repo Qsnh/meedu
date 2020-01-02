@@ -97,9 +97,3 @@ Route::group([
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
     });
 });
-
-
-Route::group(['prefix' => '/backend', 'namespace' => 'Backend'], function () {
-    Route::get('/video/upload/aliyun', 'VideoUploadController@aliyun');
-    Route::get('/video/upload/tencent', 'VideoUploadController@tencent');
-});

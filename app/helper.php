@@ -162,7 +162,7 @@ if (!function_exists('aliyun_play_auth')) {
      *
      * @return mixed|SimpleXMLElement
      */
-    function aliyun_play_auth(\App\Models\Video $video)
+    function aliyun_play_auth($video)
     {
         try {
             $client = aliyun_sdk_client();

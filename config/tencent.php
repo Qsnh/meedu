@@ -8,6 +8,7 @@
 
 return [
     'vod' => [
+        'app_id' => '',
         'secret_id' => '',
         'secret_key' => '',
     ],
