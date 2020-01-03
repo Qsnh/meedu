@@ -48,7 +48,7 @@ class LoginController extends BaseController
      */
     public function showLoginPage()
     {
-        return v('auth.login');
+        return v('frontend.auth.login');
     }
 
     /**

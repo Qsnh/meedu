@@ -11,6 +11,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\H5CheckMiddleware;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -62,6 +63,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            H5CheckMiddleware::class,
         ],
 
         // 页面加速(包括：去除空格，去除注释等)

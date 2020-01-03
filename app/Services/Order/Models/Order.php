@@ -60,7 +60,7 @@ class Order extends Model
      */
     public function goods()
     {
-        return $this->hasMany(OrderGoods::class, 'order_id');
+        return $this->hasMany(OrderGoods::class, 'oid');
     }
 
     /**

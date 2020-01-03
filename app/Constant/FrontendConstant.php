@@ -27,4 +27,6 @@ class FrontendConstant
     const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
 
     const JSON_ERROR_CODE = 2;
+
+    const H5 = 'h5';
 }
