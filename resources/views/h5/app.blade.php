@@ -37,10 +37,10 @@
             <img src="{{asset('/h5/images/dashboard.png')}}" alt="" class="weui-tabbar__icon">
             <p class="weui-tabbar__label">首页</p>
         </a>
-        <a href="{{route('member.courses')}}"
-           class="weui-tabbar__item {{request()->routeIs('member.courses') ? 'weui-bar__item_on' : ''}}">
+        <a href="{{route('role.index')}}"
+           class="weui-tabbar__item {{request()->routeIs('role.index') ? 'weui-bar__item_on' : ''}}">
             <img src="{{asset('/h5/images/mall.png')}}" alt="" class="weui-tabbar__icon">
-            <p class="weui-tabbar__label">已购课程</p>
+            <p class="weui-tabbar__label">套餐</p>
         </a>
         <a href="{{route('member')}}"
            class="weui-tabbar__item {{request()->routeIs('member') ? 'weui-bar__item_on' : ''}}">
