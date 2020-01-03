@@ -13,7 +13,6 @@ namespace App\Http;
 
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
-use App\Http\Middleware\CheckImageCaptchaMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -101,7 +100,5 @@ class Kernel extends HttpKernel
         'global.share' => GlobalShareMiddleware::class,
         // 短信验证
         'sms.check' => CheckSmsCodeMiddleware::class,
-        // 图形验证码验证
-        'image.captcha.check' => CheckImageCaptchaMiddleware::class,
     ];
 }

@@ -25,7 +25,7 @@ Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->nam
 Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:5,1', 'sms.check']);
 
 // 发送短信
-Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send')->middleware(['image.captcha.check', 'throttle:5,1']);
+Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send')->middleware(['throttle:5,1']);
 
 // 第三方登录
 Route::get('/login/{app}', 'Frontend\LoginController@socialLogin')->name('socialite');

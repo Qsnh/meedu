@@ -41,7 +41,7 @@
         $('.send-sms-captcha').click(function () {
             var captcha = $('input[name="captcha"]').val();
             var mobile = $('input[name="mobile"]').val();
-            if (captcha == '' || mobile == '') {
+            if (captcha === '' || mobile === '') {
                 alert('请输入图形验证码或手机号');
                 return false;
             }
@@ -52,7 +52,7 @@
                 method: '{{$smsCaptchaKey}}',
                 _token: '{{ csrf_token() }}'
             }, function (res) {
-                if (res.code != 200) {
+                if (res.code !== 0) {
                     alert(res.message);
                     $('.captcha').click();
                     return false;

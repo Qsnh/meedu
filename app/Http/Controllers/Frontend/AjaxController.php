@@ -12,8 +12,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BaseController;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -21,7 +21,7 @@ use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
-class AjaxController extends Controller
+class AjaxController extends BaseController
 {
     protected $videoCommentService;
     protected $courseCommentService;
@@ -58,7 +58,7 @@ class AjaxController extends Controller
         $comment = $this->courseCommentService->create($course['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
-        return [
+        return $this->jsonSuccess([
             'content' => $comment['render_content'],
             'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
             'user' => [
@@ -66,7 +66,7 @@ class AjaxController extends Controller
                 'avatar' => $user['avatar'],
                 'role' => $user['role'] ? $user['role']['name'] : '免费会员',
             ],
-        ];
+        ]);
     }
 
     /**
@@ -84,7 +84,7 @@ class AjaxController extends Controller
         $comment = $this->videoCommentService->create($video['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
-        return [
+        return $this->jsonSuccess([
             'content' => $comment['render_content'],
             'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
             'user' => [
@@ -92,6 +92,6 @@ class AjaxController extends Controller
                 'avatar' => $user['avatar'],
                 'role' => $user['role'] ? $user['role']['name'] : '免费会员',
             ],
-        ];
+        ]);
     }
 }

@@ -25,4 +25,6 @@ class FrontendConstant
 
     const PAYMENT_WECHAT_PAY_CACHE_KEY = 'wechat_remote_order_%s';
     const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
+
+    const JSON_ERROR_CODE = 2;
 }

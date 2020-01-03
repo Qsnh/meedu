@@ -69,7 +69,7 @@ class RoleServiceTest extends TestCase
 
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
-        $this->assertEquals(Carbon::now()->addDays($role->expire_days), $user->role_expired_at);
+        $this->assertEquals(Carbon::now()->addDays($role->expire_days), (string)$user->role_expired_at);
     }
 
     public function test_userContinueRole()

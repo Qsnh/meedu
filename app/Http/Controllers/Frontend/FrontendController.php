@@ -19,15 +19,6 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class FrontendController extends BaseController
 {
-    protected function success($message = '', $data = [])
-    {
-        return [
-            'code' => 200,
-            'message' => $message,
-            'data' => $data,
-        ];
-    }
-
     /**
      * @param $list
      * @param $total

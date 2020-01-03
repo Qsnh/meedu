@@ -50,10 +50,6 @@
         var submitBtn = document.getElementById('submit-comment');
         submitBtn.addEventListener('click', function () {
             var content = document.getElementById('comment-content').value;
-            if (content === '') {
-                swal('Oops', '请输入内容', 'error');
-                return;
-            }
             if (content.length < 6) {
                 swal('Oops', '评论内容不能少于6个字', 'error');
                 return;
@@ -68,7 +64,7 @@
                 '_token': '{{csrf_token()}}'
             }, function (res) {
                 $('#submit-comment').removeAttr('disabled');
-                if (typeof res.status !== 'undefined' || typeof res.code !== 'undefined') {
+                if (res.code !== 0) {
                     swal("失败", res.message, "error");
                 } else {
                     $('textarea[name="comment_content"]').val('');
@@ -76,19 +72,19 @@
             <div class="card">
                 <div class="card-body">
                     <div class="media bb-1 border-fade">
-                        <img class="avatar avatar-lg" src="${res.user.avatar}">
+                        <img class="avatar avatar-lg" src="${res.data.user.avatar}">
                         <div class="media-body">
                             <p>
-                                <strong class="fs-14">${res.user.nick_name}</strong>
-                                <time class="float-right text-lighter">${res.created_at}</time>
+                                <strong class="fs-14">${res.data.user.nick_name}</strong>
+                                <time class="float-right text-lighter">${res.data.created_at}</time>
                             </p>
                             <p>
-${res.user.role}
+${res.data.user.role}
                         </p>
                     </div>
                 </div>
                 <div class="card-body border-fade">
-${res.content}
+${res.data.content}
                         </div>
                     </div>
                 </div>

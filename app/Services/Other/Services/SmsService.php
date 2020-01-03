@@ -11,6 +11,7 @@
 
 namespace App\Services\Other\Services;
 
+use Illuminate\Support\Str;
 use Overtrue\EasySms\EasySms;
 use App\Services\Other\Models\SmsRecord;
 use App\Services\Base\Services\ConfigService;
@@ -39,7 +40,7 @@ class SmsService implements SmsServiceInterface
      */
     public function sendCode($mobile, $code, $scene): void
     {
-        $sceneMethod = sprintf('get%sSceneTemplateId', ucfirst(snake_case($scene)));
+        $sceneMethod = sprintf('get%sSceneTemplateId', Str::camel($scene));
         $templateId = $this->$sceneMethod();
         $easySms = new EasySms($this->configService->getSms());
         $data = [
