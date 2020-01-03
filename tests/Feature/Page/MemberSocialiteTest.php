@@ -6,7 +6,6 @@ namespace Tests\Feature\Page;
 
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Models\User;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class MemberSocialiteTest extends TestCase
@@ -33,11 +32,9 @@ class MemberSocialiteTest extends TestCase
     public function test_cancel_button()
     {
         $user = factory(User::class)->create();
-        Socialite::create([
+        factory(Socialite::class)->create([
             'user_id' => $user->id,
             'app' => 'qq',
-            'app_user_id' => Str::random(),
-            'data' => '',
         ]);
         $this->actingAs($user)
             ->visit(route('member.socialite'))
