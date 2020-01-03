@@ -66,19 +66,20 @@ class OrderController extends Controller
             throw new SystemException(__('payment method not exists'));
         }
 
-        // 创建远程订单
-        $paymentHandler = app()->make($payments[$payment]['handler']);
-        $createResult = $paymentHandler->create($order);
-        if ($createResult->status == false) {
-            throw new SystemException(__('remote order create failed'));
-        }
-
         // 更新订单的支付方式
         $updateData = [
             'payment' => $payment,
             'payment_method' => $paymentMethod,
         ];
         $this->orderService->change2Paying($order['id'], $updateData);
+        $order = array_merge($order, $updateData);
+
+        // 创建远程订单
+        $paymentHandler = app()->make($payments[$payment]['handler']);
+        $createResult = $paymentHandler->create($order);
+        if ($createResult->status == false) {
+            throw new SystemException(__('remote order create failed'));
+        }
 
         return $createResult->data;
     }

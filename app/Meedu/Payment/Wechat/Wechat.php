@@ -13,23 +13,41 @@ namespace App\Meedu\Payment\Wechat;
 
 use Exception;
 use Yansongda\Pay\Pay;
+use App\Constant\FrontendConstant;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use App\Meedu\Payment\Contract\Payment;
+use App\Services\Base\Services\CacheService;
 use App\Meedu\Payment\Contract\PaymentStatus;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class Wechat implements Payment
 {
+    /**
+     * @var ConfigService
+     */
     protected $configService;
+    /**
+     * @var OrderService
+     */
     protected $orderService;
+    /**
+     * @var CacheService
+     */
+    protected $cacheService;
 
-    public function __construct(ConfigService $configService, OrderService $orderService)
-    {
+    public function __construct(
+        ConfigServiceInterface $configService,
+        OrderServiceInterface $orderService,
+        CacheServiceInterface $cacheService
+    ) {
         $this->configService = $configService;
         $this->orderService = $orderService;
+        $this->cacheService = $cacheService;
     }
 
     public function create(array $order): PaymentStatus
@@ -44,10 +62,10 @@ class Wechat implements Payment
             $createResult = Pay::wechat($this->configService->getWechatPay())->{$order['payment_method']}($payOrderData);
 
             // 缓存保存
-            Cache::put(
-                sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']),
+            $this->cacheService->put(
+                sprintf(FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_KEY, $order['order_id']),
                 $createResult,
-                config('cachekey.order.wechat_remote_order.expire')
+                FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_EXPIRE
             );
 
             // 构建Response

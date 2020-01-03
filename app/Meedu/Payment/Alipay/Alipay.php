@@ -20,14 +20,24 @@ use App\Meedu\Payment\Contract\Payment;
 use App\Meedu\Payment\Contract\PaymentStatus;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class Alipay implements Payment
 {
+    /**
+     * @var ConfigService
+     */
     protected $configService;
+    /**
+     * @var OrderService
+     */
     protected $orderService;
 
-    public function __construct(ConfigService $configService, OrderService $orderService)
-    {
+    public function __construct(
+        ConfigServiceInterface $configService,
+        OrderServiceInterface $orderService
+    ) {
         $this->configService = $configService;
         $this->orderService = $orderService;
     }
