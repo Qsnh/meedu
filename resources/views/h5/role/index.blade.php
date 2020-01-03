@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="weui-form-preview__ft">
-                <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">购买</a>
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="{{route('member.role.buy', [$role['id']])}}">购买</a>
             </div>
         </div>
     @endforeach
