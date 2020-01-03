@@ -6,7 +6,9 @@
 <a href="https://packagist.org/packages/Qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/Qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/Qsnh/meedu"><img src="https://poser.pugx.org/qsnh/meedu/license" alt="License"></a>
-<a href="https://scrutinizer-ci.com/g/Qsnh/meedu/build-status/master"><img src="https://scrutinizer-ci.com/g/Qsnh/meedu/badges/coverage.png?b=master" alt="Code Coverage"></a>
+<a href="https://codecov.io/gh/Qsnh/meedu">
+  <img src="https://codecov.io/gh/Qsnh/meedu/branch/master/graph/badge.svg" />
+</a>
 </p>
 
 ## 介绍
