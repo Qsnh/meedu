@@ -43,7 +43,7 @@ class MemberMobileBindTest extends TestCase
             'captcha' => '123123',
             'sms_captcha_key' => 'mobile_bind',
             'sms_captcha' => '123123',
-        ])->seeInSession('error');
+        ])->seeInSession('warning');
     }
 
     public function test_bind_with_exists_mobile()
@@ -60,7 +60,7 @@ class MemberMobileBindTest extends TestCase
             'captcha' => '123123',
             'sms_captcha_key' => 'mobile_bind',
             'sms_captcha' => '123123',
-        ])->seeInSession('error');
+        ])->seeInSession('warning');
     }
 
 }

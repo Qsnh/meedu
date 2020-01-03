@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
+use Illuminate\Support\Str;
 use App\Services\Other\Services\SmsService;
 use App\Http\Requests\Frontend\SmsSendRequest;
 use App\Services\Other\Interfaces\SmsServiceInterface;
@@ -31,7 +32,7 @@ class SmsController extends FrontendController
     public function send(SmsSendRequest $request)
     {
         $data = $request->filldata();
-        $method = 'send'.$data['method'];
+        $method = 'send' . Str::camel($data['method']);
         try {
             return $this->{$method}($data['mobile']);
         } catch (Exception $exception) {
@@ -73,6 +74,6 @@ class SmsController extends FrontendController
 
         $this->smsService->sendCode($mobile, $code, $templateId);
 
-        return $this->success(__('success'));
+        return $this->jsonSuccess();
     }
 }

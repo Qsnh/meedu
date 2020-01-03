@@ -11,7 +11,9 @@
 
 namespace App\Http\Requests\Frontend;
 
+use App\Exceptions\ServiceException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class BaseRequest extends FormRequest
 {
@@ -23,5 +25,14 @@ class BaseRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    /**
+     * @param Validator $validator
+     * @throws ServiceException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ServiceException(implode(',', $validator->errors()->all()));
     }
 }
