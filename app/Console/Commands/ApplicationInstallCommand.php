@@ -50,14 +50,14 @@ class ApplicationInstallCommand extends Command
     public function handle()
     {
         $action = $this->argument('action');
-        if (! $action) {
+        if (!$action) {
             $this->warn('Please choice action.');
 
             return;
         }
 
-        $method = 'action'.implode('', array_map('ucfirst', explode('_', $action)));
-        if (! method_exists($this, $method)) {
+        $method = 'action' . implode('', array_map('ucfirst', explode('_', $action)));
+        if (!method_exists($this, $method)) {
             $this->warn('action not exists.');
 
             return;
@@ -68,18 +68,18 @@ class ApplicationInstallCommand extends Command
 
     public function actionAdministrator()
     {
+        $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
+        if (!$super) {
+            $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据。');
+
+            return;
+        }
+
         // 是否静默安装
-        if (! $this->option('q')) {
-            $super = AdministratorRole::whereSlug(config('meedu.administrator.super_slug'))->first();
-            if (! $super) {
-                $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据。');
-
-                return;
-            }
-
+        if (!$this->option('q')) {
             $name = '超级管理员';
             $email = $this->ask('请输入邮箱(默认：meedu@meedu.meedu):', 'meedu@meedu.meedu');
-            if (! $email) {
+            if (!$email) {
                 $this->warn('邮箱不能空');
 
                 return;

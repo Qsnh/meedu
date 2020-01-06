@@ -45,7 +45,7 @@ class Setting
     public function sync()
     {
         $saveConfig = $this->get();
-        if (! isset($saveConfig['version'])) {
+        if (!isset($saveConfig['version'])) {
             // 老版本的配置保存方式
             collect($this->get())->map(function ($item, $key) {
                 config([$key => $item]);
@@ -53,7 +53,10 @@ class Setting
         } else {
             // v1版本的配置保存方式
             if ($saveConfig['version'] == self::VERSION) {
-                config($saveConfig);
+                $arr = array_compress($saveConfig);
+                foreach ($arr as $key => $item) {
+                    config([$key => $item]);
+                }
             }
         }
         $this->specialSync();
@@ -94,7 +97,7 @@ class Setting
      */
     public function get(): array
     {
-        if (! $this->files->exists($this->dist)) {
+        if (!$this->files->exists($this->dist)) {
             return [];
         }
         $jsonContent = $this->files->get($this->dist);

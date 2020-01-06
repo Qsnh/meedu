@@ -68,6 +68,7 @@ return [
             'sign' => 'alipay',
             'default_method' => 'web',
             'pc' => 'web',
+            'h5' => 'wap',
             'enabled' => 0,
         ],
         'wechat' => [
@@ -76,6 +77,8 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
+            'h5' => 'wap',
+            'wechat' => 'mp',
             'enabled' => 0,
         ],
         'handPay' => [
@@ -84,6 +87,8 @@ return [
             'sign' => 'handPay',
             'default_method' => 'hand',
             'pc' => 'hand',
+            'h5' => 'hand',
+            'wechat' => 'hand',
             'enabled' => 0,
             'introduction' => '',
         ],

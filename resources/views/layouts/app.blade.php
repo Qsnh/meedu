@@ -13,6 +13,7 @@
     <link href="{{asset('/frontend/assets/css/app.min.css')}}" rel="stylesheet">
     <link href="{{asset('/frontend/assets/css/style.min.css')}}" rel="stylesheet">
     <link crossorigin="anonymous" integrity="sha384-6SClQBVFSY83VyPkr36mKEIuaHcXN69N5F076i0mYvEIsVK73AlDn/6vL2PyunVW" href="//lib.baomitu.com/limonte-sweetalert2/7.33.1/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mescroll.js@1.4.1/mescroll.min.css">
     @yield('css')
 </head>
 <body style="padding-top: 64px;">

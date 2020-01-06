@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
+use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Base\Services\ConfigService;
@@ -43,7 +44,11 @@ class OrderController extends Controller
     public function show($orderId)
     {
         $order = $this->orderService->findUserNoPaid($orderId);
-        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
+
+        $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
+        is_wechat() && $scene = FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+
+        $payments = get_payments($scene);
 
         return v('frontend.order.show', compact('order', 'payments'));
     }
@@ -59,9 +64,15 @@ class OrderController extends Controller
     {
         $order = $this->orderService->findUserNoPaid($orderId);
 
-        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
+        $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
+        is_wechat() && $scene = FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+
+        $payments = get_payments($scene);
         $payment = $order['payment'] ?: $request->post('payment');
-        $paymentMethod = $payments[$payment][FrontendConstant::PAYMENT_SCENE_PC] ?? '';
+        if (!$payment) {
+            throw new ServiceException(__('payment not exists'));
+        }
+        $paymentMethod = $payments[$payment][$scene] ?? '';
         if (!$paymentMethod) {
             throw new SystemException(__('payment method not exists'));
         }

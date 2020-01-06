@@ -35,7 +35,7 @@ class RegisterController extends BaseController
      */
     public function showRegisterPage()
     {
-        return v('auth.register');
+        return v('frontend.auth.register');
     }
 
     /**

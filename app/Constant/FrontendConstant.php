@@ -18,6 +18,8 @@ class FrontendConstant
 
     const PAYMENT_SCENE_PC = 'pc';
     const PAYMENT_SCENE_WECHAT_MINI = 'wechatmini';
+    const PAYMENT_SCENE_H5 = 'h5';
+    const PAYMENT_SCENE_WECHAT_OPEN = 'wechat';
 
     const ORDER_PAID = 9;
 
@@ -27,4 +29,6 @@ class FrontendConstant
     const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
 
     const JSON_ERROR_CODE = 2;
+
+    const H5 = 'h5';
 }

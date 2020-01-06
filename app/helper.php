@@ -251,7 +251,32 @@ if (!function_exists('v')) {
         $namespace = config('meedu.system.theme.use', 'default');
         $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
 
+        is_h5() && $viewName = str_replace('::frontend', '::h5', $viewName);
+
         return view($viewName, $params);
+    }
+}
+
+if (!function_exists('is_h5')) {
+    /**
+     * @return bool
+     */
+    function is_h5()
+    {
+        return session()->has(\App\Constant\FrontendConstant::H5);
+    }
+}
+
+if (!function_exists('is_wechat')) {
+    /**
+     * @return bool
+     */
+    function is_wechat()
+    {
+        if (strpos(request()->header('HTTP_USER_AGENT'), 'MicroMessenger') !== false) {
+            return true;
+        }
+        return false;
     }
 }
 
@@ -310,9 +335,9 @@ if (!function_exists('get_payments')) {
         $configService = app()->make(\App\Services\Base\Services\ConfigService::class);
         $payments = collect($configService->getPayments())->filter(function ($payment) use ($scene) {
             $enabled = $payment['enabled'] ?? false;
-            $pc = $payment[$scene] ?? false;
+            $isSet = $payment[$scene] ?? false;
 
-            return $enabled && $pc;
+            return $enabled && $isSet;
         });
 
         return $payments;
@@ -365,5 +390,26 @@ if (!function_exists('get_at_users')) {
             return [];
         }
         return $result[1];
+    }
+}
+
+if (!function_exists('array_compress')) {
+    /**
+     * @param array $arr
+     * @param string $prevKey
+     * @return array
+     */
+    function array_compress(array $arr, string $prevKey = ''): array
+    {
+        $rows = [];
+        foreach ($arr as $key => $item) {
+            $tmpKey = ($prevKey ? $prevKey . '.' : '') . $key;
+            if (is_array($item)) {
+                $rows = array_merge($rows, array_compress($item, $tmpKey));
+            } else {
+                $rows[$tmpKey] = $item;
+            }
+        }
+        return $rows;
     }
 }
