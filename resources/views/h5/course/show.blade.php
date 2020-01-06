@@ -45,7 +45,7 @@
                                         <p class="weui-media-box__desc">{{$video['short_description']}}</p>
                                         <ul class="weui-media-box__info">
                                             <li class="weui-media-box__info__meta">{{duration_humans($video['duration'])}}</li>
-                                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">￥{{$video['charge']}}</li>
+                                            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{duration_humans($video['duration'])}}</li>
                                         </ul>
                                     </div>
                                 </a>
@@ -65,7 +65,7 @@
                                     <p class="weui-media-box__desc">{{$video['short_description']}}</p>
                                     <ul class="weui-media-box__info">
                                         <li class="weui-media-box__info__meta">{{duration_humans($video['duration'])}}</li>
-                                        <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">￥{{$video['charge']}}</li>
+                                        <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{duration_humans($video['duration'])}}</li>
                                     </ul>
                                 </div>
                             </a>
