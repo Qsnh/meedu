@@ -12,11 +12,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Administrator;
-use App\Models\AdministratorRole;
 use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
 class ApplicationInstallCommand extends Command
 {
@@ -132,8 +132,7 @@ class ApplicationInstallCommand extends Command
     // 系统权限生成
     public function actionRole()
     {
-        $seeder = new class() extends Seeder
-        {
+        $seeder = new class() extends Seeder {
         };
         $seeder->call(\AdministratorSuperSeeder::class);
         $seeder->call(\AdministratorPermissionSeeder::class);
@@ -144,8 +143,7 @@ class ApplicationInstallCommand extends Command
     // 后台菜单
     public function actionBackendMenu()
     {
-        $seeder = new class() extends Seeder
-        {
+        $seeder = new class() extends Seeder {
         };
         $seeder->call(\BackendMenuSeeder::class);
 
