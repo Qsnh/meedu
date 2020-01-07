@@ -18,8 +18,11 @@ class SettingController extends BaseController
 {
     public function index()
     {
+        $meedu = config('meedu');
+        $meedu['system']['logo'] = substr($meedu['system']['logo'], 0, 4) == 'http' ? $meedu['system']['logo'] : asset($meedu['system']['logo']);
         $config = [
-            'meedu' => config('meedu'),
+            'app' => config('app'),
+            'meedu' => $meedu,
             'sms' => config('sms'),
             'services' => config('services'),
             'pay' => config('pay'),

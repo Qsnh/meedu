@@ -194,4 +194,9 @@ class ConfigService implements ConfigServiceInterface
         }
         return $list;
     }
+
+    public function getMeEduConfig(): array
+    {
+        return config('meedu');
+    }
 }

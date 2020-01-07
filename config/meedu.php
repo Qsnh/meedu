@@ -115,6 +115,8 @@ return [
 
     // 系统配置
     'system' => [
+        'icp' => '',
+        'logo' => '/frontend/logo.png',
         // 缓存开关
         'cache' => [
             'status' => -1,

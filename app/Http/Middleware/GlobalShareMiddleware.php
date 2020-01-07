@@ -15,6 +15,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Services\Other\Services\NavService;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
@@ -22,6 +23,7 @@ use App\Services\Course\Services\CourseService;
 use App\Services\Other\Services\AnnouncementService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Other\Interfaces\NavServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
@@ -69,6 +71,10 @@ class GlobalShareMiddleware
          * @var $notificationService NotificationService
          */
         $notificationService = app()->make(NotificationServiceInterface::class);
+        /**
+         * @var $configService ConfigService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
 
         // user变量共享
         $user = Auth::check() ? $userService->find(Auth::id(), ['role']) : [];
@@ -97,6 +103,10 @@ class GlobalShareMiddleware
         // 公告
         $announcement = $announcementService->latest();
         View::share('gAnnouncement', $announcement);
+
+        // meedu配置
+        $config = $configService->getMeEduConfig();
+        View::share('gConfig', $config);
 
         return $next($request);
     }

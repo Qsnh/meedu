@@ -21,7 +21,7 @@
 <header class="topbar topbar-unfix">
     <div class="topbar-left">
         <span class="topbar-brand">
-            <a href="{{route('index')}}"><img src="{{asset('/frontend/logo.png')}}" alt="logo-icon"></a>
+            <a href="{{route('index')}}"><img src="{{$gConfig['system']['logo']}}" height="64"></a>
         </span>
         <div class="topbar-divider d-none d-xl-block"></div>
         <nav class="topbar-navigation">
@@ -145,16 +145,13 @@
 
         <div class="row">
             <div class="col-md-6 justify-content-center justify-content-md-start">
-                <p>Copyright © 2019 <a href="https://github.com/Qsnh/meedu">MeEdu</a>. All rights reserved.</p>
+                <p>{{$gConfig['system']['icp']}}</p>
             </div>
 
             <div class="col-md-6">
                 <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/Qsnh/meedu">源码</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://meedu.vip">Website</a>
+                        <a class="nav-link" href="https://meedu.vip">MeEdu</a>
                     </li>
                 </ul>
             </div>
