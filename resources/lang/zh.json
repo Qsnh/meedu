@@ -30,6 +30,7 @@
   "title.member.videos": "我的视频",
   "title.member.orders": "我的订单",
   "title.member.socialite": "社交登录",
+  "title.member.promo_code": "我的优惠码",
   "comment.content.required": "请输入评论内容",
   "comment.content.min": "评论内容不能少于 :count 个字",
   "captcha.required": "请输入验证码",
@@ -64,5 +65,9 @@
   "all videos": "全部视频",
   "buy course": "购买课程《:course》",
   "buy video": "购买视频《:video》",
-  "buy role": "购买套餐《:role》"
+  "buy role": "购买套餐《:role》",
+  "ORDER_PAID_TYPE_DEFAULT": "直接支付",
+  "ORDER_PAID_TYPE_INVITE_BALANCE": "邀请余额抵扣",
+  "ORDER_PAID_TYPE_PROMO_CODE": "优惠码支付",
+  "current user cant generate promo code": "当前用户无法生成优惠码"
 }

@@ -16,6 +16,7 @@ use App\Exceptions\ServiceException;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
@@ -29,7 +30,7 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int   $userId
+     * @param int $userId
      * @param array $course
      *
      * @return mixed
@@ -59,7 +60,7 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int   $userId
+     * @param int $userId
      * @param array $video
      *
      * @return mixed
@@ -89,7 +90,7 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int   $userId
+     * @param int $userId
      * @param array $role
      *
      * @return mixed
@@ -119,7 +120,7 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $type
      *
      * @return string
@@ -129,7 +130,7 @@ class OrderService implements OrderServiceInterface
         $time = date('His');
         $rand = mt_rand(10, 99);
 
-        return strtolower($type).$userId.$time.$rand;
+        return strtolower($type) . $userId . $time . $rand;
     }
 
     /**
@@ -196,7 +197,7 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int   $id
+     * @param int $id
      * @param array $data
      *
      * @throws ServiceException
@@ -219,7 +220,7 @@ class OrderService implements OrderServiceInterface
     public function cancel(int $id): void
     {
         $order = Order::findOrFail($id);
-        if (! in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
+        if (!in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
             throw new ServiceException('order status error');
         }
         $order->update(['status' => Order::STATUS_CANCELED]);
@@ -252,7 +253,7 @@ class OrderService implements OrderServiceInterface
     public function changePaid(int $id): void
     {
         $order = Order::findOrFail($id);
-        if (! in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
+        if (!in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
             throw new ServiceException('order status error');
         }
         $order->update(['status' => Order::STATUS_PAID]);
@@ -278,5 +279,16 @@ class OrderService implements OrderServiceInterface
         return Order::whereIn('status', [Order::STATUS_UNPAY, Order::STATUS_PAYING])
             ->where('created_at', '<=', $date)
             ->get()->toArray();
+    }
+
+    /**
+     * @param int $promoCodeId
+     * @return array
+     */
+    public function getPromoCodeOrders(int $promoCodeId): array
+    {
+        $paidRecords = OrderPaidRecord::where('paid_type_id', $promoCodeId)->select(['order_id'])->latest()->limit(10)->get();
+        $orders = Order::whereIn('id', $paidRecords->pluck('order_id'))->latest()->get()->toArray();
+        return $orders;
     }
 }

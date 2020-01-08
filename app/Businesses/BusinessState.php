@@ -13,8 +13,12 @@ namespace App\Businesses;
 
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\PromoCodeService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class BusinessState
 {
@@ -71,5 +75,47 @@ class BusinessState
     public function isNeedBindMobile(array $user): bool
     {
         return substr($user['mobile'], 0, 1) != 1;
+    }
+
+    /**
+     * @param array $user
+     * @return bool
+     */
+    public function isRole(array $user): bool
+    {
+        if (!$user['role_id']) {
+            return false;
+        }
+        if (!$user['role_expired_at']) {
+            return false;
+        }
+        if (Carbon::now()->gt($user['role_expired_at'])) {
+            return false;
+        }
+        return true;
+    }
+
+    public function canGenerateInviteCode(array $user): bool
+    {
+        /**
+         * @var $configService ConfigService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        /**
+         * @var $promoCodeService PromoCodeService
+         */
+        $promoCodeService = app()->make(PromoCodeServiceInterface::class);
+        $inviteConfig = $configService->getMemberInviteConfig();
+        $isRole = $this->isRole($user);
+        if ($inviteConfig['free_user_enabled'] == false && !$isRole) {
+            // 开启了非会员无法生成优惠码
+            return false;
+        }
+        $userPromoCode = $promoCodeService->userPromoCode();
+        if ($userPromoCode) {
+            // 已经生成
+            return false;
+        }
+        return true;
     }
 }

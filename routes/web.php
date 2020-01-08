@@ -69,6 +69,8 @@ Route::group([
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
     Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
+    Route::get('/promoCode', 'MemberController@showPromoCodePage')->name('member.promo_code');
+    Route::post('/promoCode', 'MemberController@generatePromoCode');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');

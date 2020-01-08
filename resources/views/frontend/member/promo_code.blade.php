@@ -1,0 +1,69 @@
+@extends('layouts.member')
+
+@section('member')
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">我的优惠码</div>
+                    <div class="card-body">
+                        @if($userPromoCode)
+                            @if($inviteConfig['invite_balance_can_pay'])
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info"></i> 账户邀请余额可以用来支付订单哦。
+                                </div>
+                            @endif
+                            <p>账户邀请余额：<span class="badge badge-primary">{{$user['invite_balance']}}元</span></p>
+                            <p>
+                                我的专属优惠码：<span class="badge badge-primary promo_code">{{$userPromoCode['code']}}</span>
+                            </p>
+                            <p>当其TA用户用您的优惠码支付并完成订单的时候，您将获得 <span
+                                        class="badge badge-primary">{{$userPromoCode['invite_user_reward']}}</span> 元奖励。
+                            </p>
+                            <p>使用该优惠码的用户也将获得 <span
+                                        class="badge badge-primary">{{$userPromoCode['invited_user_reward']}}</span>
+                                元抵扣。
+                            </p>
+                        @else
+                            <form action="" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">生成我的专属优惠码</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 mt-2">
+                <div class="card">
+                    <div class="card-header">邀请记录 <small>只显示最近10条记录</small></div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">订单号</th>
+                                <th class="text-center">时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @forelse($orders as $order)
+                                <tr>
+                                    <td>******{{substr($order['order_id'], 6)}}</td>
+                                    <td>{{$order['created_at']}}</td>
+                                </tr>
+                            @empty
+                                <tr class="text-center">
+                                    <td colspan="2">暂无记录</td>
+                                </tr>
+                            @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@endsection

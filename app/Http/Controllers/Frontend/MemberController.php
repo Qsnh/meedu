@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -19,6 +20,7 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
+use App\Services\Order\Services\PromoCodeService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -28,6 +30,7 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 
@@ -61,6 +64,14 @@ class MemberController extends FrontendController
      * @var ConfigService
      */
     protected $configService;
+    /**
+     * @var PromoCodeService
+     */
+    protected $promoCodeService;
+    /**
+     * @var BusinessState
+     */
+    protected $businessState;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -69,7 +80,9 @@ class MemberController extends FrontendController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService,
-        ConfigServiceInterface $configService
+        ConfigServiceInterface $configService,
+        PromoCodeServiceInterface $promoCodeService,
+        BusinessState $businessState
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -78,6 +91,8 @@ class MemberController extends FrontendController
         $this->orderService = $orderService;
         $this->socialiteService = $socialiteService;
         $this->configService = $configService;
+        $this->promoCodeService = $promoCodeService;
+        $this->businessState = $businessState;
     }
 
     public function index()
@@ -280,5 +295,33 @@ class MemberController extends FrontendController
         $this->socialiteService->cancelBind($app);
         flash(__('success'), 'success');
         return back();
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showPromoCodePage()
+    {
+        $userPromoCode = $this->promoCodeService->userPromoCode();
+        $title = __('title.member.required');
+        $inviteConfig = $this->configService->getMemberInviteConfig();
+        $orders = [];
+        $userPromoCode && $this->orderService->getPromoCodeOrders($userPromoCode['id']);
+        return v('frontend.member.promo_code', compact('userPromoCode', 'title', 'inviteConfig', 'orders'));
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function generatePromoCode()
+    {
+        $user = $this->userService->find(Auth::id());
+        if (!$this->businessState->canGenerateInviteCode($user)) {
+            flash(__('current user cant generate promo code'));
+            return back();
+        }
+        $this->promoCodeService->userCreate($user);
+        flash(__('success'), 'success');
+        return redirect(route('member.promo_code'));
     }
 }
