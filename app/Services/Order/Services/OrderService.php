@@ -280,15 +280,4 @@ class OrderService implements OrderServiceInterface
             ->where('created_at', '<=', $date)
             ->get()->toArray();
     }
-
-    /**
-     * @param int $promoCodeId
-     * @return array
-     */
-    public function getPromoCodeOrders(int $promoCodeId): array
-    {
-        $paidRecords = OrderPaidRecord::where('paid_type_id', $promoCodeId)->select(['order_id'])->latest()->limit(10)->get();
-        $orders = Order::whereIn('id', $paidRecords->pluck('order_id'))->latest()->get()->toArray();
-        return $orders;
-    }
 }

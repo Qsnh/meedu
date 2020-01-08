@@ -308,4 +308,18 @@ class UserService implements UserServiceInterface
     {
         return User::whereIn('nick_name', $nicknames)->get(['id', 'nick_name'])->keyBy('nick_name')->toArray();
     }
+
+    /**
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function inviteUsers(int $page, int $pageSize): array
+    {
+        $query = User::whereInviteUserId(Auth::id())->orderByDesc('id');
+        $total = $query->count();
+        $list = $query->forPage($page, $pageSize)->get()->toArray();
+
+        return compact('list', 'total');
+    }
 }

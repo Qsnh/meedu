@@ -15,8 +15,8 @@
                                 </div>
                             @endif
                             <p>账户邀请余额：<span class="badge badge-primary">{{$user['invite_balance']}}元</span></p>
-                            <p>
-                                我的专属优惠码：<span class="badge badge-primary promo_code">{{$userPromoCode['code']}}</span>
+                            <p class="text-center">
+                                <span style="font-size: 2rem; line-height: 3rem;" title="邀请码">{{$userPromoCode['code']}}</span>
                             </p>
                             <p>当其TA用户用您的优惠码支付并完成订单的时候，您将获得 <span
                                         class="badge badge-primary">{{$userPromoCode['invite_user_reward']}}</span> 元奖励。
@@ -37,20 +37,20 @@
 
             <div class="col-sm-12 mt-2">
                 <div class="card">
-                    <div class="card-header">邀请记录 <small>只显示最近10条记录</small></div>
+                    <div class="card-header">邀请记录</div>
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th class="text-center">订单号</th>
+                                <th class="text-center">用户</th>
                                 <th class="text-center">时间</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($orders as $order)
-                                <tr>
-                                    <td>******{{substr($order['order_id'], 6)}}</td>
-                                    <td>{{$order['created_at']}}</td>
+                            @forelse($inviteUsers as $item)
+                                <tr class="text-center">
+                                    <td>******{{substr($item['mobile'], 6)}}</td>
+                                    <td>{{$item['created_at']}}</td>
                                 </tr>
                             @empty
                                 <tr class="text-center">
@@ -59,6 +59,8 @@
                             @endforelse
                             </tbody>
                         </table>
+
+                        {{$inviteUsers->render()}}
                     </div>
                 </div>
             </div>

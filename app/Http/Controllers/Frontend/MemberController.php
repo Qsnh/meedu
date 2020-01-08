@@ -300,14 +300,19 @@ class MemberController extends FrontendController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showPromoCodePage()
+    public function showPromoCodePage(Request $request)
     {
+        $page = abs(intval($request->input('page', 1)));
+        $pageSize = 10;
         $userPromoCode = $this->promoCodeService->userPromoCode();
         $title = __('title.member.required');
         $inviteConfig = $this->configService->getMemberInviteConfig();
-        $orders = [];
-        $userPromoCode && $this->orderService->getPromoCodeOrders($userPromoCode['id']);
-        return v('frontend.member.promo_code', compact('userPromoCode', 'title', 'inviteConfig', 'orders'));
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userService->inviteUsers($page, $pageSize);
+        $inviteUsers = $this->paginator($list, $total, $page, $pageSize);
+        return v('frontend.member.promo_code', compact('userPromoCode', 'title', 'inviteConfig', 'inviteUsers'));
     }
 
     /**
@@ -315,12 +320,11 @@ class MemberController extends FrontendController
      */
     public function generatePromoCode()
     {
-        $user = $this->userService->find(Auth::id());
-        if (!$this->businessState->canGenerateInviteCode($user)) {
+        if (!$this->businessState->canGenerateInviteCode($this->user())) {
             flash(__('current user cant generate promo code'));
             return back();
         }
-        $this->promoCodeService->userCreate($user);
+        $this->promoCodeService->userCreate($this->user());
         flash(__('success'), 'success');
         return redirect(route('member.promo_code'));
     }
