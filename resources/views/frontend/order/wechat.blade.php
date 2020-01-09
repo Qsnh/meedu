@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-4 text-center" style="min-height: 400px;">
                 <p>订单号：{{$order['order_id']}}</p>
-                <p>支付金额：￥{{$order['charge']}}</p>
+                <p>支付金额：￥{{$needPaidTotal}}</p>
                 <p class="mt-5 mb-5">
                     {!! QrCode::size(300)->generate($qrcodeUrl); !!}
                 </p>

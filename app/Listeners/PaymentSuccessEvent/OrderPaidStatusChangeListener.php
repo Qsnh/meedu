@@ -11,6 +11,7 @@
 
 namespace App\Listeners\PaymentSuccessEvent;
 
+use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,10 +26,12 @@ class OrderPaidStatusChangeListener implements ShouldQueue
      * @var OrderService
      */
     protected $orderService;
+    protected $businessState;
 
-    public function __construct(OrderServiceInterface $orderService)
+    public function __construct(OrderServiceInterface $orderService, BusinessState $businessState)
     {
         $this->orderService = $orderService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -37,6 +40,10 @@ class OrderPaidStatusChangeListener implements ShouldQueue
      */
     public function handle($event)
     {
+        // 修改订单状态
         $this->orderService->changePaid($event->order['id']);
+        // 记录PaidRecords
+        $paidTotal = $this->businessState->calculateOrderNeedPaidSum($event->order);
+        $this->orderService->createOrderPaidRecordDefault($event->order['id'], $event->order['user_id'], $paidTotal);
     }
 }

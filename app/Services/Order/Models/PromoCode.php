@@ -23,5 +23,6 @@ class PromoCode extends Model
     protected $fillable = [
         'user_id', 'code', 'expired_at',
         'invite_user_reward', 'invited_user_reward',
+        'use_times', 'used_times',
     ];
 }

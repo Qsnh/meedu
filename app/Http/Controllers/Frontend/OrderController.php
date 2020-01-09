@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Exceptions\ServiceException;
@@ -32,25 +33,33 @@ class OrderController extends Controller
      * @var ConfigService
      */
     protected $configService;
+    protected $businessState;
 
     public function __construct(
         OrderServiceInterface $orderService,
-        ConfigServiceInterface $configService
+        ConfigServiceInterface $configService,
+        BusinessState $businessState
     ) {
         $this->orderService = $orderService;
         $this->configService = $configService;
+        $this->businessState = $businessState;
     }
 
+    /**
+     * @param $orderId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show($orderId)
     {
         $order = $this->orderService->findUserNoPaid($orderId);
+        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
 
         $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
         is_wechat() && $scene = FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
 
         $payments = get_payments($scene);
 
-        return v('frontend.order.show', compact('order', 'payments'));
+        return v('frontend.order.show', compact('order', 'payments', 'needPaidTotal'));
     }
 
     /**
@@ -116,6 +125,8 @@ class OrderController extends Controller
     public function wechat($orderId)
     {
         $order = $this->orderService->findUser($orderId);
+        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
+
         $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']));
         if (!$wechatData) {
             $this->orderService->cancel($order['id']);
@@ -126,7 +137,7 @@ class OrderController extends Controller
 
         $qrcodeUrl = $wechatData['code_url'];
 
-        return v('frontend.order.wechat', compact('qrcodeUrl', 'order'));
+        return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal'));
     }
 
     /**
@@ -136,7 +147,8 @@ class OrderController extends Controller
     public function handPay($orderId)
     {
         $order = $this->orderService->findUser($orderId);
+        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
         $intro = $this->configService->getHandPayIntroducation();
-        return v('frontend.order.hand_pay', compact('order', 'intro'));
+        return v('frontend.order.hand_pay', compact('order', 'intro', 'needPaidTotal'));
     }
 }

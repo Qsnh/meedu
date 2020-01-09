@@ -16,9 +16,11 @@ use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
 use App\Services\Order\Services\PromoCodeService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class BusinessState
@@ -120,10 +122,18 @@ class BusinessState
         return true;
     }
 
+    /**
+     * @param array $promoCode
+     * @return bool
+     */
     public function promoCodeCanUse(array $promoCode): bool
     {
         // 自己不能使用自己的优惠码
         if ($promoCode['user_id'] == Auth::id()) {
+            return false;
+        }
+        if ($promoCode['use_times'] > 0 && $promoCode['use_times'] - $promoCode['used_times'] <= 0) {
+            // 使用次数已用完
             return false;
         }
         /**
@@ -158,5 +168,19 @@ class BusinessState
     public function isUserInvitePromoCode(string $code): bool
     {
         return strtolower(substr($code, 0, 1)) == 'u';
+    }
+
+    /**
+     * @param array $order
+     * @return int
+     */
+    public function calculateOrderNeedPaidSum(array $order): int
+    {
+        /**
+         * @var $orderService OrderService
+         */
+        $orderService = app()->make(OrderServiceInterface::class);
+        $sum = $order['charge'] - $orderService->getOrderPaidRecordsTotal($order['id']);
+        return $sum >= 0 ? $sum : 0;
     }
 }

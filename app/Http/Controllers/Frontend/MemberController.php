@@ -305,7 +305,7 @@ class MemberController extends FrontendController
         $page = abs(intval($request->input('page', 1)));
         $pageSize = 10;
         $userPromoCode = $this->promoCodeService->userPromoCode();
-        $title = __('title.member.required');
+        $title = __('title.member.promo_code');
         $inviteConfig = $this->configService->getMemberInviteConfig();
         [
             'list' => $list,

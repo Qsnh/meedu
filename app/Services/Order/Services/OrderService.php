@@ -49,6 +49,8 @@ class OrderService implements OrderServiceInterface
             $promoCode = PromoCode::find($promoCodeId);
             if ($promoCode && $this->businessState->promoCodeCanUse($promoCode->toArray())) {
                 $promoCodeDiscount = $promoCode['invited_user_reward'];
+                // 记录使用次数
+                $promoCode->increment('used_times', 1);
             }
 
             // 订单状态
@@ -59,7 +61,7 @@ class OrderService implements OrderServiceInterface
                 'user_id' => $userId,
                 'charge' => $total,
                 'status' => $orderStatus,
-                'order_id' => $this->genOrderNo($userId, OrderGoods::GOODS_TYPE_COURSE),
+                'order_id' => $this->genOrderNo($userId),
             ]);
 
             $orderGoodsItems = [];
@@ -146,16 +148,14 @@ class OrderService implements OrderServiceInterface
 
     /**
      * @param int $userId
-     * @param string $type
-     *
      * @return string
      */
-    protected function genOrderNo(int $userId, string $type): string
+    protected function genOrderNo(int $userId): string
     {
         $time = date('His');
         $rand = mt_rand(10, 99);
 
-        return strtolower($type) . $userId . $time . $rand;
+        return $userId . $time . $rand;
     }
 
     /**
@@ -300,5 +300,29 @@ class OrderService implements OrderServiceInterface
         return Order::whereIn('status', [Order::STATUS_UNPAY, Order::STATUS_PAYING])
             ->where('created_at', '<=', $date)
             ->get()->toArray();
+    }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public function getOrderPaidRecordsTotal(int $id): int
+    {
+        return intval(OrderPaidRecord::whereOrderId($id)->sum('paid_total'));
+    }
+
+    /**
+     * @param int $id
+     * @param int $userId
+     * @param int $paidTotal
+     */
+    public function createOrderPaidRecordDefault(int $id, int $userId, int $paidTotal): void
+    {
+        OrderPaidRecord::create([
+            'user_id' => $userId,
+            'order_id' => $id,
+            'paid_total' => $paidTotal,
+            'paid_type' => OrderPaidRecord::PAID_TYPE_DEFAULT,
+        ]);
     }
 }
