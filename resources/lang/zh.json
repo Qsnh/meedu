@@ -31,6 +31,7 @@
   "title.member.orders": "我的订单",
   "title.member.socialite": "社交登录",
   "title.member.promo_code": "我的优惠码",
+  "title.member.invite_balances": "邀请余额收支明细",
   "comment.content.required": "请输入评论内容",
   "comment.content.min": "评论内容不能少于 :count 个字",
   "captcha.required": "请输入验证码",

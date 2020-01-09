@@ -14,17 +14,21 @@
                                     <i class="fa fa-info"></i> 账户邀请余额可以用来支付订单哦。
                                 </div>
                             @endif
-                            <p>账户邀请余额：<span class="badge badge-primary">{{$user['invite_balance']}}元</span></p>
+                            <p>账户邀请余额：<span class="badge badge-primary">{{$user['invite_balance']}}元</span> <a
+                                        href="{{route('member.invite_balance_records')}}" class="ml-2">记录</a></p>
                             <p class="text-center">
-                                <span style="font-size: 2rem; line-height: 3rem;" title="邀请码">{{$userPromoCode['code']}}</span>
+                                <span style="font-size: 2rem; line-height: 3rem;"
+                                      title="邀请码">{{$userPromoCode['code']}}</span>
                             </p>
-                            <p>当其TA用户用您的优惠码支付并完成订单的时候，您将获得 <span
+                                <p>使用该优惠码的用户将获得 <span
+                                            class="badge badge-primary">{{$userPromoCode['invited_user_reward']}}</span>
+                                    元抵扣。
+                                </p>
+                            <p>当用户使用您的优惠码支付并完成订单的时候，您也将获得 <span
                                         class="badge badge-primary">{{$userPromoCode['invite_user_reward']}}</span> 元奖励。
                             </p>
-                            <p>使用该优惠码的用户也将获得 <span
-                                        class="badge badge-primary">{{$userPromoCode['invited_user_reward']}}</span>
-                                元抵扣。
-                            </p>
+                            <p>使用您的优惠码完成支付的用户将会自动成为您的下级，TA的每一笔已支付订单您都将享有 <span class="badge badge-primary">{{$inviteConfig['per_order_draw']*100}}%</span>
+                                的抽成。</p>
                         @else
                             <form action="" method="post">
                                 @csrf

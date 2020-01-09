@@ -12,11 +12,27 @@
 namespace App\Services\Member\Services;
 
 use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\UserInviteBalanceRecord;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class UserInviteBalanceService implements UserInviteBalanceServiceInterface
 {
+
+    /**
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function simplePaginate(int $page, int $pageSize): array
+    {
+        $query = UserInviteBalanceRecord::whereUserId(Auth::id())->latest();
+
+        $total = $query->count();
+        $list = $query->forPage($page, $pageSize)->get()->toArray();
+
+        return compact('list', 'total');
+    }
 
     /**
      * @param int $userId

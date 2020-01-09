@@ -30,9 +30,11 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
+use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberController extends FrontendController
 {
@@ -72,6 +74,10 @@ class MemberController extends FrontendController
      * @var BusinessState
      */
     protected $businessState;
+    /**
+     * @var UserInviteBalanceService
+     */
+    protected $userInviteBalanceService;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -82,7 +88,8 @@ class MemberController extends FrontendController
         SocialiteServiceInterface $socialiteService,
         ConfigServiceInterface $configService,
         PromoCodeServiceInterface $promoCodeService,
-        BusinessState $businessState
+        BusinessState $businessState,
+        UserInviteBalanceServiceInterface $userInviteBalanceService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -93,6 +100,7 @@ class MemberController extends FrontendController
         $this->configService = $configService;
         $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
+        $this->userInviteBalanceService = $userInviteBalanceService;
     }
 
     public function index()
@@ -298,6 +306,7 @@ class MemberController extends FrontendController
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showPromoCodePage(Request $request)
@@ -327,5 +336,22 @@ class MemberController extends FrontendController
         $this->promoCodeService->userCreate($this->user());
         flash(__('success'), 'success');
         return redirect(route('member.promo_code'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showInviteBalanceRecordsPage(Request $request)
+    {
+        $page = abs(intval($request->input('page', 1)));
+        $pageSize = 10;
+        $title = __('title.member.invite_balances');
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
+        $balanceRecords = $this->paginator($list, $total, $page, $pageSize);
+        return v('frontend.member.invite_balances', compact('title', 'balanceRecords'));
     }
 }
