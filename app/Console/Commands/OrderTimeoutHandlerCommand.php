@@ -32,6 +32,9 @@ class OrderTimeoutHandlerCommand extends Command
      */
     protected $description = 'order pay timeout.';
 
+    /**
+     * @var OrderService
+     */
     protected $orderService;
 
     /**
@@ -46,9 +49,7 @@ class OrderTimeoutHandlerCommand extends Command
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @throws \App\Exceptions\ServiceException
      */
     public function handle()
     {

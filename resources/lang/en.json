@@ -30,6 +30,8 @@
   "title.member.videos": "Videos",
   "title.member.orders": "Orders",
   "title.member.socialite": "Socialite",
+  "title.member.promo_code": "PromoCode",
+  "title.member.invite_balances": "InviteBalance",
   "comment.content.required": "please input comment content",
   "comment.content.min": "comment content length must >= :count",
   "captcha.required": "please input image captcha",
@@ -64,5 +66,14 @@
   "all videos": "All Videos",
   "buy course": "buy course :course",
   "buy video": "buy video :video",
-  "buy role": "buy role package :role"
+  "buy role": "buy role package :role",
+  "ORDER_PAID_TYPE_DEFAULT": "direct",
+  "ORDER_PAID_TYPE_INVITE_BALANCE": "invite balance",
+  "ORDER_PAID_TYPE_PROMO_CODE": "promo code",
+  "current user cant generate promo code": "current user cant generate promo code",
+  "promo code not exists": "promo code not exists",
+  "promo code has expired": "promo code has expired",
+  "user cant use this promo code": "user cant use this promo code",
+  "invite reward": "invite reward",
+  "order draw": "order draw :orderid"
 }

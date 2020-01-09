@@ -87,6 +87,28 @@ class CourseServiceTest extends TestCase
         $this->assertEquals(10, count($c));
     }
 
+    public function test_chapters_with_cache()
+    {
+        config(['meedu.system.cache.status' => 1]);
+
+        $course = factory(Course::class)->create();
+        factory(CourseChapter::class, 10)->create([
+            'course_id' => $course->id,
+        ]);
+
+        $c = $this->courseService->chapters($course->id);
+        $this->assertNotEmpty($c);
+        $this->assertEquals(10, count($c));
+
+        factory(CourseChapter::class, 2)->create([
+            'course_id' => $course->id,
+        ]);
+
+        $c = $this->courseService->chapters($course->id);
+        $this->assertNotEmpty($c);
+        $this->assertEquals(10, count($c));
+    }
+
     public function test_getLatestCourses()
     {
         factory(Course::class, 5)->create([
@@ -96,6 +118,27 @@ class CourseServiceTest extends TestCase
         $latestCourses = $this->courseService->getLatestCourses(3);
         $this->assertNotEmpty($latestCourses);
         $this->assertEquals(3, count($latestCourses));
+    }
+
+    public function test_getLatestCourses_withCache()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        factory(Course::class, 5)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        $latestCourses = $this->courseService->getLatestCourses(10);
+        $this->assertNotEmpty($latestCourses);
+        $this->assertEquals(5, count($latestCourses));
+
+        factory(Course::class, 2)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+
+        $latestCourses = $this->courseService->getLatestCourses(10);
+        $this->assertNotEmpty($latestCourses);
+        $this->assertEquals(5, count($latestCourses));
     }
 
     public function test_getList()

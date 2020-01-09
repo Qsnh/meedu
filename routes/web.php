@@ -69,6 +69,9 @@ Route::group([
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
     Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
     Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
+    Route::get('/promo_code', 'MemberController@showPromoCodePage')->name('member.promo_code');
+    Route::post('/promo_code', 'MemberController@generatePromoCode');
+    Route::get('/invite_balance_records', 'MemberController@showInviteBalanceRecordsPage')->name('member.invite_balance_records');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
@@ -95,5 +98,6 @@ Route::group([
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
+        Route::post('/promoCodeCheck', 'AjaxController@promoCodeCheck')->name('ajax.promo_code.check');
     });
 });

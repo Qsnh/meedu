@@ -31,4 +31,6 @@ class FrontendConstant
     const JSON_ERROR_CODE = 2;
 
     const H5 = 'h5';
+
+    const ORDER_PAID_TYPE_PROMO_CODE = 1;
 }

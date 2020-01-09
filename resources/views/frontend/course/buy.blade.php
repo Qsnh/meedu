@@ -17,7 +17,7 @@
                     <header class="bg-lightest bb-1 px-40 py-60">
                         <div class="row">
                             <div class="col-md-6 text-center text-md-left">
-                                <img src="/frontend/logo.png" alt="logo">
+                                <img src="{{$gConfig['system']['logo']}}" alt="logo">
                             </div>
                             <div class="col-md-6 text-center text-md-right">
                             </div>
@@ -41,15 +41,23 @@
                             </div>
                             <div>
                                 <small class="text-uppercase text-muted">折扣</small>
-                                <span class="w-150px d-inline-block fw-400">-￥0</span>
+                                <span class="w-150px d-inline-block fw-400 discount">-￥0</span>
                             </div>
 
-                            <hr class="hr-sm w-50 mr-0">
+                            <hr class="hr-sm w-100 mr-0">
+
+                            <div>
+                                优惠码：<input type="text" name="promo_code"
+                                           value="{{\Illuminate\Support\Facades\Cookie::get('promo_code')}}">
+                                <button class="btn btn-primary btn-sm promoCodeCheckButton" type="button">检测</button>
+                            </div>
+
+                            <hr class="hr-sm w-100 mr-0">
 
                             <h4 class="text-uppercase">
                                 <strong class="fs-14">总计</strong>
                                 <div class="w-150px d-inline-block text-primary">
-                                    <span class="fw-500 fs-20">￥{{$course['charge']}}</span>
+                                    <span class="fw-500 fs-20 total">￥{{$course['charge']}}</span>
                                     <span class="fs-10 fw-300 opacity-70">CNY</span>
                                 </div>
                             </h4>
@@ -68,6 +76,7 @@
 
                     <form action="" method="post">
                         @csrf
+                        <input type="hidden" name="promo_code_id" value="0">
                         <button type="submit" class="btn btn-block btn-bold btn-lg btn-primary no-radius">现在购买</button>
                     </form>
                 </div>
@@ -75,4 +84,43 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script>
+        var totalCharge = {{$course['charge']}};
+        $(function () {
+            var promoCode = $('input[name="promo_code"]').val();
+            var promoCodeCheck = function (code) {
+                $.post('{{route('ajax.promo_code.check')}}', {
+                    promo_code: code,
+                    _token: '{{csrf_token()}}'
+                }, function (res) {
+                    if (res.code === 0) {
+                        $('.discount').text('-￥' + res.data.discount);
+                        var newTotal = totalCharge - res.data.discount;
+                        if (newTotal < 0) {
+                            newTotal = 0;
+                        }
+                        $('.total').text('￥' + newTotal);
+                        $('input[name="promo_code_id"]').val(res.data.id);
+                    } else {
+                        $('.discount').text('-￥0');
+                        $('.total').text('￥' + totalCharge);
+                        $('input[name="promo_code_id"]').val(0);
+                    }
+                }, 'json');
+            };
+            if (promoCode) {
+                promoCodeCheck(promoCode);
+            }
+
+            $('.promoCodeCheckButton').click(function () {
+                var promoCode = $('input[name="promo_code"]').val();
+                if (promoCode) {
+                    promoCodeCheck(promoCode);
+                }
+            });
+        });
+    </script>
 @endsection

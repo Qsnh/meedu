@@ -5,8 +5,6 @@ namespace Tests\Feature\Page;
 use App\Services\Course\Models\Course;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CourseListPageTest extends TestCase
 {

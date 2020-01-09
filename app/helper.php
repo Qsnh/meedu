@@ -413,3 +413,20 @@ if (!function_exists('array_compress')) {
         return $rows;
     }
 }
+
+if (!function_exists('random_number')) {
+    /**
+     * @param $prefix
+     * @param $length
+     * @return string
+     */
+    function random_number($prefix, $length): string
+    {
+        $prefixLength = mb_strlen($prefix);
+        $length -= $prefixLength;
+        for ($i = 0; $i < $length; $i++) {
+            $prefix .= mt_rand(0, 9);
+        }
+        return $prefix;
+    }
+}

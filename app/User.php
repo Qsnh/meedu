@@ -33,33 +33,33 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * App\User.
  *
- * @property int                                                                                                       $id
- * @property \Illuminate\Config\Repository|mixed                                                                       $avatar
- * @property string                                                                                                    $nick_name
- * @property string                                                                                                    $mobile
- * @property string                                                                                                    $password
- * @property int                                                                                                       $credit1
- * @property int                                                                                                       $credit2
- * @property int                                                                                                       $credit3
- * @property int                                                                                                       $is_active       1:active,-1:unactive
- * @property int                                                                                                       $is_lock         1:lock,-1:unlock
- * @property string|null                                                                                               $remember_token
- * @property \Illuminate\Support\Carbon|null                                                                           $created_at
- * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property int                                                                                                       $role_id         角色ID
- * @property string|null                                                                                               $role_expired_at 过期时间
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[]                                              $buyVideos
- * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[]                                       $clients
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseComment[]                                      $courseComments
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[]                                             $courses
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[]                                             $joinCourses
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\UserJoinRoleRecord[]                                 $joinRoles
+ * @property int $id
+ * @property \Illuminate\Config\Repository|mixed $avatar
+ * @property string $nick_name
+ * @property string $mobile
+ * @property string $password
+ * @property int $credit1
+ * @property int $credit2
+ * @property int $credit3
+ * @property int $is_active       1:active,-1:unactive
+ * @property int $is_lock         1:lock,-1:unlock
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $role_id         角色ID
+ * @property string|null $role_expired_at 过期时间
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[] $buyVideos
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseComment[] $courseComments
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $courses
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $joinCourses
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\UserJoinRoleRecord[] $joinRoles
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Order[]                                              $orders
- * @property \App\Models\Role                                                                                          $role
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Socialite[]                                          $socialite
- * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]                                        $tokens
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\VideoComment[]                                       $videoComments
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ * @property \App\Models\Role $role
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Socialite[] $socialite
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\VideoComment[] $videoComments
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User createdAtBetween($startDate, $endDate)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
@@ -101,6 +101,7 @@ class User extends Authenticatable
     protected $fillable = [
         'avatar', 'nick_name', 'mobile', 'password',
         'is_lock', 'is_active', 'role_id', 'role_expired_at',
+        'invite_user_id', 'invite_balance', 'invite_user_expired_at',
     ];
 
     /**
@@ -141,7 +142,7 @@ class User extends Authenticatable
      */
     public static function randomNickName()
     {
-        return 'random.'.str_random(10);
+        return 'random.' . str_random(10);
     }
 
     /**
@@ -203,7 +204,7 @@ class User extends Authenticatable
      */
     public function joinACourse(Course $course)
     {
-        if (! $this->joinCourses()->whereId($course->id)->exists()) {
+        if (!$this->joinCourses()->whereId($course->id)->exists()) {
             $this->joinCourses()->attach($course->id, [
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'charge' => $course->charge,
@@ -218,7 +219,7 @@ class User extends Authenticatable
      */
     public function buyAVideo(Video $video)
     {
-        if (! $this->buyVideos()->whereId($video->id)->exists()) {
+        if (!$this->buyVideos()->whereId($video->id)->exists()) {
             $this->buyVideos()->attach($video->id, [
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'charge' => $video->charge,
@@ -407,7 +408,7 @@ class User extends Authenticatable
         return User::create([
             'avatar' => $avatar ?: config('meedu.member.default_avatar'),
             'nick_name' => $name ?? '',
-            'mobile' => mt_rand(2, 9).mt_rand(1000, 9999).mt_rand(1000, 9999),
+            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
             'password' => Hash::make(Str::random(6)),
             'is_lock' => config('meedu.member.is_lock_default'),
             'is_active' => config('meedu.member.is_active_default'),

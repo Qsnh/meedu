@@ -12,7 +12,8 @@
                     <p class="text-white"><strong>{{$user['nick_name']}}</strong></p>
                     <small class="text-white">
                         @if($user['role'] ?? [])
-                            <span class="badge badge-primary"><b>{{$user['role']['name']}}</b> {{$user['role_expired_at']}}</span>
+                            <span class="badge badge-primary"><b>{{$user['role']['name']}}</b></span>
+                            <span class="ml-2">还剩下{{\Carbon\Carbon::parse($user['role_expired_at'])->diffInDays()}}天</span>
                             @else
                             <span class="badge badge-default">免费会员</span>
                         @endif
@@ -29,6 +30,7 @@
                 <a class="nav-link {{menu_active('member.course.videos')}}" href="{{ route('member.course.videos') }}"><i class="fa fa-file-video-o"></i> 我的视频</a>
                 <a class="nav-link {{menu_active('member.join_role_records')}}" href="{{ route('member.join_role_records') }}"><i class="fa fa-user-secret"></i> 订阅计划</a>
                 <a class="nav-link {{menu_active('member.socialite')}}" href="{{ route('member.socialite') }}"><i class="fa fa-weixin"></i> 快捷登录</a>
+                <a class="nav-link {{menu_active('member.promo_code')}}" href="{{ route('member.promo_code') }}"><i class="fa fa-weixin"></i> 我的优惠码</a>
                 <a class="nav-link {{menu_active('member.password_reset')}}" href="{{ route('member.password_reset') }}"><i class="fa fa-unlock-alt"></i> 修改密码</a>
             </nav>
         </div>

@@ -4,8 +4,6 @@ namespace Tests\Feature\Page;
 
 use App\Services\Member\Models\Role;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserRoleTest extends TestCase
 {

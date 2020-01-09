@@ -4,7 +4,6 @@
 namespace Tests\Services\Order;
 
 
-use App\Exceptions\ServiceException;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\Role;
@@ -12,9 +11,9 @@ use App\Services\Member\Models\User;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Services\OrderService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -37,7 +36,20 @@ class OrderServiceTest extends TestCase
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create();
 
-        $order = $this->service->createCourseOrder($user->id, $course->toArray());
+        $order = $this->service->createCourseOrder($user->id, $course->toArray(), 0);
+        $this->assertNotEmpty($order);
+    }
+
+    public function test_createCourseOrder_with_promoCode()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
+
+        $order = $this->service->createCourseOrder($user->id, $course->toArray(), 0, $promoCode->id);
         $this->assertNotEmpty($order);
     }
 
@@ -46,7 +58,20 @@ class OrderServiceTest extends TestCase
         $user = factory(User::class)->create();
         $video = factory(Video::class)->create();
 
-        $order = $this->service->createVideoOrder($user->id, $video->toArray());
+        $order = $this->service->createVideoOrder($user->id, $video->toArray(), 0);
+        $this->assertNotEmpty($order);
+    }
+
+    public function test_createVideoOrder_with_PromoCode()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
+
+        $order = $this->service->createVideoOrder($user->id, $video->toArray(), 0, $promoCode->id);
         $this->assertNotEmpty($order);
     }
 
@@ -54,10 +79,24 @@ class OrderServiceTest extends TestCase
     {
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
 
-        $order = $this->service->createRoleOrder($user->id, $role->toArray());
+        $order = $this->service->createRoleOrder($user->id, $role->toArray(), 0, $promoCode['id']);
         $this->assertNotEmpty($order);
     }
+
+    public function test_createRoleOrder_with_promoCode()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $order = $this->service->createRoleOrder($user->id, $role->toArray(), 0);
+        $this->assertNotEmpty($order);
+    }
+
 
     /**
      * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -101,7 +140,7 @@ class OrderServiceTest extends TestCase
             'status' => Order::STATUS_UNPAY,
         ]);
 
-        $this->assertNotEmpty($this->service->find($order->order_id));
+        $this->assertNotEmpty($this->service->findOrFail($order->order_id));
     }
 
     /**
@@ -224,18 +263,6 @@ class OrderServiceTest extends TestCase
         $this->service->changePaid($order->id);
         $order->refresh();
         $this->assertEquals($order->status, Order::STATUS_PAID);
-    }
-
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
-    public function test_changePaid_with_error_status()
-    {
-        $order = factory(Order::class)->create([
-            'status' => Order::STATUS_PAID,
-        ]);
-
-        $this->service->changePaid($order->id);
     }
 
     public function test_getOrderProducts()

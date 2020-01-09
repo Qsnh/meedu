@@ -37,6 +37,22 @@ return [
                 'enabled' => 0,
             ],
         ],
+
+        // Invite
+        'invite' => [
+            // 免费用户是否可以邀请
+            'free_user_enabled' => false,
+            // 邀请用户奖励
+            'invite_user_reward' => 0,
+            // 被邀请用户奖励
+            'invited_user_reward' => 0,
+            // 上下级关系持续时间
+            'effective_days' => 365,
+            // 邀请余额是否可以支付
+            'invite_balance_can_pay' => 1,
+            // 订单抽成
+            'per_order_draw' => 0.01,
+        ],
     ],
 
     // 上传
@@ -152,11 +168,6 @@ return [
                 'private_key' => env('ALIYUN_VIDEO_AUTH_PRIVATE_KEY', ''),
             ],
         ],
-    ],
-
-    // advance
-    'advance' => [
-        'template_index' => env('TEMPLATE_INDEX') ?: 'frontend.index.index',
     ],
 
     // 其它配置

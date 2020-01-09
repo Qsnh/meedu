@@ -199,4 +199,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu');
     }
+
+    public function getMemberInviteConfig(): array
+    {
+        return config('meedu.member.invite');
+    }
 }

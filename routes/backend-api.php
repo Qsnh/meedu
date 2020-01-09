@@ -161,4 +161,13 @@ Route::group(['middleware' => ['auth:administrator']], function () {
 
     Route::post('/upload/image', 'UploadController@uploadImageHandle');
     Route::post('/upload/image/tinymce', 'UploadController@tinymceImageUpload');
+
+    // 优惠码
+    Route::group(['prefix' => 'promoCode'], function () {
+        Route::get('/', 'PromoCodeController@index');
+        Route::post('/', 'PromoCodeController@store');
+        Route::get('/{id}', 'PromoCodeController@edit');
+        Route::put('/{id}', 'PromoCodeController@update');
+        Route::delete('/{id}', 'PromoCodeController@destroy');
+    });
 });

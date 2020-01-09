@@ -81,7 +81,7 @@ class Order extends Model
      */
     public function scopeStatus($query, $status)
     {
-        if (! $status) {
+        if (!$status) {
             return $query;
         }
 
@@ -96,7 +96,7 @@ class Order extends Model
      */
     public function scopeKeywords($query, $keywords)
     {
-        if (! $keywords) {
+        if (!$keywords) {
             return $query;
         }
         $memberIds = User::where('nick_name', 'like', "%{$keywords}%")
@@ -141,5 +141,13 @@ class Order extends Model
         $payments = collect($configService->getPayments());
 
         return $payments[$this->payment]['name'] ?? '';
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paidRecords()
+    {
+        return $this->hasMany(OrderPaidRecord::class, 'order_id');
     }
 }

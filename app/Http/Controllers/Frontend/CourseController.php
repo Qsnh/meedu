@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -120,10 +121,16 @@ class CourseController extends FrontendController
         return v('frontend.course.buy', compact('course', 'title'));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(Request $request, $id)
     {
+        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
         $course = $this->courseService->find($id);
-        $order = $this->orderService->createCourseOrder(Auth::id(), $course);
+        $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
+
+        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+            flash(__('success'), 'success');
+            return redirect(route('course.show', [$course['id'], $course['slug']]));
+        }
 
         flash(__('order successfully, please pay'), 'success');
 

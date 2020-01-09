@@ -16,9 +16,11 @@ use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\CacheService;
+use App\Services\Member\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 /**
  * @OpenApi\Annotations\Swagger(
@@ -42,6 +44,8 @@ class BaseController
 
     protected $guard = 'apiv2';
 
+    protected $user;
+
     /**
      * 图形验证码校验
      * @throws ApiV2Exception
@@ -64,6 +68,18 @@ class BaseController
     protected function id()
     {
         return Auth::guard($this->guard)->id();
+    }
+
+    protected function user()
+    {
+        if (!$this->user) {
+            /**
+             * @var $userService UserService
+             */
+            $userService = app()->make(UserServiceInterface::class);
+            $this->user = $userService->find($this->id(), ['role']);
+        }
+        return $this->user;
     }
 
     /**

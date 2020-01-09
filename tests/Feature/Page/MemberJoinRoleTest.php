@@ -3,12 +3,10 @@
 namespace Tests\Feature\Page;
 
 use App\Services\Member\Models\Role;
-use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\User;
+use App\Services\Member\Models\UserJoinRoleRecord;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MemberJoinRoleTest extends TestCase
 {

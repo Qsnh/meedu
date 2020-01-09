@@ -4,8 +4,6 @@ namespace Tests\Feature\Page;
 
 use App\Services\Member\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MemberOrdersTest extends TestCase
 {

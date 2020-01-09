@@ -33,6 +33,9 @@ class OrderHandlerCommand extends Command
      */
     protected $description = 'order handler tool.';
 
+    /**
+     * @var OrderService
+     */
     protected $orderService;
 
     protected $businessState;
@@ -56,7 +59,7 @@ class OrderHandlerCommand extends Command
     public function handle()
     {
         $orderId = $this->argument('order_id');
-        $order = $this->orderService->find($orderId);
+        $order = $this->orderService->findOrFail($orderId);
         if ($this->businessState->orderIsPaid($order)) {
             $this->warn('order has paid.');
 

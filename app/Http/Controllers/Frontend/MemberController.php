@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -19,6 +20,7 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
+use App\Services\Order\Services\PromoCodeService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -28,8 +30,11 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Member\Services\UserInviteBalanceService;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
+use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberController extends FrontendController
 {
@@ -61,6 +66,18 @@ class MemberController extends FrontendController
      * @var ConfigService
      */
     protected $configService;
+    /**
+     * @var PromoCodeService
+     */
+    protected $promoCodeService;
+    /**
+     * @var BusinessState
+     */
+    protected $businessState;
+    /**
+     * @var UserInviteBalanceService
+     */
+    protected $userInviteBalanceService;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -69,7 +86,10 @@ class MemberController extends FrontendController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService,
-        ConfigServiceInterface $configService
+        ConfigServiceInterface $configService,
+        PromoCodeServiceInterface $promoCodeService,
+        BusinessState $businessState,
+        UserInviteBalanceServiceInterface $userInviteBalanceService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -78,6 +98,9 @@ class MemberController extends FrontendController
         $this->orderService = $orderService;
         $this->socialiteService = $socialiteService;
         $this->configService = $configService;
+        $this->promoCodeService = $promoCodeService;
+        $this->businessState = $businessState;
+        $this->userInviteBalanceService = $userInviteBalanceService;
     }
 
     public function index()
@@ -280,5 +303,55 @@ class MemberController extends FrontendController
         $this->socialiteService->cancelBind($app);
         flash(__('success'), 'success');
         return back();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showPromoCodePage(Request $request)
+    {
+        $page = abs(intval($request->input('page', 1)));
+        $pageSize = 10;
+        $userPromoCode = $this->promoCodeService->userPromoCode();
+        $title = __('title.member.promo_code');
+        $inviteConfig = $this->configService->getMemberInviteConfig();
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userService->inviteUsers($page, $pageSize);
+        $inviteUsers = $this->paginator($list, $total, $page, $pageSize);
+        return v('frontend.member.promo_code', compact('userPromoCode', 'title', 'inviteConfig', 'inviteUsers'));
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function generatePromoCode()
+    {
+        if (!$this->businessState->canGenerateInviteCode($this->user())) {
+            flash(__('current user cant generate promo code'));
+            return back();
+        }
+        $this->promoCodeService->userCreate($this->user());
+        flash(__('success'), 'success');
+        return redirect(route('member.promo_code'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showInviteBalanceRecordsPage(Request $request)
+    {
+        $page = abs(intval($request->input('page', 1)));
+        $pageSize = 10;
+        $title = __('title.member.invite_balances');
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
+        $balanceRecords = $this->paginator($list, $total, $page, $pageSize);
+        return v('frontend.member.invite_balances', compact('title', 'balanceRecords'));
     }
 }
