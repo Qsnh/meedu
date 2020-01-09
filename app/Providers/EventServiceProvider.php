@@ -26,6 +26,7 @@ class EventServiceProvider extends ServiceProvider
             '\App\Listeners\PaymentSuccessEvent\OrderPaidNotificationListener',
             '\App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
             '\App\Listeners\PaymentSuccessEvent\PromoCodeListener',
+            '\App\Listeners\PaymentSuccessEvent\InviteUserRewardListener',
         ],
         'App\Events\OrderCancelEvent' => [
             '\App\Listeners\OrderCancelEvent\PromoCodeResumeListener',

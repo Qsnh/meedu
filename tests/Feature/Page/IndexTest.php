@@ -3,12 +3,10 @@
 namespace Tests\Feature\Page;
 
 use App\Services\Course\Models\Course;
-use App\Services\Other\Models\Link;
 use App\Services\Member\Models\Role;
+use App\Services\Other\Models\Link;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexTest extends TestCase
 {

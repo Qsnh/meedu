@@ -334,7 +334,12 @@ class UserService implements UserServiceInterface
      */
     public function updateInviteUserId(int $id, array $promoCode): void
     {
-        User::whereId($id)->update(['invite_user_id' => $promoCode['user_id']]);
+        $inviteConfig = $this->configService->getMemberInviteConfig();
+        $expiredDays = $inviteConfig['effective_days'] ?? 0;
+        User::whereId($id)->update([
+            'invite_user_id' => $promoCode['user_id'],
+            'invite_user_expired_at' => $expiredDays ? Carbon::now()->addDays($expiredDays) : null,
+        ]);
         /**
          * @var $userInviteBalanceService UserInviteBalanceService
          */

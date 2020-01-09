@@ -19,9 +19,11 @@ class UserInviteBalanceRecord extends Model
     use SoftDeletes;
 
     const TYPE_DEFAULT = 0;
+    const TYPE_ORDER_DRAW = 1;
 
     const TYPE_TEXT = [
         self::TYPE_DEFAULT => '邀请奖励',
+        self::TYPE_ORDER_DRAW => '订单抽成',
     ];
 
     protected $table = 'user_invite_balance_records';

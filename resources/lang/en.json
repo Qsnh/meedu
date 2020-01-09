@@ -72,5 +72,6 @@
   "promo code not exists": "promo code not exists",
   "promo code has expired": "promo code has expired",
   "user cant use this promo code": "user cant use this promo code",
-  "invite reward": "invite reward"
+  "invite reward": "invite reward",
+  "order draw": "order draw :orderid"
 }

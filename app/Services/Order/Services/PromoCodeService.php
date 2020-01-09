@@ -32,24 +32,6 @@ class PromoCodeService implements PromoCodeServiceInterface
     }
 
     /**
-     * @param int $userId
-     * @param string $code
-     * @param string $expiredAt
-     * @param int $reward1
-     * @param int $reward2
-     */
-    public function create(int $userId, string $code, string $expiredAt, int $reward1, int $reward2): void
-    {
-        PromoCode::create([
-            'user_id' => $userId,
-            'code' => $code,
-            'expired_at' => $expiredAt,
-            'invite_user_reward' => $reward1,
-            'invited_user_reward' => $reward2,
-        ]);
-    }
-
-    /**
      * @param array $user
      */
     public function userCreate(array $user): void
@@ -70,16 +52,6 @@ class PromoCodeService implements PromoCodeServiceInterface
     public function userPromoCode(): array
     {
         $code = PromoCode::whereUserId(Auth::id())->first();
-        return $code ? $code->toArray() : [];
-    }
-
-    /**
-     * @param int $id
-     * @return array
-     */
-    public function find(int $id): array
-    {
-        $code = PromoCode::find($id);
         return $code ? $code->toArray() : [];
     }
 

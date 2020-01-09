@@ -7,8 +7,6 @@ use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserVideo;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MemberVideoTest extends TestCase
 {

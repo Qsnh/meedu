@@ -8,6 +8,7 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Models\User;
 use App\Services\Member\Services\SocialiteService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -43,6 +44,18 @@ class SocialiteServiceTest extends TestCase
         $this->assertEquals($user->id, $userId);
     }
 
+    /**
+     * @expectedException \App\Exceptions\ServiceException
+     */
+    public function test_bindApp_repeat()
+    {
+        $user = factory(User::class)->create();
+        $app = 'app1';
+        $appUserId = Str::random();
+        $this->service->bindApp($user->id, $app, $appUserId, []);
+        $this->service->bindApp($user->id, $app, $appUserId, []);
+    }
+
     public function test_bindAppWithNewUser()
     {
         $app = 'app1';
@@ -58,6 +71,17 @@ class SocialiteServiceTest extends TestCase
         factory(Socialite::class, 4)->create(['user_id' => $user->id]);
         $list = $this->service->userSocialites($user->id);
         $this->assertEquals(4, count($list));
+    }
+
+    public function test_cancelBind()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+        $app = 'app1';
+        $appUserId = Str::random();
+        $this->service->bindApp($user->id, $app, $appUserId, []);
+        $this->service->cancelBind($app);
+        $this->assertEmpty(Socialite::whereUserId($user->id)->where('app', $app)->whereAppUserId($appUserId)->first());
     }
 
 }

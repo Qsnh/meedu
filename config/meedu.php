@@ -47,9 +47,11 @@ return [
             // 被邀请用户奖励
             'invited_user_reward' => 0,
             // 上下级关系持续时间
-            'effective_days' => 0,
+            'effective_days' => 365,
             // 邀请余额是否可以支付
             'invite_balance_can_pay' => 1,
+            // 订单抽成
+            'per_order_draw' => 0.01,
         ],
     ],
 

@@ -73,5 +73,6 @@
   "promo code not exists": "优惠码不存在",
   "promo code has expired": "优惠码无效",
   "user cant use this promo code": "当前用户无法使用该优惠码",
-  "invite reward": "邀请奖励"
+  "invite reward": "邀请奖励",
+  "order draw": "订单:orderid抽成"
 }

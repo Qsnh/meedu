@@ -4,7 +4,6 @@
 namespace Tests\Services\Order;
 
 
-use App\Exceptions\ServiceException;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\Role;
@@ -12,9 +11,9 @@ use App\Services\Member\Models\User;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Services\OrderService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -41,6 +40,19 @@ class OrderServiceTest extends TestCase
         $this->assertNotEmpty($order);
     }
 
+    public function test_createCourseOrder_with_promoCode()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
+
+        $order = $this->service->createCourseOrder($user->id, $course->toArray(), 0, $promoCode->id);
+        $this->assertNotEmpty($order);
+    }
+
     public function test_createVideoOrder()
     {
         $user = factory(User::class)->create();
@@ -50,7 +62,33 @@ class OrderServiceTest extends TestCase
         $this->assertNotEmpty($order);
     }
 
+    public function test_createVideoOrder_with_PromoCode()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
+
+        $order = $this->service->createVideoOrder($user->id, $video->toArray(), 0, $promoCode->id);
+        $this->assertNotEmpty($order);
+    }
+
     public function test_createRoleOrder()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'invited_user_reward' => 10,
+            'used_times' => 0,
+        ]);
+
+        $order = $this->service->createRoleOrder($user->id, $role->toArray(), 0, $promoCode['id']);
+        $this->assertNotEmpty($order);
+    }
+
+    public function test_createRoleOrder_with_promoCode()
     {
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
@@ -58,6 +96,7 @@ class OrderServiceTest extends TestCase
         $order = $this->service->createRoleOrder($user->id, $role->toArray(), 0);
         $this->assertNotEmpty($order);
     }
+
 
     /**
      * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException

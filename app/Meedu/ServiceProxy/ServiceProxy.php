@@ -120,19 +120,20 @@ class ServiceProxy
             // 未开启缓存 || 没开启缓存
             return $this->run([$this->service, $name], $args);
         }
+        /**
+         * @var $cacheInfo CacheInfo
+         */
         $cacheInfo = $this->run($this->cache[$name], $args);
         if (! $cacheInfo) {
             return $this->run([$this->service, $name], $args);
         }
-        /**
-         * @var CacheInfo
-         */
         $cacheData = $this->cacheService->pull($cacheInfo->getName(), null);
         if ($cacheData) {
             return $cacheData;
         }
 
         $response = $this->run([$this->service, $name], $args);
+
         $this->cacheService->put($cacheInfo->getName(), $response, $cacheInfo->getExpire());
 
         return $response;

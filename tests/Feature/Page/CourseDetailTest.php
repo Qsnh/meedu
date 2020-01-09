@@ -7,8 +7,6 @@ use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\Video;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CourseDetailTest extends TestCase
 {

@@ -42,7 +42,7 @@ class OrderService implements OrderServiceInterface
      * @param int $promoCodeId
      * @return mixed
      */
-    protected function createOrder(int $userId, int $total, array $goodsItems, int $promoCodeId)
+    public function createOrder(int $userId, int $total, array $goodsItems, int $promoCodeId)
     {
         return DB::transaction(function () use ($userId, $total, $goodsItems, $promoCodeId) {
             // 优惠码抵扣
@@ -99,8 +99,8 @@ class OrderService implements OrderServiceInterface
     /**
      * @param int $userId
      * @param array $course
-     *
-     * @return mixed
+     * @param int $promoCodeId
+     * @return array
      */
     public function createCourseOrder(int $userId, array $course, int $promoCodeId): array
     {
@@ -116,8 +116,8 @@ class OrderService implements OrderServiceInterface
     /**
      * @param int $userId
      * @param array $video
-     *
-     * @return mixed
+     * @param int $promoCodeId
+     * @return array
      */
     public function createVideoOrder(int $userId, array $video, int $promoCodeId): array
     {

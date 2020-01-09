@@ -9,7 +9,6 @@ use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Services\VideoService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
 
 class VideoServiceTest extends TestCase
@@ -29,30 +28,46 @@ class VideoServiceTest extends TestCase
     public function test_courseVideos_with_no_chapters()
     {
         $videoTotal = mt_rand(5, 10);
-        /**
-         * @var $videoService VideoService
-         */
-        $videoService = $this->app->make(VideoService::class);
         $course = factory(Course::class)->create();
-        $videos = factory(Video::class, $videoTotal)->create([
+        factory(Video::class, $videoTotal)->create([
             'course_id' => $course->id,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Video::IS_SHOW_YES,
             'chapter_id' => 0,
         ]);
 
-        $list = $videoService->courseVideos($course['id']);
+        $list = $this->service->courseVideos($course['id']);
 
         $this->assertEquals($videoTotal, count($list[0]));
+    }
+
+    public function test_courseVideos_with_no_chapters_with_cache()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        $course = factory(Course::class)->create();
+        factory(Video::class, 10)->create([
+            'course_id' => $course->id,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Video::IS_SHOW_YES,
+            'chapter_id' => 0,
+        ]);
+
+        $list = $this->service->courseVideos($course['id']);
+        $this->assertEquals(10, count($list[0]));
+
+        factory(Video::class, 2)->create([
+            'course_id' => $course->id,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Video::IS_SHOW_YES,
+            'chapter_id' => 0,
+        ]);
+        $list = $this->service->courseVideos($course['id']);
+        $this->assertEquals(10, count($list[0]));
     }
 
     public function test_courseVideos_with_chapters()
     {
         $total = [];
-        /**
-         * @var $videoService VideoService
-         */
-        $videoService = $this->app->make(VideoService::class);
         $course = factory(Course::class)->create();
         $chapters = factory(CourseChapter::class, mt_rand(1, 5))->create();
         foreach ($chapters as $chapter) {
@@ -66,11 +81,49 @@ class VideoServiceTest extends TestCase
             $total[$chapter->id] = $count;
         }
 
-        $list = $videoService->courseVideos($course['id']);
+        $list = $this->service->courseVideos($course['id']);
 
         foreach ($chapters as $chapter) {
             $this->assertEquals($total[$chapter->id], count($list[$chapter->id]));
         }
+    }
+
+    public function test_courseVideos_with_chapters_with_cache()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        config(['meedu.system.cache.expire' => 10]);
+        $total = [];
+        $course = factory(Course::class)->create();
+        $chapters = factory(CourseChapter::class, mt_rand(1, 5))->create();
+        foreach ($chapters as $chapter) {
+            $count = mt_rand(1, 5);
+            factory(Video::class, $count)->create([
+                'course_id' => $course->id,
+                'published_at' => Carbon::now()->subDays(1),
+                'is_show' => Video::IS_SHOW_YES,
+                'chapter_id' => $chapter->id,
+            ]);
+            $total[$chapter->id] = $count;
+        }
+
+        $list = $this->service->courseVideos($course['id']);
+        foreach ($chapters as $chapter) {
+            $this->assertEquals($total[$chapter->id], count($list[$chapter->id]));
+        }
+
+        foreach ($chapters as $chapter) {
+            $count = mt_rand(1, 5);
+            factory(Video::class, $count)->create([
+                'course_id' => $course->id,
+                'published_at' => Carbon::now()->subDays(1),
+                'is_show' => Video::IS_SHOW_YES,
+                'chapter_id' => $chapter->id,
+            ]);
+            $total[$chapter->id] = $count;
+        }
+
+        $list1 = $this->service->courseVideos($course['id']);
+        $this->assertEquals($list, $list1);
     }
 
     public function test_simplePage()
@@ -127,6 +180,24 @@ class VideoServiceTest extends TestCase
         ]);
         $videos = $this->service->getLatestVideos(3);
         $this->assertNotEmpty(3, count($videos));
+    }
+
+    public function test_getLatestVideos_with_cache()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        factory(Video::class, 5)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        $videos = $this->service->getLatestVideos(10);
+        $this->assertNotEmpty(5, count($videos));
+
+        factory(Video::class, 2)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        $videos = $this->service->getLatestVideos(10);
+        $this->assertNotEmpty(5, count($videos));
     }
 
     public function test_titleSearch()

@@ -11,7 +11,9 @@ use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Services\UserService;
+use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
@@ -111,6 +113,23 @@ class UserServiceTest extends TestCase
         $this->service->bindMobile('13909098080');
     }
 
+    /**
+     * @expectedException \App\Exceptions\ServiceException
+     */
+    public function test_bindMobile_with_exists()
+    {
+        factory(User::class)->create([
+            'mobile' => '13909098080',
+            'password' => Hash::make('123456'),
+        ]);
+        $user = factory(User::class)->create([
+            'mobile' => '23090909090',
+            'password' => Hash::make('123456'),
+        ]);
+        Auth::login($user);
+        $this->service->bindMobile('13909098080');
+    }
+
     public function test_bindMobile_with_need()
     {
         $user = factory(User::class)->create([
@@ -171,12 +190,14 @@ class UserServiceTest extends TestCase
 
     public function test_messagePaginate()
     {
+        $notificationService = $this->app->make(NotificationService::class);
         $user = factory(User::class)->create();
         Auth::login($user);
+        $notificationService->notifyRegisterMessage($user->id);
 
         $page = $this->service->messagePaginate(1, 5);
         // todo 更详细的测试
-        $this->assertEquals(0, $page['total']);
+        $this->assertEquals(1, $page['total']);
     }
 
     public function test_getUserBuyCourses()
@@ -250,6 +271,41 @@ class UserServiceTest extends TestCase
         ]);
 
         $this->assertTrue($this->service->hasVideo($user->id, $video->id));
+    }
+
+    public function test_findNickname()
+    {
+        factory(User::class)->create([
+            'nick_name' => 'meedu',
+        ]);
+        $this->assertNotEmpty($this->service->findNickname('meedu'));
+    }
+
+    public function test_inviteUsers()
+    {
+        $user = factory(User::class)->create();
+        Auth::login($user);
+        factory(User::class, 9)->create([
+            'invite_user_id' => $user->id,
+        ]);
+        $r = $this->service->inviteUsers(1, 5);
+        $this->assertEquals(9, $r['total']);
+    }
+
+    public function test_updateInviteUserId()
+    {
+        $user = factory(User::class)->create();
+        $user1 = factory(User::class)->create();
+        $promoCode = factory(PromoCode::class)->create([
+            'user_id' => $user->id,
+            'invited_user_reward' => 12,
+        ]);
+        $this->service->updateInviteUserId($user1->id, $promoCode->toArray());
+
+        $user->refresh();
+        $this->assertEquals(12, $user->invite_balance);
+        $user1->refresh();
+        $this->assertEquals($user->id, $user1->invite_user_id);
     }
 
 }

@@ -7,8 +7,6 @@ use App\Services\Member\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MemberCourseTest extends TestCase
 {
