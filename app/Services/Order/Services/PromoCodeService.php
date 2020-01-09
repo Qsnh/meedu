@@ -39,7 +39,7 @@ class PromoCodeService implements PromoCodeServiceInterface
         $inviteConfig = $this->configService->getMemberInviteConfig();
         $data = [
             'user_id' => $user['id'],
-            'code' => 'U' . $user['id'],
+            'code' => random_number('U' . $user['id'], 10),
             'invite_user_reward' => $inviteConfig['invite_user_reward'],
             'invited_user_reward' => $inviteConfig['invited_user_reward'],
         ];
