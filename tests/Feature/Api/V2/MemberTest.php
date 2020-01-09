@@ -7,6 +7,7 @@ namespace Tests\Feature\Api\V2;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserInviteBalanceRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Order\Models\Order;
@@ -102,6 +103,14 @@ class MemberTest extends Base
         $response = $this->user($this->member)->getJson('api/v2/member/orders');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $response['data']['total']);
+    }
+
+    public function test_inviteBalanceRecords()
+    {
+        factory(UserInviteBalanceRecord::class, 6)->create(['user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/inviteBalanceRecords');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(6, $response['data']['total']);
     }
 
 }
