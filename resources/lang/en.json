@@ -68,5 +68,9 @@
   "ORDER_PAID_TYPE_DEFAULT": "direct",
   "ORDER_PAID_TYPE_INVITE_BALANCE": "invite balance",
   "ORDER_PAID_TYPE_PROMO_CODE": "promo code",
-  "current user cant generate promo code": "current user cant generate promo code"
+  "current user cant generate promo code": "current user cant generate promo code",
+  "promo code not exists": "promo code not exists",
+  "promo code has expired": "promo code has expired",
+  "user cant use this promo code": "user cant use this promo code",
+  "invite reward": "invite reward"
 }

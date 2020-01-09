@@ -13,6 +13,7 @@ namespace App\Businesses;
 
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\PromoCodeService;
@@ -117,5 +118,45 @@ class BusinessState
             return false;
         }
         return true;
+    }
+
+    public function promoCodeCanUse(array $promoCode): bool
+    {
+        // 自己不能使用自己的优惠码
+        if ($promoCode['user_id'] == Auth::id()) {
+            return false;
+        }
+        /**
+         * @var $promoCodeService PromoCodeService
+         */
+        $promoCodeService = app()->make(PromoCodeServiceInterface::class);
+        // 同一邀请码一个用户只能用一次
+        $useRecords = $promoCodeService->getCurrentUserOrderPaidRecords($promoCode['id']);
+        if ($useRecords) {
+            return false;
+        }
+        // 非用户邀请优惠码可以多次使用
+        if (!$this->isUserInvitePromoCode($promoCode['code'])) {
+            return true;
+        }
+        /**
+         * @var $userService UserService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        $user = $userService->find(Auth::id());
+        if ($user['invite_user_id']) {
+            // 用户邀请优惠码只能使用一次
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param string $code
+     * @return bool
+     */
+    public function isUserInvitePromoCode(string $code): bool
+    {
+        return strtolower(substr($code, 0, 1)) == 'u';
     }
 }

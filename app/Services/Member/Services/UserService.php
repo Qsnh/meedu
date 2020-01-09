@@ -21,11 +21,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class UserService implements UserServiceInterface
 {
+    /**
+     * @var ConfigService
+     */
     protected $configService;
     protected $businessState;
 
@@ -321,5 +326,19 @@ class UserService implements UserServiceInterface
         $list = $query->forPage($page, $pageSize)->get()->toArray();
 
         return compact('list', 'total');
+    }
+
+    /**
+     * @param int $id
+     * @param array $promoCode
+     */
+    public function updateInviteUserId(int $id, array $promoCode): void
+    {
+        User::whereId($id)->update(['invite_user_id' => $promoCode['user_id']]);
+        /**
+         * @var $userInviteBalanceService UserInviteBalanceService
+         */
+        $userInviteBalanceService = app()->make(UserInviteBalanceServiceInterface::class);
+        $userInviteBalanceService->createInvite($promoCode['user_id'], $promoCode['invited_user_reward']);
     }
 }

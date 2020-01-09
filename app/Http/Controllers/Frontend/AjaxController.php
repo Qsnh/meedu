@@ -12,11 +12,15 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
+use App\Services\Order\Services\PromoCodeService;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
@@ -28,19 +32,28 @@ class AjaxController extends BaseController
     protected $userService;
     protected $courseService;
     protected $videoService;
+    /**
+     * @var PromoCodeService
+     */
+    protected $promoCodeService;
+    protected $businessState;
 
     public function __construct(
         VideoCommentServiceInterface $videoCommentService,
         CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
-        CourseServiceInterface $courseService
+        CourseServiceInterface $courseService,
+        PromoCodeServiceInterface $promoCodeService,
+        BusinessState $businessState
     ) {
         $this->videoCommentService = $videoCommentService;
         $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;
         $this->videoService = $videoService;
         $this->courseService = $courseService;
+        $this->promoCodeService = $promoCodeService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -92,6 +105,32 @@ class AjaxController extends BaseController
                 'avatar' => $user['avatar'],
                 'role' => $user['role'] ? $user['role']['name'] : '免费会员',
             ],
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function promoCodeCheck(Request $request)
+    {
+        $promoCode = $request->input('promo_code');
+        if (!$promoCode) {
+            return $this->jsonError(__('error'));
+        }
+        $code = $this->promoCodeService->findCode($promoCode);
+        if (!$code) {
+            return $this->jsonError(__('promo code not exists'));
+        }
+        if ($code['expired_at'] && Carbon::now()->gt($code['expired_at'])) {
+            return $this->jsonError(__('promo code has expired'));
+        }
+        if (!$this->businessState->promoCodeCanUse($code)) {
+            return $this->jsonError(__('user cant use this promo code'));
+        }
+        return $this->jsonSuccess([
+            'id' => $code['id'],
+            'discount' => $code['invited_user_reward'],
         ]);
     }
 }

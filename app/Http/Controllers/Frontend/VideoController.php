@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -128,10 +129,16 @@ class VideoController extends FrontendController
         return v('frontend.video.buy', compact('video', compact('title')));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(Request $request, $id)
     {
+        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
         $video = $this->videoService->find($id);
-        $order = $this->orderService->createVideoOrder(Auth::id(), $video);
+        $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCodeId);
+
+        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+            flash(__('success'), 'success');
+            return redirect(route('video.show', [$video['course_id'], $video['id'], $video['slug']]));
+        }
 
         flash(__('order successfully, please pay'), 'success');
 

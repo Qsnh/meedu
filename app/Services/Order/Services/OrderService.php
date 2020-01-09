@@ -11,10 +11,13 @@
 
 namespace App\Services\Order\Services;
 
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\DB;
+use App\Events\PaymentSuccessEvent;
 use App\Exceptions\ServiceException;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Models\OrderGoods;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -23,10 +26,71 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 class OrderService implements OrderServiceInterface
 {
     protected $configService;
+    protected $businessState;
 
-    public function __construct(ConfigServiceInterface $configService)
+    public function __construct(ConfigServiceInterface $configService, BusinessState $businessState)
     {
         $this->configService = $configService;
+        $this->businessState = $businessState;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $total
+     * @param array $goodsItems
+     * @param int $promoCodeId
+     * @return mixed
+     */
+    protected function createOrder(int $userId, int $total, array $goodsItems, int $promoCodeId)
+    {
+        return DB::transaction(function () use ($userId, $total, $goodsItems, $promoCodeId) {
+            // 优惠码抵扣
+            $promoCodeDiscount = 0;
+            $promoCode = PromoCode::find($promoCodeId);
+            if ($promoCode && $this->businessState->promoCodeCanUse($promoCode->toArray())) {
+                $promoCodeDiscount = $promoCode['invited_user_reward'];
+            }
+
+            // 订单状态
+            $orderStatus = Order::STATUS_UNPAY;
+            $total - $promoCodeDiscount <= 0 && $orderStatus = Order::STATUS_PAID;
+
+            $order = Order::create([
+                'user_id' => $userId,
+                'charge' => $total,
+                'status' => $orderStatus,
+                'order_id' => $this->genOrderNo($userId, OrderGoods::GOODS_TYPE_COURSE),
+            ]);
+
+            $orderGoodsItems = [];
+            foreach ($goodsItems as $goodsItem) {
+                $orderGoodsItems[] = [
+                    'user_id' => $userId,
+                    'oid' => $order['id'],
+                    // todo 即将废弃
+                    'order_id' => '',
+                    'num' => 1,
+                    'charge' => $goodsItem['charge'],
+                    'goods_id' => $goodsItem['id'],
+                    'goods_type' => $goodsItem['type'],
+                ];
+            }
+            OrderGoods::insert($orderGoodsItems);
+
+            // 订单支付记录
+            $promoCodeDiscount && OrderPaidRecord::create([
+                'user_id' => $userId,
+                'order_id' => $order['id'],
+                'paid_total' => $promoCodeDiscount,
+                'paid_type' => OrderPaidRecord::PAID_TYPE_PROMO_CODE,
+                'paid_type_id' => $promoCode['id']
+            ]);
+
+            // 订单支付事件
+            $order['status'] == Order::STATUS_PAID && event(new PaymentSuccessEvent($order->toArray()));
+
+            return $order->toArray();
+        });
     }
 
     /**
@@ -35,28 +99,15 @@ class OrderService implements OrderServiceInterface
      *
      * @return mixed
      */
-    public function createCourseOrder(int $userId, array $course): array
+    public function createCourseOrder(int $userId, array $course, int $promoCodeId): array
     {
-        return DB::transaction(function () use ($userId, $course) {
-            $order = Order::create([
-                'user_id' => $userId,
+        return $this->createOrder($userId, $course['charge'], [
+            [
+                'id' => $course['id'],
                 'charge' => $course['charge'],
-                'status' => Order::STATUS_UNPAY,
-                'order_id' => $this->genOrderNo($userId, OrderGoods::GOODS_TYPE_COURSE),
-            ]);
-            OrderGoods::create([
-                'user_id' => $userId,
-                'oid' => $order['id'],
-                // todo 即将废弃
-                'order_id' => '',
-                'num' => 1,
-                'charge' => $course['charge'],
-                'goods_id' => $course['id'],
-                'goods_type' => OrderGoods::GOODS_TYPE_COURSE,
-            ]);
-
-            return $order->toArray();
-        });
+                'type' => OrderGoods::GOODS_TYPE_COURSE,
+            ]
+        ], $promoCodeId);
     }
 
     /**
@@ -65,58 +116,32 @@ class OrderService implements OrderServiceInterface
      *
      * @return mixed
      */
-    public function createVideoOrder(int $userId, array $video): array
+    public function createVideoOrder(int $userId, array $video, int $promoCodeId): array
     {
-        return DB::transaction(function () use ($userId, $video) {
-            $order = Order::create([
-                'user_id' => $userId,
+        return $this->createOrder($userId, $video['charge'], [
+            [
+                'id' => $video['id'],
                 'charge' => $video['charge'],
-                'status' => Order::STATUS_UNPAY,
-                'order_id' => $this->genOrderNo($userId, OrderGoods::GOODS_TYPE_VIDEO),
-            ]);
-            OrderGoods::create([
-                'user_id' => $userId,
-                'oid' => $order['id'],
-                // todo 即将废弃
-                'order_id' => '',
-                'num' => 1,
-                'charge' => $video['charge'],
-                'goods_id' => $video['id'],
-                'goods_type' => OrderGoods::GOODS_TYPE_VIDEO,
-            ]);
-
-            return $order->toArray();
-        });
+                'type' => OrderGoods::GOODS_TYPE_VIDEO,
+            ]
+        ], $promoCodeId);
     }
 
     /**
      * @param int $userId
      * @param array $role
-     *
-     * @return mixed
+     * @param int $promoCodeId
+     * @return array
      */
-    public function createRoleOrder(int $userId, array $role): array
+    public function createRoleOrder(int $userId, array $role, int $promoCodeId): array
     {
-        return DB::transaction(function () use ($userId, $role) {
-            $order = Order::create([
-                'user_id' => $userId,
+        return $this->createOrder($userId, $role['charge'], [
+            [
+                'id' => $role['id'],
                 'charge' => $role['charge'],
-                'status' => Order::STATUS_UNPAY,
-                'order_id' => $this->genOrderNo($userId, OrderGoods::GOODS_TYPE_ROLE),
-            ]);
-            OrderGoods::create([
-                'user_id' => $userId,
-                'oid' => $order['id'],
-                // todo 即将废弃
-                'order_id' => '',
-                'num' => 1,
-                'charge' => $role['charge'],
-                'goods_id' => $role['id'],
-                'goods_type' => OrderGoods::GOODS_TYPE_ROLE,
-            ]);
-
-            return $order->toArray();
-        });
+                'type' => OrderGoods::GOODS_TYPE_ROLE,
+            ]
+        ], $promoCodeId);
     }
 
     /**
@@ -161,7 +186,7 @@ class OrderService implements OrderServiceInterface
      *
      * @return array
      */
-    public function find(string $orderId): array
+    public function findOrFail(string $orderId): array
     {
         return Order::whereOrderId($orderId)->firstOrFail()->toArray();
     }
@@ -252,11 +277,7 @@ class OrderService implements OrderServiceInterface
      */
     public function changePaid(int $id): void
     {
-        $order = Order::findOrFail($id);
-        if (!in_array($order->status, [Order::STATUS_PAYING, Order::STATUS_UNPAY])) {
-            throw new ServiceException('order status error');
-        }
-        $order->update(['status' => Order::STATUS_PAID]);
+        Order::findOrFail($id)->update(['status' => Order::STATUS_PAID]);
     }
 
     /**

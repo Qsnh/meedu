@@ -37,7 +37,7 @@ class OrderServiceTest extends TestCase
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create();
 
-        $order = $this->service->createCourseOrder($user->id, $course->toArray());
+        $order = $this->service->createCourseOrder($user->id, $course->toArray(), 0);
         $this->assertNotEmpty($order);
     }
 
@@ -46,7 +46,7 @@ class OrderServiceTest extends TestCase
         $user = factory(User::class)->create();
         $video = factory(Video::class)->create();
 
-        $order = $this->service->createVideoOrder($user->id, $video->toArray());
+        $order = $this->service->createVideoOrder($user->id, $video->toArray(), 0);
         $this->assertNotEmpty($order);
     }
 
@@ -55,7 +55,7 @@ class OrderServiceTest extends TestCase
         $user = factory(User::class)->create();
         $role = factory(Role::class)->create();
 
-        $order = $this->service->createRoleOrder($user->id, $role->toArray());
+        $order = $this->service->createRoleOrder($user->id, $role->toArray(), 0);
         $this->assertNotEmpty($order);
     }
 
@@ -101,7 +101,7 @@ class OrderServiceTest extends TestCase
             'status' => Order::STATUS_UNPAY,
         ]);
 
-        $this->assertNotEmpty($this->service->find($order->order_id));
+        $this->assertNotEmpty($this->service->findOrFail($order->order_id));
     }
 
     /**
@@ -224,18 +224,6 @@ class OrderServiceTest extends TestCase
         $this->service->changePaid($order->id);
         $order->refresh();
         $this->assertEquals($order->status, Order::STATUS_PAID);
-    }
-
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
-    public function test_changePaid_with_error_status()
-    {
-        $order = factory(Order::class)->create([
-            'status' => Order::STATUS_PAID,
-        ]);
-
-        $this->service->changePaid($order->id);
     }
 
     public function test_getOrderProducts()

@@ -11,6 +11,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Illuminate\Http\Request;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -64,10 +66,16 @@ class RoleController extends FrontendController
         return v('frontend.role.buy', compact('role', 'title'));
     }
 
-    public function buyHandler($id)
+    public function buyHandler(Request $request, $id)
     {
+        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
         $role = $this->roleService->find($id);
-        $order = $this->orderService->createRoleOrder(Auth::id(), $role);
+        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCodeId);
+
+        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+            flash(__('success'), 'success');
+            return redirect(route('member'));
+        }
 
         flash(__('order successfully, please pay'), 'success');
 
