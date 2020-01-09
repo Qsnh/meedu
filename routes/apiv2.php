@@ -36,4 +36,6 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('roles', 'MemberController@roles');
     Route::get('messages', 'MemberController@messages');
     Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
+    Route::get('promoCode', 'MemberController@promoCode');
+    Route::post('promoCode', 'MemberController@generatePromoCode');
 });

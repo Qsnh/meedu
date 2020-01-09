@@ -11,6 +11,7 @@ use App\Services\Member\Models\UserInviteBalanceRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Order\Models\Order;
+use App\Services\Order\Models\PromoCode;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -111,6 +112,22 @@ class MemberTest extends Base
         $response = $this->user($this->member)->getJson('api/v2/member/inviteBalanceRecords');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(6, $response['data']['total']);
+    }
+
+    public function test_promoCode()
+    {
+        $promoCode = factory(PromoCode::class)->create(['user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals($promoCode->id, $response['data']['id']);
+    }
+
+    public function test_promoCode_post()
+    {
+        config(['meedu.member.invite.free_user_enabled' => 1]);
+        $response = $this->user($this->member)->postJson('api/v2/member/promoCode');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertNotEmpty(PromoCode::whereUserId($this->member->id)->first());
     }
 
 }

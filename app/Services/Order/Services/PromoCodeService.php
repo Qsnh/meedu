@@ -106,4 +106,13 @@ class PromoCodeService implements PromoCodeServiceInterface
             PromoCode::find($id)->decrement('used_times', 1);
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getCurrentUser(): array
+    {
+        $code = PromoCode::whereUserId(Auth::id())->first();
+        return $code ? $code->toArray() : [];
+    }
 }

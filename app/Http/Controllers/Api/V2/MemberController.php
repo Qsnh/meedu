@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
+use App\Businesses\BusinessState;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\RoleService;
@@ -21,6 +22,7 @@ use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
+use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
@@ -29,6 +31,7 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
@@ -96,6 +99,15 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="created_at",type="integer",description="时间"),
  *     ),
  *     @OA\Schema(
+ *         schema="PromoCode",
+ *         type="object",
+ *         title="优惠码",
+ *         @OA\Property(property="code",type="integer",description="优惠码"),
+ *         @OA\Property(property="expired_at",type="string",description="过期时间"),
+ *         @OA\Property(property="invite_user_reward",type="integer",description="邀请人奖励"),
+ *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请人奖励"),
+ *     ),
+ *     @OA\Schema(
  *         schema="Notification",
  *         type="object",
  *         title="消息",
@@ -137,6 +149,11 @@ class MemberController extends BaseController
      * @var UserInviteBalanceService
      */
     protected $userInviteBalanceService;
+    /**
+     * @var PromoCodeService
+     */
+    protected $promoCodeService;
+    protected $businessState;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -145,7 +162,9 @@ class MemberController extends BaseController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService,
-        UserInviteBalanceServiceInterface $userInviteBalanceService
+        UserInviteBalanceServiceInterface $userInviteBalanceService,
+        PromoCodeServiceInterface $promoCodeService,
+        BusinessState $businessState
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -154,6 +173,8 @@ class MemberController extends BaseController
         $this->orderService = $orderService;
         $this->socialiteService = $socialiteService;
         $this->userInviteBalanceService = $userInviteBalanceService;
+        $this->promoCodeService = $promoCodeService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -444,5 +465,50 @@ class MemberController extends BaseController
         $records = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($records);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/promoCode",
+     *     summary="用户邀请码",
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/PromoCode"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function promoCode()
+    {
+        $promoCode = $this->promoCodeService->getCurrentUser();
+        return $this->data($promoCode);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/member/promoCode",
+     *     summary="生成用户邀请码",
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generatePromoCode()
+    {
+        if (!$this->businessState->canGenerateInviteCode($this->user())) {
+            return $this->error(__('current user cant generate promo code'));
+        }
+        $this->promoCodeService->userCreate($this->user());
+        return $this->success();
     }
 }

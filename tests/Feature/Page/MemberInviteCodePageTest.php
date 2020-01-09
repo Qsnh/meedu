@@ -6,6 +6,7 @@ namespace Tests\Feature\Page;
 
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\PromoCode;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class MemberInviteCodePageTest extends TestCase
@@ -24,6 +25,7 @@ class MemberInviteCodePageTest extends TestCase
     {
         $user = factory(User::class)->create([
             'role_id' => 1,
+            'role_expired_at' => Carbon::now()->addDays(1),
         ]);
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
