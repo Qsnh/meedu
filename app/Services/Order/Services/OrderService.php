@@ -11,6 +11,7 @@
 
 namespace App\Services\Order\Services;
 
+use App\Events\OrderCancelEvent;
 use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\DB;
 use App\Events\PaymentSuccessEvent;
@@ -249,6 +250,8 @@ class OrderService implements OrderServiceInterface
             throw new ServiceException('order status error');
         }
         $order->update(['status' => Order::STATUS_CANCELED]);
+        
+        event(new OrderCancelEvent($order['id']));
     }
 
     /**
@@ -324,5 +327,13 @@ class OrderService implements OrderServiceInterface
             'paid_total' => $paidTotal,
             'paid_type' => OrderPaidRecord::PAID_TYPE_DEFAULT,
         ]);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function destroyOrderPaidRecords(int $id): void
+    {
+        OrderPaidRecord::whereOrderId($id)->delete();
     }
 }

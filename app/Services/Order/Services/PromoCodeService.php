@@ -124,4 +124,14 @@ class PromoCodeService implements PromoCodeServiceInterface
     {
         return PromoCode::whereIn('id', $ids)->get()->toArray();
     }
+
+    /**
+     * @param array $ids
+     */
+    public function decrementUsedTimes(array $ids): void
+    {
+        foreach ($ids as $id) {
+            PromoCode::find($id)->decrement('used_times', 1);
+        }
+    }
 }
