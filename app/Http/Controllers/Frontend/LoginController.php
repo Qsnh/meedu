@@ -66,7 +66,7 @@ class LoginController extends BaseController
             flash(__('mobile not exists or password error'), 'error');
             return back();
         }
-        Auth::loginUsingId($user['id']);
+        Auth::loginUsingId($user['id'], $request->has('remember'));
 
         event(new UserLoginEvent($user['id']));
 
