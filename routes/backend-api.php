@@ -7,6 +7,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/user', 'LoginController@user');
 
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
 
     Route::group(['prefix' => 'video/token'], function () {
         Route::post('/tencent', 'VideoUploadController@tencentToken');
@@ -170,4 +171,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::put('/{id}', 'PromoCodeController@update');
         Route::delete('/{id}', 'PromoCodeController@destroy');
     });
+
+    // 插件
+    Route::get('/addons', 'AddonsController@index');
 });
