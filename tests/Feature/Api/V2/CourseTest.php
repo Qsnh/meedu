@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\V2;
 
 
 use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Member\Models\User;
 use Carbon\Carbon;
@@ -21,6 +22,23 @@ class CourseTest extends Base
         $response = $this->get('/api/v2/courses');
         $r = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $r['data']['total']);
+    }
+
+    public function test_courses_with_category()
+    {
+        $category = factory(CourseCategory::class)->create();
+        factory(Course::class, 10)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        factory(Course::class, 3)->create([
+            'category_id' => $category->id,
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        $response = $this->get('/api/v2/courses?category_id=' . $category->id);
+        $r = $this->assertResponseSuccess($response);
+        $this->assertEquals(3, $r['data']['total']);
     }
 
     public function test_courses_paginate_size()

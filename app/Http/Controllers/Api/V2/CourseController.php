@@ -114,6 +114,7 @@ class CourseController extends BaseController
      *     summary="课程列表",
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="category_id",description="分类id",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -131,12 +132,13 @@ class CourseController extends BaseController
      */
     public function paginate(Request $request)
     {
+        $categoryId = intval($request->input('category_id'));
         $page = $request->input('page', 1);
         $pageSize = $request->input('page_size', $this->configService->getCourseListPageSize());
         [
             'total' => $total,
             'list' => $list
-        ] = $this->courseService->simplePage($page, $pageSize);
+        ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
         $courses = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($courses->toArray());
@@ -203,6 +205,8 @@ class CourseController extends BaseController
     /**
      * @OA\Get(
      *     path="/course/{id}/comments",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
      *     summary="课程评论列表",
      *     @OA\Response(

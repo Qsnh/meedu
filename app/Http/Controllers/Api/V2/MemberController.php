@@ -269,6 +269,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/roles",
      *     summary="用户订购套餐信息",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -301,6 +303,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/messages",
      *     summary="用户消息",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -333,6 +337,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/courses",
      *     summary="用户课程",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -370,6 +376,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/videos",
      *     summary="用户课程",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -407,6 +415,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/orders",
      *     summary="用户订单",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -439,6 +449,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/inviteBalanceRecrods",
      *     summary="用户邀请余额明细",
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
