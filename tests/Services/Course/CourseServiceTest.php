@@ -6,6 +6,7 @@ namespace Tests\Services\Course;
 
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Services\CourseService;
 use Carbon\Carbon;
@@ -37,6 +38,25 @@ class CourseServiceTest extends TestCase
 
         $this->assertEquals($pageSize, count($list['list']));
         $this->assertEquals($total, $list['total']);
+    }
+
+    public function test_simplePage_with_category()
+    {
+        $pageSize = mt_rand(1, 10);
+        $total = mt_rand(15, 20);
+        $category = factory(CourseCategory::class)->create();
+        factory(Course::class, $total)->create([
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        factory(Course::class, 2)->create([
+            'category_id' => $category->id,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        $list = $this->courseService->simplePage(1, $pageSize, $category->id);
+
+        $this->assertEquals(2, $list['total']);
     }
 
     public function test_find()

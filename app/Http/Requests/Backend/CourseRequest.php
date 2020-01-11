@@ -39,6 +39,7 @@ class CourseRequest extends BaseRequest
             'short_description' => 'required',
             'original_desc' => 'required',
             'published_at' => 'required',
+            'category_id' => 'required',
         ];
     }
 
@@ -58,6 +59,7 @@ class CourseRequest extends BaseRequest
     {
         $data = [
             'user_id' => $this->input('user_id', 0),
+            'category_id' => $this->input('category_id'),
             'title' => $this->input('title'),
             'thumb' => $this->input('thumb'),
             'charge' => $this->input('charge', 0),

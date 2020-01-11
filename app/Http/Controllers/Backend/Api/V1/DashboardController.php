@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\User;
+use App\Meedu\MeEdu;
 use App\Models\Order;
 
 class DashboardController extends BaseController
@@ -27,5 +28,15 @@ class DashboardController extends BaseController
             'today_paid_num' => $todayPaidNum,
             'today_paid_sum' => $todayPaidSum,
         ]);
+    }
+
+    public function systemInfo()
+    {
+        $info = [
+            'meedu_version' => MeEdu::VERSION,
+            'php_version' => phpversion(),
+            'laravel_version' => app()->version(),
+        ];
+        return $this->successData($info);
     }
 }

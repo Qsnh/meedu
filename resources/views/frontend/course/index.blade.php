@@ -24,7 +24,18 @@
         </div>
     </header>
 
-    <div class="container pt-40 pb-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{route('courses')}}" style="font-size: 2rem;">全部</a>
+                @foreach($courseCategories as $category)
+                    <a class="ml-3" style="font-size: 1rem" href="{{route('courses')}}?category_id={{$category['id']}}">{{$category['name']}}</a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt-20 pb-20">
         <div class="row">
             @foreach($courses as $course)
                 <div class="col-sm-4">
@@ -34,7 +45,9 @@
                             <h4 class="card-title b-0 px-0">
                                 <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{$course['title']}}</a>
                             </h4>
-                            <p><small>最后更新：{{$course['updated_at']}}</small></p>
+                            <p>
+                                <small>最后更新：{{$course['updated_at']}}</small>
+                            </p>
                         </div>
                     </div>
                 </div>

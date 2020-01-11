@@ -11,9 +11,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Course;
-use App\Models\CourseChapter;
 use App\Constant\BackendApiConstant;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseChapter;
 use App\Http\Requests\Backend\CourseChapterRequest;
 
 class CourseChapterController extends BaseController

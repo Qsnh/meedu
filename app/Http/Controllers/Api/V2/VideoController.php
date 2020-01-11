@@ -215,6 +215,8 @@ class VideoController extends BaseController
      * @OA\Get(
      *     path="/video/{id}/comments",
      *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     summary="视频评论列表",
      *     @OA\Response(
      *         description="",response=200,
