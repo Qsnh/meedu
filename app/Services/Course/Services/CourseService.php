@@ -28,12 +28,14 @@ class CourseService implements CourseServiceInterface
     /**
      * @param int $page
      * @param int $pageSize
-     *
+     * @param int $categoryId
      * @return array
      */
-    public function simplePage(int $page, int $pageSize): array
+    public function simplePage(int $page, int $pageSize, int $categoryId = 0): array
     {
-        $query = Course::show()->published()->orderByDesc('published_at');
+        $query = Course::show()->published()->when($categoryId, function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        })->orderByDesc('published_at');
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
 

@@ -172,6 +172,15 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::delete('/{id}', 'PromoCodeController@destroy');
     });
 
+    // 课程分类
+    Route::group(['prefix' => 'courseCategory'], function () {
+        Route::get('/', 'CourseCategoryController@index');
+        Route::post('/', 'CourseCategoryController@store');
+        Route::get('/{id}', 'CourseCategoryController@edit');
+        Route::put('/{id}', 'CourseCategoryController@update');
+        Route::delete('/{id}', 'CourseCategoryController@destroy');
+    });
+
     // 插件
     Route::get('/addons', 'AddonsController@index');
 });

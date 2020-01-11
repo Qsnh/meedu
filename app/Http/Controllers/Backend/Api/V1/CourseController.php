@@ -11,10 +11,10 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Video;
-use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Constant\BackendApiConstant;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
 use App\Http\Requests\Backend\CourseRequest;
 
 class CourseController extends BaseController

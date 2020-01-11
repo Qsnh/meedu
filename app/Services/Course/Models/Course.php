@@ -25,7 +25,7 @@ class Course extends Base
     protected $fillable = [
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'is_show',
+        'seo_description', 'published_at', 'is_show', 'category_id',
     ];
 
     protected $hidden = [

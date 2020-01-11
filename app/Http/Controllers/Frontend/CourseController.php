@@ -20,12 +20,14 @@ use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Services\CourseCommentService;
+use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
+use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 class CourseController extends FrontendController
 {
@@ -53,6 +55,10 @@ class CourseController extends FrontendController
      * @var OrderService
      */
     protected $orderService;
+    /**
+     * @var CourseCategoryService
+     */
+    protected $courseCategoryService;
 
     public function __construct(
         CourseServiceInterface $courseService,
@@ -60,7 +66,8 @@ class CourseController extends FrontendController
         CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
-        OrderServiceInterface $orderService
+        OrderServiceInterface $orderService,
+        CourseCategoryServiceInterface $courseCategoryService
     ) {
         $this->courseService = $courseService;
         $this->configService = $configService;
@@ -68,24 +75,27 @@ class CourseController extends FrontendController
         $this->userService = $userService;
         $this->videoService = $videoService;
         $this->orderService = $orderService;
+        $this->courseCategoryService = $courseCategoryService;
     }
 
     public function index(Request $request)
     {
+        $categoryId = intval($request->input('category_id'));
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
         [
             'total' => $total,
             'list' => $list
-        ] = $this->courseService->simplePage($page, $pageSize);
+        ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
         $courses = $this->paginator($list, $total, $page, $pageSize);
         [
             'title' => $title,
             'keywords' => $keywords,
             'description' => $description,
         ] = $this->configService->getSeoCourseListPage();
+        $courseCategories = $this->courseCategoryService->all();
 
-        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description'));
+        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories'));
     }
 
     public function show($id, $slug)
