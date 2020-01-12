@@ -11,6 +11,7 @@
 
 namespace App\Meedu;
 
+use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
 class Addons
@@ -44,12 +45,12 @@ class Addons
         $dirs = $this->file->directories($this->path);
         $rows = [];
         foreach ($dirs as $dir) {
-            $meeduConfigPath = $dir.DIRECTORY_SEPARATOR.'meedu.json';
-            if (! $this->file->exists($meeduConfigPath)) {
+            $meeduConfigPath = $dir . DIRECTORY_SEPARATOR . 'meedu.json';
+            if (!$this->file->exists($meeduConfigPath)) {
                 continue;
             }
-            $config = $this->file->get($dir.DIRECTORY_SEPARATOR.'meedu.json');
-            if (! $config) {
+            $config = $this->file->get($dir . DIRECTORY_SEPARATOR . 'meedu.json');
+            if (!$config) {
                 continue;
             }
             $rows[$dir] = json_decode($config, true);
@@ -60,29 +61,32 @@ class Addons
 
     /**
      * 生成ServiceProviderMapping.
-     *
+     * @param string $except
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function reGenProvidersMap()
+    public function reGenProvidersMap($except = '')
     {
         $addons = $this->addons();
-        if (! $addons) {
+        if (!$addons) {
             return;
         }
         $providersBox = [];
         foreach ($addons as $dir => $addon) {
             $sign = pathinfo($dir, PATHINFO_FILENAME);
-            $providers = $this->file->glob($dir.DIRECTORY_SEPARATOR.'*ServiceProvider.php');
-            if (! $providers) {
+            $providers = $this->file->glob($dir . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
+            if (!$providers) {
                 continue;
             }
             foreach ($providers as $provider) {
                 $providerName = pathinfo($provider, PATHINFO_FILENAME);
                 $namespace = "\\Addons\\{$sign}\\{$providerName}";
+                if ($except && Str::contains($namespace, $except)) {
+                    continue;
+                }
                 $providersBox[] = $namespace;
             }
         }
-        if (! $providersBox) {
+        if (!$providersBox) {
             return;
         }
         $this->file->put($this->providersMapFile, json_encode($providersBox));
@@ -95,7 +99,7 @@ class Addons
      */
     public function getProvidersMap()
     {
-        if (! $this->file->exists($this->providersMapFile)) {
+        if (!$this->file->exists($this->providersMapFile)) {
             return [];
         }
 
