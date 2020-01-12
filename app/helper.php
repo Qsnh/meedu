@@ -314,7 +314,7 @@ if (!function_exists('enabled_socialites')) {
     {
         $socialites = config('meedu.member.socialite', []);
         $enabled = collect($socialites)->filter(function ($item) {
-            return $item['enabled'];
+            return $item['enabled'] == 1;
         });
 
         return $enabled;
