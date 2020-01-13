@@ -49,7 +49,7 @@ class Setting
         foreach ($params as $key => $item) {
             config([$key => $item]);
         }
-        $this->put(config()->all());
+        $this->put($this->getCanEditConfig());
     }
 
     /**
@@ -112,5 +112,25 @@ class Setting
         $arrayContent = json_decode($jsonContent, true);
 
         return $arrayContent;
+    }
+
+    /**
+     * 获取可以编辑的配置
+     * @return array
+     */
+    public function getCanEditConfig(): array
+    {
+        $meedu = config('meedu');
+        $meedu['system']['logo'] = substr($meedu['system']['logo'], 0, 4) == 'http' ? $meedu['system']['logo'] : asset($meedu['system']['logo']);
+        $config = [
+            'app' => config('app'),
+            'meedu' => $meedu,
+            'sms' => config('sms'),
+            'services' => config('services'),
+            'pay' => config('pay'),
+            'tencent' => config('tencent'),
+            'filesystems' => config('filesystems'),
+        ];
+        return $config;
     }
 }

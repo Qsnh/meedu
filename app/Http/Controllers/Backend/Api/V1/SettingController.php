@@ -16,26 +16,16 @@ use Illuminate\Http\Request;
 
 class SettingController extends BaseController
 {
-    public function index()
+    public function index(Setting $setting)
     {
-        $meedu = config('meedu');
-        $meedu['system']['logo'] = substr($meedu['system']['logo'], 0, 4) == 'http' ? $meedu['system']['logo'] : asset($meedu['system']['logo']);
-        $config = [
-            'app' => config('app'),
-            'meedu' => $meedu,
-            'sms' => config('sms'),
-            'services' => config('services'),
-            'pay' => config('pay'),
-            'tencent' => config('tencent'),
-            'filesystems' => config('filesystems'),
-        ];
+        $config = $setting->getCanEditConfig();
 
         return $this->successData($config);
     }
 
-    public function saveHandler(Request $request)
+    public function saveHandler(Request $request, Setting $setting)
     {
-        app()->make(Setting::class)->save($request);
+        $setting->save($request);
 
         return $this->success();
     }
