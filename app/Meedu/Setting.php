@@ -28,6 +28,7 @@ class Setting
 
     /**
      * @param $param
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function save($param)
     {
@@ -80,11 +81,11 @@ class Setting
      */
     public function put(array $setting): void
     {
-//        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
-//        if ($config) {
-//            $config = json_decode($config, true);
-//            $setting = array_merge($config, $setting);
-//        }
+        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
+        if ($config) {
+            $config = json_decode($config, true);
+            $setting = array_merge($config, $setting);
+        }
         $this->files->put($this->dist, json_encode($setting));
     }
 
