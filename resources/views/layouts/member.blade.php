@@ -30,7 +30,7 @@
                 <a class="nav-link {{menu_active('member.course.videos')}}" href="{{ route('member.course.videos') }}"><i class="fa fa-file-video-o"></i> 我的视频</a>
                 <a class="nav-link {{menu_active('member.join_role_records')}}" href="{{ route('member.join_role_records') }}"><i class="fa fa-user-secret"></i> 订阅计划</a>
                 <a class="nav-link {{menu_active('member.socialite')}}" href="{{ route('member.socialite') }}"><i class="fa fa-weixin"></i> 快捷登录</a>
-                <a class="nav-link {{menu_active('member.promo_code')}}" href="{{ route('member.promo_code') }}"><i class="fa fa-weixin"></i> 我的优惠码</a>
+                <a class="nav-link {{menu_active('member.promo_code')}}" href="{{ route('member.promo_code') }}"><i class="fa fa-users"></i> 我的优惠码</a>
                 <a class="nav-link {{menu_active('member.password_reset')}}" href="{{ route('member.password_reset') }}"><i class="fa fa-unlock-alt"></i> 修改密码</a>
             </nav>
         </div>

@@ -41,7 +41,7 @@
 
             <div class="col-sm-12 mt-2">
                 <div class="card">
-                    <div class="card-header">邀请记录</div>
+                    <div class="card-header">我邀请的用户</div>
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
