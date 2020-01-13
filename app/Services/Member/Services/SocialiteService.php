@@ -38,7 +38,7 @@ class SocialiteService implements SocialiteServiceInterface
      */
     public function getBindUserId(string $app, string $appId): int
     {
-        return Socialite::whereApp($app)->whereAppUserId($appId)->value('user_id');
+        return intval(Socialite::whereApp($app)->whereAppUserId($appId)->value('user_id'));
     }
 
     /**

@@ -21,7 +21,7 @@ class AddonsProviderMapGenrator extends Command
      *
      * @var string
      */
-    protected $signature = 'addons:provider:map';
+    protected $signature = 'addons:provider:map {except?}';
 
     /**
      * The console command description.
@@ -45,10 +45,11 @@ class AddonsProviderMapGenrator extends Command
      */
     public function handle()
     {
+        $except = $this->argument('except');
         /**
          * @var $addons Addons
          */
         $addons = app()->make(Addons::class);
-        $addons->reGenProvidersMap();
+        $addons->reGenProvidersMap($except);
     }
 }

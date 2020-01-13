@@ -41,6 +41,11 @@ return [
             'provider' => 'users',
         ],
 
+        'backend-web' => [
+            'driver' => 'session',
+            'provider' => 'administrators',
+        ],
+
         'administrator' => [
             'driver' => 'jwt',
             'provider' => 'administrators',
