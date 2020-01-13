@@ -41,6 +41,18 @@ class Setting
     }
 
     /**
+     * @param $params
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function append($params)
+    {
+        foreach ($params as $key => $item) {
+            config([$key => $item]);
+        }
+        $this->put(config()->all());
+    }
+
+    /**
      * 自定义配置同步到Laravel系统中.
      */
     public function sync()
@@ -81,11 +93,6 @@ class Setting
      */
     public function put(array $setting): void
     {
-        $config = $this->files->exists($this->dist) ? $this->files->get($this->dist) : [];
-        if ($config) {
-            $config = json_decode($config, true);
-            $setting = array_merge($config, $setting);
-        }
         $this->files->put($this->dist, json_encode($setting));
     }
 
