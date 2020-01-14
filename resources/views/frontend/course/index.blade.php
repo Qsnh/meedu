@@ -64,24 +64,6 @@
                                                         @endif
                                                     </span>
                                                 </div>
-                                                <div class="video-list-box pb-2">
-                                                    @foreach($courseItem['videos'] as $index1 => $videoItem)
-                                                        @if($index1 == 3)
-                                                            @break
-                                                        @endif
-                                                        <div class="video-list-box-item py-1">
-                                                            <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}">
-                                                                <div class="float-left ml-3 overflow-hidden">
-                                                                    <i class="fa fa-play-circle"></i> {{$videoItem['title']}}
-                                                                </div>
-
-                                                                <div class="float-right mr-3">
-                                                                    <i class="fa fa-clock-o"></i> {{duration_humans($videoItem['duration'])}}
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
                                             </div>
                                         </a>
                                     </div>
