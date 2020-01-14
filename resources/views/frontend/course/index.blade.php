@@ -65,8 +65,8 @@
                                                     </span>
                                                 </div>
                                                 <div class="video-list-box pb-2">
-                                                    @foreach($courseItem['videos'] as $index => $videoItem)
-                                                        @if($index == 3)
+                                                    @foreach($courseItem['videos'] as $index1 => $videoItem)
+                                                        @if($index1 == 3)
                                                             @break
                                                         @endif
                                                         <div class="video-list-box-item py-1">
