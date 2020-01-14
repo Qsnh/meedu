@@ -33,9 +33,16 @@ class CourseService implements CourseServiceInterface
      */
     public function simplePage(int $page, int $pageSize, int $categoryId = 0): array
     {
-        $query = Course::show()->published()->when($categoryId, function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        })->orderByDesc('published_at');
+        $query = Course::show()->published()
+            ->with(['videos' => function ($query) {
+                $query->show()->published()->orderByDesc('published_at')->limit(3);
+            }, 'category'])
+            ->withCount(['videos' => function ($query) {
+                $query->show()->published();
+            }])
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })->orderByDesc('published_at');
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
 
@@ -77,6 +84,7 @@ class CourseService implements CourseServiceInterface
             ->withCount(['videos' => function ($query) {
                 $query->show()->published();
             }])
+            ->with(['category'])
             ->show()
             ->published()
             ->orderByDesc('published_at')

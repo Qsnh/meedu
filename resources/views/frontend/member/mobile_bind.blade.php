@@ -2,21 +2,21 @@
 
 @section('member')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <form class="card" method="post" action="">
-                    @csrf
-                    <h4 class="card-title"><strong>绑定手机号</strong></h4>
-
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-4 br-8 mb-4">
+                <div class="card">
+                    <div class="card-header">绑定手机号</div>
                     <div class="card-body">
-                        @include('components.frontend.mobile_captcha', ['smsCaptchaKey' => 'mobile_bind'])
+                        <form method="post" action="">
+                            @csrf
+                            @include('frontend.components.mobile', ['smsCaptchaKey' => 'mobile_bind'])
+                            <div class="form-group text-right mt-5">
+                                <button class="btn btn-primary btn-block" type="submit">确定绑定该手机号</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <footer class="card-footer text-right">
-                        <button class="btn btn-primary" type="submit">确认绑定此手机号</button>
-                    </footer>
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -110,4 +110,12 @@ class Course extends Base
     {
         return $this->hasMany(CourseComment::class, 'course_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(CourseCategory::class, 'category_id');
+    }
 }

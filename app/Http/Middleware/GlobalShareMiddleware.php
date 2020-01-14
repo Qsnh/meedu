@@ -89,7 +89,7 @@ class GlobalShareMiddleware
         View::share('gNavs', $navs);
 
         // 最新课程
-        $latestCourses = $courseService->getLatestCourses(5);
+        $latestCourses = $courseService->getLatestCourses(10);
         View::share('gLatestCourses', $latestCourses);
 
         // 最新视频

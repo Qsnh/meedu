@@ -15,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\DeliverService;
+use App\Services\Member\Proxies\UserServiceProxy;
 use App\Services\Member\Services\SocialiteService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
@@ -29,7 +30,7 @@ class MemberServiceRegisterProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->instance(UserServiceInterface::class, $this->app->make(UserService::class));
+        $this->app->instance(UserServiceInterface::class, $this->app->make(UserServiceProxy::class));
         $this->app->instance(RoleServiceInterface::class, $this->app->make(RoleService::class));
         $this->app->instance(DeliverServiceInterface::class, $this->app->make(DeliverService::class));
         $this->app->instance(NotificationServiceInterface::class, $this->app->make(NotificationService::class));

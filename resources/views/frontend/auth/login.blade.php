@@ -1,45 +1,70 @@
 @extends('layouts.app')
 
+@section('css')
+    <style>
+        body {
+            background-color: #f6f6f6;
+        }
+    </style>
+@endsection
+
 @section('content')
-    <div class="col-12 mt-120 mb-60">
-        <div class="card card-shadowed px-50 py-30 w-400px mx-auto" style="max-width: 100%">
-            <h5 class="text-uppercase text-center">登录</h5>
-            <br>
-            <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="form-group">
-                    <label for="mobile">手机号</label>
-                    <input id="mobile" type="mobile" class="form-control" placeholder="手机号" name="mobile" value="{{ old('mobile') }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">密码</label>
-                    <input id="password" type="password" class="form-control" placeholder="密码" name="password" required>
-                </div>
 
-                <div class="form-group flexbox flex-column flex-md-row">
-                    <label class="custom-control custom-checkbox">
-                        <input type="checkbox"  class="custom-control-input" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <span class="custom-control-indicator"></span>
-                        <span class="custom-control-description">记住我</span>
-                    </label>
-
-                    <a class="text-muted hover-primary fs-13 mt-2 mt-md-0" href="{{ route('password.request') }}">忘记密码?</a>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
+                            <h3 class="mb-5">账号登录
+                                <small class="fs-14px"><a href="{{route('register')}}">没有账号？点此注册</a></small>
+                            </h3>
+                            <form action="" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="mobile">手机号</label>
+                                    <input id="mobile" type="mobile" class="form-control" placeholder="手机号"
+                                           name="mobile" value="{{ old('mobile') }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">密码</label>
+                                    <input id="password" type="password" class="form-control" placeholder="密码"
+                                           name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label><input type="checkbox"
+                                                  name="remember" {{ old('remember') ? 'checked' : '' }}> 记住我</label>
+                                    <a href="{{ route('password.request') }}" class="float-right">忘记密码？</a>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <button class="btn btn-primary btn-block">登录</button>
+                                </div>
+                                @if(!enabled_socialites()->isEmpty())
+                                    <div class="form-group text-center c-2">
+                                        <p>其它方式登录</p>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        @foreach(enabled_socialites() as $socialite)
+                                            <a class="btn btn-square btn-primary mr-2"
+                                               href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <button class="btn btn-bold btn-block btn-primary" type="submit">登录</button>
-                </div>
-            </form>
-
-            @if(!enabled_socialites()->isEmpty())
-            <div class="divider">使用下面账号登录</div>
-            <div class="text-center">
-                @foreach(enabled_socialites() as $socialite)
-                    <a class="btn btn-square btn-dark mr-2" href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
-                @endforeach
             </div>
-            @endif
+
+            <div class="col-12 text-center pt-5">
+                <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
+            </div>
+
         </div>
-        <p class="text-center text-muted fs-13 mt-20">还没有账号? <a class="text-primary fw-500" href="{{ route('register') }}">注册</a></p>
     </div>
+
+@endsection
+
+@section('footer')
+
 @endsection

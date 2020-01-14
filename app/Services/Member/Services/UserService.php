@@ -346,4 +346,20 @@ class UserService implements UserServiceInterface
         $userInviteBalanceService = app()->make(UserInviteBalanceServiceInterface::class);
         $userInviteBalanceService->createInvite($promoCode['user_id'], $promoCode['invited_user_reward']);
     }
+
+    /**
+     * @return int
+     */
+    public function getCurrentUserCourseCount(): int
+    {
+        return (int)UserCourse::whereUserId(Auth::id())->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentUserVideoCount(): int
+    {
+        return (int)UserVideo::whereUserId(Auth::id())->count();
+    }
 }

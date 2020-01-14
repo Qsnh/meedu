@@ -107,7 +107,10 @@ class MemberController extends FrontendController
     {
         $title = __('page_title_member_index');
 
-        return v('frontend.member.index', compact('title'));
+        $courseCount = $this->userService->getCurrentUserCourseCount();
+        $videoCount = $this->userService->getCurrentUserVideoCount();
+
+        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount'));
     }
 
     public function showPasswordResetPage()

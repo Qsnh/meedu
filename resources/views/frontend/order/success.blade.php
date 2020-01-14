@@ -1,25 +1,38 @@
 @extends('layouts.app')
 
+@section('css')
+    <style>
+        body {
+            background-color: #f6f6f6;
+        }
+    </style>
+@endsection
+
 @section('content')
 
-    <header class="header bg-ui-general header-inverse">
-        <div class="header-info">
-            <h1 class="header-title">
-                <strong>支付成功</strong>
-            </h1>
-        </div>
-    </header>
-
-    <div class="container all-buy-box">
+    <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-sm-4 text-center" style="min-height: 400px;">
-                <p class="mt-5 mb-5 text-primary">
-                    <i class="fa fa-check fa-5x" aria-hidden="true"></i>
-                </p>
-                <p>订单号：{{$order['order_id']}}</p>
-                <p><a class="btn btn-primary" href="{{route('member.orders')}}">我的订单</a></p>
+            <div class="col-md-6 col-12 bg-fff br-8 px-5 py-4">
+                <div class="w-100 float-left">
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>支付成功</h2>
+                        </div>
+                        <div class="col-12">
+                            <p class="mt-4 text-right">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
+                        </div>
+                        <div class="col-12 py-3 text-center text-success">
+                            <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-12 text-right">
+                            <a href="{{route('member.orders')}}" class="btn btn-primary">订单中心</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    @include('frontend.components.recom_courses')
 
 @endsection

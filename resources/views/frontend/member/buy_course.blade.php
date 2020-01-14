@@ -4,47 +4,50 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">我的课程</div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead class="text-center">
-                            <tr>
-                                <td>课程</td>
-                                <td>价格</td>
-                                <td>时间</td>
+            <div class="col-md-12 py-4">
+                共{{$records->total()}}条记录
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="w-100 float-left bg-fff px-3 pt-5 br-8">
+                    <table class="table">
+                        <thead class="text-center">
+                        <tr>
+                            <th>课程</th>
+                            <th>价格</th>
+                            <th>时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($records as $record)
+                            @if(!($course = $courses[$record['course_id']] ?? []))
+                                @continue
+                            @endif
+                            <tr class="text-center">
+                                <td>
+                                    <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{ $course['title'] }}</a>
+                                </td>
+                                <td>
+                                    <span class="label label-danger">{{ $record['charge'] }} 元</span>
+                                </td>
+                                <td>{{$record['created_at']}}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($records as $record)
-                                @if(!($course = $courses[$record['course_id']] ?? []))
-                                    @continue
-                                @endif
-                                <tr class="text-center">
-                                    <td>
-                                        <a href="{{ route('course.show', [$course['id'], $course['slug']]) }}">{{ $course['title'] }}</a>
-                                    </td>
-                                    <td>
-                                        <span class="label label-danger">{{ $record['charge'] }} 元</span>
-                                    </td>
-                                    <td>{{$record['created_at']}}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td class="text-center color-gray" colspan="3">暂无数据</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+                        @empty
+                            <tr>
+                                <td class="text-center color-gray" colspan="3">暂无数据</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @if($records->total() > $records->perPage())
+                <div class="col-md-12">
+                    <div class="w-100 float-left bg-fff mb-4 br-8 px-3 py-4">
+                        {{$records->render()}}
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-12 pt-10">
-                <div class="text-right">
-                    {{$records->render()}}
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 
