@@ -61,9 +61,9 @@
                                                         @if($index1 == 3)
                                                             @break
                                                         @endif
-                                                        <div class="video-list-box-item py-1">
+                                                        <div class="video-list-box-item py-1 overflow-hidden">
                                                             <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}">
-                                                                <div class="float-left ml-3 overflow-hidden">
+                                                                <div class="float-left ml-3">
                                                                     <i class="fa fa-play-circle"></i> {{$videoItem['title']}}
                                                                 </div>
 
