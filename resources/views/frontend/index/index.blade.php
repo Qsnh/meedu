@@ -67,7 +67,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="video-title py-3 float-left">
-                                                    <span>{{$videoItem['title']}}</span>
+                                                    <span class="d-inline-block">{{$videoItem['title']}}</span>
                                                 </div>
                                                 <div class="video-extra pb-3">
                                                     <span class="float-left"><i class="fa fa-play-circle-o"></i> {{$videoItem['view_num']}}</span>

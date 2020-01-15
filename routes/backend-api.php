@@ -160,7 +160,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}/finish', 'OrderController@finishOrder');
     });
 
-    Route::post('/upload/image', 'UploadController@uploadImageHandle');
+    // 图片上传
     Route::post('/upload/image/tinymce', 'UploadController@tinymceImageUpload');
 
     // 优惠码
