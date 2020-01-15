@@ -76,7 +76,7 @@ class DeliverService implements DeliverServiceInterface
         $role = $this->roleService->find($roleId);
 
         $userRole = $user['role'] ?? [];
-        if (! $userRole) {
+        if (!$userRole) {
             $this->roleService->userJoinRole($user, $role, $charge);
 
             return;

@@ -22,10 +22,13 @@ class VideoServiceProxy extends ServiceProxy implements VideoServiceInterface
     {
         parent::__construct($service);
         $this->cache['courseVideos'] = function ($courseId) {
-            return new CacheInfo('cs:vs:c:'.$courseId, $this->configService->getCacheExpire());
+            return new CacheInfo('cs:vs:c:' . $courseId, $this->configService->getCacheExpire());
         };
         $this->cache['getLatestVideos'] = function () {
             return new CacheInfo('cs:vs:lv', $this->configService->getCacheExpire());
+        };
+        $this->cache['simplePage'] = function (int $page, int $pageSize) {
+            return new CacheInfo('cs:vs:sp:' . $page . '.' . $pageSize, $this->configService->getCacheExpire());
         };
     }
 }

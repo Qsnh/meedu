@@ -116,7 +116,7 @@ class ServiceProxy
      */
     public function cacheHandler($name, $args)
     {
-        if (! isset($this->cache[$name]) || ! $this->configService->getCacheStatus()) {
+        if (!isset($this->cache[$name]) || !$this->configService->getCacheStatus()) {
             // 未开启缓存 || 没开启缓存
             return $this->run([$this->service, $name], $args);
         }
@@ -124,7 +124,7 @@ class ServiceProxy
          * @var $cacheInfo CacheInfo
          */
         $cacheInfo = $this->run($this->cache[$name], $args);
-        if (! $cacheInfo) {
+        if (!$cacheInfo) {
             return $this->run([$this->service, $name], $args);
         }
         $cacheData = $this->cacheService->pull($cacheInfo->getName(), null);
@@ -154,7 +154,7 @@ class ServiceProxy
          */
         $lockInfo = call_user_func_array($this->lock[$name], $args);
         $lock = $this->cacheService->lock($lockInfo->getName(), $lockInfo->getSeconds());
-        if (! $lock->get()) {
+        if (!$lock->get()) {
             // 无法获取锁
             throw new SystemException(__('error'));
         }
@@ -172,7 +172,7 @@ class ServiceProxy
      */
     protected function limitHandler($name, $args)
     {
-        if (! isset($this->limit[$name])) {
+        if (!isset($this->limit[$name])) {
             return;
         }
         /**

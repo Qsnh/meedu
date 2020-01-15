@@ -60,7 +60,7 @@ class AdministratorController extends BaseController
     {
         $administrator = Auth::guard(BackendApiConstant::GUARD)->user();
         if (
-        ! Hash::check(
+        !Hash::check(
             $request->input('old_password'),
             $administrator->password
         )
@@ -75,7 +75,7 @@ class AdministratorController extends BaseController
     public function destroy($id)
     {
         $administrator = Administrator::findOrFail($id);
-        if (! $administrator->couldDestroy()) {
+        if (!$administrator->couldDestroy()) {
             return $this->error(BackendApiConstant::ADMINISTRATOR_ACCOUNT_CANT_DELETE);
         }
         $administrator->delete();

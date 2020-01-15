@@ -25,6 +25,8 @@ return PhpCsFixer\Config::create()
         'increment_style' => ['style' => 'post'],
         // 三元运算符的空格
         'ternary_operator_spaces' => true,
+        // .连接符两边空格，!没有空格
+        'unary_operator_spaces' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

@@ -56,7 +56,7 @@ class AdFromSyncCommand extends Command
         foreach ($adFrom as $from) {
             $date = date('Y-m-d');
             $key = sprintf('ad_from_%s_%s', $from['from_key'], $date);
-            if (! Cache::has($key)) {
+            if (!Cache::has($key)) {
                 continue;
             }
             $record = $this->adFromService->getDay($from['id'], $date);
