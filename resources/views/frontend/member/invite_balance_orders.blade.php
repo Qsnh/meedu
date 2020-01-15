@@ -43,6 +43,7 @@
                             <th>状态</th>
                             <th>渠道</th>
                             <th>账户</th>
+                            <th>备注</th>
                             <th>时间</th>
                         </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                 <td>{{$order['status_text']}}</td>
                                 <td>{{$order['channel']}}</td>
                                 <td>{{$order['channel_name']}} / {{$order['channel_account']}}</td>
+                                <td>{{$order['remark']}}</td>
                                 <td>{{$order['created_at']}}</td>
                             </tr>
                         @empty

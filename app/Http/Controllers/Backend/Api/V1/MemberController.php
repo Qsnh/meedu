@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\MemberRequest;
+use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 
 class MemberController extends BaseController
@@ -64,6 +65,7 @@ class MemberController extends BaseController
             'status' => $status,
             'remark' => $remark,
         ]);
+        event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
         return $this->success();
     }
 }

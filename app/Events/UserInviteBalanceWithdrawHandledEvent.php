@@ -16,19 +16,21 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class OrderCancelEvent
+class UserInviteBalanceWithdrawHandledEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $orderId;
+    public $ids;
+    public $status;
 
     /**
-     * OrderCancelEvent constructor.
-     * @param int $orderId
+     * UserInviteBalanceWithdrawHandledEvent constructor.
+     * @param array $ids
      */
-    public function __construct(int $orderId)
+    public function __construct(array $ids, $status)
     {
-        $this->orderId = $orderId;
+        $this->ids = $ids;
+        $this->status = $status;
     }
 
     /**

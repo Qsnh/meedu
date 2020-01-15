@@ -127,4 +127,29 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
 
         return compact('list', 'total');
     }
+
+    /**
+     * @param array $ids
+     * @return array
+     */
+    public function getOrdersList(array $ids): array
+    {
+        return UserInviteBalanceWithdrawOrder::whereIn('id', $ids)->get()->toArray();
+    }
+
+    /**
+     * @param array $order
+     */
+    public function withdrawOrderRefund(array $order): void
+    {
+        // 余额记录
+        UserInviteBalanceRecord::create([
+            'user_id' => $order['user_id'],
+            'type' => UserInviteBalanceRecord::TYPE_ORDER_WITHDRAW_BACK,
+            'total' => $order['total'],
+            'desc' => __('invite balance withdraw refund'),
+        ]);
+        // 扣除余额
+        app()->make(UserServiceInterface::class)->inviteBalanceInc($order['user_id'], $order['total']);
+    }
 }

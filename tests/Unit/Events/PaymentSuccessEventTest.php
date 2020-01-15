@@ -5,7 +5,6 @@ namespace Tests\Unit\Events;
 
 
 use App\Events\PaymentSuccessEvent;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Carbon\Carbon;

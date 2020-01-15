@@ -57,6 +57,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserInviteBalanceWithdrawCreatedEvent' => [
             'App\Listeners\UserInviteBalanceWithdrawCreatedEvent\NotifyListener',
         ],
+        'App\Events\UserInviteBalanceWithdrawHandledEvent' => [
+            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\NotifyListener',
+            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\RefundBalanceListener',
+        ],
     ];
 
     /**
