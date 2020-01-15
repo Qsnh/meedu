@@ -41,6 +41,14 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @return array
+     */
+    public function currentUser(): array
+    {
+        return $this->find(Auth::id(), ['role']);
+    }
+
+    /**
      * @param string $mobile
      *
      * @return array
@@ -361,5 +369,14 @@ class UserService implements UserServiceInterface
     public function getCurrentUserVideoCount(): int
     {
         return (int)UserVideo::whereUserId(Auth::id())->count();
+    }
+
+    /**
+     * @param int $userId
+     * @param int $inc
+     */
+    public function inviteBalanceInc(int $userId, int $inc): void
+    {
+        User::find($userId)->increment('invite_balance', $inc);
     }
 }

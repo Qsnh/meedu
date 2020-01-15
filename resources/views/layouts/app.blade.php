@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <nav class="navbar navbar-expand-lg bg-fff">
-                            <a class="navbar-brand" href="#">
+                            <a class="navbar-brand" href="{{url('/')}}">
                                 <img src="{{$gConfig['system']['logo']}}" height="40" alt="{{config('app.name')}}">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -53,7 +53,8 @@
                                     <form class="form-inline ml-4" method="get" action="{{route('search')}}">
                                         @csrf
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="keywords" placeholder="搜索" required>
+                                            <input type="text" class="form-control" name="keywords" placeholder="搜索"
+                                                   required>
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-primary" type="button">
                                                     <i class="fa fa-search"></i>
@@ -125,6 +126,18 @@
     </footer>
 @show
 
+<script>
+    @if(get_first_flash('success'))
+    flashSuccess("{{get_first_flash('success')}}");
+    @endif
+    @if(get_first_flash('warning'))
+    flashWarning("{{get_first_flash('warning')}}");
+    @endif
+    @if(get_first_flash('error'))
+    flashError("{{get_first_flash('error')}}");
+    @endif
+</script>
 @yield('js')
+<div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>
 </html>

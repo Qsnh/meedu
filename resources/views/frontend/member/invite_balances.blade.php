@@ -4,32 +4,37 @@
 
     <div class="container">
         <div class="row">
+            <div class="col-12">
+
+            </div>
             <div class="col-12 py-4">
                 邀请余额记录，共{{$balanceRecords->total()}}条记录
             </div>
-            <div class="col-12 bg-fff px-3 pt-5 br-8 mb-4">
-                <table class="table">
-                    <thead class="text-center">
-                    <tr>
-                        <th>金额</th>
-                        <th>说明</th>
-                        <th>时间</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($balanceRecords as $item)
-                        <tr class="text-center">
-                            <td>￥{{$item['total']}}</td>
-                            <td>{{$item['desc']}}</td>
-                            <td>{{$item['created_at']}}</td>
-                        </tr>
-                    @empty
+            <div class="col-12">
+                <div class="w-100 float-left bg-fff px-3 pt-5 br-8 mb-4">
+                    <table class="table">
+                        <thead class="text-center">
                         <tr>
-                            <td class="text-center color-gray" colspan="3">暂无数据</td>
+                            <th>金额</th>
+                            <th>说明</th>
+                            <th>时间</th>
                         </tr>
-                    @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @forelse($balanceRecords as $item)
+                            <tr class="text-center">
+                                <td>￥{{$item['total']}}</td>
+                                <td>{{$item['desc']}}</td>
+                                <td>{{$item['created_at']}}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td class="text-center color-gray" colspan="3">暂无数据</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             @if($balanceRecords->total() > $balanceRecords->perPage())

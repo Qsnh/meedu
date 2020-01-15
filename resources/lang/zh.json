@@ -30,8 +30,9 @@
   "title.member.videos": "我的视频",
   "title.member.orders": "我的订单",
   "title.member.socialite": "社交登录",
-  "title.member.promo_code": "我的优惠码",
+  "title.member.promo_code": "我的邀请码",
   "title.member.invite_balances": "邀请余额收支明细",
+  "title.member.invite_balance_orders": "邀请余额提现明细",
   "comment.content.required": "请输入评论内容",
   "comment.content.min": "评论内容不能少于 :count 个字",
   "captcha.required": "请输入验证码",
@@ -75,5 +76,13 @@
   "promo code has expired": "优惠码无效",
   "user cant use this promo code": "当前用户无法使用该优惠码",
   "invite reward": "邀请奖励",
-  "order draw": "订单:orderid抽成"
+  "order draw": "订单:orderid抽成",
+  "Insufficient invite balance": "邀请余额不足",
+  "invite balance withdraw": "提现",
+  "please input withdraw money": "请输入提现金额",
+  "withdraw money must be integer": "提现金额必须为整数",
+  "please input withdraw info": "请输入提现信息",
+  "please select withdraw channel": "请选择提现渠道",
+  "please input withdraw account": "请输入提现渠道账号",
+  "please input withdraw username": "请输入提现渠道姓名"
 }

@@ -46,7 +46,7 @@
                         <i class="fa fa-link"></i> 快捷登录
                     </a>
                     <a class="{{menu_active('member.promo_code')}}" href="{{ route('member.promo_code') }}">
-                        <i class="fa fa-users"></i> 我的优惠码
+                        <i class="fa fa-users"></i> 我的邀请码
                     </a>
                     <a class="{{menu_active('member.password_reset')}}"
                        href="{{ route('member.password_reset') }}">

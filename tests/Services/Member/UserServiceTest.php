@@ -308,4 +308,40 @@ class UserServiceTest extends TestCase
         $this->assertEquals($user->id, $user1->invite_user_id);
     }
 
+    public function test_getCurrentUserCourseCount()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        $user = factory(User::class)->create();
+        factory(UserCourse::class, 10)->create(['user_id' => $user]);
+        Auth::login($user);
+        $this->assertEquals(10, $this->service->getCurrentUserCourseCount());
+
+        factory(UserCourse::class, 3)->create(['user_id' => $user]);
+        $this->assertEquals(10, $this->service->getCurrentUserCourseCount());
+    }
+
+    public function test_getCurrentUserVideoCount()
+    {
+        config(['meedu.system.cache.status' => 1]);
+        $user = factory(User::class)->create();
+        factory(UserVideo::class, 11)->create(['user_id' => $user]);
+        Auth::login($user);
+        $this->assertEquals(11, $this->service->getCurrentUserVideoCount());
+
+        factory(UserVideo::class, 5)->create(['user_id' => $user]);
+        $this->assertEquals(11, $this->service->getCurrentUserVideoCount());
+    }
+
+    public function test_inviteBalanceInc()
+    {
+        $user = factory(User::class)->create(['invite_balance' => 0]);
+        $this->service->inviteBalanceInc($user['id'], 10);
+        $user->refresh();
+        $this->assertEquals(10, $user->invite_balance);
+
+        $this->service->inviteBalanceInc($user['id'], -3);
+        $user->refresh();
+        $this->assertEquals(7, $user->invite_balance);
+    }
+
 }

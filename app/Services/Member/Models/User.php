@@ -74,4 +74,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $avatar ?: url(config('meedu.member.default_avatar'));
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function inviteBalanceWithdrawOrders()
+    {
+        return $this->hasMany(UserInviteBalanceWithdrawOrder::class, 'user_id');
+    }
 }

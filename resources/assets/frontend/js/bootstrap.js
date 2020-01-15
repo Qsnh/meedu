@@ -1,4 +1,3 @@
-
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
@@ -12,7 +11,8 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) {
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -54,3 +54,15 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+import swal from 'sweetalert';
+
+window.flashSuccess = function (message) {
+    swal('成功', message, 'success');
+}
+window.flashWarning = function (message) {
+    swal('警告', message, 'warning');
+}
+window.flashError = function (message) {
+    swal('失败', message, 'error');
+}

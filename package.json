@@ -19,5 +19,7 @@
     "popper.js": "^1.12",
     "vue": "^2.5.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "sweetalert": "^2.1.2"
+  }
 }

@@ -34,7 +34,7 @@
                     <span class="fs-24px">
                         <a href="{{route('member.invite_balance_records')}}"
                            class="c-primary">￥{{$user['invite_balance']}}</a>
-                        <a href="" class="fs-14px ml-3 c-primary">提现</a>
+                        <a href="{{route('member.invite_balance_withdraw_orders')}}" class="fs-14px ml-3 c-primary">提现</a>
                     </span>
                 </div>
             </div>

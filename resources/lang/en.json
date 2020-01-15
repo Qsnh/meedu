@@ -75,5 +75,13 @@
   "promo code has expired": "promo code has expired",
   "user cant use this promo code": "user cant use this promo code",
   "invite reward": "invite reward",
-  "order draw": "order draw :orderid"
+  "order draw": "order draw :orderid",
+  "Insufficient invite balance": "Insufficient invite balance",
+  "invite balance withdraw": "invite balance withdraw",
+  "please input withdraw money": "please input withdraw money",
+  "withdraw money must be integer": "withdraw money must be integer",
+  "please input withdraw info": "please input withdraw info",
+  "please select withdraw channel": "please select withdraw channel",
+  "please input withdraw account": "please input withdraw account",
+  "please input withdraw username": "please input withdraw username"
 }

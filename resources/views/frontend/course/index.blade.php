@@ -8,7 +8,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="w-100 float-left box-shadow1">
+                            <div class="w-100 float-left box-shadow1 mb-2">
                                 <a href="{{route('role.index')}}">
                                     <img src="{{asset('frontend/images/vip1.png')}}" class="br-8" height="230"
                                          width="100%">
@@ -16,7 +16,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="w-100 box-shadow1 float-left">
+                            <div class="w-100 box-shadow1 float-left mb-2">
                                 <a href="{{route('member.promo_code')}}">
                                     <img src="{{asset('frontend/images/share.png')}}" class="br-8" height="230"
                                          width="100%">
