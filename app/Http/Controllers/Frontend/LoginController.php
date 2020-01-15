@@ -16,6 +16,7 @@ use App\Events\UserLoginEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
+use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\LoginPasswordRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
@@ -28,6 +29,9 @@ class LoginController extends BaseController
      */
     protected $userService;
 
+    /**
+     * @var SocialiteService
+     */
     protected $socialiteService;
 
     public function __construct(UserServiceInterface $userService, SocialiteServiceInterface $socialiteService)
@@ -86,13 +90,14 @@ class LoginController extends BaseController
     /**
      * @param $app
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \App\Exceptions\ServiceException
      */
     public function socialiteLoginCallback($app)
     {
         $user = Socialite::driver($app)->user();
         $appId = $user->getId();
         if (Auth::check()) {
-            $this->socialiteService->bindApp(Auth::id(), $app, $appId, $user);
+            $this->socialiteService->bindApp(Auth::id(), $app, $appId, (array)$user);
             flash(__('socialite bind success'), 'success');
             return redirect('member');
         }
@@ -100,7 +105,7 @@ class LoginController extends BaseController
             Auth::loginUsingId($bindUserId);
             return redirect(url('/'));
         }
-        $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, $user);
+        $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
         Auth::loginUsingId($userId, true);
         return redirect(url('/'));
     }
