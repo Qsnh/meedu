@@ -15,7 +15,7 @@
     <script src="{{asset('frontend/js/frontend.js')}}"></script>
     @yield('css')
 </head>
-<body>
+<body class="bg-f6">
 
 <div class="container-fluid nav-box bg-fff">
     <div class="row">
@@ -25,7 +25,7 @@
                     <div class="col-sm-12">
                         <nav class="navbar navbar-expand-lg bg-fff">
                             <a class="navbar-brand" href="#">
-                                <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
+                                <img src="{{$gConfig['system']['logo']}}" height="40" alt="{{config('app.name')}}">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -64,7 +64,7 @@
                                 </ul>
 
                                 @if(!$user)
-                                    <a class="btn btn-primary btn-sm my-2" href="{{route('login')}}">登录</a>
+                                    <a class="btn btn-primary my-2" href="{{route('login')}}">登录</a>
                                     <a class="my-2 ml-2" href="{{route('register')}}">注册</a>
                                 @else
                                     <a href="{{route('member.messages')}}">

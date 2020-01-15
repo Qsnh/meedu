@@ -30,7 +30,7 @@
                                             <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
                                                 <div class="box-shadow1">
                                                     <img src="{{$courseItem['thumb']}}" width="100%" height="170"
-                                                         class="br-8"
+                                                         class="br-8 box-shadow1"
                                                          alt="{{$courseItem['title']}}">
                                                 </div>
                                             </a>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="container-fluid py-5">
+    <div class="container-fluid bg-fff py-5">
         <div class="row">
             <div class="col-12">
                 <div class="container">

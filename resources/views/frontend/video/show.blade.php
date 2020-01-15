@@ -2,10 +2,6 @@
 
 @section('css')
     <style>
-        body {
-            background-color: #f6f6f6;
-        }
-
         #xiaoteng-player {
             width: 100%;
             height: 500px;
@@ -52,7 +48,7 @@
                                 @if($video['charge'] > 0)
                                     <p class="text-center my-5">
                                         <a href="{{ route('member.video.buy', [$video['id']]) }}"
-                                           class="btn btn-primary my-5">购买此视频 ￥{{$video['charge']}}</a>
+                                           class="btn btn-success my-5">购买此视频 ￥{{$video['charge']}}</a>
                                     </p>
                                 @endif
                             </div>
@@ -60,7 +56,7 @@
                     @else
                         <div class="w-100 float-left py-5 bg-dark br-8 box-shadow1 text-center">
                             <p class="my-5">
-                                <a class="btn btn-primary my-5 px-4" href="{{route('login')}}">登录</a>
+                                <a class="btn btn-success my-5 px-4" href="{{route('login')}}">登录</a>
                             </p>
                         </div>
                     @endif

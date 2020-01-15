@@ -1,4 +1,4 @@
-$primary: #00799E !default;
+$primary: #344962 !default;
 $secondary: #344962 !default;
 $light: #38AECC !default;
 $primary2: #36567C;
@@ -123,10 +123,6 @@ footer.footer-box {
   color: $c1;
 }
 
-.index-course-banner {
-  background-color: $primary;
-}
-
 .video-item {
   cursor: pointer;
   transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .4s ease-out;
@@ -150,7 +146,7 @@ footer.footer-box {
       float: left;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
-      background-color: rgba(0, 0, 0, .8);
+      background-color: rgba(0, 0, 0, .6);
 
       .video-thumb-img {
         border-top-left-radius: 8px;
@@ -210,7 +206,7 @@ footer.footer-box {
 
   &:hover {
     .video-thumb {
-      background-color: rgba(0, 0, 0, .6);
+      background-color: rgba(0, 0, 0, .5);
     }
   }
 }

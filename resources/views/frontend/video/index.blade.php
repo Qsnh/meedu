@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@section('css')
-    <style>
-        body {
-            background-color: #f6f6f6;
-        }
-    </style>
-@endsection
-
 @section('content')
 
     <div class="container py-5">
