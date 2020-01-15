@@ -251,8 +251,6 @@ if (!function_exists('v')) {
         $namespace = config('meedu.system.theme.use', 'default');
         $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
 
-        is_h5() && $viewName = str_replace('::frontend', '::h5', $viewName);
-
         return view($viewName, $params);
     }
 }
