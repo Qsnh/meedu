@@ -11,8 +11,8 @@
 
 namespace App\Services\Base\Services;
 
-use Illuminate\Support\Facades\Cache;
 use App\Services\Base\Interfaces\CacheServiceInterface;
+use Illuminate\Support\Facades\Cache;
 
 class CacheService implements CacheServiceInterface
 {
@@ -34,5 +34,15 @@ class CacheService implements CacheServiceInterface
     public function forget(string $name): void
     {
         Cache::forget($name);
+    }
+
+    public function inc(string $name, $inc = 1): void
+    {
+        Cache::increment($name, $inc);
+    }
+
+    public function has(string $name): bool
+    {
+        return Cache::has($name);
     }
 }

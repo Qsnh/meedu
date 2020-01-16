@@ -233,4 +233,26 @@ class VideoServiceTest extends TestCase
         $this->assertTrue(isset($list[$video2->id]));
     }
 
+    public function test_viewNumInc()
+    {
+        config(['meedu.system.cache.status' => 0]);
+        $video = factory(Video::class)->create(['view_num' => 1]);
+        $this->service->viewNumInc($video['id']);
+        $video->refresh();
+        $this->assertEquals(2, $video->view_num);
+
+        config(['meedu.system.cache.status' => 1]);
+        $this->service->viewNumInc($video['id']);
+        $video->refresh();
+        $this->assertEquals(2, $video->view_num);
+
+        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumInc($video['id']);
+        $video->refresh();
+        $this->assertEquals(8, $video->view_num);
+    }
+
 }

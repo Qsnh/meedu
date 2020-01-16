@@ -11,22 +11,22 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Member\Services\UserService;
-use App\Services\Order\Services\OrderService;
-use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\VideoCommentService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
-use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\VideoCommentService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Order\Services\OrderService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends FrontendController
 {
@@ -67,7 +67,8 @@ class VideoController extends FrontendController
         CourseServiceInterface $courseService,
         BusinessState $businessState,
         OrderServiceInterface $orderService
-    ) {
+    )
+    {
         $this->videoService = $videoService;
         $this->configService = $configService;
         $this->videoCommentService = $videoCommentService;
@@ -95,6 +96,7 @@ class VideoController extends FrontendController
     {
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
+        $this->videoService->viewNumInc($video['id']);
         $comments = $this->videoCommentService->videoComments($video['id']);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
