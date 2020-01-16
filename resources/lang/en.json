@@ -58,6 +58,7 @@
   "notification_content_register": "welcome register website member",
   "notification_content_at": "user :atUser @ <a href=':link'>:scene</a>",
   "notification_content_bind_mobile": "please bind mobile",
+  "notification_invite_balance_withdraw_handled": "withdraw has handled. result :status",
   "COURSE": "Course",
   "VIDEO": "Video",
   "ROLE": "Package",
@@ -75,5 +76,14 @@
   "promo code has expired": "promo code has expired",
   "user cant use this promo code": "user cant use this promo code",
   "invite reward": "invite reward",
-  "order draw": "order draw :orderid"
+  "order draw": "order draw :orderid",
+  "Insufficient invite balance": "Insufficient invite balance",
+  "invite balance withdraw": "invite balance withdraw",
+  "invite balance withdraw refund": "invite balance withdraw refund",
+  "please input withdraw money": "please input withdraw money",
+  "withdraw money must be integer": "withdraw money must be integer",
+  "please input withdraw info": "please input withdraw info",
+  "please select withdraw channel": "please select withdraw channel",
+  "please input withdraw account": "please input withdraw account",
+  "please input withdraw username": "please input withdraw username"
 }

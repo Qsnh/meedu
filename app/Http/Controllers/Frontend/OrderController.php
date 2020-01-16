@@ -17,9 +17,10 @@ use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
+use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
@@ -34,15 +35,21 @@ class OrderController extends Controller
      */
     protected $configService;
     protected $businessState;
+    /**
+     * @var CacheService
+     */
+    protected $cacheService;
 
     public function __construct(
         OrderServiceInterface $orderService,
         ConfigServiceInterface $configService,
-        BusinessState $businessState
+        BusinessState $businessState,
+        CacheServiceInterface $cacheService
     ) {
         $this->orderService = $orderService;
         $this->configService = $configService;
         $this->businessState = $businessState;
+        $this->cacheService = $cacheService;
     }
 
     /**
@@ -127,7 +134,7 @@ class OrderController extends Controller
         $order = $this->orderService->findUser($orderId);
         $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
 
-        $wechatData = Cache::get(sprintf(config('cachekey.order.wechat_remote_order.name'), $order['order_id']));
+        $wechatData = $this->cacheService->pull(sprintf(FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_KEY, $order['order_id']));
         if (!$wechatData) {
             $this->orderService->cancel($order['id']);
             flash(__('error'));

@@ -32,7 +32,7 @@ class PaymentController extends FrontendController
     public function callback($payment)
     {
         $payments = $this->configService->getPayments();
-        if (! isset($payments[$payment])) {
+        if (!isset($payments[$payment])) {
             abort(404);
         }
         $handler = $payments[$payment]['handler'];

@@ -311,7 +311,7 @@ class Course extends Model
     public function getNewJoinMembersCache()
     {
         $course = $this;
-        if (! config('meedu.system.cache.status')) {
+        if (!config('meedu.system.cache.status')) {
             return $this->getNewJoinMembers();
         }
 

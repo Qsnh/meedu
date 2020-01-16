@@ -54,6 +54,13 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserLoginEvent\SafeAlertListener',
             'App\Listeners\UserLoginEvent\BindMobileListener',
         ],
+        'App\Events\UserInviteBalanceWithdrawCreatedEvent' => [
+            'App\Listeners\UserInviteBalanceWithdrawCreatedEvent\NotifyListener',
+        ],
+        'App\Events\UserInviteBalanceWithdrawHandledEvent' => [
+            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\NotifyListener',
+            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\RefundBalanceListener',
+        ],
     ];
 
     /**

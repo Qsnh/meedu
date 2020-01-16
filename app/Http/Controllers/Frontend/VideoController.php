@@ -93,9 +93,11 @@ class VideoController extends FrontendController
 
     public function show($courseId, $id, $slug)
     {
+        $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
+        $this->videoService->viewNumInc($video['id']);
         $comments = $this->videoCommentService->videoComments($video['id']);
-        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'));
+        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
         $chapters = $this->courseService->chapters($video['course_id']);
         $videos = $this->videoService->courseVideos($video['course_id']);
@@ -109,6 +111,7 @@ class VideoController extends FrontendController
         $description = $video['seo_description'];
 
         return v('frontend.video.show', compact(
+            'course',
             'video',
             'title',
             'keywords',

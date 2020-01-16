@@ -51,6 +51,16 @@ class NotificationService implements NotificationServiceInterface
     }
 
     /**
+     * @param int $id
+     * @param $status
+     */
+    public function notifyInviteBalanceWithdrawHandledMessage(int $id, $status): void
+    {
+        $user = User::findOrFail($id);
+        $user->notify(new SimpleMessageNotification(__('notification_invite_balance_withdraw_handled', ['status' => $status])));
+    }
+
+    /**
      * @param int $userId
      * @param int $atUserId
      * @param string $scene

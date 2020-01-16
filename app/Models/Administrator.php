@@ -149,7 +149,7 @@ class Administrator extends Authenticatable implements JWTSubject
     public function permissionIds()
     {
         $roles = $this->roles;
-        if (! $roles) {
+        if (!$roles) {
             return [];
         }
         $permissionIds = collect([]);
@@ -191,7 +191,7 @@ class Administrator extends Authenticatable implements JWTSubject
                 break;
             }
         }
-        if (! $existsPermission) {
+        if (!$existsPermission) {
             return false;
         }
 

@@ -31,4 +31,6 @@ class BackendApiConstant
 
     const ERROR_CODE = 500;
     const NO_AUTH_CODE = 401;
+
+    const LOCAL_PUBLIC_DISK = 'public';
 }

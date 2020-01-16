@@ -22,10 +22,13 @@ class CourseServiceProxy extends ServiceProxy implements CourseServiceInterface
     {
         parent::__construct($service);
         $this->cache['getLatestCourses'] = function ($limit) {
-            return new CacheInfo('c:cs:lc:'.$limit, $this->configService->getCacheExpire());
+            return new CacheInfo('c:cs:lc:' . $limit, $this->configService->getCacheExpire());
         };
         $this->cache['chapters'] = function ($courseId) {
-            return new CacheInfo('c:cs:cc:'.$courseId, $this->configService->getCacheExpire());
+            return new CacheInfo('c:cs:cc:' . $courseId, $this->configService->getCacheExpire());
+        };
+        $this->cache['simplePage'] = function (int $page, int $pageSize, int $categoryId = 0) {
+            return new CacheInfo('c:cs:sp:' . $page . '.' . $pageSize . '.' . $categoryId, $this->configService->getCacheExpire());
         };
     }
 }

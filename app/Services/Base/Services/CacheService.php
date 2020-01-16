@@ -35,4 +35,14 @@ class CacheService implements CacheServiceInterface
     {
         Cache::forget($name);
     }
+
+    public function inc(string $name, $inc = 1): void
+    {
+        Cache::increment($name, $inc);
+    }
+
+    public function has(string $name): bool
+    {
+        return Cache::has($name);
+    }
 }

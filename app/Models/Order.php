@@ -157,7 +157,7 @@ class Order extends Model
      */
     public function scopeStatus($query, $status)
     {
-        if (! $status) {
+        if (!$status) {
             return $query;
         }
 
@@ -172,7 +172,7 @@ class Order extends Model
      */
     public function scopeKeywords($query, $keywords)
     {
-        if (! $keywords) {
+        if (!$keywords) {
             return $query;
         }
         $memberIds = User::where('nick_name', 'like', "%{$keywords}%")

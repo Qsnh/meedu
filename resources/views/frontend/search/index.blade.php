@@ -2,51 +2,28 @@
 
 @section('content')
 
-    <header class="header header-inverse">
-        <div class="header-info">
-            <div class="left">
-                <h2 class="header-title"><strong>搜索结果</strong></h2>
-            </div>
-
-            <div class="right">
-                <form class="lookup lookup-circle lookup-lg lookup-right" action="{{route('search')}}" method="get">
-                    @csrf
-                    <input type="text" name="keywords" value="{{request()->input('keywords', '')}}">
-                </form>
-            </div>
-        </div>
-
-        <div class="header-action">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('courses')}}" role="tab">全部课程</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('videos')}}" role="tab">最新视频</a>
-                </li>
-                <li class="nav-item d-none d-sm-block">
-                    <a class="nav-link active" href="#" role="tab">搜索结果</a>
-                </li>
-            </ul>
-        </div>
-    </header>
-
-    <div class="container pt-40 pb-20">
+    <div class="container py-5">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <h4 class="card-title">搜索结果 <small>只显示最近的20条数据</small></h4>
-                    <div class="media-list media-list-hover media-list-divided">
+            <div class="col-12">
+                <div class="col-12">
+                    <h2 class="fw-400 mb-4 c-primary">搜索结果 <small class="fs-14px c-2">只显示最近的20条数据</small></h2>
+                    <table class="table table-hover">
                         @foreach($videos as $video)
-                            <a class="media media-single" href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}">
-                                <h5 class="title">{{$video['title']}}</h5>
-                                <time datetime="{{$video['published_at']}}">{{$video['published_at']}}</time>
-                            </a>
+                            <tr>
+                                <td>
+                                    <a class="d-inline-block w-100 float-left" href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}">
+                                        <span class="float-left"><i class="fa fa-play-circle-o"></i> {{$video['title']}}</span>
+                                        <span class="float-right"><i class="fa fa-clock-o"></i> {{duration_humans($video['duration'])}}</span>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+
+    @include('frontend.components.recom_courses')
 
 @endsection

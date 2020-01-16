@@ -27,7 +27,7 @@ class CheckSmsCodeMiddleware
     {
         $sessionKey = 'sms_'.$request->post('sms_captcha_key', '');
         $captcha = session($sessionKey);
-        if (! $captcha || $captcha != $request->post('sms_captcha', '')) {
+        if (!$captcha || $captcha != $request->post('sms_captcha', '')) {
             flash('短信验证码错误');
 
             return back();

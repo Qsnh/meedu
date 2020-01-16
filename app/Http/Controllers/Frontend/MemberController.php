@@ -34,6 +34,7 @@ use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
+use App\Http\Requests\Frontend\Member\InviteBalanceWithdrawRequest;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberController extends FrontendController
@@ -107,7 +108,10 @@ class MemberController extends FrontendController
     {
         $title = __('page_title_member_index');
 
-        return v('frontend.member.index', compact('title'));
+        $courseCount = $this->userService->getCurrentUserCourseCount();
+        $videoCount = $this->userService->getCurrentUserVideoCount();
+
+        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount'));
     }
 
     public function showPasswordResetPage()
@@ -353,5 +357,40 @@ class MemberController extends FrontendController
         ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
         $balanceRecords = $this->paginator($list, $total, $page, $pageSize);
         return v('frontend.member.invite_balances', compact('title', 'balanceRecords'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showInviteBalanceWithdrawOrdersPage(Request $request)
+    {
+        $page = abs(intval($request->input('page', 1)));
+        $pageSize = 10;
+        $title = __('title.member.invite_balance_orders');
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
+        $orders = $this->paginator($list, $total, $page, $pageSize);
+        return v('frontend.member.invite_balance_orders', compact('title', 'orders'));
+    }
+
+    /**
+     * @param InviteBalanceWithdrawRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \App\Exceptions\ServiceException
+     */
+    public function createInviteBalanceWithdrawOrder(InviteBalanceWithdrawRequest $request)
+    {
+        $total = $request->post('total');
+        if ($this->user()['invite_balance'] < $total) {
+            flash(__('Insufficient invite balance'));
+            return back();
+        }
+        $data = $request->filldata();
+        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
+        flash(__('success'), 'success');
+        return back();
     }
 }

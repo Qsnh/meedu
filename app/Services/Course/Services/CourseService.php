@@ -12,12 +12,17 @@
 namespace App\Services\Course\Services;
 
 use App\Services\Course\Models\Course;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class CourseService implements CourseServiceInterface
 {
+    /**
+     * @var ConfigService
+     */
     protected $configService;
 
     public function __construct(ConfigServiceInterface $configService)
@@ -33,11 +38,17 @@ class CourseService implements CourseServiceInterface
      */
     public function simplePage(int $page, int $pageSize, int $categoryId = 0): array
     {
-        $query = Course::show()->published()->when($categoryId, function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        })->orderByDesc('published_at');
+        $query = Course::with(['category'])
+            ->show()->published()
+            ->withCount(['videos' => function ($query) {
+                $query->show()->published();
+            }])
+            ->when($categoryId, function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })->orderByDesc('published_at');
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
+        $list = $this->addLatestVideos($list);
 
         return compact('list', 'total');
     }
@@ -71,18 +82,17 @@ class CourseService implements CourseServiceInterface
      */
     public function getLatestCourses(int $limit): array
     {
-        return Course::with(['videos' => function ($query) {
-            $query->show()->published()->orderByDesc('published_at')->limit(3);
+        $courses = Course::withCount(['videos' => function ($query) {
+            $query->show()->published();
         }])
-            ->withCount(['videos' => function ($query) {
-                $query->show()->published();
-            }])
+            ->with(['category'])
             ->show()
             ->published()
             ->orderByDesc('published_at')
             ->limit($limit)
             ->get()
             ->toArray();
+        return $this->addLatestVideos($courses);
     }
 
     /**
@@ -93,5 +103,25 @@ class CourseService implements CourseServiceInterface
     public function getList(array $ids): array
     {
         return Course::show()->published()->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
+    }
+
+    /**
+     * 为课程列表中的每个课程增加3条最近的video
+     *
+     * @param array $list
+     * @return array
+     */
+    protected function addLatestVideos(array $list)
+    {
+        /**
+         * @var $videoService VideoService
+         */
+        $videoService = app()->make(VideoServiceInterface::class);
+        $videos = collect($videoService->getCourseList(array_column($list, 'id')))->groupBy('course_id');
+        $list = array_map(function ($item) use ($videos) {
+            $item['videos'] = isset($videos[$item['id']]) ? $videos[$item['id']]->take(3)->toArray() : [];
+            return $item;
+        }, $list);
+        return $list;
     }
 }

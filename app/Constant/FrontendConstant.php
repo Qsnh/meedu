@@ -33,4 +33,7 @@ class FrontendConstant
     const H5 = 'h5';
 
     const ORDER_PAID_TYPE_PROMO_CODE = 1;
+
+    const INVITE_BALANCE_WITHDRAW_STATUS_SUCCESS = 1;
+    const INVITE_BALANCE_WITHDRAW_STATUS_FAILURE = 2;
 }

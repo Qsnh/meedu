@@ -14,6 +14,8 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\MemberRequest;
+use App\Events\UserInviteBalanceWithdrawHandledEvent;
+use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 
 class MemberController extends BaseController
 {
@@ -26,7 +28,7 @@ class MemberController extends BaseController
                 return $query->where('nick_name', 'like', "%{$keywords}%")
                     ->orWhere('mobile', 'like', "%{$keywords}%");
             })->orderByDesc('created_at')
-            ->paginate($request->input('page_size', 12));
+            ->paginate($request->input('size', 12));
 
         $members->appends($request->input());
 
@@ -44,6 +46,26 @@ class MemberController extends BaseController
     {
         User::create($request->filldata());
 
+        return $this->success();
+    }
+
+    public function inviteBalanceWithdrawOrders(Request $request)
+    {
+        $orders = UserInviteBalanceWithdrawOrder::latest()->paginate($request->input('size', 12));
+        $users = \App\Services\Member\Models\User::whereIn('id', $orders->pluck('user_id'))->get()->keyBy('id');
+        return $this->successData(compact('orders', 'users'));
+    }
+
+    public function inviteBalanceWithdrawOrderHandle(Request $request)
+    {
+        $ids = $request->input('ids');
+        $status = $request->input('status');
+        $remark = $request->input('remark', '');
+        UserInviteBalanceWithdrawOrder::whereIn('id', $ids)->update([
+            'status' => $status,
+            'remark' => $remark,
+        ]);
+        event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
         return $this->success();
     }
 }

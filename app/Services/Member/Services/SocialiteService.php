@@ -11,6 +11,7 @@
 
 namespace App\Services\Member\Services;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,10 @@ class SocialiteService implements SocialiteServiceInterface
     public function bindAppWithNewUser(string $app, string $appId, array $data): int
     {
         return DB::transaction(function () use ($app, $appId, $data) {
-            $user = $this->userService->createWithoutMobile();
+            $avatar = $data['avatar'] ?? '';
+            $nickname = $data['nickname'] ?? '';
+            $nickname && $nickname .= '_' . Str::random(3);
+            $user = $this->userService->createWithoutMobile($avatar, $nickname);
             Socialite::create([
                 'user_id' => $user['id'],
                 'app' => $app,

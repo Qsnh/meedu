@@ -262,11 +262,10 @@ class OrderService implements OrderServiceInterface
      */
     public function userOrdersPaginate(int $page, int $pageSize): array
     {
-        $query = Order::query();
+        $query = Order::query()->whereUserId(Auth::id());
         $total = $query->count();
         $list = $query
             ->with(['goods'])
-            ->whereUserId(Auth::id())
             ->latest()
             ->forPage($page, $pageSize)->get()->toArray();
 

@@ -2,27 +2,46 @@
 
 @section('content')
 
-    <div class="col-12 mt-140 mb-60">
-        <div class="card card-shadowed px-50 py-30 w-400px mx-auto" style="max-width: 100%">
-            <h5 class="text-uppercase text-center">找回密码</h5>
-            <br>
-            <form action="" class="form-horizontal" method="POST">
-                @csrf
-                @include('components.frontend.mobile_captcha', ['smsCaptchaKey' => 'password_reset'])
-                <div class="form-group">
-                    <label for="password">密码</label>
-                    <input id="password" type="password" placeholder="请输入新密码" class="form-control" name="password" required>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
+                            <h3 class="mb-5">找回密码
+                                <small class="fs-14px"><a href="{{route('login')}}">点此登录</a></small>
+                            </h3>
+                            <form action="" method="post">
+                                @csrf
+                                @include('frontend.components.mobile', ['smsCaptchaKey' => 'password_reset'])
+                                <div class="form-group">
+                                    <label for="password">密码</label>
+                                    <input id="password" type="password" placeholder="请输入新密码" class="form-control"
+                                           name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password-confirm">确认密码</label>
+                                    <input id="password-confirm" type="password" placeholder="再输入一次"
+                                           class="form-control" name="password_confirmation" required>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <button class="btn btn-primary btn-block">重置密码</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="password-confirm">确认密码</label>
-                    <input id="password-confirm" type="password" placeholder="再输入一次" class="form-control" name="password_confirmation" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">重置密码</button>
-                </div>
-            </form>
+            </div>
+
+            <div class="col-12 text-center my-5">
+                <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
+            </div>
+
         </div>
-        <p class="text-center text-muted fs-13 mt-20"><a class="text-primary fw-500" href="{{ route('login') }}">登录</a></p>
     </div>
+
+@endsection
+
+@section('footer')
 
 @endsection

@@ -251,8 +251,6 @@ if (!function_exists('v')) {
         $namespace = config('meedu.system.theme.use', 'default');
         $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
 
-        is_h5() && $viewName = str_replace('::frontend', '::h5', $viewName);
-
         return view($viewName, $params);
     }
 }
@@ -428,5 +426,31 @@ if (!function_exists('random_number')) {
             $prefix .= mt_rand(0, 9);
         }
         return $prefix;
+    }
+}
+
+if (!function_exists('arr1_clear')) {
+    /**
+     * @param $arr
+     * @param $columns
+     * @return array
+     */
+    function arr1_clear($arr, $columns)
+    {
+        return \Illuminate\Support\Arr::only($arr, $columns);
+    }
+}
+
+if (!function_exists('arr2_clear')) {
+    /**
+     * @param $arr
+     * @param $columns
+     * @return array
+     */
+    function arr2_clear($arr, $columns)
+    {
+        return array_map(function ($item) use ($columns) {
+            return \Illuminate\Support\Arr::only($item, $columns);
+        }, $arr);
     }
 }

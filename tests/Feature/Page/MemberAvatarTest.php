@@ -22,7 +22,7 @@ class MemberAvatarTest extends TestCase
         $this->actingAs($user)
             ->visit(route('member.avatar'))
             ->attach(base_path('/public/images/meedu.png'), 'file')
-            ->press('更换')
+            ->press('更换头像')
             ->seePageIs(route('member.avatar'));
     }
 
