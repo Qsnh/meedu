@@ -11,8 +11,8 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Constant\ApiV2Constant;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -26,39 +26,6 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
-
-/**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="Course",
- *         type="object",
- *         title="课程",
- *         @OA\Property(property="id",type="integer",description="课程id"),
- *         @OA\Property(property="title",type="string",description="课程标题"),
- *         @OA\Property(property="slug",type="string",description="slug"),
- *         @OA\Property(property="thumb",type="string",description="课程封面"),
- *         @OA\Property(property="charge",type="integer",description="课程价格"),
- *         @OA\Property(property="short_description",type="string",description="简短介绍"),
- *         @OA\Property(property="render_desc",type="string",description="详细介绍"),
- *         @OA\Property(property="published_at",type="string",description="上线时间"),
- *     ),
- *     @OA\Schema(
- *         schema="CourseChapter",
- *         type="object",
- *         title="课程章节",
- *         @OA\Property(property="course_id",type="integer",description="课程id"),
- *         @OA\Property(property="title",type="string",description="章节名"),
- *         @OA\Property(property="sort",type="string",description="升序"),
- *     ),
- *     @OA\Schema(
- *         schema="CourseComment",
- *         type="object",
- *         title="课程评论",
- *         @OA\Property(property="user_id",type="integer",description="用户id"),
- *         @OA\Property(property="content",type="string",description="评论内容"),
- *     ),
- * )
- */
 
 /**
  * Class CourseController
@@ -112,6 +79,7 @@ class CourseController extends BaseController
      * @OA\Get(
      *     path="/courses",
      *     summary="课程列表",
+     *     tags={"课程"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="category_id",description="分类id",required=false,@OA\Schema(type="integer")),
@@ -139,6 +107,7 @@ class CourseController extends BaseController
             'total' => $total,
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
+        $list = arr2_clear($list, ApiV2Constant::MODEL_COURSE_FIELD);
         $courses = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($courses->toArray());
@@ -149,6 +118,7 @@ class CourseController extends BaseController
      *     path="/course/{id}",
      *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
      *     summary="课程信息",
+     *     tags={"课程"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -168,8 +138,11 @@ class CourseController extends BaseController
     public function detail($id)
     {
         $course = $this->courseService->find($id);
+        $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
         $chapters = $this->courseService->chapters($course['id']);
+        $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
         $videos = $this->videoService->courseVideos($course['id']);
+        $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
 
         return $this->data(compact('course', 'chapters', 'videos'));
     }
@@ -179,6 +152,7 @@ class CourseController extends BaseController
      *     path="/course/{id}/comment",
      *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
      *     summary="课程评论",
+     *     tags={"课程"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="content",description="评论内容",type="string"),
      *     )),
@@ -209,6 +183,7 @@ class CourseController extends BaseController
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
      *     summary="课程评论列表",
+     *     tags={"课程"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -227,11 +202,9 @@ class CourseController extends BaseController
     public function comments($id)
     {
         $comments = $this->courseCommentService->courseComments($id);
-        $comments = array_map(function ($item) {
-            $item['content'] = $item['render_content'];
-            return Arr::only($item, ['user_id', 'content']);
-        }, $comments);
+        $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
+        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_FIELD);
         $commentUsers = array_column($commentUsers, null, 'id');
 
         return $this->data([

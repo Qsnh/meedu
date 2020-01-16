@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Constant\ApiV2Constant;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
@@ -46,6 +47,7 @@ class CourseCategoryController extends BaseController
      * @OA\Get(
      *     path="/course_categories",
      *     summary="课程分类",
+     *     tags={"课程"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -60,6 +62,7 @@ class CourseCategoryController extends BaseController
     public function all()
     {
         $categories = $this->courseCategoryService->all();
+        $categories = arr2_clear($categories, ApiV2Constant::MODEL_COURSE_CATEGORY_FIELD);
         return $this->data($categories);
     }
 }

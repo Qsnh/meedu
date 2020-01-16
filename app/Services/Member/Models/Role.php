@@ -26,6 +26,18 @@ class Role extends Model
         'is_show',
     ];
 
+    protected $appends = [
+        'desc_rows',
+    ];
+
+    /**
+     * @return array
+     */
+    public function getDescRowsAttribute()
+    {
+        return explode("\n", $this->description);
+    }
+
     /**
      * 当前会员下的用户.
      *

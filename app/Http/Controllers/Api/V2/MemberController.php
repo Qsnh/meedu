@@ -38,18 +38,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 /**
  * @OpenApi\Annotations\Schemas(
  *     @OA\Schema(
- *         schema="User",
- *         type="object",
- *         title="用户信息",
- *         @OA\Property(property="id",type="integer",description="用户id"),
- *         @OA\Property(property="avatar",type="string",description="头像"),
- *         @OA\Property(property="nick_name",type="string",description="昵称"),
- *         @OA\Property(property="property",type="string",description="手机号"),
- *         @OA\Property(property="role_id",type="integer",description="会员套餐id"),
- *         @OA\Property(property="role_expired_at",type="string",description="会员套餐到期时间"),
- *         @OA\Property(property="role",type="object",ref="#/components/schemas/Role"),
- *     ),
- *     @OA\Schema(
  *         schema="UserRole",
  *         type="object",
  *         title="用户套餐记录",
@@ -115,10 +103,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *     ),
  * )
  */
-
-/**
- * Class MemberController.
- */
 class MemberController extends BaseController
 {
     /**
@@ -181,6 +165,8 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/detail",
      *     summary="用户信息",
+     *     security={{"bearer":{}}},
+     *     tags={"用户"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -196,6 +182,7 @@ class MemberController extends BaseController
     public function detail()
     {
         $user = $this->userService->find(Auth::guard($this->guard)->id());
+        $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         return $this->data($user);
     }
@@ -204,6 +191,7 @@ class MemberController extends BaseController
      * @OA\Post(
      *     path="/member/password",
      *     summary="修改密码",
+     *     tags={"用户"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="mobile_code",description="手机短信验证码",type="string"),
@@ -240,6 +228,7 @@ class MemberController extends BaseController
      * @OA\Post(
      *     path="/member/avatar",
      *     summary="修改头像",
+     *     tags={"用户"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="file",description="图片文件",type="object"),
      *     )),
@@ -269,6 +258,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/roles",
      *     summary="用户订购套餐信息",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -303,6 +293,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/messages",
      *     summary="用户消息",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -337,6 +328,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/courses",
      *     summary="用户课程",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -365,7 +357,9 @@ class MemberController extends BaseController
             'list' => $list,
         ] = $this->userService->getUserBuyCourses($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
+        // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
+        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
         $courses = array_column($courses, null, 'id');
         $records['courses'] = $courses;
 
@@ -376,6 +370,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/videos",
      *     summary="用户课程",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -404,7 +399,10 @@ class MemberController extends BaseController
             'list' => $list,
         ] = $this->userService->getUserBuyVideos($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
+
+        // 读取关联视频
         $videos = $this->videoService->getList(array_column($list, 'video_id'));
+        $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
         $videos = array_column($videos, null, 'id');
         $records['videos'] = $videos;
 
@@ -415,6 +413,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/orders",
      *     summary="用户订单",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -440,6 +439,7 @@ class MemberController extends BaseController
             'total' => $total,
             'list' => $list,
         ] = $this->orderService->userOrdersPaginate($page, $pageSize);
+        $list = arr2_clear($list, ApiV2Constant::MODEL_ORDER_FIELD);
         $orders = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($orders);
@@ -449,6 +449,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/inviteBalanceRecrods",
      *     summary="用户邀请余额明细",
+     *     tags={"用户"},
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
@@ -483,6 +484,7 @@ class MemberController extends BaseController
      * @OA\Get(
      *     path="/member/promoCode",
      *     summary="用户邀请码",
+     *     tags={"用户"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -504,6 +506,7 @@ class MemberController extends BaseController
      * @OA\Post(
      *     path="/member/promoCode",
      *     summary="生成用户邀请码",
+     *     tags={"用户"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(

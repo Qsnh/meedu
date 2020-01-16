@@ -39,6 +39,7 @@ class RegisterController extends BaseController
      * @OA\Post(
      *     path="/register/mobile",
      *     summary="手机号注册",
+     *     tags={"Auth"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),

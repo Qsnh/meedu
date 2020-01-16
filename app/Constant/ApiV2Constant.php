@@ -27,4 +27,145 @@ class ApiV2Constant
 
     const ERROR_CODE = 1;
     const ERROR_NO_AUTH_CODE = 401;
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Course",
+     *         type="object",
+     *         title="课程",
+     *         @OA\Property(property="id",type="integer",description="课程id"),
+     *         @OA\Property(property="title",type="string",description="课程标题"),
+     *         @OA\Property(property="slug",type="string",description="slug"),
+     *         @OA\Property(property="thumb",type="string",description="课程封面"),
+     *         @OA\Property(property="charge",type="integer",description="课程价格"),
+     *         @OA\Property(property="short_description",type="string",description="简短介绍"),
+     *         @OA\Property(property="render_desc",type="string",description="详细介绍"),
+     *         @OA\Property(property="published_at",type="string",description="上线时间"),
+     *         @OA\Property(property="seo_keywords",type="string",description="seo_keywords"),
+     *         @OA\Property(property="seo_description",type="string",description="seo_description"),
+     *         @OA\Property(property="category_id",type="string",description="分类id"),
+     *     )
+     * )
+     */
+    const MODEL_COURSE_FIELD = [
+        'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
+        'seo_description', 'published_at', 'category_id',
+    ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Video",
+     *         type="object",
+     *         title="视频",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="course_id",type="integer",description="课程id"),
+     *         @OA\Property(property="title",type="string",description="视频标题"),
+     *         @OA\Property(property="slug",type="string",description="slug"),
+     *         @OA\Property(property="charge",type="integer",description="视频价格"),
+     *         @OA\Property(property="view_num",type="integer",description="观看次数"),
+     *         @OA\Property(property="short_description",type="string",description="简短介绍"),
+     *         @OA\Property(property="render_desc",type="string",description="详细介绍"),
+     *         @OA\Property(property="published_at",type="string",description="上线时间"),
+     *         @OA\Property(property="duration",type="integer",description="视频时长，单位：秒"),
+     *         @OA\Property(property="seo_keywords",type="integer",description="seo_keywords"),
+     *         @OA\Property(property="seo_description",type="integer",description="seo_description"),
+     *         @OA\Property(property="chapter_id",type="integer",description="章节id"),
+     *     ),
+     * )
+     */
+    const MODEL_VIDEO_FIELD = [
+        'id', 'course_id', 'title', 'slug', 'view_num', 'short_description', 'render_desc', 'seo_keywords',
+        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration',
+    ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="User",
+     *         type="object",
+     *         title="用户信息",
+     *         @OA\Property(property="id",type="integer",description="用户id"),
+     *         @OA\Property(property="avatar",type="string",description="头像"),
+     *         @OA\Property(property="nick_name",type="string",description="昵称"),
+     *         @OA\Property(property="mobile",type="string",description="手机号"),
+     *         @OA\Property(property="role_id",type="integer",description="会员套餐id"),
+     *         @OA\Property(property="role_expired_at",type="string",description="会员套餐到期时间"),
+     *         @OA\Property(property="role",type="object",ref="#/components/schemas/Role"),
+     *         @OA\Property(property="invite_balance",type="integer",description="邀请余额"),
+     *     ),
+     * )
+     */
+    const MODEL_MEMBER_FIELD = [
+        'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
+        'invite_balance',
+    ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Role",
+     *         type="object",
+     *         title="会员套餐",
+     *         @OA\Property(property="id",type="integer",description="套餐id"),
+     *         @OA\Property(property="name",type="string",description="套餐名"),
+     *         @OA\Property(property="charge",type="integer",description="套餐价格"),
+     *         @OA\Property(property="expire_days",type="integer",description="套餐天数"),
+     *         @OA\Property(property="desc_rows",type="array",description="套餐描述",@OA\Items(@OA\Property(type="string"))),
+     *     ),
+     * )
+     */
+    const MODEL_ROLO_FIELD = [
+        'id', 'name', 'charge', 'expire_days', 'desc_rows',
+    ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="CourseChapter",
+     *         type="object",
+     *         title="课程章节",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="course_id",type="integer",description="课程id"),
+     *         @OA\Property(property="title",type="string",description="章节名"),
+     *     ),
+     * )
+     */
+    const MODEL_COURSE_CHAPTER_FIELD = [
+        'id', 'course_id', 'title',
+    ];
+    const MODEL_COURSE_CATEGORY_FIELD = [
+        'id', 'name', 'parent_id',
+    ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="CourseComment",
+     *         type="object",
+     *         title="课程评论",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="user_id",type="integer",description="用户id"),
+     *         @OA\Property(property="render_content",type="string",description="评论内容"),
+     *     ),
+     * )
+     */
+    const MODEL_COURSE_COMMENT_FIELD = [
+        'id', 'user_id', 'render_content',
+    ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="VideoComment",
+     *         type="object",
+     *         title="视频评论",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="user_id",type="integer",description="用户id"),
+     *         @OA\Property(property="render_content",type="string",description="评论内容"),
+     *     ),
+     * )
+     */
+    const MODEL_VIDEO_COMMENT_FIELD = [
+        'id', 'user_id', 'render_content',
+    ];
+    const MODEL_ORDER_FIELD = [
+        'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
+    ];
 }

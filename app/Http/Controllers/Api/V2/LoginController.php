@@ -38,6 +38,7 @@ class LoginController extends BaseController
      * @OA\Post(
      *     path="/login/password",
      *     summary="密码登录",
+     *     tags={"Auth"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="password",description="密码",type="string"),
@@ -77,6 +78,7 @@ class LoginController extends BaseController
      * @OA\Post(
      *     path="/login/mobile",
      *     summary="手机短信登录",
+     *     tags={"Auth"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),

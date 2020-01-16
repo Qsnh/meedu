@@ -20,6 +20,10 @@ use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
+/**
+ * Class CaptchaController
+ * @package App\Http\Controllers\Api\V2
+ */
 class CaptchaController extends BaseController
 {
 
@@ -50,6 +54,7 @@ class CaptchaController extends BaseController
      * @OA\Post(
      *     path="/captcha/image",
      *     summary="图形验证码",
+     *     tags={"其它"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -75,6 +80,7 @@ class CaptchaController extends BaseController
      * @OA\Post(
      *     path="/captcha/sms",
      *     summary="发送手机验证码",
+     *     tags={"其它"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
      *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),
