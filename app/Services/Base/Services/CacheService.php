@@ -11,8 +11,8 @@
 
 namespace App\Services\Base\Services;
 
-use App\Services\Base\Interfaces\CacheServiceInterface;
 use Illuminate\Support\Facades\Cache;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 
 class CacheService implements CacheServiceInterface
 {

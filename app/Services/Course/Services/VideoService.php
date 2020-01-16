@@ -11,12 +11,12 @@
 
 namespace App\Services\Course\Services;
 
-use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Course\Models\Video;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
-use App\Services\Course\Models\Video;
 
 class VideoService implements VideoServiceInterface
 {

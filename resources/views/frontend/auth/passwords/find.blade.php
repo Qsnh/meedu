@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="col-12 text-center pt-5">
+            <div class="col-12 text-center my-5">
                 <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
             </div>
 

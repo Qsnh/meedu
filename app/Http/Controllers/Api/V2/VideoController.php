@@ -11,22 +11,22 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Http\Requests\ApiV2\CommentRequest;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Base\Services\ConfigService;
-use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Course\Interfaces\VideoCommentServiceInterface;
-use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Services\VideoCommentService;
-use App\Services\Course\Services\VideoService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Member\Services\UserService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Services\Order\Services\OrderService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 
 /**
  * @OpenApi\Annotations\Schemas(
@@ -105,8 +105,7 @@ class VideoController extends BaseController
         CourseServiceInterface $courseService,
         BusinessState $businessState,
         OrderServiceInterface $orderService
-    )
-    {
+    ) {
         $this->videoService = $videoService;
         $this->configService = $configService;
         $this->videoCommentService = $videoCommentService;
