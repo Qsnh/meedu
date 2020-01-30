@@ -104,7 +104,7 @@
                                         <p class="pb-3 name {{$index == 1 ? 'c-fff' : ''}}">{{$roleItem['name']}}</p>
                                         <p class="price {{$index == 1 ? 'c-fff' : ''}}"><b>￥{{$roleItem['charge']}}</b>
                                         </p>
-                                        @foreach(explode("\n", $roleItem['description']) as $item)
+                                        @foreach($roleItem['desc_rows'] as $item)
                                             <p class="p-0 desc-item {{$index == 1 ? 'c-fff' : ''}}">{{$item}}</p>
                                         @endforeach
                                     </div>

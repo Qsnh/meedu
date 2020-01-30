@@ -12,8 +12,8 @@
                             <div class="row py-5 border-bottom border-secondary">
                                 <div class="col-md-8 col-12">
                                     <h4 class="fw-400">{{$role['name']}}</h4>
-                                    @foreach(explode("\b", $role['description']) as $item)
-                                        <p class="c-2 fs-14px">{{$item}}</p>
+                                    @foreach($role['desc_rows'] as $item)
+                                        <span class="c-2 fs-14px">{{$item}}</span> <br>
                                     @endforeach
                                 </div>
                                 <div class="col-md-4 col-12 text-right">
