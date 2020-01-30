@@ -22,6 +22,7 @@ Route::get('/course_categories', 'CourseCategoryController@all');
 // 视频
 Route::get('/videos', 'VideoController@paginate');
 Route::get('/video/{id}', 'VideoController@detail');
+Route::get('/video/{id}/playinfo', 'VideoController@playInfo')->middleware(['auth:apiv2']);
 Route::get('/video/{id}/comments', 'VideoController@comments');
 Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(['auth:apiv2']);
 

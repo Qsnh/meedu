@@ -22,6 +22,8 @@ class ApiV2Constant
     const MOBILE_OR_PASSWORD_ERROR = 'mobile not exists or password error';
     const MOBILE_CODE_ERROR = 'mobile code error';
 
+    const VIDEO_NO_AUTH = 'please buy this video before see';
+
     const SMS_CODE_EXPIRE = 60;
     const MOBILE_CODE_CACHE_KEY = 'm:%s';
 

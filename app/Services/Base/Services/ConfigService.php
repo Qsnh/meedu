@@ -204,4 +204,12 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.member.invite');
     }
+
+    /**
+     * @return array
+     */
+    public function getTencentVodConfig(): array
+    {
+        return config('tencent.vod');
+    }
 }
