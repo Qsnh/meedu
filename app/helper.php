@@ -445,12 +445,18 @@ if (!function_exists('arr2_clear')) {
     /**
      * @param $arr
      * @param $columns
+     * @param bool $rec
      * @return array
      */
-    function arr2_clear($arr, $columns)
+    function arr2_clear($arr, $columns, $rec = false)
     {
-        return array_map(function ($item) use ($columns) {
-            return \Illuminate\Support\Arr::only($item, $columns);
+        return array_map(function ($item) use ($columns, $rec) {
+            if (!$rec) {
+                return \Illuminate\Support\Arr::only($item, $columns);
+            }
+            return array_map(function ($item) use ($columns) {
+                return \Illuminate\Support\Arr::only($item, $columns);
+            }, $item);
         }, $arr);
     }
 }

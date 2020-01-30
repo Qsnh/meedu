@@ -144,11 +144,12 @@ class ApiV2Constant
      *         @OA\Property(property="id",type="integer",description="id"),
      *         @OA\Property(property="user_id",type="integer",description="用户id"),
      *         @OA\Property(property="render_content",type="string",description="评论内容"),
+     *         @OA\Property(property="created_at",type="string",description="时间"),
      *     ),
      * )
      */
     const MODEL_COURSE_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content',
+        'id', 'user_id', 'render_content', 'created_at',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
@@ -159,11 +160,12 @@ class ApiV2Constant
      *         @OA\Property(property="id",type="integer",description="id"),
      *         @OA\Property(property="user_id",type="integer",description="用户id"),
      *         @OA\Property(property="render_content",type="string",description="评论内容"),
+     *         @OA\Property(property="created_at",type="string",description="时间"),
      *     ),
      * )
      */
     const MODEL_VIDEO_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content',
+        'id', 'user_id', 'render_content', 'created_at',
     ];
     const MODEL_ORDER_FIELD = [
         'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
