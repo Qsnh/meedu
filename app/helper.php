@@ -184,20 +184,15 @@ if (!function_exists('aliyun_play_auth')) {
 if (!function_exists('aliyun_play_url')) {
     /**
      * 获取阿里云的视频播放地址
-     *
-     * @param \App\Models\Video $video
-     *
+     * @param $vid
      * @return array
      */
-    function aliyun_play_url(\App\Models\Video $video)
+    function aliyun_play_url($vid)
     {
-        if (!$video->aliyun_video_id) {
-            return [];
-        }
         try {
             $client = aliyun_sdk_client();
             $request = new \vod\Request\V20170321\GetPlayInfoRequest();
-            $request->setVideoId($video->aliyun_video_id);
+            $request->setVideoId($vid);
             $request->setAuthTimeout(3600 * 3);
             $request->setAcceptFormat('JSON');
             $response = $client->getAcsResponse($request);
@@ -445,12 +440,58 @@ if (!function_exists('arr2_clear')) {
     /**
      * @param $arr
      * @param $columns
+     * @param bool $rec
      * @return array
      */
-    function arr2_clear($arr, $columns)
+    function arr2_clear($arr, $columns, $rec = false)
     {
-        return array_map(function ($item) use ($columns) {
-            return \Illuminate\Support\Arr::only($item, $columns);
+        return array_map(function ($item) use ($columns, $rec) {
+            if (!$rec) {
+                return \Illuminate\Support\Arr::only($item, $columns);
+            }
+            return array_map(function ($item) use ($columns) {
+                return \Illuminate\Support\Arr::only($item, $columns);
+            }, $item);
         }, $arr);
+    }
+}
+
+if (!function_exists('get_tencent_play_url')) {
+    function get_tencent_play_url(string $vid): array
+    {
+        try {
+            /**
+             * @var $configService \App\Services\Base\Services\ConfigService
+             */
+            $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+            $config = $configService->getTencentVodConfig();
+            $credential = new \TencentCloud\Common\Credential($config['secret_id'], $config['secret_key']);
+            $client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
+            $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
+            $req->FileIds[] = $vid;
+            $req->Filters = ['basicInfo'];
+            /**
+             * @var $response \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosResponse
+             */
+            $response = $client->DescribeMediaInfos($req);
+            if (!$response->MediaInfoSet) {
+                return [];
+            }
+            /**
+             * @var $mediaBasicInfo \TencentCloud\Vod\V20180717\Models\MediaBasicInfo
+             */
+            $mediaBasicInfo = $response->MediaInfoSet[0]->BasicInfo;
+            return [
+                [
+                    'format' => $mediaBasicInfo->Type,
+                    'url' => $mediaBasicInfo->MediaUrl,
+                    'duration' => 0,
+                ]
+            ];
+        } catch (Exception $exception) {
+            exception_record($exception);
+
+            return [];
+        }
     }
 }

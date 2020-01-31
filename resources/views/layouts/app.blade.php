@@ -56,7 +56,7 @@
                                             <input type="text" class="form-control" name="keywords" placeholder="搜索"
                                                    required>
                                             <div class="input-group-append">
-                                                <button class="btn btn-outline-primary" type="button">
+                                                <button class="btn btn-outline-primary" type="submit">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
@@ -71,7 +71,7 @@
                                     <a href="{{route('member.messages')}}">
                                         <i class="fa fa-comments"></i>
                                         @if($gUnreadMessageCount)
-                                            <span class="badge badge-danger ml-2">{{$gUnreadMessageCount}}</span>
+                                            <span class="badge badge-danger">{{$gUnreadMessageCount}}</span>
                                         @endif
                                     </a>
                                     <div class="dropdown">

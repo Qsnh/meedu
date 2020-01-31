@@ -142,7 +142,7 @@ class CourseController extends BaseController
         $chapters = $this->courseService->chapters($course['id']);
         $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
         $videos = $this->videoService->courseVideos($course['id']);
-        $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
+        $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
 
         return $this->data(compact('course', 'chapters', 'videos'));
     }

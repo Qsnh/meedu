@@ -176,42 +176,4 @@ class Video extends Model
 
         return $comment;
     }
-
-    /**
-     * 获取视频的播放地址[阿里云|本地].
-     *
-     * @return array
-     */
-    public function getPlayInfo()
-    {
-        if ($this->aliyun_video_id != '') {
-            $playInfo = aliyun_play_url($this);
-            Log::info(json_encode($playInfo));
-
-            return $playInfo;
-        }
-
-        return [
-            [
-                'format' => pathinfo($this->url, PATHINFO_EXTENSION),
-                'url' => $this->url,
-                'duration' => 0,
-            ],
-        ];
-    }
-
-    /**
-     * 获取视频播放地址
-     *
-     * @return mixed
-     */
-    public function getPlayUrl()
-    {
-        if ($this->url) {
-            return $this->url;
-        }
-        $playInfo = aliyun_play_url($this);
-
-        return isset($playInfo[0]) ? $playInfo[0]['url'] : '';
-    }
 }
