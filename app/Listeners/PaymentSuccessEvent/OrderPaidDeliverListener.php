@@ -51,6 +51,9 @@ class OrderPaidDeliverListener implements ShouldQueue
         $orderProducts = $this->orderService->getOrderProducts($order['id']);
         foreach ($orderProducts as $orderProduct) {
             $method = 'deliver' . ucfirst(strtolower($orderProduct['goods_type']));
+            if (!method_exists($this->deliverService, $method)) {
+                continue;
+            }
             $this->deliverService->$method($order['user_id'], $orderProduct['goods_id'], $orderProduct['charge']);
         }
     }
