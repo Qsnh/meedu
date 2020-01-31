@@ -83,7 +83,8 @@ class CaptchaController extends BaseController
      *     tags={"其它"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),
+     *         @OA\Property(property="image_captcha",description="图形验证码",type="string"),
+     *         @OA\Property(property="image_key",description="图形验证码key",type="string"),
      *         @OA\Property(property="scene",description="scene[login:登录,register:注册,password_reset:密码重置]",type="string"),
      *     )),
      *     @OA\Response(
