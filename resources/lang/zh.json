@@ -87,5 +87,20 @@
   "please select withdraw channel": "请选择提现渠道",
   "please input withdraw account": "请输入提现渠道账号",
   "please input withdraw username": "请输入提现渠道姓名",
-  "please buy this video before see": "请购买视频"
+  "please buy this video before see": "请购买视频",
+  "Page Not Found": "页面不存在",
+  "Sorry, the page you are looking for could not be found.": "页面不存在",
+  "Go Home": "返回首页",
+  "Unauthorized": "请登录",
+  "Sorry, you are not authorized to access this page.": "请登录之后访问本页面",
+  "Forbidden": "禁止访问",
+  "Sorry, you are forbidden from accessing this page.": "禁止访问该页面",
+  "Page Expired": "页面已过期",
+  "Sorry, your session has expired. Please refresh and try again.": "页面已过期，请刷新重试",
+  "Too Many Requests": "尝试太多次啦",
+  "Sorry, you are making too many requests to our servers.": "您在短时间内尝试太多次啦，请稍后再试",
+  "Error": "系统错误",
+  "Whoops, something went wrong on our servers.": "系统似乎发生了未知错误",
+  "Service Unavailable": "服务已停止",
+  "Sorry, we are doing some maintenance. Please check back soon.": "系统正在维护中，请稍后再试"
 }
