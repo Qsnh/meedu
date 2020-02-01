@@ -146,6 +146,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/', 'MemberController@index');
         Route::get('/{id}', 'MemberController@show');
         Route::post('/', 'MemberController@store');
+        Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
         Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
     });
