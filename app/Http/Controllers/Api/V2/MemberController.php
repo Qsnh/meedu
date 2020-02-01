@@ -77,6 +77,8 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="payment_text",type="string",description="支付渠道"),
  *         @OA\Property(property="payment_method",type="string",description="支付渠道的支付方式"),
  *         @OA\Property(property="continue_pay",type="integer",description="是否可以继续支付"),
+ *         @OA\Property(property="created_at",type="string",description="时间"),
+ *         @OA\Property(property="goods",type="array",description="订单商品",@OA\Items(ref="#/components/schemas/OrderGoods")),
  *     ),
  *     @OA\Schema(
  *         schema="UserInviteBalanceRecord",

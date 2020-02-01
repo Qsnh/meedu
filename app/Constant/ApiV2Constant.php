@@ -171,8 +171,21 @@ class ApiV2Constant
     ];
     const MODEL_ORDER_FIELD = [
         'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
-        'goods',
+        'goods', 'created_at',
     ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="OrderGoods",
+     *         type="object",
+     *         title="订单商品",
+     *         @OA\Property(property="num",type="integer",description="订购数量"),
+     *         @OA\Property(property="goods_text",type="integer",description="商品名"),
+     *         @OA\Property(property="charge",type="string",description="价格"),
+     *         @OA\Property(property="goods_type",type="string",description="商品类型"),
+     *     ),
+     * )
+     */
     const MODEL_ORDER_GOODS_FIELD = [
         'num', 'goods_text', 'charge', 'goods_type',
     ];
