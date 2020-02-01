@@ -11,9 +11,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Frontend\Traits\JsonResponseTrait;
+use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 
 class BaseController extends Controller
 {
-    use JsonResponseTrait;
+    use ResponseTrait;
 }

@@ -74,6 +74,6 @@ class SmsController extends FrontendController
 
         $this->smsService->sendCode($mobile, $code, $templateId);
 
-        return $this->jsonSuccess();
+        return $this->success();
     }
 }

@@ -176,7 +176,7 @@ class ServiceProxy
             return;
         }
         /**
-         * @var LimiterInfo
+         * @var $limiterInfo LimiterInfo
          */
         $limiterInfo = call_user_func_array($this->limit[$name], $args);
         /**

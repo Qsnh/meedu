@@ -11,17 +11,17 @@
 
 namespace App\Exceptions;
 
-use App\Http\Controllers\Frontend\Traits\JsonResponseTrait;
+use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 
 class ServiceException extends \Exception
 {
-    use JsonResponseTrait;
+    use ResponseTrait;
 
     public function render()
     {
         $message = $this->getMessage();
         if (request()->wantsJson()) {
-            return $this->jsonError($message);
+            return $this->error($message);
         }
         flash($message);
 
