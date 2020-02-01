@@ -12,7 +12,9 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\User;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
@@ -49,6 +51,7 @@ class MemberController extends BaseController
         return $this->success();
     }
 
+    // 用户提现订单
     public function inviteBalanceWithdrawOrders(Request $request)
     {
         $orders = UserInviteBalanceWithdrawOrder::latest()->paginate($request->input('size', 12));
@@ -56,6 +59,7 @@ class MemberController extends BaseController
         return $this->successData(compact('orders', 'users'));
     }
 
+    // 用户提现订单处理
     public function inviteBalanceWithdrawOrderHandle(Request $request)
     {
         $ids = $request->input('ids');
@@ -66,6 +70,21 @@ class MemberController extends BaseController
             'remark' => $remark,
         ]);
         event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
+        return $this->success();
+    }
+
+    // 用户编辑
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->all();
+        $data = Arr::only($data, [
+            'avatar', 'nick_name', 'mobile', 'password',
+            'is_lock', 'is_active', 'role_id', 'role_expired_at',
+            'invite_user_id', 'invite_balance', 'invite_user_expired_at',
+        ]);
+        ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
+        $user->fill($data)->save();
         return $this->success();
     }
 }

@@ -19,6 +19,6 @@ class UploadController extends FrontendController
     {
         [$path, $url] = $request->filldata();
 
-        return $this->jsonSuccess(compact('path', 'url'));
+        return $this->data(compact('path', 'url'));
     }
 }

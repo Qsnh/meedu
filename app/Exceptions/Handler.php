@@ -16,12 +16,12 @@ use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
 use App\Constant\BackendApiConstant;
 use Illuminate\Auth\AuthenticationException;
-use App\Http\Controllers\Frontend\Traits\JsonResponseTrait;
+use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
-    use JsonResponseTrait;
+    use ResponseTrait;
 
     /**
      * A list of the exception types that are not reported.
@@ -44,11 +44,9 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
-     *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param \Exception $exception
+     * @param Exception $exception
+     * @return mixed|void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -80,10 +78,7 @@ class Handler extends ExceptionHandler
                 if (Str::contains($request->getUri(), '/api/v2')) {
                     $code = ApiV2Constant::ERROR_CODE;
                     $exception instanceof AuthenticationException && $code = ApiV2Constant::ERROR_NO_AUTH_CODE;
-                    return response()->json([
-                        'code' => $code,
-                        'message' => __('error'),
-                    ]);
+                    return $this->error(__('error'), $code);
                 }
             }
         }

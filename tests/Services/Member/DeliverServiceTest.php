@@ -61,7 +61,7 @@ class DeliverServiceTest extends TestCase
         $this->service->deliverRole($user->id, $role->id, $charge);
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
-        $this->assertEquals(Carbon::now()->addDays($role->expire_days)->toDateTimeString(), $user->role_expired_at);
+        $this->assertEquals(Carbon::now()->addDays($role->expire_days)->format('Ymd'), Carbon::parse($user->role_expired_at)->format('Ymd'));
     }
 
     public function test_deliverRole_with_continue()

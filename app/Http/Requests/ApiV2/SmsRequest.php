@@ -20,7 +20,6 @@ class SmsRequest extends BaseRequest
         ];
         return [
             'mobile' => 'required',
-            'mobile_code' => 'required',
             'image_captcha' => 'required',
             'image_key' => 'required',
             'scene' => 'in:' . implode(',', $scenes),
@@ -31,7 +30,6 @@ class SmsRequest extends BaseRequest
     {
         return [
             'mobile.required' => __('mobile.required'),
-            'mobile_code.required' => __('mobile_code.required'),
             'image_captcha.required' => __('image_captcha.required'),
             'image_key.required' => __('image_key.required'),
             'scene.in' => __('sms_scene_error'),

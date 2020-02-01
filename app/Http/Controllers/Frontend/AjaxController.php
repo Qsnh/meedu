@@ -71,7 +71,7 @@ class AjaxController extends BaseController
         $comment = $this->courseCommentService->create($course['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
-        return $this->jsonSuccess([
+        return $this->data([
             'content' => $comment['render_content'],
             'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
             'user' => [
@@ -97,7 +97,7 @@ class AjaxController extends BaseController
         $comment = $this->videoCommentService->create($video['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);
 
-        return $this->jsonSuccess([
+        return $this->data([
             'content' => $comment['render_content'],
             'created_at' => Carbon::parse($comment['created_at'])->diffForHumans(),
             'user' => [
@@ -116,19 +116,19 @@ class AjaxController extends BaseController
     {
         $promoCode = $request->input('promo_code');
         if (!$promoCode) {
-            return $this->jsonError(__('error'));
+            return $this->error(__('error'));
         }
         $code = $this->promoCodeService->findCode($promoCode);
         if (!$code) {
-            return $this->jsonError(__('promo code not exists'));
+            return $this->error(__('promo code not exists'));
         }
         if ($code['expired_at'] && Carbon::now()->gt($code['expired_at'])) {
-            return $this->jsonError(__('promo code has expired'));
+            return $this->error(__('promo code has expired'));
         }
         if (!$this->businessState->promoCodeCanUse($code)) {
-            return $this->jsonError(__('user cant use this promo code'));
+            return $this->error(__('user cant use this promo code'));
         }
-        return $this->jsonSuccess([
+        return $this->data([
             'id' => $code['id'],
             'discount' => $code['invited_user_reward'],
         ]);

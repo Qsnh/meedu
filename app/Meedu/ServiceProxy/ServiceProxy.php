@@ -176,11 +176,11 @@ class ServiceProxy
             return;
         }
         /**
-         * @var LimiterInfo
+         * @var $limiterInfo LimiterInfo
          */
         $limiterInfo = call_user_func_array($this->limit[$name], $args);
         /**
-         * @var RateLimiter
+         * @var $rateLimiter RateLimiter
          */
         $rateLimiter = app()->make(RateLimiter::class);
         if ($rateLimiter->tooManyAttempts($limiterInfo->getName(), $limiterInfo->getMaxTimes())) {
