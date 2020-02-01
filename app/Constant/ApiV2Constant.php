@@ -171,5 +171,9 @@ class ApiV2Constant
     ];
     const MODEL_ORDER_FIELD = [
         'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
+        'goods',
+    ];
+    const MODEL_ORDER_GOODS_FIELD = [
+        'num', 'goods_text', 'charge', 'goods_type',
     ];
 }
