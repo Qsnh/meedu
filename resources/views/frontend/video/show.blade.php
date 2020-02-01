@@ -40,7 +40,7 @@
                                 @elseif($video['tencent_video_id'])
                                     @include('frontend.components.player.tencent', ['video' => $video])
                                 @else
-                                    @include('frontend.components.player.xg', ['video' => $video])
+                                    @include('frontend.components.player.aliyunSimple', ['video' => $video])
                                 @endif
                             </div>
                         @else
