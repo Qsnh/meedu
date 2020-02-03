@@ -183,7 +183,7 @@ class MemberController extends BaseController
      */
     public function detail()
     {
-        $user = $this->userService->find(Auth::guard($this->guard)->id());
+        $user = $this->userService->find(Auth::guard($this->guard)->id(), ['role']);
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         return $this->data($user);

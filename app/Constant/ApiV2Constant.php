@@ -100,7 +100,7 @@ class ApiV2Constant
      */
     const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
-        'invite_balance',
+        'invite_balance', 'role',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
