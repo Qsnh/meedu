@@ -60,7 +60,7 @@ class Wechat implements Payment
         try {
             $payOrderData = [
                 'out_trade_no' => $order['order_id'],
-                'total_fee' => 1,
+                'total_fee' => $total * 100,
                 'body' => $order['order_id'],
                 'openid' => '',
             ];
