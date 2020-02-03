@@ -175,6 +175,7 @@ class ApiV2Constant
      *         schema="Order",
      *         type="object",
      *         title="订单商品",
+     *         @OA\Property(property="id",type="integer",description="id"),
      *         @OA\Property(property="user_id",type="integer",description="用户id"),
      *         @OA\Property(property="charge",type="integer",description="总价"),
      *         @OA\Property(property="order_id",type="string",description="订单编号"),
@@ -188,7 +189,7 @@ class ApiV2Constant
      * )
      */
     const MODEL_ORDER_FIELD = [
-        'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
+        'id', 'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
         'goods', 'created_at',
     ];
     /**

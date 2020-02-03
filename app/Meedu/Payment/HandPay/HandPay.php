@@ -16,7 +16,7 @@ use App\Meedu\Payment\Contract\PaymentStatus;
 
 class HandPay implements Payment
 {
-    public function create(array $order): PaymentStatus
+    public function create(array $order, array $extra = []): PaymentStatus
     {
         $response = redirect(route('order.pay.handPay', [$order['order_id']]));
         return new PaymentStatus(true, $response);

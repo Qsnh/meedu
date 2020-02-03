@@ -30,6 +30,11 @@ Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(
 Route::get('/roles', 'RoleController@roles');
 Route::get('/role/{id}', 'RoleController@detail');
 
+// 登录
+Route::group(['prefix' => '/wechat/mini'], function () {
+    Route::post('/login', 'WechatMiniController@login');
+});
+
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
     Route::get('detail', 'MemberController@detail');
     Route::post('detail/password', 'MemberController@passwordChange');
@@ -48,4 +53,6 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::post('/order/course', 'OrderController@createCourseOrder');
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
+
+    Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
 });

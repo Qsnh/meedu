@@ -54,17 +54,19 @@ class Wechat implements Payment
         $this->businessState = $businessState;
     }
 
-    public function create(array $order): PaymentStatus
+    public function create(array $order, array $extra = []): PaymentStatus
     {
         $total = $this->businessState->calculateOrderNeedPaidSum($order);
         try {
             $payOrderData = [
                 'out_trade_no' => $order['order_id'],
-                'total_fee' => $total * 100,
+                'total_fee' => 1,
                 'body' => $order['order_id'],
                 'openid' => '',
             ];
+            $payOrderData = array_merge($payOrderData, $extra);
             $createResult = Pay::wechat($this->configService->getWechatPay())->{$order['payment_method']}($payOrderData);
+            Log::info(__METHOD__, compact('createResult'));
 
             // 缓存保存
             $this->cacheService->put(

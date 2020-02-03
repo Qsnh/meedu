@@ -95,6 +95,7 @@ return [
             'pc' => 'scan',
             'h5' => 'wap',
             'wechat' => 'mp',
+            'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],
         'handPay' => [
