@@ -75,6 +75,7 @@ class RoleController extends BaseController
     /**
      * @OA\Get(
      *     path="/role/{id}",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
      *     summary="套餐详情",
      *     tags={"role"},
      *     @OA\Response(

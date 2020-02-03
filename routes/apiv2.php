@@ -43,3 +43,9 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('promoCode', 'MemberController@promoCode');
     Route::post('promoCode', 'MemberController@generatePromoCode');
 });
+
+Route::group(['middleware' => ['auth:apiv2']], function () {
+    Route::post('/order/course', 'OrderController@createCourseOrder');
+    Route::post('/order/role', 'OrderController@createRoleOrder');
+    Route::post('/order/video', 'OrderController@createVideoOrder');
+});
