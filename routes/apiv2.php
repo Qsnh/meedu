@@ -28,6 +28,7 @@ Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(
 
 // 套餐
 Route::get('/roles', 'RoleController@roles');
+Route::get('/role/{id}', 'RoleController@detail');
 
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
     Route::get('detail', 'MemberController@detail');

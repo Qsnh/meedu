@@ -116,7 +116,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_ROLO_FIELD = [
+    const MODEL_ROLE_FIELD = [
         'id', 'name', 'charge', 'expire_days', 'desc_rows',
     ];
     /**
