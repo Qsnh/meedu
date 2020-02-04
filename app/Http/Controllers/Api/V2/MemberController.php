@@ -348,10 +348,12 @@ class MemberController extends BaseController
         // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
         $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
-        $courses = array_column($courses, null, 'id');
-        $records['courses'] = $courses;
 
-        return $this->data($records);
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $courses,
+        ]);
     }
 
     /**
