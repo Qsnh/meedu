@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
@@ -105,7 +106,8 @@ class LoginController extends BaseController
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
-            return $this->error(__(ApiV2Constant::USER_MOBILE_NOT_EXISTS));
+            // 直接注册
+            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
         }
         $token = Auth::guard($this->guard)->tokenById($user['id']);
 

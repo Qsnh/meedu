@@ -15,10 +15,10 @@ interface Payment
 {
     /**
      * @param array $order
-     *
+     * @param array $extra
      * @return PaymentStatus
      */
-    public function create(array $order): PaymentStatus;
+    public function create(array $order, array $extra = []): PaymentStatus;
 
     /**
      * @param array $order

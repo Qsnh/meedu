@@ -68,7 +68,31 @@ class RoleController extends BaseController
     public function roles()
     {
         $roles = $this->roleService->all();
-        $roles = arr2_clear($roles, ApiV2Constant::MODEL_ROLO_FIELD);
+        $roles = arr2_clear($roles, ApiV2Constant::MODEL_ROLE_FIELD);
         return $this->data($roles);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/role/{id}",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+     *     summary="套餐详情",
+     *     tags={"role"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Role"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detail($id)
+    {
+        $role = $this->roleService->find($id);
+        $role = arr1_clear($role, ApiV2Constant::MODEL_ROLE_FIELD);
+        return $this->data($role);
     }
 }

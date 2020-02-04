@@ -10,6 +10,9 @@ return [
         'is_active_default' => \App\User::ACTIVE_NO,
         'is_lock_default' => \App\User::LOCK_NO,
 
+        // 是否提醒绑定手机号
+        'enabled_mobile_bind_alert' => 0,
+
         // 头像
         'default_avatar' => '/images/default_avatar.jpg',
 
@@ -95,6 +98,7 @@ return [
             'pc' => 'scan',
             'h5' => 'wap',
             'wechat' => 'mp',
+            'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],
         'handPay' => [
@@ -141,7 +145,7 @@ return [
         // 短信频率
         'limiter' => [
             'sms' => [
-                'times' => 1,
+                'times' => 6,
                 'minutes' => 1,
             ]
         ],
@@ -173,7 +177,7 @@ return [
     // 其它配置
     'other' => [
         // 课程列表页展示条数
-        'course_list_page_size' => 6,
+        'course_list_page_size' => 8,
         // 视频列表页展示条数
         'video_list_page_size' => 15,
     ],

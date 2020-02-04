@@ -212,4 +212,12 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('tencent.vod');
     }
+
+    /**
+     * @return array
+     */
+    public function getTencentWechatMiniConfig(): array
+    {
+        return config('tencent.wechat.mini');
+    }
 }

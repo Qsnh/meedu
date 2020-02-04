@@ -12,7 +12,6 @@
 namespace App\Meedu\Payment\Alipay;
 
 use Exception;
-use App\Models\Order;
 use Yansongda\Pay\Pay;
 use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
@@ -47,13 +46,11 @@ class Alipay implements Payment
     }
 
     /**
-     * 创建支付宝订单.
-     *
-     * @param Order $order
-     *
+     * @param array $order
+     * @param array $extra
      * @return PaymentStatus
      */
-    public function create(array $order): PaymentStatus
+    public function create(array $order, array $extra = []): PaymentStatus
     {
         $total = $this->businessState->calculateOrderNeedPaidSum($order);
         $payOrderData = [
@@ -61,6 +58,7 @@ class Alipay implements Payment
             'total_amount' => $total,
             'subject' => $order['order_id'],
         ];
+        $payOrderData = array_merge($payOrderData, $extra);
         $createResult = Pay::alipay($this->configService->getAlipayPay())->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);

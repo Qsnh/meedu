@@ -45,7 +45,7 @@
 
 ## 当前功能概览
 
-- [x] [微信小程序](https://github.com/YTU94/meedu-wxapp)
+- [x] [微信小程序](https://github.com/Meedu/wechat-mini)
 - [x] 视频在线点播/视频加密播放
 - [x] 手机号注册
 - [x] 会员/课程单独购买两种收费模式

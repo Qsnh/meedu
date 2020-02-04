@@ -9,11 +9,6 @@
                     <div class="card-header">我的邀请码</div>
                     <div class="card-body">
                         @if($userPromoCode)
-                            @if($inviteConfig['invite_balance_can_pay'])
-                                <div class="alert alert-primary">
-                                    <i class="fa fa-info-circle"></i> 账户邀请余额可以用来支付订单哦。
-                                </div>
-                            @endif
                             <p class="text-center">
                                 <span class="badge-primary badge px-4 py-3 fs-24px">
                                     <i class="fa fa-gift"></i> {{$userPromoCode['code']}}

@@ -16,6 +16,7 @@ use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -25,6 +26,7 @@ use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -65,20 +67,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="video_id",type="integer",description="视频id"),
  *         @OA\Property(property="charge",type="integer",description="购买时价格"),
  *         @OA\Property(property="created_at",type="string",description="购买时间"),
- *     ),
- *     @OA\Schema(
- *         schema="Order",
- *         type="object",
- *         title="订单",
- *         @OA\Property(property="user_id",type="integer",description="用户id"),
- *         @OA\Property(property="order_id",type="string",description="订单编号"),
- *         @OA\Property(property="charge",type="integer",description="订单总价"),
- *         @OA\Property(property="status_text",type="string",description="订单状态"),
- *         @OA\Property(property="payment_text",type="string",description="支付渠道"),
- *         @OA\Property(property="payment_method",type="string",description="支付渠道的支付方式"),
- *         @OA\Property(property="continue_pay",type="integer",description="是否可以继续支付"),
- *         @OA\Property(property="created_at",type="string",description="时间"),
- *         @OA\Property(property="goods",type="array",description="订单商品",@OA\Items(ref="#/components/schemas/OrderGoods")),
  *     ),
  *     @OA\Schema(
  *         schema="UserInviteBalanceRecord",
@@ -140,6 +128,10 @@ class MemberController extends BaseController
      */
     protected $promoCodeService;
     protected $businessState;
+    /**
+     * @var ConfigService
+     */
+    protected $configService;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -150,7 +142,8 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         UserInviteBalanceServiceInterface $userInviteBalanceService,
         PromoCodeServiceInterface $promoCodeService,
-        BusinessState $businessState
+        BusinessState $businessState,
+        ConfigServiceInterface $configService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -161,6 +154,7 @@ class MemberController extends BaseController
         $this->userInviteBalanceService = $userInviteBalanceService;
         $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
+        $this->configService = $configService;
     }
 
     /**
@@ -183,7 +177,7 @@ class MemberController extends BaseController
      */
     public function detail()
     {
-        $user = $this->userService->find(Auth::guard($this->guard)->id());
+        $user = $this->userService->find(Auth::guard($this->guard)->id(), ['role']);
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         return $this->data($user);
@@ -362,10 +356,12 @@ class MemberController extends BaseController
         // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
         $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
-        $courses = array_column($courses, null, 'id');
-        $records['courses'] = $courses;
 
-        return $this->data($records);
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $courses,
+        ]);
     }
 
     /**
@@ -405,10 +401,12 @@ class MemberController extends BaseController
         // 读取关联视频
         $videos = $this->videoService->getList(array_column($list, 'video_id'));
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
-        $videos = array_column($videos, null, 'id');
-        $records['videos'] = $videos;
 
-        return $this->data($records);
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $videos,
+        ]);
     }
 
     /**
@@ -504,6 +502,7 @@ class MemberController extends BaseController
     public function promoCode()
     {
         $promoCode = $this->promoCodeService->getCurrentUser();
+        $promoCode['per_order_draw'] = $this->configService->getMemberInviteConfig()['per_order_draw'];
         return $this->data($promoCode);
     }
 

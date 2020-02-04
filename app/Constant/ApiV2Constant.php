@@ -100,7 +100,7 @@ class ApiV2Constant
      */
     const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
-        'invite_balance',
+        'invite_balance', 'role',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
@@ -116,7 +116,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_ROLO_FIELD = [
+    const MODEL_ROLE_FIELD = [
         'id', 'name', 'charge', 'expire_days', 'desc_rows',
     ];
     /**
@@ -169,8 +169,27 @@ class ApiV2Constant
     const MODEL_VIDEO_COMMENT_FIELD = [
         'id', 'user_id', 'render_content', 'created_at',
     ];
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Order",
+     *         type="object",
+     *         title="订单商品",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="user_id",type="integer",description="用户id"),
+     *         @OA\Property(property="charge",type="integer",description="总价"),
+     *         @OA\Property(property="order_id",type="string",description="订单编号"),
+     *         @OA\Property(property="payment_method",type="string",description="支付方式"),
+     *         @OA\Property(property="payment_text",type="string",description="支付渠道文本"),
+     *         @OA\Property(property="continue_pay",type="boolean",description="是否可以继续支付"),
+     *         @OA\Property(property="goods",type="array",description="商品",@OA\Items(ref="#/components/schemas/OrderGoods")),
+     *         @OA\Property(property="status_text",type="string",description="状态文本"),
+     *         @OA\Property(property="created_at",type="string",description="时间"),
+     *     ),
+     * )
+     */
     const MODEL_ORDER_FIELD = [
-        'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
+        'id', 'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
         'goods', 'created_at',
     ];
     /**

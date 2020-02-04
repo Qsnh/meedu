@@ -14,18 +14,18 @@
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
-Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:5,1']);
+Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:10,1']);
 
 Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
-Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['throttle:5,1', 'sms.check']);
+Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['sms.check', 'throttle:10,1']);
 
 Route::post('/logout', 'Frontend\LoginController@logout')->name('logout');
 
 Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->name('password.request');
-Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:5,1', 'sms.check']);
+Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:10,1', 'sms.check']);
 
 // 发送短信
-Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send')->middleware(['throttle:5,1']);
+Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
 
 // 第三方登录
 Route::get('/login/{app}', 'Frontend\LoginController@socialLogin')->name('socialite');
