@@ -16,6 +16,7 @@ use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -25,6 +26,7 @@ use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -126,6 +128,10 @@ class MemberController extends BaseController
      */
     protected $promoCodeService;
     protected $businessState;
+    /**
+     * @var ConfigService
+     */
+    protected $configService;
 
     public function __construct(
         UserServiceInterface $userService,
@@ -136,7 +142,8 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         UserInviteBalanceServiceInterface $userInviteBalanceService,
         PromoCodeServiceInterface $promoCodeService,
-        BusinessState $businessState
+        BusinessState $businessState,
+        ConfigServiceInterface $configService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -147,6 +154,7 @@ class MemberController extends BaseController
         $this->userInviteBalanceService = $userInviteBalanceService;
         $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
+        $this->configService = $configService;
     }
 
     /**
@@ -492,6 +500,7 @@ class MemberController extends BaseController
     public function promoCode()
     {
         $promoCode = $this->promoCodeService->getCurrentUser();
+        $promoCode['per_order_draw'] = $this->configService->getMemberInviteConfig()['per_order_draw'];
         return $this->data($promoCode);
     }
 
