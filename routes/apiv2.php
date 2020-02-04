@@ -8,6 +8,7 @@ Route::post('/captcha/sms', 'CaptchaController@sentSms');
 
 // 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');
+Route::post('/login/mobile', 'LoginController@mobileLogin');
 // 手机号注册
 Route::post('/register/mobile', 'RegisterController@mobileRegister');
 
