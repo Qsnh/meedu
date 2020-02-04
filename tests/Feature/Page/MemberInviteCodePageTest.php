@@ -30,7 +30,7 @@ class MemberInviteCodePageTest extends TestCase
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
             ->press('生成我的专属优惠码')
-            ->see('账户邀请余额');
+            ->see('使用该优惠码的用户将获得');
     }
 
     public function test_member_promo_code_submit_with_free_user()
@@ -48,7 +48,7 @@ class MemberInviteCodePageTest extends TestCase
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
             ->press('生成我的专属优惠码')
-            ->see('账户邀请余额');
+            ->see('使用该优惠码的用户将获得');
     }
 
     public function test_member_promo_code_with_exists_promo_code()

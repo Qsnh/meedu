@@ -142,7 +142,7 @@ return [
         // 短信频率
         'limiter' => [
             'sms' => [
-                'times' => 1,
+                'times' => 6,
                 'minutes' => 1,
             ]
         ],
