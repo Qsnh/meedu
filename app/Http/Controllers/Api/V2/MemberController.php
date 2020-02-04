@@ -401,10 +401,12 @@ class MemberController extends BaseController
         // 读取关联视频
         $videos = $this->videoService->getList(array_column($list, 'video_id'));
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
-        $videos = array_column($videos, null, 'id');
-        $records['videos'] = $videos;
 
-        return $this->data($records);
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $videos,
+        ]);
     }
 
     /**
