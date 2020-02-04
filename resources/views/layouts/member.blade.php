@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    @if(app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
+    @if($gConfig['member']['enabled_mobile_bind_alert'] && app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
         <div class="container mt-5">
             <div class="row">
                 <div class="col-12">

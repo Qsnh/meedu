@@ -10,6 +10,9 @@ return [
         'is_active_default' => \App\User::ACTIVE_NO,
         'is_lock_default' => \App\User::LOCK_NO,
 
+        // 是否提醒绑定手机号
+        'enabled_mobile_bind_alert' => 0,
+
         // 头像
         'default_avatar' => '/images/default_avatar.jpg',
 
