@@ -32,7 +32,13 @@ class WechatMiniController extends BaseController
     public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
-        $this->app = Factory::miniProgram($this->configService->getTencentWechatMiniConfig());
+        $config = [
+            'log' => [
+                'level' => 'debug',
+                'file' => storage_path('logs/wechat-mini-' . date('Y-m-d') . '.log'),
+            ],
+        ];
+        $this->app = Factory::miniProgram(array_merge($config, $this->configService->getTencentWechatMiniConfig()));
     }
 
     /**
