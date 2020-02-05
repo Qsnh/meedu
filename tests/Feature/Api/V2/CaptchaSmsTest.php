@@ -40,7 +40,7 @@ class CaptchaSmsTest extends Base
     {
         // mock
         $captchaMock = Mockery::mock(Captcha::class);
-        $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
+        $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnFalse();
         $this->app->instance(Captcha::class, $captchaMock);
 
         $response = $this->postJson('/api/v2/captcha/sms', [
@@ -50,7 +50,7 @@ class CaptchaSmsTest extends Base
             'image_key' => '123456',
             'image_captcha' => 'image_captcha',
         ]);
-        $this->assertResponseError($response, __('error'));
+        $this->assertResponseError($response, __('image_captcha_error'));
     }
 
 
