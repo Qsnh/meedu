@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ee9b44bc41d6b413f81c18b70132335",
+    "content-hash": "70f212c7526db8ab28c73771d6be4f6c",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -583,55 +583,6 @@
                 "validator"
             ],
             "time": "2020-01-05T14:11:20+00:00"
-        },
-        {
-            "name": "emojione/emojione",
-            "version": "3.1.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/emojione/emojione.git",
-                "reference": "85ee3eda3e7fe80a03ff7b440aa7718b048c1cc5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/emojione/emojione/zipball/85ee3eda3e7fe80a03ff7b440aa7718b048c1cc5",
-                "reference": "85ee3eda3e7fe80a03ff7b440aa7718b048c1cc5",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.6 || ~5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Emojione\\": "lib/php/src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "(CC-BY-4.0 and MIT)"
-            ],
-            "description": "EmojiOne is a complete set of emojis designed for the web. It includes libraries to easily convert unicode characters to shortnames (:smile:) and shortnames to our custom emoji images. PNG format provided for the emoji images.",
-            "homepage": "http://www.emojione.com",
-            "keywords": [
-                "emoji",
-                "emojione",
-                "emojis",
-                "emoticons",
-                "smileys",
-                "smilies",
-                "unicode"
-            ],
-            "time": "2018-07-11T21:35:32+00:00"
         },
         {
             "name": "erusev/parsedown",

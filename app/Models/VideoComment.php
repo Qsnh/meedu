@@ -12,7 +12,6 @@
 namespace App\Models;
 
 use App\User;
-use Emojione\Emojione;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -57,12 +56,6 @@ class VideoComment extends Model
     protected $fillable = [
         'user_id', 'video_id', 'content',
     ];
-
-    public function setContentAttribute($content)
-    {
-        $content = markdown_clean($content);
-        $this->attributes['content'] = Emojione::getClient()->shortnameToUnicode($content);
-    }
 
     public function user()
     {
