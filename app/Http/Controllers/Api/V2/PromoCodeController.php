@@ -33,7 +33,7 @@ class PromoCodeController extends BaseController
 
     /**
      * @OA\Get(
-     *     path="/promoCode/{id}",
+     *     path="/promoCode/{code}",
      *     @OA\Parameter(in="path",name="code",description="code",required=true,@OA\Schema(type="string")),
      *     summary="优惠码详情",
      *     tags={"订单"},
@@ -58,7 +58,7 @@ class PromoCodeController extends BaseController
 
     /**
      * @OA\Get(
-     *     path="/promoCode/{id}/check",
+     *     path="/promoCode/{code}/check",
      *     @OA\Parameter(in="path",name="code",description="code",required=true,@OA\Schema(type="string")),
      *     summary="优惠码检测",
      *     tags={"订单"},
