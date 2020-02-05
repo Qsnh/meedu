@@ -29,7 +29,6 @@
         "overtrue/pinyin": "~3.0",
         "overtrue/wechat": "~4.0",
         "predis/predis": "^1.1",
-        "renatomarinho/laravel-page-speed": "^1.8",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^3.0",
         "socialiteproviders/weixin-web": "dev-master",

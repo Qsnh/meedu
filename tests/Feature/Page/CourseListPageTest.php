@@ -72,11 +72,12 @@ class CourseListPageTest extends TestCase
         config(['meedu.other.course_list_page_size' => 3]);
         $category = factory(CourseCategory::class)->create([
             'is_show' => CourseCategory::IS_SHOW_YES,
+            'name' => '分类一',
         ]);
         $category1 = factory(CourseCategory::class)->create([
             'is_show' => CourseCategory::IS_SHOW_YES,
+            'name' => '分类二',
         ]);
-        // 创建10个
         $c1 = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
@@ -90,8 +91,8 @@ class CourseListPageTest extends TestCase
             'title' => '大大',
         ]);
         $this->visit(route('courses'))
-            ->seeLink($category->name)
-            ->seeLink($category1->name)
+            ->see($category->name)
+            ->see($category1->name)
             ->click($category->name)
             ->seeElementCount('.video-list-box', 1);
     }

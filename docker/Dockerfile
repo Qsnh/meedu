@@ -1,7 +1,5 @@
 FROM php:7.2-fpm
 
-RUN apt update
-
 # bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd 
 # gettext gmp hash iconv imap interbase intl json ldap mbstring mysqli oci8 
 # odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc 

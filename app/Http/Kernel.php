@@ -68,17 +68,6 @@ class Kernel extends HttpKernel
             PromoCodeSaveMiddleware::class,
         ],
 
-        // 页面加速(包括：去除空格，去除注释等)
-        'pagespeed' => [
-            \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
-            \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
-        ],
-
         'api' => [
             'throttle:60,1',
             'bindings',
