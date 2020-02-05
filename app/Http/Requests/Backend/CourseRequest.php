@@ -70,6 +70,7 @@ class CourseRequest extends BaseRequest
             'seo_description' => $this->input('seo_description', ''),
             'published_at' => $this->input('published_at'),
             'is_show' => $this->input('is_show', Course::SHOW_NO),
+            'is_rec' => $this->input('is_rec', Course::REC_NO),
         ];
 
         if ($this->isMethod('post')) {

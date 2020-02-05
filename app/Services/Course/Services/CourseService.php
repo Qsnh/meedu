@@ -96,6 +96,26 @@ class CourseService implements CourseServiceInterface
     }
 
     /**
+     * @param int $limit
+     * @return array
+     */
+    public function getRecCourses(int $limit):array
+    {
+        $courses = Course::withCount(['videos' => function ($query) {
+            $query->show()->published();
+        }])
+            ->with(['category'])
+            ->show()
+            ->published()
+            ->recommend()
+            ->orderByDesc('published_at')
+            ->limit($limit)
+            ->get()
+            ->toArray();
+        return $this->addLatestVideos($courses);
+    }
+
+    /**
      * @param array $ids
      *
      * @return array

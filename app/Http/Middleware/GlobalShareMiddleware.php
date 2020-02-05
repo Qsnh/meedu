@@ -92,6 +92,10 @@ class GlobalShareMiddleware
         $latestCourses = $courseService->getLatestCourses(10);
         View::share('gLatestCourses', $latestCourses);
 
+        // 推荐课程
+        $gRecCourses = $courseService->getRecCourses(10);
+        View::share('gRecCourses', $gRecCourses);
+
         // 最新视频
         $latestVideos = $videoServices->getLatestVideos(10);
         View::share('gLatestVideos', $latestVideos);
