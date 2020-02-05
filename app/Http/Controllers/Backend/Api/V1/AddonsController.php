@@ -19,9 +19,14 @@ class AddonsController extends BaseController
     {
         $addons = $lib->addons();
         $addons = array_map(function ($item) {
-            $indexRoute = $item['index_route'] ?? '';
-            $indexRoute && $item['index_url'] = route($indexRoute);
-            return $item;
+            $item['index_url'] = '';
+            try {
+                $indexRoute = $item['index_route'] ?? '';
+                $indexRoute && $item['index_url'] = route($indexRoute);
+                return $item;
+            } catch (\Exception $e) {
+                return $item;
+            }
         }, $addons);
         return $this->successData(array_values($addons));
     }
