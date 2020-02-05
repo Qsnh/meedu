@@ -208,4 +208,7 @@ class ApiV2Constant
     const MODEL_ORDER_GOODS_FIELD = [
         'num', 'goods_text', 'charge', 'goods_type',
     ];
+    const MODEL_PROMO_CODE_FIELD = [
+        'id', 'code', 'expired_at', 'invited_user_reward',
+    ];
 }

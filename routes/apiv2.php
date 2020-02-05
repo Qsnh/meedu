@@ -36,6 +36,9 @@ Route::group(['prefix' => '/wechat/mini'], function () {
     Route::post('/login', 'WechatMiniController@login');
 });
 
+// 优惠码
+Route::get('/promoCode/{code}', 'PromoCodeController@detail');
+
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
     Route::get('detail', 'MemberController@detail');
     Route::post('detail/password', 'MemberController@passwordChange');
@@ -55,5 +58,9 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
 
+    // 小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+
+    // 优惠码检测
+    Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 });
