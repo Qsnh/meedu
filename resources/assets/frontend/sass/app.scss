@@ -279,6 +279,14 @@ footer.footer-box {
   }
 }
 
+.course-category-item {
+  &.active {
+    color: $primary;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+}
+
 .comment-box {
   .comment-user {
     span.nickname {
