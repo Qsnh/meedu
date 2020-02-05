@@ -31,6 +31,25 @@ class CourseService implements CourseServiceInterface
     }
 
     /**
+     * @param string $keyword
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function titleSearch(string $keyword, int $limit): array
+    {
+        return Course::show()
+            ->published()
+            ->with(['category'])
+            ->withCount(['videos' => function ($query) {
+                $query->show()->published();
+            }])
+            ->where('title', 'like', '%' . $keyword . '%')
+            ->orderByDesc('published_at')
+            ->limit($limit)->get()->toArray();
+    }
+
+    /**
      * @param int $page
      * @param int $pageSize
      * @param int $categoryId
@@ -99,7 +118,7 @@ class CourseService implements CourseServiceInterface
      * @param int $limit
      * @return array
      */
-    public function getRecCourses(int $limit):array
+    public function getRecCourses(int $limit): array
     {
         $courses = Course::withCount(['videos' => function ($query) {
             $query->show()->published();

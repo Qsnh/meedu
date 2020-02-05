@@ -13,23 +13,27 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\SearchRequest;
-use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class SearchController extends Controller
 {
-    protected $videoService;
+    /**
+     * @var CourseService
+     */
+    protected $courseService;
 
-    public function __construct(VideoServiceInterface $videoService)
+    public function __construct(CourseServiceInterface $courseService)
     {
-        $this->videoService = $videoService;
+        $this->courseService = $courseService;
     }
 
     public function searchHandler(SearchRequest $request)
     {
         ['keywords' => $keywords] = $request->filldata();
-        $videos = [];
-        $keywords && $videos = $this->videoService->titleSearch($keywords, 20);
+        $courses = [];
+        $keywords && $courses = $this->courseService->titleSearch($keywords, 20);
 
-        return v('frontend.search.index', compact('videos'));
+        return v('frontend.search.index', compact('courses'));
     }
 }
