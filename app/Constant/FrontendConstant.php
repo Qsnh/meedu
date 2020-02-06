@@ -17,7 +17,7 @@ class FrontendConstant
     const RENDER_HTML = 'html';
 
     const PAYMENT_SCENE_PC = 'pc';
-    const PAYMENT_SCENE_WECHAT_MINI = 'wechatmini';
+    const PAYMENT_SCENE_WECHAT_MINI = 'wechat_mini';
     const PAYMENT_SCENE_H5 = 'h5';
     const PAYMENT_SCENE_WECHAT_OPEN = 'wechat';
 

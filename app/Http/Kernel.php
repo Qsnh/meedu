@@ -11,7 +11,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\H5CheckMiddleware;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
@@ -64,7 +63,6 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            H5CheckMiddleware::class,
             PromoCodeSaveMiddleware::class,
         ],
 

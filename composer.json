@@ -24,6 +24,7 @@
         "league/html-to-markdown": "^4.8",
         "mews/captcha": "^2.2",
         "mews/purifier": "^2.0",
+        "mobiledetect/mobiledetectlib": "^2.8",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
         "overtrue/wechat": "~4.0",
