@@ -11,7 +11,6 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Events\UserRegisterEvent;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\Frontend\RegisterPasswordRequest;
