@@ -19,10 +19,12 @@ use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\PasswordLoginRequest;
+use App\Services\Order\Services\PromoCodeService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class OrderController extends BaseController
 {
@@ -46,17 +48,23 @@ class OrderController extends BaseController
      * @var VideoService
      */
     protected $videoService;
+    /**
+     * @var PromoCodeService
+     */
+    protected $promoCodeService;
 
     public function __construct(
         CourseServiceInterface $courseService,
         OrderServiceInterface $orderService,
         RoleServiceInterface $roleService,
-        VideoServiceInterface $videoService
+        VideoServiceInterface $videoService,
+        PromoCodeServiceInterface $promoCodeService
     ) {
         $this->courseService = $courseService;
         $this->orderService = $orderService;
         $this->roleService = $roleService;
         $this->videoService = $videoService;
+        $this->promoCodeService = $promoCodeService;
     }
 
     /**
@@ -85,9 +93,11 @@ class OrderController extends BaseController
     public function createCourseOrder(Request $request)
     {
         $courseId = $request->input('course_id');
-        $promoCodeId = $request->input('promo_code_id');
+        $code = $request->input('promo_code');
+        $promoCode = [];
+        $code && $promoCode = $this->promoCodeService->findCode($code);
         $course = $this->courseService->find($courseId);
-        $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
+        $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
@@ -118,9 +128,11 @@ class OrderController extends BaseController
     public function createRoleOrder(Request $request)
     {
         $roleId = $request->input('role_id');
-        $promoCodeId = $request->input('promo_code_id');
+        $code = $request->input('promo_code');
+        $promoCode = [];
+        $code && $promoCode = $this->promoCodeService->findCode($code);
         $role = $this->roleService->find($roleId);
-        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCodeId);
+        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
@@ -151,9 +163,11 @@ class OrderController extends BaseController
     public function createVideoOrder(Request $request)
     {
         $videoId = $request->input('video_id');
-        $promoCodeId = $request->input('promo_code_id');
+        $code = $request->input('promo_code');
+        $promoCode = [];
+        $code && $promoCode = $this->promoCodeService->findCode($code);
         $video = $this->videoService->find($videoId);
-        $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCodeId);
+        $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }

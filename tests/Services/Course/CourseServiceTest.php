@@ -176,4 +176,37 @@ class CourseServiceTest extends TestCase
         $this->assertTrue(isset($latestCourses[$course2->id]));
     }
 
+    public function test_titleSearch()
+    {
+        factory(Course::class, 3)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'title' => '我是哈哈哈PHP',
+        ]);
+        factory(Course::class, 4)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'title' => 'javascript',
+        ]);
+
+        $res = $this->courseService->titleSearch('我是', 20);
+        $this->assertEquals(3, count($res));
+    }
+
+    public function test_getRecCourses()
+    {
+        factory(Course::class, 3)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_rec' => Course::REC_YES,
+        ]);
+        factory(Course::class, 4)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_rec' => Course::REC_NO,
+        ]);
+        $res = $this->courseService->getRecCourses(10);
+        $this->assertEquals(3, count($res));
+    }
+
 }

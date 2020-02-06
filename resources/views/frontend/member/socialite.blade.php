@@ -16,7 +16,7 @@
                         <tbody>
                         @forelse($enabledApps as $app)
                             <tr class="text-center">
-                                <td>{{$app['app']}}</td>
+                                <td>{{$app['name']}}</td>
                                 <td>
                                     @if(isset($apps[$app['app']]))
                                         <span class="mr-2">已绑定</span>

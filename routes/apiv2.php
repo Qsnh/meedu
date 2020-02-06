@@ -4,7 +4,7 @@
 // 图形验证码
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
-Route::post('/captcha/sms', 'CaptchaController@sentSms')->middleware(['throttle:5,1']);
+Route::post('/captcha/sms', 'CaptchaController@sentSms');
 
 // 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');
@@ -36,6 +36,9 @@ Route::group(['prefix' => '/wechat/mini'], function () {
     Route::post('/login', 'WechatMiniController@login');
 });
 
+// 优惠码
+Route::get('/promoCode/{code}', 'PromoCodeController@detail');
+
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
     Route::get('detail', 'MemberController@detail');
     Route::post('detail/password', 'MemberController@passwordChange');
@@ -55,5 +58,9 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
 
+    // 小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+
+    // 优惠码检测
+    Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 });

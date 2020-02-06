@@ -200,24 +200,6 @@ class VideoServiceTest extends TestCase
         $this->assertNotEmpty(5, count($videos));
     }
 
-    public function test_titleSearch()
-    {
-        $video = factory(Video::class)->create([
-            'title' => '我是meedu',
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $video1 = factory(Video::class)->create([
-            'title' => '我是meedhaha',
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-
-        $v = $this->service->titleSearch('meedu', 1);
-        $this->assertNotEmpty($v);
-        $this->assertEquals($video->id, $v[0]['id']);
-    }
-
     public function test_getList()
     {
         $videos = factory(Video::class, 5)->create([

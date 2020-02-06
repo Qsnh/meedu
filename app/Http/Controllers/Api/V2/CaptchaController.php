@@ -96,7 +96,9 @@ class CaptchaController extends BaseController
      *         )
      *     )
      * )
+     *
      * @param SmsRequest $request
+     * @return \Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\ApiV2Exception
      * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
      * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
@@ -108,6 +110,6 @@ class CaptchaController extends BaseController
         $code = str_pad(mt_rand(0, 999999), 6, 0, STR_PAD_LEFT);
         $this->smsService->sendCode($mobile, $code, $scene);
         $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
-        $this->success();
+        return $this->success();
     }
 }

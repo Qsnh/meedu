@@ -11,7 +11,6 @@
 
 namespace App\Services\Course\Models;
 
-use Emojione\Emojione;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VideoComment extends Base
@@ -27,12 +26,6 @@ class VideoComment extends Base
     protected $hidden = [
         'deleted_at',
     ];
-
-//    public function setContentAttribute($content)
-//    {
-//        $content = markdown_clean($content);
-//        $this->attributes['content'] = Emojione::getClient()->shortnameToUnicode($content);
-//    }
 
     public function video()
     {

@@ -20,26 +20,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * App\Models\Course.
  *
- * @property int                                                                  $id
- * @property int                                                                  $user_id
- * @property string                                                               $title             名
- * @property string                                                               $slug              slug
- * @property string                                                               $thumb             封面
- * @property int                                                                  $charge            收费
- * @property string                                                               $short_description 简短介绍
- * @property string                                                               $description       课程介绍
- * @property string                                                               $seo_keywords      SEO关键字
- * @property string                                                               $seo_description   SEO描述
- * @property string|null                                                          $published_at      上线时间
- * @property int                                                                  $is_show           1显示,-1隐藏
- * @property \Illuminate\Support\Carbon|null                                      $created_at
- * @property \Illuminate\Support\Carbon|null                                      $updated_at
- * @property string|null                                                          $deleted_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\User[]                 $buyUsers
+ * @property int $id
+ * @property int $user_id
+ * @property string $title             名
+ * @property string $slug              slug
+ * @property string $thumb             封面
+ * @property int $charge            收费
+ * @property string $short_description 简短介绍
+ * @property string $description       课程介绍
+ * @property string $seo_keywords      SEO关键字
+ * @property string $seo_description   SEO描述
+ * @property string|null $published_at      上线时间
+ * @property int $is_show           1显示,-1隐藏
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\User[] $buyUsers
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseChapter[] $chapters
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\CourseComment[] $comments
- * @property \App\User                                                            $user
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[]         $videos
+ * @property \App\User $user
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Video[] $videos
  *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Course keywords($keywords)
@@ -77,12 +77,16 @@ class Course extends Model
     const SHOW_YES = 1;
     const SHOW_NO = -1;
 
+    const REC_YES = 1;
+    const REC_NO = 0;
+
     protected $table = 'courses';
 
     protected $fillable = [
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_show', 'category_id',
+        'is_rec',
     ];
 
     /**

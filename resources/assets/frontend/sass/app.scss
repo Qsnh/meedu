@@ -206,7 +206,7 @@ footer.footer-box {
 
   &:hover {
     .video-thumb {
-      background-color: rgba(0, 0, 0, .5);
+      background-color: rgba(0, 0, 0, 0);
     }
   }
 }
@@ -276,6 +276,14 @@ footer.footer-box {
         background-color: $primary;
       }
     }
+  }
+}
+
+.course-category-item {
+  &.active {
+    color: $primary;
+    font-size: 1.2rem;
+    font-weight: 800;
   }
 }
 

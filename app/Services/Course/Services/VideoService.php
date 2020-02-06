@@ -65,22 +65,6 @@ class VideoService implements VideoServiceInterface
     }
 
     /**
-     * @param string $keyword
-     * @param int $limit
-     *
-     * @return array
-     */
-    public function titleSearch(string $keyword, int $limit): array
-    {
-        return Video::with(['course'])
-            ->show()
-            ->published()
-            ->where('title', 'like', '%' . $keyword . '%')
-            ->orderByDesc('published_at')
-            ->limit($limit)->get()->toArray();
-    }
-
-    /**
      * @param int $limit
      *
      * @return array

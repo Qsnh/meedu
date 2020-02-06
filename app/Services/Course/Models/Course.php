@@ -20,12 +20,16 @@ class Course extends Base
     const SHOW_YES = 1;
     const SHOW_NO = -1;
 
+    const REC_YES = 1;
+    const REC_NO = 0;
+
     protected $table = 'courses';
 
     protected $fillable = [
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_show', 'category_id',
+        'is_rec',
     ];
 
     protected $hidden = [
@@ -61,6 +65,16 @@ class Course extends Base
     {
         return $query->where('is_show', self::SHOW_YES);
     }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRecommend($query)
+    {
+        return $query->where('is_rec', self::REC_YES);
+    }
+
 
     /**
      * 作用域：不显示.

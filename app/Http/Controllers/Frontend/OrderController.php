@@ -62,8 +62,6 @@ class OrderController extends Controller
         $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
 
         $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
-        is_wechat() && $scene = FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
-
         $payments = get_payments($scene);
 
         return v('frontend.order.show', compact('order', 'payments', 'needPaidTotal'));
@@ -81,8 +79,6 @@ class OrderController extends Controller
         $order = $this->orderService->findUserNoPaid($orderId);
 
         $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
-        is_wechat() && $scene = FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
-
         $payments = get_payments($scene);
         $payment = $order['payment'] ?: $request->post('payment');
         if (!$payment) {

@@ -16,7 +16,12 @@ use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
+use App\Services\Member\Services\UserService;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
+use App\Services\Course\Services\VideoCommentService;
+use App\Services\Course\Services\CourseCommentService;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -27,10 +32,25 @@ use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class AjaxController extends BaseController
 {
+    /**
+     * @var VideoCommentService
+     */
     protected $videoCommentService;
+    /**
+     * @var CourseCommentService
+     */
     protected $courseCommentService;
+    /**
+     * @var UserService
+     */
     protected $userService;
+    /**
+     * @var CourseService
+     */
     protected $courseService;
+    /**
+     * @var VideoService
+     */
     protected $videoService;
     /**
      * @var PromoCodeService

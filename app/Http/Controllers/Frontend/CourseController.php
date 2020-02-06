@@ -88,6 +88,7 @@ class CourseController extends FrontendController
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
         $courses = $this->paginator($list, $total, $page, $pageSize);
+        $categoryId && $courses->appends(['category_id' => $categoryId]);
         [
             'title' => $title,
             'keywords' => $keywords,
@@ -95,7 +96,7 @@ class CourseController extends FrontendController
         ] = $this->configService->getSeoCourseListPage();
         $courseCategories = $this->courseCategoryService->all();
 
-        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories'));
+        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId'));
     }
 
     public function show($id, $slug)

@@ -256,7 +256,7 @@ if (!function_exists('is_h5')) {
      */
     function is_h5()
     {
-        return session()->has(\App\Constant\FrontendConstant::H5);
+        return (new Mobile_Detect())->isMobile();
     }
 }
 

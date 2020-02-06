@@ -44,10 +44,10 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-12">
-                <h2 class="fw-400 mb-4 c-primary">最新课程 <a href="{{route('videos')}}" class="fs-14px ml-2">全部课程</a>
+                <h2 class="fw-400 mb-4 c-primary">推荐课程 <a href="{{route('courses')}}" class="fs-14px ml-2">全部课程</a>
                 </h2>
                 <div class="row">
-                    @foreach($gLatestCourses as $index => $courseItem)
+                    @foreach($gRecCourses as $index => $courseItem)
                         @if($index == 8)
                             @break
                         @endif

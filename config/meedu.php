@@ -96,7 +96,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'h5' => 'wap',
             'wechat' => 'mp',
             'wechat_mini' => 'miniapp',
             'enabled' => 0,
@@ -110,7 +109,6 @@ return [
             'h5' => 'hand',
             'wechat' => 'hand',
             'enabled' => 0,
-            'introduction' => '',
         ],
     ],
 

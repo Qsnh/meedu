@@ -13,12 +13,16 @@ namespace App\Services\Course\Services;
 
 use App\Events\CourseCommentEvent;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\RenderService;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Base\Interfaces\RenderServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseCommentService implements CourseCommentServiceInterface
 {
+    /**
+     * @var RenderService
+     */
     protected $renderService;
 
     public function __construct(RenderServiceInterface $renderService)
