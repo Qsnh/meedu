@@ -129,7 +129,7 @@ class VideoController extends FrontendController
         $video = $this->videoService->find($id);
         $title = __('buy video', ['video' => $video['title']]);
 
-        return v('frontend.video.buy', compact('video', compact('title')));
+        return v('frontend.video.buy', compact('video', 'title'));
     }
 
     public function buyHandler(Request $request, $id)
