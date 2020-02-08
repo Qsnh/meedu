@@ -1,7 +1,0 @@
-Route::group(['prefix' => '|name|'], function () {
-        Route::get('/', '|controller|@index');
-        Route::post('/create', '|controller|@store');
-        Route::get('/{id}', '|controller|@edit');
-        Route::put('/{id}', '|controller|@update');
-        Route::delete('/{id}', '|controller|@destroy');
-    });
