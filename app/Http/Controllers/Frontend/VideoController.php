@@ -127,6 +127,10 @@ class VideoController extends FrontendController
     public function showBuyPage($id)
     {
         $video = $this->videoService->find($id);
+        if ($this->userService->hasVideo(Auth::id(), $video['id'])) {
+            flash(__('You have already purchased this course'), 'success');
+            return back();
+        }
         $title = __('buy video', ['video' => $video['title']]);
 
         return v('frontend.video.buy', compact('video', 'title'));

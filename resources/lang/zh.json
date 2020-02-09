@@ -102,5 +102,6 @@
   "Error": "系统错误",
   "Whoops, something went wrong on our servers.": "系统似乎发生了未知错误",
   "Service Unavailable": "服务已停止",
-  "Sorry, we are doing some maintenance. Please check back soon.": "系统正在维护中，请稍后再试"
+  "Sorry, we are doing some maintenance. Please check back soon.": "系统正在维护中，请稍后再试",
+  "You have already purchased this course": "您已经购买过此课程"
 }

@@ -127,6 +127,10 @@ class CourseController extends FrontendController
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);
+        if ($this->userService->hasCourse(Auth::id(), $id)) {
+            flash(__('You have already purchased this course'), 'success');
+            return back();
+        }
         $title = __('buy course', ['course' => $course['title']]);
 
         return v('frontend.course.buy', compact('course', 'title'));
