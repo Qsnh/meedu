@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Socialite;
 use App\Events\UserLoginEvent;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
@@ -52,6 +53,8 @@ class LoginController extends BaseController
      */
     public function showLoginPage()
     {
+        $previousUrl = session('_previous.url') ?: url('/');
+        session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $previousUrl]);
         return v('frontend.auth.login');
     }
 
@@ -74,7 +77,7 @@ class LoginController extends BaseController
 
         event(new UserLoginEvent($user['id']));
 
-        return redirect(url('/'));
+        return redirect($this->redirectTo());
     }
 
     /**
@@ -103,11 +106,11 @@ class LoginController extends BaseController
         }
         if ($bindUserId = $this->socialiteService->getBindUserId($app, $appId)) {
             Auth::loginUsingId($bindUserId);
-            return redirect(url('/'));
+            return redirect($this->redirectTo());
         }
         $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
         Auth::loginUsingId($userId, true);
-        return redirect(url('/'));
+        return redirect($this->redirectTo());
     }
 
     /**
@@ -118,5 +121,15 @@ class LoginController extends BaseController
         Auth::logout();
         flash(__('success'), 'success');
         return redirect(url('/'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
+     */
+    protected function redirectTo()
+    {
+        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
+            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
+        return $callbackUrl;
     }
 }
