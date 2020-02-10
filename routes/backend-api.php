@@ -125,6 +125,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 课程
     Route::group(['prefix' => 'course'], function () {
         Route::get('/', 'CourseController@index');
+        Route::get('/create', 'CourseController@create');
         Route::post('/', 'CourseController@store');
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');

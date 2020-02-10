@@ -16,6 +16,7 @@ use App\Constant\BackendApiConstant;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Http\Requests\Backend\CourseRequest;
+use App\Services\Course\Models\CourseCategory;
 
 class CourseController extends BaseController
 {
@@ -23,7 +24,7 @@ class CourseController extends BaseController
     {
         $keywords = $request->input('keywords', '');
         $courses = Course::when($keywords, function ($query) use ($keywords) {
-            return $query->where('title', 'like', '%'.$keywords.'%');
+            return $query->where('title', 'like', '%' . $keywords . '%');
         })
             ->orderByDesc('created_at')
             ->paginate(12);
@@ -31,6 +32,12 @@ class CourseController extends BaseController
         $courses->appends($request->input());
 
         return $this->successData($courses);
+    }
+
+    public function create()
+    {
+        $categories = CourseCategory::show()->get();
+        return $this->successData(compact('categories'));
     }
 
     public function store(CourseRequest $request, Course $course)
