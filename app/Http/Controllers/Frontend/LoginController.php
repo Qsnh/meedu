@@ -73,6 +73,10 @@ class LoginController extends BaseController
             flash(__('mobile not exists or password error'), 'error');
             return back();
         }
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            flash(__('current user was locked,please contact administrator'));
+            return back();
+        }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
         event(new UserLoginEvent($user['id']));
@@ -105,10 +109,15 @@ class LoginController extends BaseController
             return redirect('member');
         }
         if ($bindUserId = $this->socialiteService->getBindUserId($app, $appId)) {
-            Auth::loginUsingId($bindUserId);
-            return redirect($this->redirectTo());
+            $userId = $bindUserId;
+        } else {
+            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
         }
-        $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+        $user = $this->userService->find($userId);
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            flash(__('current user was locked,please contact administrator'));
+            return back();
+        }
         Auth::loginUsingId($userId, true);
         return redirect($this->redirectTo());
     }

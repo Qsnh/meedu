@@ -8,6 +8,7 @@ use App\Constant\ApiV2Constant;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Services\CacheService;
 use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginTest extends Base
 {
@@ -16,6 +17,7 @@ class LoginTest extends Base
     {
         $user = factory(User::class)->create([
             'mobile' => '13890900909',
+            'is_lock' => User::LOCK_NO,
         ]);
         $response = $this->postJson('/api/v2/login/password', [
             'mobile' => $user->mobile,
@@ -24,10 +26,25 @@ class LoginTest extends Base
         $this->assertResponseSuccess($response);
     }
 
+    public function test_with_locked()
+    {
+        $user = factory(User::class)->create([
+            'mobile' => '13890900909',
+            'password' => Hash::make('123123'),
+            'is_lock' => User::LOCK_YES,
+        ]);
+        $response = $this->postJson('/api/v2/login/password', [
+            'mobile' => $user->mobile,
+            'password' => '123123',
+        ]);
+        $this->assertResponseError($response, __(ApiV2Constant::MEMBER_HAS_LOCKED));
+    }
+
     public function test_with_error_password()
     {
         $user = factory(User::class)->create([
             'mobile' => '13890900909',
+            'is_lock' => User::LOCK_NO,
         ]);
         $response = $this->postJson('/api/v2/login/password', [
             'mobile' => $user->mobile,
@@ -41,6 +58,7 @@ class LoginTest extends Base
         $mobile = '13890900909';
         $user = factory(User::class)->create([
             'mobile' => $mobile,
+            'is_lock' => User::LOCK_NO,
         ]);
 
         /**
@@ -60,6 +78,7 @@ class LoginTest extends Base
     public function test_mobile_login_with_not_exists_mobile()
     {
         $mobile = '13890900909';
+        config(['meedu.member.is_lock_default' => User::LOCK_NO]);
 
         /**
          * @var $cacheService CacheService
