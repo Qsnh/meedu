@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'Frontend\IndexController@index')->name('index');
+Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
 
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
 Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:10,1']);

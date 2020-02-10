@@ -12,17 +12,25 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Events\AdFromEvent;
+use App\Services\Other\Services\LinkService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class IndexController extends FrontendController
 {
+    /**
+     * @var LinkService
+     */
     protected $linkService;
+    /**
+     * @var ConfigService
+     */
     protected $configService;
 
     public function __construct(
         LinkServiceInterface $linkService,
-        ConfigService $configService
+        ConfigServiceInterface $configService
     ) {
         $this->linkService = $linkService;
         $this->configService = $configService;
@@ -46,5 +54,11 @@ class IndexController extends FrontendController
             'frontend.index.index',
             compact('title', 'keywords', 'description', 'links')
         );
+    }
+
+    public function userProtocol()
+    {
+        $protocol = $this->configService->getMemberProtocol();
+        return v('frontend.index.user_protocol', compact('protocol'));
     }
 }
