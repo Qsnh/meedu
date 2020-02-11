@@ -2,60 +2,51 @@
 
 @section('content')
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-f6">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">首页</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('courses')}}">全部课程</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">课程详情</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+    <div class="course-fixed-menu">
+        <a href="#课程详情" class="course-fixed-menu-item">详情</a>
+        <a href="#课程目录" class="course-fixed-menu-item">目录</a>
+        <a href="#课程评论" class="course-fixed-menu-item">评论</a>
     </div>
 
-    <div class="container pb-5">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="w-100 float-left box-shadow1">
-                    <img src="{{$course['thumb']}}" width="100%" height="284" class="br-8">
+    <div class="container-fluid course-detail-banner pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">首页</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('courses')}}">全部课程</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">课程详情</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="row">
-                    <div class="col-12 py-2">
-                        <div class="w-100 float-left">
-                            <h2 class="fw-400">{{$course['title']}}</h2>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex flex-column flex-lg-row w-100 course-detail">
+                        <div class="course-detail-thumb">
+                            <img src="{{$course['thumb']}}" width="510" height="384">
                         </div>
-                    </div>
-                    <div class="col-md-8 col-12 pb-3">
-                        <div class="w-100 bg-fff py-2 br-8 float-left">
-                            <table class="table border-0">
-                                <tr>
-                                    <td width="32%" class="text-center border-0"><i class="fa fa-money"></i> 价格</td>
-                                    <td class="border-0">￥{{$course['charge']}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center border-0"><i class="fa fa-clock-o"></i> 上架</td>
-                                    <td class="border-0">{{\Carbon\Carbon::parse($course['published_at'])->format('Y/m/d')}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center border-0"><i class="fa fa-comment-o"></i> 简介</td>
-                                    <td class="border-0">{{$course['short_description']}}</td>
-                                </tr>
-                            </table>
+                        <div class="course-detail-thumb-sm">
+                            <img src="{{$course['thumb']}}">
                         </div>
-                    </div>
-                    <div class="col-md-4 col-12">
-                        <div class="w-100 float-left">
-                            @if($course['charge'] > 0)
-                                <a href="{{route('member.course.buy', [$course['id']])}}" class="btn btn-success btn-block py-2">购买此课程 ￥{{$course['charge']}}</a>
-                            @endif
-                            <a href="#课程详情" class="btn btn-secondary btn-block py-2">课程详情</a>
-                            <a href="#课程目录" class="btn btn-secondary btn-block py-2">课程目录</a>
-                            <a href="#课程评论" class="btn btn-secondary btn-block py-2">课程评论</a>
+                        <div class="course-detail-box flex-grow-1">
+                            <div class="course-detail-title">
+                                <h3>{{$course['title']}}</h3>
+                            </div>
+                            <div class="course-detail-info fs-14px mb-3">
+                                <span>上架时间：{{\Carbon\Carbon::parse($course['published_at'])->format('Y/m/d')}}</span>
+                            </div>
+                            <div class="course-detail-desc py-2 fs-14px">
+                                {{$course['short_description']}}
+                            </div>
+                            <div class="course-detail-price text-right">
+                                @if($course['charge'] > 0)
+                                    <a href="{{route('member.course.buy', [$course['id']])}}" class="btn btn-primary">
+                                        立即购买 ￥{{$course['charge']}}
+                                    </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
