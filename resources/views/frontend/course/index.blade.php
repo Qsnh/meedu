@@ -2,26 +2,26 @@
 
 @section('content')
 
-    <div class="container-fluid py-5">
+    <div class="container">
         <div class="row">
             <div class="col-12">
+                <h2 class="fw-400 mb-4 c-primary my-4">全部课程</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-fff">
+        <div class="row">
+            <div class="col-12 bg-fff border-bottom border-top border-f7f7f7">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="w-100 float-left box-shadow1 mb-2">
-                                <a href="{{route('role.index')}}">
-                                    <img src="{{asset('frontend/images/vip1.png')}}" class="br-8" height="230"
-                                         width="100%">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="w-100 box-shadow1 float-left mb-2">
-                                <a href="{{route('member.promo_code')}}">
-                                    <img src="{{asset('frontend/images/share.png')}}" class="br-8" height="230"
-                                         width="100%">
-                                </a>
-                            </div>
+                        <div class="col-12 my-4">
+                            <a href="{{route('courses')}}"
+                               class="mb-2 mr-2 {{!$categoryId ? 'active' : ''}} course-category-item">全部</a>
+                            @foreach($courseCategories as $item)
+                                <a class="mb-2 mr-2 {{$item['id'] == $categoryId ? 'active' : ''}} course-category-item"
+                                   href="{{route('courses')}}?category_id={{$item['id']}}">{{$item['name']}}</a>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -29,22 +29,13 @@
         </div>
     </div>
 
-    <div class="container-fluid bg-fff">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="container my-5">
                     <div class="row">
                         <div class="col-12">
-                            <h2 class="fw-400 mb-4 c-primary">全部课程</h2>
                             <div class="row">
-                                <div class="col-sm-12 mb-4">
-                                    <a href="{{route('courses')}}"
-                                       class="mb-2 mr-2 {{!$categoryId ? 'active' : ''}} course-category-item">全部</a>
-                                    @foreach($courseCategories as $item)
-                                        <a class="mb-2 mr-2 {{$item['id'] == $categoryId ? 'active' : ''}} course-category-item"
-                                           href="{{route('courses')}}?category_id={{$item['id']}}">{{$item['name']}}</a>
-                                    @endforeach
-                                </div>
                                 @foreach($courses as $index => $courseItem)
                                     <div class="col-12 col-md-3 pb-24px video-item">
                                         <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
