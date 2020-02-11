@@ -49,24 +49,6 @@ if (!function_exists('menu_active')) {
     }
 }
 
-if (!function_exists('exception_response')) {
-    /**
-     * 异常响应.
-     *
-     * @param Exception $exception
-     * @param string $message
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    function exception_response(Exception $exception, string $message = '')
-    {
-        return response()->json([
-            'message' => $message ?: $exception->getMessage(),
-            'code' => $exception->getCode() ?: 500,
-        ]);
-    }
-}
-
 if (!function_exists('exception_record')) {
     /**
      * 记录异常.
@@ -77,9 +59,9 @@ if (!function_exists('exception_record')) {
     {
         $request = request();
         $data = [
+            'message' => $exception->getMessage(),
             'file' => $exception->getFile(),
             'code' => $exception->getCode(),
-            'message' => $exception->getMessage(),
             'line' => $exception->getLine(),
             'trace' => $exception->getTraceAsString(),
             'params' => $request->all(),
@@ -88,18 +70,6 @@ if (!function_exists('exception_record')) {
             'ip' => $request->getClientIps(),
         ];
         \Log::error('exception', $data);
-    }
-}
-
-if (!function_exists('admin')) {
-    /**
-     * 获取当前登录的管理员.
-     *
-     * @return \App\Models\Administrator
-     */
-    function admin()
-    {
-        return \Illuminate\Support\Facades\Auth::guard('administrator')->user();
     }
 }
 
@@ -118,39 +88,6 @@ if (!function_exists('markdown_to_html')) {
         $content = preg_replace('#<table>#', '<table class="table table-hover table-bordered">', $content);
 
         return $content;
-    }
-}
-
-if (!function_exists('markdown_clean')) {
-    /**
-     * 过滤markdown非法字符串.
-     *
-     * @param string $markdownContent
-     *
-     * @return string
-     */
-    function markdown_clean(string $markdownContent)
-    {
-        $html = markdown_to_html($markdownContent);
-        $safeHtml = clean($html, null);
-
-        return (new \League\HTMLToMarkdown\HtmlConverter())->convert($safeHtml);
-    }
-}
-
-if (!function_exists('image_url')) {
-    /**
-     * 给图片添加参数.
-     *
-     * @param $url
-     *
-     * @return string
-     */
-    function image_url($url)
-    {
-        $params = config('meedu.upload.image.params', '');
-
-        return strstr('?', $url) !== false ? $url . $params : $url . '?' . $params;
     }
 }
 
@@ -281,12 +218,9 @@ if (!function_exists('duration_humans')) {
      */
     function duration_humans($duration)
     {
-        if ($duration instanceof \App\Models\Video) {
-            $duration = $duration->duration;
-        }
         $minute = intdiv($duration, 60);
         $second = $duration % 60;
-        if ($minute > 60) {
+        if ($minute >= 60) {
             $hours = intdiv($minute, 60);
             $minute = $minute % 60;
 
@@ -316,8 +250,7 @@ if (!function_exists('enabled_socialites')) {
 
 if (!function_exists('get_payments')) {
     /**
-     * 获取可用的Payment.
-     *
+     * @param $scene
      * @return \Illuminate\Support\Collection
      */
     function get_payments($scene)
@@ -325,7 +258,7 @@ if (!function_exists('get_payments')) {
         /**
          * @var \App\Services\Base\Services\ConfigService
          */
-        $configService = app()->make(\App\Services\Base\Services\ConfigService::class);
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $payments = collect($configService->getPayments())->filter(function ($payment) use ($scene) {
             $enabled = $payment['enabled'] ?? false;
             $isSet = $payment[$scene] ?? false;
@@ -334,40 +267,6 @@ if (!function_exists('get_payments')) {
         });
 
         return $payments;
-    }
-}
-
-if (!function_exists('app_menu_is_active')) {
-    function app_menu_is_active($menu)
-    {
-        $request = request();
-        $const = [
-            'index' => [
-                'index',
-            ],
-            'courses' => [
-                'courses',
-                'videos',
-                'course.show',
-                'video.show',
-                'search',
-                'member.course.buy',
-                'member.video.buy',
-            ],
-            'role' => [
-                'role.index',
-                'member.role.buy',
-            ],
-        ];
-        $menus = $const[$menu] ?? [];
-        if (!$menus) {
-            return false;
-        }
-        if ($request->routeIs(...$menus)) {
-            return true;
-        }
-
-        return false;
     }
 }
 
