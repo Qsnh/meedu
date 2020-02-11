@@ -53,7 +53,13 @@ class LoginController extends BaseController
      */
     public function showLoginPage()
     {
-        $previousUrl = session('_previous.url') ?: url('/');
+        $previousUrl = request()->server('HTTP_REFERER') ?: url('/');
+        foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
+            if (preg_match("#{$item}#ius", $previousUrl)) {
+                $previousUrl = url('/');
+                break;
+            }
+        }
         session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $previousUrl]);
         return v('frontend.auth.login');
     }

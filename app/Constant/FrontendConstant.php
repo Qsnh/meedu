@@ -38,4 +38,8 @@ class FrontendConstant
     const INVITE_BALANCE_WITHDRAW_STATUS_FAILURE = 2;
 
     const LOGIN_CALLBACK_URL_KEY = 'login_callback_url';
+
+    const LOGIN_REFERER_BLACKLIST = [
+        '/register',
+    ];
 }
