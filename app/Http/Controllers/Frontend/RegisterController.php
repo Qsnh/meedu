@@ -27,6 +27,7 @@ class RegisterController extends BaseController
     public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
+        $this->middleware('guest');
     }
 
     /**

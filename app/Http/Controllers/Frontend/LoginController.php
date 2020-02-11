@@ -40,11 +40,7 @@ class LoginController extends BaseController
         $this->userService = $userService;
         $this->socialiteService = $socialiteService;
         $this->middleware('guest')->except(
-            'logout',
-            'showLoginPage',
-            'passwordLoginHandler',
-            'socialLogin',
-            'socialiteLoginCallback'
+            'logout'
         );
     }
 
