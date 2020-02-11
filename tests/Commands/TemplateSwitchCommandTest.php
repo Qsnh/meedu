@@ -39,4 +39,12 @@ class TemplateSwitchCommandTest extends OriginalTestCase
         $file->deleteDirectory(base_path('templates/demo'));
     }
 
+    public function test_run_with_default()
+    {
+        $this->artisan('template:switch', ['template' => 'default'])
+            ->expectsOutput('success');
+
+        $this->assertEquals(resource_path('views'), config('meedu.system.theme.path'));
+    }
+
 }

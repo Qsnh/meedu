@@ -86,5 +86,7 @@
   "please select withdraw channel": "please select withdraw channel",
   "please input withdraw account": "please input withdraw account",
   "please input withdraw username": "please input withdraw username",
-  "please buy this video before see": "please buy this video before see"
+  "please buy this video before see": "please buy this video before see",
+  "You have already purchased this course": "You have already purchased this course",
+  "current user was locked,please contact administrator": "current user was locked,please contact administrator"
 }

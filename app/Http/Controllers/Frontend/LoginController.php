@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Socialite;
 use App\Events\UserLoginEvent;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
@@ -39,11 +40,7 @@ class LoginController extends BaseController
         $this->userService = $userService;
         $this->socialiteService = $socialiteService;
         $this->middleware('guest')->except(
-            'logout',
-            'showLoginPage',
-            'passwordLoginHandler',
-            'socialLogin',
-            'socialiteLoginCallback'
+            'logout'
         );
     }
 
@@ -52,6 +49,14 @@ class LoginController extends BaseController
      */
     public function showLoginPage()
     {
+        $previousUrl = request()->server('HTTP_REFERER') ?: url('/');
+        foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
+            if (preg_match("#{$item}#ius", $previousUrl)) {
+                $previousUrl = url('/');
+                break;
+            }
+        }
+        session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $previousUrl]);
         return v('frontend.auth.login');
     }
 
@@ -70,11 +75,15 @@ class LoginController extends BaseController
             flash(__('mobile not exists or password error'), 'error');
             return back();
         }
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            flash(__('current user was locked,please contact administrator'));
+            return back();
+        }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
         event(new UserLoginEvent($user['id']));
 
-        return redirect(url('/'));
+        return redirect($this->redirectTo());
     }
 
     /**
@@ -102,12 +111,17 @@ class LoginController extends BaseController
             return redirect('member');
         }
         if ($bindUserId = $this->socialiteService->getBindUserId($app, $appId)) {
-            Auth::loginUsingId($bindUserId);
-            return redirect(url('/'));
+            $userId = $bindUserId;
+        } else {
+            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
         }
-        $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+        $user = $this->userService->find($userId);
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            flash(__('current user was locked,please contact administrator'));
+            return back();
+        }
         Auth::loginUsingId($userId, true);
-        return redirect(url('/'));
+        return redirect($this->redirectTo());
     }
 
     /**
@@ -118,5 +132,15 @@ class LoginController extends BaseController
         Auth::logout();
         flash(__('success'), 'success');
         return redirect(url('/'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
+     */
+    protected function redirectTo()
+    {
+        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
+            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
+        return $callbackUrl;
     }
 }

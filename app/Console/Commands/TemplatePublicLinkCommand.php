@@ -48,10 +48,6 @@ class TemplatePublicLinkCommand extends Command
     public function handle()
     {
         $template = $this->argument('template');
-        if (!$template) {
-            $this->error('请指定template');
-            return;
-        }
 
         $path = base_path('templates/' . $template . '/public');
         if (!is_dir($path)) {

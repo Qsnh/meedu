@@ -61,6 +61,10 @@ a {
   border-bottom-right-radius: 8px;
 }
 
+.border-f7f7f7 {
+  border-color: #eeeeee!important;
+}
+
 .pt-10px {
   padding-top: 10px;
 }
@@ -269,6 +273,7 @@ footer.footer-box {
         color: #ffffff;
       }
     }
+
     &.active {
       a {
         color: #ffffff;
@@ -291,8 +296,9 @@ footer.footer-box {
   .comment-user {
     span.nickname {
       font-size: 14px;
-      line-height:30px;
+      line-height: 30px;
     }
+
     .v-tag {
       font-size: 10px;
     }
@@ -308,8 +314,93 @@ footer.footer-box {
   }
 }
 
+.course-detail-banner {
+  background-color: #1a1a1a;
+
+  .breadcrumb {
+    background-color: #1a1a1a;
+
+    a:hover {
+      color: #999999;
+    }
+  }
+}
+
+.course-detail {
+  color: #ffffff;
+  position: relative;
+  background-color: #242424;
+
+  .course-detail-thumb {
+    width: 510px;
+    height: 384px;
+    float: left;
+  }
+
+  .course-detail-thumb-sm {
+    display: none;
+    width: 100%;
+    height: auto;
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .course-detail-box {
+    padding: 10px 20px;
+
+    .course-detail-title h3 {
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    .course-detail-info, .course-detail-desc {
+      color: #999999;
+    }
+
+    .course-detail-price {
+      position: absolute;
+      right: 2%;
+      height: auto;
+      color: #999999;
+      bottom: 0;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.course-fixed-menu {
+  position: fixed;
+  top: 40%;
+  right: 5%;
+  width: 60px;
+  height: auto;
+  z-index: 11;
+
+  .course-fixed-menu-item {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 60px;
+    float: left;
+    margin-bottom: 10px;
+    border: 1px solid #fbfbfb;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+  }
+}
+
 @include media-breakpoint-down(sm) {
   .index-course-banner {
+    display: none;
+  }
+  .course-fixed-menu {
     display: none;
   }
   .user-banner-menu {
@@ -327,5 +418,21 @@ footer.footer-box {
         border-bottom: 0px;
       }
     }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .course-fixed-menu {
+    display: none;
+  }
+
+  .course-detail-thumb {
+    display: none;
+  }
+  .course-detail-thumb-sm {
+    display: block!important;
+  }
+  .course-detail-price {
+    position: relative!important;
   }
 }

@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label><input type="checkbox"
                                                   name="agree_protocol" {{ old('remember') ? 'checked' : '' }}> 我已阅读并同意
-                                        <a href="javascript:void(0)" target="_blank">《{{config('app.name')}}
+                                        <a href="{{route('user.protocol')}}" target="_blank">《{{config('app.name')}}
                                             用户协议》</a></label>
                                 </div>
                                 <div class="form-group mt-2">

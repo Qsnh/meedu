@@ -48,10 +48,14 @@ class SwitchTemplateCommand extends Command
     public function handle()
     {
         $template = $this->argument('template');
-        $path = base_path('templates/' . $template);
-        if (!is_dir($path)) {
-            $this->warn('模板不存在');
-            return;
+        if ($template == 'default') {
+            $path = resource_path('views');
+        } else {
+            $path = base_path('templates/' . $template);
+            if (!is_dir($path)) {
+                $this->warn('模板不存在');
+                return;
+            }
         }
         $config = [];
         $config['meedu.system.theme.use'] = $template;

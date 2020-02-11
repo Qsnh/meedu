@@ -16,6 +16,15 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
+
+    /**
+     * @return string
+     */
+    public function getMemberProtocol(): string
+    {
+        return config('meedu.member.protocol', '');
+    }
+
     /**
      * @return string
      */
