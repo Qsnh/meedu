@@ -39,6 +39,10 @@ Route::group(['prefix' => '/wechat/mini'], function () {
 // 优惠码
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
 
+Route::group(['prefix' => 'other'], function () {
+    Route::get('/userProtocol', 'OtherController@userProtocol');
+});
+
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
     Route::get('detail', 'MemberController@detail');
     Route::post('detail/password', 'MemberController@passwordChange');

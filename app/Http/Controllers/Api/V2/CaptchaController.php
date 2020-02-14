@@ -109,7 +109,7 @@ class CaptchaController extends BaseController
         ['mobile' => $mobile, 'scene' => $scene] = $request->filldata();
         $code = str_pad(mt_rand(0, 999999), 6, 0, STR_PAD_LEFT);
         $this->smsService->sendCode($mobile, $code, $scene);
-        $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
+        $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
         return $this->success();
     }
 }

@@ -37,7 +37,7 @@ class AliyunVideoUploadController extends BaseController
         } catch (Exception $exception) {
             exception_record($exception);
 
-            return exception_response($exception);
+            return $this->error($exception->getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ class AliyunVideoUploadController extends BaseController
         } catch (Exception $exception) {
             exception_record($exception);
 
-            return exception_response($exception);
+            return $this->error($exception->getMessage());
         }
     }
 }
