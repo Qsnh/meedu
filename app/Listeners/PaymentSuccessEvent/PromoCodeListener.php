@@ -78,7 +78,7 @@ class PromoCodeListener
         // 修改用户上级
         $orderUser = $this->userService->find($order['user_id']);
         if ($orderUser['invite_user_id'] == 0) {
-            $this->userService->updateInviteUserId($orderUser['id'], $code['user_id']);
+            $this->userService->updateInviteUserId($orderUser['id'], $code);
         }
     }
 }
