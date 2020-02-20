@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
@@ -59,6 +60,10 @@ class CourseController extends FrontendController
      * @var CourseCategoryService
      */
     protected $courseCategoryService;
+    /**
+     * @var BusinessState
+     */
+    protected $businessState;
 
     public function __construct(
         CourseServiceInterface $courseService,
@@ -67,7 +72,8 @@ class CourseController extends FrontendController
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
         OrderServiceInterface $orderService,
-        CourseCategoryServiceInterface $courseCategoryService
+        CourseCategoryServiceInterface $courseCategoryService,
+        BusinessState $businessState
     ) {
         $this->courseService = $courseService;
         $this->configService = $configService;
@@ -76,6 +82,7 @@ class CourseController extends FrontendController
         $this->videoService = $videoService;
         $this->orderService = $orderService;
         $this->courseCategoryService = $courseCategoryService;
+        $this->businessState = $businessState;
     }
 
     public function index(Request $request)
@@ -112,6 +119,13 @@ class CourseController extends FrontendController
         $keywords = $course['seo_keywords'];
         $description = $course['seo_description'];
 
+        // 是否购买
+        $isBuy = false;
+        if (Auth::check()) {
+            $this->businessState->isRole($this->user()) && $isBuy = true;
+            $this->userService->hasCourse(Auth::id(), $course['id']) && $isBuy = true;
+        }
+
         return v('frontend.course.show', compact(
             'course',
             'title',
@@ -120,7 +134,8 @@ class CourseController extends FrontendController
             'comments',
             'commentUsers',
             'videos',
-            'chapters'
+            'chapters',
+            'isBuy'
         ));
     }
 
