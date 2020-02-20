@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
+use App\Businesses\BusinessState;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -59,13 +60,19 @@ class CourseController extends BaseController
      */
     protected $orderService;
 
+    /**
+     * @var BusinessState
+     */
+    protected $businessState;
+
     public function __construct(
         CourseServiceInterface $courseService,
         ConfigServiceInterface $configService,
         CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
-        OrderServiceInterface $orderService
+        OrderServiceInterface $orderService,
+        BusinessState $businessState
     ) {
         $this->courseService = $courseService;
         $this->configService = $configService;
@@ -73,6 +80,7 @@ class CourseController extends BaseController
         $this->userService = $userService;
         $this->videoService = $videoService;
         $this->orderService = $orderService;
+        $this->businessState = $businessState;
     }
 
     /**
@@ -128,6 +136,7 @@ class CourseController extends BaseController
      *                 @OA\Property(property="course",type="object",description="课程详情",ref="#/components/schemas/Course"),
      *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
      *                 @OA\Property(property="videos",type="array",description="视频",@OA\Items(ref="#/components/schemas/Video")),
+     *                 @OA\Property(property="isBuy",type="bool",description="是否购买"),
      *             ),
      *         )
      *     )
@@ -143,8 +152,9 @@ class CourseController extends BaseController
         $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
         $videos = $this->videoService->courseVideos($course['id']);
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
+        $isBuy = $this->businessState->isBuyCourse($course['id']);
 
-        return $this->data(compact('course', 'chapters', 'videos'));
+        return $this->data(compact('course', 'chapters', 'videos', 'isBuy'));
     }
 
     /**

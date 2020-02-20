@@ -120,11 +120,7 @@ class CourseController extends FrontendController
         $description = $course['seo_description'];
 
         // 是否购买
-        $isBuy = false;
-        if (Auth::check()) {
-            $this->businessState->isRole($this->user()) && $isBuy = true;
-            $this->userService->hasCourse(Auth::id(), $course['id']) && $isBuy = true;
-        }
+        $isBuy = $this->businessState->isBuyCourse($course['id']);
 
         return v('frontend.course.show', compact(
             'course',

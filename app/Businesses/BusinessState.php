@@ -183,4 +183,28 @@ class BusinessState
         $sum = $order['charge'] - $orderService->getOrderPaidRecordsTotal($order['id']);
         return $sum >= 0 ? $sum : 0;
     }
+
+    /**
+     * 是否购买课程
+     * @param int $courseId
+     * @return bool
+     */
+    public function isBuyCourse(int $courseId): bool
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        /**
+         * @var $userService UserService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        $user = $userService->find(Auth::id(), ['role']);
+        if ($this->isRole($user)) {
+            return true;
+        }
+        if ($userService->hasCourse($user['id'], $courseId)) {
+            return true;
+        }
+        return false;
+    }
 }
