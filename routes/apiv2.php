@@ -31,6 +31,9 @@ Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(
 Route::get('/roles', 'RoleController@roles');
 Route::get('/role/{id}', 'RoleController@detail');
 
+// 幻灯片
+Route::get('/sliders', 'SliderController@all');
+
 // 登录
 Route::group(['prefix' => '/wechat/mini'], function () {
     Route::post('/login', 'WechatMiniController@login');

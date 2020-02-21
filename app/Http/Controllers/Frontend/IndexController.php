@@ -14,8 +14,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Events\AdFromEvent;
 use App\Services\Other\Services\LinkService;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Other\Services\SliderService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Other\Interfaces\SliderServiceInterface;
 
 class IndexController extends FrontendController
 {
@@ -27,13 +29,19 @@ class IndexController extends FrontendController
      * @var ConfigService
      */
     protected $configService;
+    /**
+     * @var SliderService
+     */
+    protected $sliderService;
 
     public function __construct(
         LinkServiceInterface $linkService,
-        ConfigServiceInterface $configService
+        ConfigServiceInterface $configService,
+        SliderServiceInterface $sliderService
     ) {
         $this->linkService = $linkService;
         $this->configService = $configService;
+        $this->sliderService = $sliderService;
     }
 
     public function index()
@@ -50,9 +58,11 @@ class IndexController extends FrontendController
             event(new AdFromEvent($fromKey));
         }
 
+        $sliders = $this->sliderService->all();
+
         return v(
             'frontend.index.index',
-            compact('title', 'keywords', 'description', 'links')
+            compact('title', 'keywords', 'description', 'links', 'sliders')
         );
     }
 

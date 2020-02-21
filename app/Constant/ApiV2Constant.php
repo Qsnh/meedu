@@ -213,4 +213,20 @@ class ApiV2Constant
     const MODEL_PROMO_CODE_FIELD = [
         'id', 'code', 'expired_at', 'invited_user_reward',
     ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Slider",
+     *         type="object",
+     *         title="订单商品",
+     *         @OA\Property(property="thumb",type="string",description="图片"),
+     *         @OA\Property(property="url",type="string",description="url"),
+     *         @OA\Property(property="sort",type="integer",description="升序"),
+     *     ),
+     * )
+     */
+    const MODEL_SLIDER_FIELD = [
+        'thumb', 'url', 'sort',
+    ];
 }

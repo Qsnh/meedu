@@ -9,9 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
+namespace App\Services\Other\Interfaces;
 
-class MeEdu
+interface SliderServiceInterface
 {
-    const VERSION = 'v2.2';
 }

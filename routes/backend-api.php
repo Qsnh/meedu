@@ -24,6 +24,15 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::delete('/{id}', 'LinkController@destroy');
     });
 
+    // 幻灯片
+    Route::group(['prefix' => 'slider'], function () {
+        Route::get('/', 'SliderController@index');
+        Route::post('/', 'SliderController@store');
+        Route::get('/{id}', 'SliderController@edit');
+        Route::put('/{id}', 'SliderController@update');
+        Route::delete('/{id}', 'SliderController@destroy');
+    });
+
     // 广告推广
     Route::group(['prefix' => 'ad_from'], function () {
         Route::get('/', 'AdFromController@index');
