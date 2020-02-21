@@ -11,16 +11,14 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Announcement;
+use App\Services\Other\Models\Announcement;
 use App\Http\Requests\Backend\AnnouncementRequest;
 
 class AnnouncementController extends BaseController
 {
     public function index()
     {
-        $announcements = Announcement::with(['administrator'])
-            ->orderByDesc('id')
-            ->paginate(request()->input('size', 12));
+        $announcements = Announcement::orderByDesc('id')->paginate(request()->input('size', 12));
 
         return $this->successData($announcements);
     }

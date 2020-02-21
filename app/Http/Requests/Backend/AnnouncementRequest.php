@@ -34,6 +34,7 @@ class AnnouncementRequest extends BaseRequest
     public function rules()
     {
         return [
+            'title' => 'required',
             'announcement' => 'required',
         ];
     }
@@ -41,15 +42,17 @@ class AnnouncementRequest extends BaseRequest
     public function messages()
     {
         return [
-            'announcement.required' => '请输入公告内容',
+            'title.required' => __('please input announcement title'),
+            'announcement.required' => __('please input announcement content'),
         ];
     }
 
     public function filldata()
     {
         return [
+            'title' => $this->input('title'),
             'admin_id' => Auth::guard(BackendApiConstant::GUARD)->user()->id,
-            'announcement' => $this->input('announcement'),
+            'announcement' => clean($this->input('announcement')),
         ];
     }
 }

@@ -104,5 +104,7 @@
   "Service Unavailable": "服务已停止",
   "Sorry, we are doing some maintenance. Please check back soon.": "系统正在维护中，请稍后再试",
   "You have already purchased this course": "您已经购买过此课程",
-  "current user was locked,please contact administrator": "当前会员已被锁定，请联系管理员"
+  "current user was locked,please contact administrator": "当前会员已被锁定，请联系管理员",
+  "please input announcement title": "请输入公告标题",
+  "please input announcement content": "请输入公告内容"
 }

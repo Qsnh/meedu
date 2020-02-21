@@ -88,5 +88,7 @@
   "please input withdraw username": "please input withdraw username",
   "please buy this video before see": "please buy this video before see",
   "You have already purchased this course": "You have already purchased this course",
-  "current user was locked,please contact administrator": "current user was locked,please contact administrator"
+  "current user was locked,please contact administrator": "current user was locked,please contact administrator",
+  "please input announcement title": "please input announcement title",
+  "please input announcement content": "please input announcement content"
 }

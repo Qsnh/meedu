@@ -19,5 +19,6 @@ class Announcement extends Model
 
     protected $fillable = [
         'admin_id', 'announcement', 'created_at',
+        'view_times', 'title',
     ];
 }
