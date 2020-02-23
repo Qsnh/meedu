@@ -45,7 +45,10 @@ if (!function_exists('menu_active')) {
      */
     function menu_active($routeName)
     {
-        return request()->route()->getName() == $routeName ? 'active' : '';
+        if (!is_array($routeName)) {
+            return request()->route()->getName() == $routeName ? 'active' : '';
+        }
+        return in_array(request()->route()->getName(), $routeName) ? 'active' : '';
     }
 }
 

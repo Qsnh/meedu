@@ -1,4 +1,4 @@
-$primary: #344962 !default;
+$primary: #0B76DE !default;
 $secondary: #344962 !default;
 $light: #38AECC !default;
 $primary2: #36567C;
@@ -6,6 +6,8 @@ $dark: #1A2B3F;
 $bg1: #202020;
 $c1: #8c8c8c;
 $c2: #777777;
+$c999: #999999;
+$ce5: #e5e5e5;
 
 $border-color: $c2 !default;
 
@@ -51,6 +53,10 @@ a {
   border-radius: 50%;
 }
 
+.br-12 {
+  border-radius: 12px;
+}
+
 .br-top-8 {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -62,7 +68,7 @@ a {
 }
 
 .border-f7f7f7 {
-  border-color: #eeeeee!important;
+  border-color: #eeeeee !important;
 }
 
 .pt-10px {
@@ -97,11 +103,6 @@ a {
   font-size: 24px;
 }
 
-.nav-box {
-  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
-  font-size: 15px;
-}
-
 .box-shadow1 {
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.05);
 }
@@ -125,6 +126,80 @@ footer.footer-box {
   font-size: 11px;
   background-color: $bg1;
   color: $c1;
+}
+
+.nav-box {
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+
+  nav {
+    .nav-item {
+      margin-right: 5px;
+      font-size: 16px;
+
+      a {
+        color: $c999;
+      }
+
+      a.active {
+        color: $primary;
+        font-weight: 800;
+      }
+
+      a:hover {
+        color: $primary;
+      }
+    }
+
+    .search-input {
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      font-size: 14px;
+      height: 40px;
+    }
+
+    .search-button {
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      height: 40px;
+    }
+
+    .role-vip-button {
+      width: 80px;
+      height: 34px;
+      border-radius: 17px;
+      border: 1px solid $primary;
+      text-align: center;
+      line-height: 34px;
+      font-size: 14px;
+      font-weight: 400;
+      color: $primary;
+      margin-right: 20px;
+    }
+
+    .role-vip-button:hover {
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0px 2px 4px 0px $ce5;
+    }
+
+    .login-button {
+      width: 80px;
+      height: 34px;
+      border-radius: 17px;
+      background-color: $primary;
+      text-align: center;
+      line-height: 34px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    .login-button:hover {
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0px 2px 4px 0px $ce5;
+    }
+  }
 }
 
 .video-item {
@@ -341,6 +416,7 @@ footer.footer-box {
     display: none;
     width: 100%;
     height: auto;
+
     img {
       max-width: 100%;
       height: auto;
@@ -430,9 +506,9 @@ footer.footer-box {
     display: none;
   }
   .course-detail-thumb-sm {
-    display: block!important;
+    display: block !important;
   }
   .course-detail-price {
-    position: relative!important;
+    position: relative !important;
   }
 }
