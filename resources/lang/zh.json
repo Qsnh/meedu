@@ -5,7 +5,7 @@
   "error": "失败",
   "params error": "参数错误",
   "password change success": "密码修改成功",
-  "password.confirm": "两次输入密码不一致",
+  "password.confirmed": "两次输入密码不一致",
   "password.max": "密码长度不能超过16位",
   "password.min": "密码长度不能小于6位",
   "password.required": "请输入密码",
