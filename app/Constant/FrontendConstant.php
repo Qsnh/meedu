@@ -42,6 +42,5 @@ class FrontendConstant
     const LOGIN_REFERER_BLACKLIST = [
         '/register',
         '/password/reset',
-        ''
     ];
 }
