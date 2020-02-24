@@ -94,7 +94,7 @@ class CourseListPageTest extends TestCase
             ->see($category->name)
             ->see($category1->name)
             ->click($category->name)
-            ->seeElementCount('.video-list-box', 1);
+            ->see($c1->title);
     }
 
 }

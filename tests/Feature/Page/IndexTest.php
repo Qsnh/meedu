@@ -16,15 +16,6 @@ class IndexTest extends TestCase
         $this->get(url('/'))->assertResponseStatus(200);
     }
 
-    // 在首页可以看到已创建的套餐
-    public function test_see_some_roles()
-    {
-        $role = factory(Role::class)->create();
-        $this->visit(url('/'))
-            ->see($role->name)
-            ->see($role->charge);
-    }
-
     // 创建一些显示的且已发布的视频
     // 这种情况在首页是可以看到的
     public function test_see_some_courses()

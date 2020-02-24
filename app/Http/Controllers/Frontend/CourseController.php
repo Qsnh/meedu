@@ -88,6 +88,7 @@ class CourseController extends FrontendController
     public function index(Request $request)
     {
         $categoryId = intval($request->input('category_id'));
+        $scene = $request->input('scene');
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
         [
@@ -95,6 +96,11 @@ class CourseController extends FrontendController
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
         $courses = $this->paginator($list, $total, $page, $pageSize);
+        $courses->appends([
+            'page' => $request->input('page'),
+            'category_id' => $request->input('category_id', 0),
+            'scene' => $request->input('scene', ''),
+        ]);
         $categoryId && $courses->appends(['category_id' => $categoryId]);
         [
             'title' => $title,
@@ -103,7 +109,18 @@ class CourseController extends FrontendController
         ] = $this->configService->getSeoCourseListPage();
         $courseCategories = $this->courseCategoryService->all();
 
-        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId'));
+        $queryParams = function ($param) {
+            $request = \request();
+            $params = [
+                'page' => $request->input('page'),
+                'category_id' => $request->input('category_id', 0),
+                'scene' => $request->input('scene', ''),
+            ];
+            $params = array_merge($params, $param);
+            return http_build_query($params);
+        };
+
+        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId', 'scene', 'queryParams'));
     }
 
     public function show($id, $slug)

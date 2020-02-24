@@ -12,16 +12,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Events\AdFromEvent;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
-use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Course\Services\CourseCategoryService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Other\Interfaces\LinkServiceInterface;
-use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Other\Services\LinkService;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Services\SliderService;
+use App\Services\Course\Services\CourseService;
+use App\Services\Course\Services\CourseCategoryService;
+use App\Services\Other\Interfaces\LinkServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Other\Interfaces\SliderServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 class IndexController extends FrontendController
 {
@@ -54,8 +54,7 @@ class IndexController extends FrontendController
         SliderServiceInterface $sliderService,
         CourseServiceInterface $courseService,
         CourseCategoryServiceInterface $courseCategoryService
-    )
-    {
+    ) {
         $this->linkService = $linkService;
         $this->configService = $configService;
         $this->sliderService = $sliderService;
