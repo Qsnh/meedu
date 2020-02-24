@@ -8,7 +8,9 @@ use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseChapter;
+use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Course\Services\CourseService;
+use App\Services\Member\Models\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 
@@ -207,6 +209,20 @@ class CourseServiceTest extends TestCase
         ]);
         $res = $this->courseService->getRecCourses(10);
         $this->assertEquals(3, count($res));
+    }
+
+    public function test_recordUserCount()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create();
+        $this->courseService->recordUserCount($user->id, $course->id);
+        $this->assertTrue(CourseUserRecord::whereUserId($user->id)->whereCourseId($course->id)->exists());
+        $course->refresh();
+        $this->assertEquals(1, $course->user_count);
+        $this->courseService->recordUserCount($user->id, $course->id);
+        // 不会重复记录
+        $course->refresh();
+        $this->assertEquals(1, $course->user_count);
     }
 
 }

@@ -14,6 +14,7 @@ namespace App\Services\Course\Services;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
+use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -162,5 +163,19 @@ class CourseService implements CourseServiceInterface
             return $item;
         }, $list);
         return $list;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     */
+    public function recordUserCount(int $userId, int $courseId): void
+    {
+        $userCourseRecord = CourseUserRecord::whereUserId($userId)->whereCourseId($courseId)->exists();
+        if ($userCourseRecord) {
+            return;
+        }
+        CourseUserRecord::create(['user_id' => $userId, 'course_id' => $courseId]);
+        Course::whereId($courseId)->increment('user_count', 1);
     }
 }

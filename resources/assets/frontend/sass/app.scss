@@ -244,7 +244,7 @@ footer.footer-box {
     height: 72px;
     float: left;
     line-height: 72px;
-    font-size: 14px;
+    font-size: 16px;
     color: rgba(102, 102, 102, 1);
     cursor: pointer;
 
@@ -254,7 +254,6 @@ footer.footer-box {
   }
 
   .menu-item.active {
-    font-size: 16px;
     font-weight: 600;
 
     a {
@@ -265,7 +264,6 @@ footer.footer-box {
   }
 
   .menu-item:hover {
-    font-size: 16px;
     font-weight: 600;
 
     a {
@@ -341,6 +339,12 @@ footer.footer-box {
     float: left;
     margin-right: 27px;
     margin-bottom: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+
+    &:hover {
+      box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+    }
 
     .course-thumb {
       width: 280px;
@@ -423,8 +427,13 @@ footer.footer-box {
     a {
       font-size: 14px;
       font-weight: 400;
-      color: rgba(256, 256, 256, .4);
+      color: rgba(256, 256, 256, .2);
       margin-right: 50px;
+
+      &:hover {
+        color: rgba(256, 256, 256, 1);
+        text-decoration: none;
+      }
     }
   }
 }

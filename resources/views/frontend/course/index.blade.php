@@ -50,8 +50,8 @@
                 </div>
             </div>
 
-            <div class="col-12 align-self-center">
-                {{$courses->render()}}
+            <div class="col-12">
+                {!! str_replace('pagination', 'pagination justify-content-center', $courses->render()) !!}
             </div>
         </div>
     </div>

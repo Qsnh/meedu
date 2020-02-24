@@ -104,6 +104,7 @@ class VideoController extends FrontendController
         $canSeeVideo = false;
         if (Auth::check()) {
             $canSeeVideo = $this->businessState->canSeeVideo($this->user(), $video['course'], $video);
+            $canSeeVideo && $this->courseService->recordUserCount(Auth::id(), $course['id']);
         }
 
         $title = $video['title'];
