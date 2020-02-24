@@ -37,9 +37,6 @@
                     <div class="menu-item">
                         <a href="{{route('courses')}}?scene=sub">订阅最多</a>
                     </div>
-                    <div class="menu-item">
-                        <a href="{{route('courses')}}?scene=mysub">我的订阅</a>
-                    </div>
 
                     <div class="menu-announcement">
                         <a href="">我是公告的内容</a>

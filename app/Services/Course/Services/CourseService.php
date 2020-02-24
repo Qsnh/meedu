@@ -54,9 +54,10 @@ class CourseService implements CourseServiceInterface
      * @param int $page
      * @param int $pageSize
      * @param int $categoryId
+     * @param string $scene
      * @return array
      */
-    public function simplePage(int $page, int $pageSize, int $categoryId = 0): array
+    public function simplePage(int $page, int $pageSize, int $categoryId = 0, string $scene = ''): array
     {
         $query = Course::with(['category'])
             ->show()->published()
@@ -65,7 +66,14 @@ class CourseService implements CourseServiceInterface
             }])
             ->when($categoryId, function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
-            })->orderByDesc('published_at');
+            });
+        if (!$scene) {
+            $query->orderByDesc('published_at');
+        } elseif ($scene == 'sub') {
+            $query->orderByDesc('user_count');
+        } elseif ($scene == 'latest') {
+            $query->latest();
+        }
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
         $list = $this->addLatestVideos($list);

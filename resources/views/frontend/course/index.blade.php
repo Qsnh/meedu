@@ -15,9 +15,6 @@
                     <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
                         <a href="{{route('courses')}}?{{$queryParams(['scene' => 'sub'])}}">订阅最多</a>
                     </div>
-                    <div class="menu-item {{$scene == 'mysub' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{$queryParams(['scene' => 'mysub'])}}">我的订阅</a>
-                    </div>
                 </div>
 
                 <div class="category-box">

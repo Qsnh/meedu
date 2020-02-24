@@ -88,13 +88,13 @@ class CourseController extends FrontendController
     public function index(Request $request)
     {
         $categoryId = intval($request->input('category_id'));
-        $scene = $request->input('scene');
+        $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
         [
             'total' => $total,
             'list' => $list
-        ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
+        ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
         $courses = $this->paginator($list, $total, $page, $pageSize);
         $courses->appends([
             'page' => $request->input('page'),
