@@ -19,30 +19,6 @@
 
 如果您想使用MeEdu但是却不会安装MeEdu，那么您可以考虑MeEduCloud平台提供的在线装服务(这是一项收费服务)，它可以自动的帮您将MeEdu安装到您的服务器上。[点击查看详情](https://meedu.vip/hostPackages)
 
-## 使用站点
-
-| 站点名 | 地址 |
-| --- | --- |
-| [小滕教学](https://58hualong.com) | `https://58hualong.com` |
-| [青萍教育](http://www.qingpingjiaoyu.com/) | `http://www.qingpingjiaoyu.com` |
-| [聆鹿故事](http://edu.ilinglu.cn/) | `http://edu.ilinglu.cn` |
-| **生活趣学堂** | 微信公众号：生活趣学堂 |
-| [Seekdeer(K线教学)](http://www.seekdeer.com/) | `http://www.seekdeer.com/` |
-
-## 有哪些企业在使用
-
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="middle">
-        <a href="https://video.heyhighschool.com?from=meedu_github" target="_blank" title="上海高育教育科技有限公司">
-          <img width="100px" title="上海高育教育科技有限公司" src="https://user-images.githubusercontent.com/12671205/60409095-92e02780-9bf4-11e9-8cf6-cb6b75a718f3.jpg">
-        </a>
-      </td>
-    </tr><tr></tr>
-  </tbody>
-</table>
-
 ## 当前功能概览
 
 - [x] [微信小程序](https://github.com/Meedu/wechat-mini)
