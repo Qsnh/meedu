@@ -51,7 +51,8 @@
                                     <form class="form-inline ml-4" method="get" action="{{route('search')}}">
                                         @csrf
                                         <div class="input-group">
-                                            <input type="text" class="form-control search-input" name="keywords" placeholder="请输入关键字"
+                                            <input type="text" class="form-control search-input" name="keywords"
+                                                   placeholder="请输入关键字"
                                                    required>
                                             <div class="input-group-append">
                                                 <button class="btn btn-primary search-button" type="submit">
@@ -107,19 +108,13 @@
 </main>
 
 @section('footer')
-    <footer class="container-fluid footer-box py-3">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                        <span>
-                            © {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn" class="c-2"
-                                                                        target="_blank">{{$gConfig['system']['icp']}}</a>
-                        </span>
-                            <span class="float-right">PowerBy <a href="https://meedu.vip" class="c-2" target="_blank">MeEdu</a></span>
-                        </div>
-                    </div>
+    <footer class="container-fluid footer-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>Powered By <a href="https://meedu.vip" target="_blank">MeEdu</a></p>
+                    <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn"
+                                                                   target="_blank">{{$gConfig['system']['icp']}}</a></p>
                 </div>
             </div>
         </div>

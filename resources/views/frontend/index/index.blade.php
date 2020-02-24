@@ -1,144 +1,113 @@
 @extends('layouts.app')
 
+@section('css')
+    <link crossorigin="anonymous" integrity="sha384-K6LrEaceM4QP87RzJ7R4CDXcFN4cFW/A5Q7/fEp/92c2WV+woVw9S9zKDO23sNS+"
+          href="https://lib.baomitu.com/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
-    <div class="container-fluid py-5 index-course-banner">
+    <div class="container slider-box">
         <div class="row">
             <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        @if($gRecCourses)
-                            <div class="col-md-6 col-12 text-center pr-2">
-                                <a href="{{route('course.show', [$gRecCourses[0]['id'], $gRecCourses[0]['slug']])}}">
-                                    <div class="box-shadow1">
-                                        <img src="{{$gRecCourses[0]['thumb']}}" width="100%" height="360"
-                                             class="br-8"
-                                             alt="{{$gRecCourses[0]['title']}}">
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6 col-12">
-                                <div class="row">
-                                    @foreach($gRecCourses as $index => $courseItem)
-                                        @if($index == 0)
-                                            @continue
-                                        @endif
-                                        @if($index == 5)
-                                            @break
-                                        @endif
-                                        <div class="col-md-6 col-12 {{in_array($index, [1, 2]) ? 'pb-10px' : ''}} {{in_array($index, [3, 4]) ? 'pt-10px' : ''}}">
-                                            <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
-                                                <div class="box-shadow1">
-                                                    <img src="{{$courseItem['thumb']}}" width="100%" height="170"
-                                                         class="br-8 box-shadow1"
-                                                         alt="{{$courseItem['title']}}">
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid bg-fff py-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="fw-400 mb-4 c-primary">最新课程
-                            </h2>
-                            <div class="row">
-                                @foreach($gLatestCourses as $index => $courseItem)
-                                    @if($index == 8)
-                                        @break
-                                    @endif
-                                    <div class="col-12 col-md-3 pb-24px video-item">
-                                        <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
-                                            <div class="video-item-box box-shadow1 br-8 t1 float-left">
-                                                <div class="video-thumb">
-                                                    <div class="video-thumb-img"
-                                                         style="background: url('{{$courseItem['thumb']}}') center center no-repeat;background-size: cover;">
-                                                    </div>
-                                                </div>
-                                                <div class="video-title py-3 float-left">
-                                                    <span>{{$courseItem['title']}}</span>
-                                                </div>
-                                                <div class="video-extra pb-3">
-                                                    <span class="float-left"><i class="fa fa-file-video-o"></i> {{$courseItem['videos_count']}}</span>
-                                                    <span class="float-right">
-                                                        @if($courseItem['category'])
-                                                            <i class="fa fa-tag"></i> {{$courseItem['category']['name']}}
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid bg-f6 py-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <h2 class="fw-400 mb-4 c-primary">套餐 <a href="{{route('role.index')}}" class="fs-14px ml-2">全部套餐</a>
-                            </h2>
-                        </div>
-                        @foreach($gRoles as $index => $roleItem)
-                            @if($index == 3)
-                                @break
-                            @endif
-                            <div class="col-md-4 col-12 text-center role-item mb-3">
-                                <a href="{{route('member.role.buy', [$roleItem['id']])}}">
-                                    <div class="role-item-box px-3 py-5 {{$index == 1 ? 'bg-primary' : 'bg-fff'}} br-8 box-shadow1 t1">
-                                        <p class="pb-3 name {{$index == 1 ? 'c-fff' : ''}}">{{$roleItem['name']}}</p>
-                                        <p class="price {{$index == 1 ? 'c-fff' : ''}}"><b>￥{{$roleItem['charge']}}</b>
-                                        </p>
-                                        @foreach($roleItem['desc_rows'] as $item)
-                                            <p class="p-0 desc-item {{$index == 1 ? 'c-fff' : ''}}">{{$item}}</p>
-                                        @endforeach
-                                    </div>
-                                </a>
-                            </div>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        @foreach($sliders as $slider)
+                            <a class="swiper-slide" href="{{$slider['url']}}">
+                                <img src="{{$slider['thumb']}}" width="100%" height="400">
+                            </a>
                         @endforeach
                     </div>
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid bg-1 pt-4">
+    <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 border-bottom link">
-                            <h5 class="c-2">友情链接</h5>
-                            <p>
-                                @foreach($links as $link)
-                                    <a href="{{$link['url']}}" target="_blank"
-                                       class="m-2 c-2 fs-14px">{{$link['name']}}</a>
-                                @endforeach
-                            </p>
-                        </div>
+                <div class="course-menu-box">
+                    <div class="menu-item active">
+                        <a href="{{route('courses')}}">所有课程</a>
                     </div>
+                    <div class="menu-item">
+                        <a href="{{route('courses')}}?scene=latest">最新课程</a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{route('courses')}}?scene=sub">订阅最多</a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{route('courses')}}?scene=mysub">我的订阅</a>
+                    </div>
+
+                    <div class="menu-announcement">
+                        <a href="">我是公告的内容</a>
+                    </div>
+                </div>
+
+                <div class="category-box">
+                    <a href="{{route('courses')}}" class="category-box-item active">不限</a>
+                    @foreach($categories as $category)
+                        <a href="{{route('courses')}}?category_id={{$category['id']}}"
+                           class="category-box-item">{{$category['name']}}</a>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="course-list-box">
+                    @foreach($courses as $index => $course)
+                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
+                           class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
+                            <div class="course-thumb">
+                                <img src="{{$course['thumb']}}" width="280" height="210" alt="{{$course['title']}}">
+                            </div>
+                            <div class="course-title">
+                                {{$course['title']}}
+                            </div>
+                            <div class="course-category">
+                                <span class="video-count-label">课时：{{$course['videos_count']}}节</span>
+                                <span class="category-label">{{$course['category']['name']}}</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-12 align-self-center">
+                {{$courses->render()}}
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid friend-link-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 friend-link-box-logo">
+                    <img src="{{$gConfig['system']['logo']}}" height="37" alt="{{config('app.name')}}">
+                </div>
+                <div class="col-12 friend-link-box-link">
+                    @foreach($links as $link)
+                        <a href="{{$link['url']}}" target="_blank">{{$link['name']}}</a>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script crossorigin="anonymous" integrity="sha384-fOtis9P3S4B2asdoye1/YBpXMaRmuXu925gZhfQA/gnU3dLnftD8zvpk/lhP0YSG"
+            src="https://lib.baomitu.com/Swiper/4.5.0/js/swiper.min.js"></script>
+    <script>
+        var mySwiper = new Swiper('.swiper-container', {
+            autoplay: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    </script>
 @endsection

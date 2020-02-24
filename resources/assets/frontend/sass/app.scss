@@ -11,6 +11,13 @@ $ce5: #e5e5e5;
 
 $border-color: $c2 !default;
 
+$container-max-widths: (
+        sm: 540px,
+        md: 1230px,
+        lg: 1230px,
+        xl: 1230px
+) !default;
+
 @import "~bootstrap/scss/bootstrap";
 
 a {
@@ -123,9 +130,19 @@ a {
 }
 
 footer.footer-box {
-  font-size: 11px;
-  background-color: $bg1;
-  color: $c1;
+  background: #0e0c1e;
+  padding-top: 30px;
+
+  p {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(256, 256, 256, .4);
+    margin-bottom: 30px;
+
+    a {
+      color: rgba(256, 256, 256, .4);
+    }
+  }
 }
 
 .nav-box {
@@ -198,6 +215,216 @@ footer.footer-box {
       text-decoration: none;
       cursor: pointer;
       box-shadow: 0px 2px 4px 0px $ce5;
+    }
+  }
+}
+
+.slider-box {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 400px;
+
+  img {
+    border-radius: 8px;
+  }
+}
+
+.course-menu-box {
+  width: 100%;
+  height: 72px;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px 0px #e5e5e5;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .menu-item {
+    width: 124px;
+    height: 72px;
+    float: left;
+    line-height: 72px;
+    font-size: 14px;
+    color: rgba(102, 102, 102, 1);
+    cursor: pointer;
+
+    a {
+      color: rgba(102, 102, 102, 1);
+    }
+  }
+
+  .menu-item.active {
+    font-size: 16px;
+    font-weight: 600;
+
+    a {
+      padding-bottom: 24px;
+      color: $primary;
+      border-bottom: 4px solid $primary;
+    }
+  }
+
+  .menu-item:hover {
+    font-size: 16px;
+    font-weight: 600;
+
+    a {
+      color: $primary;
+      text-decoration: none;
+    }
+  }
+
+  .menu-announcement {
+    width: auto;
+    height: 52px;
+    float: right;
+    margin-top: 10px;
+    line-height: 52px;
+    background: rgba(255, 249, 215, 1);
+    box-shadow: 0px 2px 4px 0px rgba(229, 229, 229, 1);
+    border-radius: 27px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    a {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(222, 122, 11, 1);
+    }
+  }
+}
+
+.category-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+
+  .category-box-item {
+    display: inline-block;
+    width: auto;
+    height: 26px;
+    line-height: 26px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(153, 153, 153, 1);
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-right: 23px;
+    margin-bottom: 20px;
+  }
+
+  .category-box-item:hover {
+    text-decoration: none;
+    background-color: rgba(11, 118, 222, 0.2);
+    border-radius: 15px;
+    color: rgba(11, 118, 222, 1);
+  }
+
+  .category-box-item.active {
+    background-color: rgba(11, 118, 222, 0.2);
+    border-radius: 15px;
+    color: rgba(11, 118, 222, 1);
+  }
+}
+
+.course-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .course-list-item {
+    width: 280px;
+    height: 298px;
+    float: left;
+    margin-right: 27px;
+    margin-bottom: 40px;
+
+    .course-thumb {
+      width: 280px;
+      height: 210px;
+      float: left;
+
+      img {
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+      }
+    }
+
+    .course-title {
+      width: 100%;
+      height: 46px;
+      float: left;
+      background-color: #ffffff;
+      padding-left: 10px;
+      padding-right: 10px;
+      line-height: 46px;
+      font-size: 16px;
+      word-break: keep-all;
+      white-space: nowrap;
+      overflow: hidden;
+      color: #333333;
+    }
+
+    .course-category {
+      width: 100%;
+      height: auto;
+      float: left;
+      background-color: #ffffff;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 15px;
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+
+      .video-count-label {
+        font-size: 14px;
+        color: #666666;
+        line-height: 22px;
+      }
+
+      .category-label {
+        float: right;
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 10px;
+        line-height: 22px;
+        color: #ffffff;
+        background-color: rgba(102, 102, 102, .4);
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .course-list-item.last {
+    margin-right: -1px;
+  }
+}
+
+.pagination {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+.friend-link-box {
+  background-color: #120f22;
+
+  .friend-link-box-logo {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .friend-link-box-link {
+    padding-bottom: 50px;
+
+    a {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(256, 256, 256, .4);
+      margin-right: 50px;
     }
   }
 }
