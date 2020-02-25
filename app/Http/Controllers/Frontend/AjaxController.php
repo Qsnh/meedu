@@ -12,16 +12,23 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
+use App\Http\Requests\ApiV2\MobileLoginRequest;
 use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
+use App\Http\Requests\Frontend\LoginPasswordRequest;
+use App\Http\Requests\Frontend\PasswordResetRequest;
 use App\Services\Course\Services\VideoCommentService;
 use App\Services\Course\Services\CourseCommentService;
+use App\Http\Requests\Frontend\RegisterPasswordRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -152,5 +159,101 @@ class AjaxController extends BaseController
             'id' => $code['id'],
             'discount' => $code['invited_user_reward'],
         ]);
+    }
+
+    /**
+     * @param LoginPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passwordLoin(LoginPasswordRequest $request)
+    {
+        [
+            'mobile' => $mobile,
+            'password' => $password,
+        ] = $request->filldata();
+        $user = $this->userService->passwordLogin($mobile, $password);
+        if (!$user) {
+            return $this->error(__('mobile not exists or password error'));
+        }
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            return $this->error(__('current user was locked,please contact administrator'));
+        }
+        Auth::loginUsingId($user['id'], $request->has('remember'));
+
+        event(new UserLoginEvent($user['id']));
+
+        return $this->data(['redirect_url' => $this->redirectTo()]);
+    }
+
+    /**
+     * @param MobileLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function mobileLogin(MobileLoginRequest $request)
+    {
+        ['mobile' => $mobile] = $request->filldata();
+        $user = $this->userService->findMobile($mobile);
+        if (!$user) {
+            // 直接注册
+            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
+        }
+        if ($user['is_lock'] == FrontendConstant::YES) {
+            return $this->error(__('current user was locked,please contact administrator'));
+        }
+        Auth::loginUsingId($user['id'], $request->has('remember'));
+
+        event(new UserLoginEvent($user['id']));
+
+        return $this->data(['redirect_url' => $this->redirectTo()]);
+    }
+
+    /**
+     * @param RegisterPasswordRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(RegisterPasswordRequest $request)
+    {
+        [
+            'mobile' => $mobile,
+            'password' => $password,
+            'nick_name' => $nickname,
+        ] = $request->filldata();
+        $user = $this->userService->findNickname($nickname);
+        if ($user) {
+            return $this->error(__('nick_name.unique'));
+        }
+        $user = $this->userService->findMobile($mobile);
+        if ($user) {
+            return $this->error(__('mobile.unique'));
+        }
+        $this->userService->createWithMobile($mobile, $password, $nickname);
+
+        return $this->success();
+    }
+
+    /**
+     * @param PasswordResetRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passwordReset(PasswordResetRequest $request)
+    {
+        [
+            'mobile' => $mobile,
+            'password' => $password,
+        ] = $request->filldata();
+
+        $this->userService->findPassword($mobile, $password);
+
+        return $this->success();
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
+     */
+    protected function redirectTo()
+    {
+        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
+            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
+        return $callbackUrl;
     }
 }

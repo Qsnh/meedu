@@ -19,16 +19,22 @@ class CheckSmsCodeMiddleware
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param \Closure $next
      *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        $sessionKey = 'sms_'.$request->post('sms_captcha_key', '');
+        $sessionKey = 'sms_' . $request->post('sms_captcha_key', '');
         $captcha = session($sessionKey);
         if (!$captcha || $captcha != $request->post('sms_captcha', '')) {
-            flash('短信验证码错误');
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'code' => 1,
+                    'message' => __('mobile code error'),
+                ]);
+            }
+            flash(__('mobile code error'));
 
             return back();
         }

@@ -51,7 +51,7 @@ class RegisterController extends BaseController
         ] = $request->filldata();
         $user = $this->userService->findNickname($nickname);
         if ($user) {
-            flash(__('nickname.unique'));
+            flash(__('nick_name.unique'));
             return back();
         }
         $user = $this->userService->findMobile($mobile);

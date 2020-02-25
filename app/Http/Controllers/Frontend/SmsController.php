@@ -57,6 +57,11 @@ class SmsController extends FrontendController
         return $this->sendHandler($mobile, 'sms_mobile_bind', 'mobile_bind');
     }
 
+    public function sendMobileLogin($mobile)
+    {
+        return $this->sendHandler($mobile, 'sms_mobile_login', 'login');
+    }
+
     /**
      * @param $mobile
      * @param $sessionKey
@@ -71,6 +76,8 @@ class SmsController extends FrontendController
     {
         $code = mt_rand(1000, 10000);
         session([$sessionKey => $code]);
+        // TODO
+        return $this->data($code);
 
         $this->smsService->sendCode($mobile, $code, $templateId);
 

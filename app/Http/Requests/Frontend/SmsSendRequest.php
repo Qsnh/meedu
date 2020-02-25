@@ -20,7 +20,7 @@ class SmsSendRequest extends BaseRequest
         return [
             'captcha' => 'required|captcha',
             'mobile' => 'required',
-            'method' => ['required', Rule::in(['password_reset', 'register', 'mobile_bind'])],
+            'method' => ['required', Rule::in(['password_reset', 'register', 'mobile_bind', 'mobile_login'])],
         ];
     }
 

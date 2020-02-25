@@ -145,6 +145,116 @@ footer.footer-box {
   }
 }
 
+.auth-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1111;
+  background-color: rgba(0, 0, 0, .5);
+  display: none;
+
+  #auth-box-content {
+    margin-top: 200px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+
+    .login-box {
+      .login-box-title {
+        line-height: 24px;
+
+        .title {
+          font-size: 24px;
+          font-weight: 600;
+          color: rgba(51, 51, 51, 1);
+        }
+
+        .close-auth-box {
+          float: right;
+          line-height: 24px;
+          cursor: pointer;
+        }
+
+        .close-auth-box:hover {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+          -webkit-transition: -webkit-transform 1s linear;
+          transition: transform 1s linear;
+        }
+      }
+
+      .login-box-menu {
+        text-align: right;
+        font-size: 14px;
+        font-weight: 400;
+        color: $primary;
+        line-height: 14px;
+        padding-top: 36px;
+        padding-bottom: 36px;
+      }
+
+      .login-remember {
+        font-size: 14px;
+        color: #999999;
+        line-height: 14px;
+
+        .show-find-password {
+          border-left: 2px solid #D8D8D8;
+          padding-left: 5px;
+          margin-left: 5px;
+          line-height: 14px;
+          cursor: pointer;
+        }
+
+        .show-register-box {
+          cursor: pointer;
+        }
+      }
+
+      .auth-box-errors {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 64, 64, 1);
+        line-height: 14px;
+      }
+
+      .socialite-item {
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        line-height: 44px;
+        background-color: $primary;
+        opacity: .4;
+        color: #ffffff;
+        border-radius: 22px;
+        margin-right: 10px;
+        margin-top: 15px;
+      }
+
+      .socialite-item:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .show-login-box {
+    cursor: pointer;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+    color: $primary;
+    opacity: .6;
+  }
+
+  .cursor-pointer:hover {
+    opacity: 1;
+  }
+}
+
 .nav-box {
   box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
 

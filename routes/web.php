@@ -14,17 +14,24 @@
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 Route::redirect('/home', '/');
 Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
-
+// 登录
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
 Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:10,1']);
-
+// 注册
 Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
 Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['sms.check', 'throttle:10,1']);
-
+// 登出
 Route::post('/logout', 'Frontend\LoginController@logout')->name('logout');
-
+// 找回密码
 Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->name('password.request');
 Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:10,1', 'sms.check']);
+// Auth Ajax
+Route::group(['prefix' => 'ajax'], function () {
+    Route::post('/auth/login/password', 'Frontend\AjaxController@passwordLoin')->name('ajax.login.password');
+    Route::post('/auth/login/mobile', 'Frontend\AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
+    Route::post('/auth/register', 'Frontend\AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
+    Route::post('/auth/password/reset', 'Frontend\AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
+});
 
 // 发送短信
 Route::post('/sms/send', 'Frontend\SmsController@send')->name('sms.send');
