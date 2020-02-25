@@ -301,6 +301,40 @@
     </form>
 </script>
 
+<script id="mobile-bind-box" type="text/html">
+    <form class="login-box" action="{{route('ajax.mobile.bind')}}" method="post">
+        <div class="login-box-title" style="margin-bottom: 30px;">
+            <span class="title">手机号绑定</span>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="mobile" placeholder="请输入手机号">
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
+                <div class="input-group-append">
+                    <img src="{{ captcha_src() }}" class="captcha" width="120" height="36">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control" required>
+                <input type="hidden" name="sms_captcha_key" value="mobile_bind">
+                <div class="input-group-append">
+                    <button type="button" style="width: 120px;"
+                            class="send-sms-captcha btn btn-outline-primary">发送验证码
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group auth-box-errors"></div>
+        <div class="form-group mb-0">
+            <button type="button" class="btn btn-primary btn-block mobile-bind-button">立即绑定</button>
+        </div>
+    </form>
+</script>
+
 @section('footer')
     <footer class="container-fluid footer-box">
         <div class="container">
@@ -332,6 +366,11 @@
         $('.auth-box').show();
     };
 </script>
+@if($bindMobileState)
+    <script>
+        showAuthBox('mobile-bind-box');
+    </script>
+@endif
 @yield('js')
 <div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>

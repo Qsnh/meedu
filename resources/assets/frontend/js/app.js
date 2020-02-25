@@ -44,7 +44,7 @@ $(function () {
                 $(this).disabled = false;
                 $('.auth-box-errors').text(res.message);
             } else {
-                window.location = res.data.redirect_url;
+                window.location.reload();
             }
         }, 'json');
     }).on('click', '.captcha', function () {
@@ -120,7 +120,7 @@ $(function () {
                 $(this).disabled = false;
                 $('.auth-box-errors').text(res.message);
             } else {
-                window.location = res.data.redirect_url;
+                window.location.reload();
             }
         }, 'json');
     }).on('click', '.password-reset-button', function () {
@@ -186,6 +186,33 @@ $(function () {
                 // 成功跳转到登录界面
                 flashSuccess('注册成功');
                 showAuthBox('login-box');
+            }
+        }, 'json');
+    }).on('click', '.mobile-bind-button', function () {
+        let mobile = $('input[name="mobile"]').val();
+        let smsCaptcha = $('input[name="sms_captcha"]').val();
+        if (mobile === '' || smsCaptcha === '') {
+            $('.auth-box-errors').text('请输入手机号和短信验证码');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            mobile: mobile,
+            _token: token,
+            sms_captcha: smsCaptcha,
+            sms_captcha_key: 'mobile_bind'
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('绑定成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
             }
         }, 'json');
     });

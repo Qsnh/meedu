@@ -12,6 +12,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Services\Other\Services\NavService;
@@ -33,6 +34,17 @@ use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class GlobalShareMiddleware
 {
+
+    /**
+     * @var BusinessState
+     */
+    protected $businessState;
+
+    public function __construct(BusinessState $businessState)
+    {
+        $this->businessState = $businessState;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -79,6 +91,13 @@ class GlobalShareMiddleware
         // user变量共享
         $user = Auth::check() ? $userService->find(Auth::id(), ['role']) : [];
         View::share('user', $user);
+
+        // 是否需要绑定手机号
+        $bindMobileState = false;
+        if (Auth::check() && $this->businessState->isNeedBindMobile($user)) {
+            $bindMobileState = true;
+        }
+        View::share('bindMobileState', $bindMobileState);
 
         // 未读消息数量
         $unreadMessageCount = Auth::check() ? $notificationService->getUnreadCount() : 0;

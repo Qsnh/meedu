@@ -29,6 +29,7 @@ use App\Http\Requests\Frontend\PasswordResetRequest;
 use App\Services\Course\Services\VideoCommentService;
 use App\Services\Course\Services\CourseCommentService;
 use App\Http\Requests\Frontend\RegisterPasswordRequest;
+use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -244,6 +245,18 @@ class AjaxController extends BaseController
 
         $this->userService->findPassword($mobile, $password);
 
+        return $this->success();
+    }
+
+    /**
+     * @param MobileBindRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \App\Exceptions\ServiceException
+     */
+    public function mobileBind(MobileBindRequest $request)
+    {
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->bindMobile($mobile);
         return $this->success();
     }
 

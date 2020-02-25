@@ -76,8 +76,6 @@ class SmsController extends FrontendController
     {
         $code = mt_rand(1000, 10000);
         session([$sessionKey => $code]);
-        // TODO
-        return $this->data($code);
 
         $this->smsService->sendCode($mobile, $code, $templateId);
 

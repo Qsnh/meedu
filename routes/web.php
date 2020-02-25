@@ -31,6 +31,7 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::post('/auth/login/mobile', 'Frontend\AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
     Route::post('/auth/register', 'Frontend\AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
     Route::post('/auth/password/reset', 'Frontend\AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
+    Route::post('/auth/mobile/bind', 'Frontend\AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check']);
 });
 
 // 发送短信
