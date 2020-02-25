@@ -132,7 +132,7 @@
                 <input type="password" class="form-control" name="password" placeholder="请输入密码">
             </div>
             <div class="form-group login-remember">
-                <label class="remember"><input type="checkbox" name="remember"> 15天内免登陆</label>
+                <label class="remember"><input type="checkbox" name="remember"> 15天内免登录</label>
                 <span class="show-find-password" onclick="showAuthBox('password-find')">忘记密码</span>
                 <span class="show-register-box float-right" onclick="showAuthBox('register-box')">立即注册</span>
             </div>
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div class="form-group login-remember">
-                <label class="remember"><input type="checkbox" name="remember"> 15天内免登陆</label>
+                <label class="remember"><input type="checkbox" name="remember"> 15天内免登录</label>
             </div>
             <div class="form-group auth-box-errors"></div>
             <div class="form-group">
