@@ -13,7 +13,7 @@
             </form>
         @else
             <div class="text-center py-2">
-                请先 <a href="{{route('login')}}">登录</a>
+                请先 <a href="{{route('login')}}" @include('frontend.components.loginCheck')>登录</a>
             </div>
         @endif
     </div>

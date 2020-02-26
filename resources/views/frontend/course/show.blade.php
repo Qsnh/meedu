@@ -42,7 +42,8 @@
                             </div>
                             <div class="course-detail-price text-right">
                                 @if($course['charge'] > 0 && !$isBuy)
-                                    <a href="{{route('member.course.buy', [$course['id']])}}" class="btn btn-primary">
+                                    <a @include('frontend.components.loginCheck')
+                                       href="{{route('member.course.buy', [$course['id']])}}" class="btn btn-primary">
                                         立即购买 ￥{{$course['charge']}}
                                     </a>
                                 @endif

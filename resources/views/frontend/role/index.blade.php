@@ -16,7 +16,7 @@
                                 @break
                             @endif
                             <div class="col-md-3 col-12 text-center role-item mb-3">
-                                <a href="{{route('member.role.buy', [$roleItem['id']])}}">
+                                <a href="{{route('member.role.buy', [$roleItem['id']])}}" @include('frontend.components.loginCheck')>
                                     <div class="role-item-box px-3 py-5 {{$index == 1 ? 'bg-primary' : 'bg-fff'}} br-8 box-shadow1 t1">
                                         <p class="pb-3 name {{$index == 1 ? 'c-fff' : ''}}">{{$roleItem['name']}}</p>
                                         <p class="price {{$index == 1 ? 'c-fff' : ''}}"><b>￥{{$roleItem['charge']}}</b>
