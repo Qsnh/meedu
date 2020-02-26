@@ -65,28 +65,58 @@
                                 </ul>
 
                                 <a class="role-vip-button {{menu_active('role.index')}}"
-                                   href="{{route('role.index')}}">会员中心</a>
+                                   href="{{route('role.index')}}">
+                                    <p><img src="/images/icons/vip.png" width="24" height="24"></p>
+                                    <p>会员中心</p>
+                                </a>
 
                                 @if(!$user)
                                     <a class="login-button" onclick="showAuthBox('login-box')">登录</a>
                                 @else
-                                    <a href="{{route('member.messages')}}">
-                                        <i class="fa fa-comments"></i>
+                                    <a class="message-button {{menu_active('member.messages')}}"
+                                       href="{{route('member.messages')}}">
+                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>
+                                        <p>消息</p>
                                         @if($gUnreadMessageCount)
-                                            <span class="badge badge-danger">{{$gUnreadMessageCount}}</span>
+                                            <span class="message-count">{{$gUnreadMessageCount}}</span>
                                         @endif
                                     </a>
-                                    <div class="dropdown">
-                                        <a class="nav-link dropdown-toggle" href="javascript:void(0);"
+                                    <div class="dropdown user-avatar">
+                                        <a class="user-avatar-button" href="javascript:void(0);"
                                            id="navbarDropdown"
                                            role="button"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {{$user['nick_name']}}
+                                            <img src="{{$user['avatar']}}" width="40" height="40">
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{route('member')}}">会员中心</a>
+                                            <a class="dropdown-item" href="{{route('member')}}">
+                                                <img src="{{$user['avatar']}}" width="20" class="avatar"
+                                                     height="20"><span>{{$user['nick_name']}}</span>
+                                            </a>
+                                            @if($user['role'] ?? [])
+                                                <a class="dropdown-item vip" href="{{route('member.join_role_records')}}">
+                                                    <img src="/images/icons/vip.png" width="20"
+                                                         height="20"><span>{{$user['role']['name']}}</span>
+                                                </a>
+                                            @else
+                                                <a class="dropdown-item vip" href="{{route('role.index')}}">
+                                                    <img src="/images/icons/vip.png" width="20"
+                                                         height="20"><span>成为会员</span>
+                                                </a>
+                                            @endif
+                                            <a class="dropdown-item" href="{{route('member.courses')}}">
+                                                <img src="/images/icons/course.png" width="20"
+                                                     height="20"><span>我的课程</span>
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('member.orders')}}">
+                                                <img src="/images/icons/order.png" width="20"
+                                                     height="20"><span>订单信息</span>
+                                            </a>
                                             <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">安全退出</a>
+                                                             document.getElementById('logout-form').submit();">
+                                                <img src="/images/icons/logout.png" width="20" height="20">
+                                                <span>安全退出</span>
+                                            </a>
                                             <form class="d-none" id="logout-form" action="{{ route('logout') }}"
                                                   method="POST"
                                                   style="display: none;">

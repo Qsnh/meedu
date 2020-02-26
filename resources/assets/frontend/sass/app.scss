@@ -259,6 +259,10 @@ footer.footer-box {
   box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
 
   nav {
+    &.navbar {
+      padding: 0px;
+    }
+
     .nav-item {
       margin-right: 5px;
       font-size: 16px;
@@ -292,21 +296,88 @@ footer.footer-box {
 
     .role-vip-button {
       width: 80px;
-      height: 34px;
-      border-radius: 17px;
-      border: 1px solid $primary;
       text-align: center;
-      line-height: 34px;
       font-size: 14px;
       font-weight: 400;
-      color: $primary;
-      margin-right: 20px;
+      color: #E1A500;
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      p {
+        margin-bottom: 0px;
+      }
     }
 
-    .role-vip-button:hover {
+    .role-vip-button:hover, .message-button:hover, .user-avatar-button:hover, .role-vip-button.active, .message-button.active {
+      background-color: rgba(11, 118, 222, .1);
       text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0px 2px 4px 0px $ce5;
+    }
+
+    .message-button {
+      position: relative;
+      width: 80px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 400;
+      color: #999999;
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      p {
+        margin-bottom: 0px;
+      }
+
+      .message-count {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        z-index: 11;
+        border-radius: 6px;
+        background-color: #FF4040;
+        color: #ffffff;
+        font-size: 10px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+    }
+
+    .user-avatar {
+      .user-avatar-button {
+        display: inline-block;
+        width: 80px;
+        height: auto;
+        text-align: center;
+        padding: 15px 20px;
+        cursor: pointer;
+
+        img {
+          border-radius: 20px;
+        }
+      }
+
+      .dropdown-item {
+        height: 48px;
+        line-height: 48px;
+        font-size: 14px;
+        font-weight: 400;
+
+        &:hover {
+          background-color: rgba(11, 118, 222, .1);
+        }
+
+        img {
+          &.avatar {
+            border-radius: 10px;
+          }
+
+          margin-right: 10px;
+          margin-top: -1px;
+        }
+
+        &.vip {
+          color: #E1A500;
+        }
+      }
     }
 
     .login-button {
@@ -319,6 +390,7 @@ footer.footer-box {
       font-size: 14px;
       font-weight: 400;
       color: #ffffff;
+      margin-left: 10px;
     }
 
     .login-button:hover {
