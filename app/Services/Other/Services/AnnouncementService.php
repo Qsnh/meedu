@@ -22,4 +22,22 @@ class AnnouncementService implements AnnouncementServiceInterface
 
         return $a ? $a->toArray() : [];
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function findOrFail(int $id): array
+    {
+        $a = Announcement::findOrFail($id);
+        return $a->toArray();
+    }
+
+    /**
+     * @param int $id
+     */
+    public function viewTimesInc(int $id): void
+    {
+        Announcement::whereId($id)->increment('view_times');
+    }
 }

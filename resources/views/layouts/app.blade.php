@@ -45,7 +45,8 @@
                                     </li>
                                     @foreach($gNavs as $item)
                                         <li class="nav-item">
-                                            <a class="nav-link" href="{{$item['url']}}">{{$item['name']}}</a>
+                                            <a class="nav-link {{request()->url() == $item['url'] ? 'active' : ''}}"
+                                               href="{{$item['url']}}">{{$item['name']}}</a>
                                         </li>
                                     @endforeach
                                     <form class="form-inline ml-4" method="get" action="{{route('search')}}">

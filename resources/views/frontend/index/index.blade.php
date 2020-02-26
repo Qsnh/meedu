@@ -38,9 +38,11 @@
                         <a href="{{route('courses')}}?scene=sub">订阅最多</a>
                     </div>
 
-                    <div class="menu-announcement">
-                        <a href="">我是公告的内容</a>
-                    </div>
+                    @if($gAnnouncement)
+                        <div class="menu-announcement">
+                            <a href="{{route('announcement.show', [$gAnnouncement['id']])}}">{{$gAnnouncement['title']}}</a>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="category-box">

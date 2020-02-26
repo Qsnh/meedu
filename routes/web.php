@@ -57,6 +57,9 @@ Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
 // 支付回调
 Route::post('/payment/callback/{payment}', 'Frontend\PaymentController@callback')->name('payment.callback');
 
+// 公告
+Route::get('/announcement/{id}', 'Frontend\AnnouncementController@show')->name('announcement.show');
+
 Route::group([
     'prefix' => '/member',
     'middleware' => ['auth'],

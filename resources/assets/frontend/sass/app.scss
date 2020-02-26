@@ -843,6 +843,22 @@ footer.footer-box {
   }
 }
 
+.announcement-title {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px dashed #dddddd;
+  text-align: center;
+
+  .announcement-intro {
+    font-size: 14px;
+    color: #bbbbbb;
+  }
+}
+
+.announcement-content {
+  padding: 10px 20px;
+}
+
 @include media-breakpoint-down(md) {
   .course-fixed-menu {
     display: none;
