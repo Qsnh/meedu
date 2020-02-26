@@ -11,6 +11,7 @@
 
 namespace App\Http\Requests\Backend\Administrator;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\BaseRequest;
 
 class AdministratorRequest extends BaseRequest
@@ -66,7 +67,7 @@ class AdministratorRequest extends BaseRequest
     public function filldata()
     {
         $data = ['name' => $this->input('name', '')];
-        $this->input('password') && $data['password'] = bcrypt($this->input('password'));
+        $this->input('password') && $data['password'] = Hash::make($this->input('password'));
         if ($this->isMethod('post')) {
             $data['email'] = $this->input('email');
         }

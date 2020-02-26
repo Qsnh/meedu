@@ -13,6 +13,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -86,7 +87,7 @@ class Administrator extends Authenticatable implements JWTSubject
         $data = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            'password' => Hash::make($request->input('password')),
             'last_login_ip' => '',
             'last_login_date' => '',
         ];

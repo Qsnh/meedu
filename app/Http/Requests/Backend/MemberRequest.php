@@ -12,6 +12,7 @@
 namespace App\Http\Requests\Backend;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class MemberRequest extends BaseRequest
 {
@@ -58,7 +59,7 @@ class MemberRequest extends BaseRequest
             'avatar' => $this->post('avatar'),
             'nick_name' => $this->post('nick_name'),
             'mobile' => $this->post('mobile'),
-            'password' => bcrypt($this->post('password')),
+            'password' => Hash::make($this->post('password')),
             'is_active' => User::ACTIVE_YES,
         ];
     }

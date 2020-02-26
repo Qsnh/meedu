@@ -11,6 +11,7 @@
 
 namespace App\Http\Requests\Backend\Administrator;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\BaseRequest;
 
 class EditPasswordRequest extends BaseRequest
@@ -54,6 +55,6 @@ class EditPasswordRequest extends BaseRequest
      */
     public function filldata()
     {
-        return ['password' => bcrypt($this->input('new_password'))];
+        return ['password' => Hash::make($this->input('new_password'))];
     }
 }
