@@ -21,17 +21,25 @@ class CourseVideoController extends BaseController
     public function index(Request $request)
     {
         $keywords = $request->input('keywords', '');
+        $courseId = $request->input('course_id');
+        $sort = $request->input('sort', 'created_at');
+        $order = $request->input('order', 'desc');
 
         $videos = Video::with(['course'], ['chapter'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('title', 'like', "{$keywords}%");
             })
-            ->orderByDesc('published_at')
-            ->paginate($request->input('size', 12));
+            ->when($courseId, function ($query) use ($courseId) {
+                $query->whereCourseId($courseId);
+            })
+            ->orderBy($sort, $order)
+            ->paginate($request->input('size', 20));
 
         $videos->appends($request->input());
 
-        return $this->successData($videos);
+        $courses = \App\Services\Course\Models\Course::select(['id', 'title'])->get();
+
+        return $this->successData(compact('videos', 'courses'));
     }
 
     public function createParams()

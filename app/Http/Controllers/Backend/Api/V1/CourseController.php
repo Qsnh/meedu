@@ -23,15 +23,22 @@ class CourseController extends BaseController
     public function index(Request $request)
     {
         $keywords = $request->input('keywords', '');
+        $cid = $request->input('cid');
+        $sort = $request->input('sort', 'created_at');
+        $order = $request->input('order', 'desc');
         $courses = Course::when($keywords, function ($query) use ($keywords) {
             return $query->where('title', 'like', '%' . $keywords . '%');
+        })->when($cid, function ($query) use ($cid) {
+            return $query->whereCategoryId($cid);
         })
-            ->orderByDesc('created_at')
+            ->orderBy($sort, $order)
             ->paginate(12);
 
         $courses->appends($request->input());
 
-        return $this->successData($courses);
+        $categories = CourseCategory::select(['id', 'name'])->orderBy('sort')->get();
+
+        return $this->successData(compact('courses', 'categories'));
     }
 
     public function create()

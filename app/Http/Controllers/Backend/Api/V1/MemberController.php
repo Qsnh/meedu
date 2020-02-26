@@ -11,9 +11,11 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Services\Member\Models\Role;
+use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
@@ -24,17 +26,26 @@ class MemberController extends BaseController
     public function index(Request $request)
     {
         $keywords = $request->input('keywords', '');
+        $roleId = $request->input('role_id');
+        $sort = $request->input('sort', 'created_at');
+        $order = $request->input('order', 'desc');
 
         $members = User::with(['role'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('nick_name', 'like', "%{$keywords}%")
                     ->orWhere('mobile', 'like', "%{$keywords}%");
-            })->orderByDesc('created_at')
-            ->paginate($request->input('size', 12));
+            })
+            ->when($roleId, function ($query) use ($roleId) {
+                $query->whereRoleId($roleId)->where('role_expired_at', '>', Carbon::now());
+            })
+            ->orderBy($sort, $order)
+            ->paginate($request->input('size', 20));
 
         $members->appends($request->input());
 
-        return $this->successData($members);
+        $roles = Role::select(['id', 'name'])->get();
+
+        return $this->successData(compact('members', 'roles'));
     }
 
     public function show($id)
