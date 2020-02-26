@@ -53,7 +53,9 @@ class Addons
             if (!$config) {
                 continue;
             }
-            $rows[$dir] = json_decode($config, true);
+            $data = json_decode($config, true);
+            $data['sign'] = $this->file->name($dir);
+            $rows[$dir] = $data;
         }
 
         return $rows;
@@ -104,5 +106,52 @@ class Addons
         }
 
         return json_decode($this->file->get($this->providersMapFile));
+    }
+
+    /**
+     * 启用插件
+     *
+     * @param $sign
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function enabled($sign)
+    {
+        $path = base_path('addons/' . $sign);
+        if (!$this->file->isDirectory($path)) {
+            throw new \Exception('插件不存在');
+        }
+        $providers = $this->file->glob($path . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
+        if (empty($providers)) {
+            throw new \Exception('插件完整');
+        }
+        $providersBox = [];
+        foreach ($providers as $provider) {
+            $providerName = pathinfo($provider, PATHINFO_FILENAME);
+            $namespace = "\\Addons\\{$sign}\\{$providerName}";
+            $providersBox[] = $namespace;
+        }
+        $loadedProviders = $this->getProvidersMap();
+        $loadedProviders = array_merge($loadedProviders, $providersBox);
+        $this->file->put($this->providersMapFile, json_encode($loadedProviders));
+    }
+
+    /**
+     * 禁用插件
+     *
+     * @param $sign
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function disabled($sign)
+    {
+        $loadedProviders = $this->getProvidersMap();
+        $data = [];
+        foreach ($loadedProviders as $loadedProvider) {
+            $arr = explode('\\', $loadedProvider);
+            if ($arr[2] != $sign) {
+                $data[] = $loadedProvider;
+            }
+        }
+
+        $this->file->put($this->providersMapFile, json_encode($data));
     }
 }

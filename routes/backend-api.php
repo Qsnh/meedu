@@ -196,4 +196,5 @@ Route::group(['middleware' => ['auth:administrator']], function () {
 
     // 插件
     Route::get('/addons', 'AddonsController@index');
+    Route::post('/addons/switch', 'AddonsController@switchHandler');
 });
