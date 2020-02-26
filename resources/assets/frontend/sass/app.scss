@@ -355,27 +355,35 @@ footer.footer-box {
         }
       }
 
-      .dropdown-item {
-        height: 48px;
-        line-height: 48px;
-        font-size: 14px;
-        font-weight: 400;
+      .dropdown-menu {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        min-width: 126px;
 
-        &:hover {
-          background-color: rgba(11, 118, 222, .1);
-        }
+        .dropdown-item {
+          height: 48px;
+          width: 126px !important;
+          line-height: 48px;
+          font-size: 14px;
+          font-weight: 400;
+          padding: 0px 17px !important;
 
-        img {
-          &.avatar {
-            border-radius: 10px;
+          &:hover {
+            background-color: rgba(11, 118, 222, .1);
           }
 
-          margin-right: 10px;
-          margin-top: -1px;
-        }
+          img {
+            &.avatar {
+              border-radius: 10px;
+            }
 
-        &.vip {
-          color: #E1A500;
+            margin-right: 10px;
+            margin-top: -1px;
+          }
+
+          &.vip {
+            color: #E1A500;
+          }
         }
       }
     }
