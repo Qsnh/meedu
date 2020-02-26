@@ -41,7 +41,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link {{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}"
-                                           href="{{route('courses')}}">课程</a>
+                                           href="{{route('courses')}}">所有课程</a>
                                     </li>
                                     @foreach($gNavs as $item)
                                         <li class="nav-item">

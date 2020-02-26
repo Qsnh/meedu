@@ -35,16 +35,6 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    'directmail' => [
-        'app_key' => '',
-        'app_secret' => '',
-        'region' => 'cn-beijing',
-        'account' => [
-            'alias' => '',
-            'name' => '',
-        ]
-    ],
-
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID', ''),
         'client_secret' => env('GITHUB_CLIENT_SECRET', ''),

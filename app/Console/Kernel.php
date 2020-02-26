@@ -47,13 +47,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // 定时备份[每天凌晨5点]
-        $schedule->command('meedu:backup')
-            ->withoutOverlapping()
-            ->onOneServer()
-            ->dailyAt('05:00')
-            ->appendOutputTo(storage_path('logs/backup'));
-
         // 每30分钟
         $schedule->command('order:pay:timeout')
             ->onOneServer()

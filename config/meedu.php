@@ -160,8 +160,6 @@ return [
             'path' => resource_path('views'),
         ],
         'sms' => 'yunpian',
-        // 备份开关
-        'backup' => 0,
         // editor
         'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
     ],

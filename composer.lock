@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4b661488ed20e0073ead2f1f46ab76f",
+    "content-hash": "11c690cb2257c916a60d8bbd71770599",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -957,56 +957,6 @@
             "time": "2019-07-01T23:21:34+00:00"
         },
         {
-            "name": "hyancat/aliyun-direct-mail",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HyanCat/aliyun-direct-mail.git",
-                "reference": "1887f7178e5d6642a106509b097bf1350aa62dad"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HyanCat/aliyun-direct-mail/zipball/1887f7178e5d6642a106509b097bf1350aa62dad",
-                "reference": "1887f7178e5d6642a106509b097bf1350aa62dad",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "illuminate/support": "~5.0|~6.0",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "HyanCat\\DirectMail\\AliyunDirectMailServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "HyanCat\\DirectMail\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "HyanCat",
-                    "email": "hyancat@live.cn"
-                }
-            ],
-            "description": "阿里云邮件推送 for Laravel.",
-            "time": "2019-12-07T06:35:49+00:00"
-        },
-        {
             "name": "intervention/image",
             "version": "2.5.1",
             "source": {
@@ -1769,16 +1719,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.63",
+            "version": "1.0.64",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6"
+                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8132daec326565036bc8e8d1876f77ec183a7bd6",
-                "reference": "8132daec326565036bc8e8d1876f77ec183a7bd6",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d13c43dbd4b791f815215959105a008515d1a2e0",
+                "reference": "d13c43dbd4b791f815215959105a008515d1a2e0",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1796,7 +1746,7 @@
             },
             "require-dev": {
                 "phpspec/phpspec": "^3.4",
-                "phpunit/phpunit": "^5.7.10"
+                "phpunit/phpunit": "^5.7.26"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
@@ -1855,7 +1805,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-01-04T16:30:31+00:00"
+            "time": "2020-02-05T18:14:17+00:00"
         },
         {
             "name": "league/html-to-markdown",
@@ -4057,188 +4007,6 @@
             "time": "2019-09-06T15:27:03+00:00"
         },
         {
-            "name": "spatie/db-dumper",
-            "version": "2.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "ccb7dd7557cd119b21ea853a893da4d1b0ff08b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/ccb7dd7557cd119b21ea853a893da4d1b0ff08b6",
-                "reference": "ccb7dd7557cd119b21ea853a893da4d1b0ff08b6",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": "^7.2",
-                "symfony/process": "^4.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.0|^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\DbDumper\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Dump databases",
-            "homepage": "https://github.com/spatie/db-dumper",
-            "keywords": [
-                "database",
-                "db-dumper",
-                "dump",
-                "mysqldump",
-                "spatie"
-            ],
-            "time": "2019-11-11T10:40:42+00:00"
-        },
-        {
-            "name": "spatie/laravel-backup",
-            "version": "5.10.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "20598fb6fd8695809ffceacfbaf22a816f546bca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/20598fb6fd8695809ffceacfbaf22a816f546bca",
-                "reference": "20598fb6fd8695809ffceacfbaf22a816f546bca",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "laravel/framework": "~5.5.0|~5.6.0|~5.5.0|~5.7.0",
-                "league/flysystem": "^1.0.27",
-                "php": "^7.1",
-                "spatie/db-dumper": "^2.10",
-                "spatie/temporary-directory": "^1.1",
-                "symfony/finder": "^3.3|^4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "orchestra/testbench": "~3.5.0|~3.6.0|~3.7.0",
-                "phpunit/phpunit": "^7.3"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "Allows notifications to be sent via Slack"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\Backup\\BackupServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Backup\\": "src"
-                },
-                "files": [
-                    "src/Helpers/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel 5 package to backup your application",
-            "homepage": "https://github.com/spatie/laravel-backup",
-            "keywords": [
-                "backup",
-                "database",
-                "laravel-backup",
-                "spatie"
-            ],
-            "time": "2018-08-24T09:10:11+00:00"
-        },
-        {
-            "name": "spatie/temporary-directory",
-            "version": "1.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/temporary-directory.git",
-                "reference": "fcb127e615700751dac2aefee0ea2808ff3f5bb1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/fcb127e615700751dac2aefee0ea2808ff3f5bb1",
-                "reference": "fcb127e615700751dac2aefee0ea2808ff3f5bb1",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\TemporaryDirectory\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alex Vanderbist",
-                    "email": "alex@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Easily create, use and destroy temporary directories",
-            "homepage": "https://github.com/spatie/temporary-directory",
-            "keywords": [
-                "spatie",
-                "temporary-directory"
-            ],
-            "time": "2019-12-15T18:52:09+00:00"
-        },
-        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.2.3",
             "source": {
@@ -4862,16 +4630,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ce8743441da64c41e2a667b8eb66070444ed911e"
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ce8743441da64c41e2a667b8eb66070444ed911e",
-                "reference": "ce8743441da64c41e2a667b8eb66070444ed911e",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/3a50be43515590faf812fbd7708200aabc327ec3",
+                "reference": "3a50be43515590faf812fbd7708200aabc327ec3",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4913,7 +4681,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-17T21:56:56+00:00"
+            "time": "2020-01-04T13:00:46+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -5649,16 +5417,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b"
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b84501ad50adb72a94fb460a5b5c91f693e99c9b",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f5697ab4cb14a5deed7473819e63141bf5352c36",
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -5700,7 +5468,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-06T10:06:46+00:00"
+            "time": "2020-01-09T09:50:08+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -10077,7 +9845,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "hyancat/aliyun-direct-mail": 20,
         "socialiteproviders/weixin-web": 20,
         "tymon/jwt-auth": 5
     },
