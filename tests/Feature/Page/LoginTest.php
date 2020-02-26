@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Page;
 
-use App\Services\Course\Models\Video;
 use App\Services\Member\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 

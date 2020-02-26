@@ -3,7 +3,6 @@
 
 namespace Tests\Services\Member;
 
-
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Interfaces\UserServiceInterface;

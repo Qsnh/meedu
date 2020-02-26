@@ -11,7 +11,7 @@ use Tests\OriginalTestCase;
 class TemplateSwitchCommandTest extends OriginalTestCase
 {
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $config = [];
         $config['meedu.system.theme.use'] = 'default';

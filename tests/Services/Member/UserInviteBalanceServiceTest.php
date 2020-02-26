@@ -3,7 +3,6 @@
 
 namespace Tests\Services\Member;
 
-
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserInviteBalanceRecord;

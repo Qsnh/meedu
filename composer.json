@@ -17,7 +17,7 @@
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "jacobcyl/ali-oss-storage": "^2.1",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "5.8.*",
         "laravel/socialite": "^3.2",
         "laravel/tinker": "~1.0",
         "league/html-to-markdown": "^4.8",
@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
-        "darkaonline/l5-swagger": "5.7.*",
+        "darkaonline/l5-swagger": "5.8.*",
         "doctrine/dbal": "^2.9",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",

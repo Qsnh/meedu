@@ -4,7 +4,6 @@
 namespace Tests\Feature\Api\V2;
 
 
-use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class Base extends TestCase

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Page;
 
 use App\Services\Course\Models\Course;
-use App\Services\Member\Models\Role;
 use App\Services\Other\Models\Link;
 use Carbon\Carbon;
 use Tests\TestCase;

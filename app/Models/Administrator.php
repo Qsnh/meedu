@@ -12,7 +12,6 @@
 namespace App\Models;
 
 use Illuminate\Http\Request;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -30,7 +29,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null                                                                                               $remember_token
  * @property \Illuminate\Support\Carbon|null                                                                           $created_at
  * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Announcement[]                                       $announcements
  * @property mixed                                                                                                     $destroy_url
  * @property mixed                                                                                                     $edit_url
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -132,14 +130,6 @@ class Administrator extends Authenticatable implements JWTSubject
     public function hasRole(AdministratorRole $role)
     {
         return $this->roles()->where('id', $role->id)->exists();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function announcements()
-    {
-        return $this->hasMany(Announcement::class, 'admin_id');
     }
 
     /**

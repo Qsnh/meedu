@@ -9,7 +9,7 @@ use Tests\OriginalTestCase;
 class AddonsProviderMapGeneratorTest extends OriginalTestCase
 {
 
-    public function tearDown()
+    public function tearDown(): void
     {
         @unlink(base_path('addons/addons_service_provider.json'));
         parent::tearDown();

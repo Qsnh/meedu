@@ -149,7 +149,7 @@ class VideoServiceTest extends TestCase
     }
 
     /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function test_find_with_no_published()
     {
@@ -161,7 +161,7 @@ class VideoServiceTest extends TestCase
     }
 
     /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function test_find_with_no_show()
     {

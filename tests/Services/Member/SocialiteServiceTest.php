@@ -3,7 +3,6 @@
 
 namespace Tests\Services\Member;
 
-
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Models\User;

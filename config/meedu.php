@@ -141,7 +141,7 @@ return [
         // 缓存开关
         'cache' => [
             'status' => -1,
-            'expire' => 360,
+            'expire' => 3600 * 10,
         ],
         // 短信频率
         'limiter' => [

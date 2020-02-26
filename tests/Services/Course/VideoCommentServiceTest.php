@@ -79,7 +79,7 @@ class VideoCommentServiceTest extends TestCase
     }
 
     /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function test_find_with_not_exists()
     {

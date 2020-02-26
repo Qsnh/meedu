@@ -4,6 +4,7 @@
 namespace Tests\Unit;
 
 
+use Exception;
 use Tests\TestCase;
 
 class HelperTest extends TestCase
@@ -12,8 +13,8 @@ class HelperTest extends TestCase
     public function test_exception_record()
     {
         try {
-            throw new \Exception('我是异常');
-        } catch (\Exception $exception) {
+            throw new Exception('我是异常');
+        } catch (Exception $exception) {
             exception_record($exception);
         }
         $this->assertFalse(false);
