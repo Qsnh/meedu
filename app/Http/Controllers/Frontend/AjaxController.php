@@ -32,10 +32,12 @@ use App\Http\Requests\Frontend\RegisterPasswordRequest;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
+use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
+use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class AjaxController extends BaseController
@@ -268,5 +270,28 @@ class AjaxController extends BaseController
         $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
             session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
         return $callbackUrl;
+    }
+
+    /**
+     * @param MemberPasswordResetRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function changePassword(MemberPasswordResetRequest $request)
+    {
+        ['old_password' => $oldPassword, 'new_password' => $newPassword] = $request->filldata();
+        $this->userService->resetPassword(Auth::id(), $oldPassword, $newPassword);
+        return $this->success();
+    }
+
+    /**
+     * @param AvatarChangeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeAvatar(AvatarChangeRequest $request)
+    {
+        ['url' => $url] = $request->filldata();
+        $this->userService->updateAvatar(Auth::id(), $url);
+        return $this->success();
     }
 }

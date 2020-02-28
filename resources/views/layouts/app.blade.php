@@ -391,12 +391,6 @@
     flashError("{{get_first_flash('error')}}");
     @endif
 </script>
-<script>
-    function showAuthBox($box) {
-        $('#auth-box-content').html($('#' + $box).html());
-        $('.auth-box').show();
-    };
-</script>
 @if($bindMobileState)
     <script>
         showAuthBox('mobile-bind-box');

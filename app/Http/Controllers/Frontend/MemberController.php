@@ -111,7 +111,11 @@ class MemberController extends FrontendController
         $courseCount = $this->userService->getCurrentUserCourseCount();
         $videoCount = $this->userService->getCurrentUserVideoCount();
 
-        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount'));
+        $enabledApps = $this->configService->getEnabledSocialiteApps();
+        $apps = $this->socialiteService->userSocialites(Auth::id());
+        $apps = array_column($apps, null, 'app');
+
+        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount', 'enabledApps', 'apps'));
     }
 
     public function showPasswordResetPage()

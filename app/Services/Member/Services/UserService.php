@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
+use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -100,11 +101,10 @@ class UserService implements UserServiceInterface
     public function resetPassword(int $userId, string $oldPassword, string $newPassword): void
     {
         $user = User::findOrFail($userId);
-        if (!Hash::check($oldPassword, $user->password)) {
+        if ($oldPassword && !Hash::check($oldPassword, $user->password)) {
             throw new ServiceException(__('old_password_error'));
         }
-        $user->password = Hash::make($newPassword);
-        $user->save();
+        $this->changePassword($user->id, $newPassword);
     }
 
     /**
@@ -116,8 +116,7 @@ class UserService implements UserServiceInterface
     public function findPassword(string $mobile, string $password): void
     {
         $user = User::whereMobile($mobile)->firstOrFail();
-        $user->password = Hash::make($password);
-        $user->save();
+        $this->changePassword($user->id, $password);
     }
 
     /**
@@ -126,7 +125,10 @@ class UserService implements UserServiceInterface
      */
     public function changePassword(int $userId, string $password): void
     {
-        User::whereId($userId)->update(['password' => Hash::make($password)]);
+        User::whereId($userId)->update([
+            'password' => Hash::make($password),
+            'is_password_set' => FrontendConstant::PASSWORD_SET,
+        ]);
     }
 
     /**

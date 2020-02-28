@@ -18,6 +18,11 @@ require('./bootstrap');
 //     el: '#app'
 // });
 
+window.showAuthBox = function ($box) {
+    $('#auth-box-content').html($('#' + $box).html());
+    $('.auth-box').show();
+};
+
 $(function () {
     $('body').on('click', '.close-auth-box', function () {
         $('.auth-box').hide();
@@ -215,5 +220,64 @@ $(function () {
                 }, 1000);
             }
         }, 'json');
+    }).on('click', '.password-change-button', function () {
+        let oldPassword = $('input[name="old_password"]').val();
+        let newPassword = $('input[name="new_password"]').val();
+        let newPasswordConfirmation = $('input[name="new_password_confirmation"]').val();
+        if (oldPassword === '' || newPassword === '' || newPasswordConfirmation === '') {
+            $('.auth-box-errors').text('请输入原密码和新密码');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            old_password: oldPassword,
+            new_password: newPassword,
+            new_password_confirmation: newPasswordConfirmation
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('密码修改成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
+    }).on('click', '.avatar-change-button', function () {
+        let file = $('input[name="file"]')[0].files[0];
+        if (typeof file === 'undefined') {
+            $('.auth-box-errors').text('请选择头像');
+            return false;
+        }
+        $('.auth-box-errors').text('');
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("_token", token);
+        $.ajax({
+            url: $('.login-box').attr('action'),
+            type: 'POST',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(res => {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('头像更换成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        });
     });
 });

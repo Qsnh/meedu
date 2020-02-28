@@ -2,81 +2,179 @@
 
 @section('member')
 
-    <div class="container mt-5">
+    <div class="container member-dashboard">
         <div class="row">
-            <div class="col-md-3 col-12 text-center mb-2">
-                <div class="py-4 box-shadow1 br-8 bg-fff">
-                    <span>我的课程</span><br><br>
-                    <span class="fs-24px c-primary">{{$courseCount}}</span>
+            <div class="col-12">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <img src="{{$user['avatar']}}" width="100" height="100">
+                    </div>
+                    <div class="user-nickname">
+                        {{$user['nick_name']}}
+                    </div>
+                    <div class="user-option">
+                        <a href="javascript:void(0);" class="change-avatar-button"
+                           onclick="showAuthBox('avatar-change')">更换头像</a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-12 text-center mb-2">
-                <div class="py-4 box-shadow1 br-8 bg-fff">
-                    <span>我的视频</span><br><br>
-                    <span class="fs-24px c-primary">{{$videoCount}}</span>
-                </div>
-            </div>
-            <div class="col-md-3 col-12 text-center mb-2">
-                <div class="py-4 box-shadow1 br-8 bg-fff">
-                    <span>会员类型</span><br><br>
-                    <span class="fs-24px c-primary">
-                        @if($user['role'])
-                            {{$user['role']['name']}}
+                @if($user['role_id'] && \Carbon\Carbon::parse($user['role_expired_at'])->gt(\Carbon\Carbon::now()))
+                    <div class="user-vip">
+                        <div class="vip-logo">
+                            <img src="/images/icons/member/vip-logo-hover.png" width="100" height="100">
+                        </div>
+                        <div class="vip-logo-text">
+                            {{$user['role']['name']}} {{\Carbon\Carbon::parse($user['role_expired_at'])->format('Y-m-d')}}
+                            到期
+                        </div>
+                        <div class="vip-option">
+                            <a href="{{route('role.index')}}" class="vip-option-button">立即续费</a>
+                        </div>
+                    </div>
+                @else
+                    <div class="user-vip">
+                        <div class="vip-logo">
+                            <img src="/images/icons/member/vip-logo-hover.png" width="100" height="100">
+                        </div>
+                        <div class="vip-logo-text">
+                            您还未成为本站会员哦
+                        </div>
+                        <div class="vip-option">
+                            <a href="{{route('role.index')}}" class="vip-option-button">成为会员</a>
+                        </div>
+                    </div>
+                @endif
+                <div class="user-socialite">
+                    <div class="alert-info">
+                        绑定第三方账号更方便快捷登录和数据同步哦！
+                    </div>
+                    <div class="option-item">
+                        <span class="option-text">绑定手机：</span>
+                        @if(app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
+                            <span class="option-value">未绑定</span>
+                            <span class="option-button" onclick="showAuthBox('mobile-bind-box')">绑定</span>
                         @else
-                            免费会员
+                            <span class="option-value">{{substr($user['mobile'], 0, 3) . '****' . substr($user['mobile'], -4, 4)}}</span>
                         @endif
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-3 col-12 text-center mb-2">
-                <div class="py-4 box-shadow1 br-8 bg-fff">
-                    <span>邀请余额</span><br><br>
-                    <span class="fs-24px">
-                        <a href="{{route('member.invite_balance_records')}}"
-                           class="c-primary">￥{{$user['invite_balance']}}</a>
-                        <a href="{{route('member.invite_balance_withdraw_orders')}}" class="fs-14px ml-3 c-primary">提现</a>
-                    </span>
+                    </div>
+                    @foreach($enabledApps as $app)
+                        <div class="option-item">
+                            <span class="option-text">{{$app['name']}}：</span>
+                            @if(isset($apps[$app['app']]))
+                                <span class="option-value">已绑定</span>
+                                <span class="option-button"
+                                      onclick="document.getElementById('delete-socialite-{{$app['app']}}').submit();">取绑</span>
+                                <form id="delete-socialite-{{$app['app']}}"
+                                      action="{{route('member.socialite.delete', [$app['app']])}}" method="POST"
+                                      style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <span class="option-value">未绑定</span>
+                                <a target="_blank" href="{{route('socialite', [$app['app']])}}"
+                                   class="option-button">绑定</a>
+                            @endif
+                        </div>
+                    @endforeach
+                    <div class="option-item">
+                        <span class="option-text">修改密码：</span>
+                        <span class="option-value">{{$user['is_password_set'] ? '已设置' : '未设置'}}</span>
+                        <span class="option-button" onclick="showAuthBox('password-change')">修改</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="fw-400 mb-4 c-primary">推荐课程 <a href="{{route('courses')}}" class="fs-14px ml-2">全部课程</a>
-                </h2>
-                <div class="row">
-                    @foreach($gRecCourses as $index => $courseItem)
-                        @if($index == 8)
-                            @break
-                        @endif
-                        <div class="col-12 col-md-3 pb-24px video-item">
-                            <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
-                                <div class="video-item-box box-shadow1 br-8 t1 float-left">
-                                    <div class="video-thumb">
-                                        <div class="video-thumb-img"
-                                             style="background: url('{{$courseItem['thumb']}}') center center no-repeat;background-size: cover;">
-                                        </div>
-                                    </div>
-                                    <div class="video-title py-3 float-left">
-                                        <span>{{$courseItem['title']}}</span>
-                                    </div>
-                                    <div class="video-extra pb-3">
-                                        <span class="float-left"><i class="fa fa-file-video-o"></i> {{$courseItem['videos_count']}}</span>
-                                        <span class="float-right">
-                                            @if($courseItem['category'])
-                                                <i class="fa fa-tag"></i> {{$courseItem['category']['name']}}
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+    <div class="auth-box">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-4" id="auth-box-content">
                 </div>
             </div>
         </div>
     </div>
+
+    <script id="mobile-bind-box" type="text/html">
+        <form class="login-box" action="{{route('ajax.mobile.bind')}}" method="post">
+            <div class="login-box-title" style="margin-bottom: 30px;">
+                <span class="title">手机号绑定</span>
+                <img src="/images/close.png" width="24" height="24" class="close-auth-box">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="mobile" placeholder="请输入手机号">
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
+                    <div class="input-group-append">
+                        <img src="{{ captcha_src() }}" class="captcha" width="120" height="36">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control" required>
+                    <input type="hidden" name="sms_captcha_key" value="mobile_bind">
+                    <div class="input-group-append">
+                        <button type="button" style="width: 120px;"
+                                class="send-sms-captcha btn btn-outline-primary">发送验证码
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group auth-box-errors"></div>
+            <div class="form-group mb-0">
+                <button type="button" class="btn btn-primary btn-block mobile-bind-button">立即绑定</button>
+            </div>
+        </form>
+    </script>
+
+    <script id="password-change" type="text/html">
+        <form class="login-box" action="{{route('ajax.password.change')}}" method="post">
+            <div class="login-box-title" style="margin-bottom: 30px;">
+                <span class="title">修改密码</span>
+                <img src="/images/close.png" width="24" height="24" class="close-auth-box">
+            </div>
+            @if($user['is_password_set'])
+            <div class="form-group">
+                <input type="password" placeholder="请输入原密码" name="old_password" class="form-control"
+                       required>
+            </div>
+            @endif
+            <div class="form-group">
+                <input type="password" placeholder="请输入新密码" name="new_password" class="form-control"
+                       required>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="再输入一次" name="new_password_confirmation"
+                       class="form-control" required>
+            </div>
+            <div class="form-group auth-box-errors"></div>
+            <div class="form-group mb-0">
+                <button type="button" class="btn btn-primary btn-block password-change-button">修改密码</button>
+            </div>
+        </form>
+    </script>
+
+    <script id="avatar-change" type="text/html">
+        <form class="login-box" action="{{route('ajax.avatar.change')}}" method="post">
+            <div class="login-box-title" style="margin-bottom: 30px;">
+                <span class="title">更换头像</span>
+                <img src="/images/close.png" width="24" height="24" class="close-auth-box">
+            </div>
+            <div class="alert alert-primary">
+                <p class="mb-0">1.支持png,jpg,gif图片格式。</p>
+                <p class="mb-0">2.图片大小不能超过1MB。</p>
+            </div>
+            <div class="form-group">
+                <label>选择头像文件</label><br>
+                <input type="file" name="file">
+            </div>
+            <div class="form-group auth-box-errors"></div>
+            <div class="form-group mb-0">
+                <button type="button" class="btn btn-primary btn-block avatar-change-button">更换头像</button>
+            </div>
+        </form>
+    </script>
 
 @endsection

@@ -11,16 +11,28 @@
 
 namespace App\Http\Requests\Frontend\Member;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Frontend\BaseRequest;
+use App\Services\Member\Services\UserService;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class MemberPasswordResetRequest extends BaseRequest
 {
     public function rules()
     {
-        return [
-            'old_password' => 'required',
+        $rules = [
             'new_password' => 'required|min:6|max:16|confirmed',
         ];
+        /**
+         * @var $userService UserService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        $user = $userService->find(Auth::id());
+        if ($user['is_password_set']) {
+            $rules['old_password'] = 'required';
+        }
+
+        return $rules;
     }
 
     public function messages()
@@ -37,7 +49,7 @@ class MemberPasswordResetRequest extends BaseRequest
     public function filldata()
     {
         return [
-            'old_password' => $this->input('old_password'),
+            'old_password' => $this->input('old_password', ''),
             'new_password' => $this->input('new_password'),
         ];
     }

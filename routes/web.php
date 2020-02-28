@@ -31,7 +31,7 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::post('/auth/login/mobile', 'Frontend\AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
     Route::post('/auth/register', 'Frontend\AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
     Route::post('/auth/password/reset', 'Frontend\AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
-    Route::post('/auth/mobile/bind', 'Frontend\AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check']);
+    Route::post('/auth/mobile/bind', 'Frontend\AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check', 'auth']);
 });
 
 // 发送短信
@@ -114,5 +114,8 @@ Route::group([
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
         Route::post('/promoCodeCheck', 'AjaxController@promoCodeCheck')->name('ajax.promo_code.check');
+
+        Route::post('/password/change', 'AjaxController@changePassword')->name('ajax.password.change');
+        Route::post('/avatar/change', 'AjaxController@changeAvatar')->name('ajax.avatar.change');
     });
 });

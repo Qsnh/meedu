@@ -43,4 +43,6 @@ class FrontendConstant
         '/register',
         '/password/reset',
     ];
+
+    const PASSWORD_SET = 1;
 }
