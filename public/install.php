@@ -170,7 +170,7 @@ if ($step == 0) {
         if ($dbConnected) {
             // 数据库连接成功，写入.env文件
             $envContent = file_get_contents('../.env.install');
-            $envContent = str_replace('{URL}', $uri, $envContent);
+            $envContent = str_replace('{URL}', $url, $envContent);
             $envContent = str_replace('{MYSQL_HOST}', $dbHost, $envContent);
             $envContent = str_replace('{MYSQL_PORT}', $dbPort, $envContent);
             $envContent = str_replace('{MYSQL_DATABASE}', $dbDb, $envContent);
@@ -201,7 +201,7 @@ if ($step == 0) {
 
             // install administrator
             $artisan->call('install', ['action' => 'administrator', '-q' => true], $output);
-            
+
             exit(redirect($_SERVER['PHP_SELF'] . '?step=2')->getContent());
         }
     }
