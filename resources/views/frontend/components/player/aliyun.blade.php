@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.1/skins/default/aliplayer-min.css" />
+<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.1/skins/default/aliplayer-min.css"/>
 <div id="xiaoteng-player"></div>
 <script src="https://g.alicdn.com/de/prismplayer/2.8.1/aliplayer-h5-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="{{asset('/js/aliplayercomponents-1.0.3.min.js')}}"></script>
@@ -11,7 +11,8 @@
         "isLive": false,
         "rePlay": false,
         "playsinline": true,
-        "preload": true,
+        "preload": false,
+        "cover": "{{$gConfig['system']['player_thumb']}}",
         "autoPlayDelay": 2,
         "autoPlayDelayDisplayText": '正在加载中...',
         "loadDataTimeout": "",
@@ -23,8 +24,11 @@
         components: [{
             name: 'BulletScreenComponent',
             type: AliPlayerComponent.BulletScreenComponent,
-            args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {fontSize: '16px', color: '#000000'}, 'random']
+            args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {
+                fontSize: '16px',
+                color: '#000000'
+            }, 'random']
         }]
-    },function(player){
+    }, function (player) {
     });
 </script>

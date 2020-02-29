@@ -5,6 +5,7 @@
 <script>
     TCPlayer('xiaoteng-player', {
         fileID: '{{$video['tencent_video_id']}}',
-        appID: '{{config('tencent.vod.app_id')}}'
+        appID: '{{config('tencent.vod.app_id')}}',
+        poster: '{{$gConfig['system']['player_thumb']}}'
     });
 </script>

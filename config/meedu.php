@@ -138,6 +138,9 @@ return [
     'system' => [
         'icp' => '',
         'logo' => '/images/logo.png',
+        'member_logo' => '/images/member-logo.png',
+        'player_thumb' => '/images/player-thumb.png',
+
         // 缓存开关
         'cache' => [
             'status' => -1,
