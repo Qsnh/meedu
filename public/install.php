@@ -19,6 +19,7 @@ $step = $_GET['step'] ?? 0;
 $isSubmit = $_POST['submit'] ?? false;
 
 $extensions = get_loaded_extensions();
+$disabledFunctions = explode(',', ini_get('disable_functions'));
 $storagePath = str_replace('public', 'storage', dirname(__FILE__));
 $bootstrapPath = str_replace('public', 'bootstrap', dirname(__FILE__));
 $requires = [
@@ -76,6 +77,21 @@ $requires = [
         'item' => $bootstrapPath,
         'status' => is_writable($bootstrapPath),
         'intro' => '必须可写',
+    ],
+    [
+        'item' => 'passthru()',
+        'status' => !in_array('passthru', $disabledFunctions),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'proc_open()',
+        'status' => !in_array('proc_open', $disabledFunctions),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'proc_get_status()',
+        'status' => !in_array('proc_get_status', $disabledFunctions),
+        'intro' => '该函数不能被禁用',
     ],
 ];
 
