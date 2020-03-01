@@ -93,6 +93,16 @@ $requires = [
         'status' => !in_array('proc_get_status', $disabledFunctions),
         'intro' => '该函数不能被禁用',
     ],
+    [
+        'item' => 'symlink()',
+        'status' => !in_array('symlink', $disabledFunctions),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'putenv()',
+        'status' => !in_array('putenv', $disabledFunctions),
+        'intro' => '该函数不能被禁用',
+    ],
 ];
 
 $ok = true;
