@@ -239,13 +239,12 @@ class UserService implements UserServiceInterface
         $query = User::find(Auth::id())->notifications()->latest();
 
         $total = $query->count();
-        $list = $query->forPage($page, $pageSize)->get();
+        $data = $query->forPage($page, $pageSize)->get();
+        $list = $data->toArray();
         // 标记为已读
-        foreach ($list as $item) {
+        foreach ($data as $key => $item) {
             $item->markAsRead();
         }
-        $list = $list->toArray();
-        $list = array_column($list, 'data');
 
         return compact('list', 'total');
     }

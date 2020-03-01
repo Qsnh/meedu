@@ -25,7 +25,8 @@
                     <div class="col-sm-12">
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="{{url('/')}}">
-                                <img src="{{$gConfig['system']['member_logo']}}" height="37" alt="{{config('app.name')}}">
+                                <img src="{{$gConfig['system']['member_logo']}}" height="37"
+                                     alt="{{config('app.name')}}">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -109,28 +110,58 @@
             <div class="row">
                 <div class="col-12 member-menu-box">
                     <a href="{{route('member.join_role_records')}}" class="{{menu_active('member.join_role_records')}}">
-                        <img src="/images/icons/member/vip.png" width="24" height="24">
-                        <span class="member-menu-item-title vip">会员中心</span>
+                        <div>
+                            <img src="/images/icons/member/vip.png" width="24" height="24">
+                            <span class="member-menu-item-title vip">会员中心</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                     <a href="{{route('member.courses')}}" class="{{menu_active('member.courses')}}">
-                        <img src="/images/icons/member/course.png" width="24" height="24">
-                        <span class="member-menu-item-title">我的课程</span>
+                        <div>
+                            <img src="/images/icons/member/course.png" width="24" height="24">
+                            <span class="member-menu-item-title">我的课程</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                     <a href="{{route('member')}}" class="{{menu_active('member')}}">
-                        <img src="/images/icons/member/profile.png" width="24" height="24">
-                        <span class="member-menu-item-title">我的资料</span>
+                        <div>
+                            <img src="/images/icons/member/profile.png" width="24" height="24">
+                            <span class="member-menu-item-title">我的资料</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                     <a href="{{route('member.orders')}}" class="{{menu_active('member.orders')}}">
-                        <img src="/images/icons/member/order.png" width="24" height="24">
-                        <span class="member-menu-item-title">订单信息</span>
+                        <div>
+                            <img src="/images/icons/member/order.png" width="24" height="24">
+                            <span class="member-menu-item-title">订单信息</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                     <a href="{{route('member.promo_code')}}" class="{{menu_active('member.promo_code')}}">
-                        <img src="/images/icons/member/invite.png" width="24" height="24">
-                        <span class="member-menu-item-title">我的邀请码</span>
+                        <div>
+                            <img src="/images/icons/member/invite.png" width="24" height="24">
+                            <span class="member-menu-item-title">我的邀请码</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                     <a href="{{route('member.messages')}}" class="{{menu_active('member.messages')}}">
-                        <img src="/images/icons/member/message.png" width="24" height="24">
-                        <span class="member-menu-item-title">我的消息</span>
+                        <div>
+                            <img src="/images/icons/member/message.png" width="24" height="24">
+                            <span class="member-menu-item-title">我的消息</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
                     </a>
                 </div>
             </div>

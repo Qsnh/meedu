@@ -4,32 +4,28 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12 py-4">
-                共{{$messages->total()}}条记录
-            </div>
             <div class="col-12">
-                <div class="w-100 float-left bg-fff px-3 pt-5 br-8 mb-4">
-                    <table class="table table-hover">
-                        <tbody>
-                        @forelse($messages as $message)
-                            <tr>
-                                <td>
-                                    {!! $message['message'] !!}
-                                </td>
-                            </tr>
-                        @empty
-                            <tr><td>暂无数据</td></tr>
-                        @endforelse
-                        </tbody>
-                    </table>
+                <div class="member-message-box">
+                    @foreach($messages as $message)
+                        <div class="member-message-item">
+                            <img src="/images/icons/message.png" width="24" height="24">
+                            <span class="message-content">{!! $message['data']['message'] !!}</span>
+
+                            @if($message['read_at'])
+                                <span class="member-message-read">已读</span>
+                            @else
+                                <span class="member-message-unread">未读</span>
+                            @endif
+
+                            <span class="member-message-date">{{\Carbon\Carbon::parse($message['created_at'])->format('Y-m-d H:i')}}</span>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
             @if($messages->total() > $messages->perPage())
                 <div class="col-md-12">
-                    <div class="w-100 float-left bg-fff mb-4 br-8 px-3 py-4">
-                        {{$messages->render()}}
-                    </div>
+                    {!! str_replace('pagination', 'pagination justify-content-center', $messages->render()) !!}
                 </div>
             @endif
         </div>

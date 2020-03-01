@@ -12,8 +12,7 @@ class MemberOrdersTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->actingAs($user)
-            ->visit(route('member.orders'))
-            ->see('暂无数据');
+            ->visit(route('member.orders'));
     }
 
 }

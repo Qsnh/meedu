@@ -45,4 +45,9 @@ class FrontendConstant
     ];
 
     const PASSWORD_SET = 1;
+
+    const ORDER_GOODS_TYPE_COURSE = 'COURSE';
+    const ORDER_GOODS_TYPE_VIDEO = 'VIDEO';
+    const ORDER_GOODS_TYPE_ROLE = 'ROLE';
+    const ORDER_GOODS_TYPE_BOOK = 'BOOK';
 }

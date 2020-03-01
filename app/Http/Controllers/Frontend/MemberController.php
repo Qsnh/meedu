@@ -286,7 +286,7 @@ class MemberController extends FrontendController
         $orders = $this->paginator($list, $total, $page, $pageSize);
         $title = __('title.member.orders');
 
-        return v('frontend.member.show_orders', compact('orders', 'title'));
+        return v('frontend.member.orders', compact('orders', 'title'));
     }
 
     /**
