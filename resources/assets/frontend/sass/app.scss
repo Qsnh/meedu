@@ -263,6 +263,10 @@ footer.footer-box {
       padding: 0px;
     }
 
+    .navbar-brand {
+      margin-right: 60px;
+    }
+
     .nav-item {
       margin-right: 5px;
       font-size: 16px;
@@ -1082,6 +1086,7 @@ footer.footer-box {
 
         &:hover {
           text-decoration: none;
+          opacity: .8;
         }
       }
     }
@@ -1122,6 +1127,7 @@ footer.footer-box {
 
         &:hover {
           text-decoration: none;
+          opacity: .8;
         }
       }
     }
@@ -1151,8 +1157,8 @@ footer.footer-box {
       width: 100%;
       height: auto;
       float: left;
-      padding-top: 15px;
-      padding-bottom: 15px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       line-height: 26px;
 
       .option-text {
@@ -1189,6 +1195,11 @@ footer.footer-box {
         line-height: 14px;
         padding: 6px 15px;
         text-align: center;
+
+        &:hover {
+          text-decoration: none;
+          opacity: .8;
+        }
       }
     }
   }

@@ -78,7 +78,8 @@
                     <div class="option-item">
                         <span class="option-text">修改密码：</span>
                         <span class="option-value">{{$user['is_password_set'] ? '已设置' : '未设置'}}</span>
-                        <span class="option-button" onclick="showAuthBox('password-change')">修改</span>
+                        <a href="javascript:void(0);" class="option-button"
+                           onclick="showAuthBox('password-change')">修改</a>
                     </div>
                 </div>
             </div>
@@ -136,10 +137,10 @@
                 <img src="/images/close.png" width="24" height="24" class="close-auth-box">
             </div>
             @if($user['is_password_set'])
-            <div class="form-group">
-                <input type="password" placeholder="请输入原密码" name="old_password" class="form-control"
-                       required>
-            </div>
+                <div class="form-group">
+                    <input type="password" placeholder="请输入原密码" name="old_password" class="form-control"
+                           required>
+                </div>
             @endif
             <div class="form-group">
                 <input type="password" placeholder="请输入新密码" name="new_password" class="form-control"
