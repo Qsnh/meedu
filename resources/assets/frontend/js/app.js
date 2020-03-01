@@ -24,6 +24,16 @@ window.showAuthBox = function ($box) {
 };
 
 $(function () {
+    $('.user-avatar').mouseover(function () {
+        $(this).addClass('show');
+        $(this).find('a').attr('aria-expanded', true);
+        $(this).find('.dropdown-menu').addClass('show');
+    }).mouseout(function () {
+        $(this).removeClass('show');
+        $(this).find('a').attr('aria-expanded', false);
+        $(this).find('.dropdown-menu').removeClass('show');
+    });
+
     $('body').on('click', '.close-auth-box', function () {
         $('.auth-box').hide();
     }).on('click', '.login-password-button', function () {

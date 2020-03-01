@@ -36,7 +36,7 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item active">
-                                        <a class="nav-link pl-0 {{menu_active(['index'])}}" href="{{url('/')}}">首页 <span
+                                        <a class="nav-link {{menu_active(['index'])}}" href="{{url('/')}}">首页 <span
                                                     class="sr-only">(current)</span></a>
                                     </li>
                                     <li class="nav-item">
@@ -94,7 +94,8 @@
                                                      height="20"><span>{{$user['nick_name']}}</span>
                                             </a>
                                             @if($user['role'] ?? [])
-                                                <a class="dropdown-item vip" href="{{route('member.join_role_records')}}">
+                                                <a class="dropdown-item vip"
+                                                   href="{{route('member.join_role_records')}}">
                                                     <img src="/images/icons/vip.png" width="20"
                                                          height="20"><span>{{$user['role']['name']}}</span>
                                                 </a>
@@ -283,7 +284,7 @@
             <img src="/images/close.png" width="24" height="24" class="close-auth-box">
         </div>
         <div class="form-group">
-            <input id="nick_name" type="text" class="form-control" placeholder="昵称"
+            <input id="nick_name" type="text" class="form-control" placeholder="昵称暂不支持修改，请慎重取名哦"
                    name="nick_name" value="{{ old('nick_name') }}" required>
         </div>
         <div class="form-group">
