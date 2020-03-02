@@ -148,6 +148,7 @@ class UserService implements UserServiceInterface
             'is_active' => $this->configService->getMemberActiveStatus(),
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
+            'is_set_nickname' => 0,
         ]);
 
         event(new UserRegisterEvent($user->id));
@@ -168,11 +169,12 @@ class UserService implements UserServiceInterface
             'avatar' => $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $nickname ?: Str::random(16),
             'mobile' => $mobile,
-            'password' => Hash::make($password),
+            'password' => Hash::make($password ?: Str::random(10)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
+            'is_set_nickname' => $nickname ? 1 : 0,
         ]);
 
         event(new UserRegisterEvent($user->id));
@@ -204,6 +206,27 @@ class UserService implements UserServiceInterface
     public function updateAvatar(int $userId, string $avatar): void
     {
         User::whereId($userId)->update(['avatar' => $avatar]);
+    }
+
+    /**
+     * @param int $userId
+     * @param string $nickname
+     * @throws ServiceException
+     */
+    public function updateNickname(int $userId, string $nickname): void
+    {
+        $user = $this->find($userId);
+        if ($user['is_set_nickname'] === FrontendConstant::YES) {
+            throw new ServiceException(__('current user cant set nickname'));
+        }
+        $exists = User::where('id', '<>', $userId)->whereNickName($nickname)->exists();
+        if ($exists) {
+            throw new ServiceException(__('nick_name.unique'));
+        }
+        User::whereId($userId)->update([
+            'nick_name' => $nickname,
+            'is_set_nickname' => FrontendConstant::YES,
+        ]);
     }
 
     /**

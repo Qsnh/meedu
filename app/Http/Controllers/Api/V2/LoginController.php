@@ -111,7 +111,7 @@ class LoginController extends BaseController
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
+            $user = $this->userService->createWithMobile($mobile, '', '');
         }
         if ($user['is_lock'] == FrontendConstant::YES) {
             return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));

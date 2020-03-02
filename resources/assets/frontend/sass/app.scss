@@ -1094,6 +1094,19 @@ footer.footer-box {
       color: #ffffff;
       line-height: 18px;
       margin-bottom: 40px;
+
+      .nickname-edit-button {
+        display: inline-block;
+        margin-left: 15px;
+        width: 18px;
+        height: 18px;
+        opacity: .6;
+        line-height: 18px;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
 
     .user-option {

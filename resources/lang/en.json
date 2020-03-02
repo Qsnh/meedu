@@ -90,5 +90,6 @@
   "You have already purchased this course": "You have already purchased this course",
   "current user was locked,please contact administrator": "current user was locked,please contact administrator",
   "please input announcement title": "please input announcement title",
-  "please input announcement content": "please input announcement content"
+  "please input announcement content": "please input announcement content",
+  "current user cant set nickname": "current user cant set nickname"
 }

@@ -117,5 +117,6 @@ Route::group([
 
         Route::post('/password/change', 'AjaxController@changePassword')->name('ajax.password.change');
         Route::post('/avatar/change', 'AjaxController@changeAvatar')->name('ajax.avatar.change');
+        Route::post('/nickname/change', 'AjaxController@changeNickname')->name('ajax.nickname.change');
     });
 });

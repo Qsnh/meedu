@@ -289,5 +289,29 @@ $(function () {
                 }, 1000);
             }
         });
+    }).on('click', '.nickname-change-button', function () {
+        let nickname = $('input[name="nick_name"]').val();
+        if (nickname === '') {
+            $('.auth-box-errors').text('请输入昵称');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            nick_name: nickname
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('修改成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
     });
 });

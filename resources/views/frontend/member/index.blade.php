@@ -10,7 +10,12 @@
                         <img src="{{$user['avatar']}}" width="100" height="100">
                     </div>
                     <div class="user-nickname">
-                        {{$user['nick_name']}}
+                        <span>{{$user['nick_name']}}</span>
+                        @if(!$user['is_set_nickname'])
+                            <a href="javascript:void(0)" class="nickname-edit-button" onclick="showAuthBox('nickname-change')">
+                                <img src="/images/icons/member/nickname-edit.png" width="18" height="18">
+                            </a>
+                        @endif
                     </div>
                     <div class="user-option">
                         <a href="javascript:void(0);" class="change-avatar-button"
@@ -153,6 +158,23 @@
             <div class="form-group auth-box-errors"></div>
             <div class="form-group mb-0">
                 <button type="button" class="btn btn-primary btn-block password-change-button">修改密码</button>
+            </div>
+        </form>
+    </script>
+
+    <script id="nickname-change" type="text/html">
+        <form class="login-box" action="{{route('ajax.nickname.change')}}" method="post">
+            <div class="login-box-title" style="margin-bottom: 30px;">
+                <span class="title">修改昵称</span>
+                <img src="/images/close.png" width="24" height="24" class="close-auth-box">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="请输入昵称" name="nick_name" class="form-control"
+                       required>
+            </div>
+            <div class="form-group auth-box-errors"></div>
+            <div class="form-group mb-0">
+                <button type="button" class="btn btn-primary btn-block nickname-change-button">确认修改</button>
             </div>
         </form>
     </script>

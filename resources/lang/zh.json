@@ -106,5 +106,6 @@
   "You have already purchased this course": "您已经购买过此课程",
   "current user was locked,please contact administrator": "当前会员已被锁定，请联系管理员",
   "please input announcement title": "请输入公告标题",
-  "please input announcement content": "请输入公告内容"
+  "please input announcement content": "请输入公告内容",
+  "current user cant set nickname": "当前用户无法设置昵称"
 }

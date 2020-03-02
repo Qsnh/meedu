@@ -34,6 +34,7 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Http\Requests\Frontend\Member\NicknameChangeRequest;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
@@ -198,7 +199,7 @@ class AjaxController extends BaseController
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
+            $user = $this->userService->createWithMobile($mobile, '', '');
         }
         if ($user['is_lock'] == FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
@@ -292,6 +293,18 @@ class AjaxController extends BaseController
     {
         ['url' => $url] = $request->filldata();
         $this->userService->updateAvatar(Auth::id(), $url);
+        return $this->success();
+    }
+
+    /**
+     * @param NicknameChangeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ServiceException
+     */
+    public function changeNickname(NicknameChangeRequest $request)
+    {
+        ['nick_name' => $nickName] = $request->filldata();
+        $this->userService->updateNickname(Auth::id(), $nickName);
         return $this->success();
     }
 }
