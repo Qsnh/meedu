@@ -264,10 +264,6 @@ class UserService implements UserServiceInterface
         $total = $query->count();
         $data = $query->forPage($page, $pageSize)->get();
         $list = $data->toArray();
-        // 标记为已读
-        foreach ($data as $key => $item) {
-            $item->markAsRead();
-        }
 
         return compact('list', 'total');
     }
@@ -402,5 +398,23 @@ class UserService implements UserServiceInterface
     public function inviteBalanceInc(int $userId, int $inc): void
     {
         User::find($userId)->increment('invite_balance', $inc);
+    }
+
+    /**
+     * @param int $userId
+     * @param string $id
+     */
+    public function notificationMarkAsRead(int $userId, string $id): void
+    {
+        $notification = User::find($userId)->notifications()->whereId($id)->first();
+        $notification && $notification->markAsRead();
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function notificationMarkAllAsRead(int $userId): void
+    {
+        User::find($userId)->unreadNotifications->markAsRead();
     }
 }

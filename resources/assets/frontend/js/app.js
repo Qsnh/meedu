@@ -313,5 +313,23 @@ $(function () {
                 }, 1000);
             }
         }, 'json');
+    }).on('click', '.member-message-item', function () {
+        if ($(this).find('.red-dot').length === 0) {
+            return;
+        }
+        let id = $(this).attr('data-id');
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post('/member/ajax/message/read', {
+            id: id,
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                flashWarning(res.message);
+            } else {
+                $(this).find('.red-dot').hide();
+                $(this).find('.member-message-unread').addClass('member-message-read').removeClass('member-message-unread').text('已读');
+            }
+        }, 'json');
     });
 });

@@ -85,12 +85,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="invite_user_reward",type="integer",description="邀请人奖励"),
  *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请人奖励"),
  *     ),
- *     @OA\Schema(
- *         schema="Notification",
- *         type="object",
- *         title="消息",
- *         @OA\Property(property="message",type="string",description="消息内容"),
- *     ),
  * )
  */
 class MemberController extends BaseController
@@ -315,6 +309,7 @@ class MemberController extends BaseController
             'total' => $total,
             'list' => $list,
         ] = $this->userService->messagePaginate($page, $pageSize);
+        $list = arr1_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
         $messages = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($messages);
@@ -529,6 +524,50 @@ class MemberController extends BaseController
             return $this->error(__('current user cant generate promo code'));
         }
         $this->promoCodeService->userCreate($this->user());
+        return $this->success();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/notificationMarkAsRead/{notificationId}",
+     *     summary="消息标记已读",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notificationMarkAsRead($notificationId)
+    {
+        $this->userService->notificationMarkAsRead(Auth::id(), $notificationId);
+        return $this->success();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/notificationMarkAllAsRead",
+     *     summary="消息全部标记已读",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notificationMarkAllAsRead()
+    {
+        $this->userService->notificationMarkAllAsRead(Auth::id());
         return $this->success();
     }
 }

@@ -7,7 +7,11 @@
             <div class="col-12">
                 <div class="member-message-box">
                     @foreach($messages as $message)
-                        <div class="member-message-item">
+                        <div class="member-message-item" data-id="{{$message['id']}}">
+                            @if(!$message['read_at'])
+                                <div class="red-dot"></div>
+                            @endif
+
                             <img src="/images/icons/message.png" width="24" height="24">
                             <span class="message-content">{!! $message['data']['message'] !!}</span>
 

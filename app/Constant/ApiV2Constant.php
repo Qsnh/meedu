@@ -229,4 +229,22 @@ class ApiV2Constant
     const MODEL_SLIDER_FIELD = [
         'thumb', 'url', 'sort',
     ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="Notification",
+     *         type="object",
+     *         title="订单商品",
+     *         @OA\Property(property="id",type="string",description="消息id"),
+     *         @OA\Property(property="notifiable_id",type="integer",description="notifiable_id"),
+     *         @OA\Property(property="read_at",type="string",description="read_at"),
+     *         @OA\Property(property="created_at",type="string",description="created_at"),
+     *         @OA\Property(property="data",type="array",@OA\Items(@OA\Property(type="message"))),
+     *     ),
+     * )
+     */
+    const MODEL_NOTIFICATON_FIELD = [
+        'id', 'notifiable_id', 'data', 'read_at', 'created_at',
+    ];
 }

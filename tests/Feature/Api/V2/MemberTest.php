@@ -10,6 +10,7 @@ use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserInviteBalanceRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\PromoCode;
 use Illuminate\Http\UploadedFile;
@@ -128,6 +129,31 @@ class MemberTest extends Base
         $response = $this->user($this->member)->postJson('api/v2/member/promoCode');
         $response = $this->assertResponseSuccess($response);
         $this->assertNotEmpty(PromoCode::whereUserId($this->member->id)->first());
+    }
+
+    public function test_messages_markAsRead()
+    {
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试'));
+        $this->assertEquals(1, $this->member->unreadNotifications->count());
+
+        $notification = $this->member->unreadNotifications->first();
+        $response = $this->user($this->member)->getJson('api/v2/member/notificationMarkAsRead/' . $notification->id);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals(0, $this->member->unreadNotifications->count());
+    }
+
+    public function test_messages_markAsAllRead()
+    {
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试1'));
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试2'));
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试3'));
+        $this->assertEquals(3, $this->member->unreadNotifications->count());
+
+        $response = $this->user($this->member)->getJson('api/v2/member/notificationMarkAllAsRead');
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals(0, $this->member->unreadNotifications->count());
     }
 
 }

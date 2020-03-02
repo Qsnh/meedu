@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
     Route::get('promoCode', 'MemberController@promoCode');
     Route::post('promoCode', 'MemberController@generatePromoCode');
+    Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
+    Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
 });
 
 Route::group(['middleware' => ['auth:apiv2']], function () {

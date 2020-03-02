@@ -12,7 +12,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
@@ -33,6 +32,7 @@ use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
+use App\Http\Requests\Frontend\Member\ReadAMessageRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Http\Requests\Frontend\Member\NicknameChangeRequest;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
@@ -305,6 +305,17 @@ class AjaxController extends BaseController
     {
         ['nick_name' => $nickName] = $request->filldata();
         $this->userService->updateNickname(Auth::id(), $nickName);
+        return $this->success();
+    }
+
+    /**
+     * @param ReadAMessageRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notificationMarkAsRead(ReadAMessageRequest $request)
+    {
+        ['id' => $id] = $request->filldata();
+        $this->userService->notificationMarkAsRead(Auth::id(), $id);
         return $this->success();
     }
 }
