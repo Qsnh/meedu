@@ -26,7 +26,7 @@ class MemberJoinRoleTest extends TestCase
         $record = UserJoinRoleRecord::create([
             'user_id' => $user->id,
             'role_id' => $role->id,
-            'charge' => mt_rand(1, 100),
+            'charge' => random_int(1, 100),
             'start_date' => Carbon::now(),
             'expired_date' => Carbon::now()->addDays(30),
         ]);

@@ -33,7 +33,7 @@ class DeliverServiceTest extends TestCase
     {
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create();
-        $charge = mt_rand(0, 10);
+        $charge = random_int(0, 10);
         $this->service->deliverCourse($user->id, $course->id, $charge);
         $userCourse = UserCourse::whereUserId($user->id)->whereCourseId($course->id)->get();
         $this->assertEquals(1, $userCourse->count());
@@ -43,7 +43,7 @@ class DeliverServiceTest extends TestCase
     {
         $user = factory(User::class)->create();
         $video = factory(Video::class)->create();
-        $charge = mt_rand(0, 10);
+        $charge = random_int(0, 10);
         $this->service->deliverVideo($user->id, $video->id, $charge);
         $userVideo = UserVideo::whereUserId($user->id)->whereVideoId($video->id)->get();
         $this->assertEquals(1, $userVideo->count());
@@ -52,12 +52,12 @@ class DeliverServiceTest extends TestCase
     public function test_deliverRole()
     {
         $role = factory(Role::class)->create([
-            'expire_days' => mt_rand(1, 100),
+            'expire_days' => random_int(1, 100),
         ]);
         $user = factory(User::class)->create([
             'role_id' => 0,
         ]);
-        $charge = mt_rand(0, 100);
+        $charge = random_int(0, 100);
         $this->service->deliverRole($user->id, $role->id, $charge);
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
@@ -67,14 +67,14 @@ class DeliverServiceTest extends TestCase
     public function test_deliverRole_with_continue()
     {
         $role = factory(Role::class)->create([
-            'expire_days' => mt_rand(1, 100),
+            'expire_days' => random_int(1, 100),
         ]);
         $at = Carbon::now()->addMonths(1);
         $user = factory(User::class)->create([
             'role_id' => $role->id,
             'role_expired_at' => $at,
         ]);
-        $charge = mt_rand(0, 100);
+        $charge = random_int(0, 100);
         $this->service->deliverRole($user->id, $role->id, $charge);
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);

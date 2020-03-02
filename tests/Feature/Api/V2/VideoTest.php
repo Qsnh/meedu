@@ -35,7 +35,7 @@ class VideoTest extends Base
 
     public function test_video_id_with_no_id()
     {
-        $r = $this->getJson('api/v2/video/' . mt_rand(0, 1000));
+        $r = $this->getJson('api/v2/video/' . random_int(0, 1000));
         $this->assertResponseError($r, __('error'));
     }
 

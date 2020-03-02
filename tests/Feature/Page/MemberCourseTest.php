@@ -26,7 +26,7 @@ class MemberCourseTest extends TestCase
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $user = factory(User::class)->create();
-        $charge = mt_rand(1, 100);
+        $charge = random_int(1, 100);
         DB::table('user_course')->insert([
             'course_id' => $course->id,
             'charge' => $charge,

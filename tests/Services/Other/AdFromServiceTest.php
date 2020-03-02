@@ -54,7 +54,7 @@ class AdFromServiceTest extends TestCase
     {
         $from = factory(AdFrom::class)->create();
         $date = Carbon::now()->format('Y-m-d');
-        $num = mt_rand(1, 1000);
+        $num = random_int(1, 1000);
         $this->service->createDay($from->id, $date, $num);
 
         $number = $this->service->getDay($from->id, $date);

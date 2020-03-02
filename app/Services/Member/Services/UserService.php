@@ -134,15 +134,15 @@ class UserService implements UserServiceInterface
     /**
      * @param string $avatar
      * @param string $name
-     *
      * @return array
+     * @throws \Exception
      */
     public function createWithoutMobile(string $avatar = '', string $name = ''): array
     {
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $name ?? Str::random(16),
-            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
+            'mobile' => random_int(2, 9) . random_int(1000, 9999) . random_int(1000, 9999),
             'password' => Hash::make(Str::random(16)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),

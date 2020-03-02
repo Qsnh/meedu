@@ -74,7 +74,7 @@ class SmsController extends FrontendController
      */
     protected function sendHandler($mobile, $sessionKey, $templateId)
     {
-        $code = mt_rand(1000, 10000);
+        $code = random_int(1000, 10000);
         session([$sessionKey => $code]);
 
         $this->smsService->sendCode($mobile, $code, $templateId);

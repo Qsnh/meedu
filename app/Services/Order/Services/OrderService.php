@@ -154,7 +154,7 @@ class OrderService implements OrderServiceInterface
     protected function genOrderNo(int $userId): string
     {
         $time = date('His');
-        $rand = mt_rand(10, 99);
+        $rand = random_int(10, 99);
 
         return $userId . $time . $rand;
     }

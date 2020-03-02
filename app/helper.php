@@ -320,7 +320,7 @@ if (!function_exists('random_number')) {
         $prefixLength = mb_strlen($prefix);
         $length -= $prefixLength;
         for ($i = 0; $i < $length; $i++) {
-            $prefix .= mt_rand(0, 9);
+            $prefix .= random_int(0, 9);
         }
         return $prefix;
     }
