@@ -150,7 +150,10 @@ class CourseService implements CourseServiceInterface
      */
     public function getList(array $ids): array
     {
-        return Course::show()->published()->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
+        return Course::with(['category'])
+            ->withCount(['videos'])
+            ->show()->published()
+            ->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
     }
 
     /**
@@ -158,8 +161,9 @@ class CourseService implements CourseServiceInterface
      *
      * @param array $list
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function addLatestVideos(array $list)
+    protected function addLatestVideos(array $list): array
     {
         /**
          * @var $videoService VideoService
@@ -185,5 +189,21 @@ class CourseService implements CourseServiceInterface
         }
         CourseUserRecord::create(['user_id' => $userId, 'course_id' => $courseId]);
         Course::whereId($courseId)->increment('user_count', 1);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function userLearningCoursesPaginate(int $userId, int $page, int $pageSize): array
+    {
+        $query = CourseUserRecord::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
+
+        $total = $query->count();
+        $list = $query->get()->toArray();
+
+        return compact('list', 'total');
     }
 }

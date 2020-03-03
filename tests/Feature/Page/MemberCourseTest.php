@@ -15,8 +15,7 @@ class MemberCourseTest extends TestCase
     {
         $user = factory(User::class)->create();
         $this->actingAs($user)
-            ->visit(route('member.courses'))
-            ->see('暂无数据');
+            ->visit(route('member.courses'));
     }
 
     public function test_member_course_see_some_records()
@@ -35,8 +34,7 @@ class MemberCourseTest extends TestCase
         ]);
         $this->actingAs($user)
             ->visit(route('member.courses'))
-            ->see($course->title)
-            ->see($charge);
+            ->see($course->title);
     }
 
 }

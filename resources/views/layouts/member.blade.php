@@ -172,6 +172,15 @@
 
 @yield('member')
 
+<div class="auth-box">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-4" id="auth-box-content">
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('footer')
     <footer class="container-fluid footer-box">
         <div class="container">

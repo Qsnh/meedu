@@ -331,5 +331,37 @@ $(function () {
                 $(this).find('.member-message-unread').addClass('member-message-read').removeClass('member-message-unread').text('已读');
             }
         }, 'json');
+    }).on('click', '.invite-balance-withdraw-button', function () {
+        let total = $('input[name="total"]').val();
+        let channel_name = $('select[name="channel[name]"]').val();
+        let channel_username = $('input[name="channel[username]"]').val();
+        let channel_account = $('input[name="channel[account]"]').val();
+        if (channel_name === '' || channel_username === '' || channel_account === '') {
+            $('.auth-box-errors').text('请输入相应信息');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            total: total,
+            channel: {
+                name: channel_name,
+                username: channel_username,
+                account: channel_account
+            }
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('提现提交成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
     });
 });

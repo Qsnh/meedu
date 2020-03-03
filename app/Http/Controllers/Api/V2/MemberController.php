@@ -530,6 +530,7 @@ class MemberController extends BaseController
     /**
      * @OA\Get(
      *     path="/member/notificationMarkAsRead/{notificationId}",
+     *     @OA\Parameter(in="path",name="notificationId",description="消息id",required=true,@OA\Schema(type="string")),
      *     summary="消息标记已读",
      *     tags={"用户"},
      *     @OA\Response(

@@ -91,15 +91,6 @@
         </div>
     </div>
 
-    <div class="auth-box">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-4" id="auth-box-content">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script id="mobile-bind-box" type="text/html">
         <form class="login-box" action="{{route('ajax.mobile.bind')}}" method="post">
             <div class="login-box-title" style="margin-bottom: 30px;">

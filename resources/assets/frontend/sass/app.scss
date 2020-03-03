@@ -1242,14 +1242,14 @@ footer.footer-box {
 }
 
 
-.member-message-box, .my-orders {
+.member-message-box, .my-orders, .invite-user-box {
   width: 100%;
   height: auto;
   float: left;
   margin-top: 16px;
   margin-bottom: 80px;
 
-  .member-message-item, .orders-item {
+  .member-message-item, .orders-item, .invite-user-item {
     position: relative;
     width: 100%;
     height: 72px;
@@ -1274,7 +1274,7 @@ footer.footer-box {
       float: left;
     }
 
-    .message-content, .order-goods-title {
+    .message-content, .order-goods-title, .invite-user-item-nickname {
       width: auto;
       height: 24px;
       display: inline-block;
@@ -1285,7 +1285,7 @@ footer.footer-box {
       margin-left: 15px;
     }
 
-    .member-message-date, .member-list-item-right {
+    .member-message-date, .member-list-item-right, .invite-user-item-date {
       float: right;
       width: 126px;
       font-size: 14px;
@@ -1312,6 +1312,140 @@ footer.footer-box {
       margin-right: 0px;
     }
   }
+}
+
+.promo_code_banner {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .promo_code_balance {
+    width: 527px;
+    height: 280px;
+    float: left;
+    background: rgba(50, 50, 50, 1);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    .promo_code_code {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 70px;
+      line-height: 30px;
+      margin-bottom: 78px;
+
+      .title {
+        width: 90px;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, .6);
+        margin-left: 80px;
+      }
+
+      .code {
+        font-size: 30px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        margin-left: 50px;
+      }
+    }
+
+    .promo_code_balance_info {
+      width: 100%;
+      height: auto;
+      float: left;
+      line-height: 30px;
+
+      .title {
+        width: 90px;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, .6);
+        margin-left: 80px;
+      }
+
+      .balance {
+        font-size: 30px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        margin-left: 50px;
+
+        small {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+
+      .withdraw-button {
+        display: inline-block;
+        width: 88px;
+        height: 34px;
+        margin-left: 46px;
+        background: rgba(255, 221, 52, 1);
+        border-radius: 100px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(50, 50, 50, 1);
+        line-height: 34px;
+
+        &:hover {
+          text-decoration: none;
+          opacity: .6;
+        }
+      }
+    }
+  }
+
+  .promo_code_intro {
+    width: 673px;
+    height: 280px;
+    float: left;
+    background: rgba(255, 221, 52, 1);
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+
+    .promo_code_intro_title {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 30px;
+      line-height: 66px;
+
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(36, 35, 35, 1);
+
+      img {
+        margin-left: 50px;
+        margin-right: 20px;
+      }
+    }
+
+    .promo_code_intro_content {
+      width: 100%;
+      height: auto;
+      float: left;
+      padding-left: 50px;
+      margin-top: 20px;
+
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(36, 35, 35, 1);
+      line-height: 32px;
+
+      p {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+.my-courses {
+  margin-top: 30px;
 }
 
 @include media-breakpoint-down(md) {

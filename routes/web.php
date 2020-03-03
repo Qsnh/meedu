@@ -119,5 +119,6 @@ Route::group([
         Route::post('/avatar/change', 'AjaxController@changeAvatar')->name('ajax.avatar.change');
         Route::post('/nickname/change', 'AjaxController@changeNickname')->name('ajax.nickname.change');
         Route::post('/message/read', 'AjaxController@notificationMarkAsRead')->name('ajax.message.read');
+        Route::post('/inviteBalanceWithdraw', 'AjaxController@inviteBalanceWithdraw')->name('ajax.invite_balance.withdraw');
     });
 });

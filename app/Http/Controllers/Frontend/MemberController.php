@@ -234,18 +234,36 @@ class MemberController extends FrontendController
     public function showBuyCoursePage(Request $request)
     {
         $page = $request->input('page', 1);
+        $scene = $request->input('scene');
         $pageSize = 10;
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $this->userService->getUserBuyCourses($page, $pageSize);
+        if (!$scene) {
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->userService->getUserBuyCourses($page, $pageSize);
+        } else {
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
+        }
         $records = $this->paginator($list, $total, $page, $pageSize);
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
         $courses = array_column($courses, null, 'id');
 
         $title = __('title.member.courses');
 
-        return v('frontend.member.buy_course', compact('records', 'title', 'courses'));
+        $queryParams = function ($param) {
+            $request = \request();
+            $params = [
+                'page' => $request->input('page'),
+                'scene' => $request->input('scene', ''),
+            ];
+            $params = array_merge($params, $param);
+            return http_build_query($params);
+        };
+
+        return v('frontend.member.buy_course', compact('records', 'title', 'courses', 'scene', 'queryParams'));
     }
 
     /**
