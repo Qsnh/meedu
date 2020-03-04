@@ -361,6 +361,94 @@ class MemberController extends BaseController
 
     /**
      * @OA\Get(
+     *     path="/member/courses/like",
+     *     summary="用户收藏课程",
+     *     tags={"用户"},
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/UserCourse")),
+     *                 @OA\Property(property="courses",type="array",description="课程",@OA\Items(ref="#/components/schemas/Course")),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function likeCourses(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 5);
+
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->userService->userLikeCoursesPaginate(Auth::id(), $page, $pageSize);
+        $records = $this->paginator($list, $total, $page, $pageSize);
+        // 读取关联课程
+        $courses = $this->courseService->getList(array_column($list, 'course_id'));
+        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
+
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $courses,
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/courses/history",
+     *     summary="用户已学习课程",
+     *     tags={"用户"},
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/UserCourse")),
+     *                 @OA\Property(property="courses",type="array",description="课程",@OA\Items(ref="#/components/schemas/Course")),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function learnHistory(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 5);
+
+        [
+            'total' => $total,
+            'list' => $list,
+        ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
+        $records = $this->paginator($list, $total, $page, $pageSize);
+        // 读取关联课程
+        $courses = $this->courseService->getList(array_column($list, 'course_id'));
+        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
+
+        return $this->data([
+            'current_page' => $records->currentPage(),
+            'total' => $records->total(),
+            'data' => $courses,
+        ]);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/member/videos",
      *     summary="用户课程",
      *     tags={"用户"},

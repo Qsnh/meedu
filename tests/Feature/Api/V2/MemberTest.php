@@ -5,10 +5,12 @@ namespace Tests\Feature\Api\V2;
 
 
 use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserInviteBalanceRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 use App\Services\Order\Models\Order;
@@ -90,6 +92,23 @@ class MemberTest extends Base
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(4, $response['data']['total']);
     }
+
+    public function test_courses_like()
+    {
+        factory(UserLikeCourse::class, 6)->create(['user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/courses/like');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(6, $response['data']['total']);
+    }
+
+    public function test_courses_history()
+    {
+        factory(CourseUserRecord::class, 5)->create(['user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/courses/history');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(5, $response['data']['total']);
+    }
+
 
     public function test_videos()
     {

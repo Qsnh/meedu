@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::post('detail/password', 'MemberController@passwordChange');
     Route::post('detail/avatar', 'MemberController@avatarChange');
     Route::get('courses', 'MemberController@courses');
+    Route::get('courses/like', 'MemberController@likeCourses');
+    Route::get('courses/history', 'MemberController@learnHistory');
     Route::get('videos', 'MemberController@videos');
     Route::get('orders', 'MemberController@orders');
     Route::get('roles', 'MemberController@roles');
