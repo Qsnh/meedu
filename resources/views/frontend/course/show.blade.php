@@ -38,7 +38,7 @@
                                 <div data-login="{{$user ? 1 : 0}}"
                                      data-url="{{route('ajax.course.like', [$course['id']])}}" class="like-button">
                                     <img src="/images/icons/like-hover.png" width="24" height="24">
-                                    <span>取消收藏</span>
+                                    <span>已收藏</span>
                                 </div>
                             @else
                                 <div data-login="{{$user ? 1 : 0}}"
@@ -55,7 +55,8 @@
                                     <a href="{{route('video.show', [$firstVideo['course_id'], $firstVideo['id'], $firstVideo['slug']])}}"
                                        class="buy-course-button">开始学习</a>
                                 @else
-                                    <a href="javascript:void(0);" onclick="flashWarning('暂无视频')" class="buy-course-button">开始学习</a>
+                                    <a href="javascript:void(0);" onclick="flashWarning('暂无视频')"
+                                       class="buy-course-button">开始学习</a>
                                 @endif
                             @else
                                 <span class="course-price"><small>￥</small>{{$course['charge']}}</span>

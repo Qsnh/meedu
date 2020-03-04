@@ -378,14 +378,23 @@ $(function () {
                 flashError(res.message);
             } else {
                 if (res.data === 1) {
-                    $(this).find('span').text('取消收藏');
+                    $(this).find('span').text('已收藏');
                     $(this).find('img').attr('src', '/images/icons/like-hover.png');
                 } else {
                     $(this).find('span').text('收藏课程');
                     $(this).find('img').attr('src', '/images/icons/like.png');
-
                 }
             }
         }, 'json');
+    }).on('mouseover', '.like-button', function () {
+        let text = $(this).find('span').text();
+        if (text === '已收藏') {
+            $(this).find('span').text('取消收藏');
+        }
+    }).on('mouseout', '.like-button', function () {
+        let text = $(this).find('span').text();
+        if (text === '取消收藏') {
+            $(this).find('span').text('已收藏');
+        }
     });
 });

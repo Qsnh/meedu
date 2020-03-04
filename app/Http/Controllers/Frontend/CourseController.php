@@ -148,6 +148,8 @@ class CourseController extends FrontendController
         $firstVideo = [];
         if ($firstChapter && ($videos[$firstChapter['id']] ?? [])) {
             $firstVideo = $videos[$firstChapter['id']][0];
+        } else {
+            Arr::first($videos) && $firstVideo = $videos[0][0];
         }
 
         return v('frontend.course.show', compact(
