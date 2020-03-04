@@ -392,7 +392,7 @@ footer.footer-box {
       }
     }
 
-    .login-button {
+    .login-button, .login-button-hover {
       width: 80px;
       height: 34px;
       border-radius: 17px;
@@ -403,12 +403,22 @@ footer.footer-box {
       font-weight: 400;
       color: #ffffff;
       margin-left: 10px;
+      cursor: pointer;
     }
 
     .login-button:hover {
       text-decoration: none;
-      cursor: pointer;
       box-shadow: 0px 2px 4px 0px $ce5;
+    }
+
+    .login-button-hover {
+      background-color: #ffffff;
+      color: $primary;
+
+      &:hover {
+        box-shadow: none;
+        text-decoration: none;
+      }
     }
   }
 }
@@ -1462,9 +1472,18 @@ footer.footer-box {
     height: 14px;
     font-size: 14px;
     font-weight: 400;
-    color: rgba(255, 255, 255, .6);
     line-height: 14px;
     margin-bottom: 30px;
+    color: rgba(255, 255, 255, .6);
+
+    a {
+      color: rgba(255, 255, 255, .6);
+
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+        text-decoration: none;
+      }
+    }
   }
 }
 
@@ -1475,7 +1494,6 @@ footer.footer-box {
   margin-top: -150px;
   z-index: 22;
   background-color: #ffffff;
-  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
   border-radius: 8px 8px 0px 0px;
   padding: 30px;
 

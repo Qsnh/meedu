@@ -82,7 +82,7 @@
                                     </div>
 
                                 @else
-                                    <a class="login-button" onclick="showAuthBox('login-box')">登录</a>
+                                    <a class="login-button-hover" onclick="showAuthBox('login-box')">登录</a>
                                 @endif
                             </div>
                         </nav>

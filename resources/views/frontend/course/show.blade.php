@@ -7,7 +7,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="nav-bar">
-                        <span>我的课程 > {{$category['name']}} > {{$course['title']}}</span>
+                        <a href="{{route('courses')}}">所有课程</a>
+                        <span>></span>
+                        <a href="{{route('courses')}}?category_id={{$category['id']}}">{{$category['name']}}</a>
+                        <span>></span>
+                        <a href="javascript:void(0)">{{$course['title']}}</a>
                     </div>
                 </div>
             </div>
@@ -26,7 +30,8 @@
                         <div class="course-description">{{$course['short_description']}}</div>
                         <div class="course-extra-info">
                             <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
-                            <a href="javascript:void(0);" data-login="{{$user ? 1 : 0}}" data-url="{{route('ajax.course.like', [$course['id']])}}"
+                            <a href="javascript:void(0);" data-login="{{$user ? 1 : 0}}"
+                               data-url="{{route('ajax.course.like', [$course['id']])}}"
                                class="collect-button">{{$isLikeCourse ? '取消收藏' : '收藏课程'}}</a>
                             @if($isBuy)
                                 <a href="javascript:void(0)" class="buy-course-button">已购买</a>
@@ -45,7 +50,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="course-menu-box"
-                     style="margin-top: 1px; border-radius:0px 0px 8px 8px; box-shadow:0px 4px 8px 0px rgba(229,229,229,1);">
+                     style="margin-top: 0px; border-radius:0px 0px 8px 8px; box-shadow:0px 4px 8px 0px rgba(229,229,229,1); padding-left: 30px;">
                     <div class="menu-item active">
                         <a href="javascript:void(0)">课程目录</a>
                     </div>

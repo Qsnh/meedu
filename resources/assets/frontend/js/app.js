@@ -364,7 +364,7 @@ $(function () {
             }
         }, 'json');
     }).on('click', '.collect-button', function () {
-        let isLogin = $(this).attr('data-login');
+        let isLogin = parseInt($(this).attr('data-login'));
         let url = $(this).attr('data-url');
         if (isLogin === 0) {
             showAuthBox('login-box');
