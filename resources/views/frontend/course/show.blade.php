@@ -23,19 +23,42 @@
             <div class="col-12">
                 <div class="course-info-box">
                     <div class="course-thumb">
-                        <img src="{{$course['thumb']}}" width="320" height="240">
+                        <img class="course-thumb-img" src="{{$course['thumb']}}" width="320" height="240">
+                        @if($isBuy)
+                            <div class="paid">
+                                <img src="/images/icons/paid.png" width="100" height="100">
+                            </div>
+                        @endif
                     </div>
                     <div class="course-info">
-                        <h2 class="course-title">{{$course['title']}}</h2>
+                        <h2 class="course-title">
+                            {{$course['title']}}
+
+                            @if($isLikeCourse)
+                                <div data-login="{{$user ? 1 : 0}}"
+                                     data-url="{{route('ajax.course.like', [$course['id']])}}" class="like-button">
+                                    <img src="/images/icons/like-hover.png" width="24" height="24">
+                                    <span>取消收藏</span>
+                                </div>
+                            @else
+                                <div data-login="{{$user ? 1 : 0}}"
+                                     data-url="{{route('ajax.course.like', [$course['id']])}}" class="like-button">
+                                    <img src="/images/icons/like.png" width="24" height="24">
+                                    <span>收藏课程</span>
+                                </div>
+                            @endif
+                        </h2>
                         <div class="course-description">{{$course['short_description']}}</div>
                         <div class="course-extra-info">
-                            <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
-                            <a href="javascript:void(0);" data-login="{{$user ? 1 : 0}}"
-                               data-url="{{route('ajax.course.like', [$course['id']])}}"
-                               class="collect-button">{{$isLikeCourse ? '取消收藏' : '收藏课程'}}</a>
                             @if($isBuy)
-                                <a href="javascript:void(0)" class="buy-course-button">已购买</a>
+                                @if($firstVideo)
+                                    <a href="{{route('video.show', [$firstVideo['course_id'], $firstVideo['id'], $firstVideo['slug']])}}"
+                                       class="buy-course-button">开始学习</a>
+                                @else
+                                    <a href="javascript:void(0);" onclick="flashWarning('暂无视频')" class="buy-course-button">开始学习</a>
+                                @endif
                             @else
+                                <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
                                 <a href="{{route('member.course.buy', [$course['id']])}}"
                                    class="buy-course-button">订阅课程</a>
                             @endif

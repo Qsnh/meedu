@@ -53,4 +53,6 @@
         </div>
     </div>
 
+    @include('frontend.components.recom_courses')
+
 @endsection

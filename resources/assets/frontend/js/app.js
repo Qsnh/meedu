@@ -363,7 +363,7 @@ $(function () {
                 }, 1000);
             }
         }, 'json');
-    }).on('click', '.collect-button', function () {
+    }).on('click', '.like-button', function () {
         let isLogin = parseInt($(this).attr('data-login'));
         let url = $(this).attr('data-url');
         if (isLogin === 0) {
@@ -378,9 +378,12 @@ $(function () {
                 flashError(res.message);
             } else {
                 if (res.data === 1) {
-                    $(this).text('取消收藏');
+                    $(this).find('span').text('取消收藏');
+                    $(this).find('img').attr('src', '/images/icons/like-hover.png');
                 } else {
-                    $(this).text('收藏课程');
+                    $(this).find('span').text('收藏课程');
+                    $(this).find('img').attr('src', '/images/icons/like.png');
+
                 }
             }
         }, 'json');

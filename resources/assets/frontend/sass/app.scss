@@ -1502,9 +1502,19 @@ footer.footer-box {
     height: 240px;
     float: left;
     margin-right: 50px;
+    position: relative;
 
-    img {
+    .course-thumb-img {
       border-radius: 4px;
+    }
+
+    .paid {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 33;
     }
   }
 
@@ -1521,6 +1531,28 @@ footer.footer-box {
       line-height: 24px;
       letter-spacing: 1px;
       margin-bottom: 20px;
+
+      .like-button {
+        display: inline-block;
+        height: 24px;
+        width: auto;
+        float: right;
+        color: #cccccc;
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: 400;
+        cursor: pointer;
+
+        img {
+          float: left;
+          margin-right: 10px;
+        }
+
+        span {
+          float: left;
+          display: inline-block;
+        }
+      }
     }
 
     .course-description {
@@ -1554,7 +1586,7 @@ footer.footer-box {
         }
       }
 
-      .collect-button, .buy-course-button {
+      .buy-course-button {
         display: inline-block;
         float: left;
         padding-left: 20px;
@@ -1570,6 +1602,7 @@ footer.footer-box {
 
         &:hover {
           text-decoration: none;
+          opacity: .6;
         }
       }
 

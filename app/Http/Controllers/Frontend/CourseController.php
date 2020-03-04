@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
@@ -142,6 +143,12 @@ class CourseController extends FrontendController
         // 喜欢课程
         $isLikeCourse = false;
         Auth::check() && $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
+        // 该课程的第一个视频
+        $firstChapter = Arr::first($chapters);
+        $firstVideo = [];
+        if ($firstChapter && ($videos[$firstChapter['id']] ?? [])) {
+            $firstVideo = $videos[$firstChapter['id']][0];
+        }
 
         return v('frontend.course.show', compact(
             'course',
@@ -154,7 +161,8 @@ class CourseController extends FrontendController
             'chapters',
             'isBuy',
             'category',
-            'isLikeCourse'
+            'isLikeCourse',
+            'firstVideo'
         ));
     }
 
