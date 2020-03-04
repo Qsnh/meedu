@@ -1448,6 +1448,257 @@ footer.footer-box {
   margin-top: 30px;
 }
 
+.course-banner {
+  width: 100%;
+  height: 264px;
+  float: left;
+  background-image: url("/images/member-bg.png");
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  padding-top: 70px;
+  background-color: $primary;
+
+  .nav-bar {
+    height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, .6);
+    line-height: 14px;
+    margin-bottom: 30px;
+  }
+}
+
+.course-info-box {
+  width: 100%;
+  height: 300px;
+  float: left;
+  margin-top: -150px;
+  z-index: 22;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+  border-radius: 8px 8px 0px 0px;
+  padding: 30px;
+
+  .course-thumb {
+    width: 320px;
+    height: 240px;
+    float: left;
+    margin-right: 50px;
+
+    img {
+      border-radius: 4px;
+    }
+  }
+
+  .course-info {
+    width: 750px;
+    height: auto;
+    float: left;
+
+    .course-title {
+      height: 24px;
+      font-size: 24px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 24px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .course-description {
+      width: 750px;
+      height: 90px;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      line-height: 30px;
+      margin-bottom: 40px;
+    }
+
+    .course-extra-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 18px;
+
+      .course-price {
+        display: inline-block;
+        float: left;
+        height: 50px;
+        line-height: 50px;
+        font-size: 50px;
+        font-weight: 600;
+        color: rgba(255, 64, 64, 1);
+        margin-right: 30px;
+
+        small {
+          font-size: 16px;
+        }
+      }
+
+      .collect-button, .buy-course-button {
+        display: inline-block;
+        float: left;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: rgba(11, 118, 222, .2);
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: 400;
+        color: $primary;
+        line-height: 40px;
+        margin-right: 30px;
+        margin-top: 5px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .buy-course-button {
+        background-color: $primary;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.course-chapter {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 80px;
+
+  .course-chapter-title {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 30px;
+
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 16px;
+  }
+
+  .course-videos-box {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .course-videos-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      padding: 18px 30px;
+      background-color: #ffffff;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(11, 118, 222, .1);
+
+        .player-icon {
+          background-image: url("/images/icons/player-hover.png");
+        }
+
+        .learn-button, .buy-course-button {
+          display: inline-block;
+        }
+
+        .video-duration {
+          display: none;
+        }
+      }
+
+      .player-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-top: 3px;
+        float: left;
+        background-image: url("/images/icons/player.png");
+        background-size: 100% 100%;
+        margin-right: 15px;
+      }
+
+      .video-title {
+        display: inline-block;
+        float: left;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 30px;
+        margin-right: 28px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .free-label {
+        display: inline-block;
+        padding-left: 8px;
+        padding-right: 8px;
+        line-height: 22px;
+        margin-top: 4px;
+        background: rgba(255, 64, 64, 1);
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .video-duration {
+        display: inline-block;
+        float: right;
+        height: 16px;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 24px;
+      }
+
+      .learn-button, .buy-course-button {
+        display: none;
+        float: right;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 30px;
+        background-color: $primary;
+        border-radius: 20px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      &.first {
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+      }
+
+      &.last {
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+    }
+  }
+}
+
+.recom-courses-title {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  line-height: 27px;
+  margin-bottom: 30px;
+}
+
 @include media-breakpoint-down(md) {
   .course-fixed-menu {
     display: none;

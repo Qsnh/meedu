@@ -12,6 +12,9 @@
                     <div class="menu-item {{$scene === 'history' ? 'active' : ''}}">
                         <a href="{{route('member.courses')}}?{{$queryParams(['scene' => 'history'])}}">历史学习</a>
                     </div>
+                    <div class="menu-item {{$scene === 'like' ? 'active' : ''}}">
+                        <a href="{{route('member.courses')}}?{{$queryParams(['scene' => 'like'])}}">我的收藏</a>
+                    </div>
                 </div>
             </div>
 

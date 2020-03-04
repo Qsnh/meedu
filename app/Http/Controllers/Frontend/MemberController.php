@@ -241,11 +241,18 @@ class MemberController extends FrontendController
                 'total' => $total,
                 'list' => $list,
             ] = $this->userService->getUserBuyCourses($page, $pageSize);
-        } else {
+        } elseif ($scene === 'history') {
+            // 学习历史
             [
                 'total' => $total,
                 'list' => $list,
             ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
+        } else {
+            // 我的收藏
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->userService->userLikeCoursesPaginate(Auth::id(), $page, $pageSize);
         }
         $records = $this->paginator($list, $total, $page, $pageSize);
         $courses = $this->courseService->getList(array_column($list, 'course_id'));

@@ -345,4 +345,14 @@ class AjaxController extends BaseController
         $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
     }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function likeACourse($id)
+    {
+        $result = $this->userService->likeACourse(Auth::id(), $id);
+        return $this->data($result);
+    }
 }

@@ -363,5 +363,26 @@ $(function () {
                 }, 1000);
             }
         }, 'json');
+    }).on('click', '.collect-button', function () {
+        let isLogin = $(this).attr('data-login');
+        let url = $(this).attr('data-url');
+        if (isLogin === 0) {
+            showAuthBox('login-box');
+            return;
+        }
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                flashError(res.message);
+            } else {
+                if (res.data === 1) {
+                    $(this).text('取消收藏');
+                } else {
+                    $(this).text('收藏课程');
+                }
+            }
+        }, 'json');
     });
 });

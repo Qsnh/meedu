@@ -131,6 +131,7 @@ class CourseController extends FrontendController
         $comments = $this->courseCommentService->courseComments($course['id']);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
+        $category = $this->courseCategoryService->findOrFail($course['category_id']);
 
         $title = $course['title'];
         $keywords = $course['seo_keywords'];
@@ -138,6 +139,9 @@ class CourseController extends FrontendController
 
         // 是否购买
         $isBuy = $this->businessState->isBuyCourse($course['id']);
+        // 喜欢课程
+        $isLikeCourse = false;
+        Auth::check() && $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
 
         return v('frontend.course.show', compact(
             'course',
@@ -148,7 +152,9 @@ class CourseController extends FrontendController
             'commentUsers',
             'videos',
             'chapters',
-            'isBuy'
+            'isBuy',
+            'category',
+            'isLikeCourse'
         ));
     }
 

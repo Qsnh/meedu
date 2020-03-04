@@ -120,5 +120,6 @@ Route::group([
         Route::post('/nickname/change', 'AjaxController@changeNickname')->name('ajax.nickname.change');
         Route::post('/message/read', 'AjaxController@notificationMarkAsRead')->name('ajax.message.read');
         Route::post('/inviteBalanceWithdraw', 'AjaxController@inviteBalanceWithdraw')->name('ajax.invite_balance.withdraw');
+        Route::post('/course/like/{id}', 'AjaxController@likeACourse')->name('ajax.course.like');
     });
 });

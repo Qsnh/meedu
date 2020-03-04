@@ -1,15 +1,16 @@
 @include('layouts.common.header')
 <body class="bg-f6">
 
-<div class="container-fluid nav-box bg-fff">
+<div class="container-fluid nav-box member-nav-box">
     <div class="row">
         <div class="col-sm-12">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <nav class="navbar navbar-expand-lg bg-fff">
+                        <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="{{url('/')}}">
-                                <img src="{{$gConfig['system']['logo']}}" height="37" alt="{{config('app.name')}}">
+                                <img src="{{$gConfig['system']['member_logo']}}" height="37"
+                                     alt="{{config('app.name')}}">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -20,46 +21,28 @@
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav mr-auto">
                                     <li class="nav-item active">
-                                        <a class="nav-link {{menu_active(['index'])}}" href="{{url('/')}}">首页 <span
+                                        <a class="nav-link" href="{{url('/')}}">首页 <span
                                                     class="sr-only">(current)</span></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}"
-                                           href="{{route('courses')}}">所有课程</a>
+                                        <a class="nav-link" href="{{route('courses')}}">所有课程</a>
                                     </li>
                                     @foreach($gNavs as $item)
                                         <li class="nav-item">
-                                            <a class="nav-link {{request()->url() == $item['url'] ? 'active' : ''}}"
-                                               href="{{$item['url']}}">{{$item['name']}}</a>
+                                            <a class="nav-link" href="{{$item['url']}}">{{$item['name']}}</a>
                                         </li>
                                     @endforeach
-                                    <form class="form-inline ml-4" method="get" action="{{route('search')}}">
-                                        @csrf
-                                        <div class="input-group">
-                                            <input type="text" class="form-control search-input" name="keywords"
-                                                   placeholder="请输入关键字"
-                                                   required>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary search-button" type="submit">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
                                 </ul>
 
-                                <a class="role-vip-button {{menu_active('role.index')}}"
+                                <a class="role-vip-button hover-img-switch {{menu_active('role.index')}}"
                                    href="{{route('role.index')}}">
-                                    <p><img src="/images/icons/vip.png" width="24" height="24"></p>
+                                    <p><img src="/images/icons/member/vip.png" width="24" height="24"></p>
                                     <p>会员中心</p>
                                 </a>
-
-                                @if(!$user)
-                                    <a class="login-button" onclick="showAuthBox('login-box')">登录</a>
-                                @else
-                                    <a class="message-button {{menu_active('member.messages')}}"
+                                @if($user)
+                                    <a class="message-button hover-img-switch {{menu_active('member.messages')}}"
                                        href="{{route('member.messages')}}">
-                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>
+                                        <p><img src="/images/icons/member/message.png" width="24" height="24"></p>
                                         <p>消息</p>
                                         @if($gUnreadMessageCount)
                                             <span class="message-count">{{$gUnreadMessageCount}}</span>
@@ -85,18 +68,6 @@
                                                          height="20"><span>成为会员</span>
                                                 </a>
                                             @endif
-                                            <a class="dropdown-item" href="{{route('member')}}">
-                                                <img src="{{$user['avatar']}}" width="20" class="avatar"
-                                                     height="20"><span>用户中心</span>
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('member.courses')}}">
-                                                <img src="/images/icons/course.png" width="20"
-                                                     height="20"><span>我的课程</span>
-                                            </a>
-                                            <a class="dropdown-item" href="{{route('member.orders')}}">
-                                                <img src="/images/icons/order.png" width="20"
-                                                     height="20"><span>订单信息</span>
-                                            </a>
                                             <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                                                 <img src="/images/icons/logout.png" width="20" height="20">
@@ -109,6 +80,9 @@
                                             </form>
                                         </div>
                                     </div>
+
+                                @else
+                                    <a class="login-button" onclick="showAuthBox('login-box')">登录</a>
                                 @endif
                             </div>
                         </nav>
@@ -119,10 +93,9 @@
     </div>
 </div>
 
-<main>
-    @yield('content')
-</main>
+@yield('content')
 
 @include('layouts.common.footer')
+
 </body>
 </html>

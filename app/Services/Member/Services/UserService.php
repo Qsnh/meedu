@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
@@ -359,6 +360,7 @@ class UserService implements UserServiceInterface
     /**
      * @param int $id
      * @param array $promoCode
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function updateInviteUserId(int $id, array $promoCode): void
     {
@@ -416,5 +418,50 @@ class UserService implements UserServiceInterface
     public function notificationMarkAllAsRead(int $userId): void
     {
         User::find($userId)->unreadNotifications->markAsRead();
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     * @return int
+     */
+    public function likeACourse(int $userId, int $courseId): int
+    {
+        $record = UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->first();
+        if ($record) {
+            $record->delete();
+            return 0;
+        }
+        UserLikeCourse::create([
+            'user_id' => $userId,
+            'course_id' => $courseId,
+        ]);
+        return 1;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     * @return bool
+     */
+    public function likeCourseStatus(int $userId, int $courseId): bool
+    {
+        return UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->exists();
+    }
+
+    /**
+     * @param int $userId
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function userLikeCoursesPaginate(int $userId, int $page, int $pageSize): array
+    {
+        $query = UserLikeCourse::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
+
+        $total = $query->count();
+        $list = $query->get()->toArray();
+
+        return compact('list', 'total');
     }
 }
