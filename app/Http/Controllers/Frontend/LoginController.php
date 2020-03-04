@@ -112,17 +112,24 @@ class LoginController extends BaseController
             flash(__('socialite bind success'), 'success');
             return redirect('member');
         }
-        if ($bindUserId = $this->socialiteService->getBindUserId($app, $appId)) {
-            $userId = $bindUserId;
-        } else {
+        $userId = $this->socialiteService->getBindUserId($app, $appId);
+        if (!$userId) {
             $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
         }
+
+        // 用户是否锁定检测
         $user = $this->userService->find($userId);
-        if ($user['is_lock'] == FrontendConstant::YES) {
+        if ($user['is_lock'] === FrontendConstant::YES) {
             flash(__('current user was locked,please contact administrator'));
             return back();
         }
+
+        // 登录该用户
         Auth::loginUsingId($userId, true);
+
+        // 登录事件
+        event(new UserLoginEvent($userId));
+
         return redirect($this->redirectTo());
     }
 
