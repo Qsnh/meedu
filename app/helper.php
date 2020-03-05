@@ -206,7 +206,7 @@ if (!function_exists('is_wechat')) {
      */
     function is_wechat()
     {
-        if (strpos(request()->header('HTTP_USER_AGENT'), 'MicroMessenger') !== false) {
+        if (strpos(request()->server('HTTP_USER_AGENT'), 'MicroMessenger')) {
             return true;
         }
         return false;
