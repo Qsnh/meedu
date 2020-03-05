@@ -55,7 +55,7 @@
                                 </a>
 
                                 @if(!$user)
-                                    <a class="login-button" onclick="showAuthBox('login-box')">登录</a>
+                                    <a class="login-button login-auth" href="{{route('login')}}" data-login="0">登录</a>
                                 @else
                                     <a class="message-button {{menu_active('member.messages')}}"
                                        href="{{route('member.messages')}}">

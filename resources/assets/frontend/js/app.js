@@ -396,5 +396,12 @@ $(function () {
         if (text === '取消收藏') {
             $(this).find('span').text('已收藏');
         }
+    }).on('click', '.login-auth', function () {
+        let loginStatus = parseInt($(this).attr('data-login'));
+        if (loginStatus === 0) {
+            showAuthBox('login-box');
+            return false;
+        }
+        return true;
     });
 });

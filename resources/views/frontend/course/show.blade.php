@@ -60,8 +60,8 @@
                                 @endif
                             @else
                                 <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
-                                <a href="{{route('member.course.buy', [$course['id']])}}"
-                                   class="buy-course-button">订阅课程</a>
+                                <a data-login="{{$user ? 1 : 0}}" href="{{route('member.course.buy', [$course['id']])}}"
+                                   class="buy-course-button login-auth">订阅课程</a>
                             @endif
                         </div>
                     </div>
