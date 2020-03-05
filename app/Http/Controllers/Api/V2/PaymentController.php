@@ -99,4 +99,40 @@ class PaymentController extends BaseController
 
         return $this->data($data);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/order/payments",
+     *     summary="支付网关",
+     *     tags={"支付"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="scene",description="支付场景，h5,wechat",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="sign",type="string",description="sign"),
+     *                 @OA\Property(property="name",type="string",description="支付网关名"),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function payments(Request $request)
+    {
+        $scene = $request->input('scene', '');
+        $payments = get_payments($scene)->map(function ($val) {
+            return [
+                'sign' => $val['sign'],
+                'name' => $val['name'],
+            ];
+        })->toArray();
+        sort($payments);
+        return $this->data($payments);
+    }
 }

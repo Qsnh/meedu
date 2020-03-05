@@ -71,8 +71,9 @@ class OrderController extends Controller
      * @param Request $request
      * @param $orderId
      * @return mixed
+     * @throws ServiceException
      * @throws SystemException
-     * @throws \App\Exceptions\ServiceException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function pay(Request $request, $orderId)
     {
