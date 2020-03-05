@@ -48,7 +48,13 @@ class MemberController extends BaseController
         return $this->successData(compact('members', 'roles'));
     }
 
-    public function show($id)
+    public function create()
+    {
+        $roles = Role::all();
+        return $this->successData(compact('roles'));
+    }
+
+    public function edit($id)
     {
         $member = User::findOrFail($id);
 

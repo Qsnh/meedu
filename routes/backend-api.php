@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 会员
     Route::group(['prefix' => 'member'], function () {
         Route::get('/', 'MemberController@index');
-        Route::get('/{id}', 'MemberController@show');
+        Route::get('/create', 'MemberController@create');
+        Route::get('/{id}', 'MemberController@edit');
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
