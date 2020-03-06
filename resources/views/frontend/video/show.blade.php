@@ -1,28 +1,19 @@
-@extends('layouts.app')
-
-@section('css')
-    <style>
-        #xiaoteng-player {
-            width: 100%;
-            height: 500px;
-        }
-    </style>
-@endsection
+@extends('layouts.app-active')
 
 @section('content')
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-f6">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">首页</a></li>
-                        <li class="breadcrumb-item"><a
-                                    href="{{route('course.show', [$course['id'], $course['slug']])}}">{{$course['title']}}</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">视频详情</li>
-                    </ol>
-                </nav>
+    <div class="course-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="nav-bar">
+                        <a href="{{route('courses')}}">所有课程</a>
+                        <span>></span>
+                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}">{{$course['title']}}</a>
+                        <span>></span>
+                        <a href="javascript:void(0)">{{$video['title']}}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -30,8 +21,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="fw-400 py-2">{{$video['title']}}</h2>
-                <div class="w-100 float-left">
+                <div class="video-player">
                     @if($user)
                         @if($canSeeVideo)
                             <div class="box-shadow1">
@@ -44,21 +34,19 @@
                                 @endif
                             </div>
                         @else
-                            <div class="py-5 bg-dark br-8">
-                                @if($video['charge'] > 0)
-                                    <p class="text-center my-5">
-                                        <a href="{{ route('member.video.buy', [$video['id']]) }}"
-                                           class="btn btn-success my-5" class="login-auth"
-                                           data-login="{{$user ? 1 : 0}}">购买此视频 ￥{{$video['charge']}}</a>
-                                    </p>
-                                @endif
+                            <div class="buy-this-video">
+                                <h3>{{$video['title']}}</h3>
+                                <a href="{{ route('member.video.buy', [$video['id']]) }}"
+                                   class="btn btn-primary mt-3">购买此视频 ￥{{$video['charge']}}</a>
                             </div>
                         @endif
                     @else
-                        <div class="w-100 float-left py-5 bg-dark br-8 box-shadow1 text-center">
-                            <p class="my-5">
-                                <a class="login-auth" data-login="{{$user ? 1 : 0}}" class="btn btn-success my-5 px-4"
-                                   href="{{route('login')}}">登录</a>
+                        <div class="need-login">
+                            <h3>{{$video['title']}}</h3>
+                            <p class="mt-5"><a data-login="0" class="btn btn-primary login-auth"
+                                  href="{{route('login')}}">登录</a></p>
+                            <p class="login-text">
+                                登录后才可以观看视频哦！
                             </p>
                         </div>
                     @endif
@@ -67,102 +55,105 @@
         </div>
     </div>
 
-
-    <div class="container-fluid py-5">
+    <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-12">
-                            <h3 id="视频详情" class="fw-400 mb-4 c-primary">视频详情</h3>
-                            <div class="w-100 float-left">
-                                {!! $video['render_desc'] !!}
-                            </div>
-                        </div>
+                <div class="course-menu-box mt-0">
+                    <div class="menu-item {{!$scene ? 'active' : ''}}">
+                        <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}">课程目录</a>
+                    </div>
+                    <div class="menu-item {{$scene === 'comment' ? 'active' : ''}}">
+                        <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}?scene=comment">讨论区</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid py-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-12">
-                            <h3 id="课程目录" class="fw-400 mb-4 c-primary">课程目录</h3>
-                            <div class="course-video-list">
-                                @if($chapters)
-                                    <dl class="fs-14px d-inline-block float-left w-100">
-                                        @foreach($chapters as $chapter)
-                                            <dt class="py-2 d-inline-block w-100 float-left fw-400 fs-18px border-bottom border-secondary">
-                                                {{$chapter['title']}}
-                                            </dt>
-                                            @foreach($videos[$chapter['id']] ?? [] as $videoItem)
-                                                <dd class="d-inline-block w-100 float-left border-bottom border-secondary mb-0 {{$videoItem['id'] == $video['id'] ? 'active' : ''}}">
-                                                    <a class="d-inline-block w-100 float-left py-2"
-                                                       href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}">
-                                                        <span class="float-left ml-3">
-                                                            <i class="fa fa-play-circle-o"></i> {{$videoItem['title']}}
-                                                            @if($videoItem['charge'] > 0)
-                                                                <span class="badge badge-primary">PRO</span>
-                                                            @else
-                                                                <span class="badge badge-success">FREE</span>
-                                                            @endif
-                                                        </span>
-                                                        <span class="float-right mr-3"><i class="fa fa-clock-o"></i> {{duration_humans($videoItem['duration'])}}</span>
-                                                    </a>
-                                                </dd>
-                                            @endforeach
-                                        @endforeach
-                                    </dl>
-
-                                @else
-
-                                    <dl class="fs-14px d-inline-block float-left w-100">
-                                        @foreach($videos[0] ?? [] as $videoItem)
-                                            <dd class="d-inline-block w-100 float-left border-bottom border-secondary mb-0 {{$videoItem['id'] == $video['id'] ? 'active' : ''}}">
-                                                <a class="d-inline-block w-100 float-left py-2"
-                                                   href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}">
-                                                        <span class="float-left ml-3">
-                                                            <i class="fa fa-play-circle-o"></i> {{$videoItem['title']}}
-                                                            @if($videoItem['charge'] > 0)
-                                                                <span class="badge badge-primary">PRO</span>
-                                                            @else
-                                                                <span class="badge badge-success">FREE</span>
-                                                            @endif
-                                                        </span>
-                                                    <span class="float-right mr-3"><i class="fa fa-clock-o"></i> {{duration_humans($videoItem['duration'])}}</span>
-                                                </a>
-                                            </dd>
-                                        @endforeach
-                                    </dl>
-                                @endif
-                            </div>
-                        </div>
+    @if(!$scene)
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="course-chapter">
+                        @if($chapters)
+                            @foreach($chapters as $chapter)
+                                <div class="course-chapter-title">{{$chapter['title']}}</div>
+                                @foreach($videos[$chapter['id']] ?? [] as $videoItem)
+                                    <div class="course-videos-box">
+                                        <div class="course-videos-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}} {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
+                                            <span class="player-icon"></span>
+                                            <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
+                                               class="video-title">{{$videoItem['title']}}</a>
+                                            @if($videoItem['charge'] === 0)
+                                                <span class="free-label">免费</span>
+                                            @endif
+                                            <span class="video-duration">{{duration_humans($videoItem['duration'])}}</span>
+                                            <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
+                                               class="learn-button">开始学习</a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endforeach
+                        @else
+                            @foreach($videos[0] ?? [] as $videoItem)
+                                <div class="course-videos-box">
+                                    <div class="course-videos-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}} {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
+                                        <span class="player-icon"></span>
+                                        <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
+                                           class="video-title">{{$videoItem['title']}}</a>
+                                        @if($videoItem['charge'] === 0)
+                                            <span class="free-label">免费</span>
+                                        @endif
+                                        <span class="video-duration">{{duration_humans($video['duration'])}}</span>
+                                        <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
+                                           class="learn-button">开始学习</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container-fluid py-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-12">
-                            <h3 id="视频评论" class="fw-400 mb-4 c-primary">视频评论</h3>
-                            <div class="w-100 float-left">
-                                @include('frontend.components.comment', ['submitUrl' => route('ajax.video.comment', [$video['id']]), 'comments' => $comments, 'users' => $commentUsers])
-                            </div>
+    @elseif($scene === 'comment')
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="comment-box">
+                        <div class="comment-title">
+                            本课讨论
                         </div>
+                        <div class="comment-input-box">
+                            <textarea name="content" placeholder="请输入评论内容" class="form-control" rows="3"></textarea>
+                            <button type="button" data-url="{{route('ajax.video.comment', [$video['id']])}}"
+                                    data-login="{{$user ? 1 : 0}}" data-input="content" class="comment-button">评论
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="comment-list-box">
+                        @foreach($comments as $commentItem)
+                            <div class="comment-list-item">
+                                <div class="comment-user-avatar">
+                                    <img src="{{$commentUsers[$commentItem['user_id']]['avatar']}}" width="70"
+                                         height="70">
+                                </div>
+                                <div class="comment-content-box">
+                                    <div class="comment-user-nickname">{{$commentUsers[$commentItem['user_id']]['nick_name']}}</div>
+                                    <div class="comment-content">
+                                        {!! $commentItem['render_content'] !!}
+                                    </div>
+                                    <div class="comment-info">
+                                        <span class="comment-createAt">{{\Carbon\Carbon::parse($commentItem['created_at'])->diffForHumans()}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     @include('frontend.components.recom_courses')
 

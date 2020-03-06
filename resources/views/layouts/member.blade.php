@@ -94,6 +94,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 member-menu-box">
+                    <a href="{{route('member')}}" class="{{menu_active('member')}}">
+                        <div>
+                            <img src="/images/icons/member/profile.png" width="24" height="24">
+                            <span class="member-menu-item-title">我的资料</span>
+                        </div>
+                        <div class="dot-box">
+                            <span class="dot"></span>
+                        </div>
+                    </a>
                     <a href="{{route('member.join_role_records')}}" class="{{menu_active('member.join_role_records')}}">
                         <div>
                             <img src="/images/icons/member/vip.png" width="24" height="24">
@@ -107,15 +116,6 @@
                         <div>
                             <img src="/images/icons/member/course.png" width="24" height="24">
                             <span class="member-menu-item-title">我的课程</span>
-                        </div>
-                        <div class="dot-box">
-                            <span class="dot"></span>
-                        </div>
-                    </a>
-                    <a href="{{route('member')}}" class="{{menu_active('member')}}">
-                        <div>
-                            <img src="/images/icons/member/profile.png" width="24" height="24">
-                            <span class="member-menu-item-title">我的资料</span>
                         </div>
                         <div class="dot-box">
                             <span class="dot"></span>

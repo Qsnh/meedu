@@ -91,8 +91,9 @@ class VideoController extends FrontendController
         return v('frontend.video.index', compact('videos', 'title'));
     }
 
-    public function show($courseId, $id, $slug)
+    public function show(Request $request, $courseId, $id, $slug)
     {
+        $scene = $request->input('scene');
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
         $this->videoService->viewNumInc($video['id']);
@@ -121,7 +122,8 @@ class VideoController extends FrontendController
             'commentUsers',
             'videos',
             'chapters',
-            'canSeeVideo'
+            'canSeeVideo',
+            'scene'
         ));
     }
 

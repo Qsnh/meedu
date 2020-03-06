@@ -403,5 +403,32 @@ $(function () {
             return false;
         }
         return true;
+    }).on('click', '.comment-button', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            showAuthBox('login-box');
+            return;
+        }
+        let input = $(this).attr('data-input');
+        let url = $(this).attr('data-url');
+        let content = $(`textarea[name=${input}]`).val();
+        if (content.length === 0) {
+            flashWarning('请输入评论内容');
+            return;
+        }
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token,
+            content: content
+        }, function (res) {
+            if (res.code !== 0) {
+                flashError(res.message)
+            } else {
+                flashSuccess('评论成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 800);
+            }
+        }, 'json');
     });
 });

@@ -124,8 +124,10 @@ class CourseController extends FrontendController
         return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId', 'scene', 'queryParams'));
     }
 
-    public function show($id, $slug)
+    public function show(Request $request, $id, $slug)
     {
+        $scene = $request->input('scene', '');
+
         $course = $this->courseService->find($id);
         $chapters = $this->courseService->chapters($course['id']);
         $videos = $this->videoService->courseVideos($course['id']);
@@ -164,7 +166,8 @@ class CourseController extends FrontendController
             'isBuy',
             'category',
             'isLikeCourse',
-            'firstVideo'
+            'firstVideo',
+            'scene'
         ));
     }
 

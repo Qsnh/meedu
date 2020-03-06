@@ -486,7 +486,7 @@ footer.footer-box {
   box-shadow: 0px 4px 8px 0px #e5e5e5;
   border-radius: 8px;
   margin-bottom: 30px;
-  padding-left: 15px;
+  padding-left: 30px;
   padding-right: 15px;
   margin-top: 30px;
 
@@ -1661,6 +1661,14 @@ footer.footer-box {
         }
       }
 
+      &.active {
+        background-color: rgba(11, 118, 222, .1);
+
+        .player-icon {
+          background-image: url("/images/icons/player-hover.png");
+        }
+      }
+
       .player-icon {
         display: inline-block;
         width: 24px;
@@ -1750,18 +1758,151 @@ footer.footer-box {
   margin-bottom: 30px;
 }
 
-@include media-breakpoint-down(md) {
-  .course-fixed-menu {
-    display: none;
+.comment-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 30px;
+
+  .comment-title {
+    width: 100%;
+    height: 16px;
+    float: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+    padding-top: 20px;
   }
 
-  .course-detail-thumb {
-    display: none;
+  .comment-input-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+
+    .comment-button {
+      float: right;
+      margin-top: 20px;
+      box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 40px;
+      padding-left: 36px;
+      padding-right: 36px;
+      background-color: $primary;
+      border: 0px;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
-  .course-detail-thumb-sm {
-    display: block !important;
+}
+
+.comment-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 50px;
+
+  .comment-list-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 10px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+    padding: 20px 30px;
+
+    .comment-user-avatar {
+      width: 70px;
+      height: 70px;
+      float: left;
+      margin-right: 20px;
+
+      img {
+        border-radius: 35px;
+      }
+    }
+
+    .comment-content-box {
+      width: 1050px;
+      height: auto;
+      float: left;
+
+      .comment-user-nickname {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(153, 153, 153, 1);
+        line-height: 14px;
+        margin-bottom: 15px;
+      }
+
+      .comment-content {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 16px;
+        margin-bottom: 19px;
+
+        p {
+          margin-bottom: 5px;
+        }
+      }
+
+      .comment-info {
+        .comment-createAt {
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(204, 204, 204, 1);
+          line-height: 12px;
+        }
+      }
+    }
   }
-  .course-detail-price {
-    position: relative !important;
+}
+
+.video-player {
+  width: 100%;
+  height: 675px;
+  float: left;
+  background-color: #000000;
+  margin-top: -150px;
+  z-index: 22;
+
+  #xiaoteng-player {
+    width: 1200px;
+    height: 675px;
+  }
+
+  .buy-this-video, .need-login {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-top: 180px;
+    text-align: center;
+
+    h3 {
+      color: $primary;
+    }
+
+    .login-text {
+      color: $primary;
+    }
   }
 }

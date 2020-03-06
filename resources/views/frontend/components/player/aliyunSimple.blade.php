@@ -6,8 +6,8 @@
     new Aliplayer({
         "id": "xiaoteng-player",
         "source": "{!! $video['url'] !!}",
-        "width": "100%",
-        "height": "500px",
+        "width": "1200px",
+        "height": "675px",
         "autoplay": false,
         "isLive": false,
         "rePlay": false,
