@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Services;
 
+use App\Constant\FrontendConstant;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
@@ -56,6 +57,7 @@ class CourseService implements CourseServiceInterface
      * @param int $categoryId
      * @param string $scene
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function simplePage(int $page, int $pageSize, int $categoryId = 0, string $scene = ''): array
     {
@@ -71,8 +73,8 @@ class CourseService implements CourseServiceInterface
             $query->orderByDesc('published_at');
         } elseif ($scene == 'sub') {
             $query->orderByDesc('user_count');
-        } elseif ($scene == 'latest') {
-            $query->latest();
+        } elseif ($scene == 'recom') {
+            $query->whereIsRec(FrontendConstant::YES)->orderByDesc('id');
         }
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();

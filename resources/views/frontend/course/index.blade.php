@@ -9,8 +9,8 @@
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
                         <a href="{{route('courses')}}?{{$queryParams(['scene' => ''])}}">所有课程</a>
                     </div>
-                    <div class="menu-item {{$scene == 'latest' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{$queryParams(['scene' => 'latest'])}}">最新课程</a>
+                    <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
+                        <a href="{{route('courses')}}?{{$queryParams(['scene' => 'recom'])}}">推荐课程</a>
                     </div>
                     <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
                         <a href="{{route('courses')}}?{{$queryParams(['scene' => 'sub'])}}">订阅最多</a>

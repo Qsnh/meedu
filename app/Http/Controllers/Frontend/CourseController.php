@@ -88,7 +88,7 @@ class CourseController extends FrontendController
 
     public function index(Request $request)
     {
-        $categoryId = intval($request->input('category_id'));
+        $categoryId = (int)$request->input('category_id');
         $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
