@@ -87,6 +87,7 @@ return [
         'alipay' => [
             'handler' => \App\Meedu\Payment\Alipay\Alipay::class,
             'name' => '支付宝',
+            'logo' => '/images/icons/alipay.png',
             'sign' => 'alipay',
             'default_method' => 'web',
             'pc' => 'web',
@@ -96,6 +97,7 @@ return [
         'wechat' => [
             'handler' => \App\Meedu\Payment\Wechat\Wechat::class,
             'name' => '微信支付',
+            'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
@@ -106,6 +108,7 @@ return [
         'handPay' => [
             'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
             'name' => '手动打款',
+            'logo' => '/images/icons/handpay.png',
             'sign' => 'handPay',
             'default_method' => 'hand',
             'pc' => 'hand',

@@ -150,6 +150,7 @@ class OrderService implements OrderServiceInterface
     /**
      * @param int $userId
      * @return string
+     * @throws \Exception
      */
     protected function genOrderNo(int $userId): string
     {

@@ -53,38 +53,23 @@ class OrderController extends Controller
     }
 
     /**
-     * @param $orderId
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show($orderId)
-    {
-        $order = $this->orderService->findUserNoPaid($orderId);
-        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
-
-        $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
-        $payments = get_payments($scene);
-
-        return v('frontend.order.show', compact('order', 'payments', 'needPaidTotal'));
-    }
-
-    /**
      * @param Request $request
-     * @param $orderId
      * @return mixed
      * @throws ServiceException
      * @throws SystemException
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function pay(Request $request, $orderId)
+    public function pay(Request $request)
     {
+        $orderId = $request->input('order_id');
         $order = $this->orderService->findUserNoPaid($orderId);
 
-        $scene = is_h5() ? FrontendConstant::PAYMENT_SCENE_H5 : FrontendConstant::PAYMENT_SCENE_PC;
-        $payments = get_payments($scene);
-        $payment = $order['payment'] ?: $request->post('payment');
+        $scene = $request->input('scene');
+        $payment = $request->input('payment');
         if (!$payment) {
             throw new ServiceException(__('payment not exists'));
         }
+        $payments = get_payments($scene);
         $paymentMethod = $payments[$payment][$scene] ?? '';
         if (!$paymentMethod) {
             throw new SystemException(__('payment method not exists'));
@@ -101,7 +86,7 @@ class OrderController extends Controller
         // 创建远程订单
         $paymentHandler = app()->make($payments[$payment]['handler']);
         $createResult = $paymentHandler->create($order);
-        if ($createResult->status == false) {
+        if ($createResult->status === false) {
             throw new SystemException(__('remote order create failed'));
         }
 

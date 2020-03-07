@@ -251,10 +251,25 @@ if (!function_exists('enabled_socialites')) {
     }
 }
 
+if (!function_exists('get_payment_scene')) {
+    /**
+     * @return string
+     */
+    function get_payment_scene()
+    {
+        if (is_wechat()) {
+            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+        }
+        $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
+        return $scene;
+    }
+}
+
 if (!function_exists('get_payments')) {
     /**
      * @param $scene
      * @return \Illuminate\Support\Collection
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     function get_payments($scene)
     {

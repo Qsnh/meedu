@@ -171,6 +171,11 @@ class CourseController extends FrontendController
         ));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);
@@ -179,23 +184,35 @@ class CourseController extends FrontendController
             return back();
         }
         $title = __('buy course', ['course' => $course['title']]);
+        $goods = [
+            'id' => $course['id'],
+            'title' => $course['title'],
+            'thumb' => $course['thumb'],
+            'charge' => $course['charge'],
+            'label' => '整套课程',
+        ];
+        $total = $course['charge'];
+        $scene = get_payment_scene();
+        $payments = get_payments($scene);
 
-        return v('frontend.course.buy', compact('course', 'title'));
+        return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
-    public function buyHandler(Request $request, $id)
+    public function buyHandler(Request $request)
     {
-        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
+        $id = $request->input('goods_id');
+        $promoCodeId = abs((int)$request->input('promo_code_id'));
         $course = $this->courseService->find($id);
         $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
 
-        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+        if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
             return redirect(route('course.show', [$course['id'], $course['slug']]));
         }
 
-        flash(__('order successfully, please pay'), 'success');
+        $paymentScene = $request->input('payment_scene');
+        $payment = $request->input('payment_sign');
 
-        return redirect(route('order.show', $order['order_id']));
+        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
     }
 }

@@ -1906,3 +1906,267 @@ footer.footer-box {
     }
   }
 }
+
+.order-create-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 30px;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 27px;
+    margin-bottom: 30px;
+  }
+
+  .goods-info-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 50px;
+
+    .goods-thumb {
+      width: 160px;
+      height: 120px;
+      float: left;
+      margin-right: 30px;
+
+      img {
+        border-radius: 2px;
+      }
+    }
+
+    .goods-info {
+      width: 790px;
+      height: auto;
+      float: left;
+
+      .goods-title {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 18px;
+        margin-bottom: 30px;
+        padding-top: 20px;
+      }
+
+      .goods-label {
+        width: 100%;
+        height: auto;
+        float: left;
+
+        .label {
+          display: inline-block;
+          padding: 8px 10px;
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(255, 64, 64, 1);
+          line-height: 16px;
+          border-radius: 2px;
+          border: 1px solid rgba(255, 64, 64, 1);
+        }
+      }
+    }
+
+    .goods-price {
+      width: 160px;
+      height: auto;
+      float: left;
+      padding-top: 10px;
+      text-align: right;
+
+      .price {
+        color: rgba(255, 64, 64, 1);
+        font-weight: 700;
+        font-size: 30px;
+
+        small {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .promo-code {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 50px;
+
+    .promo-code-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 27px;
+      margin-bottom: 30px;
+    }
+
+    .promo-code-input {
+      line-height: 50px;
+
+      input {
+        width: 200px;
+        height: 50px;
+        margin-right: 30px;
+        float: left;
+      }
+
+      .promo-code-check-button {
+        float: left;
+        padding-left: 36px;
+        padding-right: 36px;
+        margin-top: 5px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 40px;
+        background-color: $primary;
+        border-radius: 20px;
+        margin-right: 30px;
+        border: 0px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .promo-code-info {
+        display: none;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 64, 64, 1);
+        line-height: 14px;
+      }
+    }
+  }
+
+  .payments-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-bottom: 50px;
+    margin-bottom: 50px;
+    border-bottom: 1px solid #cccccc;
+
+    .payments-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 27px;
+      margin-bottom: 30px;
+    }
+
+    .payments {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .payment-item {
+        width: 230px;
+        height: 100px;
+        float: left;
+        line-height: 100px;
+        text-align: center;
+        box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+        margin-right: 30px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &.selected {
+          border: 3px solid rgba(255, 64, 64, 1);
+        }
+      }
+    }
+  }
+
+  .bottom {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .bottom-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      line-height: 50px;
+      margin-bottom: 30px;
+
+      .time {
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 64, 64, 1);
+      }
+
+      .charge-info {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        float: right;
+        margin-right: 20px;
+
+        .promo-code-price {
+          color: rgba(255, 64, 64, 1);
+        }
+      }
+    }
+
+    .total-price {
+      display: inline-block;
+      color: rgba(255, 64, 64, 1);
+      font-weight: 700;
+      font-size: 30px;
+      float: right;
+
+      small {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .bottom-button-box {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .pay-button {
+        padding-left: 44px;
+        padding-right: 44px;
+        line-height: 60px;
+        border: 0px;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        background-color: $primary;
+        border-radius: 30px;
+        float: right;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}

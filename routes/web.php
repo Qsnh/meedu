@@ -105,8 +105,7 @@ Route::group([
 
     // 收银台
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
-    Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
-    Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
+    Route::get('/order/pay', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
     Route::get('/order/pay/handPay/{order_id}', 'OrderController@handPay')->name('order.pay.handPay');
 
