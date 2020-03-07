@@ -8,7 +8,7 @@
                 <span>搜索结果 <small>只展示最近20条数据</small></span>
             </div>
             <div class="col-12 course-list-box">
-                @foreach($courses as $index => $courseItem)
+                @forelse($courses as $index => $courseItem)
                     <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}"
                        class="course-list-item {{(($index + 1) % 4 === 0) ? 'last' : ''}}">
                         <div class="course-thumb">
@@ -22,7 +22,9 @@
                             <span class="category-label">{{$courseItem['category']['name']}}</span>
                         </div>
                     </a>
-                @endforeach
+                @empty
+                    @include('frontend.components.none')
+                @endforelse
             </div>
         </div>
     </div>

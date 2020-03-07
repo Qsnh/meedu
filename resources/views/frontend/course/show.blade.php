@@ -164,7 +164,7 @@
                     </div>
 
                     <div class="comment-list-box">
-                        @foreach($comments as $commentItem)
+                        @forelse($comments as $commentItem)
                             <div class="comment-list-item">
                                 <div class="comment-user-avatar">
                                     <img src="{{$commentUsers[$commentItem['user_id']]['avatar']}}" width="70"
@@ -180,7 +180,9 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            @include('frontend.components.none')
+                        @endforelse
                     </div>
                 </div>
             </div>

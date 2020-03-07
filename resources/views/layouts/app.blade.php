@@ -97,7 +97,7 @@
                                                 <img src="/images/icons/order.png" width="20"
                                                      height="20"><span>订单信息</span>
                                             </a>
-                                            <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault();
+                                            <a class="dropdown-item logout" href="javascript:void(0);" onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                                                 <img src="/images/icons/logout.png" width="20" height="20">
                                                 <span>安全退出</span>

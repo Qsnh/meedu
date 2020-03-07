@@ -58,6 +58,7 @@
                             <span class="invite-user-item-date">{{\Carbon\Carbon::parse($item['created_at'])->format('Y-m-d H:i')}}</span>
                         </div>
                     @empty
+                        @include('frontend.components.none')
                     @endforelse
                 </div>
             </div>

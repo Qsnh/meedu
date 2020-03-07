@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="member-message-box">
-                    @foreach($messages as $message)
+                    @forelse($messages as $message)
                         <div class="member-message-item" data-id="{{$message['id']}}">
                             @if(!$message['read_at'])
                                 <div class="red-dot"></div>
@@ -23,7 +23,9 @@
 
                             <span class="member-message-date">{{\Carbon\Carbon::parse($message['created_at'])->format('Y-m-d H:i')}}</span>
                         </div>
-                    @endforeach
+                    @empty
+                        @include('frontend.components.none')
+                    @endforelse
                 </div>
             </div>
 

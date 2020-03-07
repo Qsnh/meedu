@@ -44,7 +44,7 @@
                         <div class="need-login">
                             <h3>{{$video['title']}}</h3>
                             <p class="mt-5"><a data-login="0" class="btn btn-primary login-auth"
-                                  href="{{route('login')}}">登录</a></p>
+                                               href="{{route('login')}}">登录</a></p>
                             <p class="login-text">
                                 登录后才可以观看视频哦！
                             </p>
@@ -132,7 +132,7 @@
                     </div>
 
                     <div class="comment-list-box">
-                        @foreach($comments as $commentItem)
+                        @forelse($comments as $commentItem)
                             <div class="comment-list-item">
                                 <div class="comment-user-avatar">
                                     <img src="{{$commentUsers[$commentItem['user_id']]['avatar']}}" width="70"
@@ -148,7 +148,9 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            @include('frontend.components.none')
+                        @endforelse
                     </div>
                 </div>
             </div>

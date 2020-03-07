@@ -38,6 +38,7 @@
                             </div>
                         </a>
                     @empty
+                        @include('frontend.components.none')
                     @endforelse
                 </div>
             </div>

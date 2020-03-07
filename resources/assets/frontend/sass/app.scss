@@ -114,10 +114,6 @@ a {
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-.pagination {
-  margin-bottom: 0px;
-}
-
 .t1 {
   &:hover {
     opacity: 1 !important;
@@ -374,6 +370,12 @@ footer.footer-box {
 
           &:hover {
             background-color: rgba(11, 118, 222, .1);
+          }
+
+          &.logout {
+            span {
+              margin-left: -3px;
+            }
           }
 
           img {
@@ -661,7 +663,6 @@ footer.footer-box {
 .pagination {
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-bottom: 40px;
 }
 
 .friend-link-box {
