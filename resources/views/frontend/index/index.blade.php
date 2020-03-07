@@ -7,78 +7,66 @@
 
 @section('content')
 
-    <div class="container slider-box">
-        <div class="row">
-            <div class="col-12">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        @foreach($sliders as $slider)
-                            <a class="swiper-slide" href="{{$slider['url']}}">
-                                <img src="{{$slider['thumb']}}" width="100%" height="400">
-                            </a>
-                        @endforeach
+    <div class="container-fluid slider-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            @foreach($sliders as $slider)
+                                <a class="swiper-slide" href="{{$slider['url']}}">
+                                    <img src="{{$slider['thumb']}}" width="100%" height="400">
+                                </a>
+                            @endforeach
+                        </div>
+                        <div class="swiper-pagination"></div>
                     </div>
-                    <div class="swiper-pagination"></div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="course-menu-box">
-                    <div class="menu-item active">
-                        <a href="{{route('courses')}}">所有课程</a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="{{route('courses')}}?scene=latest">最新课程</a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="{{route('courses')}}?scene=sub">订阅最多</a>
-                    </div>
-
-                    @if($gAnnouncement)
-                        <div class="menu-announcement">
+                @if($gAnnouncement)
+                    <div class="col-12">
+                        <div class="announcement-box">
                             <a href="{{route('announcement.show', [$gAnnouncement['id']])}}">{{$gAnnouncement['title']}}</a>
                         </div>
-                    @endif
-                </div>
-
-                <div class="category-box">
-                    <a href="{{route('courses')}}" class="category-box-item active">不限</a>
-                    @foreach($categories as $category)
-                        <a href="{{route('courses')}}?category_id={{$category['id']}}"
-                           class="category-box-item">{{$category['name']}}</a>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div class="course-list-box">
-                    @foreach($courses as $index => $course)
-                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-                           class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
-                            <div class="course-thumb">
-                                <img src="{{$course['thumb']}}" width="280" height="210" alt="{{$course['title']}}">
-                            </div>
-                            <div class="course-title">
-                                {{$course['title']}}
-                            </div>
-                            <div class="course-category">
-                                <span class="video-count-label">课时：{{$course['videos_count']}}节</span>
-                                <span class="category-label">{{$course['category']['name']}}</span>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="col-12">
-                {!! str_replace('pagination', 'pagination justify-content-center', $courses->render()) !!}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
+
+    @foreach($banners as $i => $banner)
+        <div class="container-fluid index-latest-banner {{$i % 2 !== 0 ? 'bg-fff' : ''}}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="banner-title">
+                            <img src="/images/icons/index-banner-course.png" width="38" height="35">
+                            <span class="title">{{$banner['name']}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="course-list-box">
+                            @foreach($banner['courses'] as $index => $course)
+                                <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
+                                   class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
+                                    <div class="course-thumb">
+                                        <img src="{{$course['thumb']}}" width="280" height="210"
+                                             alt="{{$course['title']}}">
+                                    </div>
+                                    <div class="course-title">
+                                        {{$course['title']}}
+                                    </div>
+                                    <div class="course-category">
+                                        <span class="video-count-label">课时：{{$course['videos_count']}}节</span>
+                                        <span class="category-label">{{$course['category']['name']}}</span>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
     <div class="container-fluid friend-link-box">
         <div class="container">

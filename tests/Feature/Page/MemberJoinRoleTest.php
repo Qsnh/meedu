@@ -16,7 +16,7 @@ class MemberJoinRoleTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user)
             ->visit(route('member.join_role_records'))
-            ->see('暂无数据');
+            ->assertResponseStatus(200);
     }
 
     public function test_member_join_role_see_some_records()

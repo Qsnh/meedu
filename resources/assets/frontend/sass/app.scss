@@ -20,6 +20,10 @@ $container-max-widths: (
 
 @import "~bootstrap/scss/bootstrap";
 
+body {
+  background-color: #f8fafb;
+}
+
 a {
   color: $c2;
 }
@@ -473,11 +477,12 @@ footer.footer-box {
 }
 
 .slider-box {
-  margin-top: 30px;
-  height: 400px;
+  padding-top: 30px;
+  height: auto;
 
   img {
-    border-radius: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
 }
 
@@ -522,25 +527,6 @@ footer.footer-box {
     a {
       color: $primary;
       text-decoration: none;
-    }
-  }
-
-  .menu-announcement {
-    width: auto;
-    height: 52px;
-    float: right;
-    margin-top: 10px;
-    line-height: 52px;
-    background: rgba(255, 249, 215, 1);
-    box-shadow: 0px 2px 4px 0px rgba(229, 229, 229, 1);
-    border-radius: 27px;
-    padding-left: 20px;
-    padding-right: 20px;
-
-    a {
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(222, 122, 11, 1);
     }
   }
 }
@@ -2168,6 +2154,55 @@ footer.footer-box {
           outline: none;
         }
       }
+    }
+  }
+}
+
+.index-latest-banner {
+  padding-top: 100px;
+  padding-bottom: 106px;
+}
+
+.banner-title {
+  width: 100%;
+  height: 36px;
+  float: left;
+  font-size: 36px;
+  color: rgba(51, 51, 51, 1);
+  line-height: 36px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 50px;
+
+  img {
+    display: inline-block;
+    margin-right: 16px;
+    margin-top: -5px;
+  }
+
+  span.title {
+    display: inline-block;
+    height: 36px;
+  }
+}
+
+.announcement-box {
+  width: 100%;
+  height: 52px;
+  float: left;
+  background: rgba(255, 249, 215, 1);
+  border-radius: 0px 0px 8px 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 52px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  a {
+    color: #DE7A0B;
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }

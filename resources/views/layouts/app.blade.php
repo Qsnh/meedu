@@ -1,5 +1,5 @@
 @include('layouts.common.header')
-<body class="bg-f6">
+<body>
 
 <div class="container-fluid nav-box bg-fff">
     <div class="row">
