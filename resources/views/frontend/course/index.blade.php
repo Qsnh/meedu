@@ -21,7 +21,7 @@
                     <a href="{{route('courses')}}?{{$queryParams(['category_id' => 0])}}"
                        class="category-box-item {{!$categoryId ? 'active' : ''}}">不限</a>
                     @foreach($courseCategories as $category)
-                        <a href="{{route('courses')}}??{{$queryParams(['category_id' => $category['id']])}}"
+                        <a href="{{route('courses')}}?{{$queryParams(['category_id' => $category['id']])}}"
                            class="category-box-item {{$categoryId == $category['id'] ? 'active' : ''}}">{{$category['name']}}</a>
                     @endforeach
                 </div>

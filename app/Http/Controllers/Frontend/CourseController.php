@@ -98,11 +98,9 @@ class CourseController extends FrontendController
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
         $courses = $this->paginator($list, $total, $page, $pageSize);
         $courses->appends([
-            'page' => $request->input('page'),
-            'category_id' => $request->input('category_id', 0),
+            'category_id' => $categoryId,
             'scene' => $request->input('scene', ''),
         ]);
-        $categoryId && $courses->appends(['category_id' => $categoryId]);
         [
             'title' => $title,
             'keywords' => $keywords,
@@ -121,7 +119,16 @@ class CourseController extends FrontendController
             return http_build_query($params);
         };
 
-        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId', 'scene', 'queryParams'));
+        return v('frontend.course.index', compact(
+            'courses',
+            'title',
+            'keywords',
+            'description',
+            'courseCategories',
+            'categoryId',
+            'scene',
+            'queryParams'
+        ));
     }
 
     public function show(Request $request, $id, $slug)
