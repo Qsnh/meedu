@@ -9,7 +9,7 @@
                     <div class="col-sm-12">
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="{{url('/')}}">
-                                <img src="{{$gConfig['system']['member_logo']}}" height="37"
+                                <img src="{{$gConfig['system']['white_logo']}}" height="37"
                                      alt="{{config('app.name')}}">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse"

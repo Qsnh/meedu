@@ -25,21 +25,21 @@ return [
             'github' => [
                 'app' => 'github',
                 'name' => 'Github',
-                'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+                'logo' => '/images/icons/github.png',
                 'enabled' => 0,
             ],
             // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
-                'icon' => '<i class="fa fa-qq" aria-hidden="true"></i>',
+                'logo' => '/images/icons/qq.png',
                 'enabled' => 0,
             ],
             // 微信登录
             'weixinweb' => [
                 'app' => 'weixinweb',
                 'name' => '微信',
-                'icon' => '<i class="fa fa-weixin" aria-hidden="true"></i>',
+                'logo' => '/images/icons/wechat.png',
                 'enabled' => 0,
             ],
         ],
@@ -141,7 +141,7 @@ return [
     'system' => [
         'icp' => '',
         'logo' => '/images/logo.png',
-        'member_logo' => '/images/member-logo.png',
+        'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',
 
         // 缓存开关

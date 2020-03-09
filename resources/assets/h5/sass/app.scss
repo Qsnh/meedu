@@ -130,7 +130,9 @@ body {
     height: auto;
     float: left;
     color: $textColor;
-    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eeeeee;
 
     &:focus, &:hover {
       text-decoration: none;

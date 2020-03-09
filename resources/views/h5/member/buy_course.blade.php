@@ -13,7 +13,7 @@
 
     @include('h5.components.topbar', ['title' => '我的课程', 'back' => route('member')])
 
-    <div class="container-fluid">
+    <div class="container-fluid bg-fff">
         <div class="row">
             <div class="col-12 course-list-box">
                 @forelse($records as $index => $record)
