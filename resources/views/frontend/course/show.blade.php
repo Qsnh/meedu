@@ -76,7 +76,12 @@
                 <div class="course-menu-box"
                      style="margin-top: 0px; border-radius:0px 0px 8px 8px; box-shadow:0px 4px 8px 0px rgba(229,229,229,1); padding-left: 30px;">
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
-                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}">课程目录</a>
+                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
+                           class="course-show-menu-item" data-page="course-show-page-desc">课程介绍</a>
+                    </div>
+                    <div class="menu-item {{$scene === 'chapter' ? 'active' : ''}}">
+                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}?scene=chapter"
+                           class="course-show-menu-item" data-page="course-show-page-chapter">课程目录</a>
                     </div>
                     <div class="menu-item {{$scene === 'comment' ? 'active' : ''}}">
                         <a href="{{route('course.show', [$course['id'], $course['slug']])}}?scene=comment">讨论区</a>
@@ -86,15 +91,49 @@
         </div>
     </div>
 
-    @if(!$scene)
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="course-chapter">
-                        @if($chapters)
-                            @foreach($chapters as $chapter)
-                                <div class="course-chapter-title">{{$chapter['title']}}</div>
-                                @foreach($videos[$chapter['id']] ?? [] as $video)
+    @if(!$scene || $scene === 'chapter')
+        <div>
+            <div class="container course-show-page-desc {{!$scene ? '' : 'display-none'}}">
+                <div class="row">
+                    <div class="col-12">
+                        {!! $course['render_desc'] !!}
+                    </div>
+                </div>
+            </div>
+
+            <div class="container course-show-page-chapter {{$scene !== 'chapter' ? 'display-none' : ''}}">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="course-chapter">
+                            @if($chapters)
+                                @foreach($chapters as $chapter)
+                                    <div class="course-chapter-title">{{$chapter['title']}}</div>
+                                    @foreach($videos[$chapter['id']] ?? [] as $video)
+                                        <div class="course-videos-box">
+                                            <div class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
+                                                <span class="player-icon"></span>
+                                                <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                                   class="video-title">{{$video['title']}}</a>
+                                                @if($video['charge'] === 0)
+                                                    <span class="free-label">免费</span>
+                                                @endif
+                                                <span class="video-duration">{{duration_humans($video['duration'])}}</span>
+                                                @if($isBuy)
+                                                    <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                                       class="learn-button">继续学习</a>
+                                                @elseif($video['charge'] === 0)
+                                                    <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                                       class="learn-button">免费学习</a>
+                                                @else
+                                                    <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                                       class="learn-button">开始学习</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            @else
+                                @foreach($videos[0] ?? [] as $video)
                                     <div class="course-videos-box">
                                         <div class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
                                             <span class="player-icon"></span>
@@ -117,32 +156,8 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            @endforeach
-                        @else
-                            @foreach($videos[0] ?? [] as $video)
-                                <div class="course-videos-box">
-                                    <div class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
-                                        <span class="player-icon"></span>
-                                        <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                           class="video-title">{{$video['title']}}</a>
-                                        @if($video['charge'] === 0)
-                                            <span class="free-label">免费</span>
-                                        @endif
-                                        <span class="video-duration">{{duration_humans($video['duration'])}}</span>
-                                        @if($isBuy)
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">继续学习</a>
-                                        @elseif($video['charge'] === 0)
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">免费学习</a>
-                                        @else
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">开始学习</a>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

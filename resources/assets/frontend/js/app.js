@@ -461,5 +461,29 @@ $(function () {
         let url = $(this).attr('data-url');
         $(this).addClass('active').siblings().removeClass('active');
         $('.role-join-button').attr('href', url);
+    }).on('click', '.course-show-menu-item', function () {
+        let page = $(this).attr('data-page');
+        if (!page) {
+            return true;
+        }
+        let c = '.' + page;
+        if ($('body').find(c).length === 0) {
+            return true;
+        }
+        $('.' + page).show(200).siblings().hide(200);
+        $(this).parent().addClass('active').siblings().removeClass('active');
+        return false;
+    }).on('click', '.video-show-page-item', function () {
+        let page = $(this).attr('data-page');
+        if (!page) {
+            return true;
+        }
+        let c = '.' + page;
+        if ($('body').find(c).length === 0) {
+            return true;
+        }
+        $('.' + page).show(200).siblings().hide(200);
+        $(this).parent().addClass('active').siblings().removeClass('active');
+        return false;
     });
 });
