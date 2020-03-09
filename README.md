@@ -44,7 +44,6 @@
 
 - [API接口](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [安装教程](docs/安装教程.md)
-- [MeEdu使用教程](docs/使用教程.md)
 - [MeEdu常见问题总结及功能介绍](https://www.yuque.com/meedu/yr7rek)
 
 ## License
