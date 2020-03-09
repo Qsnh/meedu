@@ -25,6 +25,19 @@ body {
   padding-top: 70px;
 }
 
+input.form-control {
+  height: 48px !important;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+button.btn {
+  height: 48px;
+}
+
 a {
   color: $c2;
 }
@@ -299,12 +312,7 @@ footer.footer-box {
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       font-size: 14px;
-      height: 40px;
-
-      &:focus {
-        outline: none;
-        box-shadow: none;
-      }
+      height: 40px !important;
 
       &::-webkit-input-placeholder {
         color: #999999;
@@ -314,7 +322,7 @@ footer.footer-box {
     .search-button {
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      height: 40px;
+      height: 40px !important;
     }
 
     .role-vip-button {
@@ -1585,7 +1593,7 @@ footer.footer-box {
         float: left;
         height: 50px;
         line-height: 50px;
-        font-size: 50px;
+        font-size: 30px;
         font-weight: 600;
         color: rgba(255, 64, 64, 1);
         margin-right: 50px;
