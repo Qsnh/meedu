@@ -35,7 +35,8 @@
             <div class="form-group text-center mb-0 socialite-box">
                 @foreach(enabled_socialites() as $socialite)
                     <a class="socialite-item"
-                       href="{{route('socialite', $socialite['app'])}}"><img src="{{$socialite['logo']}}" width="44" height="44"></a>
+                       href="{{route('socialite', $socialite['app'])}}"><img src="{{$socialite['logo']}}" width="44"
+                                                                             height="44"></a>
                 @endforeach
             </div>
         </div>
@@ -81,12 +82,6 @@
             <div class="form-group auth-box-errors"></div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary btn-block login-mobile-button">立即登录</button>
-            </div>
-            <div class="form-group text-center mb-0 socialite-box">
-                @foreach(enabled_socialites() as $socialite)
-                    <a class="socialite-item"
-                       href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
-                @endforeach
             </div>
         </div>
     </form>
