@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
@@ -87,7 +88,7 @@ class CourseController extends FrontendController
 
     public function index(Request $request)
     {
-        $categoryId = intval($request->input('category_id'));
+        $categoryId = (int)$request->input('category_id');
         $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
@@ -97,11 +98,9 @@ class CourseController extends FrontendController
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
         $courses = $this->paginator($list, $total, $page, $pageSize);
         $courses->appends([
-            'page' => $request->input('page'),
-            'category_id' => $request->input('category_id', 0),
+            'category_id' => $categoryId,
             'scene' => $request->input('scene', ''),
         ]);
-        $categoryId && $courses->appends(['category_id' => $categoryId]);
         [
             'title' => $title,
             'keywords' => $keywords,
@@ -120,17 +119,29 @@ class CourseController extends FrontendController
             return http_build_query($params);
         };
 
-        return v('frontend.course.index', compact('courses', 'title', 'keywords', 'description', 'courseCategories', 'categoryId', 'scene', 'queryParams'));
+        return v('frontend.course.index', compact(
+            'courses',
+            'title',
+            'keywords',
+            'description',
+            'courseCategories',
+            'categoryId',
+            'scene',
+            'queryParams'
+        ));
     }
 
-    public function show($id, $slug)
+    public function show(Request $request, $id, $slug)
     {
+        $scene = $request->input('scene', '');
+
         $course = $this->courseService->find($id);
         $chapters = $this->courseService->chapters($course['id']);
         $videos = $this->videoService->courseVideos($course['id']);
         $comments = $this->courseCommentService->courseComments($course['id']);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
+        $category = $this->courseCategoryService->findOrFail($course['category_id']);
 
         $title = $course['title'];
         $keywords = $course['seo_keywords'];
@@ -138,6 +149,17 @@ class CourseController extends FrontendController
 
         // 是否购买
         $isBuy = $this->businessState->isBuyCourse($course['id']);
+        // 喜欢课程
+        $isLikeCourse = false;
+        Auth::check() && $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
+        // 该课程的第一个视频
+        $firstChapter = Arr::first($chapters);
+        $firstVideo = [];
+        if ($firstChapter && ($videos[$firstChapter['id']] ?? [])) {
+            $firstVideo = $videos[$firstChapter['id']][0];
+        } else {
+            Arr::first($videos) && $firstVideo = $videos[0][0];
+        }
 
         return v('frontend.course.show', compact(
             'course',
@@ -148,10 +170,19 @@ class CourseController extends FrontendController
             'commentUsers',
             'videos',
             'chapters',
-            'isBuy'
+            'isBuy',
+            'category',
+            'isLikeCourse',
+            'firstVideo',
+            'scene'
         ));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);
@@ -160,23 +191,35 @@ class CourseController extends FrontendController
             return back();
         }
         $title = __('buy course', ['course' => $course['title']]);
+        $goods = [
+            'id' => $course['id'],
+            'title' => $course['title'],
+            'thumb' => $course['thumb'],
+            'charge' => $course['charge'],
+            'label' => '整套课程',
+        ];
+        $total = $course['charge'];
+        $scene = get_payment_scene();
+        $payments = get_payments($scene);
 
-        return v('frontend.course.buy', compact('course', 'title'));
+        return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
-    public function buyHandler(Request $request, $id)
+    public function buyHandler(Request $request)
     {
-        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
+        $id = $request->input('goods_id');
+        $promoCodeId = abs((int)$request->input('promo_code_id'));
         $course = $this->courseService->find($id);
         $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
 
-        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+        if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
             return redirect(route('course.show', [$course['id'], $course['slug']]));
         }
 
-        flash(__('order successfully, please pay'), 'success');
+        $paymentScene = $request->input('payment_scene');
+        $payment = $request->input('payment_sign');
 
-        return redirect(route('order.show', $order['order_id']));
+        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
     }
 }

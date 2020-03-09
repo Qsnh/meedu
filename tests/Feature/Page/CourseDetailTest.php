@@ -16,12 +16,13 @@ class CourseDetailTest extends TestCase
     public function test_visit_course_detail_page()
     {
         $courseShow = factory(Course::class)->create([
+            'title' => '我是课程名',
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
         ]);
         $this->get(route('course.show', [$courseShow->id, $courseShow->slug]))
-            ->see($courseShow->title)
-            ->see($courseShow->charge);
+            ->seeText($courseShow->title)
+            ->seeText($courseShow->charge);
     }
 
     // 创建一个课程，发布时间为前一天，但是不显示

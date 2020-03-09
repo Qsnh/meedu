@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
@@ -134,20 +135,21 @@ class UserService implements UserServiceInterface
     /**
      * @param string $avatar
      * @param string $name
-     *
      * @return array
+     * @throws \Exception
      */
     public function createWithoutMobile(string $avatar = '', string $name = ''): array
     {
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $name ?? Str::random(16),
-            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
+            'mobile' => random_int(2, 9) . random_int(1000, 9999) . random_int(1000, 9999),
             'password' => Hash::make(Str::random(16)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
+            'is_set_nickname' => 0,
         ]);
 
         event(new UserRegisterEvent($user->id));
@@ -168,11 +170,12 @@ class UserService implements UserServiceInterface
             'avatar' => $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $nickname ?: Str::random(16),
             'mobile' => $mobile,
-            'password' => Hash::make($password),
+            'password' => Hash::make($password ?: Str::random(10)),
             'is_lock' => $this->configService->getMemberLockStatus(),
             'is_active' => $this->configService->getMemberActiveStatus(),
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
+            'is_set_nickname' => $nickname ? 1 : 0,
         ]);
 
         event(new UserRegisterEvent($user->id));
@@ -204,6 +207,27 @@ class UserService implements UserServiceInterface
     public function updateAvatar(int $userId, string $avatar): void
     {
         User::whereId($userId)->update(['avatar' => $avatar]);
+    }
+
+    /**
+     * @param int $userId
+     * @param string $nickname
+     * @throws ServiceException
+     */
+    public function updateNickname(int $userId, string $nickname): void
+    {
+        $user = $this->find($userId);
+        if ($user['is_set_nickname'] === FrontendConstant::YES) {
+            throw new ServiceException(__('current user cant set nickname'));
+        }
+        $exists = User::where('id', '<>', $userId)->whereNickName($nickname)->exists();
+        if ($exists) {
+            throw new ServiceException(__('nick_name.unique'));
+        }
+        User::whereId($userId)->update([
+            'nick_name' => $nickname,
+            'is_set_nickname' => FrontendConstant::YES,
+        ]);
     }
 
     /**
@@ -241,10 +265,6 @@ class UserService implements UserServiceInterface
         $total = $query->count();
         $data = $query->forPage($page, $pageSize)->get();
         $list = $data->toArray();
-        // 标记为已读
-        foreach ($data as $key => $item) {
-            $item->markAsRead();
-        }
 
         return compact('list', 'total');
     }
@@ -340,6 +360,7 @@ class UserService implements UserServiceInterface
     /**
      * @param int $id
      * @param array $promoCode
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function updateInviteUserId(int $id, array $promoCode): void
     {
@@ -379,5 +400,68 @@ class UserService implements UserServiceInterface
     public function inviteBalanceInc(int $userId, int $inc): void
     {
         User::find($userId)->increment('invite_balance', $inc);
+    }
+
+    /**
+     * @param int $userId
+     * @param string $id
+     */
+    public function notificationMarkAsRead(int $userId, string $id): void
+    {
+        $notification = User::find($userId)->notifications()->whereId($id)->first();
+        $notification && $notification->markAsRead();
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function notificationMarkAllAsRead(int $userId): void
+    {
+        User::find($userId)->unreadNotifications->markAsRead();
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     * @return int
+     */
+    public function likeACourse(int $userId, int $courseId): int
+    {
+        $record = UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->first();
+        if ($record) {
+            $record->delete();
+            return 0;
+        }
+        UserLikeCourse::create([
+            'user_id' => $userId,
+            'course_id' => $courseId,
+        ]);
+        return 1;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     * @return bool
+     */
+    public function likeCourseStatus(int $userId, int $courseId): bool
+    {
+        return UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->exists();
+    }
+
+    /**
+     * @param int $userId
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function userLikeCoursesPaginate(int $userId, int $page, int $pageSize): array
+    {
+        $query = UserLikeCourse::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
+
+        $total = $query->count();
+        $list = $query->get()->toArray();
+
+        return compact('list', 'total');
     }
 }

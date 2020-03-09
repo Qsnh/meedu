@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 会员
     Route::group(['prefix' => 'member'], function () {
         Route::get('/', 'MemberController@index');
-        Route::get('/{id}', 'MemberController@show');
+        Route::get('/create', 'MemberController@create');
+        Route::get('/{id}', 'MemberController@edit');
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
@@ -197,4 +198,14 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 插件
     Route::get('/addons', 'AddonsController@index');
     Route::post('/addons/switch', 'AddonsController@switchHandler');
+
+    // IndexBanner
+    Route::group(['prefix' => 'indexBanner'], function () {
+        Route::get('/', 'IndexBannerController@index');
+        Route::get('/create', 'IndexBannerController@create');
+        Route::post('/', 'IndexBannerController@store');
+        Route::get('/{id}', 'IndexBannerController@edit');
+        Route::put('/{id}', 'IndexBannerController@update');
+        Route::delete('/{id}', 'IndexBannerController@destroy');
+    });
 });

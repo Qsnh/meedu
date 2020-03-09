@@ -234,18 +234,43 @@ class MemberController extends FrontendController
     public function showBuyCoursePage(Request $request)
     {
         $page = $request->input('page', 1);
+        $scene = $request->input('scene');
         $pageSize = 10;
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $this->userService->getUserBuyCourses($page, $pageSize);
+        if (!$scene) {
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->userService->getUserBuyCourses($page, $pageSize);
+        } elseif ($scene === 'history') {
+            // 学习历史
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
+        } else {
+            // 我的收藏
+            [
+                'total' => $total,
+                'list' => $list,
+            ] = $this->userService->userLikeCoursesPaginate(Auth::id(), $page, $pageSize);
+        }
         $records = $this->paginator($list, $total, $page, $pageSize);
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
         $courses = array_column($courses, null, 'id');
 
         $title = __('title.member.courses');
 
-        return v('frontend.member.buy_course', compact('records', 'title', 'courses'));
+        $queryParams = function ($param) {
+            $request = \request();
+            $params = [
+                'page' => $request->input('page'),
+                'scene' => $request->input('scene', ''),
+            ];
+            $params = array_merge($params, $param);
+            return http_build_query($params);
+        };
+
+        return v('frontend.member.buy_course', compact('records', 'title', 'courses', 'scene', 'queryParams'));
     }
 
     /**
@@ -319,17 +344,64 @@ class MemberController extends FrontendController
      */
     public function showPromoCodePage(Request $request)
     {
-        $page = abs(intval($request->input('page', 1)));
+        $scene = $request->input('scene');
+        $page = abs((int)$request->input('page', 1));
         $pageSize = 10;
         $userPromoCode = $this->promoCodeService->userPromoCode();
-        $title = __('title.member.promo_code');
         $inviteConfig = $this->configService->getMemberInviteConfig();
-        [
-            'list' => $list,
-            'total' => $total,
-        ] = $this->userService->inviteUsers($page, $pageSize);
-        $inviteUsers = $this->paginator($list, $total, $page, $pageSize);
-        return v('frontend.member.promo_code', compact('userPromoCode', 'title', 'inviteConfig', 'inviteUsers'));
+
+        $inviteUsers = [];
+        $balanceRecords = [];
+        $withdrawOrders = [];
+
+        if (!$scene) {
+            // 邀请记录
+            [
+                'list' => $list,
+                'total' => $total,
+            ] = $this->userService->inviteUsers($page, $pageSize);
+            $inviteUsers = $this->paginator($list, $total, $page, $pageSize);
+            $inviteUsers->appends($request->all());
+        } elseif ($scene === 'records') {
+            // 余额明细
+            [
+                'list' => $list,
+                'total' => $total,
+            ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
+            $balanceRecords = $this->paginator($list, $total, $page, $pageSize);
+            $balanceRecords->appends($request->all());
+        } elseif ($scene === 'withdraw') {
+            // 提现记录
+            [
+                'list' => $list,
+                'total' => $total,
+            ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
+            $withdrawOrders = $this->paginator($list, $total, $page, $pageSize);
+            $withdrawOrders->appends($request->all());
+        }
+
+        // 分页
+        $queryParams = function ($param) {
+            $request = \request();
+            $params = [
+                'page' => $request->input('page'),
+                'scene' => $request->input('scene', ''),
+            ];
+            $params = array_merge($params, $param);
+            return http_build_query($params);
+        };
+
+        $title = __('title.member.promo_code');
+        return v('frontend.member.promo_code', compact(
+            'userPromoCode',
+            'title',
+            'inviteConfig',
+            'inviteUsers',
+            'scene',
+            'queryParams',
+            'balanceRecords',
+            'withdrawOrders'
+        ));
     }
 
     /**
@@ -344,40 +416,6 @@ class MemberController extends FrontendController
         $this->promoCodeService->userCreate($this->user());
         flash(__('success'), 'success');
         return redirect(route('member.promo_code'));
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showInviteBalanceRecordsPage(Request $request)
-    {
-        $page = abs(intval($request->input('page', 1)));
-        $pageSize = 10;
-        $title = __('title.member.invite_balances');
-        [
-            'list' => $list,
-            'total' => $total,
-        ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
-        $balanceRecords = $this->paginator($list, $total, $page, $pageSize);
-        return v('frontend.member.invite_balances', compact('title', 'balanceRecords'));
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showInviteBalanceWithdrawOrdersPage(Request $request)
-    {
-        $page = abs(intval($request->input('page', 1)));
-        $pageSize = 10;
-        $title = __('title.member.invite_balance_orders');
-        [
-            'list' => $list,
-            'total' => $total,
-        ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
-        $orders = $this->paginator($list, $total, $page, $pageSize);
-        return v('frontend.member.invite_balance_orders', compact('title', 'orders'));
     }
 
     /**

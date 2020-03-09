@@ -20,6 +20,24 @@ $container-max-widths: (
 
 @import "~bootstrap/scss/bootstrap";
 
+body {
+  background-color: #f8fafb;
+  padding-top: 70px;
+}
+
+input.form-control {
+  height: 48px !important;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+button.btn {
+  height: 48px;
+}
+
 a {
   color: $c2;
 }
@@ -46,6 +64,10 @@ a {
 
 .bg-f6 {
   background-color: #f6f6f6;
+}
+
+.bg-dark {
+  background-color: #323232;
 }
 
 .mb-10 {
@@ -114,10 +136,6 @@ a {
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-.pagination {
-  margin-bottom: 0px;
-}
-
 .t1 {
   &:hover {
     opacity: 1 !important;
@@ -136,11 +154,11 @@ footer.footer-box {
   p {
     font-size: 14px;
     font-weight: 400;
-    color: rgba(256, 256, 256, .4);
+    color: rgba(256, 256, 256, .3);
     margin-bottom: 30px;
 
     a {
-      color: rgba(256, 256, 256, .4);
+      color: rgba(256, 256, 256, .3);
     }
   }
 }
@@ -224,18 +242,7 @@ footer.footer-box {
         display: inline-block;
         width: 44px;
         height: 44px;
-        text-align: center;
-        line-height: 44px;
-        background-color: $primary;
-        opacity: .4;
-        color: #ffffff;
-        border-radius: 22px;
         margin-right: 10px;
-        margin-top: 15px;
-      }
-
-      .socialite-item:hover {
-        opacity: 1;
       }
     }
   }
@@ -256,6 +263,11 @@ footer.footer-box {
 }
 
 .nav-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
 
   nav {
@@ -272,7 +284,7 @@ footer.footer-box {
       font-size: 16px;
 
       a {
-        color: $c999;
+        color: #333333;
       }
 
       a.active {
@@ -289,13 +301,17 @@ footer.footer-box {
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       font-size: 14px;
-      height: 40px;
+      height: 40px !important;
+
+      &::-webkit-input-placeholder {
+        color: #999999;
+      }
     }
 
     .search-button {
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
-      height: 40px;
+      height: 40px !important;
     }
 
     .role-vip-button {
@@ -313,7 +329,7 @@ footer.footer-box {
     }
 
     .role-vip-button:hover, .message-button:hover, .user-avatar-button:hover, .role-vip-button.active, .message-button.active {
-      background-color: rgba(11, 118, 222, .1);
+      opacity: .6;
       text-decoration: none;
     }
 
@@ -376,6 +392,12 @@ footer.footer-box {
             background-color: rgba(11, 118, 222, .1);
           }
 
+          &.logout {
+            span {
+              margin-left: -3px;
+            }
+          }
+
           img {
             &.avatar {
               border-radius: 10px;
@@ -392,7 +414,7 @@ footer.footer-box {
       }
     }
 
-    .login-button {
+    .login-button, .login-button-hover {
       width: 80px;
       height: 34px;
       border-radius: 17px;
@@ -403,12 +425,22 @@ footer.footer-box {
       font-weight: 400;
       color: #ffffff;
       margin-left: 10px;
+      cursor: pointer;
     }
 
     .login-button:hover {
       text-decoration: none;
-      cursor: pointer;
       box-shadow: 0px 2px 4px 0px $ce5;
+    }
+
+    .login-button-hover {
+      background-color: #ffffff;
+      color: $primary;
+
+      &:hover {
+        box-shadow: none;
+        text-decoration: none;
+      }
     }
   }
 }
@@ -439,7 +471,7 @@ footer.footer-box {
     }
 
     .role-vip-button {
-      opacity: .4;
+      opacity: .6;
     }
 
     .role-vip-button:hover {
@@ -461,11 +493,13 @@ footer.footer-box {
 }
 
 .slider-box {
-  margin-top: 30px;
-  height: 400px;
+  padding-top: 30px;
+  height: auto;
+  background-color: #ffffff;
 
   img {
-    border-radius: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
 }
 
@@ -476,7 +510,7 @@ footer.footer-box {
   box-shadow: 0px 4px 8px 0px #e5e5e5;
   border-radius: 8px;
   margin-bottom: 30px;
-  padding-left: 15px;
+  padding-left: 30px;
   padding-right: 15px;
   margin-top: 30px;
 
@@ -510,25 +544,6 @@ footer.footer-box {
     a {
       color: $primary;
       text-decoration: none;
-    }
-  }
-
-  .menu-announcement {
-    width: auto;
-    height: 52px;
-    float: right;
-    margin-top: 10px;
-    line-height: 52px;
-    background: rgba(255, 249, 215, 1);
-    box-shadow: 0px 2px 4px 0px rgba(229, 229, 229, 1);
-    border-radius: 27px;
-    padding-left: 20px;
-    padding-right: 20px;
-
-    a {
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(222, 122, 11, 1);
     }
   }
 }
@@ -651,11 +666,10 @@ footer.footer-box {
 .pagination {
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-bottom: 40px;
 }
 
 .friend-link-box {
-  background-color: #120f22;
+  background-color: rgba(20, 14, 35, 1);
 
   .friend-link-box-logo {
     padding-top: 50px;
@@ -668,7 +682,7 @@ footer.footer-box {
     a {
       font-size: 14px;
       font-weight: 400;
-      color: rgba(256, 256, 256, .2);
+      color: rgba(256, 256, 256, .6);
       margin-right: 50px;
 
       &:hover {
@@ -1033,7 +1047,9 @@ footer.footer-box {
         &:hover, &.active {
           text-decoration: none;
           opacity: 1;
+        }
 
+        &.active {
           .dot-box {
             display: block;
           }
@@ -1094,6 +1110,19 @@ footer.footer-box {
       color: #ffffff;
       line-height: 18px;
       margin-bottom: 40px;
+
+      .nickname-edit-button {
+        display: inline-block;
+        margin-left: 15px;
+        width: 18px;
+        height: 18px;
+        opacity: .6;
+        line-height: 18px;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
 
     .user-option {
@@ -1105,7 +1134,7 @@ footer.footer-box {
         font-weight: 400;
         color: rgba(11, 118, 222, 1);
         line-height: 14px;
-        padding: 10px 12px;
+        padding: 10px 16px;
 
         &:hover {
           text-decoration: none;
@@ -1146,7 +1175,7 @@ footer.footer-box {
         font-weight: 400;
         color: #323232;
         line-height: 14px;
-        padding: 10px 12px;
+        padding: 10px 16px;
 
         &:hover {
           text-decoration: none;
@@ -1178,7 +1207,7 @@ footer.footer-box {
 
     .option-item {
       width: 100%;
-      height: auto;
+      height: 46px;
       float: left;
       padding-top: 10px;
       padding-bottom: 10px;
@@ -1229,14 +1258,15 @@ footer.footer-box {
 }
 
 
-.member-message-box, .my-orders {
+.member-message-box, .my-orders, .invite-user-box {
   width: 100%;
   height: auto;
   float: left;
   margin-top: 16px;
   margin-bottom: 80px;
 
-  .member-message-item, .orders-item {
+  .member-message-item, .orders-item, .invite-user-item {
+    position: relative;
     width: 100%;
     height: 72px;
     float: left;
@@ -1245,11 +1275,22 @@ footer.footer-box {
     background-color: #ffffff;
     margin-bottom: 1px;
 
+    .red-dot {
+      position: absolute;
+      top: 32px;
+      left: 11px;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 64, 64, 1);
+      border-radius: 4px;
+      z-index: 11;
+    }
+
     img {
       float: left;
     }
 
-    .message-content, .order-goods-title {
+    .message-content, .order-goods-title, .invite-user-item-nickname {
       width: auto;
       height: 24px;
       display: inline-block;
@@ -1260,7 +1301,7 @@ footer.footer-box {
       margin-left: 15px;
     }
 
-    .member-message-date, .member-list-item-right {
+    .member-message-date, .member-list-item-right, .invite-user-item-date {
       float: right;
       width: 126px;
       font-size: 14px;
@@ -1289,18 +1330,1005 @@ footer.footer-box {
   }
 }
 
-@include media-breakpoint-down(md) {
-  .course-fixed-menu {
-    display: none;
+.promo_code_banner {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .promo_code_balance {
+    width: 527px;
+    height: 280px;
+    float: left;
+    background: rgba(50, 50, 50, 1);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    .promo_code_code {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 70px;
+      line-height: 30px;
+      margin-bottom: 78px;
+
+      .title {
+        width: 90px;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, .6);
+        margin-left: 80px;
+      }
+
+      .code {
+        font-size: 30px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        margin-left: 50px;
+      }
+    }
+
+    .promo_code_balance_info {
+      width: 100%;
+      height: auto;
+      float: left;
+      line-height: 30px;
+
+      .title {
+        width: 90px;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, .6);
+        margin-left: 80px;
+      }
+
+      .balance {
+        font-size: 30px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        margin-left: 50px;
+
+        small {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+
+      .withdraw-button {
+        display: inline-block;
+        width: 88px;
+        height: 34px;
+        margin-left: 46px;
+        background: rgba(255, 221, 52, 1);
+        border-radius: 100px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(50, 50, 50, 1);
+        line-height: 34px;
+
+        &:hover {
+          text-decoration: none;
+          opacity: .6;
+        }
+      }
+    }
   }
 
-  .course-detail-thumb {
-    display: none;
+  .promo_code_intro {
+    width: 673px;
+    height: 280px;
+    float: left;
+    background: rgba(255, 221, 52, 1);
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+
+    .promo_code_intro_title {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 30px;
+      line-height: 66px;
+
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(36, 35, 35, 1);
+
+      img {
+        margin-left: 50px;
+        margin-right: 20px;
+      }
+    }
+
+    .promo_code_intro_content {
+      width: 100%;
+      height: auto;
+      float: left;
+      padding-left: 50px;
+      margin-top: 20px;
+
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(36, 35, 35, 1);
+      line-height: 32px;
+
+      p {
+        margin-bottom: 5px;
+      }
+    }
   }
-  .course-detail-thumb-sm {
-    display: block !important;
+}
+
+.my-courses {
+  margin-top: 30px;
+}
+
+.course-banner {
+  width: 100%;
+  height: 264px;
+  float: left;
+  background-image: url("/images/member-bg.png");
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  padding-top: 70px;
+  background-color: $primary;
+
+  .nav-bar {
+    height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, .6);
+
+    a {
+      color: rgba(255, 255, 255, .6);
+
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+        text-decoration: none;
+      }
+    }
   }
-  .course-detail-price {
-    position: relative !important;
+}
+
+.course-info-box {
+  width: 100%;
+  height: 300px;
+  float: left;
+  margin-top: -150px;
+  z-index: 22;
+  background-color: #ffffff;
+  border-radius: 8px 8px 0px 0px;
+  padding: 30px;
+
+  .course-thumb {
+    width: 320px;
+    height: 240px;
+    float: left;
+    margin-right: 50px;
+    position: relative;
+
+    .course-thumb-img {
+      border-radius: 4px;
+    }
+
+    .paid {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 33;
+    }
   }
+
+  .course-info {
+    width: 750px;
+    height: auto;
+    float: left;
+
+    .course-title {
+      height: 24px;
+      font-size: 24px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 24px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+
+      .like-button {
+        display: inline-block;
+        height: 24px;
+        width: auto;
+        float: right;
+        color: #cccccc;
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: 400;
+        cursor: pointer;
+
+        img {
+          float: left;
+          margin-right: 10px;
+        }
+
+        span {
+          float: left;
+          display: inline-block;
+        }
+      }
+    }
+
+    .course-description {
+      width: 750px;
+      height: 90px;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      line-height: 30px;
+      margin-bottom: 40px;
+    }
+
+    .course-extra-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-top: 18px;
+
+      .course-price {
+        display: inline-block;
+        float: left;
+        height: 50px;
+        line-height: 50px;
+        font-size: 30px;
+        font-weight: 600;
+        color: rgba(255, 64, 64, 1);
+        margin-right: 50px;
+
+        small {
+          font-size: 24px;
+        }
+      }
+
+      .buy-course-button {
+        display: inline-block;
+        float: left;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: rgba(11, 118, 222, .2);
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: 400;
+        color: $primary;
+        line-height: 40px;
+        margin-right: 30px;
+        margin-top: 5px;
+
+        &:hover {
+          text-decoration: none;
+          opacity: .6;
+        }
+      }
+
+      .buy-course-button {
+        background-color: $primary;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.course-chapter {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 80px;
+
+  .course-chapter-title {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 30px;
+
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 16px;
+  }
+
+  .course-videos-box {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .course-videos-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      padding: 18px 30px;
+      background-color: #ffffff;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(11, 118, 222, .1);
+
+        .player-icon {
+          background-image: url("/images/icons/player-hover.png");
+        }
+
+        .learn-button, .buy-course-button {
+          display: inline-block;
+        }
+
+        .video-duration {
+          display: none;
+        }
+      }
+
+      &.active {
+        background-color: rgba(11, 118, 222, .1);
+
+        .player-icon {
+          background-image: url("/images/icons/player-hover.png");
+        }
+      }
+
+      .player-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-top: 3px;
+        float: left;
+        background-image: url("/images/icons/player.png");
+        background-size: 100% 100%;
+        margin-right: 15px;
+      }
+
+      .video-title {
+        display: inline-block;
+        float: left;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 30px;
+        margin-right: 28px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .free-label {
+        display: inline-block;
+        padding-left: 8px;
+        padding-right: 8px;
+        line-height: 22px;
+        margin-top: 4px;
+        background: rgba(255, 64, 64, 1);
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .video-duration {
+        display: inline-block;
+        float: right;
+        height: 16px;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 24px;
+      }
+
+      .learn-button, .buy-course-button {
+        display: none;
+        float: right;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 30px;
+        background-color: $primary;
+        border-radius: 20px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      &.first {
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+      }
+
+      &.last {
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+    }
+  }
+}
+
+.recom-courses-title {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(51, 51, 51, 1);
+  line-height: 27px;
+  margin-bottom: 30px;
+}
+
+.comment-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 30px;
+
+  .comment-title {
+    width: 100%;
+    height: 16px;
+    float: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+    padding-top: 20px;
+  }
+
+  .comment-input-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+
+    .comment-button {
+      float: right;
+      margin-top: 20px;
+      box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 40px;
+      padding-left: 36px;
+      padding-right: 36px;
+      background-color: $primary;
+      border: 0px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.comment-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 50px;
+
+  .comment-list-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 10px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+    padding: 20px 30px;
+
+    .comment-user-avatar {
+      width: 70px;
+      height: 70px;
+      float: left;
+      margin-right: 20px;
+
+      img {
+        border-radius: 35px;
+      }
+    }
+
+    .comment-content-box {
+      width: 1050px;
+      height: auto;
+      float: left;
+
+      .comment-user-nickname {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(153, 153, 153, 1);
+        line-height: 14px;
+        margin-bottom: 15px;
+      }
+
+      .comment-content {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 20px;
+        margin-bottom: 19px;
+
+        p {
+          margin-bottom: 0px;
+        }
+      }
+
+      .comment-info {
+        .comment-createAt {
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(204, 204, 204, 1);
+          line-height: 12px;
+        }
+      }
+    }
+  }
+}
+
+.video-player {
+  width: 100%;
+  height: 675px;
+  float: left;
+  background-color: #000000;
+  margin-top: -150px;
+  z-index: 22;
+
+  #xiaoteng-player {
+    width: 1200px;
+    height: 675px;
+  }
+
+  .buy-this-video, .need-login {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-top: 180px;
+    text-align: center;
+
+    h3 {
+      margin-bottom: 80px;
+      color: $primary;
+    }
+
+    .login-text {
+      color: $primary;
+    }
+  }
+}
+
+.order-create-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 30px;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 27px;
+    margin-bottom: 30px;
+  }
+
+  .goods-info-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 50px;
+
+    .goods-thumb {
+      width: 160px;
+      height: 120px;
+      float: left;
+      margin-right: 30px;
+
+      img {
+        border-radius: 2px;
+      }
+    }
+
+    .goods-info {
+      width: 790px;
+      height: auto;
+      float: left;
+
+      .goods-title {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 18px;
+        margin-bottom: 30px;
+        padding-top: 20px;
+      }
+
+      .goods-label {
+        width: 100%;
+        height: auto;
+        float: left;
+
+        .label {
+          display: inline-block;
+          padding: 8px 10px;
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(255, 64, 64, 1);
+          line-height: 16px;
+          border-radius: 2px;
+          border: 1px solid rgba(255, 64, 64, 1);
+        }
+      }
+    }
+
+    .goods-price {
+      width: 160px;
+      height: auto;
+      float: left;
+      padding-top: 10px;
+      text-align: right;
+
+      .price {
+        color: rgba(255, 64, 64, 1);
+        font-weight: 700;
+        font-size: 30px;
+
+        small {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .promo-code {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 50px;
+
+    .promo-code-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 27px;
+      margin-bottom: 30px;
+    }
+
+    .promo-code-input {
+      line-height: 50px;
+
+      input {
+        width: 200px;
+        height: 50px;
+        margin-right: 30px;
+        float: left;
+      }
+
+      .promo-code-check-button {
+        float: left;
+        padding-left: 36px;
+        padding-right: 36px;
+        margin-top: 5px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 40px;
+        background-color: $primary;
+        border-radius: 20px;
+        margin-right: 30px;
+        border: 0px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .promo-code-info {
+        display: none;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 64, 64, 1);
+        line-height: 14px;
+      }
+    }
+  }
+
+  .payments-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-bottom: 50px;
+    margin-bottom: 50px;
+    border-bottom: 1px solid #cccccc;
+
+    .payments-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 27px;
+      margin-bottom: 30px;
+    }
+
+    .payments {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .payment-item {
+        width: 230px;
+        height: 100px;
+        float: left;
+        line-height: 100px;
+        text-align: center;
+        box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+        margin-right: 30px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &.selected {
+          border: 3px solid rgba(255, 64, 64, 1);
+        }
+      }
+    }
+  }
+
+  .bottom {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .bottom-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      line-height: 50px;
+      margin-bottom: 30px;
+
+      .time {
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 64, 64, 1);
+      }
+
+      .charge-info {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        float: right;
+        margin-right: 20px;
+
+        .promo-code-price {
+          color: rgba(255, 64, 64, 1);
+        }
+      }
+    }
+
+    .total-price {
+      display: inline-block;
+      color: rgba(255, 64, 64, 1);
+      font-weight: 700;
+      font-size: 30px;
+      float: right;
+
+      small {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .bottom-button-box {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .pay-button {
+        padding-left: 44px;
+        padding-right: 44px;
+        line-height: 60px;
+        border: 0px;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 1);
+        background-color: $primary;
+        border-radius: 30px;
+        float: right;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
+
+.index-latest-banner {
+  padding-top: 100px;
+  padding-bottom: 106px;
+}
+
+.banner-title {
+  width: 100%;
+  height: 36px;
+  float: left;
+  font-size: 36px;
+  color: rgba(51, 51, 51, 1);
+  line-height: 36px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 70px;
+  font-weight: 700;
+
+  img {
+    display: inline-block;
+    margin-right: 16px;
+    margin-top: -5px;
+  }
+
+  span.title {
+    display: inline-block;
+    height: 36px;
+  }
+}
+
+.announcement-box {
+  width: 100%;
+  height: 52px;
+  float: left;
+  background: rgba(255, 249, 215, 1);
+  border-radius: 0px 0px 8px 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 52px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  a {
+    color: #DE7A0B;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.role-center-banner {
+  width: 100%;
+  height: 264px;
+  float: left;
+  background-image: url("/images/member-bg.png");
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  padding-top: 70px;
+  background-color: #323232;
+
+  img {
+    margin-top: 100px;
+  }
+}
+
+.role-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+  .role-list-item {
+    width: 320px;
+    height: 380px;
+    float: left;
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+    margin-left: 120px;
+    margin-bottom: 50px;
+    cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 1);
+
+    &.first {
+      margin-left: 0px;
+    }
+
+    .name {
+      font-size: 30px;
+      font-weight: 600;
+      color: rgba(50, 50, 50, 1);
+      line-height: 30px;
+      margin-bottom: 40px;
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: 700;
+      color: rgba(225, 165, 0, 1);
+      line-height: 67px;
+      letter-spacing: 1px;
+      margin-bottom: 50px;
+
+      small {
+        font-size: 36px;
+      }
+    }
+
+    .desc {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
+      line-height: 20px;
+    }
+
+    &.active {
+      border: 3px solid rgba(255, 203, 0, 1);
+    }
+  }
+}
+
+.role-join-button {
+  display: inline-block;
+  width: 220px;
+  height: 60px;
+  background: rgba(255, 203, 0, 1);
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+  border-radius: 30px;
+  line-height: 60px;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(50, 50, 50, 1);
+  text-align: center;
+  margin-bottom: 170px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    color: rgba(50, 50, 50, 1);
+    background: rgba(255, 203, 0, .6);
+  }
+}
+
+.inspire {
+  text-align: center;
+  background: rgba(248, 250, 251, 1);
+  line-height: 200px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(204, 204, 204, 1);
 }

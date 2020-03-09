@@ -11,7 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Illuminate\Support\Str;
+use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
@@ -71,10 +71,13 @@ class LoginController extends BaseController
         if (!$user) {
             return $this->error(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
         }
-        if ($user['is_lock'] == FrontendConstant::YES) {
+        if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
+        
         $token = Auth::guard($this->guard)->tokenById($user['id']);
+
+        event(new UserLoginEvent($user['id']));
 
         return $this->data(compact('token'));
     }
@@ -111,12 +114,14 @@ class LoginController extends BaseController
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
+            $user = $this->userService->createWithMobile($mobile, '', '');
         }
-        if ($user['is_lock'] == FrontendConstant::YES) {
+        if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
         $token = Auth::guard($this->guard)->tokenById($user['id']);
+
+        event(new UserLoginEvent($user['id']));
 
         return $this->data(compact('token'));
     }

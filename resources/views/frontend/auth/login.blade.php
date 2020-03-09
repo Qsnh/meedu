@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <div class="container-fluid mt-5">
+    <div class="container-fluid my-5">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 my-5">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
@@ -47,16 +47,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 text-center my-5">
-                <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
-            </div>
-
         </div>
     </div>
-
-@endsection
-
-@section('footer')
 
 @endsection

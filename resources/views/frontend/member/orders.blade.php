@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="my-orders">
-                    @foreach($orders as $order)
+                    @forelse($orders as $order)
                         <div class="orders-item">
                             @if(count($order['goods']) > 1 || count($order['goods']) === 0)
                                 <img src="/images/icons/order-goods.png" width="24" height="24">
@@ -29,7 +29,9 @@
                             <span class="order-goods-date member-list-item-right">{{ \Carbon\Carbon::parse($order['created_at'])->format('Y-m-d') }}</span>
                             <span class="order-goods-charge member-list-item-right">￥{{ $order['charge'] }}</span>
                         </div>
-                    @endforeach
+                    @empty
+                        @include('frontend.components.none')
+                    @endforelse
                 </div>
             </div>
 

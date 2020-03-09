@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::post('detail/password', 'MemberController@passwordChange');
     Route::post('detail/avatar', 'MemberController@avatarChange');
     Route::get('courses', 'MemberController@courses');
+    Route::get('courses/like', 'MemberController@likeCourses');
+    Route::get('courses/history', 'MemberController@learnHistory');
     Route::get('videos', 'MemberController@videos');
     Route::get('orders', 'MemberController@orders');
     Route::get('roles', 'MemberController@roles');
@@ -58,6 +60,8 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
     Route::get('promoCode', 'MemberController@promoCode');
     Route::post('promoCode', 'MemberController@generatePromoCode');
+    Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
+    Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
 });
 
 Route::group(['middleware' => ['auth:apiv2']], function () {
@@ -67,6 +71,7 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
 
     // 小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+    Route::get('/order/payments', 'PaymentController@payments');
 
     // 优惠码检测
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');

@@ -17,12 +17,14 @@ use App\Services\Other\Services\UploadService;
 use App\Services\Other\Proxies\NavServiceProxy;
 use App\Services\Other\Proxies\SmsServiceProxy;
 use App\Services\Other\Proxies\LinkServiceProxy;
+use App\Services\Other\Services\IndexBannerService;
 use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Proxies\AnnouncementServiceProxy;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\UploadServiceInterface;
+use App\Services\Other\Interfaces\IndexBannerServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider
@@ -35,5 +37,6 @@ class OtherServiceRegisterProvider extends ServiceProvider
         $this->app->instance(LinkServiceInterface::class, $this->app->make(LinkServiceProxy::class));
         $this->app->instance(SmsServiceInterface::class, $this->app->make(SmsServiceProxy::class));
         $this->app->instance(UploadServiceInterface::class, $this->app->make(UploadService::class));
+        $this->app->instance(IndexBannerServiceInterface::class, $this->app->make(IndexBannerService::class));
     }
 }

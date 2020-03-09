@@ -185,6 +185,7 @@ if (!function_exists('v')) {
     {
         $namespace = config('meedu.system.theme.use', 'default');
         $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
+        is_h5() && $viewName = str_replace('frontend', 'h5', $viewName);
 
         return view($viewName, $params);
     }
@@ -206,7 +207,7 @@ if (!function_exists('is_wechat')) {
      */
     function is_wechat()
     {
-        if (strpos(request()->header('HTTP_USER_AGENT'), 'MicroMessenger') !== false) {
+        if (strpos(request()->server('HTTP_USER_AGENT'), 'MicroMessenger')) {
             return true;
         }
         return false;
@@ -251,10 +252,25 @@ if (!function_exists('enabled_socialites')) {
     }
 }
 
+if (!function_exists('get_payment_scene')) {
+    /**
+     * @return string
+     */
+    function get_payment_scene()
+    {
+        if (is_wechat()) {
+            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+        }
+        $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
+        return $scene;
+    }
+}
+
 if (!function_exists('get_payments')) {
     /**
      * @param $scene
      * @return \Illuminate\Support\Collection
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     function get_payments($scene)
     {
@@ -320,7 +336,7 @@ if (!function_exists('random_number')) {
         $prefixLength = mb_strlen($prefix);
         $length -= $prefixLength;
         for ($i = 0; $i < $length; $i++) {
-            $prefix .= mt_rand(0, 9);
+            $prefix .= random_int(0, 9);
         }
         return $prefix;
     }

@@ -25,21 +25,21 @@ return [
             'github' => [
                 'app' => 'github',
                 'name' => 'Github',
-                'icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+                'logo' => '/images/icons/github.png',
                 'enabled' => 0,
             ],
             // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
-                'icon' => '<i class="fa fa-qq" aria-hidden="true"></i>',
+                'logo' => '/images/icons/qq.png',
                 'enabled' => 0,
             ],
             // 微信登录
             'weixinweb' => [
                 'app' => 'weixinweb',
                 'name' => '微信',
-                'icon' => '<i class="fa fa-weixin" aria-hidden="true"></i>',
+                'logo' => '/images/icons/wechat.png',
                 'enabled' => 0,
             ],
         ],
@@ -87,6 +87,7 @@ return [
         'alipay' => [
             'handler' => \App\Meedu\Payment\Alipay\Alipay::class,
             'name' => '支付宝',
+            'logo' => '/images/icons/alipay.png',
             'sign' => 'alipay',
             'default_method' => 'web',
             'pc' => 'web',
@@ -96,6 +97,7 @@ return [
         'wechat' => [
             'handler' => \App\Meedu\Payment\Wechat\Wechat::class,
             'name' => '微信支付',
+            'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
@@ -106,6 +108,7 @@ return [
         'handPay' => [
             'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
             'name' => '手动打款',
+            'logo' => '/images/icons/handpay.png',
             'sign' => 'handPay',
             'default_method' => 'hand',
             'pc' => 'hand',
@@ -138,7 +141,7 @@ return [
     'system' => [
         'icp' => '',
         'logo' => '/images/logo.png',
-        'member_logo' => '/images/member-logo.png',
+        'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',
 
         // 缓存开关

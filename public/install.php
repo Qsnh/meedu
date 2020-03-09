@@ -29,6 +29,11 @@ $requires = [
         'intro' => 'PHP版本>=7.1.3',
     ],
     [
+        'item' => 'ext-Fileinfo',
+        'status' => in_array('fileinfo', $extensions),
+        'intro' => '安装Fileinfo扩展',
+    ],
+    [
         'item' => 'ext-BCMath',
         'status' => in_array('bcmath', $extensions),
         'intro' => '安装BCMath扩展',

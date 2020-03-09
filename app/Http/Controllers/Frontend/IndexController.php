@@ -16,11 +16,13 @@ use App\Services\Other\Services\LinkService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Services\SliderService;
 use App\Services\Course\Services\CourseService;
+use App\Services\Other\Services\IndexBannerService;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Other\Interfaces\IndexBannerServiceInterface;
 use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 class IndexController extends FrontendController
@@ -48,18 +50,25 @@ class IndexController extends FrontendController
      */
     protected $courseCategoryService;
 
+    /**
+     * @var IndexBannerService
+     */
+    protected $indexBannerService;
+
     public function __construct(
         LinkServiceInterface $linkService,
         ConfigServiceInterface $configService,
         SliderServiceInterface $sliderService,
         CourseServiceInterface $courseService,
-        CourseCategoryServiceInterface $courseCategoryService
+        CourseCategoryServiceInterface $courseCategoryService,
+        IndexBannerServiceInterface $indexBannerService
     ) {
         $this->linkService = $linkService;
         $this->configService = $configService;
         $this->sliderService = $sliderService;
         $this->courseService = $courseService;
         $this->courseCategoryService = $courseCategoryService;
+        $this->indexBannerService = $indexBannerService;
     }
 
     public function index()
@@ -89,9 +98,17 @@ class IndexController extends FrontendController
         // 课程分类
         $categories = $this->courseCategoryService->all();
 
+        // 首页banner
+        $banners = $this->indexBannerService->all();
+        foreach ($banners as $key => $banner) {
+            $courseIds = explode(',', $banner['course_ids']);
+            $banners[$key]['courses'] = [];
+            $courseIds && $banners[$key]['courses'] = $this->courseService->getList($courseIds);
+        }
+
         return v(
             'frontend.index.index',
-            compact('title', 'keywords', 'description', 'links', 'sliders', 'courses', 'categories')
+            compact('title', 'keywords', 'description', 'links', 'sliders', 'courses', 'categories', 'banners')
         );
     }
 

@@ -30,8 +30,8 @@ class CourseServiceTest extends TestCase
 
     public function test_simplePage()
     {
-        $pageSize = mt_rand(1, 10);
-        $total = mt_rand(15, 20);
+        $pageSize = random_int(1, 10);
+        $total = random_int(15, 20);
         factory(Course::class, $total)->create([
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -44,8 +44,8 @@ class CourseServiceTest extends TestCase
 
     public function test_simplePage_with_category()
     {
-        $pageSize = mt_rand(1, 10);
-        $total = mt_rand(15, 20);
+        $pageSize = random_int(1, 10);
+        $total = random_int(15, 20);
         $category = factory(CourseCategory::class)->create();
         factory(Course::class, $total)->create([
             'published_at' => Carbon::now()->subDays(1),

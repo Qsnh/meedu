@@ -17,7 +17,7 @@
                             <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
                         </div>
                         <div class="col-12 text-right">
-                            <a href="{{route('member.orders')}}" class="btn btn-primary">订单中心</a>
+                            <a href="{{route('member.orders')}}" class="btn btn-primary">我的订单</a>
                         </div>
                     </div>
                 </div>

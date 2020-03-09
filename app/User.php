@@ -408,7 +408,7 @@ class User extends Authenticatable
         return User::create([
             'avatar' => $avatar ?: config('meedu.member.default_avatar'),
             'nick_name' => $name ?? '',
-            'mobile' => mt_rand(2, 9) . mt_rand(1000, 9999) . mt_rand(1000, 9999),
+            'mobile' => random_int(2, 9) . random_int(1000, 9999) . random_int(1000, 9999),
             'password' => Hash::make(Str::random(6)),
             'is_lock' => config('meedu.member.is_lock_default'),
             'is_active' => config('meedu.member.is_active_default'),

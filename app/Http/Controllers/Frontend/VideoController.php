@@ -91,8 +91,9 @@ class VideoController extends FrontendController
         return v('frontend.video.index', compact('videos', 'title'));
     }
 
-    public function show($courseId, $id, $slug)
+    public function show(Request $request, $courseId, $id, $slug)
     {
+        $scene = $request->input('scene');
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
         $this->videoService->viewNumInc($video['id']);
@@ -121,10 +122,16 @@ class VideoController extends FrontendController
             'commentUsers',
             'videos',
             'chapters',
-            'canSeeVideo'
+            'canSeeVideo',
+            'scene'
         ));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function showBuyPage($id)
     {
         $video = $this->videoService->find($id);
@@ -132,24 +139,37 @@ class VideoController extends FrontendController
             flash(__('You have already purchased this course'), 'success');
             return back();
         }
+        $course = $this->courseService->find($video['course_id']);
         $title = __('buy video', ['video' => $video['title']]);
+        $goods = [
+            'id' => $video['id'],
+            'title' => $video['title'],
+            'thumb' => $course['thumb'],
+            'charge' => $video['charge'],
+            'label' => '单节视频',
+        ];
+        $total = $video['charge'];
+        $scene = get_payment_scene();
+        $payments = get_payments($scene);
 
-        return v('frontend.video.buy', compact('video', 'title'));
+        return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
-    public function buyHandler(Request $request, $id)
+    public function buyHandler(Request $request)
     {
-        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
+        $id = $request->input('goods_id');
+        $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $video = $this->videoService->find($id);
         $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCodeId);
 
-        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+        if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
             return redirect(route('video.show', [$video['course_id'], $video['id'], $video['slug']]));
         }
 
-        flash(__('order successfully, please pay'), 'success');
+        $paymentScene = $request->input('payment_scene');
+        $payment = $request->input('payment_sign');
 
-        return redirect(route('order.show', $order['order_id']));
+        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
     }
 }

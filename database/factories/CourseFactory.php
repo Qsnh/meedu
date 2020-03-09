@@ -5,7 +5,9 @@ use Faker\Generator as Faker;
 $factory->define(\App\Services\Course\Models\Course::class, function (Faker $faker) {
     return [
         'user_id' => 0,
-        'category_id' => 0,
+        'category_id' => function () {
+            return factory(\App\Services\Course\Models\CourseCategory::class)->create()->id;
+        },
         'title' => $faker->name,
         'slug' => $faker->slug(),
         'thumb' => $faker->imageUrl(),

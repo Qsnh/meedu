@@ -65,7 +65,7 @@ class Setting
             });
         } else {
             // v1版本的配置保存方式
-            if ($saveConfig['version'] == self::VERSION) {
+            if ((int)$saveConfig['version'] === self::VERSION) {
                 $arr = array_compress($saveConfig);
                 foreach ($arr as $key => $item) {
                     config([$key => $item]);

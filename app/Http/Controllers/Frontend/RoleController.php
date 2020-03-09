@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
+use App\Exceptions\SystemException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -58,27 +59,50 @@ class RoleController extends FrontendController
         return v('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function showBuyPage($id)
     {
         $role = $this->roleService->find($id);
         $title = __('buy role', ['role' => $role['name']]);
+        $goods = [
+            'id' => $role['id'],
+            'thumb' => asset('/images/icons/vip.jpg'),
+            'title' => $role['name'],
+            'charge' => $role['charge'],
+            'label' => $role['name'],
+        ];
+        $total = $role['charge'];
+        $scene = get_payment_scene();
+        $payments = get_payments($scene);
 
-        return v('frontend.role.buy', compact('role', 'title'));
+        return v('frontend.order.create', compact('title', 'goods', 'total', 'payments', 'scene'));
     }
 
-    public function buyHandler(Request $request, $id)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws SystemException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function buyHandler(Request $request)
     {
-        $promoCodeId = abs(intval($request->input('promo_code_id', 0)));
+        $id = $request->input('goods_id');
+        $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $role = $this->roleService->find($id);
-        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCodeId);
 
-        if ($order['status'] == FrontendConstant::ORDER_PAID) {
+        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCodeId);
+        if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
-            return redirect(route('member'));
+            return redirect(route('member.orders'));
         }
 
-        flash(__('order successfully, please pay'), 'success');
+        $paymentScene = $request->input('payment_scene');
+        $payment = $request->input('payment_sign');
 
-        return redirect(route('order.show', $order['order_id']));
+        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
     }
 }

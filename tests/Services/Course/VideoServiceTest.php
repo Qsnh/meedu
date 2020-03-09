@@ -27,7 +27,7 @@ class VideoServiceTest extends TestCase
 
     public function test_courseVideos_with_no_chapters()
     {
-        $videoTotal = mt_rand(5, 10);
+        $videoTotal = random_int(5, 10);
         $course = factory(Course::class)->create();
         factory(Video::class, $videoTotal)->create([
             'course_id' => $course->id,
@@ -69,9 +69,9 @@ class VideoServiceTest extends TestCase
     {
         $total = [];
         $course = factory(Course::class)->create();
-        $chapters = factory(CourseChapter::class, mt_rand(1, 5))->create();
+        $chapters = factory(CourseChapter::class, random_int(1, 5))->create();
         foreach ($chapters as $chapter) {
-            $count = mt_rand(1, 5);
+            $count = random_int(1, 5);
             factory(Video::class, $count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),
@@ -94,9 +94,9 @@ class VideoServiceTest extends TestCase
         config(['meedu.system.cache.expire' => 10]);
         $total = [];
         $course = factory(Course::class)->create();
-        $chapters = factory(CourseChapter::class, mt_rand(1, 5))->create();
+        $chapters = factory(CourseChapter::class, random_int(1, 5))->create();
         foreach ($chapters as $chapter) {
-            $count = mt_rand(1, 5);
+            $count = random_int(1, 5);
             factory(Video::class, $count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),
@@ -112,7 +112,7 @@ class VideoServiceTest extends TestCase
         }
 
         foreach ($chapters as $chapter) {
-            $count = mt_rand(1, 5);
+            $count = random_int(1, 5);
             factory(Video::class, $count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),

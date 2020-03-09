@@ -4,35 +4,28 @@
 
     <div class="container py-5">
         <div class="row">
-            <div class="col-12">
-                <h2 class="fw-400 mb-4 c-primary">搜索结果
-                    <small class="fs-14px c-2">只显示最近的20条数据</small>
-                </h2>
+            <div class="col-12 recom-courses-title">
+                <span>搜索结果 <small>只展示最近20条数据</small></span>
             </div>
-            @foreach($courses as $courseItem)
-                <div class="col-12 col-md-3 pb-24px video-item">
-                    <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}">
-                        <div class="video-item-box box-shadow1 br-8 t1 float-left">
-                            <div class="video-thumb">
-                                <div class="video-thumb-img"
-                                     style="background: url('{{$courseItem['thumb']}}') center center no-repeat;background-size: cover;">
-                                </div>
-                            </div>
-                            <div class="video-title py-3 float-left">
-                                <span>{{$courseItem['title']}}</span>
-                            </div>
-                            <div class="video-extra pb-3">
-                                <span class="float-left"><i class="fa fa-file-video-o"></i> {{$courseItem['videos_count']}}</span>
-                                <span class="float-right">
-                                    @if($courseItem['category'])
-                                        <i class="fa fa-tag"></i> {{$courseItem['category']['name']}}
-                                    @endif
-                                </span>
-                            </div>
+            <div class="col-12 course-list-box">
+                @forelse($courses as $index => $courseItem)
+                    <a href="{{route('course.show', [$courseItem['id'], $courseItem['slug']])}}"
+                       class="course-list-item {{(($index + 1) % 4 === 0) ? 'last' : ''}}">
+                        <div class="course-thumb">
+                            <img src="{{$courseItem['thumb']}}" width="280" height="210" alt="{{$courseItem['title']}}">
+                        </div>
+                        <div class="course-title">
+                            {{$courseItem['title']}}
+                        </div>
+                        <div class="course-category">
+                            <span class="video-count-label">课时：{{$courseItem['videos_count']}}节</span>
+                            <span class="category-label">{{$courseItem['category']['name']}}</span>
                         </div>
                     </a>
-                </div>
-            @endforeach
+                @empty
+                    @include('frontend.components.none')
+                @endforelse
+            </div>
         </div>
     </div>
 

@@ -12,7 +12,6 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
@@ -33,12 +32,17 @@ use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
+use App\Http\Requests\Frontend\Member\ReadAMessageRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
+use App\Services\Member\Services\UserInviteBalanceService;
+use App\Http\Requests\Frontend\Member\NicknameChangeRequest;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Http\Requests\Frontend\CourseOrVideoCommentCreateRequest;
 use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
+use App\Http\Requests\Frontend\Member\InviteBalanceWithdrawRequest;
+use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class AjaxController extends BaseController
 {
@@ -68,6 +72,11 @@ class AjaxController extends BaseController
     protected $promoCodeService;
     protected $businessState;
 
+    /**
+     * @var UserInviteBalanceService
+     */
+    protected $userInviteBalanceService;
+
     public function __construct(
         VideoCommentServiceInterface $videoCommentService,
         CourseCommentServiceInterface $courseCommentService,
@@ -75,7 +84,8 @@ class AjaxController extends BaseController
         VideoServiceInterface $videoService,
         CourseServiceInterface $courseService,
         PromoCodeServiceInterface $promoCodeService,
-        BusinessState $businessState
+        BusinessState $businessState,
+        UserInviteBalanceServiceInterface $userInviteBalanceService
     ) {
         $this->videoCommentService = $videoCommentService;
         $this->courseCommentService = $courseCommentService;
@@ -84,6 +94,7 @@ class AjaxController extends BaseController
         $this->courseService = $courseService;
         $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
+        $this->userInviteBalanceService = $userInviteBalanceService;
     }
 
     /**
@@ -198,7 +209,7 @@ class AjaxController extends BaseController
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, Str::random(6), Str::random(3) . '_' . $mobile);
+            $user = $this->userService->createWithMobile($mobile, '', '');
         }
         if ($user['is_lock'] == FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
@@ -293,5 +304,55 @@ class AjaxController extends BaseController
         ['url' => $url] = $request->filldata();
         $this->userService->updateAvatar(Auth::id(), $url);
         return $this->success();
+    }
+
+    /**
+     * @param NicknameChangeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ServiceException
+     */
+    public function changeNickname(NicknameChangeRequest $request)
+    {
+        ['nick_name' => $nickName] = $request->filldata();
+        $this->userService->updateNickname(Auth::id(), $nickName);
+        return $this->success();
+    }
+
+    /**
+     * @param ReadAMessageRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notificationMarkAsRead(ReadAMessageRequest $request)
+    {
+        ['id' => $id] = $request->filldata();
+        $this->userService->notificationMarkAsRead(Auth::id(), $id);
+        return $this->success();
+    }
+
+    /**
+     * @param InviteBalanceWithdrawRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\ServiceException
+     */
+    public function inviteBalanceWithdraw(InviteBalanceWithdrawRequest $request)
+    {
+        $data = $request->filldata();
+        $total = $request->post('total');
+        $user = $this->userService->find(Auth::id());
+        if ($user['invite_balance'] < $total) {
+            return $this->error(__('Insufficient invite balance'));
+        }
+        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
+        return $this->success();
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function likeACourse($id)
+    {
+        $result = $this->userService->likeACourse(Auth::id(), $id);
+        return $this->data($result);
     }
 }

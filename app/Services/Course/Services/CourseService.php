@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Services;
 
+use App\Constant\FrontendConstant;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
@@ -56,6 +57,7 @@ class CourseService implements CourseServiceInterface
      * @param int $categoryId
      * @param string $scene
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function simplePage(int $page, int $pageSize, int $categoryId = 0, string $scene = ''): array
     {
@@ -71,8 +73,8 @@ class CourseService implements CourseServiceInterface
             $query->orderByDesc('published_at');
         } elseif ($scene == 'sub') {
             $query->orderByDesc('user_count');
-        } elseif ($scene == 'latest') {
-            $query->latest();
+        } elseif ($scene == 'recom') {
+            $query->whereIsRec(FrontendConstant::YES)->orderByDesc('id');
         }
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -150,7 +152,10 @@ class CourseService implements CourseServiceInterface
      */
     public function getList(array $ids): array
     {
-        return Course::show()->published()->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
+        return Course::with(['category'])
+            ->withCount(['videos'])
+            ->show()->published()
+            ->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
     }
 
     /**
@@ -158,8 +163,9 @@ class CourseService implements CourseServiceInterface
      *
      * @param array $list
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function addLatestVideos(array $list)
+    protected function addLatestVideos(array $list): array
     {
         /**
          * @var $videoService VideoService
@@ -185,5 +191,21 @@ class CourseService implements CourseServiceInterface
         }
         CourseUserRecord::create(['user_id' => $userId, 'course_id' => $courseId]);
         Course::whereId($courseId)->increment('user_count', 1);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     */
+    public function userLearningCoursesPaginate(int $userId, int $page, int $pageSize): array
+    {
+        $query = CourseUserRecord::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
+
+        $total = $query->count();
+        $list = $query->get()->toArray();
+
+        return compact('list', 'total');
     }
 }

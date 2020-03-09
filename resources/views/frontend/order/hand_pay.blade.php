@@ -11,21 +11,16 @@
                             <h2>手动打款</h2>
                         </div>
                         <div class="col-12">
-                            <p class="mt-4 text-right">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
-                            <p class="text-right">支付总额 <span class="ml-3">￥{{$needPaidTotal}}</span></p>
+                            <p class="mt-4">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
+                            <p>支付总额 <span class="ml-3">￥{{$needPaidTotal}}</span></p>
                         </div>
                         <div class="col-12 py-3">
                             {!! $intro !!}
-                        </div>
-                        <div class="col-12 text-right">
-                            <a href="{{route('member.orders')}}" class="btn btn-primary">订单中心</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    @include('frontend.components.recom_courses')
 
 @endsection

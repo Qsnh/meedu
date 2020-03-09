@@ -289,5 +289,177 @@ $(function () {
                 }, 1000);
             }
         });
+    }).on('click', '.nickname-change-button', function () {
+        let nickname = $('input[name="nick_name"]').val();
+        if (nickname === '') {
+            $('.auth-box-errors').text('请输入昵称');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            nick_name: nickname
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('修改成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
+    }).on('click', '.member-message-item', function () {
+        if ($(this).find('.red-dot').length === 0) {
+            return;
+        }
+        let id = $(this).attr('data-id');
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post('/member/ajax/message/read', {
+            id: id,
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                flashWarning(res.message);
+            } else {
+                $(this).find('.red-dot').hide();
+                $(this).find('.member-message-unread').addClass('member-message-read').removeClass('member-message-unread').text('已读');
+            }
+        }, 'json');
+    }).on('click', '.invite-balance-withdraw-button', function () {
+        let total = $('input[name="total"]').val();
+        let channel_name = $('select[name="channel[name]"]').val();
+        let channel_username = $('input[name="channel[username]"]').val();
+        let channel_account = $('input[name="channel[account]"]').val();
+        if (channel_name === '' || channel_username === '' || channel_account === '') {
+            $('.auth-box-errors').text('请输入相应信息');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            total: total,
+            channel: {
+                name: channel_name,
+                username: channel_username,
+                account: channel_account
+            }
+        };
+        $.post($('.login-box').attr('action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                $('.auth-box-errors').text(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('提现提交成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
+    }).on('click', '.like-button', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        let url = $(this).attr('data-url');
+        if (isLogin === 0) {
+            showAuthBox('login-box');
+            return;
+        }
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                flashError(res.message);
+            } else {
+                if (res.data === 1) {
+                    $(this).find('span').text('已收藏');
+                    $(this).find('img').attr('src', '/images/icons/like-hover.png');
+                } else {
+                    $(this).find('span').text('收藏课程');
+                    $(this).find('img').attr('src', '/images/icons/like.png');
+                }
+            }
+        }, 'json');
+    }).on('click', '.login-auth', function () {
+        let loginStatus = parseInt($(this).attr('data-login'));
+        if (loginStatus === 0) {
+            showAuthBox('login-box');
+            return false;
+        }
+        return true;
+    }).on('click', '.comment-button', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            showAuthBox('login-box');
+            return;
+        }
+        let input = $(this).attr('data-input');
+        let url = $(this).attr('data-url');
+        let content = $(`textarea[name=${input}]`).val();
+        if (content.length === 0) {
+            flashWarning('请输入评论内容');
+            return;
+        }
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token,
+            content: content
+        }, function (res) {
+            if (res.code !== 0) {
+                flashError(res.message)
+            } else {
+                flashSuccess('评论成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 800);
+            }
+        }, 'json');
+    }).on('click', '.payment-item', function () {
+        let sign = $(this).find('img').attr('data-payment');
+        $('input[name="payment_sign"]').val(sign);
+        $(this).addClass('selected').siblings().removeClass('selected');
+    }).on('click', '.promo-code-check-button', function () {
+        let promoCode = $('input[name="promo_code"]').val();
+        if (promoCode === '') {
+            return;
+        }
+        let url = $(this).attr('data-url');
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            promo_code: promoCode,
+            _token: token,
+        }, function (res) {
+            if (res.code === 0) {
+                let discount = res.data.discount;
+                let total = $('.total-price-val').attr('data-total');
+                let m = total - discount;
+                m = m > 0 ? m : 0;
+                $('.promo-code-info').text('此邀请码有效，已抵扣' + discount + '元').show();
+                $('.promo-code-price').text(discount);
+                $('.total-price-val').text(m);
+                $('input[name="promo_code_id"]').val(res.data.id);
+            } else {
+                $('.promo-code-info').text(res.message).show();
+                $('.promo-code-price').text(0);
+                $('.total-price-val').text($('.total-price-val').attr('data-total'));
+                $('input[name="promo_code_id"]').val('');
+            }
+        }, 'json');
+    }).on('submit', '.create-order-form', function () {
+        let payment = $('input[name="payment_sign"]').val();
+        if (payment === '') {
+            flashWarning('请选择支付方式');
+            return false;
+        }
+    }).on('click', '.role-list-item', function () {
+        let url = $(this).attr('data-url');
+        $(this).addClass('active').siblings().removeClass('active');
+        $('.role-join-button').attr('href', url);
     });
 });

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container-fluid mt-5">
+    <div class="container-fluid my-5">
         <div class="row">
             <div class="col-12">
                 <div class="container">
@@ -32,16 +32,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 text-center my-5">
-                <img src="{{$gConfig['system']['logo']}}" width="64" alt="{{config('app.name')}}">
-            </div>
-
         </div>
     </div>
-
-@endsection
-
-@section('footer')
 
 @endsection

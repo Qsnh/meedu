@@ -84,8 +84,6 @@ Route::group([
     Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
     Route::get('/promo_code', 'MemberController@showPromoCodePage')->name('member.promo_code');
     Route::post('/promo_code', 'MemberController@generatePromoCode');
-    Route::get('/invite_balance_records', 'MemberController@showInviteBalanceRecordsPage')->name('member.invite_balance_records');
-    Route::get('/invite_balance_withdraw_orders', 'MemberController@showInviteBalanceWithdrawOrdersPage')->name('member.invite_balance_withdraw_orders');
     Route::post('/invite_balance_withdraw_orders', 'MemberController@createInviteBalanceWithdrawOrder');
 
     // 图片上传
@@ -105,8 +103,7 @@ Route::group([
 
     // 收银台
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
-    Route::get('/order/show/{order_id}', 'OrderController@show')->name('order.show');
-    Route::any('/order/pay/{order_id}', 'OrderController@pay')->name('order.pay');
+    Route::get('/order/pay', 'OrderController@pay')->name('order.pay');
     Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
     Route::get('/order/pay/handPay/{order_id}', 'OrderController@handPay')->name('order.pay.handPay');
 
@@ -117,5 +114,9 @@ Route::group([
 
         Route::post('/password/change', 'AjaxController@changePassword')->name('ajax.password.change');
         Route::post('/avatar/change', 'AjaxController@changeAvatar')->name('ajax.avatar.change');
+        Route::post('/nickname/change', 'AjaxController@changeNickname')->name('ajax.nickname.change');
+        Route::post('/message/read', 'AjaxController@notificationMarkAsRead')->name('ajax.message.read');
+        Route::post('/inviteBalanceWithdraw', 'AjaxController@inviteBalanceWithdraw')->name('ajax.invite_balance.withdraw');
+        Route::post('/course/like/{id}', 'AjaxController@likeACourse')->name('ajax.course.like');
     });
 });
