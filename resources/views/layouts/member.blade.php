@@ -103,15 +103,6 @@
                             <span class="dot"></span>
                         </div>
                     </a>
-                    <a href="{{route('member.join_role_records')}}" class="{{menu_active('member.join_role_records')}}">
-                        <div>
-                            <img src="/images/icons/member/vip.png" width="24" height="24">
-                            <span class="member-menu-item-title vip">会员中心</span>
-                        </div>
-                        <div class="dot-box">
-                            <span class="dot"></span>
-                        </div>
-                    </a>
                     <a href="{{route('member.courses')}}" class="{{menu_active('member.courses')}}">
                         <div>
                             <img src="/images/icons/member/course.png" width="24" height="24">

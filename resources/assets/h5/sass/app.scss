@@ -1,0 +1,215 @@
+@import "~bootstrap/scss/bootstrap";
+
+$primary: #0B76DE !default;
+$textColor: rgba(51, 51, 51, 1);
+
+body {
+  background-color: #f6f6f6;
+  color: $textColor;
+  padding-bottom: 70px;
+}
+
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 111;
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #dddddd;
+
+  .title {
+    font-size: 16px;
+  }
+
+  .back {
+    position: absolute;
+    left: 10px;
+    z-index: 112;
+    font-size: 14px;
+    float: left;
+    color: $textColor;
+  }
+}
+
+.footer-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 111;
+  width: 100%;
+  height: 60px;
+  background-color: #fbfcfc;
+
+  .navbar-item {
+    display: block;
+    width: 33.33%;
+    height: 60px;
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: $textColor;
+
+    &:focus, &:hover {
+      text-decoration: none;
+    }
+
+    &.active {
+      color: $primary;
+    }
+
+    .icon {
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      float: left;
+    }
+
+    .title {
+      width: 100%;
+      height: 20px;
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+}
+
+.bg-fff {
+  background-color: #ffffff;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.index-banner-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  padding-top: 20px;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+
+    span {
+      padding-left: 10px;
+      border-left: 5px solid $primary;
+    }
+  }
+}
+
+.course-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .course-list-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    color: $textColor;
+    margin-bottom: 15px;
+
+    &:focus, &:hover {
+      text-decoration: none;
+    }
+
+    .course-thumb {
+      width: 132px;
+      height: 70px;
+      float: left;
+      padding-right: 10px;
+
+      img {
+        border-radius: 2px;
+      }
+    }
+
+    .course-info-box {
+      .course-title {
+        font-size: 16px;
+        font-weight: 400;
+        margin-bottom: 15px;
+      }
+
+      .course-info {
+        font-size: 14px;
+        color: rgba(51, 51, 51, .7);
+
+        .price {
+          float: right;
+        }
+      }
+    }
+  }
+}
+
+.user-avatar {
+  width: 100%;
+  height: auto;
+  float: left;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 20px;
+
+  img {
+    border-radius: 40px;
+    border: 2px solid $textColor;
+  }
+}
+
+.user-nickname {
+  width: 100%;
+  height: auto;
+  float: left;
+  line-height: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 50px;
+
+  small {
+    font-size: 12px;
+  }
+}
+
+.user-menu-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .user-menu-item {
+    width: 100%;
+    height: 34px;
+    float: left;
+    color: $textColor;
+
+    img {
+      float: left;
+      margin-right: 10px;
+      margin-top: 7px;
+    }
+
+    .title {
+      display: inline-block;
+      float: left;
+      width: auto;
+      height: 20px;
+      font-size: 15px;
+      line-height: 20px;
+      margin-top: 7px;
+    }
+  }
+}

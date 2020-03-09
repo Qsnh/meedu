@@ -12,7 +12,7 @@ class UserRoleTest extends TestCase
     {
         $response = $this->get(route('role.index'));
         $response->assertResponseStatus(200);
-        $response->see('加入本站会员');
+        $response->see('开通会员');
     }
 
     public function test_create_user_role()

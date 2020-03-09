@@ -34,7 +34,7 @@
                                     @endforeach
                                 </ul>
 
-                                <a class="role-vip-button hover-img-switch {{menu_active('role.index')}}"
+                                <a class="role-vip-button {{menu_active('role.index')}}"
                                    href="{{route('role.index')}}">
                                     <p><img src="/images/icons/member/vip.png" width="24" height="24"></p>
                                     <p>会员中心</p>

@@ -467,5 +467,9 @@ $(function () {
             flashWarning('请选择支付方式');
             return false;
         }
+    }).on('click', '.role-list-item', function () {
+        let url = $(this).attr('data-url');
+        $(this).addClass('active').siblings().removeClass('active');
+        $('.role-join-button').attr('href', url);
     });
 });

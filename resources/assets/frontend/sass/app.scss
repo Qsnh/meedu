@@ -52,6 +52,10 @@ a {
   background-color: #f6f6f6;
 }
 
+.bg-dark {
+  background-color: #323232;
+}
+
 .mb-10 {
   margin-bottom: 10px;
 }
@@ -136,11 +140,11 @@ footer.footer-box {
   p {
     font-size: 14px;
     font-weight: 400;
-    color: rgba(256, 256, 256, .4);
+    color: rgba(256, 256, 256, .3);
     margin-bottom: 30px;
 
     a {
-      color: rgba(256, 256, 256, .4);
+      color: rgba(256, 256, 256, .3);
     }
   }
 }
@@ -272,7 +276,7 @@ footer.footer-box {
       font-size: 16px;
 
       a {
-        color: $c999;
+        color: #333333;
       }
 
       a.active {
@@ -290,6 +294,15 @@ footer.footer-box {
       border-bottom-left-radius: 20px;
       font-size: 14px;
       height: 40px;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &::-webkit-input-placeholder {
+        color: #999999;
+      }
     }
 
     .search-button {
@@ -313,7 +326,7 @@ footer.footer-box {
     }
 
     .role-vip-button:hover, .message-button:hover, .user-avatar-button:hover, .role-vip-button.active, .message-button.active {
-      background-color: rgba(11, 118, 222, .1);
+      opacity: .6;
       text-decoration: none;
     }
 
@@ -455,7 +468,7 @@ footer.footer-box {
     }
 
     .role-vip-button {
-      opacity: .4;
+      opacity: .6;
     }
 
     .role-vip-button:hover {
@@ -652,7 +665,7 @@ footer.footer-box {
 }
 
 .friend-link-box {
-  background-color: #120f22;
+  background-color: rgba(20, 14, 35, 1);
 
   .friend-link-box-logo {
     padding-top: 50px;
@@ -665,7 +678,7 @@ footer.footer-box {
     a {
       font-size: 14px;
       font-weight: 400;
-      color: rgba(256, 256, 256, .2);
+      color: rgba(256, 256, 256, .6);
       margin-right: 50px;
 
       &:hover {
@@ -2204,5 +2217,99 @@ footer.footer-box {
     &:hover {
       text-decoration: none;
     }
+  }
+}
+
+.role-center-banner {
+  width: 100%;
+  height: 264px;
+  float: left;
+  background-image: url("/images/member-bg.png");
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  padding-top: 70px;
+  background-color: #323232;
+
+  img {
+    margin-top: 100px;
+  }
+}
+
+.role-list-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+  .role-list-item {
+    width: 320px;
+    height: 380px;
+    float: left;
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+    border-radius: 8px;
+    margin-left: 120px;
+    margin-bottom: 50px;
+    cursor: pointer;
+
+    &.first {
+      margin-left: 0px;
+    }
+
+    .name {
+      font-size: 30px;
+      font-weight: 600;
+      color: rgba(50, 50, 50, 1);
+      line-height: 30px;
+      margin-bottom: 40px;
+    }
+
+    .price {
+      font-size: 30px;
+      font-weight: 600;
+      color: rgba(225, 165, 0, 1);
+      line-height: 67px;
+      letter-spacing: 1px;
+      margin-bottom: 50px;
+
+      small {
+        font-size: 18px;
+      }
+    }
+
+    .desc {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
+      line-height: 20px;
+    }
+
+    &:hover, &.active {
+      border: 3px solid rgba(255, 203, 0, 1);
+    }
+  }
+}
+
+.role-join-button {
+  display: inline-block;
+  width: 220px;
+  height: 60px;
+  background: rgba(255, 203, 0, 1);
+  box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
+  border-radius: 30px;
+  line-height: 60px;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(50, 50, 50, 1);
+  text-align: center;
+  margin-bottom: 170px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    color: rgba(50, 50, 50, 1);
   }
 }
