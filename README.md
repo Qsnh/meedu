@@ -19,6 +19,10 @@
 
 如果您想使用MeEdu但是却不会安装MeEdu，那么您可以考虑MeEduCloud平台提供的在线装服务(这是一项收费服务)，它可以自动的帮您将MeEdu安装到您的服务器上。[点击查看详情](https://meedu.vip/hostPackages)
 
+## 傻瓜安装
+
+傻瓜安装包请到我们的QQ群文件下载。加QQ群请扫描文末的QQ群二维码。
+
 ## 当前功能概览
 
 - [x] [微信小程序](https://github.com/Meedu/wechat-mini)
