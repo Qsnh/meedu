@@ -4,7 +4,7 @@
 
     @include('h5.components.topbar', ['back' => route('member'), 'backText' => '会员中心', 'title' => '收银台'])
 
-    <div class="container-fluid py-3 bg-fff my-5">
+    <div class="container-fluid hand-pay py-3 bg-fff my-5">
         <div class="row">
             <div class="col-12">
                 <h3>手动支付</h3>
