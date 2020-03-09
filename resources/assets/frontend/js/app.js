@@ -386,16 +386,6 @@ $(function () {
                 }
             }
         }, 'json');
-    }).on('mouseover', '.like-button', function () {
-        let text = $(this).find('span').text();
-        if (text === '已收藏') {
-            $(this).find('span').text('取消收藏');
-        }
-    }).on('mouseout', '.like-button', function () {
-        let text = $(this).find('span').text();
-        if (text === '取消收藏') {
-            $(this).find('span').text('已收藏');
-        }
     }).on('click', '.login-auth', function () {
         let loginStatus = parseInt($(this).attr('data-login'));
         if (loginStatus === 0) {

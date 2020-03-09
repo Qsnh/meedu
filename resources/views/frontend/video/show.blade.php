@@ -46,7 +46,7 @@
                             <p class="mt-5"><a data-login="0" class="btn btn-primary login-auth"
                                                href="{{route('login')}}">登录</a></p>
                             <p class="login-text">
-                                登录后才可以观看视频哦！
+                                登录后才可以观看视频哦 ^ - ^！
                             </p>
                         </div>
                     @endif

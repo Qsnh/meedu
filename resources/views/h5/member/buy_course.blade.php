@@ -1,11 +1,17 @@
 @extends('layouts.h5')
 
+
+@section('css')
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
+@endsection
+
 @section('content')
 
-    <div class="top-navbar">
-        <a href="{{route('member')}}" class="back">返回</a>
-        <span class="title">我的课程</span>
-    </div>
+    @include('h5.components.topbar', ['title' => '我的课程', 'back' => route('member')])
 
     <div class="container-fluid">
         <div class="row">

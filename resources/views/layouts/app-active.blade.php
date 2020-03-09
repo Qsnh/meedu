@@ -40,14 +40,6 @@
                                     <p>会员中心</p>
                                 </a>
                                 @if($user)
-                                    <a class="message-button hover-img-switch {{menu_active('member.messages')}}"
-                                       href="{{route('member.messages')}}">
-                                        <p><img src="/images/icons/member/message.png" width="24" height="24"></p>
-                                        <p>消息</p>
-                                        @if($gUnreadMessageCount)
-                                            <span class="message-count">{{$gUnreadMessageCount}}</span>
-                                        @endif
-                                    </a>
                                     <div class="dropdown user-avatar">
                                         <a class="user-avatar-button" href="javascript:void(0);"
                                            id="navbarDropdown"
@@ -68,6 +60,18 @@
                                                          height="20"><span>成为会员</span>
                                                 </a>
                                             @endif
+                                            <a class="dropdown-item" href="{{route('member')}}">
+                                                <img src="{{$user['avatar']}}" width="20" class="avatar"
+                                                     height="20"><span>用户中心</span>
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('member.courses')}}">
+                                                <img src="/images/icons/course.png" width="20"
+                                                     height="20"><span>我的课程</span>
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('member.orders')}}">
+                                                <img src="/images/icons/order.png" width="20"
+                                                     height="20"><span>订单信息</span>
+                                            </a>
                                             <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                                                 <img src="/images/icons/logout.png" width="20" height="20">

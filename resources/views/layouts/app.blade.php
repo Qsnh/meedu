@@ -57,14 +57,14 @@
                                 @if(!$user)
                                     <a class="login-button login-auth" href="{{route('login')}}" data-login="0">登录</a>
                                 @else
-                                    <a class="message-button {{menu_active('member.messages')}}"
-                                       href="{{route('member.messages')}}">
-                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>
-                                        <p>消息</p>
-                                        @if($gUnreadMessageCount)
-                                            <span class="message-count">{{$gUnreadMessageCount}}</span>
-                                        @endif
-                                    </a>
+{{--                                    <a class="message-button {{menu_active('member.messages')}}"--}}
+{{--                                       href="{{route('member.messages')}}">--}}
+{{--                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>--}}
+{{--                                        <p>消息</p>--}}
+{{--                                        @if($gUnreadMessageCount)--}}
+{{--                                            <span class="message-count">{{$gUnreadMessageCount}}</span>--}}
+{{--                                        @endif--}}
+{{--                                    </a>--}}
                                     <div class="dropdown user-avatar">
                                         <a class="user-avatar-button" href="javascript:void(0);"
                                            id="navbarDropdown"
@@ -119,9 +119,7 @@
     </div>
 </div>
 
-<main>
-    @yield('content')
-</main>
+@yield('content')
 
 @include('layouts.common.footer')
 </body>

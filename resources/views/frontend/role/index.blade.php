@@ -39,7 +39,8 @@
                     </div>
                 </div>
                 <div class="col-12 text-center">
-                    <a href="javascript:void(0)" class="role-join-button">开通会员</a>
+                    <a data-login="{{$user ? 1 : 0}}" href="javascript:void(0)"
+                       class="role-join-button login-auth">开通会员</a>
                 </div>
             </div>
         </div>

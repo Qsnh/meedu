@@ -34,7 +34,7 @@
     </div>
 
     @foreach($banners as $i => $banner)
-        <div class="container-fluid index-latest-banner {{$i % 2 !== 0 ? 'bg-fff' : ''}}">
+        <div class="container-fluid index-latest-banner {{$i % 2 === 0 ? 'bg-fff' : ''}}">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -67,6 +67,14 @@
             </div>
         </div>
     @endforeach
+
+    <div class="container inspire">
+        <div class="row">
+            <div class="col-12">
+                <span>“道可道也，非恒道也。名可名也，非恒名也。”</span>
+            </div>
+        </div>
+    </div>
 
     <div class="container-fluid friend-link-box">
         <div class="container">

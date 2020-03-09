@@ -22,6 +22,7 @@ $container-max-widths: (
 
 body {
   background-color: #f8fafb;
+  padding-top: 70px;
 }
 
 a {
@@ -260,6 +261,11 @@ footer.footer-box {
 }
 
 .nav-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   box-shadow: 0px 4px 8px 0px rgba(229, 229, 229, 1);
 
   nav {
@@ -492,6 +498,7 @@ footer.footer-box {
 .slider-box {
   padding-top: 30px;
   height: auto;
+  background-color: #ffffff;
 
   img {
     border-top-left-radius: 8px;
@@ -1043,7 +1050,9 @@ footer.footer-box {
         &:hover, &.active {
           text-decoration: none;
           opacity: 1;
+        }
 
+        &.active {
           .dot-box {
             display: block;
           }
@@ -1128,7 +1137,7 @@ footer.footer-box {
         font-weight: 400;
         color: rgba(11, 118, 222, 1);
         line-height: 14px;
-        padding: 10px 12px;
+        padding: 10px 16px;
 
         &:hover {
           text-decoration: none;
@@ -1169,7 +1178,7 @@ footer.footer-box {
         font-weight: 400;
         color: #323232;
         line-height: 14px;
-        padding: 10px 12px;
+        padding: 10px 16px;
 
         &:hover {
           text-decoration: none;
@@ -1201,7 +1210,7 @@ footer.footer-box {
 
     .option-item {
       width: 100%;
-      height: auto;
+      height: 46px;
       float: left;
       padding-top: 10px;
       padding-bottom: 10px;
@@ -1579,10 +1588,10 @@ footer.footer-box {
         font-size: 50px;
         font-weight: 600;
         color: rgba(255, 64, 64, 1);
-        margin-right: 30px;
+        margin-right: 50px;
 
         small {
-          font-size: 16px;
+          font-size: 24px;
         }
       }
 
@@ -1857,11 +1866,11 @@ footer.footer-box {
         font-size: 16px;
         font-weight: 400;
         color: rgba(51, 51, 51, 1);
-        line-height: 16px;
+        line-height: 20px;
         margin-bottom: 19px;
 
         p {
-          margin-bottom: 5px;
+          margin-bottom: 0px;
         }
       }
 
@@ -1898,6 +1907,7 @@ footer.footer-box {
     text-align: center;
 
     h3 {
+      margin-bottom: 80px;
       color: $primary;
     }
 
@@ -2185,7 +2195,8 @@ footer.footer-box {
   line-height: 36px;
   letter-spacing: 1px;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
+  font-weight: 700;
 
   img {
     display: inline-block;
@@ -2255,6 +2266,7 @@ footer.footer-box {
     margin-left: 120px;
     margin-bottom: 50px;
     cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 1);
 
     &.first {
       margin-left: 0px;
@@ -2269,15 +2281,15 @@ footer.footer-box {
     }
 
     .price {
-      font-size: 30px;
-      font-weight: 600;
+      font-size: 48px;
+      font-weight: 700;
       color: rgba(225, 165, 0, 1);
       line-height: 67px;
       letter-spacing: 1px;
       margin-bottom: 50px;
 
       small {
-        font-size: 18px;
+        font-size: 36px;
       }
     }
 
@@ -2288,7 +2300,7 @@ footer.footer-box {
       line-height: 20px;
     }
 
-    &:hover, &.active {
+    &.active {
       border: 3px solid rgba(255, 203, 0, 1);
     }
   }
@@ -2311,5 +2323,15 @@ footer.footer-box {
   &:hover, &:focus {
     text-decoration: none;
     color: rgba(50, 50, 50, 1);
+    background: rgba(255, 203, 0, .6);
   }
+}
+
+.inspire {
+  text-align: center;
+  background: rgba(248, 250, 251, 1);
+  line-height: 200px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(204, 204, 204, 1);
 }

@@ -3,6 +3,12 @@
 $primary: #0B76DE !default;
 $textColor: rgba(51, 51, 51, 1);
 
+a {
+  &:focus, &:hover {
+    text-decoration: none;
+  }
+}
+
 body {
   background-color: #f6f6f6;
   color: $textColor;
@@ -33,6 +39,10 @@ body {
     font-size: 14px;
     float: left;
     color: $textColor;
+
+    &:focus, &:hover {
+      text-decoration: none;
+    }
   }
 }
 
@@ -212,4 +222,214 @@ body {
       margin-top: 7px;
     }
   }
+}
+
+.course-thumb {
+  width: 100%;
+  height: 192px;
+  float: left;
+}
+
+.course-info-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .course-title {
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 26px;
+    padding-bottom: 20px;
+  }
+
+  .course-info {
+    width: 100%;
+    height: auto;
+    float: left;
+    color: rgb(153, 153, 153);
+    font-size: 14px;
+
+    .user_count {
+    }
+
+    .price {
+      float: right;
+      color: rgb(234, 67, 53);
+      font-size: 16px;
+    }
+  }
+}
+
+.course-detail-menu {
+  width: 100%;
+  height: 44px;
+  float: left;
+  background-color: #ffffff;
+  margin-top: 10px;
+  border-bottom: 1px solid #eeeeee;
+
+  .course-menu-item {
+    width: 50%;
+    height: 44px;
+    float: left;
+    font-size: 16px;
+    text-align: center;
+    line-height: 44px;
+
+    span {
+      padding-bottom: 10px;
+    }
+
+    &.active {
+      color: $primary;
+
+      span {
+        border-bottom: 2px solid $primary;
+      }
+    }
+  }
+}
+
+.page-chapter {
+  display: none;
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: #ffffff;
+
+  .chapter-title {
+    width: 100%;
+    height: 40px;
+    float: left;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: rgb(246, 248, 248);
+
+    span {
+      margin-left: 10px;
+    }
+  }
+
+  .chapter-list-box {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .chapter-list-item {
+      display: inline-block;
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 14px;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eeeeee;
+      color: $textColor;
+
+      &.active {
+        background-color: $primary;
+        opacity: .7;
+        color: #ffffff;
+      }
+
+      span {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  height: 60px;
+  background-color: $primary;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  line-height: 60px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+    color: #ffffff;
+  }
+}
+
+.video-play-box {
+  width: 100%;
+  height: 192px;
+  float: left;
+  background-color: #000000;
+  text-align: center;
+  vertical-align: middle;
+
+  #xiaoteng-player {
+    width: 100%;
+    height: 192px;
+    float: left;
+  }
+}
+
+.goods-name, .goods-price {
+  width: 100%;
+  height: auto;
+  float: left;
+  line-height: 50px;
+
+  span {
+    float: right;
+  }
+
+  .price {
+    color: red;
+    opacity: .8;
+  }
+}
+
+.promo-code {
+  width: 100%;
+  height: auto;
+  float: left;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .promo-code-info {
+    line-height: 30px;
+    color: red;
+    opacity: .7;
+    font-size: 14px;
+  }
+}
+
+.payments {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .payment-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+
+    &.selected {
+      img {
+        border: 2px solid $primary;
+      }
+    }
+  }
+}
+
+.pay-button-box {
+  width: 100%;
+  height: auto;
+  float: left;
 }

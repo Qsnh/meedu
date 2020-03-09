@@ -73,7 +73,7 @@ class RoleController extends FrontendController
             'thumb' => asset('/images/icons/vip.jpg'),
             'title' => $role['name'],
             'charge' => $role['charge'],
-            'label' => 'VIP',
+            'label' => $role['name'],
         ];
         $total = $role['charge'];
         $scene = get_payment_scene();
