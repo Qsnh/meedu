@@ -2253,11 +2253,11 @@ footer.footer-box {
   float: left;
   margin-top: 100px;
   margin-bottom: 100px;
+  flex-flow: row wrap;
 
   .role-list-item {
     width: 320px;
     height: 380px;
-    float: left;
     text-align: center;
     padding-top: 40px;
     padding-bottom: 40px;

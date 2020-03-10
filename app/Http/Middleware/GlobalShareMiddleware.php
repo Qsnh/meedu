@@ -94,7 +94,7 @@ class GlobalShareMiddleware
 
         // 是否需要绑定手机号
         $bindMobileState = false;
-        if (Auth::check() && $this->businessState->isNeedBindMobile($user)) {
+        if (Auth::check() && (int)config('meedu.member.enabled_mobile_bind_alert') === 1 && $this->businessState->isNeedBindMobile($user)) {
             $bindMobileState = true;
         }
         View::share('bindMobileState', $bindMobileState);
