@@ -37,8 +37,10 @@
                                     </div>
                                     <div class="form-group text-center">
                                         @foreach(enabled_socialites() as $socialite)
-                                            <a class="btn btn-square btn-primary mr-2"
-                                               href="{{route('socialite', $socialite['app'])}}">{!! $socialite['icon'] !!}</a>
+                                            <a class="mr-2 text-decoration-none"
+                                               href="{{route('socialite', $socialite['app'])}}">
+                                                <img src="{{$socialite['logo']}}" width="24" height="24">
+                                            </a>
                                         @endforeach
                                     </div>
                                 @endif
