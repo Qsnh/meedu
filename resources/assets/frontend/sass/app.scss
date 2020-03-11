@@ -23,6 +23,7 @@ $container-max-widths: (
 body {
   background-color: #f8fafb;
   padding-top: 70px;
+  font-family: "微软雅黑";
 }
 
 input.form-control {
@@ -152,6 +153,8 @@ a {
 }
 
 footer.footer-box {
+  width: 100%;
+  height: auto;
   background: #0e0c1e;
   padding-top: 30px;
 
@@ -1471,7 +1474,6 @@ footer.footer-box {
 .course-banner {
   width: 100%;
   height: 264px;
-  float: left;
   background-image: url("/images/member-bg.png");
   background-position: bottom center;
   background-repeat: no-repeat;
@@ -1502,7 +1504,6 @@ footer.footer-box {
   height: 300px;
   float: left;
   margin-top: -150px;
-  z-index: 22;
   background-color: #ffffff;
   border-radius: 8px 8px 0px 0px;
   padding: 30px;
@@ -2235,7 +2236,6 @@ footer.footer-box {
 .role-center-banner {
   width: 100%;
   height: 264px;
-  float: left;
   background-image: url("/images/member-bg.png");
   background-position: bottom center;
   background-repeat: no-repeat;
@@ -2251,8 +2251,8 @@ footer.footer-box {
   width: 100%;
   height: auto;
   float: left;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   flex-flow: row wrap;
 
   .role-list-item {
