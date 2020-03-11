@@ -9,7 +9,7 @@
             <div class="input-group">
                 <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
                 <div class="input-group-append">
-                    <img src="{{ captcha_src() }}" class="captcha" width="120" height="36">
+                    <img src="{{ captcha_src() }}" class="captcha" width="120" height="48">
                 </div>
             </div>
         </div>
