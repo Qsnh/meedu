@@ -11,15 +11,18 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Events\AdFromEvent;
+use App\Meedu\Cache\Inc\Inc;
+use App\Meedu\Cache\Inc\AdFromIncItem;
 use App\Services\Other\Services\LinkService;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Other\Services\AdFromService;
 use App\Services\Other\Services\SliderService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Other\Services\IndexBannerService;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Other\Interfaces\IndexBannerServiceInterface;
@@ -55,13 +58,19 @@ class IndexController extends FrontendController
      */
     protected $indexBannerService;
 
+    /**
+     * @var AdFromService
+     */
+    protected $adFromService;
+
     public function __construct(
         LinkServiceInterface $linkService,
         ConfigServiceInterface $configService,
         SliderServiceInterface $sliderService,
         CourseServiceInterface $courseService,
         CourseCategoryServiceInterface $courseCategoryService,
-        IndexBannerServiceInterface $indexBannerService
+        IndexBannerServiceInterface $indexBannerService,
+        AdFromServiceInterface $adFromService
     ) {
         $this->linkService = $linkService;
         $this->configService = $configService;
@@ -69,6 +78,7 @@ class IndexController extends FrontendController
         $this->courseService = $courseService;
         $this->courseCategoryService = $courseCategoryService;
         $this->indexBannerService = $indexBannerService;
+        $this->adFromService = $adFromService;
     }
 
     public function index()
@@ -82,7 +92,8 @@ class IndexController extends FrontendController
         ] = $this->configService->getSeoIndexPage();
 
         if ($fromKey = request()->input('from_key')) {
-            event(new AdFromEvent($fromKey));
+            $adFrom = $this->adFromService->findFromKey($fromKey);
+            $adFrom && Inc::record(new AdFromIncItem($adFrom));
         }
 
         // 幻灯片
