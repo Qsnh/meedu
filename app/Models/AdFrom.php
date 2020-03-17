@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\AdFrom.
  *
- * @property int                                                                 $id
- * @property string                                                              $from_name
- * @property string                                                              $from_key
- * @property \Illuminate\Support\Carbon|null                                     $created_at
- * @property \Illuminate\Support\Carbon|null                                     $updated_at
+ * @property int $id
+ * @property string $from_name
+ * @property string $from_key
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AdFromNumber[] $numbers
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdFrom newModelQuery()
@@ -40,6 +40,15 @@ class AdFrom extends Model
     protected $fillable = [
         'from_name', 'from_key',
     ];
+
+    protected $appends = [
+        'url'
+    ];
+
+    public function getUrlAttribute()
+    {
+        return route('index', ['from_key' => $this->from_key]);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

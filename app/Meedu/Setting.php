@@ -121,7 +121,6 @@ class Setting
     public function getCanEditConfig(): array
     {
         $meedu = config('meedu');
-        $meedu['system']['logo'] = substr($meedu['system']['logo'], 0, 4) == 'http' ? $meedu['system']['logo'] : asset($meedu['system']['logo']);
         $config = [
             'app' => config('app'),
             'meedu' => $meedu,
