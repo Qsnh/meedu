@@ -61,7 +61,7 @@
                             <span class="option-value">{{substr($user['mobile'], 0, 3) . '****' . substr($user['mobile'], -4, 4)}}</span>
                         @endif
                     </div>
-                    @foreach($enabledApps as $app)
+                    @foreach(enabled_socialites() as $app)
                         <div class="option-item">
                             <span class="option-text">{{$app['name']}}：</span>
                             @if(isset($apps[$app['app']]))
