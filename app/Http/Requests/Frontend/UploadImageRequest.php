@@ -36,7 +36,7 @@ class UploadImageRequest extends BaseRequest
     public function filldata()
     {
         /**
-         * @var ConfigService
+         * @var $configService ConfigService
          */
         $configService = app()->make(ConfigServiceInterface::class);
         $disk = $configService->getImageStorageDisk();
