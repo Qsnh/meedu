@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('h5.components.topbar', ['title' => '字符成功', 'back' => route('index'), 'class' => 'dark'])
+    @include('h5.components.topbar', ['title' => '支付成功', 'back' => route('index'), 'class' => 'dark'])
 
     <div class="box">
         <div class="page-title">
