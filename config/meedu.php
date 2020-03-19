@@ -101,7 +101,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'wechat' => 'mp',
             'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],

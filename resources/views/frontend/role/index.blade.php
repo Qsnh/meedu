@@ -5,6 +5,11 @@
         .member-nav-box {
             background-color: #323232;
         }
+
+        .login-button-hover {
+            background-color: #ffcb00 !important;
+            color: #323232 !important;
+        }
     </style>
 @endsection
 

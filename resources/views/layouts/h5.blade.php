@@ -61,6 +61,10 @@
                 <img src="{{asset('/h5/images/icons/course.png')}}" width="20" height="20" class="icon">
                 <span>我的课程</span>
             </a>
+            <a href="{{route('member.orders')}}" class="menu-item">
+                <img src="{{asset('/h5/images/icons/order.png')}}" width="20" height="20" class="icon">
+                <span>我的订单</span>
+            </a>
             <a href="javascript:void(0)" class="menu-item" onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                 <img src="{{asset('/h5/images/icons/logout.png')}}" width="20" height="20" class="icon">

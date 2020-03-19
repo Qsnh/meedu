@@ -181,7 +181,7 @@ footer.footer-box {
   display: none;
 
   #auth-box-content {
-    margin-top: 200px;
+    margin-top: 144px;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
@@ -539,7 +539,7 @@ footer.footer-box {
     font-weight: 600;
 
     a {
-      padding-bottom: 24px;
+      padding-bottom: 21px;
       color: $primary;
       border-bottom: 4px solid $primary;
     }
@@ -2373,6 +2373,7 @@ footer.footer-box {
 
     &.active {
       border: 3px solid rgba(255, 203, 0, 1);
+      background-color: #FFEDED;
     }
   }
 }

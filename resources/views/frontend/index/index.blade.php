@@ -3,6 +3,16 @@
 @section('css')
     <link crossorigin="anonymous" integrity="sha384-K6LrEaceM4QP87RzJ7R4CDXcFN4cFW/A5Q7/fEp/92c2WV+woVw9S9zKDO23sNS+"
           href="https://lib.baomitu.com/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 71px;
+        }
+        .nav-box {
+            position: fixed;
+            top: 0;
+            z-index: 999;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -71,7 +81,7 @@
     <div class="container inspire">
         <div class="row">
             <div class="col-12">
-                <span>“道可道也，非恒道也。名可名也，非恒名也。”</span>
+                <span>“建立自己的视频点播系统。”</span>
             </div>
         </div>
     </div>

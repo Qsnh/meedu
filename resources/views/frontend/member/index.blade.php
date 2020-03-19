@@ -186,7 +186,7 @@
             </div>
             <div class="form-group auth-box-errors"></div>
             <div class="form-group mb-0">
-                <button type="button" class="btn btn-primary btn-block avatar-change-button">更换头像</button>
+                <button type="button" class="btn btn-primary btn-block avatar-change-button">确认更换</button>
             </div>
         </form>
     </script>

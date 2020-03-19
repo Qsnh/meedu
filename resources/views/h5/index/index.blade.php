@@ -45,7 +45,7 @@
     @endforeach
 
     <div class="inspire">
-        <p class="mb-0">“道可道也，非恒道也。名可名也，非恒名也。”</p>
+        <p class="mb-0">“建立自己的视频点播系统。”</p>
     </div>
 
     <footer class="index-footer">
