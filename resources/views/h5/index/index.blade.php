@@ -45,7 +45,7 @@
     @endforeach
 
     <div class="inspire">
-        <p class="mb-0">“建立自己的视频点播系统。”</p>
+        <p class="mb-0">拥抱MeEdu 拥抱知识付费时代</p>
     </div>
 
     <footer class="index-footer">

@@ -81,7 +81,7 @@
     <div class="container inspire">
         <div class="row">
             <div class="col-12">
-                <span>“建立自己的视频点播系统。”</span>
+                <span>拥抱MeEdu 拥抱知识付费时代</span>
             </div>
         </div>
     </div>
