@@ -1,39 +1,32 @@
-@extends('layouts.h5')
+@extends('layouts.h5-pure')
 
 @section('content')
 
-    <div class="container-fluid bg-fff">
-        <div class="row">
-            <div class="col-12 pt-5 pb-3 px-3">
-                <h3 class="mb-5">找回密码</h3>
-                <form action="" method="post">
-                    @csrf
-                    @include('frontend.components.mobile', ['smsCaptchaKey' => 'password_reset'])
-                    <div class="form-group">
-                        <label for="password">密码</label>
-                        <input id="password" type="password" placeholder="请输入新密码" class="form-control"
-                               name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password-confirm">确认密码</label>
-                        <input id="password-confirm" type="password" placeholder="再输入一次"
-                               class="form-control" name="password_confirmation" required>
-                    </div>
-                    <div class="form-group mt-2">
-                        <button class="btn btn-primary btn-block">重置密码</button>
-                    </div>
-                </form>
-            </div>
+    @include('h5.components.topbar', ['title' => '找回密码', 'back' => route('login')])
 
-            <div class="col-12 my-3 text-center">
-                <a href="{{route('login')}}">点我登录</a>
-            </div>
-
+    <div class="box">
+        <div class="login-title">
+            找回密码
+            <a href="{{route('login')}}" class="float-right">
+                <small>登录</small>
+            </a>
         </div>
+        <form action="" method="post">
+            @csrf
+            <div class="login-form">
+                @include('h5.components.mobile', ['smsCaptchaKey' => 'register'])
+                <div class="form-item">
+                    <input type="password" name="password" class="form-input-item" placeholder="密码" required>
+                </div>
+                <div class="form-item">
+                    <input type="password" name="password_confirmation" class="form-input-item" placeholder="再输入一次密码"
+                           required>
+                </div>
+                <div class="form-item">
+                    <button type="submit" class="login-button">重置密码</button>
+                </div>
+            </div>
+        </form>
     </div>
-
-@endsection
-
-@section('footer')
 
 @endsection

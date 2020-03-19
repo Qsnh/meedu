@@ -60,9 +60,12 @@
                                            class="buy-course-button">开始学习</a>
                                     @endif
                                 @else
-                                    <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
-                                    <a data-login="{{$user ? 1 : 0}}" href="{{route('member.course.buy', [$course['id']])}}"
-                                       class="buy-course-button login-auth">订阅课程</a>
+                                    @if($course['charge'] > 0)
+                                        <span class="course-price"><small>￥</small>{{$course['charge']}}</span>
+                                        <a data-login="{{$user ? 1 : 0}}"
+                                           href="{{route('member.course.buy', [$course['id']])}}"
+                                           class="buy-course-button login-auth">订阅课程</a>
+                                    @endif
                                 @endif
                             </div>
                         </div>

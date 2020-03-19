@@ -160,6 +160,10 @@ class VideoController extends FrontendController
         $id = $request->input('goods_id');
         $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $video = $this->videoService->find($id);
+        if ($video['charge'] <= 0) {
+            flash(__('video cant buy'));
+            return back();
+        }
         $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCodeId);
 
         if ($order['status'] === FrontendConstant::ORDER_PAID) {

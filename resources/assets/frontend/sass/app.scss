@@ -1471,6 +1471,76 @@ footer.footer-box {
   margin-top: 30px;
 }
 
+.my-videos {
+  margin-top: 30px;
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .my-videos-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: #ffffff;
+    margin-bottom: 30px;
+    border-radius: 8px;
+
+    .course-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      padding: 30px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 16px;
+
+      .course-info-link {
+        float: right;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(11, 118, 222, 1);
+        line-height: 16px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .video-item {
+      display: block;
+      width: 100%;
+      height: auto;
+      float: left;
+      padding: 15px 30px;
+
+      .player {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        float: left;
+        margin-right: 15px;
+      }
+
+      .video-title {
+        display: inline-block;
+        float: left;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+      }
+
+      .duration {
+        float: right;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+      }
+    }
+  }
+}
+
 .course-banner {
   width: 100%;
   height: 264px;

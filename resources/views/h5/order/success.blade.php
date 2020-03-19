@@ -1,14 +1,15 @@
-@extends('layouts.h5')
+@extends('layouts.h5-pure')
 
 @section('content')
 
-    @include('h5.components.topbar', ['back' => route('member'), 'backText' => '会员中心', 'title' => '收银台'])
+    @include('h5.components.topbar', ['title' => '字符成功', 'back' => route('index'), 'class' => 'dark'])
 
-    <div class="container-fluid bg-fff my-5">
-        <div class="row">
-            <div class="col-12 py-3 text-center">
-                <span style="color: green">支付成功</span>
-            </div>
+    <div class="box">
+        <div class="page-title">
+            支付成功
+        </div>
+        <div>
+            <p class="mt-4">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
         </div>
     </div>
 

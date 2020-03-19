@@ -91,5 +91,7 @@
   "current user was locked,please contact administrator": "current user was locked,please contact administrator",
   "please input announcement title": "please input announcement title",
   "please input announcement content": "please input announcement content",
-  "current user cant set nickname": "current user cant set nickname"
+  "current user cant set nickname": "current user cant set nickname",
+  "course cant buy": "course cant buy",
+  "video cant buy": "video cant buy"
 }

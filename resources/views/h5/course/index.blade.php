@@ -1,44 +1,49 @@
-@extends('layouts.h5')
+@extends('layouts.h5-pure')
 
 @section('content')
 
-    <div class="container-fluid bg-fff mb-5">
-        <div class="row">
-            <div class="col-12">
-                <h3 class="my-3">全部课程</h3>
-            </div>
-            <div class="col-12">
-                <div class="course-list-box">
-                    @foreach($courses as $course)
-                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-                           class="course-list-item d-flex">
-                            <div class="course-thumb">
-                                <img src="{{$course['thumb']}}"
-                                     width="122"
-                                     height="70">
-                            </div>
-                            <div class="course-info-box w-100">
-                                <div class="course-title">{{$course['title']}}</div>
-                                <div class="course-info">
-                                    <span>课时：{{$course['videos_count']}}节</span>
-                                    <span class="price">{{$course['charge'] > 0 ? '￥' . $course['charge'] : '免费'}}</span>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
+    @include('h5.components.topbar', ['title' => '所有课程', 'back' => route('index'), 'class' => 'primary'])
+
+    <div class="courses-menu">
+        <div class="menu-item {{!$scene ? 'active' : ''}}">
+            <a href="{{route('courses')}}?{{$queryParams(['scene' => ''])}}">所有课程</a>
+        </div>
+        <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
+            <a href="{{route('courses')}}?{{$queryParams(['scene' => 'recom'])}}">推荐课程</a>
+        </div>
+        <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
+            <a href="{{route('courses')}}?{{$queryParams(['scene' => 'sub'])}}">订阅最多</a>
         </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                {!! str_replace('pagination', 'pagination justify-content-center', $courses->render()) !!}
-            </div>
+    <div class="category-box">
+        <a href="{{route('courses')}}?{{$queryParams(['category_id' => 0])}}"
+           class="category-box-item {{!$categoryId ? 'active' : ''}}">不限</a>
+        @foreach($courseCategories as $category)
+            <a href="{{route('courses')}}?{{$queryParams(['category_id' => $category['id']])}}"
+               class="category-box-item {{$categoryId == $category['id'] ? 'active' : ''}}">{{$category['name']}}</a>
+        @endforeach
+    </div>
+
+    <div class="box">
+        <div class="courses">
+            @forelse($courses as $index => $course)
+                <a href="{{route('course.show', [$course['id'], $course['slug']])}}" class="banner-course-item {{$index % 2 === 0 ? 'first' : ''}}">
+                    <div class="course-thumb" style="background-image: url('{{$course['thumb']}}')"></div>
+                    <div class="course-title">{{$course['title']}}</div>
+                    <div class="course-info">
+                        <span class="course-category">{{$course['category']['name']}}</span>
+                        <span class="course-video-count">{{$course['videos_count']}}课时</span>
+                    </div>
+                </a>
+            @empty
+                @include('h5.components.none')
+            @endforelse
         </div>
     </div>
 
-    @include('h5.components.navbar')
+    <div class="box">
+        {!! str_replace('pagination', 'pagination justify-content-center', $courses->render()) !!}
+    </div>
 
 @endsection

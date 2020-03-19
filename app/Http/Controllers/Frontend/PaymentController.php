@@ -27,11 +27,9 @@ class PaymentController extends FrontendController
     }
 
     /**
-     * 支付回调.
-     *
      * @param $payment
-     *
      * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function callback($payment)
     {

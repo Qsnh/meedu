@@ -312,6 +312,14 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @return array
+     */
+    public function getUserBuyAllVideosId(): array
+    {
+        return UserVideo::query()->select(['video_id'])->whereUserId(Auth::id())->orderByDesc('created_at')->get()->toArray();
+    }
+
+    /**
      * @param int $userId
      * @param int $videoId
      * @return bool
