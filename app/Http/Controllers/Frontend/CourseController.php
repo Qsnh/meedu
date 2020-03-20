@@ -210,6 +210,10 @@ class CourseController extends FrontendController
         $id = $request->input('goods_id');
         $promoCodeId = abs((int)$request->input('promo_code_id'));
         $course = $this->courseService->find($id);
+        if ($course['charge'] <= 0) {
+            flash(__('course cant buy'));
+            return back();
+        }
         $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
 
         if ($order['status'] === FrontendConstant::ORDER_PAID) {

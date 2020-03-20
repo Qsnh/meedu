@@ -32,9 +32,7 @@ class SearchRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'keywords' => 'required',
-        ];
+        return [];
     }
 
     public function messages()

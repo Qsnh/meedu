@@ -111,11 +111,10 @@ class MemberController extends FrontendController
         $courseCount = $this->userService->getCurrentUserCourseCount();
         $videoCount = $this->userService->getCurrentUserVideoCount();
 
-        $enabledApps = $this->configService->getEnabledSocialiteApps();
         $apps = $this->socialiteService->userSocialites(Auth::id());
         $apps = array_column($apps, null, 'app');
 
-        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount', 'enabledApps', 'apps'));
+        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount', 'apps'));
     }
 
     public function showPasswordResetPage()
@@ -241,22 +240,34 @@ class MemberController extends FrontendController
                 'total' => $total,
                 'list' => $list,
             ] = $this->userService->getUserBuyCourses($page, $pageSize);
+            $courses = $this->courseService->getList(array_column($list, 'course_id'));
+            $courses = array_column($courses, null, 'id');
         } elseif ($scene === 'history') {
             // 学习历史
             [
                 'total' => $total,
                 'list' => $list,
             ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
-        } else {
+            $courses = $this->courseService->getList(array_column($list, 'course_id'));
+            $courses = array_column($courses, null, 'id');
+        } elseif ($scene === 'like') {
             // 我的收藏
             [
                 'total' => $total,
                 'list' => $list,
             ] = $this->userService->userLikeCoursesPaginate(Auth::id(), $page, $pageSize);
+            $courses = $this->courseService->getList(array_column($list, 'course_id'));
+            $courses = array_column($courses, null, 'id');
+        } else {
+            // 购买的视频
+            $videoIds = $this->userService->getUserBuyAllVideosId();
+            $videos = $this->videoService->getList($videoIds);
+            $courses = $this->courseService->getList(array_column($videos, 'course_id'));
+            $courses = array_column($courses, null, 'id');
+            $list = collect($videos)->groupBy('course_id')->toArray();
+            $total = count($list);
         }
         $records = $this->paginator($list, $total, $page, $pageSize);
-        $courses = $this->courseService->getList(array_column($list, 'course_id'));
-        $courses = array_column($courses, null, 'id');
 
         $title = __('title.member.courses');
 

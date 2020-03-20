@@ -95,7 +95,8 @@
             "supervisorctl update",
             "supervisorctl start meedu:*"
         ],
-        "apidoc": "@php artisan l5-swagger:generate"
+        "apidoc": "@php artisan l5-swagger:generate",
+        "serve": "@php artisan serve"
     },
     "config": {
         "preferred-install": "dist",

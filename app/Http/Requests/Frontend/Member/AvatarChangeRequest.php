@@ -37,14 +37,14 @@ class AvatarChangeRequest extends BaseRequest
     public function filldata()
     {
         /**
-         * @var ConfigService
+         * @var $configService ConfigService
          */
         $configService = app()->make(ConfigServiceInterface::class);
 
-        $file = $this->file('file');
-        $path = $file->store('/avatar');
-        $url = Storage::disk($configService->getDefaultStorageDisk())->url($path);
+        $disk = $configService->getImageStorageDisk();
+        $path = $this->file('file')->store($configService->getImageStoragePath(), compact('disk'));
+        $url = Storage::disk($disk)->url($path);
 
-        return compact('path', 'url');
+        return compact('url');
     }
 }

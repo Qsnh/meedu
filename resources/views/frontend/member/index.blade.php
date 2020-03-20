@@ -61,7 +61,7 @@
                             <span class="option-value">{{substr($user['mobile'], 0, 3) . '****' . substr($user['mobile'], -4, 4)}}</span>
                         @endif
                     </div>
-                    @foreach($enabledApps as $app)
+                    @foreach(enabled_socialites() as $app)
                         <div class="option-item">
                             <span class="option-text">{{$app['name']}}：</span>
                             @if(isset($apps[$app['app']]))
@@ -186,7 +186,7 @@
             </div>
             <div class="form-group auth-box-errors"></div>
             <div class="form-group mb-0">
-                <button type="button" class="btn btn-primary btn-block avatar-change-button">更换头像</button>
+                <button type="button" class="btn btn-primary btn-block avatar-change-button">确认更换</button>
             </div>
         </form>
     </script>

@@ -95,6 +95,7 @@ class VideoService implements VideoServiceInterface
 
     /**
      * @param $id
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function viewNumInc($id): void
     {

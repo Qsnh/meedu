@@ -175,9 +175,8 @@
         <div class="form-group login-remember">
             <label class="user_protocol"><input type="checkbox"
                                                 name="agree_protocol" {{ old('remember') ? 'checked' : '' }}>
-                我已阅读并同意
-                <a href="{{route('user.protocol')}}" target="_blank">《{{config('app.name')}}
-                    用户协议》</a></label>
+                同意
+                <a href="{{route('user.protocol')}}" target="_blank">《用户协议》</a></label>
 
             <span class="float-right show-login-box" onclick="showAuthBox('login-box')">立即登录</span>
         </div>

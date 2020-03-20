@@ -1,64 +1,73 @@
-@extends('layouts.h5')
+@extends('layouts.h5-pure')
+
+@section('css')
+    <style>
+        body {
+            padding-bottom: 49px;
+        }
+    </style>
+@endsection
 
 @section('content')
 
-    @include('h5.components.topbar', ['back' => route('member'), 'backText' => '会员中心', 'title' => '购物车'])
+    @include('h5.components.topbar', ['title' => '收银台', 'back' => route('index'), 'class' => 'dark'])
 
     <form action="" method="post" class="create-order-form">
         @csrf
         <input type="hidden" name="goods_id" value="{{$goods['id']}}">
-        <div class="container-fluid bg-fff" style="margin-top: 80px;">
-            <div class="row">
-                <div class="col-12 py-4">
-                    <div class="goods-name">
-                        <b>商品名：</b>
-                        <span>{{$goods['title']}}</span>
+        <div class="box">
+            <div class="page-title">订阅信息</div>
+            <div class="goods-info-box">
+                <div class="goods-thumb">
+                    <img src="{{$goods['thumb']}}" width="165" height="125">
+                </div>
+                <div class="goods-info">
+                    <div class="title">{{$goods['title']}}</div>
+                    <div class="goods-labels">
+                        <span class="label">{{$goods['label']}}</span>
                     </div>
-                    <div class="goods-price">
-                        <b>总价：</b>
-                        <span class="price"><small>￥</small>{{$goods['charge']}}</span>
-                    </div>
-                    <div class="goods-price">
-                        <b>邀请码抵扣：</b>
-                        <span class="price"><small>￥</small><span class="promo-code-price">0</span></span>
-                    </div>
-                    <div class="promo-code">
-                        <div class="input-group">
-                            <input type="hidden" name="promo_code_id" value="">
-                            <input type="text" name="promo_code" class="form-control promo-code-input"
-                                   placeholder="邀请码">
-                            <div class="input-group-append">
-                                <button data-url="{{route('ajax.promo_code.check')}}"
-                                        class="btn btn-primary promo-code-check-button" type="button">检测
-                                </button>
-                            </div>
+                </div>
+            </div>
+            <div class="promo-code">
+                <div class="title">
+                    邀请码
+                    <small>（选填）</small>
+                </div>
+                <div class="input">
+                    <input type="hidden" name="promo_code_id" value="">
+                    <input type="text" name="promo_code" class="promo-code-input">
+                    <a href="javascript:void(0)" class="promo-code-check-button"
+                       data-url="{{route('ajax.promo_code.check')}}">验证</a>
+                </div>
+                <div class="promo-code-info"></div>
+            </div>
+            <div class="payments">
+                <div class="page-title">支付方式</div>
+                <div class="payments-item">
+                    <input type="hidden" name="payment_scene" value="{{$scene}}">
+                    <input type="hidden" name="payment_sign" value="">
+                    @foreach($payments as $payment)
+                        <div class="payment-item" data-payment="{{$payment['sign']}}">
+                            <img src="{{$payment['logo']}}" width="85" height="30">
                         </div>
-                        <div class="promo-code-info"></div>
-                    </div>
-                    <div class="payments">
-                        <input type="hidden" name="payment_scene" value="{{$scene}}">
-                        <input type="hidden" name="payment_sign" value="">
-                        <p><b>请选择支付方式：</b></p>
-                        @foreach($payments as $payment)
-                            <div class="payment-item">
-                                <img src="{{$payment['logo']}}" width="170" height="60"
-                                     data-payment="{{$payment['sign']}}">
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="info">
-                        <p class="text-right">
-                            需支付 <span class="total"><small>￥</small><span
-                                        data-total="{{$goods['charge']}}"
-                                        class="total-price-val">{{$goods['charge']}}</span></span>
-                        </p>
-                    </div>
-                    <div class="pay-button-box text-right">
-                        <button type="submit" class="btn btn-primary pay-button">确认支付</button>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </form>
+
+
+    <div class="pay-button-box">
+        <div class="pay-info">
+            <div class="promo-code-price">邀请码抵扣 <span class="promo-code-price-text">0</span> 元</div>
+            <div class="price">
+                <small>￥</small>
+                <span class="total-price" data-total="{{$goods['charge']}}">{{$goods['charge']}}</span>
+            </div>
+        </div>
+        <div class="pay-button">
+            立即支付
+        </div>
+    </div>
 
 @endsection

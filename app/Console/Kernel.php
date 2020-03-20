@@ -52,11 +52,6 @@ class Kernel extends ConsoleKernel
             ->onOneServer()
             ->everyThirtyMinutes()
             ->appendOutputTo(storage_path('logs/order_pay_timeout'));
-
-        // AdFrom 数据同步
-        $schedule->command('adfrom:sync')
-            ->onOneServer()
-            ->everyThirtyMinutes();
     }
 
     /**

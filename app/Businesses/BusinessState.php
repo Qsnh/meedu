@@ -185,9 +185,11 @@ class BusinessState
     }
 
     /**
-     * 是否购买课程
+     * 是否购买了课程
+     *
      * @param int $courseId
      * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function isBuyCourse(int $courseId): bool
     {

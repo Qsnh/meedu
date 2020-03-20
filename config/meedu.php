@@ -25,21 +25,21 @@ return [
             'github' => [
                 'app' => 'github',
                 'name' => 'Github',
-                'logo' => '/images/icons/github.png',
+                'logo' => '/images/icons/github.svg',
                 'enabled' => 0,
             ],
             // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
-                'logo' => '/images/icons/qq.png',
+                'logo' => '/images/icons/qq.svg',
                 'enabled' => 0,
             ],
             // 微信登录
             'weixinweb' => [
                 'app' => 'weixinweb',
                 'name' => '微信',
-                'logo' => '/images/icons/wechat.png',
+                'logo' => '/images/icons/weixin.svg',
                 'enabled' => 0,
             ],
         ],
@@ -101,7 +101,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'wechat' => 'mp',
             'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],
