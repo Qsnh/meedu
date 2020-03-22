@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\RoleService;
+use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
@@ -53,18 +54,25 @@ class OrderController extends BaseController
      */
     protected $promoCodeService;
 
+    /**
+     * @var UserService
+     */
+    protected $userService;
+
     public function __construct(
         CourseServiceInterface $courseService,
         OrderServiceInterface $orderService,
         RoleServiceInterface $roleService,
         VideoServiceInterface $videoService,
-        PromoCodeServiceInterface $promoCodeService
+        PromoCodeServiceInterface $promoCodeService,
+        UserService $userService
     ) {
         $this->courseService = $courseService;
         $this->orderService = $orderService;
         $this->roleService = $roleService;
         $this->videoService = $videoService;
         $this->promoCodeService = $promoCodeService;
+        $this->userService = $userService;
     }
 
     /**
@@ -93,10 +101,16 @@ class OrderController extends BaseController
     public function createCourseOrder(Request $request)
     {
         $courseId = $request->input('course_id');
+        $course = $this->courseService->find($courseId);
+        if ($course['charge'] === 0) {
+            return $this->error(__('course cant buy'));
+        }
+        if ($this->userService->hasCourse(Auth::id(), $course['id'])) {
+            return $this->error(__('course purchased'));
+        }
         $code = $request->input('promo_code');
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
-        $course = $this->courseService->find($courseId);
         $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
@@ -163,10 +177,16 @@ class OrderController extends BaseController
     public function createVideoOrder(Request $request)
     {
         $videoId = $request->input('video_id');
+        $video = $this->videoService->find($videoId);
+        if ($video['charge'] === 0) {
+            return $this->error(__('video cant buy'));
+        }
+        if ($this->userService->hasVideo(Auth::id(), $video['id'])) {
+            return $this->error(__('video purchased'));
+        }
         $code = $request->input('promo_code');
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
-        $video = $this->videoService->find($videoId);
         $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
