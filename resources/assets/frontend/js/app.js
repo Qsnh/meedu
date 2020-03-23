@@ -485,5 +485,9 @@ $(function () {
         $('.' + page).show(200).siblings().hide(200);
         $(this).parent().addClass('active').siblings().removeClass('active');
         return false;
+    }).on('click', '.show-select-payment-model', function () {
+        $('.select-payment-model').show();
+    }).on('click', '.close-select-payment-model', function () {
+        $('.select-payment-model').hide();
     });
 });

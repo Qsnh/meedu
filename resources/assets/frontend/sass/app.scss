@@ -41,6 +41,10 @@ button.btn {
 
 a {
   color: $c2;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .display-none {
@@ -1687,6 +1691,38 @@ footer.footer-box {
         }
       }
 
+      .join-role-alert-link {
+        display: inline-block;
+        width: auto;
+        height: 40px;
+        margin-top: 5px;
+        color: rgba(225, 165, 7, 1);
+        vertical-align: middle;
+
+        img {
+          display: inline-block;
+          float: left;
+          line-height: 1;
+          margin-top: 7px;
+          margin-right: 5px;
+        }
+
+        span {
+          display: inline-block;
+          float: left;
+          width: auto;
+          height: 16px;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1;
+          margin-top: 12px;
+        }
+
+        &:hover {
+          color: rgba(225, 165, 7, .6);
+        }
+      }
+
       .buy-course-button {
         background-color: $primary;
         color: #ffffff;
@@ -2411,5 +2447,135 @@ footer.footer-box {
 .course-show-page-desc {
   img {
     max-width: 100%;
+  }
+}
+
+.select-payment-model {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, .6);
+
+  .select-payment-model-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1002;
+    margin-top: -207px;
+    margin-left: -209px;
+    width: 414px;
+    height: 418px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 30px;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 24px;
+      font-weight: 600;
+      color: rgba(51, 51, 51, 1);
+      line-height: 24px;
+      margin-bottom: 68px;
+
+      img {
+        float: right;
+        cursor: pointer;
+
+        &:hover {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+          -webkit-transition: -webkit-transform 1s linear;
+          transition: transform 1s linear;
+        }
+      }
+    }
+
+    .content {
+      width: 100%;
+      height: auto;
+      float: left;
+      text-align: center;
+
+      .role-text {
+        width: auto;
+        height: 24px;
+        line-height: 1;
+        color: rgba(51, 51, 51, 1);
+        margin-bottom: 38px;
+
+        img {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          margin-right: 10px;
+          margin-top: -6px;
+        }
+
+        span {
+          display: inline-block;
+          height: 20px;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 1;
+          margin-top: 2px;
+        }
+      }
+
+      .join-role-button-box {
+        width: 100%;
+        height: auto;
+        float: left;
+
+        .join-role-button {
+          display: inline-block;
+          width: 255px;
+          height: 52px;
+          background: rgba(11, 118, 222, 1);
+          border-radius: 26px;
+          color: #ffffff;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 52px;
+
+          &:hover {
+            background: rgba(11, 118, 222, .6)
+          }
+        }
+      }
+
+      .extra-options {
+        width: 100%;
+        height: 16px;
+        line-height: 1;
+        float: left;
+        margin-top: 49px;
+
+        .plain-text {
+          display: inline-block;
+          width: auto;
+          height: 16px;
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(102, 102, 102, 1);
+          line-height: 1;
+          vertical-align: middle;
+
+          img {
+            margin-left: 8px;
+            margin-top: -3px;
+          }
+
+          &:hover {
+            color: rgba(102, 102, 102, .8);
+          }
+        }
+      }
+    }
   }
 }
