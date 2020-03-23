@@ -208,4 +208,9 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::put('/{id}', 'IndexBannerController@update');
         Route::delete('/{id}', 'IndexBannerController@destroy');
     });
+
+    Route::group(['prefix' => 'statistic'], function () {
+        Route::get('/userRegister', 'StatisticController@userRegister');
+        Route::get('/orderCreated', 'StatisticController@orderCreated');
+    });
 });

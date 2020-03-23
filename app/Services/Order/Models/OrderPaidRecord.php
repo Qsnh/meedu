@@ -34,6 +34,15 @@ class OrderPaidRecord extends Model
         'user_id', 'order_id', 'paid_total', 'paid_type', 'paid_type_id',
     ];
 
+    protected $appends = [
+        'paid_type_text',
+    ];
+
+    public function getPaidTypeTextAttribute()
+    {
+        return self::PAID_TYPE_TEXT[$this->paid_type] ?? '';
+    }
+
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');

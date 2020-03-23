@@ -128,9 +128,8 @@ class Order extends Model
     }
 
     /**
-     * 获取支付网关名.
-     *
      * @return string
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function getPaymentText()
     {
