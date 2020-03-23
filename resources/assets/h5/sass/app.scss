@@ -697,6 +697,7 @@ body {
   background: rgba(11, 118, 222, 1);
   color: #ffffff;
   text-align: center;
+  cursor: pointer;
 }
 
 .video-play-box {
@@ -868,6 +869,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: rgba(255, 255, 255, 1);
+  cursor: pointer;
 
   &:focus {
     color: #ffffff;
@@ -997,6 +999,7 @@ body {
     float: left;
 
     .payment-item {
+      display: inline-block;
       width: 108px;
       height: 72px;
       float: left;
@@ -1007,6 +1010,7 @@ body {
       margin-right: 8px;
       text-align: center;
       line-height: 72px;
+      cursor: pointer;
 
       &.active {
         border: 1px solid rgba(255, 39, 39, 1);
