@@ -115,12 +115,13 @@ body {
     width: 50%;
     height: 199px;
     float: left;
-    padding-left: 15px;
+    padding-left: 8px;
     line-height: 1;
     margin-bottom: 15px;
 
     &.first {
       padding-left: 0;
+      padding-right: 7px;
     }
 
     .course-thumb {
