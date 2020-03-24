@@ -185,4 +185,11 @@ return [
         // 视频列表页展示条数
         'video_list_page_size' => 16,
     ],
+
+    // MeEduCloud
+    'meeducloud' => [
+        'domain' => env('MEEDUCLOUD_DOMAIN', 'meedu.vip'),
+        'user_id' => env('MEEDUCLOUD_USER_ID'),
+        'password' => env('MEEDUCLOUD_PASSWORD'),
+    ],
 ];

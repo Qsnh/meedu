@@ -196,8 +196,15 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     });
 
     // 插件
-    Route::get('/addons', 'AddonsController@index');
-    Route::post('/addons/switch', 'AddonsController@switchHandler');
+    Route::group(['prefix' => 'addons'], function () {
+        Route::get('/', 'AddonsController@index');
+        Route::get('/repository', 'AddonsController@repository');
+        Route::get('/repository/user', 'AddonsController@user');
+        Route::get('/repository/buy', 'AddonsController@buyAddons');
+        Route::get('/repository/install', 'AddonsController@installAddons');
+        Route::get('/repository/upgrade', 'AddonsController@upgradeAddons');
+        Route::post('/switch', 'AddonsController@switchHandler');
+    });
 
     // IndexBanner
     Route::group(['prefix' => 'indexBanner'], function () {
