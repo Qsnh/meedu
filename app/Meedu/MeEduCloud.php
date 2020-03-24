@@ -30,7 +30,7 @@ class MeEduCloud
         $this->userId = $userId;
         $this->password = $password;
         $this->client = new Client([
-            'base_uri' => sprintf('http://%s', $this->domain),
+            'base_uri' => $this->domain,
             'timeout' => 5.0,
         ]);
     }
