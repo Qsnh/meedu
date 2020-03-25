@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');
         Route::delete('/{id}', 'CourseController@destroy');
+        Route::get('/{id}/subscribe/users', 'CourseController@subscribeUsers');
     });
 
     // 视频
