@@ -6,7 +6,7 @@
 
     <div class="course-info-box">
         <div class="course-thumb">
-            <img src="{{$course['thumb']}}" width="180" height="136">
+            <img src="{{$course['thumb']}}" width="160" height="120">
         </div>
         <div class="course-info-desc">
             <div class="course-title">
