@@ -57,14 +57,14 @@
                                 @if(!$user)
                                     <a class="login-button login-auth" href="{{route('login')}}" data-login="0">登录</a>
                                 @else
-{{--                                    <a class="message-button {{menu_active('member.messages')}}"--}}
-{{--                                       href="{{route('member.messages')}}">--}}
-{{--                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>--}}
-{{--                                        <p>消息</p>--}}
-{{--                                        @if($gUnreadMessageCount)--}}
-{{--                                            <span class="message-count">{{$gUnreadMessageCount}}</span>--}}
-{{--                                        @endif--}}
-{{--                                    </a>--}}
+                                    {{--                                    <a class="message-button {{menu_active('member.messages')}}"--}}
+                                    {{--                                       href="{{route('member.messages')}}">--}}
+                                    {{--                                        <p><img src="/images/icons/message.png" width="24" height="24"></p>--}}
+                                    {{--                                        <p>消息</p>--}}
+                                    {{--                                        @if($gUnreadMessageCount)--}}
+                                    {{--                                            <span class="message-count">{{$gUnreadMessageCount}}</span>--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                    </a>--}}
                                     <div class="dropdown user-avatar">
                                         <a class="user-avatar-button" href="javascript:void(0);"
                                            id="navbarDropdown"
@@ -73,7 +73,7 @@
                                             <img src="{{$user['avatar']}}" width="40" height="40">
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            @if($user['role'] ?? [])
+                                            @if(app()->make(\App\Businesses\BusinessState::class)->isRole($user))
                                                 <a class="dropdown-item vip"
                                                    href="{{route('member.join_role_records')}}">
                                                     <img src="/images/icons/vip.png" width="20"
