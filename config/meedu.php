@@ -188,7 +188,7 @@ return [
 
     // MeEduCloud
     'meeducloud' => [
-        'domain' => env('MEEDUCLOUD_DOMAIN', 'meedu.vip'),
+        'domain' => env('MEEDUCLOUD_DOMAIN', 'https://meedu.vip'),
         'user_id' => env('MEEDUCLOUD_USER_ID'),
         'password' => env('MEEDUCLOUD_PASSWORD'),
     ],
