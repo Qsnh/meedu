@@ -8,6 +8,8 @@ use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
+use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserVideo;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
@@ -28,6 +30,40 @@ class OrderTest extends Base
             'promo_code' => 0,
         ]);
         $this->assertResponseSuccess($response);
+    }
+
+    public function test_createCourseOrder_with_0_charge()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create([
+            'charge' => 0,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        $response = $this->user($user)->postJson('/api/v2/order/course', [
+            'course_id' => $course->id,
+            'promo_code' => 0,
+        ]);
+        $this->assertResponseError($response, __('course cant buy'));
+    }
+
+    public function test_createCourseOrder_with_purchased()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create([
+            'charge' => 100,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        UserCourse::create([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+        ]);
+        $response = $this->user($user)->postJson('/api/v2/order/course', [
+            'course_id' => $course->id,
+            'promo_code' => 0,
+        ]);
+        $this->assertResponseError($response, __('course purchased'));
     }
 
     public function test_createCourseOrder_with_promo_code()
@@ -154,6 +190,40 @@ class OrderTest extends Base
             'promo_code' => 0,
         ]);
         $this->assertResponseSuccess($response);
+    }
+
+    public function test_createVideoOrder_with_0_charge()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create([
+            'charge' => 0,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        $response = $this->user($user)->postJson('/api/v2/order/video', [
+            'video_id' => $video->id,
+            'promo_code' => 0,
+        ]);
+        $this->assertResponseError($response, __('video cant buy'));
+    }
+
+    public function test_createVideoOrder_with_purchased()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create([
+            'charge' => 100,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => Course::SHOW_YES,
+        ]);
+        UserVideo::create([
+            'user_id' => $user->id,
+            'video_id' => $video->id,
+        ]);
+        $response = $this->user($user)->postJson('/api/v2/order/video', [
+            'video_id' => $video->id,
+            'promo_code' => 0,
+        ]);
+        $this->assertResponseError($response, __('video purchased'));
     }
 
     public function test_createVideoOrder_with_promo_code()

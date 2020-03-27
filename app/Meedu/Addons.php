@@ -13,6 +13,7 @@ namespace App\Meedu;
 
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
 
 class Addons
 {
@@ -75,23 +76,37 @@ class Addons
         $providersBox = [];
         foreach ($addons as $dir => $addon) {
             $sign = pathinfo($dir, PATHINFO_FILENAME);
-            $providers = $this->file->glob($dir . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
-            if (!$providers) {
-                continue;
-            }
-            foreach ($providers as $provider) {
-                $providerName = pathinfo($provider, PATHINFO_FILENAME);
-                $namespace = "\\Addons\\{$sign}\\{$providerName}";
-                if ($except && Str::contains($namespace, $except)) {
-                    continue;
-                }
-                $providersBox[] = $namespace;
-            }
+            $providersBox = array_merge($providersBox, $this->getAddonsServiceProvider($sign, $except));
         }
         if (!$providersBox) {
             return;
         }
         $this->file->put($this->providersMapFile, json_encode($providersBox));
+    }
+
+    /**
+     * 获取插件的ServiceProvider
+     * @param $sign
+     * @param string $except
+     * @return array
+     */
+    public function getAddonsServiceProvider($sign, $except = '')
+    {
+        $dir = base_path('addons/' . $sign);
+        $providers = $this->file->glob($dir . DIRECTORY_SEPARATOR . '*ServiceProvider.php');
+        if (!$providers) {
+            return [];
+        }
+        $providersBox = [];
+        foreach ($providers as $provider) {
+            $providerName = pathinfo($provider, PATHINFO_FILENAME);
+            $namespace = "\\Addons\\{$sign}\\{$providerName}";
+            if ($except && Str::contains($namespace, $except)) {
+                continue;
+            }
+            $providersBox[] = $namespace;
+        }
+        return $providersBox;
     }
 
     /**
@@ -105,7 +120,7 @@ class Addons
             return [];
         }
 
-        return json_decode($this->file->get($this->providersMapFile));
+        return json_decode($this->file->get($this->providersMapFile), true);
     }
 
     /**
@@ -153,5 +168,37 @@ class Addons
         }
 
         $this->file->put($this->providersMapFile, json_encode($data));
+    }
+
+    public function install($sign)
+    {
+        $this->registerAddonsServiceProvidersNow($sign);
+        Artisan::call($sign, ['action' => 'install']);
+    }
+
+    public function uninstall($sign)
+    {
+        $this->registerAddonsServiceProvidersNow($sign);
+        Artisan::call($sign, ['action' => 'uninstall']);
+    }
+
+    public function upgrade($sign)
+    {
+        $this->registerAddonsServiceProvidersNow($sign);
+        Artisan::call($sign, ['action' => 'upgrade']);
+    }
+
+    /**
+     * 立刻注册插件的服务
+     * @param $sign
+     */
+    public function registerAddonsServiceProvidersNow($sign)
+    {
+        $services = $this->getAddonsServiceProvider($sign);
+        if ($services) {
+            foreach ($services as $service) {
+                app()->register($service);
+            }
+        }
     }
 }

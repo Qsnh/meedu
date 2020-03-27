@@ -36,8 +36,8 @@
                         @else
                             <div class="buy-this-video">
                                 <h3>{{$video['title']}}</h3>
-                                <a href="{{ route('member.video.buy', [$video['id']]) }}"
-                                   class="btn btn-primary mt-3">购买此视频 ￥{{$video['charge']}}</a>
+                                <a href="javascript:void(0)"
+                                   class="btn btn-primary mt-3 show-select-payment-model">付费内容，请订阅后查看</a>
                             </div>
                         @endif
                     @else
@@ -172,5 +172,33 @@
     @endif
 
     @include('frontend.components.recom_courses')
+
+    <div class="select-payment-model">
+        <div class="select-payment-model-box">
+            <div class="title">付费内容 <img src="{{asset('/images/close.png')}}" class="close-select-payment-model"
+                                         width="24" height="24"></div>
+            <div class="content">
+                <div class="role-text">
+                    <img src="{{asset('/images/icons/vip.png')}}" width="24" height="24">
+                    <span>开通会员，全站资源随意看</span>
+                </div>
+                <div class="join-role-button-box">
+                    <a href="{{route('role.index')}}" class="join-role-button">开通会员</a>
+                </div>
+                <div class="extra-options">
+                    <a href="{{route('member.course.buy', [$course['id']])}}" class="plain-text">
+                        订阅此套课程￥{{$course['charge']}}
+                        <img src="{{asset('/images/icons/right.png')}}" width="6" height="10">
+                    </a>
+                </div>
+                <div class="extra-options">
+                    <a href="{{ route('member.video.buy', [$video['id']]) }}" class="plain-text">
+                        仅订阅该视频￥{{$video['charge']}}
+                        <img src="{{asset('/images/icons/right.png')}}" width="6" height="10">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection

@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');
         Route::delete('/{id}', 'CourseController@destroy');
+        Route::get('/{id}/subscribe/users', 'CourseController@subscribeUsers');
     });
 
     // 视频
@@ -196,8 +197,15 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     });
 
     // 插件
-    Route::get('/addons', 'AddonsController@index');
-    Route::post('/addons/switch', 'AddonsController@switchHandler');
+    Route::group(['prefix' => 'addons'], function () {
+        Route::get('/', 'AddonsController@index');
+        Route::get('/repository', 'AddonsController@repository');
+        Route::get('/repository/user', 'AddonsController@user');
+        Route::get('/repository/buy', 'AddonsController@buyAddons');
+        Route::get('/repository/install', 'AddonsController@installAddons');
+        Route::get('/repository/upgrade', 'AddonsController@upgradeAddons');
+        Route::post('/switch', 'AddonsController@switchHandler');
+    });
 
     // IndexBanner
     Route::group(['prefix' => 'indexBanner'], function () {
@@ -207,5 +215,10 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}', 'IndexBannerController@edit');
         Route::put('/{id}', 'IndexBannerController@update');
         Route::delete('/{id}', 'IndexBannerController@destroy');
+    });
+
+    Route::group(['prefix' => 'statistic'], function () {
+        Route::get('/userRegister', 'StatisticController@userRegister');
+        Route::get('/orderCreated', 'StatisticController@orderCreated');
     });
 });

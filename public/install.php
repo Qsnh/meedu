@@ -10,7 +10,7 @@ if (file_exists('../storage/install.lock')) {
     alert('请勿重复安装');
 }
 $uri = $_SERVER['REQUEST_URI'];
-if (preg_match('/public/ius', $uri)) {
+if (stripos($url, '/public/ius') !== false) {
     // 网站根目录配置错啦
     alert('网站运行根目录配置错误');
 }
@@ -20,8 +20,8 @@ $isSubmit = $_POST['submit'] ?? false;
 
 $extensions = get_loaded_extensions();
 $disabledFunctions = explode(',', ini_get('disable_functions'));
-$storagePath = str_replace('public', 'storage', dirname(__FILE__));
-$bootstrapPath = str_replace('public', 'bootstrap', dirname(__FILE__));
+$storagePath = str_replace('public', 'storage', __DIR__);
+$bootstrapPath = str_replace('public', 'bootstrap', __DIR__);
 $requires = [
     [
         'item' => PHP_VERSION,
@@ -72,6 +72,11 @@ $requires = [
         'item' => 'ext-XML',
         'status' => in_array('xml', $extensions),
         'intro' => '安装XML扩展',
+    ],
+    [
+        'item' => 'ext-ZIP',
+        'status' => in_array('zip', $extensions),
+        'intro' => '安装ZIP扩展',
     ],
     [
         'item' => $storagePath,

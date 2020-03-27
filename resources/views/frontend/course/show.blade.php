@@ -65,6 +65,10 @@
                                         <a data-login="{{$user ? 1 : 0}}"
                                            href="{{route('member.course.buy', [$course['id']])}}"
                                            class="buy-course-button login-auth">订阅课程</a>
+                                        <a href="{{route('role.index')}}" class="join-role-alert-link">
+                                            <img src="{{asset('/images/icons/vip.png')}}" width="24" height="24">
+                                            <span>开通会员看全站</span>
+                                        </a>
                                     @endif
                                 @endif
                             </div>

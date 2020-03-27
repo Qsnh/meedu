@@ -47,9 +47,9 @@
                     <input type="hidden" name="payment_scene" value="{{$scene}}">
                     <input type="hidden" name="payment_sign" value="">
                     @foreach($payments as $payment)
-                        <div class="payment-item" data-payment="{{$payment['sign']}}">
+                        <a href="javascript:void(0)" class="payment-item" data-payment="{{$payment['sign']}}">
                             <img src="{{$payment['logo']}}" width="85" height="30">
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -65,9 +65,9 @@
                 <span class="total-price" data-total="{{$goods['charge']}}">{{$goods['charge']}}</span>
             </div>
         </div>
-        <div class="pay-button">
+        <a href="javascript:void(0)" class="pay-button">
             立即支付
-        </div>
+        </a>
     </div>
 
 @endsection

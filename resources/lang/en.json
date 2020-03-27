@@ -93,5 +93,7 @@
   "please input announcement content": "please input announcement content",
   "current user cant set nickname": "current user cant set nickname",
   "course cant buy": "course cant buy",
-  "video cant buy": "video cant buy"
+  "video cant buy": "video cant buy",
+  "course purchased": "course purchased",
+  "video purchased": "video purchased"
 }

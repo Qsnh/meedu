@@ -31,6 +31,7 @@ class BusinessState
      * @param array $course
      * @param array $video
      * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
@@ -98,6 +99,13 @@ class BusinessState
         return true;
     }
 
+    /**
+     * 是否可以生成邀请码
+     *
+     * @param array $user
+     * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function canGenerateInviteCode(array $user): bool
     {
         /**
@@ -125,11 +133,12 @@ class BusinessState
     /**
      * @param array $promoCode
      * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function promoCodeCanUse(array $promoCode): bool
     {
         // 自己不能使用自己的优惠码
-        if ($promoCode['user_id'] == Auth::id()) {
+        if ($promoCode['user_id'] === Auth::id()) {
             return false;
         }
         if ($promoCode['use_times'] > 0 && $promoCode['use_times'] - $promoCode['used_times'] <= 0) {
@@ -167,12 +176,13 @@ class BusinessState
      */
     public function isUserInvitePromoCode(string $code): bool
     {
-        return strtolower(substr($code, 0, 1)) == 'u';
+        return strtolower($code[0]) === 'u';
     }
 
     /**
      * @param array $order
      * @return int
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function calculateOrderNeedPaidSum(array $order): int
     {

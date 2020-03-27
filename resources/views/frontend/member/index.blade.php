@@ -12,7 +12,8 @@
                     <div class="user-nickname">
                         <span>{{$user['nick_name']}}</span>
                         @if(!$user['is_set_nickname'])
-                            <a href="javascript:void(0)" class="nickname-edit-button" onclick="showAuthBox('nickname-change')">
+                            <a href="javascript:void(0)" class="nickname-edit-button"
+                               onclick="showAuthBox('nickname-change')">
                                 <img src="/images/icons/member/nickname-edit.png" width="18" height="18">
                             </a>
                         @endif
@@ -22,7 +23,7 @@
                            onclick="showAuthBox('avatar-change')">更换头像</a>
                     </div>
                 </div>
-                @if($user['role_id'] && \Carbon\Carbon::parse($user['role_expired_at'])->gt(\Carbon\Carbon::now()))
+                @if(app()->make(\App\Businesses\BusinessState::class)->isRole($user))
                     <div class="user-vip">
                         <div class="vip-logo">
                             <img src="/images/icons/member/vip-logo-hover.png" width="100" height="100">

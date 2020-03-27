@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use App\Models\Administrator;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,11 @@ class LoginController extends BaseController
         }
         // jwt登录
         $token = Auth::guard(self::GUARD)->login($admin);
-        // session登录
-        Auth::guard('backend-web')->login($admin);
+
+        // 登录日志
+        $admin->last_login_ip = $request->getClientIp();
+        $admin->last_login_date = Carbon::now();
+        $admin->save();
 
         return $this->successData(compact('token'));
     }

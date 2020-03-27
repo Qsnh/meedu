@@ -57,20 +57,20 @@ class AdFromController extends BaseController
     public function number(Request $request, $id)
     {
         $ad = AdFrom::findOrFail($id);
-        $startDate = $request->input('start_date', date('Y-m-d', Carbon::now()->subDays(30)->timestamp));
-        $endDate = $request->input('end_date', date('Y-m-d', Carbon::now()->timestamp));
-        $records = $ad->numbers()->whereBetween('day', [$startDate, $endDate])->get();
-        $labels = [];
-        $dataset = [];
-        foreach ($records as $item) {
-            $labels[] = $item->day;
-            $dataset[] = $item->num;
+        $startDate = Carbon::parse($request->input('start_date', Carbon::now()->subMonths(1)));
+        $endDate = Carbon::parse($request->input('end_date', Carbon::now()));
+        $records = $ad->numbers()->select(['day', 'num'])->whereBetween('day', [$startDate->timestamp, $endDate->timestamp])->get();
+        $data = [];
+        while ($startDate->lt($endDate)) {
+            $data[$startDate->format('Y-m-d')] = 0;
+            $startDate->addDays(1);
         }
-
+        foreach ($records as $record) {
+            $data[$record->day] += $record->num;
+        }
         return $this->successData([
-            'ad' => $ad,
-            'labels' => $labels,
-            'dataset' => $dataset,
+            'labels' => array_keys($data),
+            'dataset' => array_values($data),
         ]);
     }
 }

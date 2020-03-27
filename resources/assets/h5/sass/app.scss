@@ -115,12 +115,13 @@ body {
     width: 50%;
     height: 199px;
     float: left;
-    padding-left: 15px;
+    padding-left: 8px;
     line-height: 1;
     margin-bottom: 15px;
 
     &.first {
       padding-left: 0;
+      padding-right: 7px;
     }
 
     .course-thumb {
@@ -507,16 +508,16 @@ body {
 
 .course-info-box {
   width: 100%;
-  height: 156px;
-  padding: 10px;
+  height: auto;
+  padding: 15px;
   float: left;
   display: flex;
   background-color: #ffffff;
 
   .course-thumb {
-    width: 190px;
-    height: 136px;
-    padding-right: 10px;
+    width: 175px;
+    height: 120px;
+    padding-right: 15px;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -541,10 +542,15 @@ body {
       width: 100%;
       height: auto;
       float: left;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 400;
       color: rgba(102, 102, 102, 1);
-      line-height: 15px;
+      line-height: 16px;
+      overflow: hidden;
+
+      img {
+        max-width: 100%;
+      }
     }
   }
 }
@@ -601,6 +607,7 @@ body {
   background-color: #ffffff;
   padding: 15px;
   line-height: 1.2;
+  margin-bottom: 50px;
 
   p {
     margin-bottom: 0;
@@ -691,6 +698,7 @@ body {
   background: rgba(11, 118, 222, 1);
   color: #ffffff;
   text-align: center;
+  cursor: pointer;
 }
 
 .video-play-box {
@@ -736,7 +744,7 @@ body {
     width: 275px;
     height: auto;
     text-align: center;
-    padding: 20px 22px 0 22px;
+    padding: 20px 22px 10px 22px;
     border-radius: 4px;
 
     .title {
@@ -755,7 +763,7 @@ body {
       margin-bottom: 20px;
       border-radius: 23px;
       border: 1px solid rgba(229, 229, 229, 1);
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
       color: rgba(51, 51, 51, 1);
       line-height: 40px;
@@ -862,6 +870,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: rgba(255, 255, 255, 1);
+  cursor: pointer;
 
   &:focus {
     color: #ffffff;
@@ -991,6 +1000,7 @@ body {
     float: left;
 
     .payment-item {
+      display: inline-block;
       width: 108px;
       height: 72px;
       float: left;
@@ -1001,6 +1011,7 @@ body {
       margin-right: 8px;
       text-align: center;
       line-height: 72px;
+      cursor: pointer;
 
       &.active {
         border: 1px solid rgba(255, 39, 39, 1);
