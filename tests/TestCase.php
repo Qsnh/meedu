@@ -18,4 +18,11 @@ abstract class TestCase extends BaseTestCase
         $this->assertEquals($message, $responseContent['message']);
     }
 
+    public function assertResponseAjaxSuccess($response)
+    {
+        $responseContent = $response->getContent();
+        $responseContent = json_decode($responseContent, true);
+        $this->assertEquals(0, $responseContent['code']);
+    }
+
 }

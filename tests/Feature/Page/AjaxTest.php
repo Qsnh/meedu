@@ -10,6 +10,9 @@ use App\Services\Member\Models\User;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -160,5 +163,69 @@ class AjaxTest extends TestCase
         ])->seeStatusCode(200)->response;
         $this->assertResponseError($response, __('user cant use this promo code'));
     }
+
+    public function test_promoCodeCheck()
+    {
+        $promoCode = factory(PromoCode::class)->create([
+            'user_id' => 0,
+            'invite_user_reward' => 10,
+            'invited_user_reward' => 10,
+            'use_times' => 1,
+            'used_times' => 0,
+        ]);
+
+        $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
+            'promo_code' => $promoCode->code,
+        ])->seeStatusCode(200)->response;
+        $this->assertResponseAjaxSuccess($response);
+    }
+
+    public function test_changePassword()
+    {
+        $this->user->password = Hash::make('123123');
+        $this->user->save();
+
+        $this->actingAs($this->user)->post('/member/ajax/password/change', [
+            'new_password' => '123456',
+            'new_password_confirmation' => '123456',
+            'old_password' => '123123',
+        ])->seeStatusCode(200);
+    }
+
+    public function test_changePassword_with_not_correct_password()
+    {
+        $this->user->password = Hash::make('123123');
+        $this->user->save();
+
+        $this->actingAs($this->user)->post('/member/ajax/password/change', [
+            'new_password' => '123456',
+            'new_password_confirmation' => '123456',
+            'old_password' => '123456',
+        ])->response;
+        $this->assertEquals(__('old_password_error'), get_first_flash('warning'));
+    }
+
+    public function test_changePassword_with_first_reset_password()
+    {
+        $this->user->is_password_set = 0;
+        $this->user->save();
+
+        $this->actingAs($this->user)->post('/member/ajax/password/change', [
+            'new_password' => '123456',
+            'new_password_confirmation' => '123456',
+        ])->seeStatusCode(200);
+
+        $this->user->refresh();
+        $this->assertTrue(Hash::check('123456', $this->user->password));
+    }
+
+//    public function test_avatarChange()
+//    {
+//        Storage::fake('mock');
+//        config(['meedu.upload.image.disk' => 'mock']);
+//        $this->actingAs($this->user)->post('/member/ajax/avatar/change', [
+//            'file' => UploadedFile::fake()->image('file.png'),
+//        ])->seeStatusCode(200);
+//    }
 
 }
