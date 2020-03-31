@@ -152,6 +152,7 @@ class AjaxController extends BaseController
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function promoCodeCheck(Request $request)
     {

@@ -11,4 +11,11 @@ abstract class TestCase extends BaseTestCase
 
     public $baseUrl = 'http://127.0.0.1:8000';
 
+    public function assertResponseError($response, $message)
+    {
+        $responseContent = $response->getContent();
+        $responseContent = json_decode($responseContent, true);
+        $this->assertEquals($message, $responseContent['message']);
+    }
+
 }
