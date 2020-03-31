@@ -143,9 +143,15 @@ return [
         'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',
 
+        // 播放器
+        'player' => [
+            // 跑马灯
+            'enabled_bullet_secret' => 0,
+        ],
+
         // 缓存开关
         'cache' => [
-            'status' => -1,
+            'status' => 0,
             'expire' => 3600 * 10,
         ],
         // 短信频率
@@ -155,8 +161,6 @@ return [
                 'minutes' => 1,
             ]
         ],
-        // 测试手机号
-        'test' => explode(',', env('TEST_MOBILE', '')),
         // 统计代码
         'js' => '',
         // 主题
