@@ -36,7 +36,7 @@ class CourseCommentService implements CourseCommentServiceInterface
      */
     public function courseComments(int $courseId): array
     {
-        $comments = CourseComment::query()->whereCourseId($courseId)->orderBy('id')->get()->toArray();
+        $comments = CourseComment::query()->whereCourseId($courseId)->orderByDesc('id')->limit(200)->get()->toArray();
 
         return $comments;
     }
