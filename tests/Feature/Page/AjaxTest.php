@@ -7,12 +7,11 @@ namespace Tests\Feature\Page;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\User;
+use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -227,5 +226,76 @@ class AjaxTest extends TestCase
 //            'file' => UploadedFile::fake()->image('file.png'),
 //        ])->seeStatusCode(200);
 //    }
+
+    public function test_nicknameChange()
+    {
+        $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
+            'nick_name' => 'meedu123',
+        ])->seeStatusCode(200);
+
+        $this->user->refresh();
+        $this->assertEquals('meedu123', $this->user->nick_name);
+    }
+
+    public function test_nicknameChange_already_set()
+    {
+        $this->user->is_set_nickname = 1;
+        $this->user->save();
+
+        $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
+            'nick_name' => 'meedu123',
+        ]);
+        $this->assertEquals(__('current user cant set nickname'), get_first_flash('warning'));
+    }
+
+    public function test_nicknameChange_repeat()
+    {
+        factory(User::class)->create(['nick_name' => 'meedu123']);
+
+        $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
+            'nick_name' => 'meedu123',
+        ]);
+        $this->assertEquals(__('nick_name.unique'), get_first_flash('warning'));
+    }
+
+    public function test_inviteBalanceWithdraw_insufficient()
+    {
+        $response = $this->actingAs($this->user)->post('/member/ajax/inviteBalanceWithdraw', [
+            'total' => 100,
+            'channel' => [
+                'name' => '姓名',
+                'account' => '账号',
+                'username' => '账号名',
+            ]
+        ])->response;
+        $this->assertResponseError($response, __('Insufficient invite balance'));
+    }
+
+    public function test_inviteBalanceWithdraw()
+    {
+        $this->user->invite_balance = 100;
+        $this->user->save();
+
+        $response = $this->actingAs($this->user)->post('/member/ajax/inviteBalanceWithdraw', [
+            'total' => 100,
+            'channel' => [
+                'name' => '姓名',
+                'account' => '账号',
+                'username' => '账号名',
+            ]
+        ])->response;
+        $this->assertResponseAjaxSuccess($response);
+
+        $this->user->refresh();
+        $this->assertEquals(0, $this->user->invite_balance);
+    }
+
+    public function test_courseLike()
+    {
+        $course = factory(Course::class)->create();
+        $this->actingAs($this->user)->post('/member/ajax/course/like/' . $course->id)->seeStatusCode(200);
+
+        $this->assertTrue(UserLikeCourse::whereUserId($this->user->id)->whereCourseId($course->id)->exists());
+    }
 
 }
