@@ -135,7 +135,7 @@ class ConfigService implements ConfigServiceInterface
 
     public function getCacheStatus(): bool
     {
-        return config('meedu.system.cache.status') == FrontendConstant::YES;
+        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
     }
 
     public function getCacheExpire(): int

@@ -62,7 +62,7 @@ class ServiceProxy
     }
 
     /**
-     * @param string   $methodName
+     * @param string $methodName
      * @param \Closure $cacheHandler
      *
      * @return $this
