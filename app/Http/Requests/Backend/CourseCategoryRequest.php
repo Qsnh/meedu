@@ -49,7 +49,7 @@ class CourseCategoryRequest extends BaseRequest
         return [
             'sort' => $this->input('sort'),
             'name' => $this->input('name'),
-            'parent_id' => intval($this->input('parent_id', 0)),
+            'parent_id' => (int)$this->input('parent_id', 0),
             'is_show' => $this->input('is_show', 0),
         ];
     }

@@ -11,7 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Link;
+use App\Services\Other\Models\Link;
 use App\Http\Requests\Backend\LinkRequest;
 
 class LinkController extends BaseController

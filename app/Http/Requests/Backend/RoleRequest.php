@@ -47,7 +47,7 @@ class RoleRequest extends BaseRequest
             'expire_days' => $this->input('expire_days'),
             'weight' => $this->input('weight'),
             'description' => $this->input('description'),
-            'is_show' => $this->input('is_show'),
+            'is_show' => $this->input('is_show', 0),
         ];
     }
 }

@@ -11,7 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Role;
+use App\Services\Member\Models\Role;
 use App\Http\Requests\Backend\RoleRequest;
 
 class RoleController extends BaseController
