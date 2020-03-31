@@ -76,11 +76,6 @@ $requires = [
         'intro' => '安装XML扩展',
     ],
     [
-        'item' => 'ext-ZIP',
-        'status' => in_array('zip', $extensions),
-        'intro' => '安装ZIP扩展',
-    ],
-    [
         'item' => $storagePath,
         'status' => is_writable($storagePath),
         'intro' => '必须可写',
