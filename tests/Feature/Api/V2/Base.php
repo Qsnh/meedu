@@ -14,7 +14,7 @@ class Base extends TestCase
         return $this->actingAs($user, 'apiv2');
     }
 
-    protected function assertResponseError($response, $message = '')
+    public function assertResponseError($response, $message = '')
     {
         $c = $response->response->getContent();
         $c = json_decode($c, true);
@@ -22,7 +22,7 @@ class Base extends TestCase
         $message && $this->assertEquals($message, $c['message']);
     }
 
-    protected function assertResponseSuccess($response)
+    public function assertResponseSuccess($response)
     {
         $c = $response->response->getContent();
         $c = json_decode($c, true);
