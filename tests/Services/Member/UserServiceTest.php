@@ -297,12 +297,13 @@ class UserServiceTest extends TestCase
         $user1 = factory(User::class)->create();
         $promoCode = factory(PromoCode::class)->create([
             'user_id' => $user->id,
+            'invite_user_reward' => 60,
             'invited_user_reward' => 12,
         ]);
         $this->service->updateInviteUserId($user1->id, $promoCode->toArray());
 
         $user->refresh();
-        $this->assertEquals(12, $user->invite_balance);
+        $this->assertEquals(60, $user->invite_balance);
         $user1->refresh();
         $this->assertEquals($user->id, $user1->invite_user_id);
     }

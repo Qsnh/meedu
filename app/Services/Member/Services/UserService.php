@@ -382,7 +382,7 @@ class UserService implements UserServiceInterface
          * @var $userInviteBalanceService UserInviteBalanceService
          */
         $userInviteBalanceService = app()->make(UserInviteBalanceServiceInterface::class);
-        $userInviteBalanceService->createInvite($promoCode['user_id'], $promoCode['invited_user_reward']);
+        $userInviteBalanceService->createInvite($promoCode['user_id'], $promoCode['invite_user_reward']);
     }
 
     /**

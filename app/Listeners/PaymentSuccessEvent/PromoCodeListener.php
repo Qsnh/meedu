@@ -48,10 +48,8 @@ class PromoCodeListener
     }
 
     /**
-     * Handle the event.
-     *
      * @param PaymentSuccessEvent $event
-     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function handle(PaymentSuccessEvent $event)
     {
@@ -77,7 +75,7 @@ class PromoCodeListener
 
         // 修改用户上级
         $orderUser = $this->userService->find($order['user_id']);
-        if ($orderUser['invite_user_id'] == 0) {
+        if ($orderUser['invite_user_id'] === 0) {
             $this->userService->updateInviteUserId($orderUser['id'], $code);
         }
     }
