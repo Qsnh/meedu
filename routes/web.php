@@ -27,7 +27,7 @@ Route::get('/password/reset', 'Frontend\ForgotPasswordController@showPage')->nam
 Route::post('/password/reset', 'Frontend\ForgotPasswordController@handler')->middleware(['throttle:10,1', 'sms.check']);
 // Auth Ajax
 Route::group(['prefix' => 'ajax'], function () {
-    Route::post('/auth/login/password', 'Frontend\AjaxController@passwordLoin')->name('ajax.login.password');
+    Route::post('/auth/login/password', 'Frontend\AjaxController@passwordLogin')->name('ajax.login.password');
     Route::post('/auth/login/mobile', 'Frontend\AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
     Route::post('/auth/register', 'Frontend\AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
     Route::post('/auth/password/reset', 'Frontend\AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);

@@ -180,7 +180,7 @@ class AjaxController extends BaseController
      * @param LoginPasswordRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function passwordLoin(LoginPasswordRequest $request)
+    public function passwordLogin(LoginPasswordRequest $request)
     {
         [
             'mobile' => $mobile,
@@ -190,7 +190,7 @@ class AjaxController extends BaseController
         if (!$user) {
             return $this->error(__('mobile not exists or password error'));
         }
-        if ($user['is_lock'] == FrontendConstant::YES) {
+        if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));
@@ -212,7 +212,7 @@ class AjaxController extends BaseController
             // 直接注册
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
-        if ($user['is_lock'] == FrontendConstant::YES) {
+        if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));

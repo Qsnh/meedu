@@ -4,6 +4,7 @@
 namespace Tests\Feature\Page;
 
 
+use App\Events\UserLoginEvent;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\User;
@@ -11,6 +12,7 @@ use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -296,6 +298,99 @@ class AjaxTest extends TestCase
         $this->actingAs($this->user)->post('/member/ajax/course/like/' . $course->id)->seeStatusCode(200);
 
         $this->assertTrue(UserLikeCourse::whereUserId($this->user->id)->whereCourseId($course->id)->exists());
+    }
+
+    public function test_passwordLogin_with_not_correct_password()
+    {
+        $this->user->password = Hash::make('12313');
+        $this->user->save();
+
+
+        $response = $this->post('/ajax/auth/login/password', [
+            'mobile' => $this->user->mobile,
+            'password' => '123456',
+        ])->seeStatusCode(200)->response;
+        $this->assertResponseError($response, __('mobile not exists or password error'));
+    }
+
+    public function test_passwordLogin_with_lock()
+    {
+        $this->user->is_lock = 1;
+        $this->user->password = Hash::make('123123');
+        $this->user->save();
+
+
+        $response = $this->post('/ajax/auth/login/password', [
+            'mobile' => $this->user->mobile,
+            'password' => '123123',
+        ])->seeStatusCode(200)->response;
+        $this->assertResponseError($response, __('current user was locked,please contact administrator'));
+    }
+
+    public function test_passwordLogin()
+    {
+        Event::fake();
+
+        $this->user->is_lock = 0;
+        $this->user->password = Hash::make('123123');
+        $this->user->save();
+
+
+        $response = $this->post('/ajax/auth/login/password', [
+            'mobile' => $this->user->mobile,
+            'password' => '123123',
+        ])->seeStatusCode(200)->response;
+        $this->assertResponseAjaxSuccess($response);
+
+        // 触发了登录事件
+        Event::assertDispatched(UserLoginEvent::class);
+    }
+
+    public function test_mobileLogin_with_not_correct_sms()
+    {
+        session(['sms_mock' => 'mock']);
+        $this->post('/ajax/auth/login/mobile', [
+            'mobile' => '13900000000',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock123',
+        ])->seeStatusCode(302);
+        $this->assertEquals(__('mobile code error'), get_first_flash('warning'));
+    }
+
+    public function test_mobileLogin_with_mobile_not_exists()
+    {
+        session(['sms_mock' => 'mock']);
+        $this->post('/ajax/auth/login/mobile', [
+            'mobile' => '13900000000',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(200);
+
+        // 创建了用户
+        $this->assertTrue(User::whereMobile('13900000000')->exists());
+    }
+
+    public function test_mobileLogin_with_mobile_exists()
+    {
+        session(['sms_mock' => 'mock']);
+        $this->post('/ajax/auth/login/mobile', [
+            'mobile' => $this->user->mobile,
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(200);
+    }
+
+    public function test_mobileLogin_with_user_lock()
+    {
+        $this->user->is_lock = 1;
+        $this->user->save();
+
+        session(['sms_mock' => 'mock']);
+        $this->post('/ajax/auth/login/mobile', [
+            'mobile' => $this->user->mobile,
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(200);
     }
 
 }
