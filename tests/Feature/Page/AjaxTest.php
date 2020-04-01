@@ -393,4 +393,116 @@ class AjaxTest extends TestCase
         ])->seeStatusCode(200);
     }
 
+    public function test_register()
+    {
+        session(['sms_mock' => 'mock']);
+        $this->post('/ajax/auth/register', [
+            'nick_name' => Str::random(6),
+            'mobile' => '13988889999',
+            'password' => '123123',
+            'password_confirmation' => '123123',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(200);
+
+        $this->assertTrue(User::whereMobile('13988889999')->exists());
+    }
+
+    public function test_register_with_exists_mobile()
+    {
+        session(['sms_mock' => 'mock']);
+        $response = $this->post('/ajax/auth/register', [
+            'nick_name' => Str::random(6),
+            'mobile' => $this->user->mobile,
+            'password' => '123123',
+            'password_confirmation' => '123123',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->response;
+        $this->assertResponseError($response, __('mobile.unique'));
+    }
+
+    public function test_register_with_exists_nickname()
+    {
+        $this->user->nick_name = '我是昵称';
+        $this->user->save();
+
+        session(['sms_mock' => 'mock']);
+        $response = $this->post('/ajax/auth/register', [
+            'nick_name' => '我是昵称',
+            'mobile' => '13877779999',
+            'password' => '123123',
+            'password_confirmation' => '123123',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->response;
+        $this->assertResponseError($response, __('nick_name.unique'));
+    }
+
+    public function test_passwordReset()
+    {
+        $this->user->password = Hash::make('123456');
+        $this->user->save();
+
+        session(['sms_mock' => 'mock']);
+        $response = $this->post('/ajax/auth/password/reset', [
+            'mobile' => $this->user->mobile,
+            'password' => '123123',
+            'password_confirmation' => '123123',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->response;
+        $this->assertResponseAjaxSuccess($response);
+
+        $this->user->refresh();
+        $this->assertTrue(Hash::check('123123', $this->user->password));
+    }
+
+    public function test_mobileBind()
+    {
+        $this->user->mobile = '234567';
+        $this->user->save();
+
+        session(['sms_mock' => 'mock']);
+        $response = $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+            'mobile' => '13899990000',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->response;
+        $this->assertResponseAjaxSuccess($response);
+
+        $this->user->refresh();
+        $this->assertEquals('13899990000', $this->user->mobile);
+    }
+
+    public function test_mobileBind_with_binded()
+    {
+        $this->user->mobile = '13899990001';
+        $this->user->save();
+
+        session(['sms_mock' => 'mock']);
+        $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+            'mobile' => '13899990000',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(302);
+        $this->assertEquals(__('cant bind mobile'), get_first_flash('warning'));
+    }
+
+    public function test_mobileBind_with_mobile_exsits()
+    {
+        $this->user->mobile = '3434';
+        $this->user->save();
+
+        factory(User::class)->create(['mobile' => '13666667777']);
+
+        session(['sms_mock' => 'mock']);
+        $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+            'mobile' => '13666667777',
+            'sms_captcha_key' => 'mock',
+            'sms_captcha' => 'mock',
+        ])->seeStatusCode(302);
+        $this->assertEquals(__('mobile has exists'), get_first_flash('warning'));
+    }
+
 }
