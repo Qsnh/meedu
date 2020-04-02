@@ -20,7 +20,9 @@
         "useH5Prism": true,
         "vid": "{{$video['aliyun_video_id']}}",
         "playauth": "{{aliyun_play_auth($video)}}",
+        @if((int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
         "encryptType": 1,
+        @endif
         components: [
                 @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
             {

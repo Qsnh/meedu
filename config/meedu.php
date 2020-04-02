@@ -147,6 +147,8 @@ return [
         'player' => [
             // 跑马灯
             'enabled_bullet_secret' => 0,
+            // 阿里云私密播放
+            'enabled_aliyun_private' => 0,
         ],
 
         // 缓存开关
