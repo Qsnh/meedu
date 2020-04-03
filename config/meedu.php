@@ -7,8 +7,8 @@ return [
 
     // 会员配置
     'member' => [
-        'is_active_default' => \App\User::ACTIVE_NO,
-        'is_lock_default' => \App\User::LOCK_NO,
+        'is_active_default' => 1,
+        'is_lock_default' => 0,
 
         // 用户协议
         'protocol' => '',
@@ -143,9 +143,17 @@ return [
         'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',
 
+        // 播放器
+        'player' => [
+            // 跑马灯
+            'enabled_bullet_secret' => 0,
+            // 阿里云私密播放
+            'enabled_aliyun_private' => 0,
+        ],
+
         // 缓存开关
         'cache' => [
-            'status' => -1,
+            'status' => 0,
             'expire' => 3600 * 10,
         ],
         // 短信频率
@@ -155,8 +163,6 @@ return [
                 'minutes' => 1,
             ]
         ],
-        // 测试手机号
-        'test' => explode(',', env('TEST_MOBILE', '')),
         // 统计代码
         'js' => '',
         // 主题
@@ -188,7 +194,7 @@ return [
 
     // MeEduCloud
     'meeducloud' => [
-        'domain' => env('MEEDUCLOUD_DOMAIN', 'meedu.vip'),
+        'domain' => env('MEEDUCLOUD_DOMAIN'),
         'user_id' => env('MEEDUCLOUD_USER_ID'),
         'password' => env('MEEDUCLOUD_PASSWORD'),
     ],

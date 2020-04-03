@@ -75,7 +75,7 @@ class InviteUserRewardListener
             // 未设置抽成
             return;
         }
-        $drawTotal = intval($event->order['charge'] * $perOrderDraw);
+        $drawTotal = (int)($event->order['charge'] * $perOrderDraw);
         if (!$drawTotal) {
             // 抽成少于一块钱
             return;

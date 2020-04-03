@@ -50,14 +50,6 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * @return string
-     */
-    public function getDefaultStorageDisk(): string
-    {
-        return config('filesystems.default');
-    }
-
-    /**
      * @return int
      */
     public function getCourseListPageSize(): int
@@ -71,14 +63,6 @@ class ConfigService implements ConfigServiceInterface
     public function getSeoCourseListPage(): array
     {
         return config('meedu.seo.course_list');
-    }
-
-    /**
-     * @return array
-     */
-    public function getSeoVideoListPage(): array
-    {
-        return config('meedu.seo.video_list');
     }
 
     /**
@@ -135,17 +119,12 @@ class ConfigService implements ConfigServiceInterface
 
     public function getCacheStatus(): bool
     {
-        return config('meedu.system.cache.status') == FrontendConstant::YES;
+        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
     }
 
     public function getCacheExpire(): int
     {
         return config('meedu.system.cache.expire');
-    }
-
-    public function getSmsLimiter(): array
-    {
-        return config('meedu.system.limiter.sms');
     }
 
     public function getImageStorageDisk(): string

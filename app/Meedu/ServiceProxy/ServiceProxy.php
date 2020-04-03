@@ -62,7 +62,7 @@ class ServiceProxy
     }
 
     /**
-     * @param string   $methodName
+     * @param string $methodName
      * @param \Closure $cacheHandler
      *
      * @return $this
@@ -103,9 +103,7 @@ class ServiceProxy
         // 限流
         $this->limitHandler($name, $arguments);
         // 缓存
-        $response = $this->cacheHandler($name, $arguments);
-
-        return $response;
+        return $this->cacheHandler($name, $arguments);
     }
 
     /**
@@ -167,8 +165,8 @@ class ServiceProxy
     /**
      * @param $name
      * @param $args
-     *
      * @throws SystemException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function limitHandler($name, $args)
     {

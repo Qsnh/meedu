@@ -138,6 +138,8 @@ class CourseController extends FrontendController
         $course = $this->courseService->find($id);
         $chapters = $this->courseService->chapters($course['id']);
         $videos = $this->videoService->courseVideos($course['id']);
+
+        // 课程评论
         $comments = $this->courseCommentService->courseComments($course['id']);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');

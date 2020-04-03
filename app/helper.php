@@ -27,7 +27,7 @@ if (!function_exists('get_first_flash')) {
      */
     function get_first_flash($level)
     {
-        if ($level == 'error' && session('errors') && session('errors')->any()) {
+        if ($level === 'error' && session('errors') && session('errors')->any()) {
             return session('errors')->all()[0];
         }
         if (!session()->has($level)) {
@@ -45,10 +45,7 @@ if (!function_exists('menu_active')) {
      */
     function menu_active($routeName)
     {
-        if (!is_array($routeName)) {
-            return request()->route()->getName() == $routeName ? 'active' : '';
-        }
-        return in_array(request()->route()->getName(), $routeName) ? 'active' : '';
+        return request()->routeIs($routeName) ? 'active' : '';
     }
 }
 
@@ -166,9 +163,7 @@ if (!function_exists('aliyun_sdk_client')) {
             config('meedu.upload.video.aliyun.access_key_id', ''),
             config('meedu.upload.video.aliyun.access_key_secret', '')
         );
-        $client = new \DefaultAcsClient($profile);
-
-        return $client;
+        return new \DefaultAcsClient($profile);
     }
 }
 
@@ -226,7 +221,7 @@ if (!function_exists('duration_humans')) {
         $second = $duration % 60;
         if ($minute >= 60) {
             $hours = intdiv($minute, 60);
-            $minute = $minute % 60;
+            $minute %= 60;
 
             return sprintf('%02d:%02d:%02d', $hours, $minute, $second);
         }
@@ -279,7 +274,7 @@ if (!function_exists('get_payments')) {
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $payments = collect($configService->getPayments())->filter(function ($payment) use ($scene) {
-            $enabled = $payment['enabled'] ?? false;
+            $enabled = (int)$payment['enabled'] === 1;
             $isSet = $payment[$scene] ?? false;
 
             return $enabled && $isSet;
@@ -297,7 +292,7 @@ if (!function_exists('get_at_users')) {
     function get_at_users(string $content): array
     {
         preg_match_all('/@(.*?)\s{1}/', $content, $result);
-        if (count($result[1] ?? []) == 0) {
+        if (count($result[1] ?? []) === 0) {
             return [];
         }
         return $result[1];
@@ -330,6 +325,7 @@ if (!function_exists('random_number')) {
      * @param $prefix
      * @param $length
      * @return string
+     * @throws Exception
      */
     function random_number($prefix, $length): string
     {

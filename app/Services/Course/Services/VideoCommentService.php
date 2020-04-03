@@ -32,7 +32,7 @@ class VideoCommentService implements VideoCommentServiceInterface
      */
     public function videoComments(int $courseId): array
     {
-        $comments = VideoComment::whereVideoId($courseId)->orderBy('id')->get()->toArray();
+        $comments = VideoComment::whereVideoId($courseId)->orderByDesc('id')->limit(200)->get()->toArray();
 
         return $comments;
     }

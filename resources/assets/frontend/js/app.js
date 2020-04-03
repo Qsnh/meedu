@@ -414,10 +414,25 @@ $(function () {
             if (res.code !== 0) {
                 flashError(res.message)
             } else {
-                flashSuccess('评论成功');
-                setTimeout(function () {
-                    window.location.reload();
-                }, 800);
+                let data = res.data;
+                let html = `
+<div class="comment-list-item">
+                                <div class="comment-user-avatar">
+                                    <img src="${data.user.avatar}" width="70" height="70">
+                                </div>
+                                <div class="comment-content-box">
+                                    <div class="comment-user-nickname">${data.user.nick_name}</div>
+                                    <div class="comment-content">
+                                    ${data.content}
+                                    </div>
+                                    <div class="comment-info">
+                                        <span class="comment-createAt">${data.created_at}</span>
+                                    </div>
+                                </div>
+                            </div>
+                    `;
+                $(`textarea[name=${input}]`).val('');
+                $('.comment-list-box').prepend(html);
             }
         }, 'json');
     }).on('click', '.payment-item', function () {

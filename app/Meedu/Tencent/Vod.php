@@ -23,9 +23,9 @@ class Vod
     }
 
     /**
-     * 获取上传签名.
-     *
+     * 获取上传签名
      * @return string
+     * @throws \Exception
      */
     public function getUploadSignature()
     {
@@ -37,7 +37,7 @@ class Vod
             'random' => random_int(0, 100000),
         ];
         $queryString = http_build_query($data);
-        $sign = base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true).$queryString);
+        $sign = base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true) . $queryString);
 
         return $sign;
     }

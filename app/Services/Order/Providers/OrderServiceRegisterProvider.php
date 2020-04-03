@@ -13,10 +13,8 @@ namespace App\Services\Order\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\Order\Services\OrderService;
-use App\Services\Other\Services\SliderService;
 use App\Services\Order\Services\PromoCodeService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class OrderServiceRegisterProvider extends ServiceProvider
@@ -25,6 +23,5 @@ class OrderServiceRegisterProvider extends ServiceProvider
     {
         $this->app->instance(OrderServiceInterface::class, $this->app->make(OrderService::class));
         $this->app->instance(PromoCodeServiceInterface::class, $this->app->make(PromoCodeService::class));
-        $this->app->instance(SliderServiceInterface::class, $this->app->make(SliderService::class));
     }
 }

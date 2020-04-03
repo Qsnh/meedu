@@ -30,11 +30,15 @@ class PromoCodeRequest extends BaseRequest
      */
     public function rules()
     {
-        return [
-            'code' => 'required|unique:promo_codes',
+        $rules = [
+            'code' => 'required',
             'invited_user_reward' => 'required',
             'use_times' => 'required',
         ];
+
+        $this->isMethod('post') && $rules['code'] .= '|unique:promo_codes';
+
+        return $rules;
     }
 
     public function messages()
@@ -47,13 +51,14 @@ class PromoCodeRequest extends BaseRequest
 
     public function filldata()
     {
-        return [
+        $data = [
             'user_id' => 0,
-            'code' => $this->post('code'),
             'expired_at' => $this->post('expired_at', null),
-            'invite_user_reward' => intval($this->post('invite_user_reward', 0)),
-            'invited_user_reward' => $this->post('invited_user_reward'),
-            'use_times' => $this->post('use_times'),
+            'invite_user_reward' => (int)$this->post('invite_user_reward', 0),
+            'invited_user_reward' => (int)$this->post('invited_user_reward', 0),
+            'use_times' => (int)$this->post('use_times', 0),
         ];
+        $this->isMethod('post') && $data['code'] = $this->input('code');
+        return $data;
     }
 }

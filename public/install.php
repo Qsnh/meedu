@@ -22,6 +22,8 @@ $extensions = get_loaded_extensions();
 $disabledFunctions = explode(',', ini_get('disable_functions'));
 $storagePath = str_replace('public', 'storage', __DIR__);
 $bootstrapPath = str_replace('public', 'bootstrap', __DIR__);
+$addonsPath = str_replace('public', 'addons', __DIR__);
+$resourcesPath = str_replace('public', 'resources', __DIR__);
 $requires = [
     [
         'item' => PHP_VERSION,
@@ -74,13 +76,18 @@ $requires = [
         'intro' => '安装XML扩展',
     ],
     [
-        'item' => 'ext-ZIP',
-        'status' => in_array('zip', $extensions),
-        'intro' => '安装ZIP扩展',
-    ],
-    [
         'item' => $storagePath,
         'status' => is_writable($storagePath),
+        'intro' => '必须可写',
+    ],
+    [
+        'item' => $addonsPath,
+        'status' => is_writable($addonsPath),
+        'intro' => '必须可写',
+    ],
+    [
+        'item' => $resourcesPath,
+        'status' => is_writable($resourcesPath),
         'intro' => '必须可写',
     ],
     [

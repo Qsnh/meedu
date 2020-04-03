@@ -97,9 +97,13 @@ class VideoController extends FrontendController
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
         $this->videoService->viewNumInc($video['id']);
+
+        // 视频评论
         $comments = $this->videoCommentService->videoComments($video['id']);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = array_column($commentUsers, null, 'id');
+
+        // 课程章节
         $chapters = $this->courseService->chapters($video['course_id']);
         $videos = $this->videoService->courseVideos($video['course_id']);
         $canSeeVideo = false;
