@@ -26,7 +26,7 @@ class CheckSmsCodeMiddleware
     public function handle($request, Closure $next)
     {
         $sessionKey = 'sms_' . $request->post('sms_captcha_key', '');
-        $captcha = session($sessionKey);
+        $captcha = (string)session($sessionKey);
         if (!$captcha || $captcha !== $request->post('sms_captcha', '')) {
             if ($request->wantsJson()) {
                 return response()->json([
