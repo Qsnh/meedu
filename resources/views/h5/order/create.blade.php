@@ -15,7 +15,7 @@
     <form action="" method="post" class="create-order-form">
         @csrf
         <input type="hidden" name="goods_id" value="{{$goods['id']}}">
-        <div class="box">
+        <div class="box" style="margin-bottom: 110px;">
             <div class="page-title">订阅信息</div>
             <div class="goods-info-box">
                 <div class="goods-thumb">
@@ -65,7 +65,7 @@
                 <span class="total-price" data-total="{{$goods['charge']}}">{{$goods['charge']}}</span>
             </div>
         </div>
-        <a href="javascript:void(0)" class="pay-button">
+        <a href="javascript:void(0)" class="pay-button focus-c-white">
             立即支付
         </a>
     </div>

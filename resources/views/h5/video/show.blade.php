@@ -16,7 +16,7 @@
                 @endif
             @else
                 <div style="padding-top: 60px;" class="text-center">
-                    <a href="javascript:void(0)" onclick="$('.show-buy-course-model').click()" class="btn btn-primary btn-sm">请先购买</a>
+                    <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
                 </div>
             @endif
         @else
@@ -78,7 +78,7 @@
     </div>
 
     @if(!$canSeeVideo)
-        <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model">订阅课程</a>
+        <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
     @endif
 
     <div class="buy-course-model">

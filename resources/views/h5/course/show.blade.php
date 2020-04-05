@@ -61,7 +61,7 @@
     </div>
 
     @if(!$isBuy && $course['charge'] > 0)
-        <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model">订阅课程</a>
+        <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
     @endif
 
     <div class="buy-course-model">

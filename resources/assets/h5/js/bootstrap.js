@@ -1,9 +1,5 @@
 import swal from 'sweetalert';
 
-window.$ = window.JQuery = require('jquery');
-
-require('bootstrap');
-
 window.flashSuccess = function (message) {
     swal('成功', message, 'success');
 };

@@ -1,12 +1,12 @@
 require('./bootstrap')
 
 $(function () {
-    $('.course-menu-item').click(function () {
+    $('.course-menu-item').tap(function () {
         let page = $(this).attr('data-page');
         $('.' + page).show().siblings().hide();
         $(this).addClass('active').siblings().removeClass('active');
     });
-    $('body').on('click', '.promo-code-check-button', function () {
+    $('body').on('tap', '.promo-code-check-button', function () {
         let promoCode = $('input[name="promo_code"]').val();
         if (promoCode === '') {
             return;
@@ -33,7 +33,7 @@ $(function () {
                 $('input[name="promo_code_id"]').val('');
             }
         }, 'json');
-    }).on('click', '.captcha', function () {
+    }).on('tap', '.captcha', function () {
         let src = $(this).attr('src');
         if (src.indexOf('?') !== -1) {
             src = src + "&1";
@@ -42,7 +42,7 @@ $(function () {
         }
         $(this).attr('src', src);
         $('input[name="captcha"]').val('')
-    }).on('click', '.send-sms-captcha', function () {
+    }).on('tap', '.send-sms-captcha', function () {
 
         const SMS_CYCLE_TIME = 120;
         let SMS_CURRENT_TIME = 0;
@@ -64,7 +64,7 @@ $(function () {
             if (res.code !== 0) {
                 $(this).attr('disabled', false);
                 flashError(res.message);
-                $('.captcha').click();
+                $('.captcha').tap();
                 return;
             }
 
@@ -82,17 +82,17 @@ $(function () {
             }, 1000);
 
         }, 'json');
-    }).on('click', '.show-buy-course-model', function () {
+    }).on('tap', '.show-buy-course-model', function () {
         $('.buy-course-model').show();
-    }).on('click', '.buy-course-model .close', function () {
+    }).on('tap', '.buy-course-model .close', function () {
         $('.buy-course-model').hide();
-    }).on('click', '.role-item', function () {
+    }).on('tap', '.role-item', function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('.role-subscribe-button').attr('href', $(this).attr('data-url'));
-    }).on('click', '.payment-item', function () {
+    }).on('tap', '.payment-item', function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('input[name="payment_sign"]').val($(this).attr('data-payment'));
-    }).on('click', '.pay-button', function () {
+    }).on('tap', '.pay-button', function () {
         $('.create-order-form').submit();
     }).on('submit', '.create-order-form', function () {
         let paymentSign = $('input[name="payment_sign"]').val();

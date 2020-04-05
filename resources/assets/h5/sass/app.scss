@@ -25,6 +25,12 @@ body {
   background-color: rgba(248, 250, 251, 1);;
 }
 
+.focus-c-white {
+  &:focus, &:hover {
+    color: #ffffff;
+  }
+}
+
 .top-header {
   position: fixed;
   top: 0;
@@ -246,7 +252,7 @@ body {
   .title {
     position: absolute;
     z-index: 11;
-    top: 20px;
+    top: 16px;
     left: 50%;
     margin-left: -60px;
     width: 120px;
@@ -563,12 +569,12 @@ body {
   background-color: #ffffff;
 
   .menu-item {
-    width: 56px;
+    width: auto;
     height: 14px;
     float: left;
     font-size: 14px;
     font-weight: 400;
-    line-height: 14px;
+    line-height: 1;
     margin-right: 50px;
 
     a {

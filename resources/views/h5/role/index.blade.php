@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <a href="javascript:void(0)" class="role-subscribe-button">
+    <a href="javascript:void(0)" class="role-subscribe-button focus-c-white">
         立即支付
     </a>
 
