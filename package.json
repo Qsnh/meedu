@@ -20,6 +20,7 @@
     "vue": "^2.5.7"
   },
   "dependencies": {
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "zepto-webpack": "^1.2.1"
   }
 }
