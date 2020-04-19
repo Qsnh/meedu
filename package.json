@@ -21,6 +21,10 @@
   },
   "dependencies": {
     "sweetalert": "^2.1.2",
+    "xgplayer": "^2.6.15",
+    "xgplayer-hls": "^2.3.2",
+    "xgplayer-hls.js": "^2.1.6",
+    "xgplayer-mp4": "^1.1.8",
     "zepto-webpack": "^1.2.1"
   }
 }

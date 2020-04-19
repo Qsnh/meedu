@@ -9,10 +9,8 @@
             @if($canSeeVideo)
                 @if($video['aliyun_video_id'])
                     @include('h5.components.player.aliyun', ['video' => $video])
-                @elseif($video['tencent_video_id'])
-                    @include('h5.components.player.tencent', ['video' => $video])
                 @else
-                    @include('h5.components.player.aliyunSimple', ['video' => $video])
+                    @include('h5.components.player.xg', ['video' => $video])
                 @endif
             @else
                 <div style="padding-top: 60px;" class="text-center">
