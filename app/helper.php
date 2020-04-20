@@ -460,3 +460,13 @@ if (!function_exists('get_play_url')) {
         return collect($playUrl);
     }
 }
+
+if (!function_exists('is_dev')) {
+    /**
+     * @return bool|string
+     */
+    function is_dev()
+    {
+        return app()->environment(['dev', 'local']);
+    }
+}
