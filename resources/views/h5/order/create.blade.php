@@ -45,9 +45,10 @@
                 <div class="page-title">支付方式</div>
                 <div class="payments-item">
                     <input type="hidden" name="payment_scene" value="{{$scene}}">
-                    <input type="hidden" name="payment_sign" value="">
+                    <input type="hidden" name="payment_sign" value="{{$payments ? $payments->first()['sign'] : ''}}">
                     @foreach($payments as $payment)
-                        <a href="javascript:void(0)" class="payment-item" data-payment="{{$payment['sign']}}">
+                        <a href="javascript:void(0)" class="payment-item {{$loop->first ? 'active' : ''}}"
+                           data-payment="{{$payment['sign']}}">
                             <img src="{{$payment['logo']}}" width="85" height="30">
                         </a>
                     @endforeach
