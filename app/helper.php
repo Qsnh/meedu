@@ -140,6 +140,7 @@ if (!function_exists('aliyun_play_url')) {
                     'format' => $item->Format,
                     'url' => $item->PlayURL,
                     'duration' => $item->Duration,
+                    'name' => $item->Height,
                 ];
             }
 
@@ -442,6 +443,9 @@ if (!function_exists('get_play_url')) {
         } else {
             $playUrl[] = [
                 'url' => $video['url'],
+                'format' => pathinfo($video['url'], PATHINFO_EXTENSION),
+                'name' => '',
+                'duration' => 0,
             ];
         }
 
