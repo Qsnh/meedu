@@ -6,20 +6,20 @@ function alert($message)
     exit($message);
 }
 
-if (file_exists('../storage/install.lock')) {
+if (file_exists('../storage/install.lock') || file_exists('../.env')) {
     alert('请勿重复安装');
 }
 $uri = $_SERVER['REQUEST_URI'];
-if (stripos($url, '/public/ius') !== false) {
+if (stripos($uri, '/public/ius') !== false) {
     // 网站根目录配置错啦
     alert('网站运行根目录配置错误');
 }
 
-$step = $_GET['step'] ?? 0;
+$step = (int)($_GET['step'] ?? 0);
 $isSubmit = $_POST['submit'] ?? false;
 
-$extensions = get_loaded_extensions();
-$disabledFunctions = explode(',', ini_get('disable_functions'));
+$extensions = array_flip(get_loaded_extensions());
+$disabledFunctions = array_flip(explode(',', ini_get('disable_functions')));
 $storagePath = str_replace('public', 'storage', __DIR__);
 $bootstrapPath = str_replace('public', 'bootstrap', __DIR__);
 $addonsPath = str_replace('public', 'addons', __DIR__);
@@ -27,52 +27,52 @@ $resourcesPath = str_replace('public', 'resources', __DIR__);
 $requires = [
     [
         'item' => PHP_VERSION,
-        'status' => version_compare(PHP_VERSION, '7.1.3', '>='),
+        'status' => PHP_VERSION_ID > 70103,
         'intro' => 'PHP版本>=7.1.3',
     ],
     [
         'item' => 'ext-Fileinfo',
-        'status' => in_array('fileinfo', $extensions),
+        'status' => isset($extensions['fileinfo']),
         'intro' => '安装Fileinfo扩展',
     ],
     [
         'item' => 'ext-BCMath',
-        'status' => in_array('bcmath', $extensions),
+        'status' => isset($extensions['bcmath']),
         'intro' => '安装BCMath扩展',
     ],
     [
         'item' => 'ext-Ctype',
-        'status' => in_array('ctype', $extensions),
+        'status' => isset($extensions['ctype']),
         'intro' => '安装Ctype扩展',
     ],
     [
         'item' => 'ext-Json',
-        'status' => in_array('json', $extensions),
+        'status' => isset($extensions['json']),
         'intro' => '安装Json扩展',
     ],
     [
         'item' => 'ext-Mbstring',
-        'status' => in_array('mbstring', $extensions),
+        'status' => isset($extensions['mbstring']),
         'intro' => '安装Mbstring扩展',
     ],
     [
         'item' => 'ext-OpenSSL',
-        'status' => in_array('openssl', $extensions),
+        'status' => isset($extensions['openssl']),
         'intro' => '安装OpenSSL扩展',
     ],
     [
         'item' => 'ext-PDOMysql',
-        'status' => in_array('pdo_mysql', $extensions),
+        'status' => isset($extensions['pdo_mysql']),
         'intro' => '安装PDOMysql扩展',
     ],
     [
         'item' => 'ext-Tokenizer',
-        'status' => in_array('tokenizer', $extensions),
+        'status' => isset($extensions['tokenizer']),
         'intro' => '安装Tokenizer扩展',
     ],
     [
         'item' => 'ext-XML',
-        'status' => in_array('xml', $extensions),
+        'status' => isset($extensions['xml']),
         'intro' => '安装XML扩展',
     ],
     [
@@ -97,27 +97,27 @@ $requires = [
     ],
     [
         'item' => 'passthru()',
-        'status' => !in_array('passthru', $disabledFunctions),
+        'status' => !isset($disabledFunctions['passthru']),
         'intro' => '该函数不能被禁用',
     ],
     [
         'item' => 'proc_open()',
-        'status' => !in_array('proc_open', $disabledFunctions),
+        'status' => !isset($disabledFunctions['proc_open']),
         'intro' => '该函数不能被禁用',
     ],
     [
         'item' => 'proc_get_status()',
-        'status' => !in_array('proc_get_status', $disabledFunctions),
+        'status' => !isset($disabledFunctions['proc_get_status']),
         'intro' => '该函数不能被禁用',
     ],
     [
         'item' => 'symlink()',
-        'status' => !in_array('symlink', $disabledFunctions),
+        'status' => !isset($disabledFunctions['symlink']),
         'intro' => '该函数不能被禁用',
     ],
     [
         'item' => 'putenv()',
-        'status' => !in_array('putenv', $disabledFunctions),
+        'status' => !isset($disabledFunctions['putenv']),
         'intro' => '该函数不能被禁用',
     ],
 ];
@@ -130,7 +130,7 @@ foreach ($requires as $require) {
     }
 }
 
-if ($step == 0) {
+if ($step === 0) {
     ?>
     <!doctype html>
     <html lang="en">
@@ -188,7 +188,7 @@ if ($step == 0) {
     </body>
     </html>
     <?php
-} elseif ($step == 1) {
+} elseif ($step === 1) {
     if (!$ok) {
         alert('安装环境错误');
     }
@@ -212,13 +212,16 @@ if ($step == 0) {
 
         if ($dbConnected) {
             // 数据库连接成功，写入.env文件
+            $replaceArr = [
+                '{URL}' => $url,
+                '{MYSQL_HOST}' => $dbHost,
+                '{MYSQL_PORT}' => $dbPort,
+                '{MYSQL_DATABASE}' => $dbDb,
+                '{MYSQL_USERNAME}' => $dbUser,
+                '{MYSQL_PASSWORD}' => $dbPass,
+            ];
             $envContent = file_get_contents('../.env.install');
-            $envContent = str_replace('{URL}', $url, $envContent);
-            $envContent = str_replace('{MYSQL_HOST}', $dbHost, $envContent);
-            $envContent = str_replace('{MYSQL_PORT}', $dbPort, $envContent);
-            $envContent = str_replace('{MYSQL_DATABASE}', $dbDb, $envContent);
-            $envContent = str_replace('{MYSQL_USERNAME}', $dbUser, $envContent);
-            $envContent = str_replace('{MYSQL_PASSWORD}', $dbPass, $envContent);
+            $envContent = str_replace(array_keys($replaceArr), array_values($replaceArr), $envContent);
             file_put_contents('../.env', $envContent);
 
             // 执行安装程序
@@ -318,7 +321,7 @@ if ($step == 0) {
     </body>
     </html>
     <?php
-} elseif ($step == 2) {
+} elseif ($step === 2) {
     // 安装成功
     file_put_contents('../storage/install.lock', time());
     ?>
