@@ -10,7 +10,7 @@
         defaultPlaybackRate: 1,
         pip: true,
         cssFullscreen: true,
-        url: "{{$playUrls->first()['url']}}",
+        url: "{!! $playUrls->first()['url'] !!}",
         keyShortcut: 'on',
         definitionActive: 'click'
     };

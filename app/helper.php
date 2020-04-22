@@ -432,6 +432,7 @@ if (!function_exists('get_play_url')) {
      * 获取播放地址
      * @param array $video
      * @return \Illuminate\Support\Collection
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     function get_play_url(array $video)
     {
@@ -440,6 +441,14 @@ if (!function_exists('get_play_url')) {
             $playUrl = aliyun_play_url($video['aliyun_video_id']);
         } elseif ($video['tencent_video_id']) {
             $playUrl = get_tencent_play_url($video['tencent_video_id']);
+            // 是否开启了播放key
+            if ($key = config('meedu.system.player.tencent_play_key')) {
+                $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
+                $playUrl = array_map(function ($item) use ($tencentKey) {
+                    $item['url'] = $tencentKey->url($item['url']);
+                    return $item;
+                }, $playUrl);
+            }
         } else {
             $playUrl[] = [
                 'url' => $video['url'],
