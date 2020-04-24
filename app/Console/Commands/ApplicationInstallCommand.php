@@ -92,16 +92,16 @@ class ApplicationInstallCommand extends Command
             }
 
             $password = '';
-            while ($password == '') {
+            while ($password === '') {
                 $password = $this->ask('请输入密码(默认：meedu123):', 'meedu123');
             }
 
             $passwordRepeat = '';
-            while ($passwordRepeat == '') {
+            while ($passwordRepeat === '') {
                 $passwordRepeat = $this->ask('请再输入一次(默认：meedu123):', 'meedu123');
             }
 
-            if ($passwordRepeat != $password) {
+            if ($passwordRepeat !== $password) {
                 $this->warn('两次输入密码不一致.');
 
                 return;

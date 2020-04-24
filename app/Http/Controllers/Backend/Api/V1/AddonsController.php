@@ -79,12 +79,14 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
         );
-        $addons = $mc->addons($request->input('page'), $request->input('size'));
-        $addonsData = $addons['data'];
 
-        // 读取已购买的插件
-        $buyAddons = [];
         try {
+            $addons = $mc->addons($request->input('page'), $request->input('size'));
+            $addonsData = $addons['data'];
+
+            // 读取已购买的插件
+            $buyAddons = [];
+
             $buyAddons = $mc->userAddons();
             $buyAddons = array_column($buyAddons, null, 'sign');
         } catch (\Exception $e) {

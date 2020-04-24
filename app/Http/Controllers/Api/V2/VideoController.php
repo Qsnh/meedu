@@ -37,6 +37,7 @@ use App\Services\Course\Interfaces\VideoCommentServiceInterface;
  *         @OA\Property(property="url",type="string",description="视频播放地址"),
  *         @OA\Property(property="format",type="string",description="视频格式"),
  *         @OA\Property(property="duration",type="integer",description="时长，秒"),
+ *         @OA\Property(property="name",type="string",description="码率"),
  *     ),
  * )
  */
@@ -264,25 +265,7 @@ class VideoController extends BaseController
             return $this->error(__(ApiV2Constant::VIDEO_NO_AUTH));
         }
 
-        $urls = [];
-
-        if ($video['url']) {
-            // 直链
-            $pathinfo = @pathinfo($video['url']);
-            $urls = [
-                [
-                    'format' => $pathinfo['extension'] ?? '',
-                    'url' => $video['url'],
-                    'duration' => $video['duration'],
-                ]
-            ];
-        } elseif ($video['aliyun_video_id']) {
-            // 阿里云点播
-            $urls = aliyun_play_url($video['aliyun_video_id']);
-        } elseif ($video['tencent_video_id']) {
-            // 腾讯云点播
-            $urls = get_tencent_play_url($video['tencent_video_id']);
-        }
+        $urls = get_play_url($video);
 
         if (!$urls) {
             return $this->error(__('error'));

@@ -9,10 +9,8 @@
             @if($canSeeVideo)
                 @if($video['aliyun_video_id'])
                     @include('h5.components.player.aliyun', ['video' => $video])
-                @elseif($video['tencent_video_id'])
-                    @include('h5.components.player.tencent', ['video' => $video])
                 @else
-                    @include('h5.components.player.aliyunSimple', ['video' => $video])
+                    @include('h5.components.player.xg', ['video' => $video])
                 @endif
             @else
                 <div style="padding-top: 60px;" class="text-center">
@@ -77,7 +75,7 @@
         @endif
     </div>
 
-    @if(!$canSeeVideo)
+    @if(!$canSeeVideo && $video['charge'] > 0)
         <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
     @endif
 
@@ -89,7 +87,9 @@
             <div class="title">此套课程需付费，请选择</div>
             <a href="{{route('role.index')}}" class="active">成为会员所有视频免费看</a>
             <a href="{{route('member.video.buy', [$video['id']])}}">单独购买此条视频 ￥{{$video['charge']}}</a>
-            <a href="{{route('member.course.buy', [$course['id']])}}">订阅此套课程 ￥{{$course['charge']}}</a>
+            @if($course['charge'] > 0)
+                <a href="{{route('member.course.buy', [$course['id']])}}">订阅此套课程 ￥{{$course['charge']}}</a>
+            @endif
         </div>
     </div>
 

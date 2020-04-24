@@ -112,6 +112,17 @@ class VideoController extends FrontendController
             $canSeeVideo && $this->courseService->recordUserCount(Auth::id(), $course['id']);
         }
 
+        // 播放地址
+        $playUrls = collect([]);
+        if (!$video['aliyun_video_id']) {
+            // 暂时只开启腾讯云和直连
+            $playUrls = get_play_url($video);
+            if ($playUrls->isEmpty()) {
+                flash('没有播放地址');
+                return back();
+            }
+        }
+
         $title = $video['title'];
         $keywords = $video['seo_keywords'];
         $description = $video['seo_description'];
@@ -127,7 +138,8 @@ class VideoController extends FrontendController
             'videos',
             'chapters',
             'canSeeVideo',
-            'scene'
+            'scene',
+            'playUrls'
         ));
     }
 

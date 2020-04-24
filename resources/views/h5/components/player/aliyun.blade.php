@@ -23,14 +23,18 @@
         @if((int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
         "encryptType": 1,
         @endif
-        components: [{
+        components: [
+                @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
+            {
             name: 'BulletScreenComponent',
             type: AliPlayerComponent.BulletScreenComponent,
             args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {
                 fontSize: '16px',
                 color: '#000000'
             }, 'random']
-        }]
+        }
+        @endif
+        ]
     }, function (player) {
     });
 </script>

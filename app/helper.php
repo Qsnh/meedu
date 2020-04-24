@@ -140,6 +140,7 @@ if (!function_exists('aliyun_play_url')) {
                     'format' => $item->Format,
                     'url' => $item->PlayURL,
                     'duration' => $item->Duration,
+                    'name' => $item->Height,
                 ];
             }
 
@@ -383,13 +384,28 @@ if (!function_exists('get_tencent_play_url')) {
             $client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
             $req->FileIds[] = $vid;
-            $req->Filters = ['basicInfo'];
             /**
              * @var $response \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosResponse
              */
             $response = $client->DescribeMediaInfos($req);
             if (!$response->MediaInfoSet) {
+                // 无法获取url地址
                 return [];
+            }
+            if ($response->MediaInfoSet[0]->TranscodeInfo) {
+                // 配置了转码信息
+                $urls = [];
+                foreach ($response->MediaInfoSet[0]->TranscodeInfo->TranscodeSet as $item) {
+                    $url = $item->Url;
+                    $format = pathinfo($url, PATHINFO_EXTENSION);
+                    $urls[] = [
+                        'url' => $url,
+                        'format' => $format,
+                        'Duration' => (int)$item->Duration,
+                        'name' => $item->Height,
+                    ];
+                }
+                return $urls;
             }
             /**
              * @var $mediaBasicInfo \TencentCloud\Vod\V20180717\Models\MediaBasicInfo
@@ -400,6 +416,7 @@ if (!function_exists('get_tencent_play_url')) {
                     'format' => $mediaBasicInfo->Type,
                     'url' => $mediaBasicInfo->MediaUrl,
                     'duration' => 0,
+                    'name' => '',
                 ]
             ];
         } catch (Exception $exception) {
@@ -407,5 +424,58 @@ if (!function_exists('get_tencent_play_url')) {
 
             return [];
         }
+    }
+}
+
+if (!function_exists('get_play_url')) {
+    /**
+     * 获取播放地址
+     * @param array $video
+     * @return \Illuminate\Support\Collection
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    function get_play_url(array $video)
+    {
+        $playUrl = [];
+        if ($video['aliyun_video_id']) {
+            $playUrl = aliyun_play_url($video['aliyun_video_id']);
+        } elseif ($video['tencent_video_id']) {
+            $playUrl = get_tencent_play_url($video['tencent_video_id']);
+            // 是否开启了播放key
+            if ($key = config('meedu.system.player.tencent_play_key')) {
+                $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
+                $playUrl = array_map(function ($item) use ($tencentKey) {
+                    $item['url'] = $tencentKey->url($item['url']);
+                    return $item;
+                }, $playUrl);
+            }
+        } else {
+            $playUrl[] = [
+                'url' => $video['url'],
+                'format' => pathinfo($video['url'], PATHINFO_EXTENSION),
+                'name' => '',
+                'duration' => 0,
+            ];
+        }
+
+        if (count($playUrl) > 1) {
+            // 可播放数量大于1，说明配置了转码，那么需要删除第一条数据
+            // 因为该条数据是原始的视频内容，不安全，未加密等等
+            unset($playUrl[0]);
+        }
+
+        sort($playUrl);
+
+        return collect($playUrl);
+    }
+}
+
+if (!function_exists('is_dev')) {
+    /**
+     * @return bool|string
+     */
+    function is_dev()
+    {
+        return app()->environment(['dev', 'local']);
     }
 }

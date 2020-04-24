@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Frontend;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use App\Services\Other\Services\SmsService;
 use App\Http\Requests\Frontend\SmsSendRequest;
 use App\Services\Other\Interfaces\SmsServiceInterface;
@@ -66,9 +67,7 @@ class SmsController extends FrontendController
      * @param $mobile
      * @param $sessionKey
      * @param $templateId
-     *
-     * @return array
-     *
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
      * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
@@ -76,6 +75,12 @@ class SmsController extends FrontendController
     {
         $code = random_int(1000, 10000);
         session([$sessionKey => $code]);
+
+        if (is_dev()) {
+            // 开发环境直接跳过
+            Log::info(__METHOD__, ['code' => $code]);
+            return $this->success();
+        }
 
         $this->smsService->sendCode($mobile, $code, $templateId);
 

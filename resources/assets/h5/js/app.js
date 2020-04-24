@@ -43,6 +43,9 @@ $(function () {
         $(this).attr('src', src);
         $('input[name="captcha"]').val('')
     }).on('tap', '.send-sms-captcha', function () {
+        if (window.SMS_LOCK === true) {
+            return;
+        }
 
         const SMS_CYCLE_TIME = 120;
         let SMS_CURRENT_TIME = 0;
@@ -54,7 +57,6 @@ $(function () {
             return;
         }
         let token = $('meta[name="csrf-token"]').attr('content');
-        $(this).attr('disabled', true);
         $.post('/sms/send', {
             mobile: mobile,
             captcha: imageCaptcha,
@@ -62,23 +64,25 @@ $(function () {
             _token: token
         }, res => {
             if (res.code !== 0) {
-                $(this).attr('disabled', false);
+                window.SMS_LOCK = false;
                 flashError(res.message);
                 $('.captcha').tap();
                 return;
             }
 
+            window.SMS_LOCK = true;
+
             SMS_CURRENT_TIME = SMS_CYCLE_TIME;
             var smsInterval = setInterval(() => {
                 if (SMS_CURRENT_TIME <= 1) {
                     $(this).text('发送验证码');
-                    $(this).attr('disabled', false);
                     clearInterval(smsInterval);
+                    window.SMS_LOCK = false;
                     return;
                 }
                 SMS_CURRENT_TIME = SMS_CURRENT_TIME - 1;
                 $(this).text(SMS_CURRENT_TIME + 's');
-                $(this).attr('disabled', true);
+                window.SMS_LOCK = true;
             }, 1000);
 
         }, 'json');
@@ -100,5 +104,25 @@ $(function () {
             flashWarning('请选择支付方式');
             return false;
         }
-    })
+    }).on('tap', '.mobile-login-button', function () {
+        let url = $(this).attr('data-url');
+        let mobile = $('.mobile-login-form input[name="mobile"]').val();
+        let smsCode = $('.mobile-login-form input[name="sms_captcha"]').val();
+        let smsKey = $('.mobile-login-form input[name="sms_captcha_key"]').val();
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token,
+            mobile: mobile,
+            sms_captcha: smsCode,
+            sms_captcha_key: smsKey
+        }, function (res) {
+            if (res.code !== 0) {
+                flashError(res.message);
+                $('.mobile-login-form input[name="sms_captcha"]').val('');
+                $('.captcha').tap();
+                return;
+            }
+            window.location = res.data.redirect_url;
+        }, 'json');
+    });
 });

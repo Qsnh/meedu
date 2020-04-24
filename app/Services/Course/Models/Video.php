@@ -13,8 +13,8 @@ namespace App\Services\Course\Models;
 
 class Video extends Base
 {
-    const IS_SHOW_YES = 1;
-    const IS_SHOW_NO = -1;
+    public const IS_SHOW_YES = 1;
+    public const IS_SHOW_NO = -1;
 
     protected $table = 'videos';
 

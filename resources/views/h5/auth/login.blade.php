@@ -49,7 +49,7 @@
                    class="float-right">密码登录
             </small>
         </div>
-        <form action="" method="post">
+        <form action="" class="mobile-login-form">
             @csrf
             <div class="login-form">
                 @include('h5.components.mobile', ['smsCaptchaKey' => 'mobile_login'])
@@ -58,7 +58,7 @@
                                                                              href="{{route('password.request')}}">忘记密码？</a>
                 </div>
                 <div class="form-item">
-                    <button class="btn btn-primary btn-block login-button">登录</button>
+                    <button type="button" data-url="{{route('ajax.login.mobile')}}" class="btn btn-primary btn-block login-button mobile-login-button">登录</button>
                 </div>
             </div>
         </form>
