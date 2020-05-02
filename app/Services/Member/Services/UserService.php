@@ -20,10 +20,12 @@ use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Events\UserVideoWatchedEvent;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
@@ -471,5 +473,53 @@ class UserService implements UserServiceInterface
         $list = $query->get()->toArray();
 
         return compact('list', 'total');
+    }
+
+    /**
+     * 用户视频观看记录
+     *
+     * @param int $userId
+     * @param int $courseId
+     * @param int $videoId
+     * @param int $duration
+     * @param bool $isWatched
+     */
+    public function recordUserVideoWatch(int $userId, int $courseId, int $videoId, int $duration, bool $isWatched): void
+    {
+        $record = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->where('video_id', $videoId)->first();
+        if ($record) {
+            if ($record->watched_at === null && $record->watch_seconds < $duration) {
+                // 如果有记录，那么在没有看完的情况下继续记录
+                $data = ['watch_seconds' => $duration];
+                $isWatched && $data['watched_at'] = Carbon::now();
+                $record->fill($data)->save();
+
+                // 视频看完事件
+                $isWatched && event(new UserVideoWatchedEvent($userId, $videoId));
+            }
+            return;
+        }
+
+        UserVideoWatchRecord::create([
+            'user_id' => $userId,
+            'course_id' => $courseId,
+            'video_id' => $videoId,
+            'watch_seconds' => $duration,
+            'watched_at' => $isWatched ? Carbon::now() : null,
+        ]);
+
+        $isWatched && event(new UserVideoWatchedEvent($userId, $videoId));
+    }
+
+    /**
+     * 获取用户视频观看记录
+     * @param int $userId
+     * @param int $courseId
+     * @return array
+     */
+    public function getUserVideoWatchRecords(int $userId, int $courseId): array
+    {
+        $records = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->get();
+        return $records->toArray();
     }
 }

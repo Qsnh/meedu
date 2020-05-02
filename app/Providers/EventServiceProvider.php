@@ -58,6 +58,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserInviteBalanceWithdrawHandledEvent\NotifyListener',
             'App\Listeners\UserInviteBalanceWithdrawHandledEvent\RefundBalanceListener',
         ],
+        'App\Events\UserVideoWatchedEvent' => [
+            'App\Listeners\UserVideoWatchedEvent\UserVideoWatchedListener',
+        ],
+        'App\Events\UserCourseWatchedEvent' => [
+            'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedListener',
+        ],
     ];
 
     /**

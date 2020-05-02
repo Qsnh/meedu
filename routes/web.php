@@ -110,6 +110,7 @@ Route::group([
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
+        Route::post('/video/{id}/watch/record', 'AjaxController@recordVideo')->name('ajax.video.watch.record');
         Route::post('/promoCodeCheck', 'AjaxController@promoCodeCheck')->name('ajax.promo_code.check');
 
         Route::post('/password/change', 'AjaxController@changePassword')->name('ajax.password.change');

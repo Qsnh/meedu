@@ -356,4 +356,18 @@ class AjaxController extends BaseController
         $result = $this->userService->likeACourse(Auth::id(), $id);
         return $this->data($result);
     }
+
+    /**
+     * @param Request $request
+     * @param $videoId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function recordVideo(Request $request, $videoId)
+    {
+        $duration = (int)$request->input('duration', 0);
+        $video = $this->videoService->find($videoId);
+        $isWatched = $video['duration'] <= $duration;
+        $this->userService->recordUserVideoWatch(Auth::id(), $video['course_id'], $videoId, $duration, $isWatched);
+        return $this->success();
+    }
 }

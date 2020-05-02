@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Services;
 
+use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
@@ -191,6 +192,21 @@ class CourseService implements CourseServiceInterface
         }
         CourseUserRecord::create(['user_id' => $userId, 'course_id' => $courseId]);
         Course::whereId($courseId)->increment('user_count', 1);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $courseId
+     */
+    public function setUserWatchedCourse(int $userId, int $courseId): void
+    {
+        CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->whereNull('watched_at')->update([
+                'is_watched' => 1,
+                'watched_at' => Carbon::now(),
+            ]);
     }
 
     /**

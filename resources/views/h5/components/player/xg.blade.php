@@ -23,5 +23,23 @@
 
     @if($playUrls->count() > 1)
     XGPlayer.emit('resourceReady', @json($playUrls));
-    @endif
+            @endif
+
+    var PREV_SECONDS = 0;
+    var recordHandle = function () {
+        var s = parseInt(XGPlayer.currentTime);
+        if (s > PREV_SECONDS) {
+            PREV_SECONDS = s;
+            $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
+                _token: '{{csrf_token()}}',
+                duration: s
+            }, function (res) {
+                console.log(res);
+            }, 'json');
+        }
+    };
+    setInterval('recordHandle()', 10000);
+    XGPlayer.on('ended', function () {
+        recordHandle();
+    });
 </script>

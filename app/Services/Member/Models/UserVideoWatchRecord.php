@@ -9,18 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Course\Models;
+namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourseUserRecord extends Model
+class UserVideoWatchRecord extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'course_user_records';
+    protected $table = 'user_video_watch_records';
 
     protected $fillable = [
-        'course_id', 'user_id', 'is_watched', 'watched_at',
+        'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at',
     ];
 }
