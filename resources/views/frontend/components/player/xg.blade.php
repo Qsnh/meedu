@@ -40,5 +40,7 @@
     setInterval('recordHandle()', 10000);
     XGPlayer.on('ended', function () {
         recordHandle();
+        $('#meedu-player').hide();
+        $('.need-login').show();
     });
 </script>

@@ -41,5 +41,7 @@
     setInterval('recordHandle()', 10000);
     XGPlayer.on('ended', function () {
         recordHandle();
+        $('#meedu-player').hide();
+        $('.watched-over').show();
     });
 </script>

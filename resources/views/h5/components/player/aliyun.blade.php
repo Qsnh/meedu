@@ -51,5 +51,7 @@
     setInterval('recordHandle()', 10000);
     ALI_PLAYER.on('ended', function () {
         recordHandle();
+        $('#xiaoteng-player').hide();
+        $('.watched-over').show();
     });
 </script>

@@ -12,6 +12,16 @@
                 @else
                     @include('h5.components.player.xg', ['video' => $video])
                 @endif
+                @if($nextVideo)
+                    <div style="margin-top: 60px;display: none" class="text-center watched-over">
+                        <a class="btn btn-primary"
+                           href="{{route('video.show', [$nextVideo['course_id'], $nextVideo['id'], $nextVideo['slug']])}}">下一集</a>
+                    </div>
+                @else
+                    <div style="margin-top: 60px;display: none;" class="text-center watched-over">
+                        <span style="color: white">厉害，当前课程已全部看完！</span>
+                    </div>
+                @endif
             @else
                 <div style="padding-top: 60px;" class="text-center">
                     <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
