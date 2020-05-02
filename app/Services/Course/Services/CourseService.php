@@ -203,7 +203,8 @@ class CourseService implements CourseServiceInterface
         CourseUserRecord::query()
             ->where('user_id', $userId)
             ->where('course_id', $courseId)
-            ->whereNull('watched_at')->update([
+            ->whereNull('watched_at')
+            ->update([
                 'is_watched' => 1,
                 'watched_at' => Carbon::now(),
             ]);
