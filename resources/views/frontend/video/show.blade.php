@@ -25,7 +25,7 @@
                     @if($user)
                         @if($canSeeVideo)
                             <div class="box-shadow1">
-                                @if($video['aliyun_video_id'])
+                                @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
                                     @include('frontend.components.player.aliyun', ['video' => $video])
                                 @else
                                     @include('frontend.components.player.xg', ['video' => $video])

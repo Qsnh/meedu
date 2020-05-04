@@ -7,7 +7,7 @@
     <div class="video-play-box">
         @if($user)
             @if($canSeeVideo)
-                @if($video['aliyun_video_id'])
+                @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
                     @include('h5.components.player.aliyun', ['video' => $video])
                 @else
                     @include('h5.components.player.xg', ['video' => $video])
