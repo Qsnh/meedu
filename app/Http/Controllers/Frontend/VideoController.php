@@ -142,10 +142,13 @@ class VideoController extends FrontendController
         });
 
         // 播放地址
-        $playUrls = get_play_url($video);
-        if ($playUrls->isEmpty()) {
-            flash('没有播放地址');
-            return back();
+        $playUrls = collect([]);
+        if (!($video['aliyun_video_id'] && $this->configService->getAliyunPrivatePlayStatus())) {
+            $playUrls = get_play_url($video);
+            if ($playUrls->isEmpty()) {
+                flash('没有播放地址');
+                return back();
+            }
         }
 
         $title = $video['title'];

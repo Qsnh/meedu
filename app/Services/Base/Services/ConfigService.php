@@ -208,4 +208,12 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('tencent.wechat.mini');
     }
+
+    /**
+     * @return bool
+     */
+    public function getAliyunPrivatePlayStatus(): bool
+    {
+        return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
+    }
 }
