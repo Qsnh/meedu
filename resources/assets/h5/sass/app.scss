@@ -692,6 +692,84 @@ body {
   }
 }
 
+.course-comment {
+  display: none;
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .comment-input-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 15px 15px 0 15px;
+    background-color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .comment-list-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 60px;
+
+    .comment-list-item {
+      display: flex;
+      padding: 15px;
+      background-color: white;
+      margin-bottom: 10px;
+
+      .comment-user-avatar {
+        width: 59px;
+        height: 44px;
+        float: left;
+        padding-right: 15px;
+
+        img {
+          border-radius: 50%;
+        }
+      }
+
+      .comment-content-box {
+        flex: 1;
+
+        .comment-user-nickname {
+          width: 100%;
+          height: 20px;
+          float: left;
+          line-height: 20px;
+          font-size: 12px;
+          color: rgba(0, 0, 0, .6);
+          margin-bottom: 5px;
+        }
+
+        .comment-content {
+          width: 100%;
+          height: auto;
+          float: left;
+          color: rgba(0, 0, 0, .8);
+          margin-bottom: 10px;
+          font-size: 14px;
+          line-height: 18px;
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+
+        .comment-info {
+          width: 100%;
+          height: auto;
+          float: left;
+          color: rgba(0, 0, 0, .4);
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
 .course-info-bottom-bar {
   position: fixed;
   bottom: 0;
