@@ -3,7 +3,7 @@
 <script src="https://g.alicdn.com/de/prismplayer/2.8.1/aliplayer-h5-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="{{asset('/js/aliplayercomponents-1.0.3.min.js')}}"></script>
 <script>
-    new Aliplayer({
+    var ALI_PLAYER = new Aliplayer({
         "id": "xiaoteng-player",
         "width": "100%",
         "height": "192px",
@@ -11,11 +11,8 @@
         "isLive": false,
         "rePlay": false,
         "playsinline": true,
-        "preload": false,
+        "preload": true,
         "cover": "{{$gConfig['system']['player_thumb']}}",
-        "autoPlayDelay": 2,
-        "autoPlayDelayDisplayText": '正在加载中...',
-        "loadDataTimeout": "",
         "controlBarVisibility": "hover",
         "useH5Prism": true,
         "vid": "{{$video['aliyun_video_id']}}",
@@ -36,5 +33,25 @@
         @endif
         ]
     }, function (player) {
+    });
+
+    var PREV_SECONDS = 0;
+    var recordHandle = function () {
+        var s = parseInt(ALI_PLAYER.getCurrentTime());
+        if (s > PREV_SECONDS) {
+            PREV_SECONDS = s;
+            $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
+                _token: '{{csrf_token()}}',
+                duration: s
+            }, function (res) {
+                console.log(res);
+            }, 'json');
+        }
+    };
+    setInterval('recordHandle()', 10000);
+    ALI_PLAYER.on('ended', function () {
+        recordHandle();
+        $('#xiaoteng-player').hide();
+        $('.watched-over').show();
     });
 </script>

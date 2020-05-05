@@ -124,5 +124,49 @@ $(function () {
             }
             window.location = res.data.redirect_url;
         }, 'json');
+    }).on('tap', '.comment-button', function () {
+        let input = $(this).attr('data-input');
+        let isLogin = parseInt($(this).attr('data-login'));
+        let url = $(this).attr('data-url');
+        let loginUrl = $(this).attr('data-login-url');
+        let content = $(`textarea[name=${input}]`).val();
+        let token = $('meta[name="csrf-token"]').attr('content');
+        if (isLogin === 0) {
+            window.location = loginUrl;
+            return;
+        }
+        if (content.length < 6) {
+            flashWarning('评论内容最少6个字');
+            return;
+        }
+        $.post(url, {
+            _token: token,
+            content: content,
+        }, function (res) {
+            if (res.code !== 0) {
+                flashError(res.message);
+            } else {
+                flashSuccess('评论成功');
+                let data = res.data;
+                let html = `
+<div class="comment-list-item">
+                                <div class="comment-user-avatar">
+                                    <img src="${data.user.avatar}" width="44" height="44">
+                                </div>
+                                <div class="comment-content-box">
+                                    <div class="comment-user-nickname">${data.user.nick_name}</div>
+                                    <div class="comment-content">
+                                    ${data.content}
+                                    </div>
+                                    <div class="comment-info">
+                                        <span class="comment-createAt">${data.created_at}</span>
+                                    </div>
+                                </div>
+                            </div>
+                    `;
+                $(`textarea[name=${input}]`).val('');
+                $('.comment-list-box').prepend(html);
+            }
+        }, 'json');
     });
 });

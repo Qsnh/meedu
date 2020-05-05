@@ -6,9 +6,11 @@ namespace Tests\Feature\Page;
 
 use App\Events\UserLoginEvent;
 use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\User;
 use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
@@ -503,6 +505,66 @@ class AjaxTest extends TestCase
             'sms_captcha' => 'mock',
         ])->seeStatusCode(302);
         $this->assertEquals(__('mobile has exists'), get_first_flash('warning'));
+    }
+
+    public function test_user_video_watch_record()
+    {
+        $course = factory(Course::class)->create();
+        $video = factory(Video::class)->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 100,
+            'charge' => 0,
+        ]);
+        $video1 = factory(Video::class)->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 90,
+            'charge' => 0,
+        ]);
+
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
+            'duration' => 5,
+        ])->seeStatusCode(200);
+
+        $record = UserVideoWatchRecord::query()->where('user_id', $this->user->id)->where('video_id', $video->id)->first();
+        $this->assertNotEmpty($record);
+        $this->assertEquals(5, $record->watch_seconds);
+
+        $courseUser = CourseUserRecord::create([
+            'user_id' => $this->user->id,
+            'course_id' => $video->course_id,
+        ]);
+
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
+            'duration' => 100,
+        ])->seeStatusCode(200);
+
+        $record->refresh();
+        $this->assertEquals(100, $record->watch_seconds);
+        $this->assertNotEmpty($record->watched_at);
+
+        $courseUser->refresh();
+        $this->assertEquals(0, $courseUser->is_watched);
+        $this->assertNull($courseUser->watched_at);
+
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
+            'duration' => 80,
+        ])->seeStatusCode(200);
+
+        $courseUser->refresh();
+        $this->assertEquals(0, $courseUser->is_watched);
+        $this->assertNull($courseUser->watched_at);
+
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
+            'duration' => 90,
+        ])->seeStatusCode(200);
+
+        $courseUser->refresh();
+        $this->assertEquals(1, $courseUser->is_watched);
+        $this->assertNotNull($courseUser->watched_at);
     }
 
 }

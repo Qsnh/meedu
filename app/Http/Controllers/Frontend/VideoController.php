@@ -112,10 +112,38 @@ class VideoController extends FrontendController
             $canSeeVideo && $this->courseService->recordUserCount(Auth::id(), $course['id']);
         }
 
+        // 下一个视频
+        $nextVideo = call_user_func(function () use ($chapters, $videos, $video) {
+            $nextVideo = null;
+            $index = false;
+            $lock = false;
+            foreach ($chapters ?: [['id' => 0]] as $chapter) {
+                $chapterId = $chapter['id'];
+                $items = $videos[$chapterId] ?? [];
+                if (!$items) {
+                    continue;
+                }
+                if ($index === false && $chapterId !== $video['chapter_id']) {
+                    continue;
+                }
+                $index = true;
+                foreach ($items as $item) {
+                    if ($lock === false && $item['id'] !== $video['id']) {
+                        continue;
+                    }
+                    if ($lock === true) {
+                        $nextVideo = $item;
+                        break 2;
+                    }
+                    $lock = true;
+                }
+            }
+            return $nextVideo;
+        });
+
         // 播放地址
         $playUrls = collect([]);
-        if (!$video['aliyun_video_id']) {
-            // 暂时只开启腾讯云和直连
+        if (!($video['aliyun_video_id'] && $this->configService->getAliyunPrivatePlayStatus())) {
             $playUrls = get_play_url($video);
             if ($playUrls->isEmpty()) {
                 flash('没有播放地址');
@@ -139,7 +167,8 @@ class VideoController extends FrontendController
             'chapters',
             'canSeeVideo',
             'scene',
-            'playUrls'
+            'playUrls',
+            'nextVideo'
         ));
     }
 

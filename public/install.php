@@ -6,7 +6,7 @@ function alert($message)
     exit($message);
 }
 
-if (file_exists('../storage/install.lock') || file_exists('../.env')) {
+if (file_exists('../storage/install.lock')) {
     alert('请勿重复安装');
 }
 $uri = $_SERVER['REQUEST_URI'];
