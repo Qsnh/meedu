@@ -48,13 +48,15 @@ class ApiV2Constant
      *         @OA\Property(property="published_at",type="string",description="上线时间"),
      *         @OA\Property(property="seo_keywords",type="string",description="seo_keywords"),
      *         @OA\Property(property="seo_description",type="string",description="seo_description"),
-     *         @OA\Property(property="category_id",type="string",description="分类id"),
+     *         @OA\Property(property="category_id",type="integer",description="分类id"),
+     *         @OA\Property(property="is_rec",type="integer",description="推荐"),
+     *         @OA\Property(property="user_count",type="integer",description="订阅人数"),
      *     )
      * )
      */
     const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'category_id',
+        'seo_description', 'published_at', 'is_rec', 'user_count',
     ];
 
     /**
