@@ -16,6 +16,9 @@ class Video extends Base
     public const IS_SHOW_YES = 1;
     public const IS_SHOW_NO = -1;
 
+    public const IS_BAN_SELL_YES = 1;
+    public const IS_BAN_SELL_NO = 0;
+
     protected $table = 'videos';
 
     protected $fillable = [
@@ -24,6 +27,7 @@ class Video extends Base
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
         'chapter_id', 'duration', 'tencent_video_id',
+        'is_ban_sell',
     ];
 
     /**

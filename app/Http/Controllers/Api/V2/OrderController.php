@@ -178,6 +178,10 @@ class OrderController extends BaseController
     {
         $videoId = $request->input('video_id');
         $video = $this->videoService->find($videoId);
+        if ($video['is_ban_sell'] === ApiV2Constant::YES) {
+            flash(__('this video cannot be sold'));
+            return back();
+        }
         if ($video['charge'] === 0) {
             return $this->error(__('video cant buy'));
         }

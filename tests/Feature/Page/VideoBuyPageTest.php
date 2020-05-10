@@ -19,10 +19,25 @@ class VideoBuyPageTest extends TestCase
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'is_ban_sell' => 0,
         ]);
         $this->actingAs($user)
             ->visit(route('member.video.buy', [$video->id]))
             ->see($video->title);
+    }
+
+    public function test_member_orders_page_cannot_sold()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_ban_sell' => 1,
+        ]);
+        $this->actingAs($user)
+            ->get(route('member.video.buy', [$video->id]));
+        $this->assertTrue(session()->has('warning'));
+        $this->assertEquals(__('this video cannot be sold'), session()->get('warning')->first());
     }
 
     /**

@@ -11,9 +11,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Video;
-use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
 use App\Http\Requests\Backend\CourseVideoRequest;
 
 class CourseVideoController extends BaseController
@@ -53,6 +53,8 @@ class CourseVideoController extends BaseController
     {
         $video->fill($request->filldata())->save();
 
+        $this->hook($video->course_id);
+
         return $this->success();
     }
 
@@ -70,13 +72,26 @@ class CourseVideoController extends BaseController
         $video = Video::findOrFail($id);
         $video->fill($request->filldata())->save();
 
+        $this->hook($video->course_id);
+
         return $this->success();
     }
 
     public function destroy($id)
     {
-        Video::destroy($id);
+        $video = Video::findOrFail($id);
+        $courseId = $video->course_id;
+        $video->delete();
+
+        $this->hook($courseId);
 
         return $this->success();
+    }
+
+    protected function hook($courseId)
+    {
+        $count = Video::query()->where('course_id', $courseId)->where('charge', '>', 0)->count();
+        $isFree = $count === 0;
+        Course::query()->where('id', $courseId)->update(['is_free' => $isFree]);
     }
 }

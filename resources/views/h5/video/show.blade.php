@@ -141,7 +141,9 @@
             </div>
             <div class="title">此套课程需付费，请选择</div>
             <a href="{{route('role.index')}}" class="active">成为会员所有视频免费看</a>
-            <a href="{{route('member.video.buy', [$video['id']])}}">单独购买此条视频 ￥{{$video['charge']}}</a>
+            @if($video['is_ban_sell'] !== \App\Constant\FrontendConstant::YES)
+                <a href="{{route('member.video.buy', [$video['id']])}}">单独购买此条视频 ￥{{$video['charge']}}</a>
+            @endif
             @if($course['charge'] > 0)
                 <a href="{{route('member.course.buy', [$course['id']])}}">订阅此套课程 ￥{{$course['charge']}}</a>
             @endif
