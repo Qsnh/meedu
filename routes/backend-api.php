@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 课程评论
     Route::group(['prefix' => 'course_comment'], function () {
         Route::get('/', 'CourseCommentController@index');
-        Route::delete('/{id}', 'CourseCommentController@destroy');
+        Route::post('/delete', 'CourseCommentController@destroy');
     });
 
     // Nav
@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 视频评论
     Route::group(['prefix' => 'video_comment'], function () {
         Route::get('/', 'VideoCommentController@index');
-        Route::delete('/{id}', 'VideoCommentController@destroy');
+        Route::post('/delete', 'VideoCommentController@destroy');
     });
 
     // 管理员

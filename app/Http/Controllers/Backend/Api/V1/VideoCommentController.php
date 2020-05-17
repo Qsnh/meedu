@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\VideoComment;
 use Illuminate\Http\Request;
+use App\Models\CourseComment;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 
@@ -43,9 +44,11 @@ class VideoCommentController extends BaseController
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        VideoComment::destroy($id);
+        $ids = $request->input('ids');
+
+        VideoComment::destroy($ids);
 
         return $this->success();
     }

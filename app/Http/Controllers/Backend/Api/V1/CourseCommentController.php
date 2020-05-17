@@ -35,9 +35,11 @@ class CourseCommentController extends BaseController
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        CourseComment::destroy($id);
+        $ids = $request->input('ids');
+
+        CourseComment::destroy($ids);
 
         return $this->success();
     }
