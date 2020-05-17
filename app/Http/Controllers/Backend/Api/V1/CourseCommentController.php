@@ -11,17 +11,28 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Http\Request;
 use App\Models\CourseComment;
+use App\Services\Course\Models\Course;
 
 class CourseCommentController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
+        $courseId = $request->input('course_id');
         $comments = CourseComment::with(['user', 'course'])
+            ->when($courseId, function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
             ->orderByDesc('id')
-            ->paginate(request()->input('size', 12));
+            ->paginate($request->input('size', 12));
 
-        return $this->successData($comments);
+        $courses = Course::query()->select(['id', 'title'])->get();
+
+        return $this->successData([
+            'data' => $comments,
+            'courses' => $courses,
+        ]);
     }
 
     public function destroy($id)

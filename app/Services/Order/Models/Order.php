@@ -17,12 +17,12 @@ use App\Services\Base\Services\ConfigService;
 
 class Order extends Model
 {
-    const STATUS_UNPAY = 1;
-    const STATUS_PAYING = 5;
-    const STATUS_PAID = 9;
-    const STATUS_CANCELED = 7;
+    public const STATUS_UNPAY = 1;
+    public const STATUS_PAYING = 5;
+    public const STATUS_PAID = 9;
+    public const STATUS_CANCELED = 7;
 
-    const STATUS_TEXT = [
+    public const STATUS_TEXT = [
         self::STATUS_UNPAY => '未支付',
         self::STATUS_PAYING => '支付中',
         self::STATUS_PAID => '已支付',

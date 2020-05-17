@@ -99,4 +99,10 @@ class CourseController extends BaseController
         $users = User::select(['id', 'nick_name', 'avatar', 'mobile'])->whereIn('id', array_column($data->all(), 'user_id'))->get()->keyBy('id');
         return $this->successData(compact('data', 'users'));
     }
+
+    public function all()
+    {
+        $courses = Course::query()->select(['id', 'title'])->get();
+        return $this->successData(['data' => $courses]);
+    }
 }

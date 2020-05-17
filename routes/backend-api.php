@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // Role
     Route::group(['prefix' => 'role'], function () {
         Route::get('/', 'RoleController@index');
+        Route::get('/all', 'RoleController@all');
         Route::post('/', 'RoleController@store');
         Route::get('/{id}', 'RoleController@edit');
         Route::put('/{id}', 'RoleController@update');
@@ -134,6 +135,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 课程
     Route::group(['prefix' => 'course'], function () {
         Route::get('/', 'CourseController@index');
+        Route::get('/all', 'CourseController@all');
         Route::get('/create', 'CourseController@create');
         Route::post('/', 'CourseController@store');
         Route::get('/{id}', 'CourseController@edit');
@@ -218,7 +220,21 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     });
 
     Route::group(['prefix' => 'statistic'], function () {
+        // 每日会员注册数量统计
         Route::get('/userRegister', 'StatisticController@userRegister');
+        // 每日订单创建数量统计
         Route::get('/orderCreated', 'StatisticController@orderCreated');
+        // 每日订单支付数量统计
+        Route::get('/orderPaidCount', 'StatisticController@orderPaidCount');
+        // 每日订单已支付总额统计
+        Route::get('/orderPaidSum', 'StatisticController@orderPaidSum');
+        // 课程每日销售数量统计
+        Route::get('/courseSell', 'StatisticController@courseSell');
+        // 会员每日销售数量统计
+        Route::get('/roleSell', 'StatisticController@roleSell');
+        // 每日视频观看时长统计
+        Route::get('/videoWatchDuration', 'StatisticController@videoWatchDuration');
+        // 每日课程观看时长统计
+        Route::get('/courseWatchDuration', 'StatisticController@courseWatchDuration');
     });
 });
