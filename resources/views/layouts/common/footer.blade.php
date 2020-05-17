@@ -248,6 +248,14 @@
     function showAuthBox($box) {
         $('#auth-box-content').html($('#' + $box).html());
         $('.auth-box').show();
+        var domHeight = $('#auth-box-content').height();
+        var windowHeight = $(window).height();
+        if (windowHeight - domHeight <= 200) {
+            $('#auth-box-content').css('margin-top', '10px');
+        } else {
+            $('#auth-box-content').css('margin-top', '144px');
+        }
+        return false;
     };
 </script>
 @if($bindMobileState)
