@@ -384,6 +384,7 @@ if (!function_exists('get_tencent_play_url')) {
             $client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
             $req->FileIds[] = $vid;
+            $req->SubAppId = (int)$config['app_id'];
             /**
              * @var $response \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosResponse
              */
