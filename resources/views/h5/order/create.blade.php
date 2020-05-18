@@ -45,7 +45,7 @@
                 <div class="page-title">支付方式</div>
                 <div class="payments-item">
                     <input type="hidden" name="payment_scene" value="{{$scene}}">
-                    <input type="hidden" name="payment_sign" value="{{$payments ? $payments->first()['sign'] : ''}}">
+                    <input type="hidden" name="payment_sign" value="{{$payments->isNotEmpty() ? $payments->first()['sign'] : ''}}">
                     @foreach($payments as $payment)
                         <a href="javascript:void(0)" class="payment-item {{$loop->first ? 'active' : ''}}"
                            data-payment="{{$payment['sign']}}">
