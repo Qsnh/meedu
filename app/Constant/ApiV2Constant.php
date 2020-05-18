@@ -13,24 +13,26 @@ namespace App\Constant;
 
 class ApiV2Constant
 {
-    const PARAMS_ERROR = 'params error';
-    const PLEASE_INPUT_IMAGE_CAPTCHA = 'image_captcha.required';
-    const IMAGE_CAPTCHA_ERROR = 'image_captcha_error';
+    public const YES = 1;
+    
+    public const PARAMS_ERROR = 'params error';
+    public const PLEASE_INPUT_IMAGE_CAPTCHA = 'image_captcha.required';
+    public const IMAGE_CAPTCHA_ERROR = 'image_captcha_error';
 
-    const USER_MOBILE_NOT_EXISTS = 'mobile not exists';
-    const MOBILE_HAS_EXISTS = 'mobile has exists';
-    const MOBILE_OR_PASSWORD_ERROR = 'mobile not exists or password error';
-    const MOBILE_CODE_ERROR = 'mobile code error';
+    public const USER_MOBILE_NOT_EXISTS = 'mobile not exists';
+    public const MOBILE_HAS_EXISTS = 'mobile has exists';
+    public const MOBILE_OR_PASSWORD_ERROR = 'mobile not exists or password error';
+    public const MOBILE_CODE_ERROR = 'mobile code error';
 
-    const MEMBER_HAS_LOCKED = 'current user was locked,please contact administrator';
+    public const MEMBER_HAS_LOCKED = 'current user was locked,please contact administrator';
 
-    const VIDEO_NO_AUTH = 'please buy this video before see';
+    public const VIDEO_NO_AUTH = 'please buy this video before see';
 
-    const SMS_CODE_EXPIRE = 60;
-    const MOBILE_CODE_CACHE_KEY = 'm:%s';
+    public const SMS_CODE_EXPIRE = 60;
+    public const MOBILE_CODE_CACHE_KEY = 'm:%s';
 
-    const ERROR_CODE = 1;
-    const ERROR_NO_AUTH_CODE = 401;
+    public const ERROR_CODE = 1;
+    public const ERROR_NO_AUTH_CODE = 401;
 
     /**
      * @OpenApi\Annotations\Schemas(
@@ -48,13 +50,15 @@ class ApiV2Constant
      *         @OA\Property(property="published_at",type="string",description="上线时间"),
      *         @OA\Property(property="seo_keywords",type="string",description="seo_keywords"),
      *         @OA\Property(property="seo_description",type="string",description="seo_description"),
-     *         @OA\Property(property="category_id",type="string",description="分类id"),
+     *         @OA\Property(property="category_id",type="integer",description="分类id"),
+     *         @OA\Property(property="is_rec",type="integer",description="推荐"),
+     *         @OA\Property(property="user_count",type="integer",description="订阅人数"),
      *     )
      * )
      */
-    const MODEL_COURSE_FIELD = [
+    public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'category_id',
+        'seo_description', 'published_at', 'is_rec', 'user_count',
     ];
 
     /**
@@ -79,7 +83,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_VIDEO_FIELD = [
+    public const MODEL_VIDEO_FIELD = [
         'id', 'course_id', 'title', 'slug', 'view_num', 'short_description', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'charge', 'chapter_id', 'duration',
     ];
@@ -100,7 +104,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_MEMBER_FIELD = [
+    public const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
         'invite_balance', 'role',
     ];
@@ -118,7 +122,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_ROLE_FIELD = [
+    public const MODEL_ROLE_FIELD = [
         'id', 'name', 'charge', 'expire_days', 'desc_rows',
     ];
     /**
@@ -133,10 +137,10 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_COURSE_CHAPTER_FIELD = [
+    public const MODEL_COURSE_CHAPTER_FIELD = [
         'id', 'course_id', 'title',
     ];
-    const MODEL_COURSE_CATEGORY_FIELD = [
+    public const MODEL_COURSE_CATEGORY_FIELD = [
         'id', 'name', 'parent_id',
     ];
     /**
@@ -152,7 +156,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_COURSE_COMMENT_FIELD = [
+    public const MODEL_COURSE_COMMENT_FIELD = [
         'id', 'user_id', 'render_content', 'created_at',
     ];
     /**
@@ -168,7 +172,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_VIDEO_COMMENT_FIELD = [
+    public const MODEL_VIDEO_COMMENT_FIELD = [
         'id', 'user_id', 'render_content', 'created_at',
     ];
     /**
@@ -190,7 +194,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_ORDER_FIELD = [
+    public const MODEL_ORDER_FIELD = [
         'id', 'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
         'goods', 'created_at',
     ];
@@ -207,10 +211,10 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_ORDER_GOODS_FIELD = [
+    public const MODEL_ORDER_GOODS_FIELD = [
         'num', 'goods_text', 'charge', 'goods_type',
     ];
-    const MODEL_PROMO_CODE_FIELD = [
+    public const MODEL_PROMO_CODE_FIELD = [
         'id', 'code', 'expired_at', 'invited_user_reward',
     ];
 
@@ -226,7 +230,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_SLIDER_FIELD = [
+    public const MODEL_SLIDER_FIELD = [
         'thumb', 'url', 'sort',
     ];
 
@@ -244,7 +248,7 @@ class ApiV2Constant
      *     ),
      * )
      */
-    const MODEL_NOTIFICATON_FIELD = [
+    public const MODEL_NOTIFICATON_FIELD = [
         'id', 'notifiable_id', 'data', 'read_at', 'created_at',
     ];
 }

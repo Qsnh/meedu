@@ -82,6 +82,7 @@ class CourseVideoRequest extends BaseRequest
             'charge' => $this->input('charge', 0),
             'chapter_id' => $this->input('chapter_id', 0),
             'duration' => $this->input('duration'),
+            'is_ban_sell' => $this->input('is_ban_sell', 0),
         ];
 
         if ($this->isMethod('post')) {

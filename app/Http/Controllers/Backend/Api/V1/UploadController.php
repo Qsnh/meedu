@@ -23,7 +23,7 @@ class UploadController extends BaseController
         $disk = config('meedu.upload.image.disk');
         $path = $file->store(config('meedu.upload.image.path'), $disk);
         $url = Storage::disk($disk)->url($path);
-        $disk == BackendApiConstant::LOCAL_PUBLIC_DISK && $url = rtrim(config('app.url'), '/') . $url;
+        $disk === BackendApiConstant::LOCAL_PUBLIC_DISK && $url = rtrim(config('app.url'), '/') . $url;
 
         return ['location' => $url];
     }

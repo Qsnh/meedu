@@ -17,11 +17,14 @@ class Course extends Base
 {
     use SoftDeletes;
 
-    const SHOW_YES = 1;
-    const SHOW_NO = -1;
+    public const SHOW_YES = 1;
+    public const SHOW_NO = -1;
 
-    const REC_YES = 1;
-    const REC_NO = 0;
+    public const REC_YES = 1;
+    public const REC_NO = 0;
+
+    public const IS_FREE_YES = 1;
+    public const IS_FREE_NO = 0;
 
     protected $table = 'courses';
 
@@ -29,7 +32,7 @@ class Course extends Base
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_show', 'category_id',
-        'is_rec', 'user_count',
+        'is_rec', 'user_count', 'is_free',
     ];
 
     protected $hidden = [

@@ -184,6 +184,10 @@ class VideoController extends FrontendController
             flash(__('You have already purchased this course'), 'success');
             return back();
         }
+        if ($video['is_ban_sell'] === FrontendConstant::YES) {
+            flash(__('this video cannot be sold'));
+            return back();
+        }
         $course = $this->courseService->find($video['course_id']);
         $title = __('buy video', ['video' => $video['title']]);
         $goods = [
@@ -200,11 +204,19 @@ class VideoController extends FrontendController
         return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function buyHandler(Request $request)
     {
         $id = $request->input('goods_id');
         $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $video = $this->videoService->find($id);
+        if ($video['is_ban_sell'] === FrontendConstant::YES) {
+            flash(__('this video cannot be sold'));
+            return back();
+        }
         if ($video['charge'] <= 0) {
             flash(__('video cant buy'));
             return back();

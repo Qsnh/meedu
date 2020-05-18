@@ -22,8 +22,9 @@
                                     <img src="/images/icons/order-goods.png" width="24" height="24">
                                 @endswitch
                             @endif
-                            <span class="order-goods-title">{{ implode(',', array_column($order['goods'] ?? [], 'goods_text')) }}</span>
-
+                            <span class="order-goods-title">
+                                {{ implode(',', array_column($order['goods'] ?? [], 'goods_text')) }} [{{$order['order_id']}}]
+                            </span>
                             <span class="order-goods-status member-list-item-right">{{$order['status_text']}}</span>
                             <span class="order-goods-payment member-list-item-right">{{$order['payment_text'] ?: '暂无'}}</span>
                             <span class="order-goods-date member-list-item-right">{{ \Carbon\Carbon::parse($order['created_at'])->format('Y-m-d') }}</span>

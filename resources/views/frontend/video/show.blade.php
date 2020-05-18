@@ -202,12 +202,14 @@
                         <img src="{{asset('/images/icons/right.png')}}" width="6" height="10">
                     </a>
                 </div>
-                <div class="extra-options">
-                    <a href="{{ route('member.video.buy', [$video['id']]) }}" class="plain-text">
-                        仅订阅该视频￥{{$video['charge']}}
-                        <img src="{{asset('/images/icons/right.png')}}" width="6" height="10">
-                    </a>
-                </div>
+                @if($video['is_ban_sell'] !== \App\Constant\FrontendConstant::YES)
+                    <div class="extra-options">
+                        <a href="{{ route('member.video.buy', [$video['id']]) }}" class="plain-text">
+                            仅订阅该视频￥{{$video['charge']}}
+                            <img src="{{asset('/images/icons/right.png')}}" width="6" height="10">
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

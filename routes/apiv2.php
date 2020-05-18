@@ -34,6 +34,9 @@ Route::get('/role/{id}', 'RoleController@detail');
 // 幻灯片
 Route::get('/sliders', 'SliderController@all');
 
+// 首页推荐
+Route::get('/index/banners', 'IndexBannerController@all');
+
 // 登录
 Route::group(['prefix' => '/wechat/mini'], function () {
     Route::post('/login', 'WechatMiniController@login');

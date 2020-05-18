@@ -16,6 +16,12 @@ use App\Http\Requests\Backend\RoleRequest;
 
 class RoleController extends BaseController
 {
+    public function all()
+    {
+        $roles = Role::query()->get();
+        return $this->successData(['data' => $roles]);
+    }
+
     public function index()
     {
         $roles = Role::orderByDesc('id')->paginate(request()->input('size', 12));
