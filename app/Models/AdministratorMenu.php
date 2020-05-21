@@ -13,39 +13,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\AdministratorMenu.
- *
- * @property int                                                                      $id
- * @property int                                                                      $parent_id
- * @property int                                                                      $order         升序
- * @property int                                                                      $permission_id 权限
- * @property string                                                                   $name          链接
- * @property string                                                                   $url           地址
- * @property \Illuminate\Support\Carbon|null                                          $created_at
- * @property \Illuminate\Support\Carbon|null                                          $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AdministratorMenu[] $children
- * @property mixed                                                                    $destroy_url
- * @property mixed                                                                    $edit_url
- * @property \App\Models\AdministratorMenu                                            $parent
- * @property \App\Models\AdministratorPermission                                      $permission
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu notSuper()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu orderAsc()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu rootLevel()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu wherePermissionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AdministratorMenu whereUrl($value)
- * @mixin \Eloquent
- */
 class AdministratorMenu extends Model
 {
     protected $table = 'administrator_menus';

@@ -11,15 +11,16 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\User;
+use Carbon\Carbon;
 use App\Meedu\MeEdu;
-use App\Models\Order;
+use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 
 class DashboardController extends BaseController
 {
     public function index()
     {
-        $todayRegisterUserCount = User::todayRegisterCount();
+        $todayRegisterUserCount = User::query()->where('created_at', '>=', Carbon::now()->subDays(1)->format('Y-m-d'))->count();
         $todayPaidNum = Order::todayPaidNum();
         $todayPaidSum = Order::todayPaidSum();
 

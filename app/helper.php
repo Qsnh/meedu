@@ -93,11 +93,10 @@ if (!function_exists('markdown_to_html')) {
 
 if (!function_exists('aliyun_play_auth')) {
     /**
-     * 获取阿里云视频的播放Auth.
+     * 获取阿里云视频的播放Auth
      *
-     * @param \App\Models\Video $video
-     *
-     * @return mixed|SimpleXMLElement
+     * @param array $video
+     * @return SimpleXMLElement|string
      */
     function aliyun_play_auth($video)
     {

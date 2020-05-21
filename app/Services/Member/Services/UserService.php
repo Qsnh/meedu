@@ -531,4 +531,22 @@ class UserService implements UserServiceInterface
     {
         User::query()->where('id', $id)->update(['is_used_promo_code' => 1]);
     }
+
+    /**
+     * @param int $id
+     * @param string $ip
+     */
+    public function setRegisterIp(int $id, string $ip): void
+    {
+        User::query()->where('id', $id)->update(['register_ip' => $ip]);
+    }
+
+    /**
+     * @param int $id
+     * @param string $area
+     */
+    public function setRegisterArea(int $id, string $area): void
+    {
+        $area && User::query()->where('id', $id)->update(['register_ip' => $area]);
+    }
 }

@@ -12,8 +12,8 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
-use App\Models\AdFrom;
 use Illuminate\Http\Request;
+use App\Services\Other\Models\AdFrom;
 use App\Http\Requests\Backend\AdFromRequest;
 
 class AdFromController extends BaseController

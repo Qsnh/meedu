@@ -18,7 +18,7 @@ $factory->define(\App\Services\Course\Models\Course::class, function (Faker $fak
         'seo_keywords' => $faker->title,
         'seo_description' => $faker->title,
         'published_at' => date('Y-m-d H:i:s'),
-        'is_show' => $faker->randomElement([\App\Models\Course::SHOW_NO, \App\Models\Course::SHOW_YES]),
-        'is_rec' => $faker->randomElement([\App\Models\Course::REC_YES, \App\Models\Course::REC_NO]),
+        'is_show' => $faker->randomElement([\App\Services\Course\Models\Course::SHOW_NO, \App\Services\Course\Models\Course::SHOW_YES]),
+        'is_rec' => $faker->randomElement([\App\Services\Course\Models\Course::REC_YES, \App\Services\Course\Models\Course::REC_NO]),
     ];
 });

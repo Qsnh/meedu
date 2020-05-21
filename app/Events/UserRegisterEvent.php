@@ -13,10 +13,11 @@ namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class UserRegisterEvent
+class UserRegisterEvent implements ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

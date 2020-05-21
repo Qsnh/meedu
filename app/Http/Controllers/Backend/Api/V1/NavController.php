@@ -11,7 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\Nav;
+use App\Services\Other\Models\Nav;
 use App\Http\Requests\Backend\NavRequest;
 
 class NavController extends BaseController
