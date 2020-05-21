@@ -35,8 +35,9 @@ class OrderPaidStatusChangeListener implements ShouldQueue
     }
 
     /**
-     * @param $event PaymentSuccessEvent
+     * @param $event
      * @throws \App\Exceptions\ServiceException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function handle($event)
     {

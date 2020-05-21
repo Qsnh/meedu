@@ -186,7 +186,7 @@ class BusinessStateTest extends TestCase
         ]);
         $this->assertTrue($this->businessStatus->promoCodeCanUse($promoCode->toArray()));
 
-        $user->invite_user_id = 1;
+        $user->is_used_promo_code = 1;
         $user->save();
         Auth::login($user);
         $this->assertFalse($this->businessStatus->promoCodeCanUse($promoCode->toArray()));
@@ -195,7 +195,7 @@ class BusinessStateTest extends TestCase
     public function test_promoCodeCanUse_with_simple_promo_code()
     {
         $user = factory(User::class)->create([
-            'invite_user_id' => 1,
+            'is_used_promo_code' => 1,
         ]);
         Auth::login($user);
         $promoCode = factory(PromoCode::class)->create([

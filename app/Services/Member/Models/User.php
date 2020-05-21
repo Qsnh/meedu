@@ -19,11 +19,11 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    const ACTIVE_YES = 1;
-    const ACTIVE_NO = -1;
+    public const ACTIVE_YES = 1;
+    public const ACTIVE_NO = -1;
 
-    const LOCK_YES = 1;
-    const LOCK_NO = -1;
+    public const LOCK_YES = 1;
+    public const LOCK_NO = -1;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'avatar', 'nick_name', 'password', 'mobile',
         'is_lock', 'is_active', 'role_id', 'role_expired_at',
         'invite_user_id', 'invite_balance', 'invite_user_expired_at',
-        'is_password_set', 'is_set_nickname',
+        'is_password_set', 'is_set_nickname', 'is_used_promo_code',
     ];
 
     public function getJWTIdentifier()
