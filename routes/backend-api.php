@@ -7,6 +7,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/user', 'LoginController@user');
 
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard/check', 'DashboardController@check');
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
 
     Route::group(['prefix' => 'video/token'], function () {

@@ -31,6 +31,14 @@ class DashboardController extends BaseController
         ]);
     }
 
+    public function check()
+    {
+        if (file_exists(base_path('public/install.php'))) {
+            return $this->error('请删除傻瓜安装脚本public/install.php文件。');
+        }
+        return $this->success();
+    }
+
     public function systemInfo()
     {
         $info = [
