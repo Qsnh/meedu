@@ -151,3 +151,11 @@
     </div>
 
 @endsection
+
+@section('js')
+    <script>
+        $(function () {
+            $('.course-description').find('img').attr('width', 'auto').attr('height', 'auto');
+        });
+    </script>
+@endsection
