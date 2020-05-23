@@ -33,6 +33,9 @@ class DashboardController extends BaseController
 
     public function check()
     {
+        if (!file_exists(storage_path('install.lock'))) {
+            return $this->error('请运行php artisan install:lock命令生成安装锁文件。');
+        }
         if (file_exists(base_path('public/install.php'))) {
             return $this->error('请删除傻瓜安装脚本public/install.php文件。');
         }
