@@ -187,7 +187,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::post('/', 'PromoCodeController@store');
         Route::get('/{id}', 'PromoCodeController@edit');
         Route::put('/{id}', 'PromoCodeController@update');
-        Route::delete('/{id}', 'PromoCodeController@destroy');
+        Route::post('/delete/multi', 'PromoCodeController@destroy');
     });
 
     // 课程分类
