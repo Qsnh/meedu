@@ -36,6 +36,9 @@ class SliderController extends BaseController
      */
     public function all(SliderServiceInterface $sliderService)
     {
+        /**
+         * @var SliderService $sliderService
+         */
         $sliders = $sliderService->all();
         $sliders = arr2_clear($sliders, ApiV2Constant::MODEL_SLIDER_FIELD);
         return $this->data($sliders);
