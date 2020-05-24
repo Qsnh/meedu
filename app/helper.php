@@ -479,3 +479,23 @@ if (!function_exists('is_dev')) {
         return app()->environment(['dev', 'local']);
     }
 }
+
+if (!function_exists('get_array_ids')) {
+    /**
+     * @param array $data
+     * @param string $key
+     * @return array
+     */
+    function get_array_ids(array $data, string $key = 'id'): array
+    {
+        $ids = [];
+        foreach ($data as $item) {
+            $id = $item[$key] ?? false;
+            if ($id === false) {
+                continue;
+            }
+            $ids[$id] = 0;
+        }
+        return array_keys($ids);
+    }
+}

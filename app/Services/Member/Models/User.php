@@ -57,6 +57,11 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public function invitor()
+    {
+        return $this->belongsTo(__CLASS__, 'invite_user_id');
+    }
+
     /**
      * 所属角色.
      *

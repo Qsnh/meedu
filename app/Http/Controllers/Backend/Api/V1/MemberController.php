@@ -16,8 +16,16 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\MemberRequest;
+use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 
@@ -103,5 +111,96 @@ class MemberController extends BaseController
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
         $user->fill($data)->save();
         return $this->success();
+    }
+
+    public function detail($id)
+    {
+        $user = User::query()->with(['role', 'invitor'])->where('id', $id)->firstOrFail();
+
+        return $this->successData([
+            'data' => $user,
+        ]);
+    }
+
+    public function userCourses(Request $request, $id)
+    {
+        $data = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
+        $courseIds = get_array_ids($data->items(), 'course_id');
+        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+        return $this->successData([
+            'data' => $data,
+            'courses' => $courses,
+        ]);
+    }
+
+    public function userVideos(Request $request, $id)
+    {
+        $data = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
+        $videoIds = get_array_ids($data->items(), 'video_id');
+        $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title', 'charge'])->get()->keyBy('id');
+        return $this->successData([
+            'data' => $data,
+            'videos' => $videos,
+        ]);
+    }
+
+    public function userRoles(Request $request, $id)
+    {
+        $data = UserJoinRoleRecord::query()
+            ->with(['role'])
+            ->where('user_id', $id)
+            ->orderByDesc('created_at')
+            ->paginate($request->input('size', 20));
+
+        return $this->successData([
+            'data' => $data,
+        ]);
+    }
+
+    public function userCollect(Request $request, $id)
+    {
+        $data = UserLikeCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
+        $courseIds = get_array_ids($data->items(), 'course_id');
+        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+        return $this->successData([
+            'data' => $data,
+            'courses' => $courses,
+        ]);
+    }
+
+    public function userHistory(Request $request, $id)
+    {
+        $data = CourseUserRecord::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
+        $courseIds = get_array_ids($data->items(), 'course_id');
+        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+        return $this->successData([
+            'data' => $data,
+            'courses' => $courses,
+        ]);
+    }
+
+    public function userOrders(Request $request, $id)
+    {
+        $data = Order::query()
+            ->with(['goods', 'paidRecords'])
+            ->where('user_id', $id)
+            ->orderByDesc('created_at')
+            ->paginate($request->input('size', 20));
+
+        return $this->successData([
+            'data' => $data,
+        ]);
+    }
+
+    public function userInvite(Request $request, $id)
+    {
+        $data = User::query()
+            ->select(['id', 'nick_name', 'avatar', 'mobile', 'created_at', 'invite_user_expired_at'])
+            ->where('invite_user_id', $id)
+            ->paginate($request->input('size', 20));
+
+        return $this->successData([
+            'data' => $data,
+        ]);
     }
 }
