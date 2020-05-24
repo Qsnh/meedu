@@ -487,28 +487,28 @@ class UserService implements UserServiceInterface
      */
     public function recordUserVideoWatch(int $userId, int $courseId, int $videoId, int $duration, bool $isWatched): void
     {
-        $record = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->where('video_id', $videoId)->first();
-        if ($record) {
-            if ($record->watched_at === null && $record->watch_seconds < $duration) {
-                // 如果有记录，那么在没有看完的情况下继续记录
-                $data = ['watch_seconds' => $duration];
-                $isWatched && $data['watched_at'] = Carbon::now();
-                $record->fill($data)->save();
+        $record = UserVideoWatchRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->where('video_id', $videoId)
+            ->first();
 
-                // 视频看完事件
-                $isWatched && event(new UserVideoWatchedEvent($userId, $videoId));
-            }
-            return;
+        if ($record && $record->watched_at === null && $record->watch_seconds < $duration) {
+            // 如果有记录，那么在没有看完的情况下继续记录
+            $data = ['watch_seconds' => $duration];
+            $isWatched && $data['watched_at'] = Carbon::now();
+            $record->fill($data)->save();
+        } else {
+            UserVideoWatchRecord::create([
+                'user_id' => $userId,
+                'course_id' => $courseId,
+                'video_id' => $videoId,
+                'watch_seconds' => $duration,
+                'watched_at' => $isWatched ? Carbon::now() : null,
+            ]);
         }
 
-        UserVideoWatchRecord::create([
-            'user_id' => $userId,
-            'course_id' => $courseId,
-            'video_id' => $videoId,
-            'watch_seconds' => $duration,
-            'watched_at' => $isWatched ? Carbon::now() : null,
-        ]);
-
+        // 视频看完event
         $isWatched && event(new UserVideoWatchedEvent($userId, $videoId));
     }
 
