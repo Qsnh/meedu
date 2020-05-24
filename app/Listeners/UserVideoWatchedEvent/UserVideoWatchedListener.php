@@ -69,9 +69,16 @@ class UserVideoWatchedListener
         $courseVideoIds = array_column($courseVideos, 'id');
         $recordVideos = $this->userService->getUserVideoWatchRecords($event->userId, $video['course_id']);
         $recordVideoIds = array_column($recordVideos, 'video_id');
-        if (!array_diff($courseVideoIds, $recordVideoIds)) {
+        $diff = array_diff($courseVideoIds, $recordVideoIds);
+
+        // 课程进度计算
+
+        if (!$diff) {
             // 全部看完
             event(new UserCourseWatchedEvent($event->userId, $video['course_id']));
+        } else {
+            $progress = (int) (round(count($recordVideoIds) / count($courseVideoIds), 2) * 100);
+            $this->courseService->setUserWatchProgress($event->userId, $video['course_id'], $progress);
         }
     }
 }

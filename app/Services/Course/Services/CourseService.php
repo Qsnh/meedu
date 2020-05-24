@@ -195,6 +195,24 @@ class CourseService implements CourseServiceInterface
     }
 
     /**
+     * 设置用户某个课程的观看进度
+     *
+     * @param integer $userId
+     * @param integer $courseId
+     * @param integer $progress
+     * @return void
+     */
+    public function setUserWatchProgress(int $userId, int $courseId, int $progress): void
+    {
+        CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->update([
+                'progress' => $progress,
+            ]);
+    }
+
+    /**
      * @param int $userId
      * @param int $courseId
      */
@@ -207,6 +225,7 @@ class CourseService implements CourseServiceInterface
             ->update([
                 'is_watched' => 1,
                 'watched_at' => Carbon::now(),
+                'progress' => 100,
             ]);
     }
 

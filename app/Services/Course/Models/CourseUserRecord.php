@@ -21,6 +21,6 @@ class CourseUserRecord extends Model
     protected $table = 'course_user_records';
 
     protected $fillable = [
-        'course_id', 'user_id', 'is_watched', 'watched_at',
+        'course_id', 'user_id', 'is_watched', 'watched_at', 'progress',
     ];
 }
