@@ -37,9 +37,9 @@ class Ip
                 return false;
             }
 
-            $area = ($content['country'] ?? '') . ($content['regionName'] ?? '') . ($content['city'] ?? '');
-
-            return $area;
+            $country = $content['country'] ?? '';
+            $city = $content['city'] ?? '';
+            return $city ?: $country;
         } catch (\Exception $e) {
             exception_record($e);
             return false;
