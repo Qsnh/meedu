@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($request->wantsJson()) {
+        if (!($exception instanceof ServiceException) && $request->wantsJson()) {
             // 后台的异常错误
             if (Str::contains($request->getUri(), '/backend/api/v1')) {
                 $code = BackendApiConstant::ERROR_CODE;

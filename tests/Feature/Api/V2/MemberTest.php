@@ -53,6 +53,29 @@ class MemberTest extends Base
         $this->assertTrue(Hash::check('123123', $this->member->password));
     }
 
+    public function test_nickname()
+    {
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/nickname', [
+            'nick_name' => 'nick1',
+        ]);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals('nick1', $this->member->nick_name);
+    }
+
+    public function test_nickname_already_set()
+    {
+        // 已设置过昵称
+        $this->member->is_set_nickname = 1;
+        $this->member->save();
+
+
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/nickname', [
+            'nick_name' => 'nick1',
+        ]);
+        $this->assertResponseError($response, __('current user cant set nickname'));
+    }
+
     public function test_avatar()
     {
         Storage::fake('public');
@@ -174,5 +197,4 @@ class MemberTest extends Base
         $this->member->refresh();
         $this->assertEquals(0, $this->member->unreadNotifications->count());
     }
-
 }

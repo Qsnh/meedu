@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
@@ -24,6 +25,7 @@ use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Services\Order\Services\PromoCodeService;
+use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -211,6 +213,34 @@ class MemberController extends BaseController
         }
         $this->userService->changePassword($this->id(), $password);
 
+        return $this->success();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/member/nickname",
+     *     summary="修改昵称",
+     *     tags={"用户"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="nick_name",description="昵称",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     *
+     * @param NicknameChangeRequest $request
+     * @return void
+     */
+    public function nicknameChange(NicknameChangeRequest $request)
+    {
+        ['nick_name' => $nickname] = $request->filldata();
+        $this->userService->updateNickname($this->id(), $nickname);
         return $this->success();
     }
 

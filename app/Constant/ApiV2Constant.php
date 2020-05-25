@@ -14,7 +14,7 @@ namespace App\Constant;
 class ApiV2Constant
 {
     public const YES = 1;
-    
+
     public const PARAMS_ERROR = 'params error';
     public const PLEASE_INPUT_IMAGE_CAPTCHA = 'image_captcha.required';
     public const IMAGE_CAPTCHA_ERROR = 'image_captcha_error';
@@ -53,12 +53,14 @@ class ApiV2Constant
      *         @OA\Property(property="category_id",type="integer",description="分类id"),
      *         @OA\Property(property="is_rec",type="integer",description="推荐"),
      *         @OA\Property(property="user_count",type="integer",description="订阅人数"),
+     *         @OA\Property(property="videos_count",type="integer",description="视频数量"),
+     *         @OA\Property(property="category",type="object",ref="#/components/schemas/CourseCategory")
      *     )
      * )
      */
     public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'is_rec', 'user_count',
+        'seo_description', 'published_at', 'is_rec', 'user_count', 'videos_count', 'category',
     ];
 
     /**
@@ -101,12 +103,14 @@ class ApiV2Constant
      *         @OA\Property(property="role_expired_at",type="string",description="会员套餐到期时间"),
      *         @OA\Property(property="role",type="object",ref="#/components/schemas/Role"),
      *         @OA\Property(property="invite_balance",type="integer",description="邀请余额"),
+     *         @OA\Property(property="is_password_set",type="integer",description="是否配置了密码"),
+     *         @OA\Property(property="is_set_nickname",type="integer",description="是否设置了昵称"),
      *     ),
      * )
      */
     public const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
-        'invite_balance', 'role',
+        'invite_balance', 'role', 'is_password_set', 'is_set_nickname',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
