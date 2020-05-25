@@ -5,6 +5,9 @@ return [
     // 配置文件存储路径
     'save' => storage_path('/meedu_config.json'),
 
+    // 关于我们
+    'aboutus' => '',
+
     // 会员配置
     'member' => [
         'is_active_default' => 1,

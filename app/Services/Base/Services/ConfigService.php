@@ -28,6 +28,14 @@ class ConfigService implements ConfigServiceInterface
     /**
      * @return string
      */
+    public function getAboutus(): string
+    {
+        return config('meedu.aboutus', '');
+    }
+
+    /**
+     * @return string
+     */
     public function getMemberDefaultAvatar(): string
     {
         return config('meedu.member.default_avatar');
@@ -119,7 +127,7 @@ class ConfigService implements ConfigServiceInterface
 
     public function getCacheStatus(): bool
     {
-        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
+        return (int) config('meedu.system.cache.status') === FrontendConstant::YES;
     }
 
     public function getCacheExpire(): int
@@ -214,6 +222,6 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getAliyunPrivatePlayStatus(): bool
     {
-        return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
+        return (int) config('meedu.system.player.enabled_aliyun_private') === 1;
     }
 }
