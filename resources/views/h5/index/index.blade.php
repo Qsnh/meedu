@@ -41,7 +41,6 @@
     </div>
 
     <footer class="index-footer">
-        <p>Powered By <a href="https://meedu.vip">MeEdu</a></p>
         <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn"
                                                        target="_blank">{{$gConfig['system']['icp']}}</a></p>
     </footer>
