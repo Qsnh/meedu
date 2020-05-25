@@ -11,8 +11,8 @@
 
 namespace App\Http\Requests\Backend;
 
-use App\Models\Course;
 use Overtrue\Pinyin\Pinyin;
+use App\Services\Course\Models\Course;
 
 class CourseRequest extends BaseRequest
 {

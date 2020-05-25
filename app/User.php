@@ -11,21 +11,12 @@
 
 namespace App;
 
-use Carbon\Carbon;
-use App\Models\Role;
-use App\Models\Order;
-use App\Models\Socialite;
-use App\Models\VideoComment;
-use App\Models\CourseComment;
-use App\Models\UserJoinRoleRecord;
-use App\Models\traits\CreatedAtBetween;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use CreatedAtBetween;
 
     const ACTIVE_YES = 1;
     const ACTIVE_NO = -1;
@@ -54,36 +45,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * 所属角色.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
-
-    /**
-     * 用户的课程评论.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function courseComments()
-    {
-        return $this->hasMany(CourseComment::class, 'user_id');
-    }
-
-    /**
-     * 用户的视频评论.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function videoComments()
-    {
-        return $this->hasMany(VideoComment::class, 'user_id');
-    }
-
-    /**
      * 头像修饰器.
      *
      * @return \Illuminate\Config\Repository|mixed
@@ -91,44 +52,5 @@ class User extends Authenticatable
     public function getAvatarAttribute($avatar)
     {
         return $avatar ?: url(config('meedu.member.default_avatar'));
-    }
-
-    /**
-     * 关联订单.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class, 'user_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function joinRoles()
-    {
-        return $this->hasMany(UserJoinRoleRecord::class, 'user_id');
-    }
-
-    /**
-     * 今日注册用户数量.
-     *
-     * @return mixed
-     */
-    public static function todayRegisterCount()
-    {
-        return self::createdAtBetween(
-            Carbon::now()->format('Y-m-d'),
-            Carbon::now()->addDays(1)->format('Y-m-d')
-        )->count();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function socialite()
-    {
-        return $this->hasMany(Socialite::class, 'user_id');
     }
 }

@@ -11,15 +11,16 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\User;
+use Carbon\Carbon;
 use App\Meedu\MeEdu;
-use App\Models\Order;
+use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 
 class DashboardController extends BaseController
 {
     public function index()
     {
-        $todayRegisterUserCount = User::todayRegisterCount();
+        $todayRegisterUserCount = User::query()->where('created_at', '>=', Carbon::now()->subDays(1)->format('Y-m-d'))->count();
         $todayPaidNum = Order::todayPaidNum();
         $todayPaidSum = Order::todayPaidSum();
 
@@ -28,6 +29,17 @@ class DashboardController extends BaseController
             'today_paid_num' => $todayPaidNum,
             'today_paid_sum' => $todayPaidSum,
         ]);
+    }
+
+    public function check()
+    {
+        if (!file_exists(storage_path('install.lock'))) {
+            return $this->error('请运行php artisan install:lock命令生成安装锁文件。');
+        }
+        if (file_exists(base_path('public/install.php'))) {
+            return $this->error('请删除傻瓜安装脚本public/install.php文件。');
+        }
+        return $this->success();
     }
 
     public function systemInfo()

@@ -64,8 +64,9 @@ class RoleServiceTest extends TestCase
 
         $this->service->userJoinRole($user->toArray(), $role->toArray(), 1);
 
-        $record = UserJoinRoleRecord::whereUserId($user->id)->whereRoleId($role->id)->whereCharge(1)->exists();
-        $this->assertTrue($record);
+        $record = UserJoinRoleRecord::whereUserId($user->id)->whereRoleId($role->id)->whereCharge(1)->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(3600 * 24, strtotime($record->expired_at) - strtotime($record->started_at));
 
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
@@ -74,7 +75,7 @@ class RoleServiceTest extends TestCase
 
     public function test_userContinueRole()
     {
-        $role = factory(Role::class)->create(['expire_days' => 1]);
+        $role = factory(Role::class)->create(['expire_days' => 2]);
 
         $now = Carbon::now()->addDays(1);
         $user = factory(User::class)->create([
@@ -85,8 +86,9 @@ class RoleServiceTest extends TestCase
 
         $this->service->userContinueRole($user->toArray(), $role->toArray(), 1);
 
-        $record = UserJoinRoleRecord::whereUserId($user->id)->whereRoleId($role->id)->whereCharge(1)->exists();
-        $this->assertTrue($record);
+        $record = UserJoinRoleRecord::whereUserId($user->id)->whereRoleId($role->id)->whereCharge(1)->orderByDesc('id')->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(3600 * 24 * 2, strtotime($record->expired_at) - strtotime($record->started_at));
 
         $user->refresh();
         $this->assertTrue(abs($now->addDays($role->expire_days)->timestamp - strtotime($user->role_expired_at)) < 5);

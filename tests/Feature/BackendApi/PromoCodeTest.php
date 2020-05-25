@@ -71,7 +71,9 @@ class PromoCodeTest extends Base
     public function test_destroy()
     {
         $item = factory(self::MODEL)->create();
-        $response = $this->user($this->admin)->delete(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id);
+        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/delete/multi', [
+            'ids' => [$item->id],
+        ]);
         $this->assertResponseSuccess($response);
         $model = self::MODEL;
         $this->assertEmpty($model::find($item->id));

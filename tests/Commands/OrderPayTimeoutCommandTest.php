@@ -3,8 +3,7 @@
 
 namespace Tests\Commands;
 
-
-use App\Models\Order;
+use App\Services\Order\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Tests\OriginalTestCase;

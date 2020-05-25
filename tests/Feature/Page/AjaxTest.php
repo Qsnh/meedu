@@ -222,14 +222,14 @@ class AjaxTest extends TestCase
         $this->assertTrue(Hash::check('123456', $this->user->password));
     }
 
-//    public function test_avatarChange()
-//    {
-//        Storage::fake('mock');
-//        config(['meedu.upload.image.disk' => 'mock']);
-//        $this->actingAs($this->user)->post('/member/ajax/avatar/change', [
-//            'file' => UploadedFile::fake()->image('file.png'),
-//        ])->seeStatusCode(200);
-//    }
+    //    public function test_avatarChange()
+    //    {
+    //        Storage::fake('mock');
+    //        config(['meedu.upload.image.disk' => 'mock']);
+    //        $this->actingAs($this->user)->post('/member/ajax/avatar/change', [
+    //            'file' => UploadedFile::fake()->image('file.png'),
+    //        ])->seeStatusCode(200);
+    //    }
 
     public function test_nicknameChange()
     {
@@ -549,6 +549,10 @@ class AjaxTest extends TestCase
         $courseUser->refresh();
         $this->assertEquals(0, $courseUser->is_watched);
         $this->assertNull($courseUser->watched_at);
+        // 观看进度达到50%
+        // 因为该课程下有两个视频
+        // 看完了一个视频，进度=50%
+        $this->assertEquals(50, $courseUser->progress);
 
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
             'duration' => 80,
@@ -557,6 +561,8 @@ class AjaxTest extends TestCase
         $courseUser->refresh();
         $this->assertEquals(0, $courseUser->is_watched);
         $this->assertNull($courseUser->watched_at);
+        // 第二个视频没有看完，依旧是50
+        $this->assertEquals(50, $courseUser->progress);
 
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
             'duration' => 90,
@@ -565,6 +571,7 @@ class AjaxTest extends TestCase
         $courseUser->refresh();
         $this->assertEquals(1, $courseUser->is_watched);
         $this->assertNotNull($courseUser->watched_at);
+        // 第二个视频也看完了，所以变成100了
+        $this->assertEquals(100, $courseUser->progress);
     }
-
 }

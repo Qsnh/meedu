@@ -46,6 +46,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\UserRegisterEvent' => [
             'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
+            'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
         ],
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\SafeAlertListener',

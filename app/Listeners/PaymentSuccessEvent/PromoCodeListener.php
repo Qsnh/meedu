@@ -12,6 +12,7 @@
 namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\PromoCodeService;
@@ -76,7 +77,14 @@ class PromoCodeListener
         // 修改用户上级
         $orderUser = $this->userService->find($order['user_id']);
         if ($orderUser['invite_user_id'] === 0) {
-            $this->userService->updateInviteUserId($orderUser['id'], $code);
+            // 当前用户使用了优惠码，且没有上级
+            // 那么将该优惠码的注册设置为当前用户的上级
+            $this->userService->updateInviteUserId($orderUser['id'], $code['user_id'], $code['invite_user_reward']);
+        }
+
+        // 记录用户使用invite promo_code的状态
+        if ($orderUser['is_used_promo_code'] !== FrontendConstant::YES) {
+            $this->userService->setUsedPromoCode($orderUser['id']);
         }
     }
 }

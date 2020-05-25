@@ -35,11 +35,11 @@
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item active"
+        <div class="menu-item"
              onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-description').show();">
             <a href="javascript:void(0)">介绍</a>
         </div>
-        <div class="menu-item"
+        <div class="menu-item active"
              onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-chapter').show();">
             <a href="javascript:void(0)">目录</a>
         </div>
@@ -56,9 +56,9 @@
         @endif
     </div>
 
-    <div class="course-description course-content-tab-item">{!! $video['render_desc'] !!}</div>
+    <div class="course-description course-content-tab-item" style="display: none">{!! $video['render_desc'] !!}</div>
 
-    <div class="course-chapter course-content-tab-item">
+    <div class="course-chapter course-content-tab-item" style="display: block">
         @if($chapters)
             @foreach($chapters as $chapter)
                 <div class="chapter-title">{{$chapter['title']}}</div>
@@ -150,4 +150,12 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script>
+        $(function () {
+            $('.course-description').find('img').attr('width', 'auto').attr('height', 'auto');
+        });
+    </script>
 @endsection

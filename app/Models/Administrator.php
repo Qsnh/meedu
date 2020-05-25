@@ -17,37 +17,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-/**
- * App\Models\Administrator.
- *
- * @property int                                                                                                       $id
- * @property string                                                                                                    $name            姓名
- * @property string                                                                                                    $email           邮箱
- * @property string                                                                                                    $password        密码
- * @property string                                                                                                    $last_login_ip   最后登录IP
- * @property string|null                                                                                               $last_login_date 最后登录时间
- * @property string|null                                                                                               $remember_token
- * @property \Illuminate\Support\Carbon|null                                                                           $created_at
- * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property mixed                                                                                                     $destroy_url
- * @property mixed                                                                                                     $edit_url
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AdministratorRole[]                                  $roles
- *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereLastLoginDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereLastLoginIp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Administrator whereUpdatedAt($value)
- * @mixin \Eloquent
- */
 class Administrator extends Authenticatable implements JWTSubject
 {
     use Notifiable;

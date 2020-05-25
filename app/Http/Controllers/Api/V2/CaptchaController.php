@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Mews\Captcha\Captcha;
 use App\Constant\ApiV2Constant;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ApiV2\SmsRequest;
 use App\Services\Other\Services\SmsService;
 use App\Services\Base\Services\CacheService;
@@ -108,7 +109,15 @@ class CaptchaController extends BaseController
         $this->checkImageCaptcha();
         ['mobile' => $mobile, 'scene' => $scene] = $request->filldata();
         $code = str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
-        $this->smsService->sendCode($mobile, $code, $scene);
+
+        if (!is_dev()) {
+            // 正式环境才发送验证码
+            $this->smsService->sendCode($mobile, $code, $scene);
+        } else {
+            // 测试环境将验证码记录在log
+            Log::info(__METHOD__, compact('code'));
+        }
+
         $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
         return $this->success();
     }

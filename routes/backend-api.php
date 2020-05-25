@@ -7,6 +7,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/user', 'LoginController@user');
 
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/dashboard/check', 'DashboardController@check');
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
 
     Route::group(['prefix' => 'video/token'], function () {
@@ -159,6 +160,17 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/', 'MemberController@index');
         Route::get('/create', 'MemberController@create');
         Route::get('/{id}', 'MemberController@edit');
+
+        // 用户详情
+        Route::get('/{id}/detail', 'MemberController@detail');
+        Route::get('/{id}/detail/userCourses', 'MemberController@userCourses');
+        Route::get('/{id}/detail/userVideos', 'MemberController@userVideos');
+        Route::get('/{id}/detail/userRoles', 'MemberController@userRoles');
+        Route::get('/{id}/detail/userCollect', 'MemberController@userCollect');
+        Route::get('/{id}/detail/userHistory', 'MemberController@userHistory');
+        Route::get('/{id}/detail/userOrders', 'MemberController@userOrders');
+        Route::get('/{id}/detail/userInvite', 'MemberController@userInvite');
+
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
@@ -186,7 +198,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::post('/', 'PromoCodeController@store');
         Route::get('/{id}', 'PromoCodeController@edit');
         Route::put('/{id}', 'PromoCodeController@update');
-        Route::delete('/{id}', 'PromoCodeController@destroy');
+        Route::post('/delete/multi', 'PromoCodeController@destroy');
     });
 
     // 课程分类

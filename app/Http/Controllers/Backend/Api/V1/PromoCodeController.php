@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Http\Request;
 use App\Services\Order\Models\PromoCode;
 use App\Http\Requests\Backend\PromoCodeRequest;
 
@@ -45,9 +46,10 @@ class PromoCodeController extends BaseController
         return $this->success();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        PromoCode::destroy($id);
+        $ids = $request->input('ids', []);
+        $ids && PromoCode::destroy($ids);
 
         return $this->success();
     }
