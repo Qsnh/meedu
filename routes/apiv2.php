@@ -46,7 +46,7 @@ Route::group(['prefix' => '/wechat/mini'], function () {
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
 
 Route::group(['prefix' => 'other'], function () {
-    Route::get('/userProtocol', 'OtherController@userProtocol');
+    Route::get('/config', 'OtherController@config');
 });
 
 Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {

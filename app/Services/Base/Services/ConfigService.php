@@ -16,6 +16,23 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
+    public function getName(): string
+    {
+        return config('app.name');
+    }
+
+    /**
+     * 获取logo
+     *
+     * @return array
+     */
+    public function getLogo(): array
+    {
+        return [
+            'logo' => config('meedu.system.logo'),
+            'white_logo' => config('meedu.system.white_logo'),
+        ];
+    }
 
     /**
      * @return string
