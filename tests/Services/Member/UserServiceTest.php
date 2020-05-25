@@ -352,4 +352,21 @@ class UserServiceTest extends TestCase
         $this->assertEquals(1, $user->is_used_promo_code);
     }
 
+    public function test_changeMobile()
+    {
+        $user = factory(User::class)->create(['mobile' => '199000012341']);
+        $this->service->changeMobile($user->id, '188999900011');
+        $user->refresh();
+        $this->assertEquals('188999900011', $user->mobile);
+    }
+
+    /**
+     * @expectedException App\Exceptions\ServiceException
+     */
+    public function test_changeMobile_exists()
+    {
+        $user = factory(User::class)->create(['mobile' => '199000012341']);
+        $user = factory(User::class)->create(['mobile' => '13788889999']);
+        $this->service->changeMobile($user->id, '13788889999');
+    }
 }

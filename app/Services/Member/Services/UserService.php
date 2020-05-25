@@ -203,6 +203,24 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * 更换手机号
+     *
+     * @param integer $userId
+     * @param string $mobile
+     * @return void
+     */
+    public function changeMobile(int $userId, string $mobile): void
+    {
+        $exists = $this->findMobile($mobile);
+        if ($exists) {
+            throw new ServiceException(__('mobile has exists'));
+        }
+        $user = User::findOrFail($userId);
+        $user->mobile = $mobile;
+        $user->save();
+    }
+
+    /**
      * @param $userId
      * @param $avatar
      */
@@ -393,7 +411,7 @@ class UserService implements UserServiceInterface
      */
     public function getCurrentUserCourseCount(): int
     {
-        return (int)UserCourse::whereUserId(Auth::id())->count();
+        return (int) UserCourse::whereUserId(Auth::id())->count();
     }
 
     /**
@@ -401,7 +419,7 @@ class UserService implements UserServiceInterface
      */
     public function getCurrentUserVideoCount(): int
     {
-        return (int)UserVideo::whereUserId(Auth::id())->count();
+        return (int) UserVideo::whereUserId(Auth::id())->count();
     }
 
     /**

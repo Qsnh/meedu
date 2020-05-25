@@ -107,7 +107,7 @@
   "current user was locked,please contact administrator": "当前会员已被锁定，请联系管理员",
   "please input announcement title": "请输入公告标题",
   "please input announcement content": "请输入公告内容",
-  "current user cant set nickname": "当前用户无法设置昵称",
+  "current user cant set nickname": "昵称只能设置一次，您已经设置过啦",
   "course cant buy": "当前课程无法购买",
   "video cant buy": "当前视频无法购买",
   "course purchased": "课程已购买",

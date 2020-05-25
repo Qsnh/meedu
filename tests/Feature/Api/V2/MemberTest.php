@@ -53,6 +53,31 @@ class MemberTest extends Base
         $this->assertTrue(Hash::check('123123', $this->member->password));
     }
 
+    public function test_change_mobile()
+    {
+        $cacheService = $this->app->make(CacheServiceInterface::class);
+        $cacheService->put('m:17898765423', 'code', 10);
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
+            'mobile_code' => 'code',
+            'mobile' => '17898765423',
+        ]);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals('17898765423', $this->member->mobile);
+    }
+
+    public function test_change_mobile_exists()
+    {
+        factory(User::class)->create(['mobile' => '12345679876']);
+        $cacheService = $this->app->make(CacheServiceInterface::class);
+        $cacheService->put('m:12345679876', 'code', 10);
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
+            'mobile_code' => 'code',
+            'mobile' => '12345679876',
+        ]);
+        $this->assertResponseError($response, __('mobile has exists'));
+    }
+
     public function test_nickname()
     {
         $response = $this->user($this->member)->postJson('api/v2/member/detail/nickname', [

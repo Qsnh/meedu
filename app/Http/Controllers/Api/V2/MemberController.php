@@ -24,6 +24,7 @@ use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
+use App\Http\Requests\ApiV2\MobileChangeRequest;
 use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
@@ -213,6 +214,35 @@ class MemberController extends BaseController
         }
         $this->userService->changePassword($this->id(), $password);
 
+        return $this->success();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/member/mobile",
+     *     summary="更换手机号",
+     *     tags={"用户"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="mobile",description="手机号",type="string"),
+     *         @OA\Property(property="mobile_code",description="手机短信验证码",type="string")
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     *
+     * @param MobileChangeRequest $request
+     */
+    public function mobileChange(MobileChangeRequest $request)
+    {
+        $this->mobileCodeCheck();
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->changeMobile($this->id(), $mobile);
         return $this->success();
     }
 
