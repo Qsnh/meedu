@@ -225,6 +225,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
+                <p>Powered By <a href="http://www.huashifengxing.com/" target="_blank">华视风行</a></p>
                 <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn"
                                                                target="_blank">{{$gConfig['system']['icp']}}</a></p>
             </div>
