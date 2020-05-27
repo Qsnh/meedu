@@ -96,6 +96,15 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="mobile",type="integer",description="手机号"),
  *         @OA\Property(property="created_at",type="string",description="时间"),
  *     ),
+ *     @OA\Schema(
+ *         schema="WithdrawRecord",
+ *         type="object",
+ *         title="提现记录",
+ *         @OA\Property(property="status_text",type="integer",description="提现状态"),
+ *         @OA\Property(property="created_at",type="string",description="时间"),
+ *         @OA\Property(property="remark",type="string",description="备注"),
+ *         @OA\Property(property="total",type="integer",description="提现金额"),
+ *     ),
  * )
  */
 class MemberController extends BaseController
@@ -377,10 +386,17 @@ class MemberController extends BaseController
             'total' => $total,
             'list' => $list,
         ] = $this->userService->messagePaginate($page, $pageSize);
-        $list = arr1_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
-        $messages = $this->paginator($list, $total, $page, $pageSize);
+        $list = arr2_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
 
-        return $this->data($messages);
+        $list = array_map(function ($item) {
+            $item['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d H:i');
+            return $item;
+        }, $list);
+
+        return $this->data([
+            'data' => $list,
+            'total' => $total,
+        ]);
     }
 
     /**
@@ -761,6 +777,38 @@ class MemberController extends BaseController
                 'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
             ];
         }, $list);
+        
+        return $this->data([
+            'total' => $total,
+            'data' => $list,
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/withdrawRecords",
+     *     summary="邀请余额提现记录",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",ref="#/components/schemas/WithdrawRecord"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function withdrawRecords(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 10);
+        
+        [
+             'list' => $list,
+            'total' => $total,
+        ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
         
         return $this->data([
             'total' => $total,
