@@ -1,27 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
-use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Course\Models\CourseUserRecord;
-use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserInviteBalanceRecord;
-use App\Services\Member\Models\UserJoinRoleRecord;
-use App\Services\Member\Models\UserLikeCourse;
-use App\Services\Member\Models\UserVideo;
-use App\Services\Member\Notifications\SimpleMessageNotification;
-use App\Services\Order\Models\Order;
-use App\Services\Order\Models\PromoCode;
 use Illuminate\Http\UploadedFile;
+use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Services\Order\Models\PromoCode;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Member\Models\UserInviteBalanceRecord;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberTest extends Base
 {
-
     protected $member;
 
     public function setUp()
@@ -221,5 +227,14 @@ class MemberTest extends Base
         $this->assertResponseSuccess($response);
         $this->member->refresh();
         $this->assertEquals(0, $this->member->unreadNotifications->count());
+    }
+
+    public function test_inviteUsers()
+    {
+        factory(User::class, 10)->create(['invite_user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/inviteUsers?page=1&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(10, $response['data']['total']);
+        $this->assertEquals(8, count($response['data']['data']));
     }
 }

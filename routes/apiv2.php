@@ -1,7 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
-// 图形验证码
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
 Route::post('/captcha/sms', 'CaptchaController@sentSms');
@@ -63,6 +70,7 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('roles', 'MemberController@roles');
     Route::get('messages', 'MemberController@messages');
     Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
+    Route::get('inviteUsers', 'MemberController@inviteUsers');
     Route::get('promoCode', 'MemberController@promoCode');
     Route::post('promoCode', 'MemberController@generatePromoCode');
     Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');

@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
@@ -87,6 +88,13 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="expired_at",type="string",description="过期时间"),
  *         @OA\Property(property="invite_user_reward",type="integer",description="邀请人奖励"),
  *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请人奖励"),
+ *     ),
+ *     @OA\Schema(
+ *         schema="InviteUser",
+ *         type="object",
+ *         title="邀请用户",
+ *         @OA\Property(property="mobile",type="integer",description="手机号"),
+ *         @OA\Property(property="created_at",type="string",description="时间"),
  *     ),
  * )
  */
@@ -718,5 +726,45 @@ class MemberController extends BaseController
     {
         $this->userService->notificationMarkAllAsRead(Auth::id());
         return $this->success();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/inviteUsers",
+     *     summary="我的邀请用户",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",ref="#/components/schemas/InviteUser"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function inviteUsers(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 10);
+
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userService->inviteUsers($page, $pageSize);
+    
+        $list = array_map(function ($item) {
+            $mobile = '******'.mb_substr($item['mobile'], 6);
+            return [
+                'mobile' => $mobile,
+                'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
+            ];
+        }, $list);
+        
+        return $this->data([
+            'total' => $total,
+            'data' => $list,
+        ]);
     }
 }
