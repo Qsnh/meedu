@@ -565,6 +565,6 @@ class UserService implements UserServiceInterface
      */
     public function setRegisterArea(int $id, string $area): void
     {
-        $area && User::query()->where('id', $id)->update(['register_ip' => $area]);
+        $area && User::query()->where('id', $id)->update(['register_area' => $area]);
     }
 }
