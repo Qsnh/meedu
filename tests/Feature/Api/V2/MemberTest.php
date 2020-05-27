@@ -24,6 +24,7 @@ use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Models\UserInviteBalanceRecord;
+use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberTest extends Base
@@ -236,5 +237,21 @@ class MemberTest extends Base
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $response['data']['total']);
         $this->assertEquals(8, count($response['data']['data']));
+    }
+
+    public function test_withdrawRecords()
+    {
+        UserInviteBalanceWithdrawOrder::create([
+            'user_id' => $this->member->id,
+            'total' => 100,
+            'channel' => '支付宝',
+            'channel_name' => 'meedu',
+            'channel_account' => 'meedu@meedu.vip',
+            'channel_address' => 'address',
+        ]);
+        $response = $this->user($this->member)->getJson('api/v2/member/withdrawRecords?page=1&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(1, $response['data']['total']);
+        $this->assertEquals(1, count($response['data']['data']));
     }
 }
