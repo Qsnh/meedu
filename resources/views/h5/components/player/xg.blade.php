@@ -15,7 +15,12 @@
         airplay: true,
         useHls: true,
         closeVideoTouch: true,
-        closeVideoClick: true
+        closeVideoClick: true,
+        @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
+        marquee: {
+        value: '{{$user['mobile']}}'
+        },
+        @endif
     };
             @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsJsPlayer(XGPlayerConfig);
