@@ -757,7 +757,10 @@ class MemberController extends BaseController
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",ref="#/components/schemas/InviteUser"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/InviteUser")),
+     *             ),
      *         )
      *     )
      * )
@@ -797,7 +800,10 @@ class MemberController extends BaseController
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",ref="#/components/schemas/WithdrawRecord"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/WithdrawRecord")),
+     *             ),
      *         )
      *     )
      * )
