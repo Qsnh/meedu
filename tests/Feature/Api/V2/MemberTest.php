@@ -254,4 +254,26 @@ class MemberTest extends Base
         $this->assertEquals(1, $response['data']['total']);
         $this->assertEquals(1, count($response['data']['data']));
     }
+
+    public function test_createWithdraw()
+    {
+        $this->member->invite_balance = 100;
+        $this->member->save();
+
+        $response = $this->user($this->member)->postJson('api/v2/member/withdraw', [
+            'channel' => '支付宝',
+            'channel_name' => 'meedu',
+            'channel_account' => 'meedu1',
+            'total' => 11,
+        ]);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals(89, $this->member->invite_balance);
+
+        $record = UserInviteBalanceWithdrawOrder::query()->where('user_id', $this->member->id)->first();
+        $this->assertNotEmpty($record);
+        $this->assertEquals('支付宝', $record->channel);
+        $this->assertEquals('meedu', $record->channel_name);
+        $this->assertEquals('meedu1', $record->channel_account);
+    }
 }

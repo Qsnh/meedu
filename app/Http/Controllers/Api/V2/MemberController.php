@@ -34,6 +34,7 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Http\Requests\ApiV2\InviteBalanceWithdrawRequest;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
@@ -749,6 +750,8 @@ class MemberController extends BaseController
      *     path="/member/inviteUsers",
      *     summary="我的邀请用户",
      *     tags={"用户"},
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -814,5 +817,36 @@ class MemberController extends BaseController
             'total' => $total,
             'data' => $list,
         ]);
+    }
+
+    /**
+    * @OA\Post(
+    *     path="/member/withdraw",
+    *     summary="邀请余额提现",
+    *     tags={"用户"},
+    *     @OA\RequestBody(description="",@OA\JsonContent(
+    *         @OA\Property(property="channel",description="渠道",type="string"),
+    *         @OA\Property(property="channel_name",description="姓名",type="string"),
+    *         @OA\Property(property="channel_account",description="账号",type="string"),
+    *         @OA\Property(property="total",description="提现金额",type="integer"),
+    *     )),
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="object",description=""),
+    *         )
+    *     )
+    * )
+    *
+    * @param InviteBalanceWithdrawRequest $request
+    * @return void
+    */
+    public function createWithdraw(InviteBalanceWithdrawRequest $request)
+    {
+        $data = $request->filldata();
+        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
+        return $this->success();
     }
 }
