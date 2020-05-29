@@ -38,7 +38,6 @@
                 _token: '{{csrf_token()}}',
                 duration: s
             }, function (res) {
-                console.log(res);
             }, 'json');
         }
     };
