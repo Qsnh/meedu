@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -148,6 +149,8 @@ class VideoController extends BaseController
      *                 @OA\Property(property="video",type="object",description="视频详情",ref="#/components/schemas/Video"),
      *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
      *                 @OA\Property(property="videos",type="array",description="视频列表",@OA\Items(ref="#/components/schemas/Video")),
+     *                 @OA\Property(property="course",type="object",description="课程",ref="#/components/schemas/Course"),
+     *                 @OA\Property(property="is_watch",type="boolean",description="是否可以观看"),
      *             ),
      *         )
      *     )
@@ -158,16 +161,34 @@ class VideoController extends BaseController
     public function detail($id)
     {
         $video = $this->videoService->find($id);
+
+        // 视频浏览次数自增
         $this->videoService->viewNumInc($video['id']);
+
+        // 章节
         $chapters = $this->courseService->chapters($video['course_id']);
         $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
+
+        // 课程下视频列表
         $videos = $this->videoService->courseVideos($video['course_id']);
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
+
+        // 课程
+        $course = $this->courseService->find($video['course_id']);
+
+        // 是否可以观看
+        $isWatch = false;
+        Auth::check() && $this->businessState->canSeeVideo($this->user(), $course, $video);
+
+        $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
+        $video = arr1_clear($video, ApiV2Constant::MODEL_VIDEO_FIELD);
 
         return $this->data([
             'video' => $video,
             'videos' => $videos,
             'chapters' => $chapters,
+            'course' => $course,
+            'is_watch' => $isWatch,
         ]);
     }
 

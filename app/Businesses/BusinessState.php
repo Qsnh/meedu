@@ -52,7 +52,7 @@ class BusinessState
             return true;
         }
         // 如果用户买了会员可以直接观看
-        if ($user['role_id'] && Carbon::now()->lt($user['role_expired_at'])) {
+        if ($this->isRole($user)) {
             return true;
         }
         return false;

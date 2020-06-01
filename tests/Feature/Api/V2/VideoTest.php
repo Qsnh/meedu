@@ -1,17 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
-use App\Services\Course\Models\Video;
-use App\Services\Course\Models\VideoComment;
-use App\Services\Member\Models\User;
 use Carbon\Carbon;
+use App\Services\Member\Models\User;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\VideoComment;
 
 class VideoTest extends Base
 {
-
     public function test_videos()
     {
         factory(Video::class, 10)->create([
@@ -25,7 +32,12 @@ class VideoTest extends Base
 
     public function test_video_id()
     {
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
         $video = factory(Video::class)->create([
+            'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -90,5 +102,4 @@ class VideoTest extends Base
         $r = $this->assertResponseSuccess($r);
         $this->assertEquals(12, count($r['data']['comments']));
     }
-
 }
