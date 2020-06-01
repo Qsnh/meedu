@@ -92,6 +92,16 @@ class BaseController
     }
 
     /**
+     * 检测是否登录
+     *
+     * @return boolean
+     */
+    protected function check():bool
+    {
+        return Auth::guard($this->guard)->check();
+    }
+
+    /**
      * @return mixed
      */
     protected function id()

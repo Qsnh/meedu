@@ -178,7 +178,7 @@ class VideoController extends BaseController
 
         // 是否可以观看
         $isWatch = false;
-        Auth::check() && $this->businessState->canSeeVideo($this->user(), $course, $video);
+        $this->check() && $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
 
         $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
         $video = arr1_clear($video, ApiV2Constant::MODEL_VIDEO_FIELD);

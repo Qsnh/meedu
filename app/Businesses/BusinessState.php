@@ -36,7 +36,7 @@ class BusinessState
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
         /**
-         * @var $userService UserService
+         * @var UserService $userService
          */
         $userService = app()->make(UserServiceInterface::class);
         // 如果video的价格为0那么可以直接观看
