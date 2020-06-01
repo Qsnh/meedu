@@ -16,6 +16,7 @@ use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\VideoComment;
+use App\Services\Member\Models\UserVideoWatchRecord;
 
 class VideoTest extends Base
 {
@@ -101,5 +102,41 @@ class VideoTest extends Base
         $r = $this->getJson('api/v2/video/' . $video->id . '/comments');
         $r = $this->assertResponseSuccess($r);
         $this->assertEquals(12, count($r['data']['comments']));
+    }
+
+    public function test_video_record()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 100,
+        ]);
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 10,
+        ]);
+        $r = $this->assertResponseSuccess($r);
+
+        $record = UserVideoWatchRecord::query()->where('user_id', $user->id)->where('video_id', $video->id)->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(10, $record->watch_seconds);
+
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 80,
+        ]);
+        $r = $this->assertResponseSuccess($r);
+
+        $record->refresh();
+        $this->assertEquals(80, $record->watch_seconds);
+
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 100,
+        ]);
+        $r = $this->assertResponseSuccess($r);
+
+        $record->refresh();
+        $this->assertEquals(100, $record->watch_seconds);
+        $this->assertNotNull($record->watched_at);
     }
 }

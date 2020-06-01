@@ -294,4 +294,35 @@ class VideoController extends BaseController
 
         return $this->data(compact('urls'));
     }
+
+    /**
+    * @OA\Post(
+    *     path="/video/{id}/record",
+    *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+    *     summary="视频观看时长记录",
+    *     tags={"视频"},
+    *     @OA\RequestBody(description="",@OA\JsonContent(
+    *         @OA\Property(property="duration",description="时长",type="integer"),
+    *     )),
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="object",description=""),
+    *         )
+    *     )
+    * )
+    * @param CommentRequest $request
+    * @param $id
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function recordVideo(Request $request, $id)
+    {
+        $duration = (int)$request->post('duration', 0);
+        $video = $this->videoService->find($id);
+        $isWatched = $video['duration'] <= $duration;
+        $this->userService->recordUserVideoWatch($this->id(), $video['course_id'], $id, $duration, $isWatched);
+        return $this->success();
+    }
 }
