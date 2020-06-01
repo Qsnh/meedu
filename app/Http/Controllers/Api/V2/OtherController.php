@@ -21,11 +21,17 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
  *         type="object",
  *         title="系统配置",
  *         @OA\Property(property="webname",type="string",description="网站名"),
+ *         @OA\Property(property="icp",type="string",description="备案信息"),
  *         @OA\Property(property="user_protocol",type="string",description="用户协议url"),
  *         @OA\Property(property="aboutus",type="integer",description="关于我们url"),
  *         @OA\Property(property="logo",type="object",description="logo",@OA\Property(
  *             @OA\Property(property="logo",type="string",description="默认logo"),
  *             @OA\Property(property="white_logo",type="string",description="白色logo"),
+ *         )),
+ *         @OA\Property(property="player",type="object",description="播放器",@OA\Property(
+ *             @OA\Property(property="cover",type="string",description="封面"),
+ *             @OA\Property(property="enabled_bullet_secret",type="integer",description="是否开启跑马灯"),
+ *             @OA\Property(property="enabled_aliyun_private",type="integer",description="阿里云私密播放"),
  *         )),
  *     ),
  * )
@@ -62,11 +68,18 @@ class OtherController extends BaseController
      */
     public function config()
     {
+        $plyaerConfig = $this->configService->getPlayer();
         $data = [
             'webname' => $this->configService->getName(),
+            'icp' => $this->configService->getIcp(),
             'user_protocol' => route('user.protocol'),
             'aboutus' => route('aboutus'),
             'logo' => $this->configService->getLogo(),
+            'player' => [
+                'cover' => $this->configService->getPlayerCover(),
+                'enabled_bullet_secret' => $plyaerConfig['enabled_bullet_secret'] ?? 0,
+                'enabled_aliyun_private' => $plyaerConfig['enabled_aliyun_private'] ?? 0,
+            ],
         ];
         return $this->data($data);
     }
