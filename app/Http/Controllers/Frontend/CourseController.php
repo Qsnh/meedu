@@ -150,7 +150,8 @@ class CourseController extends FrontendController
         $description = $course['seo_description'];
 
         // 是否购买
-        $isBuy = $this->businessState->isBuyCourse($course['id']);
+        $isBuy = false;
+        Auth::check() && $isBuy = $this->businessState->isBuyCourse(Auth::id(), $course['id']);
         // 喜欢课程
         $isLikeCourse = false;
         Auth::check() && $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);

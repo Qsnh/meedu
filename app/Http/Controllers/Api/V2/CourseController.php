@@ -158,7 +158,8 @@ class CourseController extends BaseController
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
 
         // 是否购买
-        $isBuy = $this->businessState->isBuyCourse($course['id']);
+        $isBuy = false;
+        $this->id() && $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
 
         return $this->data(compact('course', 'chapters', 'videos', 'isBuy'));
     }

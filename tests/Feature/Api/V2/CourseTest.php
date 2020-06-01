@@ -1,18 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\CourseCategory;
-use App\Services\Course\Models\CourseComment;
-use App\Services\Member\Models\User;
 use Carbon\Carbon;
+use App\Services\Member\Models\User;
+use App\Services\Course\Models\Course;
+use App\Services\Member\Models\UserCourse;
+use App\Services\Course\Models\CourseComment;
+use App\Services\Course\Models\CourseCategory;
 
 class CourseTest extends Base
 {
-
     public function test_courses()
     {
         $courses = factory(Course::class, 10)->create([
@@ -64,7 +71,7 @@ class CourseTest extends Base
     }
 
 
-    public function test_course_id()
+    public function test_course_detail()
     {
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
@@ -72,6 +79,22 @@ class CourseTest extends Base
         ]);
         $response = $this->getJson('/api/v2/course/' . $course->id);
         $this->assertResponseSuccess($response);
+    }
+
+    public function test_course_detail_paid()
+    {
+        $user = factory(User::class)->create();
+
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+
+        UserCourse::create(['course_id' => $course->id, 'user_id' => $user->id, 'charge' => 1]);
+        
+        $response = $this->user($user)->getJson('/api/v2/course/' . $course->id);
+        $response = $this->assertResponseSuccess($response);
+        $this->assertTrue($response['data']['isBuy']);
     }
 
     public function test_course_id_not_exists()
@@ -128,5 +151,4 @@ class CourseTest extends Base
         $r = $this->assertResponseSuccess($response);
         $this->assertEquals(10, count($r['data']['comments']));
     }
-
 }

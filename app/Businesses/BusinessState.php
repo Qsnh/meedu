@@ -197,20 +197,20 @@ class BusinessState
     /**
      * 是否购买了课程
      *
-     * @param int $courseId
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param integer $userId
+     * @param integer $courseId
+     * @return boolean
      */
-    public function isBuyCourse(int $courseId): bool
+    public function isBuyCourse(int $userId, int $courseId): bool
     {
-        if (!Auth::check()) {
+        if (!$userId) {
             return false;
         }
         /**
          * @var $userService UserService
          */
         $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find(Auth::id(), ['role']);
+        $user = $userService->find($userId, ['role']);
         if ($this->isRole($user)) {
             return true;
         }
