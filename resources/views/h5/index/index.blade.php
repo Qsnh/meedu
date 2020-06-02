@@ -37,7 +37,7 @@
     @endforeach
 
     <div class="inspire">
-        <p class="mb-0">拥抱MeEdu 拥抱知识付费时代</p>
+        <p class="mb-0">拥抱慕课微课 拥抱在线教育时代</p>
     </div>
 
     <footer class="index-footer">

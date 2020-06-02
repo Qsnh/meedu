@@ -90,7 +90,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 friend-link-box-logo">
-                    <img src="{{$gConfig['system']['logo']}}" height="37" alt="{{config('app.name')}}">
+                    <img src="{{$gConfig['system']['white_logo']}}" height="37" alt="{{config('app.name')}}">
                 </div>
                 <div class="col-12 friend-link-box-link">
                     @foreach($links as $link)
