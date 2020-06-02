@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::post('promoCode', 'MemberController@generatePromoCode');
     Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
     Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
+    Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
 });
 
 Route::group(['middleware' => ['auth:apiv2']], function () {

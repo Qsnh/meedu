@@ -276,4 +276,20 @@ class MemberTest extends Base
         $this->assertEquals('meedu', $record->channel_name);
         $this->assertEquals('meedu1', $record->channel_account);
     }
+
+    public function test_messages_unreadNotificationCount()
+    {
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试1'));
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试2'));
+
+        $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(2, $response['data']);
+
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试2'));
+
+        $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(3, $response['data']);
+    }
 }

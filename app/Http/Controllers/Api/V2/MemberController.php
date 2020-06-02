@@ -716,6 +716,28 @@ class MemberController extends BaseController
 
     /**
      * @OA\Get(
+     *     path="/member/unreadNotificationCount",
+     *     summary="未读消息数量",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="integer",description="数量"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unreadNotificationCount()
+    {
+        $count = $this->userService->unreadNotificationCount($this->id());
+        return $this->data($count);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/member/notificationMarkAllAsRead",
      *     summary="消息全部标记已读",
      *     tags={"用户"},

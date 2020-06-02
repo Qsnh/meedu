@@ -450,6 +450,17 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * 未读消息数量
+     *
+     * @param integer $userId
+     * @return int
+     */
+    public function unreadNotificationCount(int $userId): int
+    {
+        return (int)User::find($userId)->unreadNotifications->count();
+    }
+
+    /**
      * @param int $userId
      * @param int $courseId
      * @return int

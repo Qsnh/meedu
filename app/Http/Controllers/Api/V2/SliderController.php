@@ -22,7 +22,7 @@ class SliderController extends BaseController
      * @OA\Get(
      *     path="/sliders",
      *     summary="幻灯片",
-     *     tags={"role"},
+     *     tags={"其它"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
