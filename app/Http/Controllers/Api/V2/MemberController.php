@@ -82,15 +82,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="created_at",type="integer",description="时间"),
  *     ),
  *     @OA\Schema(
- *         schema="PromoCode",
- *         type="object",
- *         title="优惠码",
- *         @OA\Property(property="code",type="integer",description="优惠码"),
- *         @OA\Property(property="expired_at",type="string",description="过期时间"),
- *         @OA\Property(property="invite_user_reward",type="integer",description="邀请人奖励"),
- *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请人奖励"),
- *     ),
- *     @OA\Schema(
  *         schema="InviteUser",
  *         type="object",
  *         title="邀请用户",

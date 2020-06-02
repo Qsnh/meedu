@@ -16,18 +16,6 @@ use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 /**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="CourseCategory",
- *         type="object",
- *         title="课程分类",
- *         @OA\Property(property="name",type="string",description="分类名"),
- *         @OA\Property(property="sort",type="integer",description="升序"),
- *     ),
- * )
- */
-
-/**
  * Class CourseCategoryController
  * @package App\Http\Controllers\Api\V2
  */
