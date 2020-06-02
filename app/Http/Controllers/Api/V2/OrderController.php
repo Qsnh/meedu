@@ -105,13 +105,13 @@ class OrderController extends BaseController
         if ($course['charge'] === 0) {
             return $this->error(__('course cant buy'));
         }
-        if ($this->userService->hasCourse(Auth::id(), $course['id'])) {
+        if ($this->userService->hasCourse($this->id(), $course['id'])) {
             return $this->error(__('course purchased'));
         }
         $code = $request->input('promo_code');
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
-        $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCode['id'] ?? 0);
+        $order = $this->orderService->createCourseOrder($this->id(), $course, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
@@ -146,7 +146,7 @@ class OrderController extends BaseController
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
         $role = $this->roleService->find($roleId);
-        $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCode['id'] ?? 0);
+        $order = $this->orderService->createRoleOrder($this->id(), $role, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
@@ -185,13 +185,13 @@ class OrderController extends BaseController
         if ($video['charge'] === 0) {
             return $this->error(__('video cant buy'));
         }
-        if ($this->userService->hasVideo(Auth::id(), $video['id'])) {
+        if ($this->userService->hasVideo($this->id(), $video['id'])) {
             return $this->error(__('video purchased'));
         }
         $code = $request->input('promo_code');
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
-        $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCode['id'] ?? 0);
+        $order = $this->orderService->createVideoOrder($this->id(), $video, $promoCode['id'] ?? 0);
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
