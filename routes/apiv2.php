@@ -86,10 +86,9 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
 
-    // 小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+    Route::post('/order/pay', 'PaymentController@pay');
     Route::get('/order/payments', 'PaymentController@payments');
 
-    // 优惠码检测
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 });

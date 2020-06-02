@@ -93,6 +93,7 @@ class Wechat implements Payment
      */
     public function query(array $order): PaymentStatus
     {
+        return new PaymentStatus(false);
     }
 
     /**

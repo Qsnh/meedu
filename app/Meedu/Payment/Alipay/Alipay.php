@@ -65,12 +65,15 @@ class Alipay implements Payment
     }
 
     /**
+     * 订单查询
+     *
      * @param array $order
      *
      * @return PaymentStatus
      */
     public function query(array $order): PaymentStatus
     {
+        return new PaymentStatus(false);
     }
 
     public function callback()
@@ -79,7 +82,7 @@ class Alipay implements Payment
 
         try {
             $data = $pay->verify();
-            Log::info($data);
+            Log::info(__METHOD__, [$data]);
 
             $order = $this->orderService->findOrFail($data['out_trade_no']);
 
