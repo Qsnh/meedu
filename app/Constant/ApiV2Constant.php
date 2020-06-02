@@ -82,12 +82,13 @@ class ApiV2Constant
      *         @OA\Property(property="seo_keywords",type="integer",description="seo_keywords"),
      *         @OA\Property(property="seo_description",type="integer",description="seo_description"),
      *         @OA\Property(property="chapter_id",type="integer",description="章节id"),
+     *         @OA\Property(property="is_ban_sell",type="integer",description="禁止销售，1是，0否"),
      *     ),
      * )
      */
     public const MODEL_VIDEO_FIELD = [
         'id', 'course_id', 'title', 'slug', 'view_num', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration',
+        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
