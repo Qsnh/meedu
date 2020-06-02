@@ -78,13 +78,15 @@ class PromoCodeController extends BaseController
     public function checkCode($code)
     {
         $code = $this->promoCodeService->findCode($code);
-        if (!$code) {
-            return $this->error(__('error'));
+        $canUse = 0;
+        $data = [];
+        if ($code) {
+            $canUse = (int)$this->businessState->promoCodeCanUse($code);
+            $data = arr1_clear($code, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
         }
-        $result = $this->businessState->promoCodeCanUse($code);
         return $this->data([
-            'can_use' => intval($result),
-            'promo_code' => arr1_clear($code, ApiV2Constant::MODEL_PROMO_CODE_FIELD),
+            'can_use' => $canUse,
+            'promo_code' => $data,
         ]);
     }
 }
