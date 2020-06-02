@@ -317,7 +317,7 @@ class ConfigService implements ConfigServiceInterface
         $apps = config('meedu.member.socialite');
         $list = [];
         foreach ($apps as $app) {
-            if (!($app['enabled'] ?? false)) {
+            if ((int)($app['enabled'] ?? 0) !== 1) {
                 continue;
             }
             $list[] = $app;
