@@ -33,6 +33,9 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
  *             @OA\Property(property="enabled_bullet_secret",type="integer",description="是否开启跑马灯"),
  *             @OA\Property(property="enabled_aliyun_private",type="integer",description="阿里云私密播放"),
  *         )),
+ *         @OA\Property(property="member",type="object",description="会员配置",@OA\Property(
+ *             @OA\Property(property="enabled_mobile_bind_alert",type="integer",description="强制绑定手机号，1是"),
+ *         )),
  *     ),
  * )
  */
@@ -80,6 +83,9 @@ class OtherController extends BaseController
                 'enabled_bullet_secret' => $plyaerConfig['enabled_bullet_secret'] ?? 0,
                 'enabled_aliyun_private' => $plyaerConfig['enabled_aliyun_private'] ?? 0,
             ],
+            'member' => [
+                'enabled_mobile_bind_alert' => $this->configService->getEnabledMobileBindAlert(),
+            ]
         ];
         return $this->data($data);
     }

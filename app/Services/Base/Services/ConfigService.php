@@ -347,6 +347,16 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 获取手机号强制绑定状态开关
+     *
+     * @return integer
+     */
+    public function getEnabledMobileBindAlert():int
+    {
+        return (int)config('meeedu.member.enabled_mobile_bind_alert', 0);
+    }
+
+    /**
      * 会员邀请配置
      *
      * @return array
