@@ -353,7 +353,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getEnabledMobileBindAlert():int
     {
-        return (int)config('meeedu.member.enabled_mobile_bind_alert', 0);
+        return (int)config('meedu.member.enabled_mobile_bind_alert', 0);
     }
 
     /**
