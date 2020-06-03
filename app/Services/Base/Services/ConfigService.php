@@ -17,6 +17,17 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 class ConfigService implements ConfigServiceInterface
 {
     /**
+     * 获取服务配置
+     *
+     * @param string $app
+     * @return array
+     */
+    public function getServiceConfig(string $app):array
+    {
+        return config('services.'.$app, []);
+    }
+
+    /**
      * 网站名
      *
      * @return string

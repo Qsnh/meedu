@@ -59,7 +59,16 @@ class Alipay implements Payment
             'subject' => $order['order_id'],
         ];
         $payOrderData = array_merge($payOrderData, $extra);
-        $createResult = Pay::alipay($this->configService->getAlipayPay())->{$order['payment_method']}($payOrderData);
+
+        $config = $this->configService->getAlipayPay();
+
+        // 重定向地址覆盖
+        if (isset($payOrderData['redirect'])) {
+            $config['return_url'] = $payOrderData['redirect'];
+            unset($payOrderData['redirect']);
+        }
+        
+        $createResult = Pay::alipay($config)->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);
     }

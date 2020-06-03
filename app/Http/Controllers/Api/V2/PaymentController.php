@@ -137,28 +137,26 @@ class PaymentController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/order/pay",
-     *     summary="支付",
+     * @OA\Get(
+     *     path="/order/pay/redirect",
+     *     summary="支付(跳转)",
      *     tags={"支付"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="payment_scene",description="支付场景，h5,wechat",type="string"),
-     *         @OA\Property(property="payment",description="支付网关",type="string"),
-     *         @OA\Property(property="order_id",description="订单号",type="string"),
-     *     )),
+     *     @OA\Parameter(in="query",name="payment_scene",description="支付场景，如：h5,wechat",required=true,@OA\Schema(type="string")),
+     *     @OA\Parameter(in="query",name="payment",description="支付网关",required=true,@OA\Schema(type="string")),
+     *     @OA\Parameter(in="query",name="order_id",description="订单号",required=true,@OA\Schema(type="string")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
      *             @OA\Property(property="code",type="integer",description="状态码"),
      *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="支付网关内容"),
+     *             @OA\Property(property="data",type="object",description="data"),
      *         )
      *     )
      * )
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function pay(Request $request)
+    public function payRedirect(Request $request)
     {
         $payment = $request->input('payment', '');
         $payemntScene = $request->input('payment_scene', '');
@@ -190,8 +188,6 @@ class PaymentController extends BaseController
             throw new SystemException(__('remote order create failed'));
         }
 
-        return $this->data([
-            'data' => $createResult->data,
-        ]);
+        return $createResult->data;
     }
 }

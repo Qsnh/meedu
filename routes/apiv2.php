@@ -18,6 +18,9 @@ Route::post('/login/password', 'LoginController@passwordLogin');
 Route::post('/login/mobile', 'LoginController@mobileLogin');
 // 手机号注册
 Route::post('/register/mobile', 'RegisterController@mobileRegister');
+// 无状态的社交登录
+Route::get('/login/socialite/{app}', 'LoginController@socialite');
+Route::any('/login/socialite/{app}/callback', 'LoginController@socialiteCallback')->name('api.v2.socialite.login.callback');
 
 // 课程
 Route::get('/courses', 'CourseController@paginate');
@@ -87,7 +90,7 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::post('/order/video', 'OrderController@createVideoOrder');
 
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
-    Route::post('/order/pay', 'PaymentController@pay');
+    Route::get('/order/pay/redirect', 'PaymentController@payRedirect');
     Route::get('/order/payments', 'PaymentController@payments');
 
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');

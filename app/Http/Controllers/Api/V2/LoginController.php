@@ -11,15 +11,24 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Socialite;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\CacheService;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
 use App\Http\Requests\ApiV2\PasswordLoginRequest;
+use App\Services\Member\Services\SocialiteService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 /**
  * Class LoginController.
@@ -31,9 +40,26 @@ class LoginController extends BaseController
      */
     protected $userService;
 
-    public function __construct(UserServiceInterface $userService)
-    {
+    protected $configService;
+    protected $cacheService;
+    protected $socialiteService;
+
+    /**
+     * @param UserServiceInterface $userService
+     * @param ConfigService $configService
+     * @param CacheService $cacheService
+     * @param SocialiteService $socialiteService
+     */
+    public function __construct(
+        UserServiceInterface $userService,
+        ConfigServiceInterface $configService,
+        CacheServiceInterface $cacheService,
+        SocialiteServiceInterface $socialiteService
+        ) {
         $this->userService = $userService;
+        $this->configService = $configService;
+        $this->cacheService = $cacheService;
+        $this->socialiteService = $socialiteService;
     }
 
     /**
@@ -124,5 +150,77 @@ class LoginController extends BaseController
         event(new UserLoginEvent($user['id']));
 
         return $this->data(compact('token'));
+    }
+
+    /**
+    * @OA\Post(
+    *     path="/login/socialite/{app}",
+    *     summary="社交登录",
+    *     @OA\Parameter(in="query",name="app",description="社交app",required=true,@OA\Schema(type="string")),
+    *     @OA\Parameter(in="query",name="redirect",description="重定向地址",required=true,@OA\Schema(type="string")),
+    *     tags={"Auth"},
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="object",description=""),
+    *         )
+    *     )
+    * )
+    *
+    * @param MobileLoginRequest $request
+    * @return \Illuminate\Http\JsonResponse
+    * @throws ApiV2Exception
+    */
+    public function socialite(Request $request, $app)
+    {
+        $redirect = $request->input('redirect');
+        if (!$redirect) {
+            abort(406);
+        }
+
+        // 记录重定向地址
+        $nonce = Str::random(6);
+        $this->cacheService->put($nonce, $redirect, 60);
+
+        return Socialite::driver($app)->redirectUrl(route('api.v2.socialite.login.callback', $app))->with(['state' => $nonce])->stateless()->redirect();
+    }
+
+    /**
+     * 社交登录回调
+     *
+     * @param Request $request
+     * @param string $app
+     * @return void
+     */
+    public function socialiteCallback(Request $request, $app)
+    {
+        $user = Socialite::driver($app)->stateless()->user();
+        $appId = $user->getId();
+
+        // 登录检测
+        $userId = $this->socialiteService->getBindUserId($app, $appId);
+        if (!$userId) {
+            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+        }
+
+        // 用户是否锁定检测
+        $user = $this->userService->find($userId);
+        if ($user['is_lock'] === FrontendConstant::YES) {
+            return $this->error(__('current user was locked,please contact administrator'));
+        }
+
+        // 登录
+        $token = Auth::guard($this->guard)->tokenById($user['id']);
+
+        // 登录事件
+        event(new UserLoginEvent($userId));
+
+        $nonce = $request->input('state');
+        $redirect = $this->cacheService->pull($nonce, '');
+
+        $redirect .= (strpos($redirect, '?') === false ? '?' : '&'). 'token=' . $token;
+        return redirect($redirect . '?token=' . $token);
     }
 }
