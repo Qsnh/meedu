@@ -31,7 +31,17 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 /**
- * Class LoginController.
+ * @OpenApi\Annotations\Schemas(
+ *     @OA\Schema(
+ *         schema="SocailiteApp",
+ *         type="object",
+ *         title="社交登录APP",
+ *         @OA\Property(property="app",type="string",description="app"),
+ *         @OA\Property(property="name",type="string",description="名称"),
+ *         @OA\Property(property="url",type="string",description="地址"),
+ *         @OA\Property(property="logo",type="string",description="logo"),
+ *     ),
+ * )
  */
 class LoginController extends BaseController
 {
@@ -153,7 +163,7 @@ class LoginController extends BaseController
     }
 
     /**
-    * @OA\Post(
+    * @OA\Get(
     *     path="/login/socialite/{app}",
     *     summary="社交登录",
     *     @OA\Parameter(in="query",name="app",description="社交app",required=true,@OA\Schema(type="string")),
@@ -168,10 +178,6 @@ class LoginController extends BaseController
     *         )
     *     )
     * )
-    *
-    * @param MobileLoginRequest $request
-    * @return \Illuminate\Http\JsonResponse
-    * @throws ApiV2Exception
     */
     public function socialite(Request $request, $app)
     {
@@ -222,5 +228,32 @@ class LoginController extends BaseController
 
         $redirect .= (strpos($redirect, '?') === false ? '?' : '&'). 'token=' . $token;
         return redirect($redirect . '?token=' . $token);
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/login/socialites",
+    *     summary="社交登录app",
+    *     tags={"Auth"},
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
+    *         )
+    *     )
+    * )
+    */
+    public function socialiteApps()
+    {
+        $apps = $this->configService->getEnabledSocialiteApps();
+        $apps = array_map(function ($app) {
+            $app['logo'] = url($app['logo']);
+            $app['url'] = route('api.v2.socialite.login', $app['app']);
+            return $app;
+        }, $apps);
+
+        return $this->data($apps);
     }
 }

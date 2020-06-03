@@ -19,7 +19,8 @@ Route::post('/login/mobile', 'LoginController@mobileLogin');
 // 手机号注册
 Route::post('/register/mobile', 'RegisterController@mobileRegister');
 // 无状态的社交登录
-Route::get('/login/socialite/{app}', 'LoginController@socialite');
+Route::get('/login/socialites', 'LoginController@socialiteApps');
+Route::get('/login/socialite/{app}', 'LoginController@socialite')->name('api.v2.socialite.login');
 Route::any('/login/socialite/{app}/callback', 'LoginController@socialiteCallback')->name('api.v2.socialite.login.callback');
 
 // 课程
