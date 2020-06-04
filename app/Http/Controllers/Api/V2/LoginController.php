@@ -250,7 +250,12 @@ class LoginController extends BaseController
         $apps = $this->configService->getEnabledSocialiteApps();
         $apps = array_map(function ($app) {
             $app['logo'] = url($app['logo']);
-            $app['url'] = route('api.v2.socialite.login', $app['app']);
+
+            // 授权地址
+            if (!($app['url'] ?? '')) {
+                $app['url'] = route('api.v2.socialite.login', $app['app']);
+            }
+            
             return $app;
         }, $apps);
 
