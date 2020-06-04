@@ -137,6 +137,7 @@ class CourseController extends BaseController
      *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
      *                 @OA\Property(property="videos",type="array",description="视频",@OA\Items(ref="#/components/schemas/Video")),
      *                 @OA\Property(property="isBuy",type="bool",description="是否购买"),
+     *                 @OA\Property(property="isCollect",type="bool",description="是否收藏"),
      *             ),
      *         )
      *     )
@@ -160,6 +161,10 @@ class CourseController extends BaseController
         // 是否购买
         $isBuy = false;
         $this->id() && $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
+
+        // 是否收藏
+        $isLikeCourse = false;
+        $this->check() && $isLikeCourse = $this->userService->likeCourseStatus($this->id(), $course['id']);
 
         return $this->data(compact('course', 'chapters', 'videos', 'isBuy'));
     }
