@@ -163,10 +163,10 @@ class CourseController extends BaseController
         $this->id() && $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
 
         // 是否收藏
-        $isLikeCourse = false;
-        $this->check() && $isLikeCourse = $this->userService->likeCourseStatus($this->id(), $course['id']);
+        $isCollect = false;
+        $this->check() && $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy'));
+        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect'));
     }
 
     /**
