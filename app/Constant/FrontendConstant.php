@@ -50,4 +50,6 @@ class FrontendConstant
     const ORDER_GOODS_TYPE_VIDEO = 'VIDEO';
     const ORDER_GOODS_TYPE_ROLE = 'ROLE';
     const ORDER_GOODS_TYPE_BOOK = 'BOOK';
+
+    const API_GUARD = 'apiv2';
 }

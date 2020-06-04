@@ -164,74 +164,6 @@ class LoginController extends BaseController
 
     /**
     * @OA\Get(
-    *     path="/login/socialite/{app}",
-    *     summary="社交登录",
-    *     @OA\Parameter(in="query",name="app",description="社交app",required=true,@OA\Schema(type="string")),
-    *     @OA\Parameter(in="query",name="redirect",description="重定向地址",required=true,@OA\Schema(type="string")),
-    *     tags={"Auth"},
-    *     @OA\Response(
-    *         description="",response=200,
-    *         @OA\JsonContent(
-    *             @OA\Property(property="code",type="integer",description="状态码"),
-    *             @OA\Property(property="message",type="string",description="消息"),
-    *             @OA\Property(property="data",type="object",description=""),
-    *         )
-    *     )
-    * )
-    */
-    public function socialite(Request $request, $app)
-    {
-        $redirect = $request->input('redirect');
-        if (!$redirect) {
-            abort(406);
-        }
-
-        // 记录重定向地址
-        $nonce = Str::random(6);
-        $this->cacheService->put($nonce, $redirect, 60);
-
-        return Socialite::driver($app)->redirectUrl(route('api.v2.socialite.login.callback', $app))->with(['state' => $nonce])->stateless()->redirect();
-    }
-
-    /**
-     * 社交登录回调
-     *
-     * @param Request $request
-     * @param string $app
-     * @return void
-     */
-    public function socialiteCallback(Request $request, $app)
-    {
-        $user = Socialite::driver($app)->stateless()->user();
-        $appId = $user->getId();
-
-        // 登录检测
-        $userId = $this->socialiteService->getBindUserId($app, $appId);
-        if (!$userId) {
-            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
-        }
-
-        // 用户是否锁定检测
-        $user = $this->userService->find($userId);
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__('current user was locked,please contact administrator'));
-        }
-
-        // 登录
-        $token = Auth::guard($this->guard)->tokenById($user['id']);
-
-        // 登录事件
-        event(new UserLoginEvent($userId));
-
-        $nonce = $request->input('state');
-        $redirect = $this->cacheService->pull($nonce, '');
-
-        $redirect .= (strpos($redirect, '?') === false ? '?' : '&'). 'token=' . $token;
-        return redirect($redirect . '?token=' . $token);
-    }
-
-    /**
-    * @OA\Get(
     *     path="/login/socialites",
     *     summary="社交登录app",
     *     tags={"Auth"},
@@ -253,7 +185,7 @@ class LoginController extends BaseController
 
             // 授权地址
             if (!($app['url'] ?? '')) {
-                $app['url'] = route('api.v2.socialite.login', $app['app']);
+                $app['url'] = route('socialite', $app['app']);
             }
             
             return $app;

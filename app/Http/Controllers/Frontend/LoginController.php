@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Socialite;
+use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
@@ -90,20 +91,20 @@ class LoginController extends BaseController
 
     /**
      * 社交登录
-     * @param $app
-     * @return mixed
+     *
+     * @param Request $request
+     * @param string $app
      */
-    public function socialLogin($app)
+    public function socialLogin(Request $request, $app)
     {
+        $redirect = $request->input('redirect');
+        $redirect && session(['socialite_login_redirect' => $redirect]);
+
+        // 开始跳转
         return Socialite::driver($app)->redirect();
     }
 
-    /**
-     * @param $app
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws \App\Exceptions\ServiceException
-     */
-    public function socialiteLoginCallback($app)
+    public function socialiteLoginCallback(Request $request, $app)
     {
         $user = Socialite::driver($app)->user();
         $appId = $user->getId();
@@ -129,6 +130,12 @@ class LoginController extends BaseController
 
         // 登录事件
         event(new UserLoginEvent($userId));
+
+        if ($redirect = session('socialite_login_redirect')) {
+            $token = Auth::guard(FrontendConstant::API_GUARD)->tokenById($userId);
+            $redirect .= (strpos($redirect, '?') === false ? '?' : '&') . 'token=' . $token;
+            return redirect($redirect);
+        }
 
         return redirect($this->redirectTo());
     }
