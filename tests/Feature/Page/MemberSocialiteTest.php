@@ -32,7 +32,6 @@ class MemberSocialiteTest extends TestCase
         $this->actingAs($user)
             ->visit(route('member.socialite'))
             ->seeStatusCode(200)
-            ->dontSee('QQ')
             ->dontSee('微信')
             ->see('Github');
     }

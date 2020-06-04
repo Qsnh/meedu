@@ -55,13 +55,22 @@ class UserRegisterIpToAreaJob implements ShouldQueue
                 return;
             }
 
-            $area = Ip::ip2area($user['register_ip']);
-            if ($area === false) {
-                // 再试一次
-                if ($this->times < 1) {
-                    dispatch(new UserRegisterIpToAreaJob($this->userId, $this->times + 1))->delay(3);
+            $localIp = [
+                '127.0.0.1' => true,
+                'localhost' => true,
+            ];
+
+            if (isset($localIp[$user['register_ip']])) {
+                $area = '本地';
+            } else {
+                $area = Ip::ip2area($user['register_ip']);
+                if ($area === false) {
+                    // 再试一次
+                    if ($this->times < 1) {
+                        dispatch(new UserRegisterIpToAreaJob($this->userId, $this->times + 1))->delay(3);
+                    }
+                    return;
                 }
-                return;
             }
 
             $userService->setRegisterArea($this->userId, $area);
