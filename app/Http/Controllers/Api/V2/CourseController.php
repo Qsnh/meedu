@@ -234,4 +234,29 @@ class CourseController extends BaseController
             'users' => $commentUsers,
         ]);
     }
+
+    /**
+    * @OA\Get(
+    *     path="/course/{id}/like",
+    *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
+    *     summary="喜欢课程",
+    *     tags={"课程"},
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="object",description=""),
+    *         )
+    *     )
+    * )
+    * @param $id
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function like($id)
+    {
+        $course = $this->courseService->find($id);
+        $status = $this->userService->likeACourse($this->id(), $course['id']);
+        return $this->data($status);
+    }
 }

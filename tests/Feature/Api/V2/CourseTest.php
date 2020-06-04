@@ -17,6 +17,7 @@ use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Course\Models\CourseCategory;
+use App\Services\Member\Models\UserLikeCourse;
 
 class CourseTest extends Base
 {
@@ -128,7 +129,7 @@ class CourseTest extends Base
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->addDays(1),
+            'published_at' => Carbon::now()->subDays(1),
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
@@ -143,12 +144,26 @@ class CourseTest extends Base
     {
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->addDays(1),
+            'published_at' => Carbon::now()->subDays(1),
         ]);
         factory(CourseComment::class, 10)->create(['course_id' => $course->id]);
 
         $response = $this->getJson('api/v2/course/' . $course->id . '/comments');
         $r = $this->assertResponseSuccess($response);
         $this->assertEquals(10, count($r['data']['comments']));
+    }
+
+    public function test_course_like()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+        ]);
+        $response = $this->user($user)->getJson('api/v2/course/' . $course->id . '/like');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(1, $response['data']);
+
+        $this->assertTrue(UserLikeCourse::query()->where('user_id', $user->id)->where('course_id', $course->id)->exists());
     }
 }

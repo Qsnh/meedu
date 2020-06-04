@@ -28,6 +28,7 @@ Route::get('/courses', 'CourseController@paginate');
 Route::get('/course/{id}', 'CourseController@detail');
 Route::get('/course/{id}/comments', 'CourseController@comments');
 Route::post('/course/{id}/comment', 'CourseController@createComment')->middleware(['auth:apiv2']);
+Route::get('/course/{id}/like', 'CourseController@like')->middleware(['auth:apiv2']);
 // 全部课程分类
 Route::get('/course_categories', 'CourseCategoryController@all');
 
