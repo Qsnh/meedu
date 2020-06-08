@@ -592,4 +592,16 @@ class UserService implements UserServiceInterface
     {
         $area && User::query()->where('id', $id)->update(['register_area' => $area]);
     }
+
+    /**
+     * 重置会员过期用户
+     *
+     * @return int
+     */
+    public function resetRoleExpiredUsers(): int
+    {
+        return User::query()
+            ->where('role_expired_at', '<=', Carbon::now())
+            ->update(['role_id' => 0, 'role_expired_at' => null]);
+    }
 }
