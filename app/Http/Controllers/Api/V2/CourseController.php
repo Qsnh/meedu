@@ -160,13 +160,20 @@ class CourseController extends BaseController
 
         // 是否购买
         $isBuy = false;
-        $this->id() && $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
-
         // 是否收藏
         $isCollect = false;
-        $this->check() && $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect'));
+        if ($this->check()) {
+            $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
+            $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
+
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+        }
+
+        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress'));
     }
 
     /**
@@ -236,23 +243,23 @@ class CourseController extends BaseController
     }
 
     /**
-    * @OA\Get(
-    *     path="/course/{id}/like",
-    *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
-    *     summary="喜欢课程",
-    *     tags={"课程"},
-    *     @OA\Response(
-    *         description="",response=200,
-    *         @OA\JsonContent(
-    *             @OA\Property(property="code",type="integer",description="状态码"),
-    *             @OA\Property(property="message",type="string",description="消息"),
-    *             @OA\Property(property="data",type="object",description=""),
-    *         )
-    *     )
-    * )
-    * @param $id
-    * @return \Illuminate\Http\JsonResponse
-    */
+     * @OA\Get(
+     *     path="/course/{id}/like",
+     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
+     *     summary="喜欢课程",
+     *     tags={"课程"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function like($id)
     {
         $course = $this->courseService->find($id);

@@ -178,7 +178,15 @@ class VideoController extends BaseController
 
         // 是否可以观看
         $isWatch = false;
-        $this->check() && $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
+
+        if ($this->check()) {
+            $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
+
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+        }
 
         $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
         $video = arr1_clear($video, ApiV2Constant::MODEL_VIDEO_FIELD);
@@ -189,6 +197,7 @@ class VideoController extends BaseController
             'chapters' => $chapters,
             'course' => $course,
             'is_watch' => $isWatch,
+            'video_watched_progress' => $videoWatchedProgress,
         ]);
     }
 
@@ -296,27 +305,27 @@ class VideoController extends BaseController
     }
 
     /**
-    * @OA\Post(
-    *     path="/video/{id}/record",
-    *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
-    *     summary="视频观看时长记录",
-    *     tags={"视频"},
-    *     @OA\RequestBody(description="",@OA\JsonContent(
-    *         @OA\Property(property="duration",description="时长",type="integer"),
-    *     )),
-    *     @OA\Response(
-    *         description="",response=200,
-    *         @OA\JsonContent(
-    *             @OA\Property(property="code",type="integer",description="状态码"),
-    *             @OA\Property(property="message",type="string",description="消息"),
-    *             @OA\Property(property="data",type="object",description=""),
-    *         )
-    *     )
-    * )
-    * @param CommentRequest $request
-    * @param $id
-    * @return \Illuminate\Http\JsonResponse
-    */
+     * @OA\Post(
+     *     path="/video/{id}/record",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+     *     summary="视频观看时长记录",
+     *     tags={"视频"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="duration",description="时长",type="integer"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @param CommentRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function recordVideo(Request $request, $id)
     {
         $duration = (int)$request->post('duration', 0);
