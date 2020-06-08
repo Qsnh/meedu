@@ -411,7 +411,7 @@ class UserService implements UserServiceInterface
      */
     public function getCurrentUserCourseCount(): int
     {
-        return (int) UserCourse::whereUserId(Auth::id())->count();
+        return (int)UserCourse::whereUserId(Auth::id())->count();
     }
 
     /**
@@ -419,7 +419,7 @@ class UserService implements UserServiceInterface
      */
     public function getCurrentUserVideoCount(): int
     {
-        return (int) UserVideo::whereUserId(Auth::id())->count();
+        return (int)UserVideo::whereUserId(Auth::id())->count();
     }
 
     /**
@@ -551,6 +551,18 @@ class UserService implements UserServiceInterface
     {
         $records = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->get();
         return $records->toArray();
+    }
+
+    /**
+     * 获取课程的最新一条观看记录
+     * @param int $userId
+     * @param int $courseId
+     * @return array
+     */
+    public function getLatestRecord(int $userId, int $courseId): array
+    {
+        $record = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->orderByDesc('updated_at')->first();
+        return $record ? $record->toArray() : [];
     }
 
     /**

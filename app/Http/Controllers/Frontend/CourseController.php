@@ -151,17 +151,34 @@ class CourseController extends FrontendController
 
         // 是否购买
         $isBuy = false;
-        Auth::check() && $isBuy = $this->businessState->isBuyCourse(Auth::id(), $course['id']);
         // 喜欢课程
         $isLikeCourse = false;
-        Auth::check() && $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
         // 该课程的第一个视频
-        $firstChapter = Arr::first($chapters);
         $firstVideo = [];
-        if ($firstChapter && ($videos[$firstChapter['id']] ?? [])) {
-            $firstVideo = $videos[$firstChapter['id']][0];
-        } else {
-            Arr::first($videos) && $firstVideo = $videos[0][0];
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
+
+        // 已登录用户的一些判断
+        if (Auth::check()) {
+            // 是否购买
+            $isBuy = $this->businessState->isBuyCourse(Auth::id(), $course['id']);
+            // 是否收藏当前课程
+            $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
+            // 课程视频观看进度
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords(Auth::id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+            // 最近一条观看记录
+            $latestWatchRecord = $this->userService->getLatestRecord(Auth::id(), $course['id']);
+            $latestWatchRecord && $firstVideo = $this->videoService->find($latestWatchRecord['video_id']);
+        }
+
+        if (!$firstVideo) {
+            $firstChapter = Arr::first($chapters);
+            if ($firstChapter && ($videos[$firstChapter['id']] ?? [])) {
+                $firstVideo = $videos[$firstChapter['id']][0];
+            } else {
+                Arr::first($videos) && $firstVideo = $videos[0][0];
+            }
         }
 
         return v('frontend.course.show', compact(
@@ -177,15 +194,11 @@ class CourseController extends FrontendController
             'category',
             'isLikeCourse',
             'firstVideo',
-            'scene'
+            'scene',
+            'videoWatchedProgress'
         ));
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);

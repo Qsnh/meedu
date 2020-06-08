@@ -120,50 +120,48 @@
                                 <div class="course-chapter-title">{{$chapter['title']}}</div>
                                 @foreach($videos[$chapter['id']] ?? [] as $video)
                                     <div class="course-videos-box">
-                                        <div class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
-                                            <span class="player-icon"></span>
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="video-title">{{$video['title']}}</a>
-                                            @if($video['charge'] === 0)
-                                                <span class="free-label">免费</span>
-                                            @endif
-                                            <span class="video-duration">{{duration_humans($video['duration'])}}</span>
-                                            @if($isBuy)
-                                                <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                                   class="learn-button">继续学习</a>
-                                            @elseif($video['charge'] === 0)
-                                                <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                                   class="learn-button">免费学习</a>
-                                            @else
-                                                <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                                   class="learn-button">开始学习</a>
-                                            @endif
-                                        </div>
+                                        <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                           class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
+                                            <div class="player-icon"></div>
+                                            <div href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                                 class="video-title">
+                                                {{$video['title']}}
+                                                @if($video['charge'] === 0)
+                                                    <span class="free-label">免费</span>
+                                                @endif
+                                            </div>
+                                            <div class="video-duration">
+                                                @if(isset($videoWatchedProgress[$video['id']]) && $videoWatchedProgress[$video['id']]['watched_at'])
+                                                    已看完
+                                                @else
+                                                    {{duration_humans($video['duration'])}}
+                                                @endif
+                                            </div>
+                                        </a>
                                     </div>
                                 @endforeach
                             @endforeach
                         @else
                             @foreach($videos[0] ?? [] as $video)
                                 <div class="course-videos-box">
-                                    <div class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
-                                        <span class="player-icon"></span>
-                                        <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                           class="video-title">{{$video['title']}}</a>
-                                        @if($video['charge'] === 0)
-                                            <span class="free-label">免费</span>
-                                        @endif
-                                        <span class="video-duration">{{duration_humans($video['duration'])}}</span>
-                                        @if($isBuy)
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">继续学习</a>
-                                        @elseif($video['charge'] === 0)
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">免费学习</a>
-                                        @else
-                                            <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
-                                               class="learn-button">开始学习</a>
-                                        @endif
-                                    </div>
+                                    <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                       class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
+                                        <div class="player-icon"></div>
+                                        <div href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
+                                             class="video-title">
+                                            {{$video['title']}}
+                                            @if($video['charge'] === 0)
+                                                <span class="free-label">免费</span>
+                                            @endif
+                                        </div>
+                                        <div class="video-duration">
+                                            @if(isset($videoWatchedProgress[$video['id']]) && $videoWatchedProgress[$video['id']]['watched_at'])
+                                                已看完
+                                            @else
+                                                {{duration_humans($video['duration'])}}
+                                            @endif
+                                        </div>
+                                    </a>
                                 </div>
                             @endforeach
                         @endif
