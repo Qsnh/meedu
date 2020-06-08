@@ -5,6 +5,7 @@ Route::post('/login', 'LoginController@login');
 Route::group(['middleware' => ['auth:administrator']], function () {
 
     Route::get('/user', 'LoginController@user');
+    Route::get('/menus', 'LoginController@menus');
 
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/check', 'DashboardController@check');
@@ -88,7 +89,6 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::group(['prefix' => 'administrator'], function () {
         Route::put('/password', 'AdministratorController@editPasswordHandle');
         Route::get('/', 'AdministratorController@index');
-        Route::get('/user', 'AdministratorController@user');
         Route::get('/create', 'AdministratorController@create');
         Route::post('/', 'AdministratorController@store');
         Route::get('/{id}', 'AdministratorController@edit');
@@ -99,20 +99,16 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 权限
     Route::group(['prefix' => 'administrator_permission'], function () {
         Route::get('/', 'AdministratorPermissionController@index');
-        Route::post('/', 'AdministratorPermissionController@store');
-        Route::get('/{id}', 'AdministratorPermissionController@edit');
-        Route::put('/{id}', 'AdministratorPermissionController@update');
-        Route::delete('/{id}', 'AdministratorPermissionController@destroy');
     });
 
     // 角色
     Route::group(['prefix' => 'administrator_role'], function () {
         Route::get('/', 'AdministratorRoleController@index');
+        Route::get('/create', 'AdministratorRoleController@create');
         Route::post('/', 'AdministratorRoleController@store');
         Route::get('/{id}', 'AdministratorRoleController@edit');
         Route::put('/{id}', 'AdministratorRoleController@update');
         Route::delete('/{id}', 'AdministratorRoleController@destroy');
-        Route::post('/{id}/permission', 'AdministratorRoleController@permissionSave');
     });
 
     // 课程章节
@@ -139,11 +135,11 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 视频
     Route::group(['prefix' => 'video'], function () {
         Route::get('/', 'CourseVideoController@index');
+        Route::get('/create', 'CourseVideoController@create');
         Route::post('/', 'CourseVideoController@store');
         Route::get('/{id}', 'CourseVideoController@edit');
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
-        Route::get('/create/params', 'CourseVideoController@createParams');
     });
 
     // 会员

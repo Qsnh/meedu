@@ -14,15 +14,24 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Illuminate\Http\Request;
 use App\Models\AdministratorRole;
 use App\Constant\BackendApiConstant;
+use App\Models\AdministratorPermission;
 use App\Http\Requests\Backend\AdministratorRoleRequest;
 
 class AdministratorRoleController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = AdministratorRole::orderByDesc('id')->paginate(\request()->input('size', 12));
+        $roles = AdministratorRole::orderByDesc('id')->paginate($request->input('size', 10));
 
         return $this->successData($roles);
+    }
+
+    public function create()
+    {
+        $permissions = AdministratorPermission::query()->select(['id', 'slug', 'display_name', 'group_name'])->get()->groupBy('group_name');
+        return $this->successData([
+            'permissions' => $permissions,
+        ]);
     }
 
     public function store(
@@ -30,6 +39,8 @@ class AdministratorRoleController extends BaseController
         AdministratorRole $role
     ) {
         $role->fill($request->filldata())->save();
+
+        $role->permissions()->sync($request->input('permission_ids', []));
 
         return $this->success();
     }
@@ -46,6 +57,8 @@ class AdministratorRoleController extends BaseController
         $role = AdministratorRole::findOrFail($id);
         $role->fill($request->filldata())->save();
 
+        $role->permissions()->sync($request->input('permission_ids', []));
+
         return $this->success();
     }
 
@@ -59,14 +72,6 @@ class AdministratorRoleController extends BaseController
             return $this->error(BackendApiConstant::ROLE_BAN_DELETE_FOR_INIT_ADMINISTRATOR);
         }
         $role->delete();
-
-        return $this->success();
-    }
-
-    public function permissionSave(Request $request, $id)
-    {
-        $role = AdministratorRole::findOrFail($id);
-        $role->permissions()->sync($request->input('permission_id', []));
 
         return $this->success();
     }

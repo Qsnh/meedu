@@ -15,6 +15,7 @@ class AddColumnAdmPermissionsTables extends Migration
     {
         Schema::table('administrator_permissions', function (Blueprint $table) {
             $table->string('route')->default('')->comment('类型');
+            $table->string('group_name')->default('')->comment('分组');
         });
     }
 
@@ -27,6 +28,7 @@ class AddColumnAdmPermissionsTables extends Migration
     {
         Schema::table('administrator_permissions', function (Blueprint $table) {
             $table->dropColumn('route');
+            $table->dropColumn('group_name');
         });
     }
 }

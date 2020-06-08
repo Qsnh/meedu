@@ -33,4 +33,18 @@ class BackendApiConstant
     public const NO_AUTH_CODE = 401;
 
     public const LOCAL_PUBLIC_DISK = 'public';
+
+    public const PERMISSION_WHITE_LIST = [
+        '/user',
+        '/menus',
+        '/login',
+        '/dashboard',
+        '/dashboard/system/info',
+        '/dashboard/check',
+        '/role/all',
+        '/administrator/password',
+        '/administrator_permission',
+        '/course/all',
+        '/upload/image/tinymce',
+    ];
 }

@@ -19,7 +19,7 @@ class AdministratorPermission extends Model
 
     protected $fillable = [
         'display_name', 'slug', 'description',
-        'method', 'url', 'route',
+        'method', 'url', 'route', 'group_name',
     ];
 
     /**

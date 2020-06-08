@@ -130,6 +130,21 @@ class Administrator extends Authenticatable implements JWTSubject
         return $permissionIds->unique();
     }
 
+    public function permissions()
+    {
+        $permissions = [];
+        $roles = $this->roles;
+        if ($roles->isEmpty()) {
+            return $permissions;
+        }
+        foreach ($roles as $role) {
+            $tmp = $role->permissions()->select(['slug'])->get()->pluck('slug')->toArray();
+            $permissions = array_merge($permissions, $tmp);
+        }
+        $permissions = array_flip($permissions);
+        return $permissions;
+    }
+
     /**
      * 是否为超级管理员.
      *

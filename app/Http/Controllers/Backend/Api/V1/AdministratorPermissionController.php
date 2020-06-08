@@ -11,51 +11,14 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Constant\BackendApiConstant;
 use App\Models\AdministratorPermission;
-use App\Http\Requests\Backend\AdministratorPermissionRequest;
 
 class AdministratorPermissionController extends BaseController
 {
     public function index()
     {
-        $permissions = AdministratorPermission::orderByDesc('id')->paginate(10);
+        $permissions = AdministratorPermission::query()->orderByDesc('id')->get();
 
         return $this->successData($permissions);
-    }
-
-    public function store(
-        AdministratorPermissionRequest $request,
-        AdministratorPermission $permission
-    ) {
-        $permission->fill($request->filldata())->save();
-
-        return $this->success();
-    }
-
-    public function edit($id)
-    {
-        $permission = AdministratorPermission::findOrFail($id);
-
-        return $this->successData($permission);
-    }
-
-    public function update(AdministratorPermissionRequest $request, $id)
-    {
-        $permission = AdministratorPermission::findOrFail($id);
-        $permission->fill($request->filldata())->save();
-
-        return $this->success();
-    }
-
-    public function destroy($id)
-    {
-        $permission = AdministratorPermission::findOrFail($id);
-        if ($permission->roles()->exists()) {
-            return $this->error(BackendApiConstant::PERMISSION_BAN_DELETE_FOR_CHILDREN);
-        }
-        $permission->delete();
-
-        return $this->success();
     }
 }
