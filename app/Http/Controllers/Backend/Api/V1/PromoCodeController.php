@@ -17,9 +17,14 @@ use App\Http\Requests\Backend\PromoCodeRequest;
 
 class PromoCodeController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $items = PromoCode::orderByDesc('id')->paginate(12);
+        $key = $request->input('key');
+        $items = PromoCode::query()->when($key, function ($query) use ($key) {
+            $query->where('code', 'like', $key . '%');
+        })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 20));
 
         return $this->successData($items);
     }
