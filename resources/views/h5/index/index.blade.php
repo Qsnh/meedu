@@ -36,10 +36,6 @@
         </div>
     @endforeach
 
-    <div class="inspire">
-        <p class="mb-0">拥抱MeEdu 拥抱知识付费时代</p>
-    </div>
-
     <footer class="index-footer">
         <p>Powered By <a href="https://meedu.vip">MeEdu</a></p>
         <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn"
