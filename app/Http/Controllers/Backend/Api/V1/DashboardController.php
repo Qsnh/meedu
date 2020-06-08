@@ -20,7 +20,7 @@ class DashboardController extends BaseController
 {
     public function index()
     {
-        $todayRegisterUserCount = User::query()->where('created_at', '>=', Carbon::now()->subDays(1)->format('Y-m-d'))->count();
+        $todayRegisterUserCount = User::query()->where('created_at', '>=', date('Y-m-d'))->count();
         $todayPaidNum = Order::todayPaidNum();
         $todayPaidSum = Order::todayPaidSum();
 
