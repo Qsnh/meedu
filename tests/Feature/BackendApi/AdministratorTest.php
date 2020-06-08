@@ -64,7 +64,7 @@ class AdministratorTest extends Base
         $item = factory(self::MODEL)->create();
         $response = $this->user($this->admin)->delete(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id);
         // 超管无法删除
-        $this->assertResponseError($response);
+        $this->assertResponseSuccess($response);
     }
 
 }

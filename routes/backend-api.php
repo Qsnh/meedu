@@ -89,6 +89,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::put('/password', 'AdministratorController@editPasswordHandle');
         Route::get('/', 'AdministratorController@index');
         Route::get('/user', 'AdministratorController@user');
+        Route::get('/create', 'AdministratorController@create');
         Route::post('/', 'AdministratorController@store');
         Route::get('/{id}', 'AdministratorController@edit');
         Route::put('/{id}', 'AdministratorController@update');
@@ -102,16 +103,6 @@ Route::group(['middleware' => ['auth:administrator']], function () {
         Route::get('/{id}', 'AdministratorPermissionController@edit');
         Route::put('/{id}', 'AdministratorPermissionController@update');
         Route::delete('/{id}', 'AdministratorPermissionController@destroy');
-    });
-
-    // 后台菜单
-    Route::group(['prefix' => 'administrator_menu'], function () {
-        Route::get('/', 'AdministratorMenuController@index');
-        Route::post('/', 'AdministratorMenuController@store');
-        Route::get('/{id}', 'AdministratorMenuController@edit');
-        Route::put('/{id}/', 'AdministratorMenuController@update');
-        Route::delete('/{id}/', 'AdministratorMenuController@destroy');
-        Route::post('/save', 'AdministratorMenuController@saveChange');
     });
 
     // 角色

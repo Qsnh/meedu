@@ -112,5 +112,6 @@
   "video cant buy": "当前视频无法购买",
   "course purchased": "课程已购买",
   "video purchased": "视频已购买",
-  "this video cannot be sold": "该视频无法购买"
+  "this video cannot be sold": "该视频无法购买",
+  "administrator cant login": "当前账户已锁定"
 }

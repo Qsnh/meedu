@@ -32,12 +32,18 @@ class LoginController extends BaseController
         if (!Hash::check($password, $admin->password)) {
             return $this->error(BackendApiConstant::LOGIN_PASSWORD_ERROR);
         }
+
+        if ($admin->is_ban_login === 1) {
+            return $this->error(__('administrator cant login'));
+        }
+
         // jwt登录
         $token = Auth::guard(self::GUARD)->login($admin);
 
         // 登录日志
         $admin->last_login_ip = $request->getClientIp();
         $admin->last_login_date = Carbon::now();
+        $admin->login_times++;
         $admin->save();
 
         return $this->successData(compact('token'));

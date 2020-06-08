@@ -25,11 +25,15 @@ class Administrator extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name', 'email', 'password', 'last_login_ip',
-        'last_login_date',
+        'last_login_date', 'is_ban_login', 'login_times',
     ];
 
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $appends = [
+        'role_id',
     ];
 
     public function getJWTIdentifier()
@@ -40,6 +44,12 @@ class Administrator extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getRoleIdAttribute()
+    {
+        $roles = $this->roles()->select(['id'])->get()->pluck('id');
+        return $roles;
     }
 
     /**

@@ -12,7 +12,6 @@ class AdministratorPermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
-
             // 后台菜单
             [
                 'display_name' => '后台菜单界面',
@@ -516,7 +515,7 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => '/backend/link/\d+/delete',
                 'description' => '',
             ],
-            
+
             // 推广链接
             [
                 'display_name' => '推广链接首页',
@@ -633,7 +632,10 @@ class AdministratorPermissionSeeder extends Seeder
             $exists = \App\Models\AdministratorPermission::where('slug', $permission['slug'])
                 ->where('method', $permission['method'])
                 ->exists();
-            ! $exists && \App\Models\AdministratorPermission::create($permission);
+            if ($exists) {
+                continue;
+            }
+            \App\Models\AdministratorPermission::create($permission);
         }
     }
 }
