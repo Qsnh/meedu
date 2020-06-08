@@ -53,6 +53,9 @@ class LoginController extends BaseController
     {
         $admin = Auth::guard(self::GUARD)->user();
 
+        $permissions = $admin->permissions();
+        $admin['permissions'] = $permissions;
+
         return $this->successData($admin);
     }
 

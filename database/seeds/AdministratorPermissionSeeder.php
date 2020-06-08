@@ -416,7 +416,7 @@ class AdministratorPermissionSeeder extends Seeder
             [
                 'group_name' => '课程',
                 'display_name' => '课程章节删除',
-                'slug' => 'course_chapter.delete',
+                'slug' => 'course_chapter.destroy',
                 'method' => 'DELETE',
                 'url' => 'course_chapter/\d+/\d+',
             ],
@@ -634,7 +634,7 @@ class AdministratorPermissionSeeder extends Seeder
             [
                 'group_name' => '系统',
                 'display_name' => '系统配置保存',
-                'slug' => 'setting',
+                'slug' => 'setting.save',
                 'method' => 'POST',
                 'url' => 'setting',
             ],

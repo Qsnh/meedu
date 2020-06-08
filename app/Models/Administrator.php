@@ -33,7 +33,7 @@ class Administrator extends Authenticatable implements JWTSubject
     ];
 
     protected $appends = [
-        'role_id',
+        'role_id', 'is_super',
     ];
 
     public function getJWTIdentifier()
@@ -44,6 +44,11 @@ class Administrator extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getIsSuperAttribute()
+    {
+        return $this->isSuper();
     }
 
     public function getRoleIdAttribute()
