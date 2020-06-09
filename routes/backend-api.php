@@ -2,7 +2,7 @@
 
 Route::post('/login', 'LoginController@login');
 
-Route::group(['middleware' => ['auth:administrator']], function () {
+Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
 
     Route::get('/user', 'LoginController@user');
     Route::get('/menus', 'LoginController@menus');

@@ -5,16 +5,31 @@ namespace Tests\Feature\BackendApi;
 
 
 use App\Models\Administrator;
+use App\Models\AdministratorRole;
+use Illuminate\Support\Facades\DB;
 
 class UserTest extends Base
 {
 
+    protected $admin;
+    protected $role;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->admin = factory(Administrator::class)->create();
+        $this->role = factory(AdministratorRole::class)->create();
+        DB::table('administrator_role_relation')->insert([
+            'administrator_id' => $this->admin->id,
+            'role_id' => $this->role->id,
+        ]);
+    }
+
     public function test_user()
     {
-        $admin = factory(Administrator::class)->create();
-        $response = $this->user($admin)->get(self::API_V1_PREFIX . '/user');
+        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/user');
         $data = $this->assertResponseSuccess($response);
-        $this->assertEquals($admin->email, $data['data']['email']);
+        $this->assertEquals($this->admin->email, $data['data']['email']);
     }
 
 }
