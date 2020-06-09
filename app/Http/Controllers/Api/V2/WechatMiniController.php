@@ -27,7 +27,7 @@ class WechatMiniController extends BaseController
 
     /**
      * WechatMiniController constructor.
-     * @param ConfigServiceInterface $configService
+     * @param ConfigService $configService
      */
     public function __construct(ConfigServiceInterface $configService)
     {
@@ -44,7 +44,7 @@ class WechatMiniController extends BaseController
     /**
      * @OA\Post(
      *     path="/wechat/mini/login",
-     *     summary="微信小程序登录",
+     *     summary="微信小程序静默登录",
      *     tags={"Auth"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="code",description="code",type="string"),

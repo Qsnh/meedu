@@ -110,13 +110,4 @@ class ApplicationInstallCommandTest extends OriginalTestCase
         $this->assertGreaterThan(0, $count);
     }
 
-    public function test_install_backend_menu()
-    {
-        $this->artisan('install', ['action' => 'backend_menu'])
-            ->assertExitCode(0);
-
-        $count = AdministratorMenu::count();
-        $this->assertGreaterThan(0, $count);
-    }
-
 }

@@ -1,27 +1,34 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
-use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Course\Models\CourseUserRecord;
-use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserInviteBalanceRecord;
-use App\Services\Member\Models\UserJoinRoleRecord;
-use App\Services\Member\Models\UserLikeCourse;
-use App\Services\Member\Models\UserVideo;
-use App\Services\Member\Notifications\SimpleMessageNotification;
-use App\Services\Order\Models\Order;
-use App\Services\Order\Models\PromoCode;
 use Illuminate\Http\UploadedFile;
+use App\Services\Member\Models\User;
+use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Services\Order\Models\PromoCode;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Member\Models\UserInviteBalanceRecord;
+use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberTest extends Base
 {
-
     protected $member;
 
     public function setUp()
@@ -51,6 +58,31 @@ class MemberTest extends Base
         $this->assertResponseSuccess($response);
         $this->member->refresh();
         $this->assertTrue(Hash::check('123123', $this->member->password));
+    }
+
+    public function test_change_mobile()
+    {
+        $cacheService = $this->app->make(CacheServiceInterface::class);
+        $cacheService->put('m:17898765423', 'code', 10);
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
+            'mobile_code' => 'code',
+            'mobile' => '17898765423',
+        ]);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals('17898765423', $this->member->mobile);
+    }
+
+    public function test_change_mobile_exists()
+    {
+        factory(User::class)->create(['mobile' => '12345679876']);
+        $cacheService = $this->app->make(CacheServiceInterface::class);
+        $cacheService->put('m:12345679876', 'code', 10);
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
+            'mobile_code' => 'code',
+            'mobile' => '12345679876',
+        ]);
+        $this->assertResponseError($response, __('mobile has exists'));
     }
 
     public function test_nickname()
@@ -196,5 +228,68 @@ class MemberTest extends Base
         $this->assertResponseSuccess($response);
         $this->member->refresh();
         $this->assertEquals(0, $this->member->unreadNotifications->count());
+    }
+
+    public function test_inviteUsers()
+    {
+        factory(User::class, 10)->create(['invite_user_id' => $this->member->id]);
+        $response = $this->user($this->member)->getJson('api/v2/member/inviteUsers?page=1&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(10, $response['data']['total']);
+        $this->assertEquals(8, count($response['data']['data']));
+    }
+
+    public function test_withdrawRecords()
+    {
+        UserInviteBalanceWithdrawOrder::create([
+            'user_id' => $this->member->id,
+            'total' => 100,
+            'channel' => '支付宝',
+            'channel_name' => 'meedu',
+            'channel_account' => 'meedu@meedu.vip',
+            'channel_address' => 'address',
+        ]);
+        $response = $this->user($this->member)->getJson('api/v2/member/withdrawRecords?page=1&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(1, $response['data']['total']);
+        $this->assertEquals(1, count($response['data']['data']));
+    }
+
+    public function test_createWithdraw()
+    {
+        $this->member->invite_balance = 100;
+        $this->member->save();
+
+        $response = $this->user($this->member)->postJson('api/v2/member/withdraw', [
+            'channel' => '支付宝',
+            'channel_name' => 'meedu',
+            'channel_account' => 'meedu1',
+            'total' => 11,
+        ]);
+        $this->assertResponseSuccess($response);
+        $this->member->refresh();
+        $this->assertEquals(89, $this->member->invite_balance);
+
+        $record = UserInviteBalanceWithdrawOrder::query()->where('user_id', $this->member->id)->first();
+        $this->assertNotEmpty($record);
+        $this->assertEquals('支付宝', $record->channel);
+        $this->assertEquals('meedu', $record->channel_name);
+        $this->assertEquals('meedu1', $record->channel_account);
+    }
+
+    public function test_messages_unreadNotificationCount()
+    {
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试1'));
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试2'));
+
+        $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(2, $response['data']);
+
+        $this->member->notify(new SimpleMessageNotification('meedu消息测试2'));
+
+        $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(3, $response['data']);
     }
 }

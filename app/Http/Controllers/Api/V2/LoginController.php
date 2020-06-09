@@ -11,18 +11,37 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Socialite;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\CacheService;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
 use App\Http\Requests\ApiV2\PasswordLoginRequest;
+use App\Services\Member\Services\SocialiteService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 /**
- * Class LoginController.
+ * @OpenApi\Annotations\Schemas(
+ *     @OA\Schema(
+ *         schema="SocailiteApp",
+ *         type="object",
+ *         title="社交登录APP",
+ *         @OA\Property(property="app",type="string",description="app"),
+ *         @OA\Property(property="name",type="string",description="名称"),
+ *         @OA\Property(property="url",type="string",description="地址"),
+ *         @OA\Property(property="logo",type="string",description="logo"),
+ *     ),
+ * )
  */
 class LoginController extends BaseController
 {
@@ -31,9 +50,26 @@ class LoginController extends BaseController
      */
     protected $userService;
 
-    public function __construct(UserServiceInterface $userService)
-    {
+    protected $configService;
+    protected $cacheService;
+    protected $socialiteService;
+
+    /**
+     * @param UserServiceInterface $userService
+     * @param ConfigService $configService
+     * @param CacheService $cacheService
+     * @param SocialiteService $socialiteService
+     */
+    public function __construct(
+        UserServiceInterface $userService,
+        ConfigServiceInterface $configService,
+        CacheServiceInterface $cacheService,
+        SocialiteServiceInterface $socialiteService
+        ) {
         $this->userService = $userService;
+        $this->configService = $configService;
+        $this->cacheService = $cacheService;
+        $this->socialiteService = $socialiteService;
     }
 
     /**
@@ -124,5 +160,37 @@ class LoginController extends BaseController
         event(new UserLoginEvent($user['id']));
 
         return $this->data(compact('token'));
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/login/socialites",
+    *     summary="社交登录app",
+    *     tags={"Auth"},
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
+    *         )
+    *     )
+    * )
+    */
+    public function socialiteApps()
+    {
+        $apps = $this->configService->getEnabledSocialiteApps();
+        $apps = array_map(function ($app) {
+            $app['logo'] = url($app['logo']);
+
+            // 授权地址
+            if (!($app['url'] ?? '')) {
+                $app['url'] = route('socialite', $app['app']);
+            }
+            
+            return $app;
+        }, $apps);
+
+        return $this->data($apps);
     }
 }

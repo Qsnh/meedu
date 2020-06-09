@@ -36,7 +36,7 @@ class BusinessState
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
         /**
-         * @var $userService UserService
+         * @var UserService $userService
          */
         $userService = app()->make(UserServiceInterface::class);
         // 如果video的价格为0那么可以直接观看
@@ -52,7 +52,7 @@ class BusinessState
             return true;
         }
         // 如果用户买了会员可以直接观看
-        if ($user['role_id'] && Carbon::now()->lt($user['role_expired_at'])) {
+        if ($this->isRole($user)) {
             return true;
         }
         return false;
@@ -197,20 +197,20 @@ class BusinessState
     /**
      * 是否购买了课程
      *
-     * @param int $courseId
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param integer $userId
+     * @param integer $courseId
+     * @return boolean
      */
-    public function isBuyCourse(int $courseId): bool
+    public function isBuyCourse(int $userId, int $courseId): bool
     {
-        if (!Auth::check()) {
+        if (!$userId) {
             return false;
         }
         /**
          * @var $userService UserService
          */
         $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find(Auth::id(), ['role']);
+        $user = $userService->find($userId, ['role']);
         if ($this->isRole($user)) {
             return true;
         }

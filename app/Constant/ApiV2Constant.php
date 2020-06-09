@@ -82,12 +82,13 @@ class ApiV2Constant
      *         @OA\Property(property="seo_keywords",type="integer",description="seo_keywords"),
      *         @OA\Property(property="seo_description",type="integer",description="seo_description"),
      *         @OA\Property(property="chapter_id",type="integer",description="章节id"),
+     *         @OA\Property(property="is_ban_sell",type="integer",description="禁止销售，1是，0否"),
      *     ),
      * )
      */
     public const MODEL_VIDEO_FIELD = [
         'id', 'course_id', 'title', 'slug', 'view_num', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration',
+        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
@@ -144,9 +145,25 @@ class ApiV2Constant
     public const MODEL_COURSE_CHAPTER_FIELD = [
         'id', 'course_id', 'title',
     ];
+
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="CourseCategory",
+     *         type="object",
+     *         title="课程分类",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="name",type="string",description="分类名"),
+     *         @OA\Property(property="parent_id",type="integer",description="父id"),
+     *     ),
+     * )
+     */
     public const MODEL_COURSE_CATEGORY_FIELD = [
         'id', 'name', 'parent_id',
     ];
+
+
     /**
      * @OpenApi\Annotations\Schemas(
      *     @OA\Schema(
@@ -163,6 +180,7 @@ class ApiV2Constant
     public const MODEL_COURSE_COMMENT_FIELD = [
         'id', 'user_id', 'render_content', 'created_at',
     ];
+
     /**
      * @OpenApi\Annotations\Schemas(
      *     @OA\Schema(
@@ -179,12 +197,13 @@ class ApiV2Constant
     public const MODEL_VIDEO_COMMENT_FIELD = [
         'id', 'user_id', 'render_content', 'created_at',
     ];
+
     /**
      * @OpenApi\Annotations\Schemas(
      *     @OA\Schema(
      *         schema="Order",
      *         type="object",
-     *         title="订单商品",
+     *         title="订单",
      *         @OA\Property(property="id",type="integer",description="id"),
      *         @OA\Property(property="user_id",type="integer",description="用户id"),
      *         @OA\Property(property="charge",type="integer",description="总价"),
@@ -218,6 +237,20 @@ class ApiV2Constant
     public const MODEL_ORDER_GOODS_FIELD = [
         'num', 'goods_text', 'charge', 'goods_type',
     ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="PromoCode",
+     *         type="object",
+     *         title="优惠码",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="code",type="string",description="优惠码"),
+     *         @OA\Property(property="expired_at",type="string",description="过期时间"),
+     *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请奖励"),
+     *     ),
+     * )
+     */
     public const MODEL_PROMO_CODE_FIELD = [
         'id', 'code', 'expired_at', 'invited_user_reward',
     ];
@@ -227,7 +260,7 @@ class ApiV2Constant
      *     @OA\Schema(
      *         schema="Slider",
      *         type="object",
-     *         title="订单商品",
+     *         title="幻灯片",
      *         @OA\Property(property="thumb",type="string",description="图片"),
      *         @OA\Property(property="url",type="string",description="url"),
      *         @OA\Property(property="sort",type="integer",description="升序"),
@@ -243,7 +276,7 @@ class ApiV2Constant
      *     @OA\Schema(
      *         schema="Notification",
      *         type="object",
-     *         title="订单商品",
+     *         title="消息",
      *         @OA\Property(property="id",type="string",description="消息id"),
      *         @OA\Property(property="notifiable_id",type="integer",description="notifiable_id"),
      *         @OA\Property(property="read_at",type="string",description="read_at"),

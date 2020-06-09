@@ -25,11 +25,15 @@ class Administrator extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name', 'email', 'password', 'last_login_ip',
-        'last_login_date',
+        'last_login_date', 'is_ban_login', 'login_times',
     ];
 
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $appends = [
+        'role_id', 'is_super',
     ];
 
     public function getJWTIdentifier()
@@ -40,6 +44,17 @@ class Administrator extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getIsSuperAttribute()
+    {
+        return $this->isSuper();
+    }
+
+    public function getRoleIdAttribute()
+    {
+        $roles = $this->roles()->select(['id'])->get()->pluck('id');
+        return $roles;
     }
 
     /**
@@ -101,23 +116,19 @@ class Administrator extends Authenticatable implements JWTSubject
         return $this->roles()->where('id', $role->id)->exists();
     }
 
-    /**
-     * 获取当前管理员用户下的所有权限ID.
-     *
-     * @return array|\Illuminate\Support\Collection
-     */
-    public function permissionIds()
+    public function permissions()
     {
+        $permissions = [];
         $roles = $this->roles;
-        if (!$roles) {
-            return [];
+        if ($roles->isEmpty()) {
+            return $permissions;
         }
-        $permissionIds = collect([]);
         foreach ($roles as $role) {
-            $permissionIds = $permissionIds->merge($role->permissions()->select('id')->pluck('id'));
+            $tmp = $role->permissions()->select(['slug'])->get()->pluck('slug')->toArray();
+            $permissions = array_merge($permissions, $tmp);
         }
-
-        return $permissionIds->unique();
+        $permissions = array_flip($permissions);
+        return $permissions;
     }
 
     /**
@@ -131,30 +142,28 @@ class Administrator extends Authenticatable implements JWTSubject
     }
 
     /**
-     * 当前管理员是否可以访问某个请求
-     *
-     * @param Request $request
-     *
+     * @param $path
+     * @param $method
      * @return bool
      */
-    public function couldVisited(Request $request)
+    public function hasPermission($path, $method)
     {
-        $path = $request->getPathInfo();
-        $method = $request->getMethod();
-
-        // 查找到对应的权限
-        $permissions = AdministratorPermission::where('method', 'like', "%{$method}%")->get();
-        $existsPermission = null;
-        foreach ($permissions as $permission) {
-            if (preg_match("#{$permission->url}$#", $path)) {
-                $existsPermission = $permission;
-                break;
+        $through = false;
+        $roles = $this->roles;
+        foreach ($roles as $role) {
+            // http method
+            $permissions = $role->permissions()->where('method', 'like', "%{$method}%")->get();
+            if ($permissions->isEmpty()) {
+                continue;
+            }
+            // url
+            foreach ($permissions as $permission) {
+                if (preg_match("#{$permission->url}$#i", $path) === 1) {
+                    $through = true;
+                    break;
+                }
             }
         }
-        if (!$existsPermission) {
-            return false;
-        }
-
-        return in_array($existsPermission->id, $this->permissionIds()->toArray());
+        return $through;
     }
 }

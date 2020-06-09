@@ -1765,6 +1765,7 @@ footer.footer-box {
     float: left;
 
     .course-videos-item {
+      display: flex;
       width: 100%;
       height: auto;
       float: left;
@@ -1772,92 +1773,11 @@ footer.footer-box {
       background-color: #ffffff;
       cursor: pointer;
 
-      &:hover {
+      &:hover, &.active {
         background-color: rgba(11, 118, 222, .1);
 
         .player-icon {
           background-image: url("/images/icons/player-hover.png");
-        }
-
-        .learn-button, .buy-course-button {
-          display: inline-block;
-        }
-
-        .video-duration {
-          display: none;
-        }
-      }
-
-      &.active {
-        background-color: rgba(11, 118, 222, .1);
-
-        .player-icon {
-          background-image: url("/images/icons/player-hover.png");
-        }
-      }
-
-      .player-icon {
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        margin-top: 3px;
-        float: left;
-        background-image: url("/images/icons/player.png");
-        background-size: 100% 100%;
-        margin-right: 15px;
-      }
-
-      .video-title {
-        display: inline-block;
-        float: left;
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(51, 51, 51, 1);
-        line-height: 30px;
-        margin-right: 28px;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-
-      .free-label {
-        display: inline-block;
-        padding-left: 8px;
-        padding-right: 8px;
-        line-height: 22px;
-        margin-top: 4px;
-        background: rgba(255, 64, 64, 1);
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #ffffff;
-      }
-
-      .video-duration {
-        display: inline-block;
-        float: right;
-        height: 16px;
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(153, 153, 153, 1);
-        line-height: 24px;
-      }
-
-      .learn-button, .buy-course-button {
-        display: none;
-        float: right;
-        padding-left: 12px;
-        padding-right: 12px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #ffffff;
-        line-height: 30px;
-        background-color: $primary;
-        border-radius: 20px;
-
-        &:hover {
-          text-decoration: none;
         }
       }
 
@@ -1869,6 +1789,52 @@ footer.footer-box {
       &.last {
         border-bottom-right-radius: 8px;
         border-bottom-left-radius: 8px;
+      }
+
+      .player-icon {
+        width: 24px;
+        height: 24px;
+        margin-top: 3px;
+        float: left;
+        background-image: url("/images/icons/player.png");
+        background-size: 100% 100%;
+        margin-right: 15px;
+      }
+
+      .video-title {
+        flex: 1;
+        width: auto;
+        padding-right: 28px;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 30px;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        .free-label {
+          padding-left: 8px;
+          padding-right: 8px;
+          line-height: 22px;
+          margin-top: 4px;
+          background: rgba(255, 64, 64, 1);
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 400;
+          color: #ffffff;
+        }
+      }
+
+      .video-duration {
+        width: 70px;
+        text-align: right;
+        height: 16px;
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 24px;
       }
     }
   }
@@ -2443,15 +2409,6 @@ footer.footer-box {
     color: rgba(50, 50, 50, 1);
     background: rgba(255, 203, 0, .6);
   }
-}
-
-.inspire {
-  text-align: center;
-  background: rgba(248, 250, 251, 1);
-  line-height: 200px;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgba(204, 204, 204, 1);
 }
 
 .course-show-page-desc {

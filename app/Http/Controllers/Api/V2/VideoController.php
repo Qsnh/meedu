@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -148,6 +149,8 @@ class VideoController extends BaseController
      *                 @OA\Property(property="video",type="object",description="视频详情",ref="#/components/schemas/Video"),
      *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
      *                 @OA\Property(property="videos",type="array",description="视频列表",@OA\Items(ref="#/components/schemas/Video")),
+     *                 @OA\Property(property="course",type="object",description="课程",ref="#/components/schemas/Course"),
+     *                 @OA\Property(property="is_watch",type="boolean",description="是否可以观看"),
      *             ),
      *         )
      *     )
@@ -158,16 +161,43 @@ class VideoController extends BaseController
     public function detail($id)
     {
         $video = $this->videoService->find($id);
+
+        // 视频浏览次数自增
         $this->videoService->viewNumInc($video['id']);
+
+        // 章节
         $chapters = $this->courseService->chapters($video['course_id']);
         $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
+
+        // 课程下视频列表
         $videos = $this->videoService->courseVideos($video['course_id']);
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
+
+        // 课程
+        $course = $this->courseService->find($video['course_id']);
+
+        // 是否可以观看
+        $isWatch = false;
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
+
+        if ($this->check()) {
+            $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
+
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+        }
+
+        $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
+        $video = arr1_clear($video, ApiV2Constant::MODEL_VIDEO_FIELD);
 
         return $this->data([
             'video' => $video,
             'videos' => $videos,
             'chapters' => $chapters,
+            'course' => $course,
+            'is_watch' => $isWatch,
+            'video_watched_progress' => $videoWatchedProgress,
         ]);
     }
 
@@ -272,5 +302,36 @@ class VideoController extends BaseController
         }
 
         return $this->data(compact('urls'));
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/video/{id}/record",
+     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+     *     summary="视频观看时长记录",
+     *     tags={"视频"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="duration",description="时长",type="integer"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @param CommentRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function recordVideo(Request $request, $id)
+    {
+        $duration = (int)$request->post('duration', 0);
+        $video = $this->videoService->find($id);
+        $isWatched = $video['duration'] <= $duration;
+        $this->userService->recordUserVideoWatch($this->id(), $video['course_id'], $id, $duration, $isWatched);
+        return $this->success();
     }
 }

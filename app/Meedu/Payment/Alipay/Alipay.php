@@ -52,25 +52,40 @@ class Alipay implements Payment
      */
     public function create(array $order, array $extra = []): PaymentStatus
     {
+        // 计算需要支付的金额
         $total = $this->businessState->calculateOrderNeedPaidSum($order);
+
+        // 组装数据
         $payOrderData = [
             'out_trade_no' => $order['order_id'],
             'total_amount' => $total,
             'subject' => $order['order_id'],
         ];
         $payOrderData = array_merge($payOrderData, $extra);
-        $createResult = Pay::alipay($this->configService->getAlipayPay())->{$order['payment_method']}($payOrderData);
+
+        // 支付宝配置
+        $config = $this->configService->getAlipayPay();
+        // 覆盖同步返回的地址
+        if (request()->has('redirect')) {
+            $config['return_url'] = request()->input('redirect');
+        }
+        Log::info(__METHOD__, $config);
+        
+        $createResult = Pay::alipay($config)->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);
     }
 
     /**
+     * 订单查询
+     *
      * @param array $order
      *
      * @return PaymentStatus
      */
     public function query(array $order): PaymentStatus
     {
+        return new PaymentStatus(false);
     }
 
     public function callback()
@@ -79,7 +94,8 @@ class Alipay implements Payment
 
         try {
             $data = $pay->verify();
-            Log::info($data);
+
+            Log::info(__METHOD__, [$data]);
 
             $order = $this->orderService->findOrFail($data['out_trade_no']);
 

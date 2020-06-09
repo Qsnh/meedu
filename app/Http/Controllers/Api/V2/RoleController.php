@@ -53,7 +53,7 @@ class RoleController extends BaseController
      * @OA\Get(
      *     path="/roles",
      *     summary="套餐列表",
-     *     tags={"role"},
+     *     tags={"会员"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -77,7 +77,7 @@ class RoleController extends BaseController
      *     path="/role/{id}",
      *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
      *     summary="套餐详情",
-     *     tags={"role"},
+     *     tags={"会员"},
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(

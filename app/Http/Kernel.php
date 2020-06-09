@@ -15,6 +15,7 @@ use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\BackendPermissionCheckMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -91,5 +92,7 @@ class Kernel extends HttpKernel
         'global.share' => GlobalShareMiddleware::class,
         // 短信验证
         'sms.check' => CheckSmsCodeMiddleware::class,
+        // 后台权限
+        'backend.permission' => BackendPermissionCheckMiddleware::class,
     ];
 }

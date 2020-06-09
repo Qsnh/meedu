@@ -1,19 +1,18 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 Route::redirect('/home', '/');
 Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
+Route::get('/aboutus', 'Frontend\IndexController@aboutus')->name('aboutus');
 // 登录
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
 Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:10,1']);

@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\Administrator;
+use App\Models\AdministratorRole;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,14 @@ class AdministratorController extends BaseController
         $administrators = Administrator::orderByDesc('created_at')->paginate(request()->input('size', 12));
 
         return $this->successData($administrators);
+    }
+
+    public function create()
+    {
+        $roles = AdministratorRole::query()->select(['id', 'display_name'])->get();
+        return $this->successData([
+            'roles' => $roles,
+        ]);
     }
 
     public function store(
@@ -56,6 +65,7 @@ class AdministratorController extends BaseController
         return $this->success();
     }
 
+    // 修改密码
     public function editPasswordHandle(EditPasswordRequest $request)
     {
         $administrator = Auth::guard(BackendApiConstant::GUARD)->user();
@@ -75,7 +85,7 @@ class AdministratorController extends BaseController
     public function destroy($id)
     {
         $administrator = Administrator::findOrFail($id);
-        if (!$administrator->couldDestroy()) {
+        if ($administrator->couldDestroy()) {
             return $this->error(BackendApiConstant::ADMINISTRATOR_ACCOUNT_CANT_DELETE);
         }
         $administrator->delete();

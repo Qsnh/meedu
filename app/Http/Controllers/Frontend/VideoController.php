@@ -106,10 +106,18 @@ class VideoController extends FrontendController
         // 课程章节
         $chapters = $this->courseService->chapters($video['course_id']);
         $videos = $this->videoService->courseVideos($video['course_id']);
+
+        // 是否可以观看视频
         $canSeeVideo = false;
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
+
         if (Auth::check()) {
             $canSeeVideo = $this->businessState->canSeeVideo($this->user(), $video['course'], $video);
             $canSeeVideo && $this->courseService->recordUserCount(Auth::id(), $course['id']);
+
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords(Auth::id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
         }
 
         // 下一个视频
@@ -168,7 +176,8 @@ class VideoController extends FrontendController
             'canSeeVideo',
             'scene',
             'playUrls',
-            'nextVideo'
+            'nextVideo',
+            'videoWatchedProgress'
         ));
     }
 

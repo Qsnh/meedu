@@ -16,8 +16,72 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
+    /**
+     * 获取服务配置
+     *
+     * @param string $app
+     * @return array
+     */
+    public function getServiceConfig(string $app):array
+    {
+        return config('services.'.$app, []);
+    }
 
     /**
+     * 网站名
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return config('app.name');
+    }
+
+    /**
+     * ICP
+     *
+     * @return string
+     */
+    public function getIcp():string
+    {
+        return config('meedu.system.icp', '');
+    }
+
+    /**
+     * 播放器封面
+     *
+     * @return string
+     */
+    public function getPlayerCover():string
+    {
+        return config('meedu.system.player_thumb', '');
+    }
+
+    /**
+     * 播放器配置
+     *
+     * @return array
+     */
+    public function getPlayer():array
+    {
+        return config('meedu.system.player');
+    }
+
+    /**
+     * 获取logo
+     *
+     * @return array
+     */
+    public function getLogo(): array
+    {
+        return [
+            'logo' => config('meedu.system.logo'),
+            'white_logo' => config('meedu.system.white_logo'),
+        ];
+    }
+
+    /**
+     * 获取用户协议
      * @return string
      */
     public function getMemberProtocol(): string
@@ -26,6 +90,16 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 关于我们
+     * @return string
+     */
+    public function getAboutus(): string
+    {
+        return config('meedu.aboutus', '');
+    }
+
+    /**
+     * 用户默认头像
      * @return string
      */
     public function getMemberDefaultAvatar(): string
@@ -34,6 +108,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 用户默认锁定状态
      * @return int
      */
     public function getMemberLockStatus(): int
@@ -42,6 +117,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 用户默认激活状态
      * @return int
      */
     public function getMemberActiveStatus(): int
@@ -50,6 +126,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 课程列表默认显示条数
      * @return int
      */
     public function getCourseListPageSize(): int
@@ -58,6 +135,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 课程列表页面SEO
      * @return array
      */
     public function getSeoCourseListPage(): array
@@ -66,6 +144,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 视频列表页面显示条数
      * @return int
      */
     public function getVideoListPageSize(): int
@@ -74,6 +153,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 获取默认的编辑器
      * @return string
      */
     public function getEditor(): string
@@ -82,6 +162,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 短信配置
      * @return array
      */
     public function getSms(): array
@@ -90,6 +171,7 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 会员界面SEO
      * @return array
      */
     public function getSeoRoleListPage(): array
@@ -102,61 +184,122 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.seo.index');
     }
 
+    /**
+     * 支付网关
+     *
+     * @return array
+     */
     public function getPayments(): array
     {
         return config('meedu.payment');
     }
 
+    /**
+     * 微信支付配置
+     *
+     * @return array
+     */
     public function getWechatPay(): array
     {
         return config('pay.wechat');
     }
 
+    /**
+     * 支付宝支付配置
+     *
+     * @return array
+     */
     public function getAlipayPay(): array
     {
         return config('pay.alipay');
     }
 
+    /**
+     * 缓存状态
+     *
+     * @return boolean
+     */
     public function getCacheStatus(): bool
     {
-        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
+        return (int) config('meedu.system.cache.status') === FrontendConstant::YES;
     }
 
+    /**
+     * 缓存时间
+     *
+     * @return integer
+     */
     public function getCacheExpire(): int
     {
         return config('meedu.system.cache.expire');
     }
 
+    /**
+     * 图片存储驱动
+     *
+     * @return string
+     */
     public function getImageStorageDisk(): string
     {
         return config('meedu.upload.image.disk');
     }
 
+    /**
+     * 图片存储路径
+     *
+     * @return string
+     */
     public function getImageStoragePath(): string
     {
         return config('meedu.upload.image.path');
     }
 
+    /**
+     * 注册短信模板ID
+     *
+     * @return string
+     */
     public function getRegisterSmsTemplateId(): string
     {
         return $this->getTemplateId('register');
     }
 
+    /**
+     * 登录短信模板ID
+     *
+     * @return string
+     */
     public function getLoginSmsTemplateId(): string
     {
         return $this->getTemplateId('login');
     }
 
+    /**
+     * 密码重置模板ID
+     *
+     * @return string
+     */
     public function getPasswordResetSmsTemplateId(): string
     {
         return $this->getTemplateId('password_reset');
     }
 
+    /**
+     * 手机号绑定模板ID
+     *
+     * @return string
+     */
     public function getMobileBindSmsTemplateId(): string
     {
         return $this->getTemplateId('mobile_bind');
     }
 
+    /**
+     * 获取某个场景的短信模板id
+     *
+     * @param [type] $scene
+     * @return string
+     */
     protected function getTemplateId($scene): string
     {
         $supplier = config('meedu.system.sms');
@@ -165,17 +308,27 @@ class ConfigService implements ConfigServiceInterface
         return $supplierConfig['template'][$scene] ?? '';
     }
 
+    /**
+     * 手动支付详情
+     *
+     * @return string
+     */
     public function getHandPayIntroducation(): string
     {
         return config('meedu.payment.handPay.introduction') ?? '';
     }
 
+    /**
+     * 已开启的社交登录app
+     *
+     * @return array
+     */
     public function getEnabledSocialiteApps(): array
     {
         $apps = config('meedu.member.socialite');
         $list = [];
         foreach ($apps as $app) {
-            if (!($app['enabled'] ?? false)) {
+            if ((int)($app['enabled'] ?? 0) !== 1) {
                 continue;
             }
             $list[] = $app;
@@ -183,17 +336,39 @@ class ConfigService implements ConfigServiceInterface
         return $list;
     }
 
+    /**
+     * meedu系统配置
+     *
+     * @return array
+     */
     public function getMeEduConfig(): array
     {
         return config('meedu');
     }
 
+    /**
+     * 获取手机号强制绑定状态开关
+     *
+     * @return integer
+     */
+    public function getEnabledMobileBindAlert():int
+    {
+        return (int)config('meedu.member.enabled_mobile_bind_alert', 0);
+    }
+
+    /**
+     * 会员邀请配置
+     *
+     * @return array
+     */
     public function getMemberInviteConfig(): array
     {
         return config('meedu.member.invite');
     }
 
     /**
+     * 腾讯云VOD配置
+     *
      * @return array
      */
     public function getTencentVodConfig(): array
@@ -202,6 +377,8 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 腾讯小程序配置
+     *
      * @return array
      */
     public function getTencentWechatMiniConfig(): array
@@ -210,10 +387,12 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 阿里云私密播放状态
+     *
      * @return bool
      */
     public function getAliyunPrivatePlayStatus(): bool
     {
-        return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
+        return (int) config('meedu.system.player.enabled_aliyun_private') === 1;
     }
 }

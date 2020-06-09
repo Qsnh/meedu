@@ -65,7 +65,11 @@ class Wechat implements Payment
                 'openid' => '',
             ];
             $payOrderData = array_merge($payOrderData, $extra);
-            $createResult = Pay::wechat($this->configService->getWechatPay())->{$order['payment_method']}($payOrderData);
+
+            $config = $this->configService->getWechatPay();
+
+            $createResult = Pay::wechat($config)->{$order['payment_method']}($payOrderData);
+
             Log::info(__METHOD__, compact('createResult'));
 
             // 缓存保存
@@ -76,7 +80,8 @@ class Wechat implements Payment
             );
 
             // 构建Response
-            $response = redirect(route('order.pay.wechat', [$order['order_id']]));
+            $payUrl = route('order.pay.wechat', [$order['order_id']]);
+            $response = redirect($payUrl);
 
             return new PaymentStatus(true, $response);
         } catch (Exception $exception) {
@@ -93,6 +98,7 @@ class Wechat implements Payment
      */
     public function query(array $order): PaymentStatus
     {
+        return new PaymentStatus(false);
     }
 
     /**

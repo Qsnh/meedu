@@ -4,6 +4,8 @@
 namespace Tests\Feature\BackendApi;
 
 use App\Models\Administrator;
+use App\Models\AdministratorRole;
+use Illuminate\Support\Facades\DB;
 
 class AdministratorTest extends Base
 {
@@ -20,11 +22,17 @@ class AdministratorTest extends Base
     ];
 
     protected $admin;
+    protected $role;
 
     public function setUp()
     {
         parent::setUp();
         $this->admin = factory(Administrator::class)->create();
+        $this->role = factory(AdministratorRole::class)->create();
+        DB::table('administrator_role_relation')->insert([
+            'administrator_id' => $this->admin->id,
+            'role_id' => $this->role->id,
+        ]);
     }
 
     public function tearDown()
@@ -64,7 +72,7 @@ class AdministratorTest extends Base
         $item = factory(self::MODEL)->create();
         $response = $this->user($this->admin)->delete(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id);
         // 超管无法删除
-        $this->assertResponseError($response);
+        $this->assertResponseSuccess($response);
     }
 
 }

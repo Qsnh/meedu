@@ -1,18 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
 use App\Constant\ApiV2Constant;
-use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Base\Services\CacheService;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Base\Services\CacheService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 
 class LoginTest extends Base
 {
-
     public function test_with_correct_password()
     {
         $user = factory(User::class)->create([
@@ -94,4 +100,18 @@ class LoginTest extends Base
         $this->assertResponseSuccess($response);
     }
 
+    public function test_socialites()
+    {
+        config(['meedu.member.socialite.github.enabled' => 0]);
+        config(['meedu.member.socialite.qq.enabled' => 1]);
+        config(['meedu.member.socialite.weixinweb.enabled' => 0]);
+
+        $response = $this->get('/api/v2/login/socialites');
+        $response = $this->assertResponseSuccess($response);
+        $apps = $response['data'];
+        $apps = array_column($apps, null, 'app');
+        $this->assertTrue(isset($apps['qq']));
+        $this->assertFalse(isset($apps['github']));
+        $this->assertFalse(isset($apps['weixinweb']));
+    }
 }

@@ -21,6 +21,15 @@ class AdministratorRole extends Model
         'display_name', 'slug', 'description',
     ];
 
+    protected $appends = [
+        'permission_ids',
+    ];
+
+    public function getPermissionIdsAttribute()
+    {
+        return $this->permissions()->select(['id'])->get()->pluck('id')->toArray();
+    }
+
     /**
      * 角色下的管理员.
      *

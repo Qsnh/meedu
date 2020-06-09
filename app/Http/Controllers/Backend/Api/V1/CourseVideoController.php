@@ -42,7 +42,7 @@ class CourseVideoController extends BaseController
         return $this->successData(compact('videos', 'courses'));
     }
 
-    public function createParams()
+    public function create()
     {
         $courses = Course::select(['id', 'title'])->orderByDesc('published_at')->get();
 

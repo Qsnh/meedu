@@ -1,0 +1,51 @@
+<?php
+
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace App\Http\Middleware;
+
+use Closure;
+use App\Constant\BackendApiConstant;
+use Illuminate\Support\Facades\Auth;
+
+class BackendPermissionCheckMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        $path = str_replace('backend/api/v1/', '', $request->path());
+        // 白名单
+        if (isset(BackendApiConstant::PERMISSION_WHITE_LIST[$path])) {
+            return $next($request);
+        }
+
+        // 超级管理员
+        $admin = Auth::guard(BackendApiConstant::GUARD)->user();
+        if ($admin->is_super) {
+            return $next($request);
+        }
+
+        // 权限判断
+        if ($admin->hasPermission($path, $request->method())) {
+            return $next($request);
+        }
+
+        return response()->json([
+            'status' => 403,
+            'message' => '无权限',
+        ]);
+    }
+}

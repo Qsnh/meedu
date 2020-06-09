@@ -78,14 +78,6 @@
         </div>
     @endforeach
 
-    <div class="container inspire">
-        <div class="row">
-            <div class="col-12">
-                <span>拥抱MeEdu 拥抱知识付费时代</span>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid friend-link-box">
         <div class="container">
             <div class="row">

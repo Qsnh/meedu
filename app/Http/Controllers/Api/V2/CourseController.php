@@ -137,6 +137,7 @@ class CourseController extends BaseController
      *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
      *                 @OA\Property(property="videos",type="array",description="视频",@OA\Items(ref="#/components/schemas/Video")),
      *                 @OA\Property(property="isBuy",type="bool",description="是否购买"),
+     *                 @OA\Property(property="isCollect",type="bool",description="是否收藏"),
      *             ),
      *         )
      *     )
@@ -148,13 +149,31 @@ class CourseController extends BaseController
     {
         $course = $this->courseService->find($id);
         $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
+
+        // 章节列表
         $chapters = $this->courseService->chapters($course['id']);
         $chapters = arr2_clear($chapters, ApiV2Constant::MODEL_COURSE_CHAPTER_FIELD);
+
+        // 视频列表
         $videos = $this->videoService->courseVideos($course['id']);
         $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD, true);
-        $isBuy = $this->businessState->isBuyCourse($course['id']);
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy'));
+        // 是否购买
+        $isBuy = false;
+        // 是否收藏
+        $isCollect = false;
+        // 课程视频观看进度
+        $videoWatchedProgress = [];
+
+        if ($this->check()) {
+            $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
+            $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
+
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
+            $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+        }
+
+        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress'));
     }
 
     /**
@@ -221,5 +240,30 @@ class CourseController extends BaseController
             'comments' => $comments,
             'users' => $commentUsers,
         ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/course/{id}/like",
+     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
+     *     summary="喜欢课程",
+     *     tags={"课程"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function like($id)
+    {
+        $course = $this->courseService->find($id);
+        $status = $this->userService->likeACourse($this->id(), $course['id']);
+        return $this->data($status);
     }
 }

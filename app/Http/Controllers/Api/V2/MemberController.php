@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
@@ -24,6 +25,7 @@ use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
+use App\Http\Requests\ApiV2\MobileChangeRequest;
 use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
@@ -32,6 +34,7 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Http\Requests\ApiV2\InviteBalanceWithdrawRequest;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
@@ -79,13 +82,20 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
  *         @OA\Property(property="created_at",type="integer",description="时间"),
  *     ),
  *     @OA\Schema(
- *         schema="PromoCode",
+ *         schema="InviteUser",
  *         type="object",
- *         title="优惠码",
- *         @OA\Property(property="code",type="integer",description="优惠码"),
- *         @OA\Property(property="expired_at",type="string",description="过期时间"),
- *         @OA\Property(property="invite_user_reward",type="integer",description="邀请人奖励"),
- *         @OA\Property(property="invited_user_reward",type="integer",description="被邀请人奖励"),
+ *         title="邀请用户",
+ *         @OA\Property(property="mobile",type="integer",description="手机号"),
+ *         @OA\Property(property="created_at",type="string",description="时间"),
+ *     ),
+ *     @OA\Schema(
+ *         schema="WithdrawRecord",
+ *         type="object",
+ *         title="提现记录",
+ *         @OA\Property(property="status_text",type="integer",description="提现状态"),
+ *         @OA\Property(property="created_at",type="string",description="时间"),
+ *         @OA\Property(property="remark",type="string",description="备注"),
+ *         @OA\Property(property="total",type="integer",description="提现金额"),
  *     ),
  * )
  */
@@ -218,6 +228,35 @@ class MemberController extends BaseController
 
     /**
      * @OA\Post(
+     *     path="/member/mobile",
+     *     summary="更换手机号",
+     *     tags={"用户"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="mobile",description="手机号",type="string"),
+     *         @OA\Property(property="mobile_code",description="手机短信验证码",type="string")
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     *
+     * @param MobileChangeRequest $request
+     */
+    public function mobileChange(MobileChangeRequest $request)
+    {
+        $this->mobileCodeCheck();
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->changeMobile($this->id(), $mobile);
+        return $this->success();
+    }
+
+    /**
+     * @OA\Post(
      *     path="/member/nickname",
      *     summary="修改昵称",
      *     tags={"用户"},
@@ -339,10 +378,17 @@ class MemberController extends BaseController
             'total' => $total,
             'list' => $list,
         ] = $this->userService->messagePaginate($page, $pageSize);
-        $list = arr1_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
-        $messages = $this->paginator($list, $total, $page, $pageSize);
+        $list = arr2_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
 
-        return $this->data($messages);
+        $list = array_map(function ($item) {
+            $item['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d H:i');
+            return $item;
+        }, $list);
+
+        return $this->data([
+            'data' => $list,
+            'total' => $total,
+        ]);
     }
 
     /**
@@ -670,6 +716,28 @@ class MemberController extends BaseController
 
     /**
      * @OA\Get(
+     *     path="/member/unreadNotificationCount",
+     *     summary="未读消息数量",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="integer",description="数量"),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unreadNotificationCount()
+    {
+        $count = $this->userService->unreadNotificationCount($this->id());
+        return $this->data($count);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/member/notificationMarkAllAsRead",
      *     summary="消息全部标记已读",
      *     tags={"用户"},
@@ -687,6 +755,117 @@ class MemberController extends BaseController
     public function notificationMarkAllAsRead()
     {
         $this->userService->notificationMarkAllAsRead(Auth::id());
+        return $this->success();
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/inviteUsers",
+     *     summary="我的邀请用户",
+     *     tags={"用户"},
+     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/InviteUser")),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function inviteUsers(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 10);
+
+        [
+            'list' => $list,
+            'total' => $total,
+        ] = $this->userService->inviteUsers($page, $pageSize);
+    
+        $list = array_map(function ($item) {
+            $mobile = '******'.mb_substr($item['mobile'], 6);
+            return [
+                'mobile' => $mobile,
+                'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
+            ];
+        }, $list);
+        
+        return $this->data([
+            'total' => $total,
+            'data' => $list,
+        ]);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/member/withdrawRecords",
+     *     summary="邀请余额提现记录",
+     *     tags={"用户"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="total",type="integer",description="总数"),
+     *                 @OA\Property(property="data",type="array",description="列表",@OA\Items(ref="#/components/schemas/WithdrawRecord")),
+     *             ),
+     *         )
+     *     )
+     * )
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function withdrawRecords(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $pageSize = $request->input('page_size', 10);
+        
+        [
+             'list' => $list,
+            'total' => $total,
+        ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
+        
+        return $this->data([
+            'total' => $total,
+            'data' => $list,
+        ]);
+    }
+
+    /**
+    * @OA\Post(
+    *     path="/member/withdraw",
+    *     summary="邀请余额提现",
+    *     tags={"用户"},
+    *     @OA\RequestBody(description="",@OA\JsonContent(
+    *         @OA\Property(property="channel",description="渠道",type="string"),
+    *         @OA\Property(property="channel_name",description="姓名",type="string"),
+    *         @OA\Property(property="channel_account",description="账号",type="string"),
+    *         @OA\Property(property="total",description="提现金额",type="integer"),
+    *     )),
+    *     @OA\Response(
+    *         description="",response=200,
+    *         @OA\JsonContent(
+    *             @OA\Property(property="code",type="integer",description="状态码"),
+    *             @OA\Property(property="message",type="string",description="消息"),
+    *             @OA\Property(property="data",type="object",description=""),
+    *         )
+    *     )
+    * )
+    *
+    * @param InviteBalanceWithdrawRequest $request
+    * @return void
+    */
+    public function createWithdraw(InviteBalanceWithdrawRequest $request)
+    {
+        $data = $request->filldata();
+        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
     }
 }

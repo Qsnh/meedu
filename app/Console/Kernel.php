@@ -47,11 +47,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // 每30分钟
+        // 订单超时处理
         $schedule->command('order:pay:timeout')
             ->onOneServer()
             ->everyThirtyMinutes()
             ->appendOutputTo(storage_path('logs/order_pay_timeout'));
+
+        // 会员过期处理
+        $schedule->command('member:role:expired')
+            ->onOneServer()
+            ->hourly()
+            ->appendOutputTo(storage_path('logs/user_role_expired'));
     }
 
     /**
@@ -59,8 +65,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
-
-        require base_path('routes/console.php');
+        $this->load(__DIR__ . '/Commands');
     }
 }

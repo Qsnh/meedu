@@ -5,6 +5,9 @@ return [
     // 配置文件存储路径
     'save' => storage_path('/meedu_config.json'),
 
+    // 关于我们
+    'aboutus' => '',
+
     // 会员配置
     'member' => [
         'is_active_default' => 1,
@@ -101,7 +104,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],
         'handPay' => [
@@ -172,18 +174,10 @@ return [
             'use' => 'default',
             'path' => resource_path('views'),
         ],
-        'sms' => 'yunpian',
+        // 默认短信服务商
+        'sms' => 'aliyun',
         // editor
         'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
-    ],
-
-    // 视频鉴权
-    'video' => [
-        'auth' => [
-            'aliyun' => [
-                'private_key' => env('ALIYUN_VIDEO_AUTH_PRIVATE_KEY', ''),
-            ],
-        ],
     ],
 
     // 其它配置
@@ -196,7 +190,7 @@ return [
 
     // MeEduCloud
     'meeducloud' => [
-        'domain' => env('MEEDUCLOUD_DOMAIN'),
+        'domain' => env('MEEDUCLOUD_DOMAIN', 'https://meedu.vip'),
         'user_id' => env('MEEDUCLOUD_USER_ID'),
         'password' => env('MEEDUCLOUD_PASSWORD'),
     ],

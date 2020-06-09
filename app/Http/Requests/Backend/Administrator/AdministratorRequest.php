@@ -66,7 +66,12 @@ class AdministratorRequest extends BaseRequest
      */
     public function filldata()
     {
-        $data = ['name' => $this->input('name', '')];
+        $data = [
+            'name' => $this->input('name'),
+            'is_ban_login' => (int)$this->input('is_ban_login'),
+        ];
+
+        // 编辑
         $this->input('password') && $data['password'] = Hash::make($this->input('password'));
         if ($this->isMethod('post')) {
             $data['email'] = $this->input('email');
