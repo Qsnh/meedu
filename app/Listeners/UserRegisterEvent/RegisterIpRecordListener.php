@@ -13,11 +13,14 @@ namespace App\Listeners\UserRegisterEvent;
 
 use App\Events\UserRegisterEvent;
 use App\Jobs\UserRegisterIpToAreaJob;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
-class RegisterIpRecordListener
+class RegisterIpRecordListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var UserService

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Page;
 
+use App\Services\Member\Models\User;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -13,6 +14,41 @@ class RegisterTest extends TestCase
         $response->assertResponseStatus(200);
         $response->see('注册');
         $response->see('登录');
+    }
+
+    public function test_submit()
+    {
+        $this->session(['sms_register' => 'smscode']);
+        $this->visit(route('register'))
+            ->type('nickname', 'nick_name')
+            ->type('13900001111', 'mobile')
+            ->type('smscode', 'sms_captcha')
+            ->type('register', 'sms_captcha_key')
+            ->type('meedu123', 'password')
+            ->type('meedu123', 'password_confirmation')
+            ->press('注册');
+
+        $user = User::query()->where('mobile', '13900001111')->exists();
+        $this->assertTrue($user);
+    }
+
+    public function test_submit_credit1_reward()
+    {
+        config(['meedu.member.credit1.register' => 112]);
+
+        $this->session(['sms_register' => 'smscode']);
+        $this->visit(route('register'))
+            ->type('nickname', 'nick_name')
+            ->type('13900001111', 'mobile')
+            ->type('smscode', 'sms_captcha')
+            ->type('register', 'sms_captcha_key')
+            ->type('meedu123', 'password')
+            ->type('meedu123', 'password_confirmation')
+            ->press('注册');
+
+        $user = User::query()->where('mobile', '13900001111')->first();
+        $this->assertNotEmpty($user);
+        $this->assertEquals(112, $user->credit1);
     }
 
 }

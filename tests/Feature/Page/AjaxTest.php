@@ -9,6 +9,7 @@ use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\User;
+use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Order\Models\OrderPaidRecord;
@@ -27,7 +28,9 @@ class AjaxTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->user = factory(User::class)->create();
+        $this->user = factory(User::class)->create([
+            'credit1' => 0,
+        ]);
     }
 
     public function tearDown()
@@ -509,6 +512,10 @@ class AjaxTest extends TestCase
 
     public function test_user_video_watch_record()
     {
+        // 看完奖励2积分
+        config(['meedu.member.credit1.watched_video' => 2]);
+        config(['meedu.member.credit1.watched_course' => 3]);
+
         $course = factory(Course::class)->create();
         $video = factory(Video::class)->create([
             'course_id' => $course->id,
@@ -525,33 +532,52 @@ class AjaxTest extends TestCase
             'charge' => 0,
         ]);
 
+        //------- 第一步，两个视频分别看5s,10s
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
             'duration' => 5,
+        ])->seeStatusCode(200);
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
+            'duration' => 10,
         ])->seeStatusCode(200);
 
         $record = UserVideoWatchRecord::query()->where('user_id', $this->user->id)->where('video_id', $video->id)->first();
         $this->assertNotEmpty($record);
         $this->assertEquals(5, $record->watch_seconds);
+        $record1 = UserVideoWatchRecord::query()->where('user_id', $this->user->id)->where('video_id', $video1->id)->first();
+        $this->assertNotEmpty($record1);
+        $this->assertEquals(10, $record1->watch_seconds);
 
         $courseUser = CourseUserRecord::create([
             'user_id' => $this->user->id,
             'course_id' => $video->course_id,
         ]);
 
+        //------- 第二步，第一个视频看100s(也就是看完)；第二个视频看50s(未看完:90s)
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
             'duration' => 100,
         ])->seeStatusCode(200);
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
+            'duration' => 50,
+        ])->seeStatusCode(200);
 
+        // 第一个视频看完
         $record->refresh();
         $this->assertEquals(100, $record->watch_seconds);
         $this->assertNotEmpty($record->watched_at);
+        $record1->refresh();
+        $this->assertEquals(50, $record1->watch_seconds);
+        $this->assertEmpty($record1->watched_at);
 
-        $courseUser->refresh();
-        $this->assertEquals(0, $courseUser->is_watched);
-        $this->assertNull($courseUser->watched_at);
+        // 第一个视频看完积分到账
+        $this->user->refresh();
+        $this->assertEquals(2, $this->user->credit1);
+
         // 观看进度达到50%
         // 因为该课程下有两个视频
         // 看完了一个视频，进度=50%
+        $courseUser->refresh();
+        $this->assertEquals(0, $courseUser->is_watched);
+        $this->assertNull($courseUser->watched_at);
         $this->assertEquals(50, $courseUser->progress);
 
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
@@ -559,9 +585,10 @@ class AjaxTest extends TestCase
         ])->seeStatusCode(200);
 
         $courseUser->refresh();
+        // 第二个视频依旧没看完
+        // 第二个视频没有看完，依旧是50
         $this->assertEquals(0, $courseUser->is_watched);
         $this->assertNull($courseUser->watched_at);
-        // 第二个视频没有看完，依旧是50
         $this->assertEquals(50, $courseUser->progress);
 
         $this->actingAs($this->user)->post('/member/ajax/video/' . $video1->id . '/watch/record', [
@@ -569,9 +596,14 @@ class AjaxTest extends TestCase
         ])->seeStatusCode(200);
 
         $courseUser->refresh();
+        // 第二个视频也看完了，课程进度也变为100
         $this->assertEquals(1, $courseUser->is_watched);
         $this->assertNotNull($courseUser->watched_at);
-        // 第二个视频也看完了，所以变成100了
         $this->assertEquals(100, $courseUser->progress);
+
+        // 课程全部看完，积分到账3积分
+        // 前面看完了2个视频奖励工奖励4分+课程完成3分=7分
+        $this->user->refresh();
+        $this->assertEquals(7, $this->user->credit1);
     }
 }

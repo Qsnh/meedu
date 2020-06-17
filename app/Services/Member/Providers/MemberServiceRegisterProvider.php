@@ -13,13 +13,14 @@ namespace App\Services\Member\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\Member\Services\RoleService;
-use App\Services\Member\Services\UserService;
+use App\Services\Member\Services\CreditService;
 use App\Services\Member\Services\DeliverService;
 use App\Services\Member\Proxies\UserServiceProxy;
 use App\Services\Member\Services\SocialiteService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Interfaces\CreditServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 use App\Services\Member\Proxies\UserInviteBalanceServiceProxy;
@@ -36,5 +37,6 @@ class MemberServiceRegisterProvider extends ServiceProvider
         $this->app->instance(NotificationServiceInterface::class, $this->app->make(NotificationService::class));
         $this->app->instance(SocialiteServiceInterface::class, $this->app->make(SocialiteService::class));
         $this->app->instance(UserInviteBalanceServiceInterface::class, $this->app->make(UserInviteBalanceServiceProxy::class));
+        $this->app->instance(CreditServiceInterface::class, $this->app->make(CreditService::class));
     }
 }

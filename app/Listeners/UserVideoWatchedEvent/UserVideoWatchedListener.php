@@ -13,6 +13,8 @@ namespace App\Listeners\UserVideoWatchedEvent;
 
 use App\Events\UserVideoWatchedEvent;
 use App\Events\UserCourseWatchedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
@@ -20,8 +22,9 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 
-class UserVideoWatchedListener
+class UserVideoWatchedListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var CourseService
@@ -67,17 +70,24 @@ class UserVideoWatchedListener
         // 检测课程下的视频是否全部观看，全部观看完的话触发课程观看完成事件
         $courseVideos = $this->videoService->getCourseList([$video['course_id']]);
         $courseVideoIds = array_column($courseVideos, 'id');
+
+        // 解析已看完的视频id数组
         $recordVideos = $this->userService->getUserVideoWatchRecords($event->userId, $video['course_id']);
-        $recordVideoIds = array_column($recordVideos, 'video_id');
+        $recordVideoIds = [];
+        foreach ($recordVideos as $item) {
+            if ($item['watched_at']) {
+                $recordVideoIds[] = $item['video_id'];
+            }
+        }
+
+        // 求交集
         $diff = array_diff($courseVideoIds, $recordVideoIds);
 
-        // 课程进度计算
-
-        if (!$diff) {
-            // 全部看完
+        if (empty($diff)) {
+            // 交集为空说明全部看完了
             event(new UserCourseWatchedEvent($event->userId, $video['course_id']));
         } else {
-            $progress = (int) (round(count($recordVideoIds) / count($courseVideoIds), 2) * 100);
+            $progress = (int)(round(count($recordVideoIds) / count($courseVideoIds), 2) * 100);
             $this->courseService->setUserWatchProgress($event->userId, $video['course_id'], $progress);
         }
     }

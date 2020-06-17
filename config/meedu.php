@@ -62,6 +62,20 @@ return [
             // 订单抽成
             'per_order_draw' => 0.01,
         ],
+
+        // 积分
+        'credit1' => [
+            // 注册送
+            'register' => 0,
+            // 看完课程
+            'watched_course' => 0,
+            // 看完视频
+            'watched_video' => 0,
+            // 支付订单
+            'paid_order' => 0,
+            // 邀请用户
+            'invite' => 0,
+        ]
     ],
 
     // 上传

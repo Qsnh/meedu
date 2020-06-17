@@ -40,11 +40,10 @@ class VideoBuyPageTest extends TestCase
         $this->assertEquals(__('this video cannot be sold'), session()->get('warning')->first());
     }
 
-    /**
-     * @expectedException \Laravel\BrowserKitTesting\HttpException
-     */
     public function test_member_orders_page_with_no_published()
     {
+        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
+
         $user = factory(User::class)->create();
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
@@ -55,11 +54,10 @@ class VideoBuyPageTest extends TestCase
             ->seeStatusCode(404);
     }
 
-    /**
-     * @expectedException \Laravel\BrowserKitTesting\HttpException
-     */
     public function test_member_orders_page_with_no_show()
     {
+        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
+
         $user = factory(User::class)->create();
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_NO,

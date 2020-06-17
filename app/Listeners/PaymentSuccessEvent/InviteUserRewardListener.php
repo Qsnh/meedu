@@ -13,6 +13,8 @@ namespace App\Listeners\PaymentSuccessEvent;
 
 use Carbon\Carbon;
 use App\Events\PaymentSuccessEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -20,8 +22,9 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
-class InviteUserRewardListener
+class InviteUserRewardListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var UserService

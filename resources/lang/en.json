@@ -96,5 +96,11 @@
   "video cant buy": "video cant buy",
   "course purchased": "course purchased",
   "video purchased": "video purchased",
-  "this video cannot be sold": "this video cannot be sold"
+  "this video cannot be sold": "this video cannot be sold",
+  "credit1_remark_register": "register reward",
+  "credit1_remark_watched_course": "course watched reward",
+  "credit1_remark_watched_video": "video watched reward",
+  "credit1_remark_order": "paid order reward",
+  "credit1_remark_invite": "invite reward",
+  "credit1_remark_other": "other"
 }
