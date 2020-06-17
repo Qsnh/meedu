@@ -108,6 +108,7 @@ class MemberController extends BaseController
             'is_lock', 'is_active', 'role_id', 'role_expired_at',
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
+        $data['role_id'] = (int)($data['role_id'] ?? 0);
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
         $user->fill($data)->save();
         return $this->success();
