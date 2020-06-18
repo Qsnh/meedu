@@ -17,8 +17,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\CreditService;
+use App\Services\Member\Services\NotificationService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\CreditServiceInterface;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class RegisterCredit1RewardListener implements ShouldQueue
 {
@@ -35,14 +37,21 @@ class RegisterCredit1RewardListener implements ShouldQueue
     protected $creditService;
 
     /**
+     * @var NotificationService
+     */
+    protected $notificationService;
+
+    /**
      * RegisterCredit1RewardListener constructor.
      * @param ConfigServiceInterface $configService
      * @param CreditServiceInterface $creditService
+     * @param NotificationServiceInterface $notificationService
      */
-    public function __construct(ConfigServiceInterface $configService, CreditServiceInterface $creditService)
+    public function __construct(ConfigServiceInterface $configService, CreditServiceInterface $creditService, NotificationServiceInterface $notificationService)
     {
         $this->configService = $configService;
         $this->creditService = $creditService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -59,6 +68,8 @@ class RegisterCredit1RewardListener implements ShouldQueue
             return;
         }
 
-        $this->creditService->createCredit1Record($event->userId, $credit1, __(FrontendConstant::CREDIT1_REMARK_REGISTER));
+        $message = __(FrontendConstant::CREDIT1_REMARK_REGISTER);
+        $this->creditService->createCredit1Record($event->userId, $credit1, $message);
+        $this->notificationService->notifyCredit1Message($event->userId, $credit1, $message);
     }
 }
