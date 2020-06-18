@@ -10,10 +10,17 @@
                         <div class="col-12">
                             <h2>手动打款</h2>
                         </div>
+                        @if($needPaidTotal > 0)
                         <div class="col-12">
                             <p class="mt-4">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
-                            <p>支付总额 <span class="ml-3">￥{{$needPaidTotal}}</span></p>
+                            <p>需支付总额 <span class="ml-3">￥{{$needPaidTotal}}</span></p>
                         </div>
+                        @else
+                            <div class="col-12">
+                                <p class="mt-4">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
+                                <p>已支付</p>
+                            </div>
+                            @endif
                         <div class="col-12 py-3">
                             {!! $intro !!}
                         </div>

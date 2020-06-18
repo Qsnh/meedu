@@ -63,7 +63,7 @@ class Credit1RewardListener implements ShouldQueue
     public function handle(PaymentSuccessEvent $event)
     {
         $credit1 = $this->configService->getPaidOrderSceneCredit1();
-        $credit = $credit1 * 100 * $event->order['charge'];
+        $credit = (int)($credit1 * $event->order['charge']);
         if ($credit <= 0) {
             // 未开启积分奖励
             return;
