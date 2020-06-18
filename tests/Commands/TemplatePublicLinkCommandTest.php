@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Commands;
 
-
-use Illuminate\Filesystem\Filesystem;
 use Tests\OriginalTestCase;
+use Illuminate\Filesystem\Filesystem;
 
 class TemplatePublicLinkCommandTest extends OriginalTestCase
 {
-
     public function test_run()
     {
         $this->artisan('template:public', ['template' => 'demo'])
@@ -28,5 +34,4 @@ class TemplatePublicLinkCommandTest extends OriginalTestCase
         $file->deleteDirectory(base_path('templates/demo'));
         $file->delete(base_path('public/templates/demo'));
     }
-
 }

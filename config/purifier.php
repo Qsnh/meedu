@@ -1,19 +1,12 @@
 <?php
-/**
- * Ok, glad you are here
- * first we get a config instance, and set the settings
- * $config = HTMLPurifier_Config::createDefault();
- * $config->set('Core.Encoding', $this->config->get('purifier.encoding'));
- * $config->set('Cache.SerializerPath', $this->config->get('purifier.cachePath'));
- * if ( ! $this->config->get('purifier.finalize')) {
- *     $config->autoFinalize = false;
- * }
- * $config->loadArray($this->getConfig());
+
+/*
+ * This file is part of the Qsnh/meedu.
  *
- * You must NOT delete the default settings
- * anything in settings should be compacted with params that needed to instance HTMLPurifier_Config.
+ * (c) XiaoTeng <616896861@qq.com>
  *
- * @link http://htmlpurifier.org/live/configdoc/plain.html
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 return [
@@ -32,9 +25,9 @@ return [
         'test' => [
             'Attr.EnableID' => 'true',
         ],
-        "youtube" => [
-            "HTML.SafeIframe" => 'true',
-            "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
+        'youtube' => [
+            'HTML.SafeIframe' => 'true',
+            'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
         ],
         'custom_definition' => [
             'id' => 'html5-definitions',

@@ -11,7 +11,6 @@
 
 namespace Tests\Feature\Api\V2;
 
-use App\Services\Member\Models\UserCreditRecord;
 use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
@@ -22,6 +21,7 @@ use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Models\UserInviteBalanceRecord;

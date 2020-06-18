@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Other;
 
-
-use App\Services\Other\Interfaces\LinkServiceInterface;
-use App\Services\Other\Models\Link;
 use Tests\TestCase;
+use App\Services\Other\Models\Link;
+use App\Services\Other\Interfaces\LinkServiceInterface;
 
 class LinkServiceTest extends TestCase
 {
-
     protected $service;
 
     public function setUp()
@@ -67,5 +73,4 @@ class LinkServiceTest extends TestCase
         $this->assertEquals($link->name, $links[0]['name']);
         $this->assertEquals($link1->name, $links[1]['name']);
     }
-
 }

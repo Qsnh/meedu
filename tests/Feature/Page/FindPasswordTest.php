@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests\Feature\Page;
 
+use Tests\TestCase;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
 
 class FindPasswordTest extends TestCase
 {
@@ -39,5 +48,4 @@ class FindPasswordTest extends TestCase
         $user->refresh();
         $this->assertTrue(Hash::check('123123', $user->password));
     }
-
 }

@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests\Feature\Page;
 
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\CourseCategory;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseCategory;
 
 class CourseListPageTest extends TestCase
 {
@@ -96,5 +105,4 @@ class CourseListPageTest extends TestCase
             ->click($category->name)
             ->see($c1->title);
     }
-
 }

@@ -11,8 +11,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Socialite;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;

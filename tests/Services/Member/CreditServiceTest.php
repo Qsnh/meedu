@@ -1,14 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Member;
 
-
-use App\Services\Member\Interfaces\CreditServiceInterface;
-use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCreditRecord;
-use App\Services\Member\Services\CreditService;
 use Tests\TestCase;
+use App\Services\Member\Models\User;
+use App\Services\Member\Services\CreditService;
+use App\Services\Member\Models\UserCreditRecord;
+use App\Services\Member\Interfaces\CreditServiceInterface;
 
 class CreditServiceTest extends TestCase
 {
@@ -81,5 +88,4 @@ class CreditServiceTest extends TestCase
 
         $this->assertEquals(2, $this->service->getCredit1RecordsCount($user->id));
     }
-
 }

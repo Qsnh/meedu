@@ -1,15 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Other;
 
-
-use App\Services\Other\Interfaces\AdFromServiceInterface;
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Services\Other\Models\AdFrom;
 use App\Services\Other\Models\AdFromNumber;
 use App\Services\Other\Services\AdFromService;
-use Carbon\Carbon;
-use Tests\TestCase;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 
 class AdFromServiceTest extends TestCase
 {
@@ -61,5 +68,4 @@ class AdFromServiceTest extends TestCase
 
         $this->assertEquals($num, $number['num']);
     }
-
 }

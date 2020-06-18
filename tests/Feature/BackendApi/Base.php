@@ -1,14 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\BackendApi;
-
 
 use Tests\TestCase;
 
 class Base extends TestCase
 {
-
     public const API_V1_PREFIX = '/backend/api/v1';
 
     protected function user($user)
@@ -31,5 +37,4 @@ class Base extends TestCase
         $this->assertEquals(0, $c['status']);
         return $c;
     }
-
 }

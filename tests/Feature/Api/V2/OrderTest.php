@@ -1,22 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\Video;
+use Carbon\Carbon;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserVideo;
-use App\Services\Order\Models\OrderPaidRecord;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
 use App\Services\Order\Models\PromoCode;
-use Carbon\Carbon;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
+use App\Services\Order\Models\OrderPaidRecord;
 
 class OrderTest extends Base
 {
-
     public function test_createCourseOrder()
     {
         $user = factory(User::class)->create();
@@ -248,5 +254,4 @@ class OrderTest extends Base
 
         $this->assertEquals(10, OrderPaidRecord::whereOrderId($order['data']['id'])->sum('paid_total'));
     }
-
 }

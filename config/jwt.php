@@ -1,12 +1,12 @@
 <?php
 
 /*
- * This file is part of jwt-auth.
+ * This file is part of the Qsnh/meedu.
  *
- * (c) Sean Tymon <tymon148@gmail.com>
+ * (c) XiaoTeng <616896861@qq.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 return [

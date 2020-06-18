@@ -1,23 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Member;
 
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\Video;
-use App\Services\Member\Interfaces\UserServiceInterface;
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserVideo;
-use App\Services\Member\Services\NotificationService;
-use App\Services\Member\Services\UserService;
-use App\Services\Order\Models\PromoCode;
-use Carbon\Carbon;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
+use App\Services\Order\Models\PromoCode;
+use App\Services\Member\Models\UserVideo;
+use App\Services\Member\Models\UserCourse;
+use Illuminate\Foundation\Testing\WithFaker;
+use App\Services\Member\Services\UserService;
+use App\Services\Member\Services\NotificationService;
+use App\Services\Member\Interfaces\UserServiceInterface;
 
 class UserServiceTest extends TestCase
 {

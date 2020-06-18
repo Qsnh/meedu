@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Course;
 
-use App\Services\Course\Interfaces\VideoServiceInterface;
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\CourseChapter;
-use App\Services\Course\Models\Video;
-use App\Services\Course\Services\VideoService;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseChapter;
+use App\Services\Course\Services\VideoService;
+use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoServiceTest extends TestCase
 {
@@ -236,5 +244,4 @@ class VideoServiceTest extends TestCase
         $video->refresh();
         $this->assertEquals(8, $video->view_num);
     }
-
 }

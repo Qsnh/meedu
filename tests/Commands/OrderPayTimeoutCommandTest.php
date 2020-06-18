@@ -1,16 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Commands;
 
-use App\Services\Order\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Tests\OriginalTestCase;
+use App\Services\Order\Models\Order;
 
 class OrderPayTimeoutCommandTest extends OriginalTestCase
 {
-
     public function test_order_pay_timeout()
     {
         $this->artisan('order:pay:timeout')
@@ -56,5 +63,4 @@ class OrderPayTimeoutCommandTest extends OriginalTestCase
         $order->refresh();
         $this->assertEquals(Order::STATUS_CANCELED, $order->status);
     }
-
 }

@@ -11,7 +11,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
 use App\Exceptions\ApiV2Exception;
 use App\Http\Requests\ApiV2\RegisterRequest;

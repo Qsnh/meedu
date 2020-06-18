@@ -1,28 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Page;
 
-
-use App\Events\UserLoginEvent;
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\CourseUserRecord;
-use App\Services\Course\Models\Video;
-use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCreditRecord;
-use App\Services\Member\Models\UserLikeCourse;
-use App\Services\Member\Models\UserVideoWatchRecord;
-use App\Services\Order\Models\OrderPaidRecord;
-use App\Services\Order\Models\PromoCode;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Tests\TestCase;
+use Illuminate\Support\Str;
+use App\Events\UserLoginEvent;
+use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Services\Course\Models\Video;
+use Illuminate\Support\Facades\Event;
+use App\Services\Course\Models\Course;
+use App\Services\Order\Models\PromoCode;
+use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Order\Models\OrderPaidRecord;
+use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserVideoWatchRecord;
 
 class AjaxTest extends TestCase
 {
-
     protected $user;
 
     public function setUp()

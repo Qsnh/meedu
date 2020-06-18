@@ -14,7 +14,6 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
-use Illuminate\Support\Facades\Log;
 use App\Services\Base\Services\CacheService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\CacheServiceInterface;

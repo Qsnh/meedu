@@ -1,19 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Unit\Events;
 
-
-use App\Events\UserInviteBalanceWithdrawHandledEvent;
-use App\Services\Member\Interfaces\NotificationServiceInterface;
-use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
+use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Events\UserInviteBalanceWithdrawHandledEvent;
+use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class UserInviteBalanceWithdrawHandledEventTest extends TestCase
 {
-
     public function test_run()
     {
         $user = factory(User::class)->create();
@@ -56,5 +62,4 @@ class UserInviteBalanceWithdrawHandledEventTest extends TestCase
         $user1->refresh();
         $this->assertEquals(12, $user2->invite_balance);
     }
-
 }

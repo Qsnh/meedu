@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Other;
 
-use App\Services\Other\Interfaces\NavServiceInterface;
+use Tests\TestCase;
 use App\Services\Other\Models\Nav;
 use App\Services\Other\Services\NavService;
-use Tests\TestCase;
+use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavServiceTest extends TestCase
 {
@@ -68,5 +76,4 @@ class NavServiceTest extends TestCase
         $this->assertEquals($nav->name, $all[0]['name']);
         $this->assertEquals($nav2->name, $all[1]['name']);
     }
-
 }

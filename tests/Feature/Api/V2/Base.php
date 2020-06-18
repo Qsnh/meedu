@@ -12,7 +12,6 @@
 namespace Tests\Feature\Api\V2;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\Log;
 
 class Base extends TestCase
 {

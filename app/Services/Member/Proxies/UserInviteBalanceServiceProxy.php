@@ -11,9 +11,7 @@
 
 namespace App\Services\Member\Proxies;
 
-use Illuminate\Support\Facades\Auth;
 use App\Meedu\ServiceProxy\ServiceProxy;
-use App\Meedu\ServiceProxy\Lock\LockInfo;
 use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
