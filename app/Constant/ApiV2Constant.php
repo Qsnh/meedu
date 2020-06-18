@@ -253,7 +253,7 @@ class ApiV2Constant
      * )
      */
     public const MODEL_PROMO_CODE_FIELD = [
-        'id', 'code', 'expired_at', 'invited_user_reward',
+        'id', 'code', 'expired_at', 'invited_user_reward', 'invite_user_reward',
     ];
 
     /**
