@@ -35,28 +35,14 @@
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-description').show();">
-            <a href="javascript:void(0)">介绍</a>
-        </div>
-        <div class="menu-item active"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-chapter').show();">
-            <a href="javascript:void(0)">目录</a>
-        </div>
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-comment').show();">
-            <a href="javascript:void(0)">评论</a>
-        </div>
-        @if($user)
-            @if(app()->make(\App\Businesses\BusinessState::class)->isRole($user))
-                <div class="label">{{$user['role']['name']}}</div>
-            @elseif($canSeeVideo && $video['charge'] > 0)
-                <div class="label">已订阅</div>
-            @endif
-        @endif
+        <div class="menu-item" data-dom="course-description">介绍</div>
+        <div class="menu-item active" data-dom="course-chapter">目录</div>
+        <div class="menu-item" data-dom="course-comment">评论</div>
     </div>
 
-    <div class="course-description course-content-tab-item" style="display: none">{!! $video['render_desc'] !!}</div>
+    <div class="course-description course-content-tab-item" style="display: none">
+        {!! $video['render_desc'] !!}
+    </div>
 
     <div class="course-chapter course-content-tab-item" style="display: block">
         @if($chapters)

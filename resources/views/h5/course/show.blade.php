@@ -6,32 +6,20 @@
 
     <div class="course-info-box">
         <div class="course-thumb">
-            <img src="{{$course['thumb']}}" width="160" height="120">
-        </div>
-        <div class="course-info-desc">
-            <div class="course-title">
-                {{$course['title']}}
-            </div>
-            <div class="course-short-desc">{{$course['short_description']}}</div>
+            <img src="{{$course['thumb']}}" width="100%" height="192">
+            <div class="title">{{$course['title']}}</div>
         </div>
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item active"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-description').show();">
-            <a href="javascript:void(0)">介绍</a>
-        </div>
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-chapter').show();">
-            <a href="javascript:void(0)">目录</a>
-        </div>
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-comment').show();">
-            <a href="javascript:void(0)">评论</a>
-        </div>
+        <div class="menu-item active" data-dom="course-description">介绍</div>
+        <div class="menu-item" data-dom="course-chapter">目录</div>
+        <div class="menu-item" data-dom="course-comment">评论</div>
     </div>
 
-    <div class="course-description course-content-tab-item">{!! $course['render_desc'] !!}</div>
+    <div class="course-description course-content-tab-item">
+        {!! $course['render_desc'] !!}
+    </div>
 
     <div class="course-chapter course-content-tab-item">
         @if($chapters)

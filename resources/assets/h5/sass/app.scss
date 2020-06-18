@@ -504,93 +504,56 @@ body {
 .course-info-box {
   width: 100%;
   height: auto;
-  padding: 15px;
   float: left;
-  display: flex;
-  background-color: #ffffff;
 
   .course-thumb {
-    width: 175px;
-    height: 120px;
-    padding-right: 15px;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
+    width: 100%;
+    height: 192px;
+    float: left;
+    position: relative;
 
-  .course-info-desc {
-    flex: 1;
-    height: auto;
-
-    .course-title {
+    .title {
+      position: absolute;
+      bottom: 0;
+      z-index: 11;
       width: 100%;
       height: auto;
       float: left;
-      font-size: 15px;
-      font-weight: 600;
-      color: rgba(51, 51, 51, 1);
-      line-height: 18px;
-      margin-bottom: 10px;
-    }
-
-    .course-short-desc {
-      width: 100%;
-      height: auto;
-      float: left;
-      font-size: 12px;
-      font-weight: 400;
-      color: rgba(102, 102, 102, 1);
-      line-height: 16px;
+      padding: 0 15px;
+      font-size: 14px;
+      line-height: 36px;
+      white-space: nowrap;
       overflow: hidden;
-
-      img {
-        max-width: 100%;
-      }
+      text-overflow: ellipsis;
+      background-color: rgba(0, 0, 0, .5);
+      color: white;
     }
   }
 }
 
 .course-info-menu {
+  position: relative;
   width: 100%;
   height: 52px;
   float: left;
   padding: 19px 15px;
   background-color: #ffffff;
+  display: flex;
+  border-bottom: 1px solid #f2f2f2;
 
   .menu-item {
-    width: auto;
+    flex: 1;
     height: 14px;
-    float: left;
     font-size: 14px;
     font-weight: 400;
     line-height: 1;
-    margin-right: 50px;
-
-    a {
-      color: rgba(102, 102, 102, 1);
-    }
+    color: rgba(102, 102, 102, 1);
+    text-align: center;
 
     &.active {
       font-weight: 600;
-
-      a {
-        color: $primary;
-      }
+      color: $primary;
     }
-  }
-
-  .label {
-    float: right;
-    width: 64px;
-    height: 24px;
-    background: rgba(255, 243, 170, 1);
-    border-radius: 2px;
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(225, 165, 0, 1);
-    line-height: 24px;
-    text-align: center;
-    margin-top: -5px;
   }
 }
 
