@@ -47,6 +47,7 @@ class CreditService implements CreditServiceInterface
     {
         return UserCreditRecord::query()
             ->where('user_id', $userId)
+            ->where('field', UserCreditRecord::FIELD_CREDIT1)
             ->count();
     }
 }

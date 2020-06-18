@@ -100,6 +100,7 @@ class ApiV2Constant
      *         @OA\Property(property="avatar",type="string",description="头像"),
      *         @OA\Property(property="nick_name",type="string",description="昵称"),
      *         @OA\Property(property="mobile",type="string",description="手机号"),
+     *         @OA\Property(property="credit1",type="int",description="积分"),
      *         @OA\Property(property="role_id",type="integer",description="会员套餐id"),
      *         @OA\Property(property="role_expired_at",type="string",description="会员套餐到期时间"),
      *         @OA\Property(property="role",type="object",ref="#/components/schemas/Role"),
@@ -111,7 +112,7 @@ class ApiV2Constant
      */
     public const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
-        'invite_balance', 'role', 'is_password_set', 'is_set_nickname',
+        'invite_balance', 'role', 'is_password_set', 'is_set_nickname', 'credit1',
     ];
     /**
      * @OpenApi\Annotations\Schemas(
@@ -287,5 +288,21 @@ class ApiV2Constant
      */
     public const MODEL_NOTIFICATON_FIELD = [
         'id', 'notifiable_id', 'data', 'read_at', 'created_at',
+    ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="UserCredit1Record",
+     *         type="object",
+     *         title="积分明细",
+     *         @OA\Property(property="sum",type="integer",description="变动"),
+     *         @OA\Property(property="remark",type="string",description="说明"),
+     *         @OA\Property(property="created_at",type="integer",description="时间"),
+     *     ),
+     * )
+     */
+    public const MODEL_CREDIT1_RECORD_FIELD = [
+        'sum', 'remark', 'created_at',
     ];
 }

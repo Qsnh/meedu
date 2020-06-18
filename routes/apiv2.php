@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function ()
     Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
     Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
     Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
+    Route::get('credit1Records', 'MemberController@credit1Records');
 });
 
 Route::group(['middleware' => ['auth:apiv2']], function () {

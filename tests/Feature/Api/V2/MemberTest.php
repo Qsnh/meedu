@@ -11,6 +11,7 @@
 
 namespace Tests\Feature\Api\V2;
 
+use App\Services\Member\Models\UserCreditRecord;
 use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
@@ -291,5 +292,36 @@ class MemberTest extends Base
         $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(3, $response['data']);
+    }
+
+    public function test_credit1Records()
+    {
+        UserCreditRecord::create([
+            'field' => 'credit1',
+            'user_id' => $this->member->id,
+            'sum' => 101,
+            'remark' => 'meedu test1'
+        ]);
+        UserCreditRecord::create([
+            'field' => 'credit1',
+            'user_id' => $this->member->id,
+            'sum' => 102,
+            'remark' => 'meedu test2'
+        ]);
+        UserCreditRecord::create([
+            'field' => 'credit1',
+            'user_id' => $this->member->id,
+            'sum' => 103,
+            'remark' => 'meedu test3'
+        ]);
+        $response = $this->user($this->member)->getJson('api/v2/member/credit1Records?page=1&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(3, $response['data']['total']);
+        $this->assertEquals(3, count($response['data']['data']));
+
+        $response = $this->user($this->member)->getJson('api/v2/member/credit1Records?page=2&page_size=8');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEquals(3, $response['data']['total']);
+        $this->assertEquals(0, count($response['data']['data']));
     }
 }
