@@ -34,7 +34,6 @@
                         <div class="course-info">
                             <h2 class="course-title">
                                 {{$course['title']}}
-
                                 @if($isLikeCourse)
                                     <div data-login="{{$user ? 1 : 0}}"
                                          data-url="{{route('ajax.course.like', [$course['id']])}}" class="like-button">
