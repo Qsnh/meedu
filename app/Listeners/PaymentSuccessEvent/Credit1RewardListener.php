@@ -71,6 +71,6 @@ class Credit1RewardListener implements ShouldQueue
 
         $message = __(FrontendConstant::CREDIT1_REMARK_WATCHED_ORDER);
         $this->creditService->createCredit1Record($event->order['user_id'], $credit, $message);
-        $this->notificationService->notifyCredit1Message($event->order['user_id'], $credit1, $message);
+        $this->notificationService->notifyCredit1Message($event->order['user_id'], $credit, $message);
     }
 }
