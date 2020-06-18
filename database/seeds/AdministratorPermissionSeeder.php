@@ -619,6 +619,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '用户积分明细',
+                'slug' => 'member.detail.credit1Records',
+                'method' => 'GET',
+                'url' => 'member/\d+/detail/credit1Records',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户邀请余额提现记录列表',
                 'slug' => 'member.inviteBalance.withdrawOrders',
                 'method' => 'GET',

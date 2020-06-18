@@ -165,6 +165,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/detail/userHistory', 'MemberController@userHistory');
         Route::get('/{id}/detail/userOrders', 'MemberController@userOrders');
         Route::get('/{id}/detail/userInvite', 'MemberController@userInvite');
+        Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
 
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');

@@ -22,7 +22,9 @@ class CreditService implements CreditServiceInterface
     {
         DB::transaction(function () use ($userId, $sum, $remark) {
             // 积分扣除
-            User::query()->increment(UserCreditRecord::FIELD_CREDIT1, $sum);
+            User::query()
+                ->where('id', $userId)
+                ->increment(UserCreditRecord::FIELD_CREDIT1, $sum);
 
             UserCreditRecord::create([
                 'user_id' => $userId,

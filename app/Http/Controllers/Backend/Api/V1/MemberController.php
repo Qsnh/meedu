@@ -25,6 +25,7 @@ use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
@@ -202,6 +203,18 @@ class MemberController extends BaseController
 
         return $this->successData([
             'data' => $data,
+        ]);
+    }
+
+    public function credit1Records(Request $request, $id)
+    {
+        $records = UserCreditRecord::query()
+            ->where('user_id', $id)
+            ->where('field', 'credit1')
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 20));
+        return $this->successData([
+            'data' => $records,
         ]);
     }
 }
