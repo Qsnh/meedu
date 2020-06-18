@@ -54,36 +54,36 @@
                         绑定第三方账号更方便快捷登录和数据同步哦！
                     </div>
                     <div class="option-item">
-                        <span class="option-text">绑定手机：</span>
+                        <div class="option-text">绑定手机</div>
                         @if(app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
-                            <span class="option-value">未绑定</span>
-                            <span class="option-button" onclick="showAuthBox('mobile-bind-box')">绑定</span>
+                            <div class="option-value">未绑定</div>
+                            <div class="option-button" onclick="showAuthBox('mobile-bind-box')">绑定</div>
                         @else
-                            <span class="option-value">{{substr($user['mobile'], 0, 3) . '****' . substr($user['mobile'], -4, 4)}}</span>
+                            <div class="option-value">{{substr($user['mobile'], 0, 3) . '****' . substr($user['mobile'], -4, 4)}}</div>
                         @endif
                     </div>
                     @foreach(enabled_socialites() as $app)
                         <div class="option-item">
-                            <span class="option-text">{{$app['name']}}：</span>
+                            <div class="option-text">{{$app['name']}}</div>
                             @if(isset($apps[$app['app']]))
-                                <span class="option-value">已绑定</span>
-                                <span class="option-button"
-                                      onclick="document.getElementById('delete-socialite-{{$app['app']}}').submit();">取绑</span>
+                                <div class="option-value">已绑定</div>
+                                <div class="option-button"
+                                      onclick="document.getElementById('delete-socialite-{{$app['app']}}').submit();">取绑</div>
                                 <form id="delete-socialite-{{$app['app']}}"
                                       action="{{route('member.socialite.delete', [$app['app']])}}" method="POST"
                                       style="display: none;">
                                     @csrf
                                 </form>
                             @else
-                                <span class="option-value">未绑定</span>
+                                <div class="option-value">未绑定</div>
                                 <a target="_blank" href="{{route('socialite', [$app['app']])}}"
                                    class="option-button">绑定</a>
                             @endif
                         </div>
                     @endforeach
                     <div class="option-item">
-                        <span class="option-text">修改密码：</span>
-                        <span class="option-value">{{$user['is_password_set'] ? '已设置' : '未设置'}}</span>
+                        <div class="option-text">修改密码</div>
+                        <div class="option-value">{{$user['is_password_set'] ? '已设置' : '未设置'}}</div>
                         <a href="javascript:void(0);" class="option-button"
                            onclick="showAuthBox('password-change')">修改</a>
                     </div>

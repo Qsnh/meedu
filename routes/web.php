@@ -84,6 +84,7 @@ Route::group([
     Route::get('/promo_code', 'MemberController@showPromoCodePage')->name('member.promo_code');
     Route::post('/promo_code', 'MemberController@generatePromoCode');
     Route::post('/invite_balance_withdraw_orders', 'MemberController@createInviteBalanceWithdrawOrder');
+    Route::get('/credit1_records', 'MemberController@credit1Records')->name('member.credit1_records');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');

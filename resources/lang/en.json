@@ -32,6 +32,7 @@
   "title.member.socialite": "Socialite",
   "title.member.promo_code": "PromoCode",
   "title.member.invite_balances": "InviteBalance",
+  "title.member.credit1_records": "credit records",
   "comment.content.required": "please input comment content",
   "comment.content.min": "comment content length must >= :count",
   "captcha.required": "please input image captcha",

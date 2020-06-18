@@ -43,6 +43,15 @@
                                 <span class="dot"></span>
                             </div>
                         </a>
+                        <a href="{{route('member.credit1_records')}}" class="{{menu_active('member.credit1_records')}}">
+                            <div>
+                                <img src="/images/icons/member/credit1.png" width="24" height="24">
+                                <span class="member-menu-item-title">我的积分</span>
+                            </div>
+                            <div class="dot-box">
+                                <span class="dot"></span>
+                            </div>
+                        </a>
                         <a href="{{route('member.messages')}}" class="{{menu_active('member.messages')}}">
                             <div>
                                 <img src="/images/icons/member/message.png" width="24" height="24">
