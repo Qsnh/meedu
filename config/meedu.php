@@ -24,6 +24,8 @@ return [
 
         // 用户协议
         'protocol' => '',
+        // 隐私协议
+        'private_protocol' => '',
 
         // 是否提醒绑定手机号
         'enabled_mobile_bind_alert' => 0,

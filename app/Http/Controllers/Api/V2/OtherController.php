@@ -23,6 +23,7 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
  *         @OA\Property(property="webname",type="string",description="网站名"),
  *         @OA\Property(property="icp",type="string",description="备案信息"),
  *         @OA\Property(property="user_protocol",type="string",description="用户协议url"),
+ *         @OA\Property(property="user_private_protocol",type="string",description="隐私政策协议url"),
  *         @OA\Property(property="aboutus",type="integer",description="关于我们url"),
  *         @OA\Property(property="logo",type="object",description="logo",@OA\Property(
  *             @OA\Property(property="logo",type="string",description="默认logo"),
@@ -66,8 +67,6 @@ class OtherController extends BaseController
      *         )
      *     )
      * )
-     *
-     * @return void
      */
     public function config()
     {
@@ -76,6 +75,7 @@ class OtherController extends BaseController
             'webname' => $this->configService->getName(),
             'icp' => $this->configService->getIcp(),
             'user_protocol' => route('user.protocol'),
+            'user_private_protocol' => route('user.private_protocol'),
             'aboutus' => route('aboutus'),
             'logo' => $this->configService->getLogo(),
             'player' => [

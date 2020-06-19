@@ -179,7 +179,7 @@ $(function () {
             return false;
         }
         if (typeof protocol === "undefined") {
-            flashWarning("请同意用户协议");
+            flashWarning("请同意协议");
             return;
         }
         $(this).disabled = true;

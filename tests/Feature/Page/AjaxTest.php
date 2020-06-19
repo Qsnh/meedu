@@ -46,7 +46,10 @@ class AjaxTest extends TestCase
 
     public function test_course_comment_with_empty_content()
     {
-        $course = factory(Course::class)->create();
+        $course = factory(Course::class)->create([
+            'published_at' => Carbon::now()->subDays(1),
+            'is_show' => 1,
+        ]);
         $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '',
         ])->seeStatusCode(302);

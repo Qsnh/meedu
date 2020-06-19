@@ -12,6 +12,7 @@
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 Route::redirect('/home', '/');
 Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
+Route::get('/user/private_protocol', 'Frontend\IndexController@userPrivateProtocol')->name('user.private_protocol');
 Route::get('/aboutus', 'Frontend\IndexController@aboutus')->name('aboutus');
 // 登录
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');

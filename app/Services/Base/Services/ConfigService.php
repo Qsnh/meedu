@@ -131,6 +131,15 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
+     * 获取用户隐私协议
+     * @return string
+     */
+    public function getMemberPrivateProtocol(): string
+    {
+        return config('meedu.member.private_protocol', '');
+    }
+
+    /**
      * 关于我们
      * @return string
      */
