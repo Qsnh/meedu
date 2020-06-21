@@ -54,7 +54,7 @@
     <div class="box">
         @if($records->total() > $records->perPage())
             <div class="col-12">
-                {!! str_replace('pagination', 'pagination justify-content-center', $records->render()) !!}
+                {!! str_replace('pagination', 'pagination justify-content-center', $records->render('pagination::simple-bootstrap-4')) !!}
             </div>
         @endif
     </div>

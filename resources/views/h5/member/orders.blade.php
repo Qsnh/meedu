@@ -26,7 +26,7 @@
 
     @if($orders->total() > $orders->perPage())
         <div class="box">
-            {!! str_replace('pagination', 'pagination justify-content-center', $orders->render()) !!}
+            {!! str_replace('pagination', 'pagination justify-content-center', $orders->render('pagination::simple-bootstrap-4')) !!}
         </div>
     @endif
 
