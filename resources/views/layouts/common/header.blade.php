@@ -8,10 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="{{$keywords ?? ''}}">
     <meta name="description" content="{{$description ?? ''}}">
-    <title>{{$user ? $user['nick_name'].' - ' : ''}}{{$title ?? 'MeEdu'}}</title>
+    <title>{{$title ?? 'MeEdu'}}</title>
     <link crossorigin="anonymous" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('/frontend/css/frontend.css')}}">
-    <script src="{{asset('frontend/js/frontend.js')}}"></script>
+    <link rel="stylesheet" href="{{mix('/frontend/css/frontend.css')}}">
+    <script src="{{mix('frontend/js/frontend.js')}}"></script>
     @yield('css')
 </head>
