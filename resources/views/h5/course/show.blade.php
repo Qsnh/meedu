@@ -15,6 +15,7 @@
         <div class="menu-item active" data-dom="course-description">介绍</div>
         <div class="menu-item" data-dom="course-chapter">目录</div>
         <div class="menu-item" data-dom="course-comment">评论</div>
+        <div class="menu-item" data-dom="course-attach">附件</div>
     </div>
 
     <div class="course-description course-content-tab-item">
@@ -89,9 +90,30 @@
                     </div>
                 </div>
             @empty
-                @include('frontend.components.none')
+                @include('h5.components.none')
             @endforelse
         </div>
+    </div>
+
+    <div class="course-attach course-content-tab-item">
+        @if(!$attach)
+            @include('h5.components.none')
+        @else
+            <table class="table table-bordered">
+                <tbody>
+                @foreach($attach as $item)
+                    <tr>
+                        <td>{{$item['name']}}</td>
+                        <td class="text-center">{{round($item['size']/1024, 2)}}KB</td>
+                        <td class="text-center"><a
+                                    href="{{route('course.attach.download', $item['id'])}}?_t={{time()}}"
+                                    target="_blank">下载</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 
     @if(!$isBuy && $course['charge'] > 0)

@@ -846,6 +846,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'statistic/courseWatchDuration',
             ],
+
+            // 课程附件
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件列表',
+                'slug' => 'course_attach',
+                'method' => 'GET',
+                'url' => 'course_attach',
+            ],
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件创建',
+                'slug' => 'course_attach.store',
+                'method' => 'POST',
+                'url' => 'course_attach',
+            ],
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件删除',
+                'slug' => 'course_attach.destroy',
+                'method' => 'DELETE',
+                'url' => 'course_attach/\d+',
+            ],
         ];
 
         foreach ($permissions as $permission) {

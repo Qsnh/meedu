@@ -140,6 +140,13 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribe/users', 'CourseController@subscribeUsers');
     });
 
+    // 课程
+    Route::group(['prefix' => 'course_attach'], function () {
+        Route::get('/', 'CourseAttachController@index');
+        Route::post('/', 'CourseAttachController@store');
+        Route::delete('/{id}', 'CourseAttachController@destroy');
+    });
+
     // 视频
     Route::group(['prefix' => 'video'], function () {
         Route::get('/', 'CourseVideoController@index');

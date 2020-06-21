@@ -111,7 +111,7 @@
                     </div>
                 </div>
             @empty
-                @include('frontend.components.none')
+                @include('h5')
             @endforelse
         </div>
     </div>

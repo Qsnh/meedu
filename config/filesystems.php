@@ -57,6 +57,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'attach' => [
+            'driver' => 'local',
+            'root' => storage_path('app/attach'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

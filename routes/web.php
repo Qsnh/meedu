@@ -47,6 +47,7 @@ Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/videos', 'Frontend\VideoController@index')->name('videos');
 // 课程详情
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
+Route::get('/course/attach/{id}/download', 'Frontend\CourseController@attachDownload')->name('course.attach.download')->middleware(['auth']);
 // 视频详情
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 // 搜索

@@ -103,6 +103,12 @@ return [
                 'access_key_secret' => '',
             ],
         ],
+        'attach' => [
+            'course' => [
+                'disk' => 'attach',
+                'path' => 'course',
+            ],
+        ],
     ],
 
     // 管理员配置

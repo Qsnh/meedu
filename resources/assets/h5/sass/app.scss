@@ -576,6 +576,19 @@ body {
   }
 }
 
+.course-attach {
+  display: none;
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 10px;
+  background-color: white;
+
+  table {
+    margin-bottom: 0;
+  }
+}
+
 .course-chapter {
   display: none;
   width: 100%;
