@@ -71,3 +71,11 @@
     </form>
 
 @endsection
+
+@section('js')
+    <script>
+        $(function () {
+            $('.payment-item').first().click();
+        });
+    </script>
+@endsection
