@@ -305,4 +305,21 @@ class ApiV2Constant
     public const MODEL_CREDIT1_RECORD_FIELD = [
         'sum', 'remark', 'created_at',
     ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="CourseAttach",
+     *         type="object",
+     *         title="课程附件",
+     *         @OA\Property(property="id",type="integer",description="id"),
+     *         @OA\Property(property="name",type="string",description="附件名"),
+     *         @OA\Property(property="size",type="integer",description="附件大小，单位：字节"),
+     *         @OA\Property(property="extension",type="string",description="附件扩展"),
+     *     ),
+     * )
+     */
+    public const MODEL_COURSE_ATTACH_FIELD = [
+        'id', 'name', 'size', 'extension',
+    ];
 }

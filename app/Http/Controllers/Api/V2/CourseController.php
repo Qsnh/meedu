@@ -165,6 +165,10 @@ class CourseController extends BaseController
         // 课程视频观看进度
         $videoWatchedProgress = [];
 
+        // 课程附件
+        $attach = $this->courseService->getCourseAttach($course['id']);
+        $attach = arr2_clear($attach, ApiV2Constant::MODEL_COURSE_ATTACH_FIELD);
+
         if ($this->check()) {
             $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
@@ -173,7 +177,7 @@ class CourseController extends BaseController
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
         }
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress'));
+        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress', 'attach'));
     }
 
     /**
@@ -265,5 +269,32 @@ class CourseController extends BaseController
         $course = $this->courseService->find($id);
         $status = $this->userService->likeACourse($this->id(), $course['id']);
         return $this->data($status);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/course/attach/{id}/download",
+     *     @OA\Parameter(in="path",name="id",description="课程附件id",required=true,@OA\Schema(type="integer")),
+     *     summary="课程附件下载",
+     *     tags={"课程"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description=""),
+     *         )
+     *     )
+     * )
+     * @param $id
+     */
+    public function attachDownload($id)
+    {
+        $courseAttach = $this->courseService->getAttach($id);
+        if (!$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
+            return $this->error(__('please buy course'));
+        }
+        $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);
+        return response()->download(storage_path('app/attach/' . $courseAttach['path']));
     }
 }
