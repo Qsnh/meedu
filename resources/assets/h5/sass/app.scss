@@ -1240,3 +1240,40 @@ body {
     }
   }
 }
+
+.my-credit1 {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 15px;
+
+  .credit1-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 5px;
+    background-color: white;
+    padding: 10px 15px;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 10px;
+    }
+
+    .sum {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: $primary;
+    }
+  }
+}

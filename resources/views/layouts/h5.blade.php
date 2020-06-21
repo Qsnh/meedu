@@ -10,7 +10,8 @@
     <meta name="description" content="{{$description ?? ''}}">
     <title>{{$title ?? 'MeEdu'}}</title>
     <link rel="stylesheet" href="{{asset('/h5/css/app.css')}}">
-    <script crossorigin="anonymous" integrity="sha384-qu2J8HSjv8EaYlbzBdbVeJncuCmfBqnZ4h3UIBZ9WTZ/5Wrqt0/9hofL0046NCkc" src="https://lib.baomitu.com/zepto/1.2.0/zepto.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-qu2J8HSjv8EaYlbzBdbVeJncuCmfBqnZ4h3UIBZ9WTZ/5Wrqt0/9hofL0046NCkc"
+            src="https://lib.baomitu.com/zepto/1.2.0/zepto.min.js"></script>
     <script src="{{asset('/h5/js/zepto-touch.js')}}"></script>
     <script src="{{asset('/h5/js/app.js')}}"></script>
     @yield('css')
@@ -59,6 +60,10 @@
                          class="icon"><span>会员中心</span>
                 </a>
             @endif
+            <a href="{{route('member.credit1_records')}}" class="menu-item">
+                <img src="{{asset('/h5/images/icons/credit1.png')}}" width="20" height="20" class="icon">
+                <span>我的积分</span>
+            </a>
             <a href="{{route('member.courses')}}" class="menu-item">
                 <img src="{{asset('/h5/images/icons/course.png')}}" width="20" height="20" class="icon">
                 <span>我的课程</span>
