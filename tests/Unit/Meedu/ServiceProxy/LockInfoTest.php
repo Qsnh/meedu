@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Unit\Meedu\ServiceProxy;
 
-
-use App\Meedu\ServiceProxy\Lock\LockInfo;
 use Tests\TestCase;
+use App\Meedu\ServiceProxy\Lock\LockInfo;
 
 class LockInfoTest extends TestCase
 {
-
     public function test()
     {
         $lockInfo = new LockInfo('lock', 10);
@@ -21,5 +27,4 @@ class LockInfoTest extends TestCase
         $this->assertEquals('lock1', $lockInfo->getName());
         $this->assertEquals(20, $lockInfo->getSeconds());
     }
-
 }

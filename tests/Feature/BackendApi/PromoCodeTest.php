@@ -1,16 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\BackendApi;
 
 use App\Models\Administrator;
 use App\Models\AdministratorRole;
-use App\Services\Order\Models\PromoCode;
 use Illuminate\Support\Facades\DB;
+use App\Services\Order\Models\PromoCode;
 
 class PromoCodeTest extends Base
 {
-
     public const MODEL = PromoCode::class;
 
     public const MODEL_NAME = 'promoCode';
@@ -86,5 +93,4 @@ class PromoCodeTest extends Base
         $model = self::MODEL;
         $this->assertEmpty($model::find($item->id));
     }
-
 }

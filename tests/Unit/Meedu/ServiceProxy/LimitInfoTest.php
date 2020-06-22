@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Unit\Meedu\ServiceProxy;
 
-
-use App\Meedu\ServiceProxy\Limiter\LimiterInfo;
 use Tests\TestCase;
+use App\Meedu\ServiceProxy\Limiter\LimiterInfo;
 
 class LimitInfoTest extends TestCase
 {
-
     public function test()
     {
         $limitInfo = new LimiterInfo('limit', 10, 1);
@@ -25,5 +31,4 @@ class LimitInfoTest extends TestCase
         $this->assertEquals(2, $limitInfo->getMinutes());
         $this->assertEquals(20, $limitInfo->getMaxTimes());
     }
-
 }

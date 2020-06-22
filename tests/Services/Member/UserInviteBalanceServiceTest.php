@@ -1,16 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Member;
 
-use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
+use Tests\TestCase;
 use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserInviteBalanceRecord;
-use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
-use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
+use App\Services\Member\Models\UserInviteBalanceRecord;
+use App\Services\Member\Services\UserInviteBalanceService;
+use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
+use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class UserInviteBalanceServiceTest extends TestCase
 {
@@ -91,5 +99,4 @@ class UserInviteBalanceServiceTest extends TestCase
         $this->assertEquals(10, $order->total);
         $this->assertEquals(100, $order->before_balance);
     }
-
 }

@@ -6,32 +6,21 @@
 
     <div class="course-info-box">
         <div class="course-thumb">
-            <img src="{{$course['thumb']}}" width="160" height="120">
-        </div>
-        <div class="course-info-desc">
-            <div class="course-title">
-                {{$course['title']}}
-            </div>
-            <div class="course-short-desc">{{$course['short_description']}}</div>
+            <img src="{{$course['thumb']}}" width="100%" height="192">
+            <div class="title">{{$course['title']}}</div>
         </div>
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item active"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-description').show();">
-            <a href="javascript:void(0)">介绍</a>
-        </div>
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-chapter').show();">
-            <a href="javascript:void(0)">目录</a>
-        </div>
-        <div class="menu-item"
-             onclick="$(this).addClass('active').siblings().removeClass('active');$('.course-content-tab-item').hide();$('.course-comment').show();">
-            <a href="javascript:void(0)">评论</a>
-        </div>
+        <div class="menu-item active" data-dom="course-description">介绍</div>
+        <div class="menu-item" data-dom="course-chapter">目录</div>
+        <div class="menu-item" data-dom="course-comment">评论</div>
+        <div class="menu-item" data-dom="course-attach">附件</div>
     </div>
 
-    <div class="course-description course-content-tab-item">{!! $course['render_desc'] !!}</div>
+    <div class="course-description course-content-tab-item">
+        {!! $course['render_desc'] !!}
+    </div>
 
     <div class="course-chapter course-content-tab-item">
         @if($chapters)
@@ -101,9 +90,30 @@
                     </div>
                 </div>
             @empty
-                @include('frontend.components.none')
+                @include('h5.components.none')
             @endforelse
         </div>
+    </div>
+
+    <div class="course-attach course-content-tab-item">
+        @if(!$attach)
+            @include('h5.components.none')
+        @else
+            <table class="table table-bordered">
+                <tbody>
+                @foreach($attach as $item)
+                    <tr>
+                        <td>{{$item['name']}}</td>
+                        <td class="text-center">{{round($item['size']/1024, 2)}}KB</td>
+                        <td class="text-center"><a
+                                    href="{{route('course.attach.download', $item['id'])}}?_t={{time()}}"
+                                    target="_blank">下载</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 
     @if(!$isBuy && $course['charge'] > 0)

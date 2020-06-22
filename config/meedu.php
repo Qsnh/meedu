@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 return [
 
     // 配置文件存储路径
@@ -15,6 +24,8 @@ return [
 
         // 用户协议
         'protocol' => '',
+        // 隐私协议
+        'private_protocol' => '',
 
         // 是否提醒绑定手机号
         'enabled_mobile_bind_alert' => 0,
@@ -62,6 +73,20 @@ return [
             // 订单抽成
             'per_order_draw' => 0.01,
         ],
+
+        // 积分
+        'credit1' => [
+            // 注册送
+            'register' => 0,
+            // 看完课程
+            'watched_course' => 0,
+            // 看完视频
+            'watched_video' => 0,
+            // 支付订单
+            'paid_order' => 0,
+            // 邀请用户
+            'invite' => 0,
+        ]
     ],
 
     // 上传
@@ -76,6 +101,12 @@ return [
                 'region' => 'cn-shanghai',
                 'access_key_id' => '',
                 'access_key_secret' => '',
+            ],
+        ],
+        'attach' => [
+            'course' => [
+                'disk' => 'attach',
+                'path' => 'course',
             ],
         ],
     ],

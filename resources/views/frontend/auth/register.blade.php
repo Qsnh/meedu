@@ -31,9 +31,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label><input type="checkbox"
-                                                  name="agree_protocol" {{ old('remember') ? 'checked' : '' }}> 我已阅读并同意
-                                        <a href="{{route('user.protocol')}}" target="_blank">《{{config('app.name')}}
-                                            用户协议》</a></label>
+                                                  name="agree_protocol" {{ old('remember') ? 'checked' : '' }}> 同意
+                                        <a href="{{route('user.protocol')}}" target="_blank">《用户协议》</a> 和 <a
+                                                href="{{route('user.private_protocol')}}"
+                                                target="_blank">《隐私政策》</a></label>
                                 </div>
                                 <div class="form-group mt-2">
                                     <button class="btn btn-primary btn-block">注册</button>
@@ -53,7 +54,7 @@
     <script>
         function formSubmitCheck() {
             if ($('input[name="agree_protocol"]').is(':checked') === false) {
-                alert('请同意用户协议');
+                flashWarning('请同意协议');
                 return false;
             }
             return true;

@@ -34,7 +34,6 @@
                         <div class="course-info">
                             <h2 class="course-title">
                                 {{$course['title']}}
-
                                 @if($isLikeCourse)
                                     <div data-login="{{$user ? 1 : 0}}"
                                          data-url="{{route('ajax.course.like', [$course['id']])}}" class="like-button">
@@ -95,7 +94,12 @@
                     <div class="menu-item {{$scene === 'comment' ? 'active' : ''}}">
                         <a href="{{route('course.show', [$course['id'], $course['slug']])}}?scene=comment"
                            class="course-show-menu-item"
-                           data-page="course-show-page-comment">讨论区</a>
+                           data-page="course-show-page-comment">课程讨论</a>
+                    </div>
+                    <div class="menu-item {{$scene === 'attach' ? 'active' : ''}}">
+                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}?scene=attach"
+                           class="course-show-menu-item"
+                           data-page="course-show-page-attach">课程附件</a>
                     </div>
                 </div>
             </div>
@@ -206,6 +210,28 @@
                             @include('frontend.components.none')
                         @endforelse
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container course-show-page-attach {{$scene !== 'comment' ? 'display-none' : ''}}">
+            <div class="row">
+                <div class="col-12">
+                    @if(!$attach)
+                        @include('frontend.components.none')
+                    @else
+                        @foreach($attach as $item)
+                            <div class="attach-item">
+                                <div class="name">{{$item['name']}}</div>
+                                <div class="size">{{round($item['size']/1024, 2)}}KB</div>
+                                <div class="option">
+                                    <a
+                                            href="{{route('course.attach.download', $item['id'])}}?_t={{time()}}"
+                                            target="_blank">下载</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

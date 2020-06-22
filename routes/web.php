@@ -12,6 +12,7 @@
 Route::get('/', 'Frontend\IndexController@index')->name('index');
 Route::redirect('/home', '/');
 Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
+Route::get('/user/private_protocol', 'Frontend\IndexController@userPrivateProtocol')->name('user.private_protocol');
 Route::get('/aboutus', 'Frontend\IndexController@aboutus')->name('aboutus');
 // 登录
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
@@ -46,6 +47,7 @@ Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
 Route::get('/videos', 'Frontend\VideoController@index')->name('videos');
 // 课程详情
 Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
+Route::get('/course/attach/{id}/download', 'Frontend\CourseController@attachDownload')->name('course.attach.download')->middleware(['auth']);
 // 视频详情
 Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
 // 搜索
@@ -84,6 +86,7 @@ Route::group([
     Route::get('/promo_code', 'MemberController@showPromoCodePage')->name('member.promo_code');
     Route::post('/promo_code', 'MemberController@generatePromoCode');
     Route::post('/invite_balance_withdraw_orders', 'MemberController@createInviteBalanceWithdrawOrder');
+    Route::get('/credit1_records', 'MemberController@credit1Records')->name('member.credit1_records');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');

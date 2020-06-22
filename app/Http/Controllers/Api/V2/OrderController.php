@@ -13,7 +13,6 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -179,8 +178,7 @@ class OrderController extends BaseController
         $videoId = $request->input('video_id');
         $video = $this->videoService->find($videoId);
         if ($video['is_ban_sell'] === ApiV2Constant::YES) {
-            flash(__('this video cannot be sold'));
-            return back();
+            return $this->error(__('this video cannot be sold'));
         }
         if ($video['charge'] === 0) {
             return $this->error(__('video cant buy'));

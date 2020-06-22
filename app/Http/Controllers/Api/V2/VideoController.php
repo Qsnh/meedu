@@ -14,7 +14,6 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;

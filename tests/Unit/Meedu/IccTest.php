@@ -1,19 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Unit\Meedu;
 
-
-use App\Meedu\Cache\Inc\AdFromIncItem;
-use App\Meedu\Cache\Inc\Inc;
-use App\Services\Other\Interfaces\AdFromServiceInterface;
-use App\Services\Other\Models\AdFrom;
-use App\Services\Other\Services\AdFromService;
 use Tests\TestCase;
+use App\Meedu\Cache\Inc\Inc;
+use App\Services\Other\Models\AdFrom;
+use App\Meedu\Cache\Inc\AdFromIncItem;
+use App\Services\Other\Services\AdFromService;
+use App\Services\Other\Interfaces\AdFromServiceInterface;
 
 class IccTest extends TestCase
 {
-
     public function test_AdFromIncItem()
     {
         $adFrom = factory(AdFrom::class)->create();
@@ -45,5 +51,4 @@ class IccTest extends TestCase
         $adFromDay = $adFromService->getDay($adFrom->id, $today);
         $this->assertEquals(4, $adFromDay['num']);
     }
-
 }

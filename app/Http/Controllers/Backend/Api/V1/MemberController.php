@@ -25,6 +25,7 @@ use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
@@ -108,6 +109,7 @@ class MemberController extends BaseController
             'is_lock', 'is_active', 'role_id', 'role_expired_at',
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
+        $data['role_id'] = (int)($data['role_id'] ?? 0);
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
         $user->fill($data)->save();
         return $this->success();
@@ -201,6 +203,18 @@ class MemberController extends BaseController
 
         return $this->successData([
             'data' => $data,
+        ]);
+    }
+
+    public function credit1Records(Request $request, $id)
+    {
+        $records = UserCreditRecord::query()
+            ->where('user_id', $id)
+            ->where('field', 'credit1')
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 20));
+        return $this->successData([
+            'data' => $records,
         ]);
     }
 }

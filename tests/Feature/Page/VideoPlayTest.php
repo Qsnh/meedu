@@ -1,14 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests\Feature\Page;
 
-use App\Services\Course\Models\Video;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Course\Models\Video;
 
 class VideoPlayTest extends TestCase
 {
-
     public function test_visit()
     {
         $video = factory(Video::class)->create([
@@ -38,5 +46,4 @@ class VideoPlayTest extends TestCase
         $response = $this->get(route('video.show', [$video->course, $video->id, $video->slug]));
         $response->assertResponseStatus(404);
     }
-
 }

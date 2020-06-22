@@ -1,9 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 Route::post('/login', 'LoginController@login');
 
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
-
     Route::get('/user', 'LoginController@user');
     Route::get('/menus', 'LoginController@menus');
 
@@ -132,6 +140,13 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribe/users', 'CourseController@subscribeUsers');
     });
 
+    // 课程
+    Route::group(['prefix' => 'course_attach'], function () {
+        Route::get('/', 'CourseAttachController@index');
+        Route::post('/', 'CourseAttachController@store');
+        Route::delete('/{id}', 'CourseAttachController@destroy');
+    });
+
     // 视频
     Route::group(['prefix' => 'video'], function () {
         Route::get('/', 'CourseVideoController@index');
@@ -157,6 +172,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/detail/userHistory', 'MemberController@userHistory');
         Route::get('/{id}/detail/userOrders', 'MemberController@userOrders');
         Route::get('/{id}/detail/userInvite', 'MemberController@userInvite');
+        Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
 
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');

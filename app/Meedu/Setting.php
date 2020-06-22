@@ -58,19 +58,9 @@ class Setting
     public function sync()
     {
         $saveConfig = $this->get();
-        if (!isset($saveConfig['version'])) {
-            // 老版本的配置保存方式
-            collect($this->get())->map(function ($item, $key) {
-                config([$key => $item]);
-            });
-        } else {
-            // v1版本的配置保存方式
-            if ((int)$saveConfig['version'] === self::VERSION) {
-                $arr = array_compress($saveConfig);
-                foreach ($arr as $key => $item) {
-                    config([$key => $item]);
-                }
-            }
+        $arr = array_compress($saveConfig);
+        foreach ($arr as $key => $item) {
+            config([$key => $item]);
         }
         $this->specialSync();
     }
@@ -93,6 +83,8 @@ class Setting
      */
     public function put(array $setting): void
     {
+        // 删除一些敏感信息
+        $setting = $this->removePrivateConfig($setting);
         $this->files->put($this->dist, json_encode($setting));
     }
 
@@ -130,6 +122,21 @@ class Setting
             'tencent' => config('tencent'),
             'filesystems' => config('filesystems'),
         ];
+        return $config;
+    }
+
+    protected function removePrivateConfig(array $config): array
+    {
+        unset($config['app']['key']);
+        unset($config['app']['cipher']);
+        unset($config['app']['log']);
+        unset($config['app']['log_level']);
+        unset($config['app']['providers']);
+        unset($config['app']['aliases']);
+        unset($config['app']['timezone']);
+        unset($config['app']['locale']);
+        unset($config['app']['fallback_locale']);
+        unset($config['app']['env']);
         return $config;
     }
 }

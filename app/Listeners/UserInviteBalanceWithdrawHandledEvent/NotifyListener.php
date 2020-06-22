@@ -12,14 +12,17 @@
 namespace App\Listeners\UserInviteBalanceWithdrawHandledEvent;
 
 use App\Constant\FrontendConstant;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
-class NotifyListener
+class NotifyListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var NotificationService

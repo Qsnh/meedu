@@ -1,16 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\BackendApi;
 
 use App\Models\Administrator;
 use App\Models\AdministratorRole;
-use App\Services\Other\Models\AdFrom;
 use Illuminate\Support\Facades\DB;
+use App\Services\Other\Models\AdFrom;
 
 class AdFromTest extends Base
 {
-
     public const MODEL = AdFrom::class;
 
     public const MODEL_NAME = 'ad_from';
@@ -79,5 +86,4 @@ class AdFromTest extends Base
         $model = self::MODEL;
         $this->assertEmpty($model::find($item->id));
     }
-
 }

@@ -12,11 +12,14 @@
 namespace App\Listeners\UserCourseWatchedEvent;
 
 use App\Events\UserCourseWatchedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 
-class UserCourseWatchedListener
+class UserCourseWatchedListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var CourseService

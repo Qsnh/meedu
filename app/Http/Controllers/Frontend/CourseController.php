@@ -149,6 +149,9 @@ class CourseController extends FrontendController
         $keywords = $course['seo_keywords'];
         $description = $course['seo_description'];
 
+        // 课程附件
+        $attach = $this->courseService->getCourseAttach($course['id']);
+
         // 是否购买
         $isBuy = false;
         // 喜欢课程
@@ -195,7 +198,8 @@ class CourseController extends FrontendController
             'isLikeCourse',
             'firstVideo',
             'scene',
-            'videoWatchedProgress'
+            'videoWatchedProgress',
+            'attach'
         ));
     }
 
@@ -241,5 +245,15 @@ class CourseController extends FrontendController
         $payment = $request->input('payment_sign');
 
         return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
+    }
+
+    public function attachDownload($id)
+    {
+        $courseAttach = $this->courseService->getAttach($id);
+        if (!$this->businessState->isBuyCourse(Auth::id(), $courseAttach['course_id'])) {
+            abort(403, __('please buy course'));
+        }
+        $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);
+        return response()->download(storage_path('app/attach/' . $courseAttach['path']));
     }
 }

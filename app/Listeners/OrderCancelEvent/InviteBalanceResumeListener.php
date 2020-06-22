@@ -12,8 +12,6 @@
 namespace App\Listeners\OrderCancelEvent;
 
 use App\Events\OrderCancelEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class InviteBalanceResumeListener
 {

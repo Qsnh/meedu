@@ -33,6 +33,7 @@
   "title.member.promo_code": "我的邀请码",
   "title.member.invite_balances": "邀请余额收支明细",
   "title.member.invite_balance_orders": "邀请余额提现明细",
+  "title.member.credit1_records": "积分明细",
   "comment.content.required": "请输入评论内容",
   "comment.content.min": "评论内容不能少于 :count 个字",
   "captcha.required": "请输入验证码",
@@ -113,5 +114,12 @@
   "course purchased": "课程已购买",
   "video purchased": "视频已购买",
   "this video cannot be sold": "该视频无法购买",
-  "administrator cant login": "当前账户已锁定"
+  "administrator cant login": "当前账户已锁定",
+  "credit1_remark_register": "注册赠送",
+  "credit1_remark_watched_course": "看完课程",
+  "credit1_remark_watched_video": "看完视频",
+  "credit1_remark_order": "已支付订单",
+  "credit1_remark_invite": "邀请",
+  "credit1_remark_other": "其它",
+  "please buy course": "请购买课程"
 }

@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Api\V2;
 
-
 use App\Constant\ApiV2Constant;
-use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Models\User;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 
 class RegisterMobileTest extends Base
 {
-
     public function test_register_mobile_with_error_code()
     {
         $response = $this->postJson('/api/v2/register/mobile', [
@@ -44,6 +50,4 @@ class RegisterMobileTest extends Base
         ]);
         $this->assertResponseError($response, __(ApiV2Constant::MOBILE_HAS_EXISTS));
     }
-
-
 }

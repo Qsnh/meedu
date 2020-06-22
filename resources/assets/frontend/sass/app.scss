@@ -1233,10 +1233,11 @@ footer.footer-box {
       padding-top: 10px;
       padding-bottom: 10px;
       line-height: 26px;
+      display: flex;
 
       .option-text {
-        display: inline-block;
-        width: 80px;
+        display: block;
+        width: 120px;
         height: 16px;
         float: left;
         font-size: 16px;
@@ -1246,8 +1247,8 @@ footer.footer-box {
       }
 
       .option-value {
-        display: inline-block;
-        width: auto;
+        display: block;
+        flex: 1;
         height: 16px;
         float: left;
         font-size: 16px;
@@ -1256,7 +1257,7 @@ footer.footer-box {
       }
 
       .option-button {
-        display: inline-block;
+        display: block;
         width: 58px;
         height: 26px;
         float: right;
@@ -2543,6 +2544,189 @@ footer.footer-box {
           }
         }
       }
+    }
+  }
+}
+
+.credit1-box {
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .left-box {
+    flex: 1;
+    height: 276px;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    .value {
+      width: 280px;
+      margin: 0 auto;
+      margin-top: 120px;
+      display: flex;
+
+      .icon {
+        width: 50px;
+        height: 36px;
+        padding: 3px 20px 3px 0;
+      }
+
+      .help {
+        width: 72px;
+        height: 30px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 18px;
+      }
+
+      .credit1 {
+        flex: 1;
+        height: 36px;
+        font-size: 36px;
+        font-weight: 600;
+        color: rgba(51, 51, 51, 1);
+        line-height: 36px;
+        text-align: right;
+      }
+    }
+  }
+
+  .right-box {
+    flex: 1;
+    height: 276px;
+    background-color: #2694FF;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 20px 40px;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-bottom: 20px;
+      display: flex;
+
+      .icon {
+        width: 66px;
+        height: 66px;
+        padding-right: 20px;
+        float: left;
+      }
+
+      .text {
+        flex: 1;
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+        line-height: 66px;
+      }
+    }
+
+    .content {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .item {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 14px;
+        font-weight: 400;
+        color: white;
+        line-height: 26px;
+      }
+    }
+  }
+}
+
+.credit1-records-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 30px;
+
+  .item {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 30px;
+    background-color: white;
+    margin-bottom: 1px;
+    display: flex;
+
+    .remark {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 14px;
+      text-align: left;
+    }
+
+    .value {
+      flex: 1;
+      height: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(38, 148, 255, 1);
+      line-height: 16px;
+      text-align: center;
+    }
+
+    .date {
+      flex: 1;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
+      line-height: 14px;
+    }
+  }
+}
+
+.course-show-page-attach {
+  .attach-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    display: flex;
+    background-color: white;
+    padding: 24px 30px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(11, 118, 222, .1);
+    }
+
+    .name {
+      flex: 1;
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    .size {
+      width: 120px;
+      height: auto;
+      line-height: 16px;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .option {
+      width: 100px;
+      height: auto;
+      text-align: right;
+      font-size: 14px;
+      line-height: 16px;
     }
   }
 }

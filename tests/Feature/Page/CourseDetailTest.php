@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests\Feature\Page;
 
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\CourseChapter;
-use App\Services\Course\Models\Video;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Course\Models\Video;
+use App\Services\Course\Models\Course;
+use App\Services\Course\Models\CourseChapter;
 
 class CourseDetailTest extends TestCase
 {
@@ -112,5 +121,4 @@ class CourseDetailTest extends TestCase
         $this->visit(route('course.show', [$video->course->id, $video->course->slug]))
             ->dontSee($video->title);
     }
-
 }

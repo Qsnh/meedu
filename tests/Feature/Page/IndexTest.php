@@ -1,11 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests\Feature\Page;
 
-use App\Services\Course\Models\Course;
-use App\Services\Other\Models\Link;
-use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\Other\Models\Link;
 
 class IndexTest extends TestCase
 {
@@ -26,5 +33,4 @@ class IndexTest extends TestCase
         $this->visit('/')->see('小滕博客')
             ->see('//58hualong.cn');
     }
-
 }

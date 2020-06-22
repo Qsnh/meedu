@@ -96,6 +96,8 @@ class VideoController extends FrontendController
         $scene = $request->input('scene');
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
+
+        // 视频浏览次数
         $this->videoService->viewNumInc($video['id']);
 
         // 视频评论

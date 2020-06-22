@@ -16,15 +16,56 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
+
+    /**
+     * @return int
+     */
+    public function getWatchedVideoSceneCredit1():int
+    {
+        return (int)config('meedu.member.credit1.watched_video');
+    }
+
+    /**
+     * @return int
+     */
+    public function getWatchedCourseSceneCredit1():int
+    {
+        return (int)config('meedu.member.credit1.watched_course');
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaidOrderSceneCredit1():int
+    {
+        return (int)config('meedu.member.credit1.paid_order');
+    }
+
+    /**
+     * @return int
+     */
+    public function getRegisterSceneCredit1(): int
+    {
+        return (int)config('meedu.member.credit1.register');
+    }
+
+    /**
+     * @return int
+     */
+    public function getInviteSceneCredit1(): int
+    {
+        return (int)config('meedu.member.credit1.invite');
+    }
+
     /**
      * 获取服务配置
      *
      * @param string $app
      * @return array
      */
-    public function getServiceConfig(string $app):array
+    public function getServiceConfig(string $app): array
     {
-        return config('services.'.$app, []);
+        return config('services.' . $app, []);
     }
 
     /**
@@ -42,7 +83,7 @@ class ConfigService implements ConfigServiceInterface
      *
      * @return string
      */
-    public function getIcp():string
+    public function getIcp(): string
     {
         return config('meedu.system.icp', '');
     }
@@ -52,7 +93,7 @@ class ConfigService implements ConfigServiceInterface
      *
      * @return string
      */
-    public function getPlayerCover():string
+    public function getPlayerCover(): string
     {
         return config('meedu.system.player_thumb', '');
     }
@@ -62,7 +103,7 @@ class ConfigService implements ConfigServiceInterface
      *
      * @return array
      */
-    public function getPlayer():array
+    public function getPlayer(): array
     {
         return config('meedu.system.player');
     }
@@ -87,6 +128,15 @@ class ConfigService implements ConfigServiceInterface
     public function getMemberProtocol(): string
     {
         return config('meedu.member.protocol', '');
+    }
+
+    /**
+     * 获取用户隐私协议
+     * @return string
+     */
+    public function getMemberPrivateProtocol(): string
+    {
+        return config('meedu.member.private_protocol', '');
     }
 
     /**
@@ -221,7 +271,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getCacheStatus(): bool
     {
-        return (int) config('meedu.system.cache.status') === FrontendConstant::YES;
+        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
     }
 
     /**
@@ -351,7 +401,7 @@ class ConfigService implements ConfigServiceInterface
      *
      * @return integer
      */
-    public function getEnabledMobileBindAlert():int
+    public function getEnabledMobileBindAlert(): int
     {
         return (int)config('meedu.member.enabled_mobile_bind_alert', 0);
     }
@@ -393,6 +443,6 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getAliyunPrivatePlayStatus(): bool
     {
-        return (int) config('meedu.system.player.enabled_aliyun_private') === 1;
+        return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
     }
 }

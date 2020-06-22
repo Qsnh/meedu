@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Commands;
 
-
 use App\Meedu\Setting;
-use Illuminate\Filesystem\Filesystem;
 use Tests\OriginalTestCase;
+use Illuminate\Filesystem\Filesystem;
 
 class TemplateSwitchCommandTest extends OriginalTestCase
 {
-
     public function tearDown(): void
     {
         $config = [];
@@ -46,5 +52,4 @@ class TemplateSwitchCommandTest extends OriginalTestCase
 
         $this->assertEquals(resource_path('views'), config('meedu.system.theme.path'));
     }
-
 }

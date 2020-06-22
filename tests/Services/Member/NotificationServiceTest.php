@@ -1,15 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Member;
 
-
-use App\Services\Member\Interfaces\NotificationServiceInterface;
-use App\Services\Member\Models\User;
-use App\Services\Member\Services\NotificationService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Tests\TestCase;
+use Illuminate\Support\Str;
+use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Member\Services\NotificationService;
+use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class NotificationServiceTest extends TestCase
 {
@@ -44,5 +51,4 @@ class NotificationServiceTest extends TestCase
         $this->service->markAllRead($user->id);
         $this->assertEquals(0, $this->service->getUnreadCount());
     }
-
 }

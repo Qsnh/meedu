@@ -20,6 +20,20 @@ class NotificationService implements NotificationServiceInterface
 {
 
     /**
+     * @param int $userId
+     * @param int $credit1
+     * @param string $message
+     */
+    public function notifyCredit1Message(int $userId, int $credit1, string $message): void
+    {
+        /**
+         * @var User
+         */
+        $user = User::findOrFail($userId);
+        $user->notify(new SimpleMessageNotification(sprintf('积分变动：%d，备注：%s', $credit1, $message)));
+    }
+
+    /**
      * @param int $id
      * @param string $orderId
      */

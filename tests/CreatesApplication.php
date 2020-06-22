@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Tests;
 
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
 {

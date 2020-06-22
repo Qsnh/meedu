@@ -1,20 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Commands;
 
-
-use App\Models\Administrator;
-use App\Models\AdministratorMenu;
-use App\Models\AdministratorPermission;
-use App\Models\AdministratorRole;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\OriginalTestCase;
+use App\Models\Administrator;
+use App\Models\AdministratorRole;
+use Illuminate\Support\Facades\Hash;
+use App\Models\AdministratorPermission;
 
 class ApplicationInstallCommandTest extends OriginalTestCase
 {
-
     public function test_install_administrator()
     {
         $this->artisan('install', ['action' => 'administrator'])
@@ -109,5 +114,4 @@ class ApplicationInstallCommandTest extends OriginalTestCase
         $count = AdministratorPermission::count();
         $this->assertGreaterThan(0, $count);
     }
-
 }

@@ -21,7 +21,9 @@ return PhpCsFixer\Config::create()
         'not_operator_with_successor_space' => false,
         'no_useless_else' => true,
         'no_useless_return' => true,
+        'no_unused_imports' => true,
         'yoda_style' => false,
+        'single_quote' => true,
         'increment_style' => ['style' => 'post'],
         // 三元运算符的空格
         'ternary_operator_spaces' => true,
@@ -30,5 +32,15 @@ return PhpCsFixer\Config::create()
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->in(__DIR__ . '/app')
+            ->exclude('addons')
+            ->exclude('docker')
+            ->exclude('docs')
+            ->exclude('library')
+            ->exclude('node_modules')
+            ->exclude('public')
+            ->exclude('resources')
+            ->exclude('storage')
+            ->exclude('templates')
+            ->exclude('vendor')
+            ->in(__DIR__)
     );

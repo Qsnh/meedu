@@ -4,6 +4,6 @@
     <div class="course-title">{{$course['title']}}</div>
     <div class="course-info">
         <span class="course-category">{{$course['category']['name']}}</span>
-        <span class="course-video-count">{{$course['videos_count']}}课时</span>
+        <span class="course-video-count">{{$course['user_count']}}订阅</span>
     </div>
 </a>

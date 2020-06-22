@@ -1,14 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Feature\Page;
 
-use App\Services\Member\Models\User;
 use Tests\TestCase;
+use App\Services\Member\Models\User;
 
 class MemberMobileBindTest extends TestCase
 {
-
     public function test_page()
     {
         $user = factory(User::class)->create();
@@ -62,5 +69,4 @@ class MemberMobileBindTest extends TestCase
             'sms_captcha' => '123123',
         ])->seeInSession('warning');
     }
-
 }

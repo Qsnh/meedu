@@ -168,5 +168,9 @@ $(function () {
                 $('.comment-list-box').prepend(html);
             }
         }, 'json');
+    }).on('tap', '.course-info-menu .menu-item', function () {
+        $('.course-content-tab-item').hide();
+        $('.' + $(this).attr('data-dom')).show();
+        $(this).addClass('active').siblings().removeClass('active');
     });
 });

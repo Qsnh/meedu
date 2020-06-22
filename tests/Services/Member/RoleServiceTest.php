@@ -1,17 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Services\Member;
 
-
-use App\Services\Member\Interfaces\RoleServiceInterface;
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserJoinRoleRecord;
-use App\Services\Member\Services\RoleService;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
+use App\Services\Member\Services\RoleService;
+use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Interfaces\RoleServiceInterface;
 
 class RoleServiceTest extends TestCase
 {
@@ -93,5 +100,4 @@ class RoleServiceTest extends TestCase
         $user->refresh();
         $this->assertTrue(abs($now->addDays($role->expire_days)->timestamp - strtotime($user->role_expired_at)) < 5);
     }
-
 }

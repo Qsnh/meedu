@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 use Illuminate\Database\Seeder;
 
 class AdministratorPermissionSeeder extends Seeder
@@ -610,6 +619,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '用户积分明细',
+                'slug' => 'member.detail.credit1Records',
+                'method' => 'GET',
+                'url' => 'member/\d+/detail/credit1Records',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户邀请余额提现记录列表',
                 'slug' => 'member.inviteBalance.withdrawOrders',
                 'method' => 'GET',
@@ -829,6 +845,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'statistic.courseWatchDuration',
                 'method' => 'GET',
                 'url' => 'statistic/courseWatchDuration',
+            ],
+
+            // 课程附件
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件列表',
+                'slug' => 'course_attach',
+                'method' => 'GET',
+                'url' => 'course_attach',
+            ],
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件创建',
+                'slug' => 'course_attach.store',
+                'method' => 'POST',
+                'url' => 'course_attach',
+            ],
+            [
+                'group_name' => '课程附件',
+                'display_name' => '课程附件删除',
+                'slug' => 'course_attach.destroy',
+                'method' => 'DELETE',
+                'url' => 'course_attach/\d+',
             ],
         ];
 

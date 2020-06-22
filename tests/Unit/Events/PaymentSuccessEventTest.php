@@ -1,18 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Qsnh/meedu.
+ *
+ * (c) XiaoTeng <616896861@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Tests\Unit\Events;
 
-
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
-use Carbon\Carbon;
-use Tests\TestCase;
 
 class PaymentSuccessEventTest extends TestCase
 {
-
     public function test_InviteUserRewardListener()
     {
         config(['meedu.member.invite.per_order_draw' => 0.02]);
@@ -30,5 +36,4 @@ class PaymentSuccessEventTest extends TestCase
         $user->refresh();
         $this->assertEquals(2, $user->invite_balance);
     }
-
 }
