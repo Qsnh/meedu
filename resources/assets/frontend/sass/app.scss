@@ -2690,3 +2690,43 @@ footer.footer-box {
     }
   }
 }
+
+.course-show-page-attach {
+  .attach-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    display: flex;
+    background-color: white;
+    padding: 24px 30px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(11, 118, 222, .1);
+    }
+
+    .name {
+      flex: 1;
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    .size {
+      width: 120px;
+      height: auto;
+      line-height: 16px;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .option {
+      width: 100px;
+      height: auto;
+      text-align: right;
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+}

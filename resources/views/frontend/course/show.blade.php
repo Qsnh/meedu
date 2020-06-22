@@ -220,19 +220,17 @@
                     @if(!$attach)
                         @include('frontend.components.none')
                     @else
-                        <table class="table table-bordered">
-                            <tbody>
-                            @foreach($attach as $item)
-                                <tr>
-                                    <td>{{$item['name']}}</td>
-                                    <td width="120" class="text-center">{{round($item['size']/1024, 2)}}KB</td>
-                                    <td width="120" class="text-center"><a
-                                                href="{{route('course.attach.download', $item['id'])}}?_t={{time()}}" target="_blank">下载</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                        @foreach($attach as $item)
+                            <div class="attach-item">
+                                <div class="name">{{$item['name']}}</div>
+                                <div class="size">{{round($item['size']/1024, 2)}}KB</div>
+                                <div class="option">
+                                    <a
+                                            href="{{route('course.attach.download', $item['id'])}}?_t={{time()}}"
+                                            target="_blank">下载</a>
+                                </div>
+                            </div>
+                        @endforeach
                     @endif
                 </div>
             </div>
