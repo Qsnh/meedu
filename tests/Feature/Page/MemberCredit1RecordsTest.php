@@ -53,18 +53,18 @@ class MemberCredit1RecordsTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        factory(UserCreditRecord::class, 19)->create([
+        factory(UserCreditRecord::class)->create([
             'user_id' => $user->id,
+            'sum' => -892,
+            'remark' => 'testpaginate2',
         ]);
         factory(UserCreditRecord::class)->create([
             'user_id' => $user->id,
             'sum' => 1000989,
             'remark' => 'testpaginate1',
         ]);
-        factory(UserCreditRecord::class)->create([
+        factory(UserCreditRecord::class, 19)->create([
             'user_id' => $user->id,
-            'sum' => -892,
-            'remark' => 'testpaginate2',
         ]);
 
         $this->actingAs($user)

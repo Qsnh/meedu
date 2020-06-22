@@ -41,6 +41,7 @@ class CreditService implements CreditServiceInterface
             ->where('user_id', $userId)
             ->where('field', UserCreditRecord::FIELD_CREDIT1)
             ->forPage($page, $pageSize)
+            ->orderByDesc('id')
             ->get()
             ->toArray();
     }
