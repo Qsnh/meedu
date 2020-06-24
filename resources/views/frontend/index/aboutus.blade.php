@@ -13,5 +13,7 @@
 </head>
 <body>
 {!! $aboutus !!}
+
+<div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>
 </html>
