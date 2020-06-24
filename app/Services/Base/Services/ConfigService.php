@@ -12,6 +12,7 @@
 namespace App\Services\Base\Services;
 
 use App\Constant\FrontendConstant;
+use App\Services\Base\Model\AppConfig;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
@@ -20,7 +21,7 @@ class ConfigService implements ConfigServiceInterface
     /**
      * @return int
      */
-    public function getWatchedVideoSceneCredit1():int
+    public function getWatchedVideoSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.watched_video');
     }
@@ -28,7 +29,7 @@ class ConfigService implements ConfigServiceInterface
     /**
      * @return int
      */
-    public function getWatchedCourseSceneCredit1():int
+    public function getWatchedCourseSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.watched_course');
     }
@@ -36,7 +37,7 @@ class ConfigService implements ConfigServiceInterface
     /**
      * @return int
      */
-    public function getPaidOrderSceneCredit1():int
+    public function getPaidOrderSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.paid_order');
     }
@@ -444,5 +445,39 @@ class ConfigService implements ConfigServiceInterface
     public function getAliyunPrivatePlayStatus(): bool
     {
         return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
+    }
+
+    /**
+     * 获取所有配置
+     * @return array
+     */
+    public function all(): array
+    {
+        return AppConfig::query()->orderBy('sort')->get()->toArray();
+    }
+
+    /**
+     * 检测配置是否存在
+     * @param string $key
+     * @return bool
+     */
+    public function isConfigExists(string $key): bool
+    {
+        return AppConfig::query()->where('key', $key)->exists();
+    }
+
+    /**
+     * 写入配置
+     * @param array $config
+     */
+    public function setConfig(array $config): void
+    {
+        $data = array_column($this->all(), 'key');
+        foreach ($config as $key => $value) {
+            if (!in_array($key, $data)) {
+                continue;
+            }
+            AppConfig::query()->where('key', $key)->update(['value' => $value]);
+        }
     }
 }
