@@ -34,6 +34,8 @@ class SearchController extends Controller
         $courses = [];
         $keywords && $courses = $this->courseService->titleSearch($keywords, 20);
 
-        return v('frontend.search.index', compact('courses'));
+        $title = '搜索';
+
+        return v('frontend.search.index', compact('courses', 'title'));
     }
 }
