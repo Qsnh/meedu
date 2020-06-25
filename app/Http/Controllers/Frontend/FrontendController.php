@@ -33,7 +33,7 @@ class FrontendController extends BaseController
         return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => $path]);
     }
 
-    protected function user()
+    public function user()
     {
         if (Auth::check()) {
             /**

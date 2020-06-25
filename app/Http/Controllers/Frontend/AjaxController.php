@@ -104,10 +104,16 @@ class AjaxController extends BaseController
      */
     public function courseCommentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
     {
+        $user = $this->user();
         $course = $this->courseService->find($courseId);
+        if ($this->businessState->courseCanComment($user, $course) === false) {
+            return $this->error(__('course cant comment'));
+        }
+
         ['content' => $content] = $request->filldata();
         $comment = $this->courseCommentService->create($course['id'], $content);
-        $user = $this->userService->find(Auth::id(), ['role']);
+
+        $user = $this->userService->find($this->id(), ['role']);
 
         return $this->data([
             'content' => $comment['render_content'],

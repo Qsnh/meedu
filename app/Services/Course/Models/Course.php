@@ -26,13 +26,17 @@ class Course extends Base
     public const IS_FREE_YES = 1;
     public const IS_FREE_NO = 0;
 
+    public const COMMENT_STATUS_CLOSE = 0;
+    public const COMMENT_STATUS_ALL = 1;
+    public const COMMENT_STATUS_ONLY_PAID = 2;
+
     protected $table = 'courses';
 
     protected $fillable = [
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_show', 'category_id',
-        'is_rec', 'user_count', 'is_free',
+        'is_rec', 'user_count', 'is_free', 'comment_status',
     ];
 
     protected $hidden = [

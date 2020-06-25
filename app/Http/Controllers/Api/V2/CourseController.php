@@ -204,6 +204,10 @@ class CourseController extends BaseController
      */
     public function createComment(CommentRequest $request, $id)
     {
+        $course = $this->courseService->find($id);
+        if ($this->businessState->courseCanComment($this->user(), $course) == false) {
+            return $this->error(__('course cant comment'));
+        }
         ['content' => $content] = $request->filldata();
         $this->courseCommentService->create($id, $content);
         return $this->success();

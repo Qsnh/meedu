@@ -14,6 +14,7 @@ namespace App\Businesses;
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -215,6 +216,37 @@ class BusinessState
             return true;
         }
         if ($userService->hasCourse($user['id'], $courseId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否可以评论课程
+     *
+     * @param array $user
+     * @param array $course
+     * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function courseCanComment(array $user, array $course): bool
+    {
+        $commentStatus = $course['comment_status'] ?? Course::COMMENT_STATUS_CLOSE;
+        if ($commentStatus === Course::COMMENT_STATUS_CLOSE) {
+            return false;
+        }
+        if ($commentStatus === Course::COMMENT_STATUS_ALL) {
+            return true;
+        }
+        /**
+         * @var $userService UserService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        $user = $userService->find($user['id'], ['role']);
+        if ($this->isRole($user)) {
+            return true;
+        }
+        if ($userService->hasCourse($user['id'], $course['id'])) {
             return true;
         }
         return false;

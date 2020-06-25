@@ -11,9 +11,26 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 
 class BaseController extends Controller
 {
     use ResponseTrait;
+
+    /**
+     * @return int|null
+     */
+    public function id()
+    {
+        return Auth::id();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function user()
+    {
+        return Auth::user()->toArray();
+    }
 }

@@ -15,12 +15,14 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use App\Events\UserLoginEvent;
+use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Course\Models\Video;
 use Illuminate\Support\Facades\Event;
 use App\Services\Course\Models\Course;
 use App\Services\Order\Models\PromoCode;
+use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Course\Models\CourseUserRecord;
@@ -70,10 +72,62 @@ class AjaxTest extends TestCase
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ALL,
         ]);
         $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
         ])->seeStatusCode(200);
+    }
+
+    public function test_course_comment_close()
+    {
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_CLOSE,
+        ]);
+        $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
+            'content' => '哈哈哈哈，我要评论下',
+        ])->decodeResponseJson();
+        $this->assertEquals(1, $response['code']);
+        $this->assertEquals(__('course cant comment'), $response['message']);
+    }
+
+    public function test_course_comment_only_vip()
+    {
+        $role = factory(Role::class)->create();
+        $this->user->role_id = $role->id;
+        $this->user->role_expired_at = Carbon::now()->addDays(1);
+        $this->user->save();
+
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
+        ]);
+        $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
+            'content' => '哈哈哈哈，我要评论下',
+        ])->decodeResponseJson();
+        $this->assertEquals(0, $response['code']);
+    }
+
+    public function test_course_comment_only_paid_course()
+    {
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
+        ]);
+
+        UserCourse::create([
+            'user_id' => $this->user->id,
+            'course_id' => $course->id,
+        ]);
+
+        $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
+            'content' => '哈哈哈哈，我要评论下',
+        ])->decodeResponseJson();
+        $this->assertEquals(0, $response['code']);
     }
 
     public function test_video_comment()
