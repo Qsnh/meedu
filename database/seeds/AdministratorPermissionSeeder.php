@@ -524,6 +524,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'video/\d+',
             ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频批量删除',
+                'slug' => 'video.destroy.multi',
+                'method' => 'POST',
+                'url' => 'video/delete/multi',
+            ],
 
             // 用户
             [

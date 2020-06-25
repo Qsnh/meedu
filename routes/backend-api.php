@@ -155,6 +155,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'CourseVideoController@edit');
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
+        Route::post('/delete/multi', 'CourseVideoController@multiDestroy');
     });
 
     // 会员

@@ -94,4 +94,17 @@ class CourseVideoController extends BaseController
         $isFree = $count === 0;
         Course::query()->where('id', $courseId)->update(['is_free' => $isFree]);
     }
+
+    public function multiDestroy(Request $request)
+    {
+        $ids = $request->input('ids');
+        $videos = Video::query()->whereIn('id', $ids)->get();
+        foreach ($videos as $video) {
+            $courseId = $video['course_id'];
+            $video->delete();
+            $this->hook($courseId);
+        }
+
+        return $this->success();
+    }
 }
