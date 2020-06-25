@@ -101,10 +101,17 @@
                 <div class="col-12">
                     <div class="course-chapter">
                         @if($chapters)
-                            @foreach($chapters as $chapter)
-                                <div class="course-chapter-title">{{$chapter['title']}}</div>
-                                @foreach($videos[$chapter['id']] ?? [] as $videoItem)
-                                    <div class="course-videos-box">
+                            @foreach($chapters as $chapterIndex => $chapter)
+                                @if($videosBox = $videos[$chapter['id']] ?? [])@endif
+                                @if($videosBoxIds = array_column($videosBox, 'id'))@endif
+                                <div class="course-chapter-title">
+                                    {{$chapter['title']}}
+                                    <small class="videos-count"
+                                           data-dom="course-videos-box-{{$chapter['id']}}">{{count($videosBox)}}节 <i
+                                                class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i></small>
+                                </div>
+                                @foreach($videosBox as $videoItem)
+                                    <div class="course-videos-box {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} course-videos-box-{{$chapter['id']}}">
                                         <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                                            class="course-videos-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}} {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
                                             <div class="player-icon"></div>

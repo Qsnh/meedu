@@ -604,12 +604,21 @@ body {
     font-size: 13px;
     font-weight: 400;
     color: rgba(102, 102, 102, 1);
+
+    .videos-count {
+      float: right;
+    }
   }
 
   .chapter-videos {
     width: 100%;
     height: auto;
     float: left;
+    display: none;
+
+    &.active {
+      display: block;
+    }
 
     .chapter-video-item {
       width: 100%;

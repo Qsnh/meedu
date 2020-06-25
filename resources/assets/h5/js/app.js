@@ -172,5 +172,14 @@ $(function () {
         $('.course-content-tab-item').hide();
         $('.' + $(this).attr('data-dom')).show();
         $(this).addClass('active').siblings().removeClass('active');
+    }).on('tap', '.videos-count', function () {
+        let dom = $(this).attr('data-dom');
+        $('.' + dom).toggle();
+        let iconDom = $(this).find('i');
+        if ($(iconDom).hasClass('fa-angle-down')) {
+            $(iconDom).removeClass('fa-angle-down').addClass('fa-angle-up');
+        } else {
+            $(iconDom).removeClass('fa-angle-up').addClass('fa-angle-down');
+        }
     });
 });

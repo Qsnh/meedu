@@ -1758,12 +1758,24 @@ footer.footer-box {
     font-weight: 500;
     color: rgba(51, 51, 51, 1);
     line-height: 16px;
+
+    small.videos-count {
+      display: inline-block;
+      float: right;
+      margin-left: 10px;
+      cursor: pointer;
+    }
   }
 
   .course-videos-box {
     width: 100%;
     height: auto;
     float: left;
+    display: none;
+
+    &.active {
+      display: block;
+    }
 
     .course-videos-item {
       display: flex;

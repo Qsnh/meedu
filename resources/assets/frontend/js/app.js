@@ -504,5 +504,14 @@ $(function () {
         $('.select-payment-model').show();
     }).on('click', '.close-select-payment-model', function () {
         $('.select-payment-model').hide();
+    }).on('click', '.videos-count', function () {
+        let dom = $(this).attr('data-dom');
+        $('.' + dom).toggle();
+        let iconDom = $(this).find('i');
+        if ($(iconDom).hasClass('fa-angle-down')) {
+            $(iconDom).removeClass('fa-angle-down').addClass('fa-angle-up');
+        } else {
+            $(iconDom).removeClass('fa-angle-up').addClass('fa-angle-down');
+        }
     });
 });

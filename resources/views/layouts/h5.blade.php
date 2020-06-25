@@ -9,6 +9,8 @@
     <meta name="keywords" content="{{$keywords ?? ''}}">
     <meta name="description" content="{{$description ?? ''}}">
     <title>{{$title ?? 'MeEdu'}}</title>
+    <link crossorigin="anonymous" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+          href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{mix('/h5/css/app.css')}}">
     <script crossorigin="anonymous" integrity="sha384-qu2J8HSjv8EaYlbzBdbVeJncuCmfBqnZ4h3UIBZ9WTZ/5Wrqt0/9hofL0046NCkc"
             src="https://lib.baomitu.com/zepto/1.2.0/zepto.min.js"></script>

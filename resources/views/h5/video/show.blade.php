@@ -47,9 +47,17 @@
     <div class="course-chapter course-content-tab-item" style="display: block">
         @if($chapters)
             @foreach($chapters as $chapter)
-                <div class="chapter-title">{{$chapter['title']}}</div>
-                <div class="chapter-videos">
-                    @foreach($videos[$chapter['id']] ?? [] as $videoItem)
+                @if($videosBox = $videos[$chapter['id']] ?? [])@endif
+                @if($videosBoxIds = array_column($videosBox, 'id'))@endif
+                <div class="chapter-title">
+                    {{$chapter['title']}}
+                    <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
+                        {{count($videosBox)}}节
+                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                    </span>
+                </div>
+                <div class="chapter-videos {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} chapter-videos-{{$chapter['id']}}">
+                    @foreach($videosBox as $videoItem)
                         <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                            class="chapter-video-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}}">
                             <span class="video-title">{{$videoItem['title']}}</span>
@@ -116,7 +124,7 @@
         </div>
     </div>
 
-    @if(!$canSeeVideo && $video['charge'] > 0)
+    @if($user && !$canSeeVideo && $video['charge'] > 0)
         <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
     @endif
 

@@ -24,10 +24,17 @@
 
     <div class="course-chapter course-content-tab-item">
         @if($chapters)
-            @foreach($chapters as $chapter)
-                <div class="chapter-title">{{$chapter['title']}}</div>
-                <div class="chapter-videos">
-                    @foreach($videos[$chapter['id']] ?? [] as $video)
+            @foreach($chapters as $chapterIndex => $chapter)
+                @if($videosBox = $videos[$chapter['id']] ?? [])@endif
+                <div class="chapter-title">
+                    {{$chapter['title']}}
+                    <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
+                        {{count($videosBox)}}节
+                        <i class="fa {{$chapterIndex === 0 ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                    </span>
+                </div>
+                <div class="chapter-videos {{$chapterIndex === 0 ? 'active' : ''}} chapter-videos-{{$chapter['id']}}">
+                    @foreach($videosBox as $video)
                         <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
                            class="chapter-video-item">
                             <span class="video-title">{{$video['title']}}</span>
