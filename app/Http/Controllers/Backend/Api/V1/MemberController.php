@@ -14,6 +14,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
@@ -216,5 +217,27 @@ class MemberController extends BaseController
         return $this->successData([
             'data' => $records,
         ]);
+    }
+
+    public function credit1Change(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $credit1 = $request->input('credit1');
+        $remark = $request->input('remark', '');
+        DB::transaction(function () use ($userId, $credit1, $remark) {
+            $user = User::query()->where('id', $userId)->firstOrFail();
+
+            $user->credit1 += $credit1;
+            $user->save();
+
+            UserCreditRecord::create([
+                'user_id' => $userId,
+                'field' => 'credit1',
+                'sum' => $credit1,
+                'remark' => $remark,
+            ]);
+        });
+
+        return $this->success();
     }
 }

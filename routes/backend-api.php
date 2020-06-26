@@ -179,6 +179,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
         Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
+
+        Route::post('/credit1/change', 'MemberController@credit1Change');
     });
 
     // 网站配置

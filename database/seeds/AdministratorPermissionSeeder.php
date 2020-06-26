@@ -645,6 +645,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'member/inviteBalance/withdrawOrders',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '积分变动',
+                'slug' => 'member.credit1.change',
+                'method' => 'POST',
+                'url' => 'member/credit1/change',
+            ],
 
             // 系统配置
             [
