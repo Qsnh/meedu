@@ -28,13 +28,20 @@
                                 @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
                                     @include('frontend.components.player.aliyun', ['video' => $video])
                                 @else
-                                    @include('frontend.components.player.xg', ['video' => $video])
+                                    @if($video['player_pc'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                                        @include('frontend.components.player.aliyun', ['video' => $video])
+                                    @elseif($video['player_pc'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                                        @include('frontend.components.player.tencent', ['video' => $video])
+                                    @else
+                                        @include('frontend.components.player.xg', ['video' => $video])
+                                    @endif
                                 @endif
                             </div>
                             @if($nextVideo)
                                 <div class="need-login" style="display: none">
-                                    <p class="mt-5"><a class="btn btn-primary"
-                                                       href="{{route('video.show', [$nextVideo['course_id'], $nextVideo['id'], $nextVideo['slug']])}}">下一集</a>
+                                    <p class="mt-5">
+                                        <a class="btn btn-primary"
+                                           href="{{route('video.show', [$nextVideo['course_id'], $nextVideo['id'], $nextVideo['slug']])}}">下一集</a>
                                     </p>
                                     <p class="login-text">
                                         下一集：{{$nextVideo['title']}}
@@ -46,11 +53,30 @@
                                 </div>
                             @endif
                         @else
-                            <div class="buy-this-video">
-                                <h3>{{$video['title']}}</h3>
-                                <a href="javascript:void(0)"
-                                   class="btn btn-primary mt-3 show-select-payment-model">付费内容，请订阅后查看</a>
-                            </div>
+                            @if($trySee)
+                                <div class="box-shadow1">
+                                    @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
+                                        @include('frontend.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                                    @else
+                                        @if($video['player_pc'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                                            @include('frontend.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                                        @elseif($video['player_pc'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                                            @include('frontend.components.player.tencent', ['video' => $video, 'isTry' => true])
+                                        @else
+                                            @include('frontend.components.player.xg', ['video' => $video, 'isTry' => true])
+                                        @endif
+                                    @endif
+                                </div>
+                                <div class="need-login" style="display: none">
+                                    <h3>您观看的是试看内容，如需观看完整内容请先订阅！</h3>
+                                </div>
+                            @else
+                                <div class="buy-this-video">
+                                    <h3>{{$video['title']}}</h3>
+                                    <a href="javascript:void(0)"
+                                       class="btn btn-primary mt-3 show-select-payment-model">付费内容，请订阅后查看</a>
+                                </div>
+                            @endif
                         @endif
                     @else
                         <div class="need-login">
@@ -134,7 +160,7 @@
                             @endforeach
                         @else
                             @foreach($videos[0] ?? [] as $videoItem)
-                                <div class="course-videos-box">
+                                <div class="course-videos-box" style="display: block">
                                     <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                                        class="course-videos-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}} {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
                                         <div class="player-icon"></div>

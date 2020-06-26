@@ -14,13 +14,18 @@
         playsinline: false,
         airplay: true,
         useHls: true,
-        closeVideoTouch: true,
-        closeVideoClick: true,
+        ignores: [
+            @if($video['ban_drag'] === 1)
+                'progress',
+            @endif
+        ],
         @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
         marquee: {
-        value: '{{$user['mobile']}}'
+            value: '{{$user['mobile']}}'
         },
         @endif
+        closeVideoTouch: true,
+        closeVideoClick: true,
     };
             @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsJsPlayer(XGPlayerConfig);

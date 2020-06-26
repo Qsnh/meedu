@@ -153,7 +153,7 @@
                             @endforeach
                         @else
                             @foreach($videos[0] ?? [] as $video)
-                                <div class="course-videos-box">
+                                <div class="course-videos-box" style="display: block">
                                     <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
                                        class="course-videos-item {{$loop->first ? 'first' : ''}} {{$loop->last ? 'last' : ''}}">
                                         <div class="player-icon"></div>

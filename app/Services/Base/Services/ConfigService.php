@@ -480,4 +480,13 @@ class ConfigService implements ConfigServiceInterface
             AppConfig::query()->where('key', $key)->update(['value' => $value]);
         }
     }
+
+    /**
+     * 获取阿里云VOD配置
+     * @return array
+     */
+    public function getAliyunVodConfig(): array
+    {
+        return config('meedu.upload.video.aliyun');
+    }
 }

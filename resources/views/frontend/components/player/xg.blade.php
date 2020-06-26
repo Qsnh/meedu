@@ -8,16 +8,21 @@
         playsinline: true,
         playbackRate: [0.5, 0.75, 1, 1.5, 2],
         defaultPlaybackRate: 1,
-        pip: true,
-        cssFullscreen: true,
+        pip: false,
+        cssFullscreen: false,
         url: "{!! $playUrls->first()['url'] !!}",
         keyShortcut: 'on',
-        definitionActive: 'click',
+        ignores: [
+            @if($video['ban_drag'] === 1)
+                'progress',
+            @endif
+        ],
         @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
         marquee: {
             value: '{{$user['mobile']}}'
         },
         @endif
+        definitionActive: 'click',
     };
             @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsJsPlayer(XGPlayerConfig);

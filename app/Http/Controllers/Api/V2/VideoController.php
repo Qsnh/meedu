@@ -274,6 +274,7 @@ class VideoController extends BaseController
      * @OA\Get(
      *     path="/video/{id}/playinfo",
      *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
+     *      @OA\Parameter(in="query",name="is_try",description="试看",required=false,@OA\Schema(type="integer")),
      *     summary="视频播放地址",
      *     tags={"视频"},
      *     @OA\Response(
@@ -287,18 +288,21 @@ class VideoController extends BaseController
      *         )
      *     )
      * )
+     * @param Request $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function playInfo($id)
+    public function playInfo(Request $request, $id)
     {
+        $isTry = $request->has('is_try');
+
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
         if (!$this->businessState->canSeeVideo($this->user(), $course, $video)) {
             return $this->error(__(ApiV2Constant::VIDEO_NO_AUTH));
         }
 
-        $urls = get_play_url($video);
+        $urls = get_play_url($video, $isTry);
 
         if (!$urls) {
             return $this->error(__('error'));

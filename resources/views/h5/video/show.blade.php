@@ -10,7 +10,13 @@
                 @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
                     @include('h5.components.player.aliyun', ['video' => $video])
                 @else
-                    @include('h5.components.player.xg', ['video' => $video])
+                    @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                        @include('h5.components.player.aliyun', ['video' => $video])
+                    @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                        @include('h5.components.player.tencent', ['video' => $video])
+                    @else
+                        @include('h5.components.player.xg', ['video' => $video])
+                    @endif
                 @endif
                 @if($nextVideo)
                     <div style="margin-top: 60px;display: none" class="text-center watched-over">
@@ -23,9 +29,27 @@
                     </div>
                 @endif
             @else
-                <div style="padding-top: 60px;" class="text-center">
-                    <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
-                </div>
+                @if($trySee)
+                    @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
+                        @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                    @else
+                        @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                            @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                        @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                            @include('h5.components.player.tencent', ['video' => $video, 'isTry' => true])
+                        @else
+                            @include('h5.components.player.xg', ['video' => $video, 'isTry' => true])
+                        @endif
+                    @endif
+                    <div style="margin-top: 60px;display: none;" class="text-center watched-over show-buy-course-model">
+                        <span style="color: white">您当前观看的是试看内容，如需观看完整内容请订阅课程！</span>
+                    </div>
+                @else
+                    <div style="padding-top: 60px;" class="text-center">
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
+                    </div>
+                @endif
+
             @endif
         @else
             <div style="margin-top: 60px;" class="text-center">
@@ -69,7 +93,7 @@
                 </div>
             @endforeach
         @else
-            <div class="chapter-videos">
+            <div class="chapter-videos" style="display: block">
                 @foreach($videos[0] ?? [] as $videoItem)
                     <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                        class="chapter-video-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}}">

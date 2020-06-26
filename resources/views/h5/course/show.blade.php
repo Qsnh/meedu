@@ -46,7 +46,7 @@
                 </div>
             @endforeach
         @else
-            <div class="chapter-videos">
+            <div class="chapter-videos" style="display: block">
                 @foreach($videos[0] ?? [] as $video)
                     <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
                        class="chapter-video-item">

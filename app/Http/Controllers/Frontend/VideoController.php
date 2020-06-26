@@ -111,6 +111,8 @@ class VideoController extends FrontendController
 
         // 是否可以观看视频
         $canSeeVideo = false;
+        // 试看
+        $trySee = false;
         // 课程视频观看进度
         $videoWatchedProgress = [];
 
@@ -120,6 +122,8 @@ class VideoController extends FrontendController
 
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords(Auth::id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+
+            $trySee = $canSeeVideo === false && $video['free_seconds'] > 0;
         }
 
         // 下一个视频
@@ -154,7 +158,7 @@ class VideoController extends FrontendController
         // 播放地址
         $playUrls = collect([]);
         if (!($video['aliyun_video_id'] && $this->configService->getAliyunPrivatePlayStatus())) {
-            $playUrls = get_play_url($video);
+            $playUrls = get_play_url($video, $trySee);
             if ($playUrls->isEmpty()) {
                 flash('没有播放地址');
                 return back();
@@ -179,7 +183,8 @@ class VideoController extends FrontendController
             'scene',
             'playUrls',
             'nextVideo',
-            'videoWatchedProgress'
+            'videoWatchedProgress',
+            'trySee'
         ));
     }
 
