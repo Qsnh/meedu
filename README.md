@@ -1,5 +1,5 @@
 <p align="center"><img src="public/images/meedu.jpg"/></p>
-<p align="center">**MeEdu** - 基于 *Laravel* 开发的在线教育点播系统。</p>
+<p align="center">MeEdu - 基于 Laravel 开发的在线教育点播系统。</p>
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/Qsnh/meedu.svg?branch=master" alt="Build Status"></a>
@@ -11,13 +11,12 @@
 </a>
 </p>
 
-## 傻瓜安装
+## 安装方式
 
-傻瓜安装包请到我们的QQ群文件下载。加QQ群请扫描文末的QQ群二维码。
-
-## 宝塔安装
-
-MeEdu 已上架宝塔一键部署服务。使用宝塔面板的小伙伴可以在宝塔的一键部署列表中搜索meedu并部署安装 meedu 。
+- [x] 傻瓜安装。傻瓜安装包请到我们的QQ群文件下载，加QQ群请扫描文末的QQ群二维码。
+- [x] 宝塔一键安装。MeEdu 已上架宝塔一键安装服务。
+- [x] 手动安装。[查看安装教程](docs/安装教程.md) 。
+- [x] MeEdu 安装服务。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
 
 ## 当前功能概览
 
@@ -49,9 +48,16 @@ MeEdu 已上架宝塔一键部署服务。使用宝塔面板的小伙伴可以�
 - [x] 模板系统
 - [x] [微信小程序](https://github.com/Meedu/wechat-mini)
 
+## MeEdu 插件市场
+
+| 插件 | 插件 | 插件 |
+| --- | --- | --- | 
+| [问答模块](https://meedu.vip/addons/38/Wenda) | [试题插件](https://meedu.vip/addons/36/Paper) | [团购](https://meedu.vip/addons/33/TuanGou) |
+| [秒杀](https://meedu.vip/addons/32/MiaoSha) | [阿里云HLS加密播放](https://meedu.vip/addons/30/AliyunHls) | [腾讯云HLS加密播放](https://meedu.vip/addons/27/TencentCloudHls) |
+| [学习路径](https://meedu.vip/addons/26/LearningPaths) | [图文收费](https://meedu.vip/addons/16/MeeduTopics) | [电子书模块](https://meedu.vip/addons/17/MeeduBooks) |
+
 ## FAQ
 
-- [安装教程](docs/安装教程.md)
 - [MeEdu API](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [MeEdu常见问题总结](https://www.yuque.com/meedu/yr7rek)
 
