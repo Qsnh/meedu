@@ -48,7 +48,7 @@
 - [x] 模板系统
 - [x] [微信小程序](https://github.com/Meedu/wechat-mini)
 
-## MeEdu 插件市场
+## 收费插件
 
 | 插件 | 插件 | 插件 |
 | --- | --- | --- | 
@@ -83,6 +83,7 @@
 
 <p>
 <img src="/docs/contact/qqgroup.png" width=200>
+<img src="/docs/contact/wechat1.png" width=200>
 </p>
 
 ## License
