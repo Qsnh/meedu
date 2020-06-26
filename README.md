@@ -1,5 +1,5 @@
 <p align="center"><img src="public/images/meedu.jpg"/></p>
-
+<p align="center">**MeEdu** - 基于 *Laravel* 开发的在线教育点播系统。</p>
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/Qsnh/meedu.svg?branch=master" alt="Build Status"></a>
@@ -10,10 +10,6 @@
   <img src="https://codecov.io/gh/Qsnh/meedu/branch/master/graph/badge.svg" />
 </a>
 </p>
-
-## 介绍
-
-随着知识付费领域的兴起，尤其是知识付费领域的龙头“得到”的成功，知识付费领域俨然成为了新的风口。经过这几年的发展，知识付费领域的基础建设有了很大的进步，市场上面很多知识付费的平台可以在短短几分钟之内搭建一套属于自己的知识付费应用。但是，这并不是我想要的！可能是处于程序员的角度出发，我更在乎的是这套应用是我自己可以完全控制的！所以 *MeEdu* 诞生了。*MeEdu* 寄托了我对当前知识付费领域的期望。我相信未来的每位身负技能的人都可以通过 *MeEdu* 来构建自己的知识付费应用，通过 *MeEdu* 将自己的知识进行变现。
 
 ## 傻瓜安装
 
@@ -55,13 +51,9 @@ MeEdu 已上架宝塔一键部署服务。使用宝塔面板的小伙伴可以�
 
 ## FAQ
 
-- [API接口](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [安装教程](docs/安装教程.md)
-- [MeEdu常见问题总结及功能介绍](https://www.yuque.com/meedu/yr7rek)
-
-## License
-
-**MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次 开发而不必支付费用。
+- [MeEdu API](https://meedu-v2-xiaoteng.doc.coding.io/)
+- [MeEdu常见问题总结](https://www.yuque.com/meedu/yr7rek)
 
 ## 鸣谢
 
@@ -76,14 +68,17 @@ MeEdu 已上架宝塔一键部署服务。使用宝塔面板的小伙伴可以�
 ## 捐赠
 
 <p>
-<img src="/docs/contact/BTC钱包.png" width=200>
-<img src="/docs/contact/ETH钱包.png" width=200>
-<img src="/docs/contact/EOS钱包.png" width=200>
+<img src="/docs/contact/BTC.png" width=200>
+<img src="/docs/contact/ETH.png" width=200>
+<img src="/docs/contact/EOS.png" width=200>
 </p>
 
 ## 联系我们
 
 <p>
-<img src="/docs/contact/qq群.png" width=200>
-<img src="/docs/contact/wechat.png" width=200>
+<img src="/docs/contact/qqgroup.png" width=200>
 </p>
+
+## License
+
+**MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次开发而不必支付费用。
