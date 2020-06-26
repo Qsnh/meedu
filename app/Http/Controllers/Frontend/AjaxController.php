@@ -134,6 +134,9 @@ class AjaxController extends BaseController
     public function videoCommentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
         $video = $this->videoService->find($videoId);
+        if ($this->businessState->videoCanComment($this->user(), $video) === false) {
+            return $this->error(__('video cant comment'));
+        }
         ['content' => $content] = $request->filldata();
         $comment = $this->videoCommentService->create($video['id'], $content);
         $user = $this->userService->find(Auth::id(), ['role']);

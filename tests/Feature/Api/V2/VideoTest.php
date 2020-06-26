@@ -12,6 +12,7 @@
 namespace Tests\Feature\Api\V2;
 
 use Carbon\Carbon;
+use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -165,6 +166,7 @@ class VideoTest extends Base
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ALL,
         ]);
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -174,6 +176,114 @@ class VideoTest extends Base
         $comment = VideoComment::whereUserId($user->id)->whereVideoId($video->id)->first();
         $this->assertNotEmpty($comment);
         $this->assertEquals('hello meedu', $comment->original_content);
+    }
+
+    public function test_video_comment_close()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_CLOSE,
+        ]);
+        $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseError($response, __('video cant comment'));
+    }
+
+    public function test_video_comment_only_paid()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
+        ]);
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseError($r, __('video cant comment'));
+    }
+
+    public function test_video_comment_only_paid_for_vip()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $user->role_id = $role->id;
+        $user->role_expired_at = Carbon::now()->addDays(1);
+        $user->save();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'charge' => 1,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
+        ]);
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($r);
+    }
+
+    public function test_video_comment_only_paid_for_buy()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'charge' => 1,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
+        ]);
+
+        UserVideo::create([
+            'video_id' => $video->id,
+            'user_id' => $user->id,
+        ]);
+
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($r);
+    }
+
+    public function test_video_comment_only_paid_for_free()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'charge' => 0,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
+        ]);
+
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($r);
+    }
+
+    public function test_video_comment_only_paid_for_buy_course()
+    {
+        $user = factory(User::class)->create();
+
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'charge' => 0,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
+        ]);
+
+        UserCourse::create(['course_id' => $video->course_id, 'user_id' => $user->id]);
+
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($r);
     }
 
     public function test_video_comments()

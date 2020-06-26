@@ -224,6 +224,10 @@ class VideoController extends BaseController
      */
     public function createComment(CommentRequest $request, $id)
     {
+        $video = $this->videoService->find($id);
+        if ($this->businessState->videoCanComment($this->user(), $video) === false) {
+            return $this->error(__('video cant comment'));
+        }
         ['content' => $content] = $request->filldata();
         $this->videoCommentService->create($id, $content);
         return $this->success();

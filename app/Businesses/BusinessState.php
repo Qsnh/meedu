@@ -14,14 +14,17 @@ namespace App\Businesses;
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
+use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class BusinessState
@@ -79,7 +82,7 @@ class BusinessState
      */
     public function isNeedBindMobile(array $user): bool
     {
-        return substr($user['mobile'], 0, 1) != 1;
+        return substr($user['mobile'], 0, 1) != 1 || mb_strlen($user['mobile']) !== 11;
     }
 
     /**
@@ -88,10 +91,7 @@ class BusinessState
      */
     public function isRole(array $user): bool
     {
-        if (!$user['role_id']) {
-            return false;
-        }
-        if (!$user['role_expired_at']) {
+        if (!$user['role_id'] || !$user['role_expired_at']) {
             return false;
         }
         if (Carbon::now()->gt($user['role_expired_at'])) {
@@ -247,6 +247,34 @@ class BusinessState
             return true;
         }
         if ($userService->hasCourse($user['id'], $course['id'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function videoCanComment(array $user, array $video): bool
+    {
+        $commentStatus = $video['comment_status'] ?? Video::COMMENT_STATUS_CLOSE;
+        if ($commentStatus === Video::COMMENT_STATUS_CLOSE) {
+            return false;
+        }
+        if ($commentStatus === Video::COMMENT_STATUS_ALL) {
+            return true;
+        }
+        /**
+         * @var UserService $userService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+        $user = $userService->find($user['id'], ['role']);
+        if ($this->isRole($user)) {
+            return true;
+        }
+        /**
+         * @var CourseService $courseService
+         */
+        $courseService = app()->make(CourseServiceInterface::class);
+        $course = $courseService->find($video['course_id']);
+        if ($this->canSeeVideo($user, $course, $video)) {
             return true;
         }
         return false;

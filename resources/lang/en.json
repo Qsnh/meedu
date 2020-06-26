@@ -105,5 +105,6 @@
   "credit1_remark_invite": "invite reward",
   "credit1_remark_other": "other",
   "please buy course": "please buy course",
-  "course cant comment": "course ban comment"
+  "course cant comment": "course baned comment",
+  "video cant comment": "video baned comment"
 }
