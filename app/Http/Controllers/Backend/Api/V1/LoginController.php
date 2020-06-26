@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use App\Models\Administrator;
+use App\Models\AdministratorMenu;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,152 +62,12 @@ class LoginController extends BaseController
 
     public function menus()
     {
-        $menus = [
-            [
-                'title' => '首页',
-                'key' => 'Home',
-                'icon' => 'icon-monitor',
-            ],
-            [
-                'title' => '运营',
-                'key' => 'operator',
-                'icon' => 'icon-grid-2',
-                'children' => [
-                    [
-                        'title' => '公告',
-                        'key' => 'Announcement',
-                        'permission' => 'announcement',
-                    ],
-                    [
-                        'title' => 'VIP会员',
-                        'key' => 'Role',
-                        'permission' => 'role',
-                    ],
-                    [
-                        'title' => '友情链接',
-                        'key' => 'Link',
-                        'permission' => 'link',
-                    ],
-                    [
-                        'title' => '幻灯片',
-                        'key' => 'Slider',
-                        'permission' => 'slider',
-                    ],
-                    [
-                        'title' => '首页推荐',
-                        'key' => 'IndexBanner',
-                        'permission' => 'indexBanner',
-                    ],
-                    [
-                        'title' => '推广链接',
-                        'key' => 'AdFrom',
-                        'permission' => 'ad_from',
-                    ],
-                    [
-                        'title' => '课程评论',
-                        'key' => 'CourseComment',
-                        'permission' => 'course_comment',
-                    ],
-                    [
-                        'title' => '视频评论',
-                        'key' => 'VideoComment',
-                        'permission' => 'video_comment',
-                    ],
-                    [
-                        'title' => '统计工具',
-                        'key' => 'Statistic',
-                    ],
-                ],
-            ],
-            [
-                'title' => '财务',
-                'key' => 'finance',
-                'icon' => 'icon-paper',
-                'children' => [
-                    [
-                        'title' => '订单列表',
-                        'key' => 'Order',
-                        'permission' => 'order',
-                    ],
-                    [
-                        'title' => '优惠码',
-                        'key' => 'PromoCode',
-                        'permission' => 'promoCode',
-                    ],
-                    [
-                        'title' => '邀请余额提现',
-                        'key' => 'InviteBalanceWithdrawOrders',
-                        'permission' => 'member.inviteBalance.withdrawOrders',
-                    ],
-                ],
-            ],
-            [
-                'title' => '用户',
-                'key' => 'members',
-                'icon' => 'icon-head',
-                'children' => [
-                    [
-                        'title' => '用户',
-                        'key' => 'Member',
-                        'permission' => 'member',
-                    ],
-                ],
-            ],
-            [
-                'title' => '视频',
-                'key' => 'videomanage',
-                'icon' => 'icon-video',
-                'children' => [
-                    [
-                        'title' => '分类',
-                        'key' => 'CourseCategory',
-                        'permission' => 'courseCategory',
-                    ],
-                    [
-                        'title' => '课程',
-                        'key' => 'Course',
-                        'permission' => 'course',
-                    ],
-                    [
-                        'title' => '视频',
-                        'key' => 'Video',
-                        'permission' => 'video',
-                    ],
-                ],
-            ],
-            [
-                'title' => '系统',
-                'key' => 'system',
-                'icon' => 'icon-cog',
-                'children' => [
-                    [
-                        'title' => '配置',
-                        'key' => 'Setting',
-                        'permission' => 'setting',
-                    ],
-                    [
-                        'title' => '管理员',
-                        'key' => 'Administrator',
-                        'permission' => 'administrator',
-                    ],
-                    [
-                        'title' => '管理员角色',
-                        'key' => 'AdministratorRole',
-                        'permission' => 'administrator_role',
-                    ],
-                    [
-                        'title' => '首页导航',
-                        'key' => 'Nav',
-                        'permission' => 'nav',
-                    ],
-                    [
-                        'title' => '插件',
-                        'key' => 'Addons',
-                        'super' => 1,
-                    ],
-                ],
-            ],
-        ];
+        $menus = AdministratorMenu::query()
+            ->select(['id', 'parent_id', 'name as title', 'url as key', 'icon', 'permission', 'sort', 'is_super'])
+            ->where('parent_id', 0)
+            ->orderBy('sort')
+            ->get()
+            ->toArray();
 
         $data = [];
 
@@ -215,34 +76,51 @@ class LoginController extends BaseController
             // 非超级管理员，需要根据权限生成菜单
             $permissions = $admin->permissions();
             foreach ($menus as $menu) {
-                if (!isset($menu['children'])) {
+                $children = AdministratorMenu::query()
+                    ->select(['id', 'parent_id', 'name as title', 'url as key', 'icon', 'permission', 'sort', 'is_super'])
+                    ->where('parent_id', $menu['id'])
+                    ->orderBy('sort')
+                    ->get()
+                    ->toArray();
+
+                if (!$children) {
                     $data[] = $menu;
                     continue;
                 }
 
-                $children = $menu['children'];
-                $children = array_filter($children, function ($item) use ($permissions) {
-                    if (isset($item['super'])) {
-                        return false;
+                $childrenData = [];
+                foreach ($children as $item) {
+                    if (($item['is_super'] ?? 0) === 1) {
+                        continue;
                     }
                     $per = $item['permission'] ?? '';
-                    if (!$per) {
-                        return true;
+                    if ($per === '' || isset($permissions[$per])) {
+                        $childrenData[] = $item;
+                        continue;
                     }
-                    return isset($permissions[$per]);
-                });
-                sort($children);
+                }
 
-                if (count($children) === 0) {
+                if (!$childrenData) {
                     continue;
                 }
 
-                $menu['children'] = $children;
+                $menu['children'] = $childrenData;
                 $data[] = $menu;
             }
         } else {
             // 超管返回全部菜单
-            $data = $menus;
+            foreach ($menus as $menu) {
+                $children = AdministratorMenu::query()
+                    ->select(['id', 'parent_id', 'name as title', 'url as key', 'icon', 'permission', 'sort', 'is_super'])
+                    ->where('parent_id', $menu['id'])
+                    ->orderBy('sort')
+                    ->get()
+                    ->toArray();
+                if ($children) {
+                    $menu['children'] = $children;
+                }
+                $data[] = $menu;
+            }
         }
 
         return $this->successData([
