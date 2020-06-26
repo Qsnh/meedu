@@ -59,4 +59,8 @@ class FrontendConstant
     public const CREDIT1_REMARK_WATCHED_ORDER = 'credit1_remark_order';
     public const CREDIT1_REMARK_WATCHED_INVITE = 'credit1_remark_invite';
     public const CREDIT1_REMARK_WATCHED_OTHER = 'credit1_remark_other';
+
+    public const PLAYER_XG = 'xg';
+    public const PLAYER_TENCENT = 'tencent';
+    public const PLAYER_ALIYUN = 'aliyun';
 }
