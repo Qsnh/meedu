@@ -34,7 +34,7 @@ class SettingController extends BaseController
             if (!isset($data[$item['group']])) {
                 $data[$item['group']] = [];
             }
-            $data[$item['group']][] = $item;
+            $item['is_show'] === 1 && $data[$item['group']][] = $item;
         }
 
         return $this->successData($data);

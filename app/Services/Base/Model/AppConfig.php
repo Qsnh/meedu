@@ -19,6 +19,6 @@ class AppConfig extends Model
 
     protected $fillable = [
         'group', 'name', 'field_type', 'sort', 'default_value', 'key', 'value', 'is_private',
-        'option_value', 'help',
+        'option_value', 'help', 'is_show',
     ];
 }
