@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Meedu\Setting;
 use Illuminate\Http\Request;
+use App\Events\AppConfigSavedEvent;
 
 class SettingController extends BaseController
 {
@@ -44,6 +45,9 @@ class SettingController extends BaseController
     {
         $data = $request->input('config');
         $setting->append($data);
+
+        event(new AppConfigSavedEvent());
+
         return $this->success();
     }
 }
