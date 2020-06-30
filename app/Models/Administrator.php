@@ -126,6 +126,7 @@ class Administrator extends Authenticatable implements JWTSubject
         // 超管返回所有的权限
         if ($this->isSuper()) {
             $permissions = AdministratorPermission::query()->select(['slug'])->get()->pluck('slug')->toArray();
+            $permissions = array_flip($permissions);
             return $permissions;
         }
         foreach ($roles as $role) {
