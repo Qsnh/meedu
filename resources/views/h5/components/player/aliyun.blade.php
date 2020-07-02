@@ -93,26 +93,26 @@
         components: [
                 @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
             {
-            name: 'BulletScreenComponent',
-            type: AliPlayerComponent.BulletScreenComponent,
-            args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {
-                fontSize: '16px',
-                color: '#000000'
-            }, 'random']
-        }
-        @endif
+                name: 'BulletScreenComponent',
+                type: AliPlayerComponent.BulletScreenComponent,
+                args: ['{{$user ? sprintf('会员%s', $user['mobile']) : config('app.name')}}', {
+                    fontSize: '16px',
+                    color: '#000000'
+                }, 'random']
+            }
+            @endif
         ]
     }, function (player) {
     });
 
     var PREV_SECONDS = 0;
-    var recordHandle = function () {
+    var recordHandle = function (isEnd = false) {
         var s = parseInt(ALI_PLAYER.getCurrentTime());
         if (s > PREV_SECONDS) {
             PREV_SECONDS = s;
             $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
                 _token: '{{csrf_token()}}',
-                duration: s
+                duration: (isEnd ? s + 1 : s)
             }, function (res) {
                 console.log(res);
             }, 'json');
@@ -120,7 +120,7 @@
     };
     setInterval('recordHandle()', 10000);
     ALI_PLAYER.on('ended', function () {
-        recordHandle();
+        recordHandle(true);
         $('#xiaoteng-player').hide();
         $('.watched-over').show();
     });

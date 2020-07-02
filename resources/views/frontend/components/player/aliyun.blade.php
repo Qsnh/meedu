@@ -106,21 +106,21 @@
     });
 
     var PREV_SECONDS = 0;
-    var recordHandle = function () {
+    var recordHandle = function (isEnd = false) {
         var s = parseInt(ALI_PLAYER.getCurrentTime());
         if (s > PREV_SECONDS) {
             PREV_SECONDS = s;
             $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
                 _token: '{{csrf_token()}}',
-                duration: s
+                duration: (isEnd ? s + 1 : s)
             }, function (res) {
-                console.log(res);
+                //
             }, 'json');
         }
     };
     setInterval('recordHandle()', 10000);
     ALI_PLAYER.on('ended', function () {
-        recordHandle();
+        recordHandle(true);
         $('#xiaoteng-player').hide();
         $('.need-login').show();
     });

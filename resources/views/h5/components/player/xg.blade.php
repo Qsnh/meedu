@@ -38,20 +38,20 @@
             @endif
 
     var PREV_SECONDS = 0;
-    var recordHandle = function () {
+    var recordHandle = function (isEnd = false) {
         var s = parseInt(XGPlayer.currentTime);
         if (s > PREV_SECONDS) {
             PREV_SECONDS = s;
             $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
                 _token: '{{csrf_token()}}',
-                duration: s
+                duration: (isEnd ? s + 1 : s)
             }, function (res) {
             }, 'json');
         }
     };
     setInterval('recordHandle()', 10000);
     XGPlayer.on('ended', function () {
-        recordHandle();
+        recordHandle(true);
         $('#meedu-player').hide();
         $('.watched-over').show();
     });
