@@ -1,7 +1,9 @@
 <link href="https://imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.css" rel="stylesheet">
 <script src="https://imgcache.qq.com/open/qcloud/video/tcplayer/libs/hls.min.0.13.2m.js"></script>
 <script src="https://imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.v4.1.min.js"></script>
-<video id="xiaoteng-player" preload="auto" playsinline webkit-playsinline></video>
+<div id="meedu-player">
+    <video id="xiaoteng-player" preload="auto" playsinline webkit-playsinline></video>
+</div>
 <script>
     var tcPlayer = TCPlayer('xiaoteng-player', {
         fileID: '{{$video['tencent_video_id']}}',
