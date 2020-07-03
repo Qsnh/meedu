@@ -200,7 +200,7 @@ return [
         // 主题
         'theme' => [
             'use' => 'default',
-            'path' => base_path(env('TEMPLATE_PATH', 'resources/views')),
+            'path' => base_path(env('TEMPLATE_PATH') ?: 'resources/views'),
         ],
         // 默认短信服务商
         'sms' => 'aliyun',

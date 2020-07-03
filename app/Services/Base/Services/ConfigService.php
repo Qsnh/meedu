@@ -164,7 +164,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getMemberLockStatus(): int
     {
-        return config('meedu.member.is_lock_default');
+        return (int)config('meedu.member.is_lock_default');
     }
 
     /**
@@ -173,7 +173,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getMemberActiveStatus(): int
     {
-        return config('meedu.member.is_active_default');
+        return (int)config('meedu.member.is_active_default');
     }
 
     /**
@@ -182,7 +182,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getCourseListPageSize(): int
     {
-        return config('meedu.other.course_list_page_size', 6);
+        return (int)config('meedu.other.course_list_page_size', 6);
     }
 
     /**
@@ -200,7 +200,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getVideoListPageSize(): int
     {
-        return config('meedu.other.video_list_page_size', 10);
+        return (int)config('meedu.other.video_list_page_size', 10);
     }
 
     /**
@@ -282,7 +282,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getCacheExpire(): int
     {
-        return config('meedu.system.cache.expire');
+        return (int)config('meedu.system.cache.expire');
     }
 
     /**
