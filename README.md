@@ -61,15 +61,16 @@
 - [MeEdu API](https://meedu-v2-xiaoteng.doc.coding.io/)
 - [MeEdu常见问题总结](https://www.yuque.com/meedu/yr7rek)
 
-## 鸣谢
+## License
 
-感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
+**MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次开发而不必支付费用。
 
-| 昵称 | |
-| --- | --- |
-| `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
-| `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
-| `Aunger` | [https://www.aunwen.com](https://www.aunwen.com) |
+## 联系我们
+
+<p>
+<img src="/docs/contact/qqgroup.png" width=200>
+<img src="/docs/contact/wechat1.png" width=200>
+</p>
 
 ## 捐赠
 
@@ -79,13 +80,12 @@
 <img src="/docs/contact/EOS.png" width=200>
 </p>
 
-## 联系我们
+## 鸣谢
 
-<p>
-<img src="/docs/contact/qqgroup.png" width=200>
-<img src="/docs/contact/wechat1.png" width=200>
-</p>
+感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
 
-## License
-
-**MeEdu** 采用 MIT 开源许可证，你可以在商业项目中免费使用 **MeEdu** 或者基于 **MeEdu** 二次开发而不必支付费用。
+| 昵称 | |
+| --- | --- |
+| `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
+| `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
+| `Aunger` | [https://www.aunwen.com](https://www.aunwen.com) |
