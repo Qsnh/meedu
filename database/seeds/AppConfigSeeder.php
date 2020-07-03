@@ -1013,18 +1013,16 @@ class AppConfigSeeder extends Seeder
                 'name' => '课程列表页每页数',
                 'field_type' => 'number',
                 'sort' => 0,
-                'default_value' => '',
                 'key' => 'meedu.other.course_list_page_size',
-                'value' => '',
+                'value' => 16,
             ],
             [
                 'group' => '其它配置',
                 'name' => '视频列表页每页数',
                 'field_type' => 'number',
                 'sort' => 1,
-                'default_value' => '',
                 'key' => 'meedu.other.video_list_page_size',
-                'value' => '',
+                'value' => 16,
             ],
         ];
 
