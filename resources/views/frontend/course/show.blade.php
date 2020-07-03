@@ -138,6 +138,10 @@
                                                 {{$video['title']}}
                                                 @if($video['charge'] === 0)
                                                     <span class="free-label">免费</span>
+                                                @else
+                                                    @if($video['free_seconds'] > 0)
+                                                        <span class="free-label">试看</span>
+                                                    @endif
                                                 @endif
                                             </div>
                                             <div class="video-duration">
@@ -162,6 +166,10 @@
                                             {{$video['title']}}
                                             @if($video['charge'] === 0)
                                                 <span class="free-label">免费</span>
+                                            @else
+                                                @if($video['free_seconds'] > 0)
+                                                    <span class="free-label">试看</span>
+                                                @endif
                                             @endif
                                         </div>
                                         <div class="video-duration">

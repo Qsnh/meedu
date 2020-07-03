@@ -87,6 +87,10 @@
                             <span class="video-title">{{$videoItem['title']}}</span>
                             @if($videoItem['charge'] === 0)
                                 <span class="video-label">免费</span>
+                            @else
+                                @if($videoItem['free_seconds'] > 0)
+                                    <span class="video-label">试看</span>
+                                @endif
                             @endif
                         </a>
                     @endforeach
@@ -100,6 +104,10 @@
                         <span class="video-title">{{$videoItem['title']}}</span>
                         @if($videoItem['charge'] === 0)
                             <span class="video-label">免费</span>
+                        @else
+                            @if($videoItem['free_seconds'] > 0)
+                                <span class="video-label">试看</span>
+                            @endif
                         @endif
                     </a>
                 @endforeach

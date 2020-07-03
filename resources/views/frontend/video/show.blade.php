@@ -144,7 +144,11 @@
                                             <div class="video-title">
                                                 {{$videoItem['title']}}
                                                 @if($videoItem['charge'] === 0)
-                                                    <span class="free-label">试看</span>
+                                                    <span class="free-label">免费</span>
+                                                @else
+                                                    @if($videoItem['free_seconds'] > 0)
+                                                        <span class="free-label">试看</span>
+                                                    @endif
                                                 @endif
                                             </div>
                                             <div class="video-duration">
@@ -167,7 +171,11 @@
                                         <div class="video-title">
                                             {{$videoItem['title']}}
                                             @if($videoItem['charge'] === 0)
-                                                <span class="free-label">试看</span>
+                                                <span class="free-label">免费</span>
+                                            @else
+                                                @if($videoItem['free_seconds'] > 0)
+                                                    <span class="free-label">试看</span>
+                                                @endif
                                             @endif
                                         </div>
                                         <div class="video-duration">
