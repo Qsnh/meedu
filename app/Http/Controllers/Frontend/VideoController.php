@@ -14,7 +14,6 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -115,12 +114,14 @@ class VideoController extends FrontendController
         $trySee = false;
         // 课程视频观看进度
         $videoWatchedProgress = [];
+        // 是否可以评论
+        $canComment = $this->businessState->videoCanComment($this->user(), $video);
 
-        if (Auth::check()) {
+        if ($this->check()) {
             $canSeeVideo = $this->businessState->canSeeVideo($this->user(), $video['course'], $video);
-            $canSeeVideo && $this->courseService->recordUserCount(Auth::id(), $course['id']);
+            $canSeeVideo && $this->courseService->recordUserCount($this->id(), $course['id']);
 
-            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords(Auth::id(), $course['id']);
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
 
             $trySee = $canSeeVideo === false && $video['free_seconds'] > 0;
@@ -184,7 +185,8 @@ class VideoController extends FrontendController
             'playUrls',
             'nextVideo',
             'videoWatchedProgress',
-            'trySee'
+            'trySee',
+            'canComment'
         ));
     }
 
@@ -196,7 +198,7 @@ class VideoController extends FrontendController
     public function showBuyPage($id)
     {
         $video = $this->videoService->find($id);
-        if ($this->userService->hasVideo(Auth::id(), $video['id'])) {
+        if ($this->userService->hasVideo($this->id(), $video['id'])) {
             flash(__('You have already purchased this course'), 'success');
             return back();
         }
@@ -237,7 +239,7 @@ class VideoController extends FrontendController
             flash(__('video cant buy'));
             return back();
         }
-        $order = $this->orderService->createVideoOrder(Auth::id(), $video, $promoCodeId);
+        $order = $this->orderService->createVideoOrder($this->id(), $video, $promoCodeId);
 
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');

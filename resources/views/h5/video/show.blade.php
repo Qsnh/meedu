@@ -108,23 +108,25 @@
     </div>
 
     <div class="course-comment course-content-tab-item">
-        <div class="comment-input-box">
-            <form action="">
-                <div class="form-group">
+        @if($canComment)
+            <div class="comment-input-box">
+                <form action="">
+                    <div class="form-group">
                     <textarea name="comment-content" class="form-control" placeholder="{{$user ? '请输入评论的内容' : '请先登录'}}"
                               rows="1" {{$user ? '' : 'disabled'}}></textarea>
-                </div>
-                @if($user)
-                    <div class="form-group text-right">
-                        <button type="button" class="btn btn-primary btn-sm comment-button"
-                                data-login-url="{{route('login')}}"
-                                data-url="{{route('ajax.video.comment', [$video['id']])}}"
-                                data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
-                        </button>
                     </div>
-                @endif
-            </form>
-        </div>
+                    @if($user)
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-primary btn-sm comment-button"
+                                    data-login-url="{{route('login')}}"
+                                    data-url="{{route('ajax.video.comment', [$video['id']])}}"
+                                    data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
+                            </button>
+                        </div>
+                    @endif
+                </form>
+            </div>
+        @endif
         <div class="comment-list-box">
             @forelse($comments as $commentItem)
                 <div class="comment-list-item">

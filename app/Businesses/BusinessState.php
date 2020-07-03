@@ -238,6 +238,9 @@ class BusinessState
         if ($commentStatus === Course::COMMENT_STATUS_ALL) {
             return true;
         }
+        if (!$user) {
+            return false;
+        }
         /**
          * @var $userService UserService
          */
@@ -260,6 +263,9 @@ class BusinessState
         }
         if ($commentStatus === Video::COMMENT_STATUS_ALL) {
             return true;
+        }
+        if (!$user) {
+            return false;
         }
         /**
          * @var UserService $userService

@@ -189,17 +189,19 @@
         <div class="container {{$scene === 'comment' ? '' : 'display-none'}} video-show-page-comment">
             <div class="row">
                 <div class="col-12">
-                    <div class="comment-box">
-                        <div class="comment-title">
-                            本课讨论
+                    @if($canComment)
+                        <div class="comment-box">
+                            <div class="comment-title">
+                                本课讨论
+                            </div>
+                            <div class="comment-input-box">
+                                <textarea name="content" placeholder="请输入评论内容" class="form-control" rows="3"></textarea>
+                                <button type="button" data-url="{{route('ajax.video.comment', [$video['id']])}}"
+                                        data-login="{{$user ? 1 : 0}}" data-input="content" class="comment-button">评论
+                                </button>
+                            </div>
                         </div>
-                        <div class="comment-input-box">
-                            <textarea name="content" placeholder="请输入评论内容" class="form-control" rows="3"></textarea>
-                            <button type="button" data-url="{{route('ajax.video.comment', [$video['id']])}}"
-                                    data-login="{{$user ? 1 : 0}}" data-input="content" class="comment-button">评论
-                            </button>
-                        </div>
-                    </div>
+                    @endif
 
                     <div class="comment-list-box">
                         @forelse($comments as $commentItem)
