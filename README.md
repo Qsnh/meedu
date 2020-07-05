@@ -72,14 +72,6 @@
 <img src="/docs/contact/wechat1.png" width=200>
 </p>
 
-## 捐赠
-
-<p>
-<img src="/docs/contact/BTC.png" width=200>
-<img src="/docs/contact/ETH.png" width=200>
-<img src="/docs/contact/EOS.png" width=200>
-</p>
-
 ## 鸣谢
 
 感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
