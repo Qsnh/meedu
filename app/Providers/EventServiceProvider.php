@@ -69,6 +69,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedListener',
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedCredit1RewardListener',
         ],
+        'App\Events\AppConfigSavedEvent' => [],
     ];
 
     /**

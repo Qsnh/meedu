@@ -11,9 +11,10 @@
     "type": "project",
     "require": {
         "php": ">=7.1.3",
+        "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*",
-        "ext-curl": "*",
+        "alibabacloud/sdk": "^1.8",
         "barryvdh/laravel-cors": "^0.11.2",
         "chumper/zipper": "^1.0",
         "erusev/parsedown": "^1.7",
@@ -57,16 +58,15 @@
         "psr-4": {
             "App\\": "app/",
             "Addons\\": "addons/"
-        }
+        },
+        "files": [
+            "./app/helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        },
-        "files": [
-            "./app/helper.php",
-            "./library/aliyun-php-sdk-core/Config.php"
-        ]
+        }
     },
     "extra": {
         "laravel": {
@@ -98,8 +98,7 @@
             "supervisorctl update",
             "supervisorctl start meedu:*"
         ],
-        "apidoc": "@php artisan l5-swagger:generate",
-        "serve": "@php artisan serve"
+        "apidoc": "@php artisan l5-swagger:generate"
     },
     "config": {
         "preferred-install": "dist",

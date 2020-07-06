@@ -9,16 +9,14 @@ services:
     volumes:
       - ./:/var/www/html/
     restart: always
-    expose:
-      - "9000"
     networks:
       - meedu-net
 
   mysql:
     container_name: "meedu-mysql"
     image: daocloud.io/mysql:5.7
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - ./docker/mysql/logs:/logs/:rw
       - ./docker/mysql/data:/var/lib/mysql/:rw

@@ -524,6 +524,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'video/\d+',
             ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频批量删除',
+                'slug' => 'video.destroy.multi',
+                'method' => 'POST',
+                'url' => 'video/delete/multi',
+            ],
 
             // 用户
             [
@@ -637,6 +644,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'member.inviteBalance.withdrawOrders',
                 'method' => 'POST',
                 'url' => 'member/inviteBalance/withdrawOrders',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '积分变动',
+                'slug' => 'member.credit1.change',
+                'method' => 'POST',
+                'url' => 'member/credit1/change',
             ],
 
             // 系统配置

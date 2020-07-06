@@ -33,14 +33,26 @@ class FrontendController extends BaseController
         return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => $path]);
     }
 
-    protected function user()
+    /**
+     * @return bool
+     */
+    public function check(): bool
     {
-        if (Auth::check()) {
+        return Auth::check();
+    }
+
+    /**
+     * @return array|mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function user(): array
+    {
+        if ($this->check()) {
             /**
              * @var $userService UserService
              */
             $userService = app()->make(UserServiceInterface::class);
-            return $userService->find(Auth::id(), ['role']);
+            return $userService->find($this->id(), ['role']);
         }
         return [];
     }

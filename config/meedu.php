@@ -11,9 +11,6 @@
 
 return [
 
-    // 配置文件存储路径
-    'save' => storage_path('/meedu_config.json'),
-
     // 关于我们
     'aboutus' => '',
 
@@ -203,7 +200,7 @@ return [
         // 主题
         'theme' => [
             'use' => 'default',
-            'path' => resource_path('views'),
+            'path' => base_path(env('TEMPLATE_PATH') ?: 'resources/views'),
         ],
         // 默认短信服务商
         'sms' => 'aliyun',

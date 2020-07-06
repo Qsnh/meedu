@@ -136,7 +136,17 @@ class ApplicationInstallCommand extends Command
         };
         $seeder->call(\AdministratorSuperSeeder::class);
         $seeder->call(\AdministratorPermissionSeeder::class);
+        $seeder->call(\AdministratorMenuSeeder::class);
 
         $this->info('数据初始化成功');
+    }
+
+    public function actionConfig()
+    {
+        $seeder = new class() extends Seeder {
+        };
+        $seeder->call(\AppConfigSeeder::class);
+
+        $this->info('配置初始化完成');
     }
 }

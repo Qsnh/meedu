@@ -160,18 +160,20 @@ class CourseController extends FrontendController
         $firstVideo = [];
         // 课程视频观看进度
         $videoWatchedProgress = [];
+        // 课程评论
+        $canComment = $this->businessState->courseCanComment($this->user(), $course);
 
         // 已登录用户的一些判断
         if (Auth::check()) {
             // 是否购买
-            $isBuy = $this->businessState->isBuyCourse(Auth::id(), $course['id']);
+            $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             // 是否收藏当前课程
-            $isLikeCourse = $this->userService->likeCourseStatus(Auth::id(), $course['id']);
+            $isLikeCourse = $this->userService->likeCourseStatus($this->id(), $course['id']);
             // 课程视频观看进度
-            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords(Auth::id(), $course['id']);
+            $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
             // 最近一条观看记录
-            $latestWatchRecord = $this->userService->getLatestRecord(Auth::id(), $course['id']);
+            $latestWatchRecord = $this->userService->getLatestRecord($this->id(), $course['id']);
             $latestWatchRecord && $firstVideo = $this->videoService->find($latestWatchRecord['video_id']);
         }
 
@@ -199,7 +201,8 @@ class CourseController extends FrontendController
             'firstVideo',
             'scene',
             'videoWatchedProgress',
-            'attach'
+            'attach',
+            'canComment'
         ));
     }
 

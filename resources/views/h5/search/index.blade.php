@@ -9,7 +9,9 @@
                 <img src="{{asset('/h5/images/icons/back.png')}}" width="24" height="24">
             </a>
             <div class="input">
-                <input type="text" name="keywords" value="{{request()->input('keywords')}}" class="search-input-text"
+                <input type="text" name="keywords" value="{{request()->input('keywords')}}"
+                       class="search-input-text"
+                       placeholder="请输入搜索内容"
                        required>
             </div>
         </div>

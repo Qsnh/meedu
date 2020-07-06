@@ -24,28 +24,43 @@
 
     <div class="course-chapter course-content-tab-item">
         @if($chapters)
-            @foreach($chapters as $chapter)
-                <div class="chapter-title">{{$chapter['title']}}</div>
-                <div class="chapter-videos">
-                    @foreach($videos[$chapter['id']] ?? [] as $video)
+            @foreach($chapters as $chapterIndex => $chapter)
+                @if($videosBox = $videos[$chapter['id']] ?? [])@endif
+                <div class="chapter-title">
+                    {{$chapter['title']}}
+                    <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
+                        {{count($videosBox)}}节
+                        <i class="fa {{$chapterIndex === 0 ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                    </span>
+                </div>
+                <div class="chapter-videos {{$chapterIndex === 0 ? 'active' : ''}} chapter-videos-{{$chapter['id']}}">
+                    @foreach($videosBox as $video)
                         <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
                            class="chapter-video-item">
                             <span class="video-title">{{$video['title']}}</span>
                             @if($video['charge'] === 0)
                                 <span class="video-label">免费</span>
+                            @else
+                                @if($video['free_seconds'] > 0)
+                                    <span class="video-label">试看</span>
+                                @endif
                             @endif
                         </a>
                     @endforeach
                 </div>
             @endforeach
         @else
-            <div class="chapter-videos">
+            <div class="chapter-videos" style="display: block">
                 @foreach($videos[0] ?? [] as $video)
                     <a href="{{route('video.show', [$video['course_id'], $video['id'], $video['slug']])}}"
                        class="chapter-video-item">
                         <span class="video-title">{{$video['title']}}</span>
                         @if($video['charge'] === 0)
                             <span class="video-label">免费</span>
+                        @else
+                            @if($video['free_seconds'] > 0)
+                                <span class="video-label">试看</span>
+                            @endif
                         @endif
                     </a>
                 @endforeach
@@ -54,24 +69,26 @@
     </div>
 
     <div class="course-comment course-content-tab-item">
-        <div class="comment-input-box">
-            <form action="">
-                <div class="form-group">
+        @if($canComment)
+            <div class="comment-input-box">
+                <form action="">
+                    <div class="form-group">
                     <textarea name="comment-content" class="form-control" placeholder="{{$user ? '请输入评论的内容' : '请先登录'}}"
                               rows="1"
                               {{$user ? '' : 'disabled'}}></textarea>
-                </div>
-                @if($user)
-                    <div class="form-group text-right">
-                        <button type="button" class="btn btn-primary btn-sm comment-button"
-                                data-login-url="{{route('login')}}"
-                                data-url="{{route('ajax.course.comment', [$course['id']])}}"
-                                data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
-                        </button>
                     </div>
-                @endif
-            </form>
-        </div>
+                    @if($user)
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-primary btn-sm comment-button"
+                                    data-login-url="{{route('login')}}"
+                                    data-url="{{route('ajax.course.comment', [$course['id']])}}"
+                                    data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
+                            </button>
+                        </div>
+                    @endif
+                </form>
+            </div>
+        @endif
         <div class="comment-list-box">
             @forelse($comments as $commentItem)
                 <div class="comment-list-item">

@@ -13,7 +13,6 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
 use Illuminate\Http\Request;
-use vod\Request\V20170321 as vod;
 
 class VideoUploadController extends BaseController
 {
@@ -26,20 +25,18 @@ class VideoUploadController extends BaseController
 
     public function aliyunCreateVideoToken(Request $request)
     {
+        $title = $request->input('title');
+        $filename = $request->input('filename');
+
         try {
-            $title = $request->input('title');
-            $filename = $request->input('filename');
-            $client = aliyun_sdk_client();
-            $request = new vod\CreateUploadVideoRequest();
-            $request->setTitle($title);
-            $request->setFileName($filename);
-            $response = $client->getAcsResponse($request);
+            aliyun_sdk_client();
+            $result = \AlibabaCloud\Vod\Vod::v20170321()->createUploadVideo()->withTitle($title)->withFileName($filename)->request();
 
             return $this->successData([
-                'upload_auth' => $response->UploadAuth,
-                'upload_address' => $response->UploadAddress,
-                'video_id' => $response->VideoId,
-                'request_id' => $response->RequestId,
+                'upload_auth' => $result['UploadAuth'],
+                'upload_address' => $result['UploadAddress'],
+                'video_id' => $result['VideoId'],
+                'request_id' => $result['RequestId'],
             ]);
         } catch (Exception $exception) {
             exception_record($exception);
@@ -50,19 +47,18 @@ class VideoUploadController extends BaseController
 
     public function aliyunRefreshVideoToken(Request $request)
     {
-        try {
-            $videoId = $request->input('video_id');
-            $client = aliyun_sdk_client();
-            $request = new vod\RefreshUploadVideoRequest();
-            $request->setVideoId($videoId);
-            $response = $client->getAcsResponse($request);
+        $videoId = $request->input('video_id');
 
-            return [
-                'upload_auth' => $response->UploadAuth,
-                'upload_address' => $response->UploadAddress,
-                'video_id' => $response->VideoId,
-                'request_id' => $response->RequestId,
-            ];
+        try {
+            aliyun_sdk_client();
+            $result = \AlibabaCloud\Vod\Vod::v20170321()->refreshUploadVideo()->withVideoId($videoId)->request();
+
+            return $this->successData([
+                'upload_auth' => $result['UploadAuth'],
+                'upload_address' => $result['UploadAddress'],
+                'video_id' => $result['VideoId'],
+                'request_id' => $result['RequestId'],
+            ]);
         } catch (Exception $exception) {
             exception_record($exception);
 

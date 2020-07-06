@@ -8,5 +8,7 @@
 </head>
 <body>
     {!! $protocol !!}
+
+    <div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>
 </html>

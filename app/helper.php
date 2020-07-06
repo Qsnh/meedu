@@ -63,7 +63,6 @@ if (!function_exists('exception_record')) {
             'file' => $exception->getFile(),
             'code' => $exception->getCode(),
             'line' => $exception->getLine(),
-            'trace' => $exception->getTraceAsString(),
             'params' => $request->all(),
             'url' => $request->url(),
             'method' => $request->method(),
@@ -95,20 +94,24 @@ if (!function_exists('aliyun_play_auth')) {
     /**
      * 获取阿里云视频的播放Auth
      *
-     * @param array $video
-     * @return SimpleXMLElement|string
+     * @param $video
+     * @param bool $isTry
+     * @return mixed|string
      */
-    function aliyun_play_auth($video)
+    function aliyun_play_auth($video, $isTry = false)
     {
+        // 试看参数封装
+        $playConfig = [];
+        ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
         try {
-            $client = aliyun_sdk_client();
-            $request = new \vod\Request\V20170321\GetVideoPlayAuthRequest();
-            $request->setAcceptFormat('JSON');
-            $request->setRegionId(config('meedu.upload.video.aliyun.region', ''));
-            $request->setVideoId($video['aliyun_video_id']);
-            $response = $client->getAcsResponse($request);
+            aliyun_sdk_client();
+            $request = \AlibabaCloud\Vod\Vod::v20170321()
+                ->getVideoPlayAuth()
+                ->withVideoId($video['aliyun_video_id']);
+            $playConfig && $request = $request->withPlayConfig(json_encode($playConfig));
+            $result = $request->request();
 
-            return $response->PlayAuth;
+            return $result['PlayAuth'];
         } catch (Exception $exception) {
             exception_record($exception);
 
@@ -120,26 +123,32 @@ if (!function_exists('aliyun_play_auth')) {
 if (!function_exists('aliyun_play_url')) {
     /**
      * 获取阿里云的视频播放地址
-     * @param $vid
+     * @param array $video
+     * @param bool $isTry
      * @return array
      */
-    function aliyun_play_url($vid)
+    function aliyun_play_url(array $video, $isTry = false)
     {
         try {
-            $client = aliyun_sdk_client();
-            $request = new \vod\Request\V20170321\GetPlayInfoRequest();
-            $request->setVideoId($vid);
-            $request->setAuthTimeout(3600 * 3);
-            $request->setAcceptFormat('JSON');
-            $response = $client->getAcsResponse($request);
-            $list = $response->PlayInfoList->PlayInfo;
+            aliyun_sdk_client();
+
+            $playConfig = [];
+            ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
+
+            $request = \AlibabaCloud\Vod\Vod::v20170321()
+                ->getPlayInfo()
+                ->withVideoId($video['aliyun_video_id']);
+            $playConfig && $request = $request->withPlayConfig(json_encode($playConfig));
+            $result = $request->request();
+
+            $playInfo = $result['PlayInfoList']['PlayInfo'];
             $rows = [];
-            foreach ($list as $item) {
+            foreach ($playInfo as $item) {
                 $rows[] = [
-                    'format' => $item->Format,
-                    'url' => $item->PlayURL,
-                    'duration' => $item->Duration,
-                    'name' => $item->Height,
+                    'format' => $item['Format'],
+                    'url' => $item['PlayURL'],
+                    'duration' => $item['Duration'],
+                    'name' => $item['Height'],
                 ];
             }
 
@@ -153,17 +162,18 @@ if (!function_exists('aliyun_play_url')) {
 }
 
 if (!function_exists('aliyun_sdk_client')) {
-    /**
-     * @return DefaultAcsClient
-     */
     function aliyun_sdk_client()
     {
-        $profile = \DefaultProfile::getProfile(
-            config('meedu.upload.video.aliyun.region', ''),
-            config('meedu.upload.video.aliyun.access_key_id', ''),
-            config('meedu.upload.video.aliyun.access_key_secret', '')
-        );
-        return new \DefaultAcsClient($profile);
+        /**
+         * @var \App\Services\Base\Services\ConfigService $configService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $aliyunVodConfig = $configService->getAliyunVodConfig();
+        \AlibabaCloud\Client\AlibabaCloud::accessKeyClient($aliyunVodConfig['access_key_id'], $aliyunVodConfig['access_key_secret'])
+            ->regionId($aliyunVodConfig['region'])
+            ->connectTimeout(1)
+            ->timeout(15)
+            ->asDefaultClient();
     }
 }
 
@@ -431,21 +441,22 @@ if (!function_exists('get_play_url')) {
     /**
      * 获取播放地址
      * @param array $video
+     * @param bool $isTry
      * @return \Illuminate\Support\Collection
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    function get_play_url(array $video)
+    function get_play_url(array $video, $isTry = false)
     {
         $playUrl = [];
         if ($video['aliyun_video_id']) {
-            $playUrl = aliyun_play_url($video['aliyun_video_id']);
+            $playUrl = aliyun_play_url($video, $isTry);
         } elseif ($video['tencent_video_id']) {
             $playUrl = get_tencent_play_url($video['tencent_video_id']);
             // 是否开启了播放key
             if ($key = config('meedu.system.player.tencent_play_key')) {
                 $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
-                $playUrl = array_map(function ($item) use ($tencentKey) {
-                    $item['url'] = $tencentKey->url($item['url']);
+                $playUrl = array_map(function ($item) use ($tencentKey, $isTry, $video) {
+                    $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
                     return $item;
                 }, $playUrl);
             }

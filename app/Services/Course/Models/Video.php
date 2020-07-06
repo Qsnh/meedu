@@ -19,6 +19,10 @@ class Video extends Base
     public const IS_BAN_SELL_YES = 1;
     public const IS_BAN_SELL_NO = 0;
 
+    public const COMMENT_STATUS_CLOSE = 0;
+    public const COMMENT_STATUS_ALL = 1;
+    public const COMMENT_STATUS_ONLY_PAID = 2;
+
     protected $table = 'videos';
 
     protected $fillable = [
@@ -27,7 +31,8 @@ class Video extends Base
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
         'chapter_id', 'duration', 'tencent_video_id',
-        'is_ban_sell',
+        'is_ban_sell', 'player_pc', 'player_h5', 'comment_status',
+        'free_seconds', 'ban_drag',
     ];
 
     /**

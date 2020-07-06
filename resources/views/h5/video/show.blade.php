@@ -10,7 +10,13 @@
                 @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
                     @include('h5.components.player.aliyun', ['video' => $video])
                 @else
-                    @include('h5.components.player.xg', ['video' => $video])
+                    @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                        @include('h5.components.player.aliyun', ['video' => $video])
+                    @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                        @include('h5.components.player.tencent', ['video' => $video])
+                    @else
+                        @include('h5.components.player.xg', ['video' => $video])
+                    @endif
                 @endif
                 @if($nextVideo)
                     <div style="margin-top: 60px;display: none" class="text-center watched-over">
@@ -23,9 +29,27 @@
                     </div>
                 @endif
             @else
-                <div style="padding-top: 60px;" class="text-center">
-                    <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
-                </div>
+                @if($trySee)
+                    @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
+                        @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                    @else
+                        @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
+                            @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
+                        @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
+                            @include('h5.components.player.tencent', ['video' => $video, 'isTry' => true])
+                        @else
+                            @include('h5.components.player.xg', ['video' => $video, 'isTry' => true])
+                        @endif
+                    @endif
+                    <div style="margin-top: 60px;display: none;" class="text-center watched-over show-buy-course-model">
+                        <span style="color: white">您当前观看的是试看内容，如需观看完整内容请订阅课程！</span>
+                    </div>
+                @else
+                    <div style="padding-top: 60px;" class="text-center">
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm show-buy-course-model">请先购买</a>
+                    </div>
+                @endif
+
             @endif
         @else
             <div style="margin-top: 60px;" class="text-center">
@@ -47,27 +71,43 @@
     <div class="course-chapter course-content-tab-item" style="display: block">
         @if($chapters)
             @foreach($chapters as $chapter)
-                <div class="chapter-title">{{$chapter['title']}}</div>
-                <div class="chapter-videos">
-                    @foreach($videos[$chapter['id']] ?? [] as $videoItem)
+                @if($videosBox = $videos[$chapter['id']] ?? [])@endif
+                @if($videosBoxIds = array_column($videosBox, 'id'))@endif
+                <div class="chapter-title">
+                    {{$chapter['title']}}
+                    <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
+                        {{count($videosBox)}}节
+                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                    </span>
+                </div>
+                <div class="chapter-videos {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} chapter-videos-{{$chapter['id']}}">
+                    @foreach($videosBox as $videoItem)
                         <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                            class="chapter-video-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}}">
                             <span class="video-title">{{$videoItem['title']}}</span>
                             @if($videoItem['charge'] === 0)
                                 <span class="video-label">免费</span>
+                            @else
+                                @if($videoItem['free_seconds'] > 0)
+                                    <span class="video-label">试看</span>
+                                @endif
                             @endif
                         </a>
                     @endforeach
                 </div>
             @endforeach
         @else
-            <div class="chapter-videos">
+            <div class="chapter-videos" style="display: block">
                 @foreach($videos[0] ?? [] as $videoItem)
                     <a href="{{route('video.show', [$videoItem['course_id'], $videoItem['id'], $videoItem['slug']])}}"
                        class="chapter-video-item {{$videoItem['id'] === $video['id'] ? 'active' : ''}}">
                         <span class="video-title">{{$videoItem['title']}}</span>
                         @if($videoItem['charge'] === 0)
                             <span class="video-label">免费</span>
+                        @else
+                            @if($videoItem['free_seconds'] > 0)
+                                <span class="video-label">试看</span>
+                            @endif
                         @endif
                     </a>
                 @endforeach
@@ -76,23 +116,25 @@
     </div>
 
     <div class="course-comment course-content-tab-item">
-        <div class="comment-input-box">
-            <form action="">
-                <div class="form-group">
+        @if($canComment)
+            <div class="comment-input-box">
+                <form action="">
+                    <div class="form-group">
                     <textarea name="comment-content" class="form-control" placeholder="{{$user ? '请输入评论的内容' : '请先登录'}}"
                               rows="1" {{$user ? '' : 'disabled'}}></textarea>
-                </div>
-                @if($user)
-                    <div class="form-group text-right">
-                        <button type="button" class="btn btn-primary btn-sm comment-button"
-                                data-login-url="{{route('login')}}"
-                                data-url="{{route('ajax.video.comment', [$video['id']])}}"
-                                data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
-                        </button>
                     </div>
-                @endif
-            </form>
-        </div>
+                    @if($user)
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-primary btn-sm comment-button"
+                                    data-login-url="{{route('login')}}"
+                                    data-url="{{route('ajax.video.comment', [$video['id']])}}"
+                                    data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
+                            </button>
+                        </div>
+                    @endif
+                </form>
+            </div>
+        @endif
         <div class="comment-list-box">
             @forelse($comments as $commentItem)
                 <div class="comment-list-item">
@@ -116,7 +158,7 @@
         </div>
     </div>
 
-    @if(!$canSeeVideo && $video['charge'] > 0)
+    @if($user && !$canSeeVideo && $video['charge'] > 0)
         <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
     @endif
 

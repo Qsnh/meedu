@@ -8,16 +8,21 @@
         playsinline: true,
         playbackRate: [0.5, 0.75, 1, 1.5, 2],
         defaultPlaybackRate: 1,
-        pip: true,
-        cssFullscreen: true,
+        pip: false,
+        cssFullscreen: false,
         url: "{!! $playUrls->first()['url'] !!}",
         keyShortcut: 'on',
-        definitionActive: 'click',
+        ignores: [
+            @if($video['ban_drag'] === 1)
+                'progress',
+            @endif
+        ],
         @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
         marquee: {
             value: '{{$user['mobile']}}'
         },
         @endif
+        definitionActive: 'click',
     };
             @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsJsPlayer(XGPlayerConfig);
@@ -30,20 +35,20 @@
             @endif
 
     var PREV_SECONDS = 0;
-    var recordHandle = function () {
+    var recordHandle = function (isEnd = false) {
         var s = parseInt(XGPlayer.currentTime);
         if (s > PREV_SECONDS) {
             PREV_SECONDS = s;
             $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
                 _token: '{{csrf_token()}}',
-                duration: s
+                duration: (isEnd ? s + 1 : s)
             }, function (res) {
             }, 'json');
         }
     };
     setInterval('recordHandle()', 10000);
     XGPlayer.on('ended', function () {
-        recordHandle();
+        recordHandle(true);
         $('#meedu-player').hide();
         $('.need-login').show();
     });

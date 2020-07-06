@@ -12,6 +12,7 @@
 namespace App\Http\Requests\Backend;
 
 use Overtrue\Pinyin\Pinyin;
+use App\Services\Course\Models\Video;
 
 class CourseVideoRequest extends BaseRequest
 {
@@ -72,17 +73,22 @@ class CourseVideoRequest extends BaseRequest
             'aliyun_video_id' => $this->input('aliyun_video_id', '') ?? '',
             'tencent_video_id' => $this->input('tencent_video_id', '') ?? '',
             'view_num' => $this->input('view_num', 0),
-            'short_description' => $this->input('short_description'),
-            'original_desc' => $this->input('original_desc'),
-            'render_desc' => $this->input('render_desc'),
-            'seo_keywords' => $this->input('seo_keywords', ''),
-            'seo_description' => $this->input('seo_description', ''),
+            'short_description' => $this->input('short_description', ''),
+            'original_desc' => $this->input('original_desc', ''),
+            'render_desc' => $this->input('render_desc', ''),
+            'seo_keywords' => (string)$this->input('seo_keywords', ''),
+            'seo_description' => (string)$this->input('seo_description', ''),
             'published_at' => $this->input('published_at'),
             'is_show' => $this->input('is_show'),
             'charge' => $this->input('charge', 0),
             'chapter_id' => $this->input('chapter_id', 0),
             'duration' => $this->input('duration'),
             'is_ban_sell' => $this->input('is_ban_sell', 0),
+            'comment_status' => (int)$this->input('comment_status', Video::COMMENT_STATUS_CLOSE),
+            'player_pc' => $this->input('player_pc', ''),
+            'player_h5' => $this->input('player_h5', ''),
+            'free_seconds' => (int)$this->input('free_seconds'),
+            'ban_drag' => (int)$this->input('ban_drag', 0),
         ];
 
         if ($this->isMethod('post')) {

@@ -39,7 +39,7 @@
                                 {{$course['title']}}
                             </div>
                             <div class="course-category">
-                                <span class="video-count-label">{{$course['user_count']}}订阅</span>
+                                <span class="video-count-label"><i class="fa fa-user-o" aria-hidden="true"></i> {{$course['user_count']}}</span>
                                 <span class="category-label">{{$course['category']['name']}}</span>
                             </div>
                         </a>

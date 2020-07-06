@@ -12,6 +12,7 @@
 namespace Tests\Feature\Api\V2;
 
 use Carbon\Carbon;
+use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserCourse;
@@ -92,7 +93,7 @@ class CourseTest extends Base
         ]);
 
         UserCourse::create(['course_id' => $course->id, 'user_id' => $user->id, 'charge' => 1]);
-        
+
         $response = $this->user($user)->getJson('/api/v2/course/' . $course->id);
         $response = $this->assertResponseSuccess($response);
         $this->assertTrue($response['data']['isBuy']);
@@ -124,12 +125,81 @@ class CourseTest extends Base
         $this->assertResponseError($response, __('error'));
     }
 
+    public function test_course_comment_ban()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_CLOSE,
+        ]);
+        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseError($response, __('course cant comment'));
+    }
+
+    public function test_course_comment_un_vip()
+    {
+        $user = factory(User::class)->create();
+
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
+        ]);
+        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseError($response, __('course cant comment'));
+    }
+
+    public function test_course_comment_vip()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $user->role_id = $role->id;
+        $user->role_expired_at = Carbon::now()->addDays(1);
+        $user->save();
+
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
+        ]);
+        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($response);
+    }
+
+    public function test_course_comment_paid()
+    {
+        $user = factory(User::class)->create();
+        $course = factory(Course::class)->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
+        ]);
+
+        UserCourse::create([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+        ]);
+
+        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
+            'content' => 'hello meedu',
+        ]);
+        $this->assertResponseSuccess($response);
+    }
+
     public function test_course_comment()
     {
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'comment_status' => Course::COMMENT_STATUS_ALL,
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',

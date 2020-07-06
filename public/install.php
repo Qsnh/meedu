@@ -248,6 +248,9 @@ if ($step === 0) {
             // install administrator
             $artisan->call('install', ['action' => 'administrator', '-q' => true], $output);
 
+            // config
+            $artisan->call('install', ['action' => 'config'], $output);
+
             exit(redirect($_SERVER['PHP_SELF'] . '?step=2')->getContent());
         }
     }

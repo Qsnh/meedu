@@ -121,5 +121,7 @@
   "credit1_remark_order": "已支付订单",
   "credit1_remark_invite": "邀请",
   "credit1_remark_other": "其它",
-  "please buy course": "请购买课程"
+  "please buy course": "请购买课程",
+  "course cant comment": "当前课程无法评论",
+  "video cant comment": "当前视频无法评论"
 }

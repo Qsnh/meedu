@@ -66,11 +66,12 @@ class CourseRequest extends BaseRequest
             'short_description' => $this->input('short_description'),
             'original_desc' => $this->input('original_desc'),
             'render_desc' => $this->input('render_desc'),
-            'seo_keywords' => $this->input('seo_keywords', ''),
-            'seo_description' => $this->input('seo_description', ''),
+            'seo_keywords' => (string)$this->input('seo_keywords', ''),
+            'seo_description' => (string)$this->input('seo_description', ''),
             'published_at' => $this->input('published_at'),
-            'is_show' => $this->input('is_show', Course::SHOW_NO),
-            'is_rec' => $this->input('is_rec', Course::REC_NO),
+            'is_show' => (int)$this->input('is_show', Course::SHOW_NO),
+            'is_rec' => (int)$this->input('is_rec', Course::REC_NO),
+            'comment_status' => (int)$this->input('comment_status', Course::COMMENT_STATUS_CLOSE),
         ];
 
         if ($this->isMethod('post')) {
