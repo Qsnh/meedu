@@ -17,7 +17,7 @@
                         {{$courseItem['title']}}
                     </div>
                     <div class="course-category">
-                        <span class="video-count-label"><i class="fa fa-user-o" aria-hidden="true"></i> {{$course['user_count']}}</span>
+                        <span class="video-count-label"><i class="fa fa-user-o" aria-hidden="true"></i> {{$courseItem['user_count']}}</span>
                         <span class="category-label">{{$courseItem['category']['name']}}</span>
                     </div>
                 </a>
