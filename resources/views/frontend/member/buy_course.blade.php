@@ -28,19 +28,7 @@
                             @if(!($course = $courses[$record['course_id']] ?? []))
                                 @continue
                             @endif
-                            <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-                               class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
-                                <div class="course-thumb">
-                                    <img src="{{$course['thumb']}}" width="280" height="210" alt="{{$course['title']}}">
-                                </div>
-                                <div class="course-title">
-                                    {{$course['title']}}
-                                </div>
-                                <div class="course-category">
-                                    <span class="video-count-label">课时：{{$course['videos_count']}}节</span>
-                                    <span class="category-label">{{$course['category']['name']}}</span>
-                                </div>
-                            </a>
+                            @include('frontend.components.course-item', ['course' => $course, 'class' => (($index + 1) % 4 == 0) ? 'last' : ''])
                         @empty
                             @include('frontend.components.none')
                         @endforelse

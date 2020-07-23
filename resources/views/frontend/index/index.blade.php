@@ -7,6 +7,7 @@
         body {
             padding-top: 71px;
         }
+
         .nav-box {
             position: fixed;
             top: 0;
@@ -56,20 +57,7 @@
                     <div class="col-12">
                         <div class="course-list-box">
                             @foreach($banner['courses'] as $index => $course)
-                                <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-                                   class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
-                                    <div class="course-thumb">
-                                        <img src="{{$course['thumb']}}" width="280" height="210"
-                                             alt="{{$course['title']}}">
-                                    </div>
-                                    <div class="course-title">
-                                        {{$course['title']}}
-                                    </div>
-                                    <div class="course-category">
-                                        <span class="video-count-label"><i class="fa fa-user-o" aria-hidden="true"></i> {{$course['user_count']}}</span>
-                                        <span class="category-label">{{$course['category']['name']}}</span>
-                                    </div>
-                                </a>
+                                @include('frontend.components.course-item', ['course' => $course, 'class' => (($index + 1) % 4 == 0) ? 'last' : ''])
                             @endforeach
                         </div>
                     </div>
