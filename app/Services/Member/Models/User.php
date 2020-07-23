@@ -43,6 +43,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
+    /**
+     * 写入到jwt中的数据
+     * @return array
+     */
     public function getJWTCustomClaims()
     {
         return [];

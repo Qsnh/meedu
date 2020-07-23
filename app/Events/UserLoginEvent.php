@@ -24,15 +24,19 @@ class UserLoginEvent
 
     public $platform;
 
+    public $at;
+
     /**
      * UserLoginEvent constructor.
      * @param int $userId
      * @param string $platform
+     * @param string $at
      */
-    public function __construct(int $userId, string $platform = '')
+    public function __construct(int $userId, string $platform = '', $at = '')
     {
         $this->userId = $userId;
         $this->platform = $platform;
+        $this->at = $at;
     }
 
     /**

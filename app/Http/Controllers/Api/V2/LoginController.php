@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
@@ -48,22 +49,34 @@ class LoginController extends BaseController
      */
     protected $userService;
 
+    /**
+     * @var ConfigService
+     */
     protected $configService;
+
+    /**
+     * @var CacheService
+     */
     protected $cacheService;
+
+    /**
+     * @var SocialiteService
+     */
     protected $socialiteService;
 
     /**
+     * LoginController constructor.
      * @param UserServiceInterface $userService
-     * @param ConfigService $configService
-     * @param CacheService $cacheService
-     * @param SocialiteService $socialiteService
+     * @param ConfigServiceInterface $configService
+     * @param CacheServiceInterface $cacheService
+     * @param SocialiteServiceInterface $socialiteService
      */
     public function __construct(
         UserServiceInterface $userService,
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService,
         SocialiteServiceInterface $socialiteService
-        ) {
+    ) {
         $this->userService = $userService;
         $this->configService = $configService;
         $this->cacheService = $cacheService;
@@ -108,10 +121,11 @@ class LoginController extends BaseController
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
-        
-        $token = Auth::guard($this->guard)->tokenById($user['id']);
 
-        event(new UserLoginEvent($user['id']));
+        $loginAt = Carbon::now();
+        $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
+
+        event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
 
         return $this->data(compact('token'));
     }
@@ -153,28 +167,29 @@ class LoginController extends BaseController
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
-        $token = Auth::guard($this->guard)->tokenById($user['id']);
 
-        event(new UserLoginEvent($user['id']));
+        $loginAt = Carbon::now();
+        $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
+        event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
 
         return $this->data(compact('token'));
     }
 
     /**
-    * @OA\Get(
-    *     path="/login/socialites",
-    *     summary="社交登录app",
-    *     tags={"Auth"},
-    *     @OA\Response(
-    *         description="",response=200,
-    *         @OA\JsonContent(
-    *             @OA\Property(property="code",type="integer",description="状态码"),
-    *             @OA\Property(property="message",type="string",description="消息"),
-    *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
-    *         )
-    *     )
-    * )
-    */
+     * @OA\Get(
+     *     path="/login/socialites",
+     *     summary="社交登录app列表",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
+     *         )
+     *     )
+     * )
+     */
     public function socialiteApps()
     {
         $apps = $this->configService->getEnabledSocialiteApps();
@@ -185,7 +200,7 @@ class LoginController extends BaseController
             if (!($app['url'] ?? '')) {
                 $app['url'] = route('socialite', $app['app']);
             }
-            
+
             return $app;
         }, $apps);
 

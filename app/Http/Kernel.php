@@ -97,5 +97,7 @@ class Kernel extends HttpKernel
         'backend.permission' => BackendPermissionCheckMiddleware::class,
         // 登录状态检测
         'login.status.check' => LoginStatusCheckMiddleware::class,
+        // api接口的状态登录检测
+        'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,
     ];
 }

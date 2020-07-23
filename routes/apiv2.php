@@ -15,10 +15,9 @@ Route::post('/captcha/sms', 'CaptchaController@sentSms');
 
 // 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');
+// 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
-// 手机号注册
-Route::post('/register/mobile', 'RegisterController@mobileRegister');
-// 无状态的社交登录
+// 无状态的社交登录app列表
 Route::get('/login/socialites', 'LoginController@socialiteApps');
 
 // 课程
@@ -61,32 +60,7 @@ Route::group(['prefix' => 'other'], function () {
     Route::get('/config', 'OtherController@config');
 });
 
-Route::group(['middleware' => ['auth:apiv2'], 'prefix' => 'member'], function () {
-    Route::get('detail', 'MemberController@detail');
-    Route::post('detail/password', 'MemberController@passwordChange');
-    Route::post('detail/avatar', 'MemberController@avatarChange');
-    Route::post('detail/nickname', 'MemberController@nicknameChange');
-    Route::post('detail/mobile', 'MemberController@mobileChange');
-    Route::get('courses', 'MemberController@courses');
-    Route::get('courses/like', 'MemberController@likeCourses');
-    Route::get('courses/history', 'MemberController@learnHistory');
-    Route::get('videos', 'MemberController@videos');
-    Route::get('orders', 'MemberController@orders');
-    Route::get('roles', 'MemberController@roles');
-    Route::get('messages', 'MemberController@messages');
-    Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
-    Route::get('inviteUsers', 'MemberController@inviteUsers');
-    Route::get('withdrawRecords', 'MemberController@withdrawRecords');
-    Route::post('withdraw', 'MemberController@createWithdraw');
-    Route::get('promoCode', 'MemberController@promoCode');
-    Route::post('promoCode', 'MemberController@generatePromoCode');
-    Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
-    Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
-    Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
-    Route::get('credit1Records', 'MemberController@credit1Records');
-});
-
-Route::group(['middleware' => ['auth:apiv2']], function () {
+Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
     Route::post('/order/course', 'OrderController@createCourseOrder');
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
@@ -96,4 +70,29 @@ Route::group(['middleware' => ['auth:apiv2']], function () {
     Route::get('/order/payments', 'PaymentController@payments');
 
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
+
+    Route::group(['prefix' => 'member'], function () {
+        Route::get('detail', 'MemberController@detail');
+        Route::post('detail/password', 'MemberController@passwordChange');
+        Route::post('detail/avatar', 'MemberController@avatarChange');
+        Route::post('detail/nickname', 'MemberController@nicknameChange');
+        Route::post('detail/mobile', 'MemberController@mobileChange');
+        Route::get('courses', 'MemberController@courses');
+        Route::get('courses/like', 'MemberController@likeCourses');
+        Route::get('courses/history', 'MemberController@learnHistory');
+        Route::get('videos', 'MemberController@videos');
+        Route::get('orders', 'MemberController@orders');
+        Route::get('roles', 'MemberController@roles');
+        Route::get('messages', 'MemberController@messages');
+        Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
+        Route::get('inviteUsers', 'MemberController@inviteUsers');
+        Route::get('withdrawRecords', 'MemberController@withdrawRecords');
+        Route::post('withdraw', 'MemberController@createWithdraw');
+        Route::get('promoCode', 'MemberController@promoCode');
+        Route::post('promoCode', 'MemberController@generatePromoCode');
+        Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
+        Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
+        Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
+        Route::get('credit1Records', 'MemberController@credit1Records');
+    });
 });

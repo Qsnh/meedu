@@ -44,7 +44,7 @@ class LoginRecordListener
     public function handle(UserLoginEvent $event)
     {
         $ip = request()->getClientIp();
-        $at = Carbon::now();
+        $at = $event->at ? Carbon::parse($event->at) : Carbon::now();
 
         $this->userService->createLoginRecord($event->userId, $event->platform, $ip, $at);
 
