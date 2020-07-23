@@ -198,7 +198,7 @@ class AjaxController extends BaseController
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id']));
+        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         return $this->data(['redirect_url' => $this->redirectTo()]);
     }
@@ -220,7 +220,7 @@ class AjaxController extends BaseController
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id']));
+        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         return $this->data(['redirect_url' => $this->redirectTo()]);
     }

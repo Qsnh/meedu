@@ -14,6 +14,7 @@ namespace App\Http;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
+use App\Http\Middleware\LoginStatusCheckMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\BackendPermissionCheckMiddleware;
 
@@ -94,5 +95,7 @@ class Kernel extends HttpKernel
         'sms.check' => CheckSmsCodeMiddleware::class,
         // 后台权限
         'backend.permission' => BackendPermissionCheckMiddleware::class,
+        // 登录状态检测
+        'login.status.check' => LoginStatusCheckMiddleware::class,
     ];
 }

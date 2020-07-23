@@ -63,7 +63,7 @@ Route::get('/announcement/{id}', 'Frontend\AnnouncementController@show')->name('
 
 Route::group([
     'prefix' => '/member',
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'login.status.check'],
     'namespace' => 'Frontend'
 ], function () {
     Route::get('/', 'MemberController@index')->name('member');

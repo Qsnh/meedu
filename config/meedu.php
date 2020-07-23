@@ -206,6 +206,12 @@ return [
         'sms' => 'aliyun',
         // editor
         'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
+        // 登录
+        'login' => [
+            'limit' => [
+                'rule' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
+            ]
+        ],
     ],
 
     // 其它配置

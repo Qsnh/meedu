@@ -113,6 +113,29 @@ class AppConfigSeeder extends Seeder
             // 登录
             [
                 'group' => '登录',
+                'name' => '登录限制',
+                'field_type' => 'select',
+                'sort' => -1,
+                'key' => 'meedu.system.login.limit.rule',
+                'option_value' => json_encode([
+                    [
+                        'title' => '不限制',
+                        'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
+                    ],
+                    [
+                        'title' => '单平台限制',
+                        'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM,
+                    ],
+                    [
+                        'title' => '全平台限制',
+                        'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_ALL,
+                    ],
+                ]),
+                'value' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
+                'help' => '单平台限制=每一个平台仅允许一台设备登录.全平台限制=所有平台仅允许一台设备登录',
+            ],
+            [
+                'group' => '登录',
                 'name' => 'Github登录',
                 'field_type' => 'switch',
                 'sort' => 0,

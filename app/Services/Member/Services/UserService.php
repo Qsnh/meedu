@@ -25,6 +25,7 @@ use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Member\Models\UserLoginRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -603,5 +604,43 @@ class UserService implements UserServiceInterface
         return User::query()
             ->where('role_expired_at', '<=', Carbon::now())
             ->update(['role_id' => 0, 'role_expired_at' => null]);
+    }
+
+    /**
+     * 用户登录记录
+     *
+     * @param int $userId
+     * @param string $platform
+     * @param string $ip
+     * @param string $at
+     */
+    public function createLoginRecord(int $userId, string $platform, string $ip, string $at): void
+    {
+        $record = UserLoginRecord::create([
+            'user_id' => $userId,
+            'ip' => $ip,
+            'area' => '',
+            'platform' => $platform,
+            'at' => $at,
+        ]);
+
+        User::query()->where('id', $userId)->update(['last_login_id' => $record->id]);
+    }
+
+    /**
+     * @param int $userId
+     * @param string $platform
+     * @return array
+     */
+    public function findUserLastLoginRecord(int $userId, string $platform): array
+    {
+        $record = UserLoginRecord::query()
+            ->where('user_id', $userId)
+            ->when($platform, function ($query) use ($platform) {
+                $query->where('platform', $platform);
+            })
+            ->orderByDesc('id')
+            ->first();
+        return $record ? $record->toArray() : [];
     }
 }

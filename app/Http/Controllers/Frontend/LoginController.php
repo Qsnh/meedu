@@ -84,7 +84,7 @@ class LoginController extends BaseController
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id']));
+        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         return redirect($this->redirectTo());
     }
@@ -129,7 +129,7 @@ class LoginController extends BaseController
         Auth::loginUsingId($userId, true);
 
         // 登录事件
-        event(new UserLoginEvent($userId));
+        event(new UserLoginEvent($userId, is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         if ($redirect = session('socialite_login_redirect')) {
             $token = Auth::guard(FrontendConstant::API_GUARD)->tokenById($userId);
