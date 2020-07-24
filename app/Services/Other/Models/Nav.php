@@ -18,6 +18,6 @@ class Nav extends Model
     protected $table = 'navs';
 
     protected $fillable = [
-        'sort', 'name', 'url',
+        'sort', 'name', 'url', 'active_routes',
     ];
 }

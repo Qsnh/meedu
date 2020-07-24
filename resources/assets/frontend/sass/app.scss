@@ -473,13 +473,11 @@ footer.footer-box {
   nav {
     .nav-item {
       a {
-        color: #ffffff;
-        opacity: .4;
+        color: rgba(255, 255, 255, .4);
       }
 
-      a:hover {
-        color: #ffffff;
-        opacity: 1;
+      a:hover, a.active {
+        color: rgba(255, 255, 255, 1);
       }
     }
 

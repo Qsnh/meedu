@@ -52,6 +52,7 @@ class NavRequest extends BaseRequest
             'sort' => $this->input('sort'),
             'name' => $this->input('name'),
             'url' => $this->input('url'),
+            'active_routes' => $this->input('active_routes', '') ?: '',
         ];
     }
 }
