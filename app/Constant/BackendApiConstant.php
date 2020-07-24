@@ -46,5 +46,6 @@ class BackendApiConstant
         'administrator_permission' => true,
         'course/all' => true,
         'upload/image/tinymce' => true,
+        'upload/image/download' => true,
     ];
 }

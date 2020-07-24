@@ -197,6 +197,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
     // 图片上传
     Route::post('/upload/image/tinymce', 'UploadController@tinymceImageUpload');
+    // 远程图片下载
+    Route::post('/upload/image/download', 'UploadController@imageUpload');
 
     // 优惠码
     Route::group(['prefix' => 'promoCode'], function () {
