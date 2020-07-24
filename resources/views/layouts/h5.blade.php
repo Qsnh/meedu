@@ -17,6 +17,11 @@
     <script src="{{asset('/h5/js/zepto-touch.js')}}"></script>
     <script src="{{mix('/h5/js/app.js')}}"></script>
     @yield('css')
+    @if($css = $gConfig['system']['css']['h5'] ?? '')
+        <style>
+            {{$css}}
+        </style>
+    @endif
 </head>
 <body style="padding-top: 52px;">
 
@@ -39,9 +44,9 @@
 </div>
 <div class="top-menu">
     <a href="{{route('index')}}" class="{{menu_active(['index'])}} first">首页</a>
-    <a href="{{route('courses')}}" class="{{menu_active(['courses'])}}">所有课程</a>
+    <a href="{{route('courses')}}" class="{{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}">所有课程</a>
     @foreach($gNavs as $item)
-        <a class="{{request()->url() === $item['url'] ? 'active' : ''}}"
+        <a class="{{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
            href="{{$item['url']}}">{{$item['name']}}</a>
     @endforeach
 </div>

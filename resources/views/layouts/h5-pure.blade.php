@@ -17,6 +17,11 @@
     <script src="{{asset('/h5/js/zepto-touch.js')}}"></script>
     <script src="{{mix('/h5/js/app.js')}}"></script>
     @yield('css')
+    @if($css = $gConfig['system']['css']['h5'] ?? '')
+        <style>
+            {{$css}}
+        </style>
+    @endif
 </head>
 <body>
 

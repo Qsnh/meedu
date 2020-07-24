@@ -24,7 +24,7 @@
                 </li>
                 @foreach($gNavs as $item)
                     <li class="nav-item">
-                        <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?: ''))}}"
+                        <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
                            href="{{$item['url']}}">{{$item['name']}}</a>
                     </li>
                 @endforeach

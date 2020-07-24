@@ -212,6 +212,11 @@ return [
                 'rule' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
             ]
         ],
+        // 全局css
+        'css' => [
+            'pc' => '',
+            'h5' => '',
+        ],
     ],
 
     // 其它配置

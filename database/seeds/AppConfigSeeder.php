@@ -89,6 +89,22 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.aboutus',
                 'value' => '',
             ],
+            [
+                'group' => '系统',
+                'name' => 'PC自定义css',
+                'field_type' => 'textarea',
+                'sort' => 9,
+                'key' => 'meedu.system.css.pc',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => 'H5自定义css',
+                'field_type' => 'textarea',
+                'sort' => 10,
+                'key' => 'meedu.system.css.h5',
+                'value' => '',
+            ],
 
             // 缓存
             [

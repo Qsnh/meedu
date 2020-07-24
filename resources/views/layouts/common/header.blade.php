@@ -14,4 +14,9 @@
     <link rel="stylesheet" href="{{mix('/frontend/css/frontend.css')}}">
     <script src="{{mix('frontend/js/frontend.js')}}"></script>
     @yield('css')
+    @if($css = $gConfig['system']['css']['pc'] ?? '')
+    <style>
+        {{$css}}
+    </style>
+    @endif
 </head>
