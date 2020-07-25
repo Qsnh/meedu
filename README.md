@@ -79,5 +79,5 @@
 | 昵称 | |
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
-| `Ron.wiki` | [http://ron.wiki](http://ron.wiki) |
+| `逸企邦` | [https://easeco.cn/](https://easeco.cn/) |
 | `Aunger` | [https://www.aunwen.com](https://www.aunwen.com) |
