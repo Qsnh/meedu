@@ -269,7 +269,7 @@ class ApiV2Constant
      * )
      */
     public const MODEL_SLIDER_FIELD = [
-        'thumb', 'url', 'sort',
+        'thumb', 'url', 'sort', 'platform',
     ];
 
     /**

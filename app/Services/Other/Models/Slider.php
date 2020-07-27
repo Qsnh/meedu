@@ -21,6 +21,6 @@ class Slider extends Model
     protected $table = 'sliders';
 
     protected $fillable = [
-        'thumb', 'sort', 'url',
+        'thumb', 'sort', 'url', 'platform',
     ];
 }

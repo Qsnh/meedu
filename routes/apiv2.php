@@ -20,6 +20,9 @@ Route::post('/login/mobile', 'LoginController@mobileLogin');
 // 无状态的社交登录app列表
 Route::get('/login/socialites', 'LoginController@socialiteApps');
 
+// 课程搜索
+Route::get('/search', 'SearchController@index');
+
 // 课程
 Route::get('/courses', 'CourseController@paginate');
 Route::get('/course/{id}', 'CourseController@detail');

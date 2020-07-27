@@ -16,8 +16,16 @@ use App\Services\Other\Interfaces\SliderServiceInterface;
 
 class SliderService implements SliderServiceInterface
 {
-    public function all(): array
+    /**
+     * @param string $platform
+     * @return array
+     */
+    public function all($platform = ''): array
     {
-        return Slider::orderBy('sort')->get()->toArray();
+        return Slider::query()
+            ->when($platform, function ($query) use ($platform) {
+                $query->where('platform', $platform);
+            })
+            ->orderBy('sort')->get()->toArray();
     }
 }

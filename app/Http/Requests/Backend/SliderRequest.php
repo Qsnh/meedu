@@ -34,6 +34,7 @@ class SliderRequest extends BaseRequest
             'sort' => 'required',
             'thumb' => 'required',
             'url' => 'required',
+            'platform' => 'required',
         ];
     }
 
@@ -43,6 +44,7 @@ class SliderRequest extends BaseRequest
             'sort.required' => '请输入排序数值',
             'thumb.required' => '请上传图片',
             'url.required' => '请输入链接地址',
+            'platform.required' => '请选择平台',
         ];
     }
 
@@ -52,6 +54,7 @@ class SliderRequest extends BaseRequest
             'sort' => $this->input('sort'),
             'thumb' => $this->input('thumb'),
             'url' => $this->input('url'),
+            'platform' => $this->input('platform'),
         ];
     }
 }

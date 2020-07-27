@@ -77,4 +77,9 @@ class FrontendConstant
     public const LOGIN_LIMIT_RULE_PLATFORM = 2;
     // 所有平台只允许一台设备已登录
     public const LOGIN_LIMIT_RULE_ALL = 3;
+
+    public const SLIDER_PLATFORM_PC = 'PC';
+    public const SLIDER_PLATFORM_H5 = 'H5';
+    public const SLIDER_PLATFORM_MINI = 'MINI';
+    public const SLIDER_PLATFORM_APP = 'APP';
 }
