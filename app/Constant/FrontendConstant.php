@@ -78,8 +78,12 @@ class FrontendConstant
     // 所有平台只允许一台设备已登录
     public const LOGIN_LIMIT_RULE_ALL = 3;
 
+    // 幻灯片设备
     public const SLIDER_PLATFORM_PC = 'PC';
     public const SLIDER_PLATFORM_H5 = 'H5';
     public const SLIDER_PLATFORM_MINI = 'MINI';
     public const SLIDER_PLATFORM_APP = 'APP';
+
+    // 微信小程序登录socialite sign
+    public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
 }

@@ -12,11 +12,13 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Carbon\Carbon;
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
@@ -118,16 +120,14 @@ class LoginController extends BaseController
         if (!$user) {
             return $this->error(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
         }
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
         }
-
-        $loginAt = Carbon::now();
-        $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
-
-        event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
-
-        return $this->data(compact('token'));
     }
 
     /**
@@ -164,15 +164,132 @@ class LoginController extends BaseController
             // 直接注册
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/login/wechatMini",
+     *     summary="微信小程序登录",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="openid",description="openid",type="string"),
+     *         @OA\Property(property="iv",description="iv",type="string"),
+     *         @OA\Property(property="rawData",description="rawData",type="string"),
+     *         @OA\Property(property="signature",description="signature",type="string"),
+     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="token",type="string",description="token"),
+     *             ),
+     *         )
+     *     )
+     * )
+     */
+    public function wechatMini(
+        Request $request,
+        CacheServiceInterface $cacheService,
+        SocialiteServiceInterface $socialiteService,
+        UserServiceInterface $userService,
+        ConfigServiceInterface $configService
+    ) {
+        /**
+         * @var CacheService $cacheService
+         */
+        /**
+         * @var SocialiteService $socialiteService
+         */
+        /**
+         * @var UserService $userService
+         */
+        /**
+         * @var ConfigService $configService
+         */
+
+        $openid = $request->input('openid');
+        $raw = $request->input('rawData');
+        $signature = $request->input('signature');
+        $encryptedData = $request->input('encryptedData');
+        $iv = $request->input('iv');
+        if (
+            !$openid ||
+            !$raw ||
+            !$signature ||
+            !$encryptedData ||
+            !$iv
+        ) {
+            return $this->error(__('error'));
+        }
+
+        $sessionKey = $cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        if (!$sessionKey) {
+            return $this->error(__('error'));
+        }
+
+        // 验签
+        if (sha1($raw . $sessionKey) !== $signature) {
+            return $this->error(__('error'));
+        }
+
+        // 解密
+        $data = Factory::miniProgram($configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+        $nickname = $data['nickName'];
+        $avatar = str_replace('http://', 'https://', $data['avatarUrl']);
+
+        $userId = $socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
+        if (!$userId) {
+            $userId = $socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, [
+                'nickname' => $nickname,
+                'avatar' => $avatar,
+                'gender' => $data['gender'],
+                'city' => $data['city'],
+                'province' => $data['province'],
+                'country' => $data['country'],
+                'unionId' => $data['unionId'] ?? '',
+            ]);
+        }
+
+        $user = $userService->find($userId);
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     * @throws ServiceException
+     */
+    protected function token($user)
+    {
         if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+            throw new ServiceException(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
 
         $loginAt = Carbon::now();
         $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
+
+        // 登录事件
         event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
 
-        return $this->data(compact('token'));
+        return $token;
     }
 
     /**
