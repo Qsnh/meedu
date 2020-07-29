@@ -176,6 +176,61 @@ class LoginController extends BaseController
 
     /**
      * @OA\Post(
+     *     path="/login/wechatMiniMobile",
+     *     summary="微信小程序手机号登录",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="openid",description="openid",type="string"),
+     *         @OA\Property(property="iv",description="iv",type="string"),
+     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="token",type="string",description="token"),
+     *             ),
+     *         )
+     *     )
+     * )
+     */
+    public function wechatMiniMobile(Request $request)
+    {
+        $openid = $request->input('openid');
+        $encryptedData = $request->input('encryptedData');
+        $iv = $request->input('iv');
+        if (!$openid || !$encryptedData || !$iv) {
+            return $this->error(__('error'));
+        }
+
+        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        if (!$sessionKey) {
+            return $this->error(__('error'));
+        }
+
+        // 解密
+        $data = Factory::miniProgram($this->configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+        $mobile = $data['phoneNumber'];
+
+        $user = $this->userService->findMobile($mobile);
+        if (!$user) {
+            // 直接注册
+            $user = $this->userService->createWithMobile($mobile, '', '');
+        }
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @OA\Post(
      *     path="/login/wechatMini",
      *     summary="微信小程序登录",
      *     tags={"Auth"},
@@ -198,26 +253,8 @@ class LoginController extends BaseController
      *     )
      * )
      */
-    public function wechatMini(
-        Request $request,
-        CacheServiceInterface $cacheService,
-        SocialiteServiceInterface $socialiteService,
-        UserServiceInterface $userService,
-        ConfigServiceInterface $configService
-    ) {
-        /**
-         * @var CacheService $cacheService
-         */
-        /**
-         * @var SocialiteService $socialiteService
-         */
-        /**
-         * @var UserService $userService
-         */
-        /**
-         * @var ConfigService $configService
-         */
-
+    public function wechatMini(Request $request)
+    {
         $openid = $request->input('openid');
         $raw = $request->input('rawData');
         $signature = $request->input('signature');
@@ -233,7 +270,7 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $sessionKey = $cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
         if (!$sessionKey) {
             return $this->error(__('error'));
         }
@@ -244,13 +281,13 @@ class LoginController extends BaseController
         }
 
         // 解密
-        $data = Factory::miniProgram($configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+        $data = Factory::miniProgram($this->configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
         $nickname = $data['nickName'];
         $avatar = str_replace('http://', 'https://', $data['avatarUrl']);
 
-        $userId = $socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
+        $userId = $this->socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
         if (!$userId) {
-            $userId = $socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, [
+            $userId = $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, [
                 'nickname' => $nickname,
                 'avatar' => $avatar,
                 'gender' => $data['gender'],
@@ -261,7 +298,7 @@ class LoginController extends BaseController
             ]);
         }
 
-        $user = $userService->find($userId);
+        $user = $this->userService->find($userId);
 
         try {
             $token = $this->token($user);

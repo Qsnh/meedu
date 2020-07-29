@@ -19,6 +19,8 @@ Route::post('/login/password', 'LoginController@passwordLogin');
 Route::post('/login/mobile', 'LoginController@mobileLogin');
 // 微信小程序登录
 Route::post('/login/wechatMini', 'LoginController@wechatMini');
+// 微信小程序手机号登录
+Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile');
 // 无状态的社交登录app列表
 Route::get('/login/socialites', 'LoginController@socialiteApps');
 
