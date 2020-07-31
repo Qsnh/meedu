@@ -201,7 +201,16 @@ class LoginController extends BaseController
         $openid = $request->input('openid');
         $encryptedData = $request->input('encryptedData');
         $iv = $request->input('iv');
-        if (!$openid || !$encryptedData || !$iv) {
+        $userInfo = $request->input('userInfo');
+
+        if (
+            !$openid || !$encryptedData || !$iv ||
+            !$userInfo ||
+            !($userInfo['encryptedData'] ?? '') ||
+            !($userInfo['iv'] ?? '') ||
+            !($userInfo['rawData'] ?? '') ||
+            !($userInfo['signature'] ?? '')
+        ) {
             return $this->error(__('error'));
         }
 
@@ -210,14 +219,32 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        // 解密
-        $data = Factory::miniProgram($this->configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+        // 校验签名
+        if (sha1($userInfo['rawData'] . $sessionKey) !== $userInfo['signature']) {
+            return $this->error(__('params error'));
+        }
+
+        $mini = Factory::miniProgram($this->configService->getTencentWechatMiniConfig());
+
+        // 解密获取手机号
+        $data = $mini->encryptor->decryptData($sessionKey, $iv, $encryptedData);
         $mobile = $data['phoneNumber'];
+        // 解密获取用户信息
+        $userData = $mini->encryptor->decryptData($sessionKey, $userInfo['iv'], $userInfo['encryptedData']);
 
         $user = $this->userService->findMobile($mobile);
+        $socialites = [];
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, '', '');
+            $user = $this->userService->createWithMobile($mobile, '', $userData['nickName'], $userData['avatarUrl']);
+        } else {
+            // socialite
+            $socialites = $this->socialiteService->userSocialites($user['id']);
+            $socialites = array_column($socialites, null, 'app');
+        }
+        if (!isset($socialites[FrontendConstant::WECHAT_MINI_LOGIN_SIGN])) {
+            // 未绑定socialite
+            $this->socialiteService->bindApp($user['id'], FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, $userData);
         }
 
         try {
@@ -232,7 +259,7 @@ class LoginController extends BaseController
     /**
      * @OA\Post(
      *     path="/login/wechatMini",
-     *     summary="微信小程序登录",
+     *     summary="微信小程序静默授权登录",
      *     tags={"Auth"},
      *     @OA\RequestBody(description="",@OA\JsonContent(
      *         @OA\Property(property="openid",description="openid",type="string"),
@@ -280,26 +307,12 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        // 解密
-        $data = Factory::miniProgram($this->configService->getTencentWechatMiniConfig())->encryptor->decryptData($sessionKey, $iv, $encryptedData);
-        $nickname = $data['nickName'];
-        $avatar = str_replace('http://', 'https://', $data['avatarUrl']);
-
         $userId = $this->socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
         if (!$userId) {
-            $userId = $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, [
-                'nickname' => $nickname,
-                'avatar' => $avatar,
-                'gender' => $data['gender'],
-                'city' => $data['city'],
-                'province' => $data['province'],
-                'country' => $data['country'],
-                'unionId' => $data['unionId'] ?? '',
-            ]);
+            return $this->error(__('error'));
         }
 
         $user = $this->userService->find($userId);
-
         try {
             $token = $this->token($user);
 

@@ -164,13 +164,13 @@ class UserService implements UserServiceInterface
      * @param string $mobile
      * @param string $password
      * @param string $nickname
-     *
+     * @param string $avatar
      * @return array
      */
-    public function createWithMobile(string $mobile, string $password, string $nickname): array
+    public function createWithMobile(string $mobile, string $password, string $nickname, string $avatar = ''): array
     {
         $user = User::create([
-            'avatar' => $this->configService->getMemberDefaultAvatar(),
+            'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
             'nick_name' => $nickname ?: Str::random(16),
             'mobile' => $mobile,
             'password' => Hash::make($password ?: Str::random(10)),
