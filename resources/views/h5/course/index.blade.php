@@ -8,6 +8,9 @@
         <div class="menu-item {{!$scene ? 'active' : ''}}">
             <a href="{{route('courses')}}?{{$queryParams(['scene' => ''])}}">所有课程</a>
         </div>
+        <div class="menu-item {{$scene == 'free' ? 'active' : ''}}">
+            <a href="{{route('courses')}}?{{$queryParams(['scene' => 'free'])}}">免费课程</a>
+        </div>
         <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
             <a href="{{route('courses')}}?{{$queryParams(['scene' => 'recom'])}}">推荐课程</a>
         </div>
