@@ -11,6 +11,7 @@
 
 namespace App\Http;
 
+use Fruitcake\Cors\HandleCors;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
@@ -48,7 +49,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
 //        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Barryvdh\Cors\HandleCors::class,
+        HandleCors::class,
     ];
 
     /**
