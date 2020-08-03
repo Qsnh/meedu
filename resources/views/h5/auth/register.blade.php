@@ -14,17 +14,9 @@
         <form action="" method="post" onsubmit="return formSubmitCheck();">
             @csrf
             <div class="login-form">
-                <div class="form-item">
-                    <input type="text" name="nick_name" value="{{old('nick_name')}}" class="form-input-item"
-                           placeholder="昵称" required>
-                </div>
                 @include('h5.components.mobile', ['smsCaptchaKey' => 'register'])
                 <div class="form-item">
                     <input type="password" name="password" class="form-input-item" placeholder="密码" required>
-                </div>
-                <div class="form-item">
-                    <input type="password" name="password_confirmation" class="form-input-item" placeholder="再输入一次密码"
-                           required>
                 </div>
                 <div class="form-item protocol">
                     <label><input type="checkbox"

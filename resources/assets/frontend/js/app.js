@@ -169,13 +169,11 @@ $(function () {
         }, 'json');
     }).on('click', '.register-button', function () {
         let mobile = $('input[name="mobile"]').val();
-        let nick_name = $('input[name="nick_name"]').val();
         let password = $('input[name="password"]').val();
-        let passwordConfirm = $('input[name="password_confirmation"]').val();
         let smsCaptcha = $('input[name="sms_captcha"]').val();
         let protocol = $('input[name="agree_protocol"]:checked').val();
-        if (mobile === '' || nick_name === '' || password === '' || passwordConfirm === '') {
-            $('.auth-box-errors').text('请输入昵称，手机号，密码');
+        if (mobile === '' || password === '') {
+            $('.auth-box-errors').text('请输入手机号，密码');
             return false;
         }
         if (typeof protocol === "undefined") {
@@ -185,10 +183,8 @@ $(function () {
         $(this).disabled = true;
         let token = $('meta[name="csrf-token"]').attr('content');
         let data = {
-            nick_name: nick_name,
             mobile: mobile,
             password: password,
-            password_confirmation: passwordConfirm,
             _token: token,
             sms_captcha: smsCaptcha,
             sms_captcha_key: 'register'
