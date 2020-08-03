@@ -80,6 +80,12 @@ class Handler extends ExceptionHandler
             }
         }
 
+        // 登录重定向
+        if ($exception instanceof AuthenticationException && !$request->wantsJson()) {
+            $currentUrl = urlencode($request->fullUrl());
+            return redirect(route('login') . '?redirect=' . $currentUrl);
+        }
+
         return parent::render($request, $exception);
     }
 }

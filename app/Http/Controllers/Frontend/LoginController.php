@@ -48,18 +48,27 @@ class LoginController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showLoginPage()
+    public function showLoginPage(Request $request)
     {
-        $previousUrl = request()->server('HTTP_REFERER') ?: url('/');
-        foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
-            if (preg_match("#{$item}#ius", $previousUrl)) {
-                $previousUrl = url('/');
-                break;
+        // 主动配置redirect
+        $redirect = $request->input('redirect');
+
+        if (!$redirect && $redirect = request()->server('HTTP_REFERER')) {
+            // 当为配置redirect的时候，检测http_referer
+            foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
+                if (preg_match("#{$item}#ius", $redirect)) {
+                    $redirect = '';
+                    break;
+                }
             }
         }
-        session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $previousUrl]);
+
+        // 存储redirectTo
+        $redirect && session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $redirect]);
+
         return v('frontend.auth.login');
     }
 
@@ -151,12 +160,12 @@ class LoginController extends BaseController
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
      */
     protected function redirectTo()
     {
-        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
-            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
-        return $callbackUrl;
+        $redirectTo = session(FrontendConstant::LOGIN_CALLBACK_URL_KEY);
+        $redirectTo = $redirectTo ?: route('index');
+        return $redirectTo;
     }
 }
