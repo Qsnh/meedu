@@ -69,7 +69,9 @@ class LoginController extends BaseController
         // 存储redirectTo
         $redirect && session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $redirect]);
 
-        return v('frontend.auth.login');
+        $title = __('title.login');
+
+        return v('frontend.auth.login', compact('title'));
     }
 
     /**
