@@ -15,15 +15,13 @@ use Illuminate\Support\Str;
 use Tests\OriginalTestCase;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderHandlerCommandTest extends OriginalTestCase
 {
-
-    /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_order_handler()
     {
+        $this->expectException(ModelNotFoundException::class);
         $this->artisan('order:success', ['order_id' => Str::random()]);
     }
 

@@ -33,7 +33,7 @@ class AjaxTest extends TestCase
 {
     protected $user;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->user = factory(User::class)->create([
@@ -41,7 +41,7 @@ class AjaxTest extends TestCase
         ]);
     }
 
-    public function tearDown()
+    public function tearDown():void
     {
         $this->user->delete();
         parent::tearDown();

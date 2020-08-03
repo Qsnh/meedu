@@ -12,6 +12,7 @@
 namespace Tests\Services\Member;
 
 use Tests\TestCase;
+use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class UserInviteBalanceServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->service = $this->app->make(UserInviteBalanceServiceInterface::class);
@@ -60,11 +61,10 @@ class UserInviteBalanceServiceTest extends TestCase
         $this->assertEquals(UserInviteBalanceRecord::TYPE_ORDER_DRAW, $r->type);
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_createCurrentUserWithdraw()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create([
             'invite_balance' => 0,
         ]);

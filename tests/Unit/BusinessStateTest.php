@@ -32,7 +32,7 @@ class BusinessStateTest extends TestCase
      */
     protected $businessStatus;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->businessStatus = $this->app->make(BusinessState::class);

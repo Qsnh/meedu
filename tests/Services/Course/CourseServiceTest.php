@@ -19,6 +19,7 @@ use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Models\CourseUserRecord;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class CourseServiceTest extends TestCase
@@ -29,7 +30,7 @@ class CourseServiceTest extends TestCase
      */
     protected $courseService;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->courseService = $this->app->make(CourseServiceInterface::class);
@@ -80,11 +81,10 @@ class CourseServiceTest extends TestCase
         $this->assertEquals($course->title, $c['title']);
     }
 
-    /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_find_with_no_published()
     {
+        $this->expectException(ModelNotFoundException::class);
+
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
@@ -92,11 +92,10 @@ class CourseServiceTest extends TestCase
         $c = $this->courseService->find($course->id);
     }
 
-    /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_find_with_no_show()
     {
+        $this->expectException(ModelNotFoundException::class);
+
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_NO,
             'published_at' => Carbon::now()->subDays(1),

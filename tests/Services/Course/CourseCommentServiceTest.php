@@ -19,6 +19,7 @@ use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Course\Services\CourseCommentService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
@@ -35,7 +36,7 @@ class CourseCommentServiceTest extends TestCase
      */
     protected $notificationService;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(CourseCommentServiceInterface::class);
@@ -85,11 +86,10 @@ class CourseCommentServiceTest extends TestCase
         $this->assertEquals($comments->count(), count($list));
     }
 
-    /**
-     * @expectedException \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
+
     public function test_find_with_not_exists()
     {
+        $this->expectException(ModelNotFoundException::class);
         $this->service->find(12);
     }
 

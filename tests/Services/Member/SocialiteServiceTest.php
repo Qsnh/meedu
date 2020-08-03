@@ -13,6 +13,7 @@ namespace Tests\Services\Member;
 
 use Tests\TestCase;
 use Illuminate\Support\Str;
+use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\Socialite;
@@ -27,7 +28,7 @@ class SocialiteServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(SocialiteServiceInterface::class);
@@ -51,11 +52,10 @@ class SocialiteServiceTest extends TestCase
         $this->assertEquals($user->id, $userId);
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_bindApp_repeat()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create();
         $app = 'app1';
         $appUserId = Str::random();

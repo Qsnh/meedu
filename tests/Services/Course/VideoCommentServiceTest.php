@@ -19,6 +19,7 @@ use App\Services\Course\Models\Video;
 use App\Services\Course\Models\VideoComment;
 use App\Services\Course\Services\VideoCommentService;
 use App\Services\Member\Services\NotificationService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 
@@ -35,7 +36,7 @@ class VideoCommentServiceTest extends TestCase
      */
     protected $notificationService;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(VideoCommentServiceInterface::class);
@@ -85,11 +86,9 @@ class VideoCommentServiceTest extends TestCase
         $this->assertEquals($comments->count(), count($list));
     }
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_find_with_not_exists()
     {
+        $this->expectException(ModelNotFoundException::class);
         $this->service->find(12);
     }
 
