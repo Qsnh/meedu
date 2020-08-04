@@ -35,6 +35,8 @@ return [
         'api/*',
         // 后台api
         'backend/api/*',
+        // 插件
+        'addons/*',
     ],
 
     /*
