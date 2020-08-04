@@ -24,6 +24,7 @@
         "mews/captcha": "^3.0",
         "mews/purifier": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8",
+        "nelexa/zip": "^3.3",
         "overtrue/easy-sms": "^1.1",
         "overtrue/pinyin": "~3.0",
         "overtrue/wechat": "~4.0",

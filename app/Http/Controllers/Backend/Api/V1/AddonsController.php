@@ -11,11 +11,11 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use PhpZip\ZipFile;
 use App\Meedu\Addons;
 use GuzzleHttp\Client;
 use App\Meedu\MeEduCloud;
 use Illuminate\Http\Request;
-use Chumper\Zipper\Facades\Zipper;
 
 class AddonsController extends BaseController
 {
@@ -160,7 +160,8 @@ class AddonsController extends BaseController
             ]);
 
             // 解压
-            Zipper::make($storagePath)->extractTo(base_path('addons'));
+            $zip = new ZipFile();
+            $zip->openFile($storagePath)->extractTo(base_path('addons'));
 
             // 安装命令
             $lib->install($addonsSign);
@@ -195,7 +196,8 @@ class AddonsController extends BaseController
             ]);
 
             // 解压
-            Zipper::make($storagePath)->extractTo(base_path('addons'));
+            $zip = new ZipFile();
+            $zip->openFile($storagePath)->extractTo(base_path('addons'));
 
             // 执行升级命令
             $lib->upgrade($addonsSign);
