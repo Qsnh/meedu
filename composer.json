@@ -85,16 +85,16 @@
         "test": "./vendor/bin/phpunit",
         "cf": "php-cs-fixer fix",
         "clean": [
-            "php artisan route:clear",
-            "php artisan config:clear",
-            "php artisan view:clear"
+            "@php artisan route:clear",
+            "@php artisan config:clear",
+            "@php artisan view:clear"
         ],
         "rebuild": [
-            "php artisan route:clear",
-            "php artisan config:clear",
-            "php artisan view:clear",
-            "php artisan route:cache",
-            "php artisan config:cache"
+            "@php artisan route:clear",
+            "@php artisan config:clear",
+            "@php artisan view:clear",
+            "@php artisan route:cache",
+            "@php artisan config:cache"
         ],
         "restart-sp": [
             "supervisorctl reread",
