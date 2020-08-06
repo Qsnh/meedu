@@ -26,7 +26,7 @@ class SettingController extends BaseController
                 $config[$key]['option_value'] = json_decode($val['option_value'], true);
             }
             // 私密信息
-            if ((int)$val['is_private'] === 1) {
+            if ((int)$val['is_private'] === 1 && $config[$key]['value']) {
                 $config[$key]['value'] = str_pad('', 12, '*');
             }
         }
