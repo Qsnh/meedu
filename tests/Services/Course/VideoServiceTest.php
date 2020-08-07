@@ -17,6 +17,7 @@ use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Services\VideoService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoServiceTest extends TestCase
@@ -27,7 +28,7 @@ class VideoServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(VideoServiceInterface::class);
@@ -156,11 +157,10 @@ class VideoServiceTest extends TestCase
         $this->assertEquals($video->title, $v['title']);
     }
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_find_with_no_published()
     {
+        $this->expectException(ModelNotFoundException::class);
+
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
@@ -168,11 +168,10 @@ class VideoServiceTest extends TestCase
         $this->service->find($video->id);
     }
 
-    /**
-     * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
-     */
     public function test_find_with_no_show()
     {
+        $this->expectException(ModelNotFoundException::class);
+
         $video = factory(Video::class)->create([
             'is_show' => Video::IS_SHOW_NO,
             'published_at' => Carbon::now()->subDays(1),

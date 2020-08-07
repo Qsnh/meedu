@@ -13,22 +13,13 @@
                             </h3>
                             <form action="" method="post" onsubmit="return formSubmitCheck();">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="nick_name">昵称</label>
-                                    <input id="nick_name" type="text" class="form-control" placeholder="昵称"
-                                           name="nick_name" value="{{ old('nick_name') }}" required>
-                                </div>
                                 @include('frontend.components.mobile', ['smsCaptchaKey' => 'register'])
                                 <div class="form-group">
                                     <label for="password">密码</label>
                                     <input id="password" type="password" class="form-control" placeholder="密码"
                                            name="password" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password-confirm">确认密码</label>
-                                    <input id="password-confirm" type="password" class="form-control"
-                                           placeholder="再输入一次" name="password_confirmation" required>
-                                </div>
+                                <div class="form-group auth-box-errors" style="color: red;"></div>
                                 <div class="form-group">
                                     <label><input type="checkbox"
                                                   name="agree_protocol" {{ old('remember') ? 'checked' : '' }}> 同意

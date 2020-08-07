@@ -28,12 +28,10 @@ class RegisterTest extends TestCase
     {
         $this->session(['sms_register' => 'smscode']);
         $this->visit(route('register'))
-            ->type('nickname', 'nick_name')
             ->type('13900001111', 'mobile')
             ->type('smscode', 'sms_captcha')
             ->type('register', 'sms_captcha_key')
             ->type('meedu123', 'password')
-            ->type('meedu123', 'password_confirmation')
             ->press('注册');
 
         $user = User::query()->where('mobile', '13900001111')->exists();
@@ -46,12 +44,10 @@ class RegisterTest extends TestCase
 
         $this->session(['sms_register' => 'smscode']);
         $this->visit(route('register'))
-            ->type('nickname', 'nick_name')
             ->type('13900001111', 'mobile')
             ->type('smscode', 'sms_captcha')
             ->type('register', 'sms_captcha_key')
             ->type('meedu123', 'password')
-            ->type('meedu123', 'password_confirmation')
             ->press('注册');
 
         $user = User::query()->where('mobile', '13900001111')->first();

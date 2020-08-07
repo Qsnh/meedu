@@ -48,19 +48,30 @@ class LoginController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showLoginPage()
+    public function showLoginPage(Request $request)
     {
-        $previousUrl = request()->server('HTTP_REFERER') ?: url('/');
-        foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
-            if (preg_match("#{$item}#ius", $previousUrl)) {
-                $previousUrl = url('/');
-                break;
+        // 主动配置redirect
+        $redirect = $request->input('redirect');
+
+        if (!$redirect && $redirect = request()->server('HTTP_REFERER')) {
+            // 当为配置redirect的时候，检测http_referer
+            foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
+                if (preg_match("#{$item}#ius", $redirect)) {
+                    $redirect = '';
+                    break;
+                }
             }
         }
-        session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $previousUrl]);
-        return v('frontend.auth.login');
+
+        // 存储redirectTo
+        $redirect && session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $redirect]);
+
+        $title = __('title.login');
+
+        return v('frontend.auth.login', compact('title'));
     }
 
     /**
@@ -84,7 +95,7 @@ class LoginController extends BaseController
         }
         Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id']));
+        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         return redirect($this->redirectTo());
     }
@@ -129,7 +140,7 @@ class LoginController extends BaseController
         Auth::loginUsingId($userId, true);
 
         // 登录事件
-        event(new UserLoginEvent($userId));
+        event(new UserLoginEvent($userId, is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
 
         if ($redirect = session('socialite_login_redirect')) {
             $token = Auth::guard(FrontendConstant::API_GUARD)->tokenById($userId);
@@ -151,12 +162,12 @@ class LoginController extends BaseController
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\UrlGenerator|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
      */
     protected function redirectTo()
     {
-        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
-            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
-        return $callbackUrl;
+        $redirectTo = session(FrontendConstant::LOGIN_CALLBACK_URL_KEY);
+        $redirectTo = $redirectTo ?: route('index');
+        return $redirectTo;
     }
 }

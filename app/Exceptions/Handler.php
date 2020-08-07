@@ -54,12 +54,9 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
-     *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception $exception
-     *
-     * @return \Illuminate\Http\Response
+     * @param Exception $exception
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
@@ -83,6 +80,11 @@ class Handler extends ExceptionHandler
             }
         }
 
+        // 登录重定向
+        if ($exception instanceof AuthenticationException && !$request->wantsJson()) {
+            $currentUrl = urlencode($request->fullUrl());
+            return redirect(route('login') . '?redirect=' . $currentUrl);
+        }
 
         return parent::render($request, $exception);
     }

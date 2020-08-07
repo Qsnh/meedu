@@ -16,10 +16,10 @@ Route::get('/user/private_protocol', 'Frontend\IndexController@userPrivateProtoc
 Route::get('/aboutus', 'Frontend\IndexController@aboutus')->name('aboutus');
 // 登录
 Route::get('/login', 'Frontend\LoginController@showLoginPage')->name('login');
-Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:10,1']);
+Route::post('/login', 'Frontend\LoginController@passwordLoginHandler')->middleware(['throttle:30,1']);
 // 注册
 Route::get('/register', 'Frontend\RegisterController@showRegisterPage')->name('register');
-Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['sms.check', 'throttle:10,1']);
+Route::post('/register', 'Frontend\RegisterController@passwordRegisterHandler')->middleware(['sms.check', 'throttle:30,1']);
 // 登出
 Route::post('/logout', 'Frontend\LoginController@logout')->name('logout');
 // 找回密码
@@ -63,7 +63,7 @@ Route::get('/announcement/{id}', 'Frontend\AnnouncementController@show')->name('
 
 Route::group([
     'prefix' => '/member',
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'login.status.check'],
     'namespace' => 'Frontend'
 ], function () {
     Route::get('/', 'MemberController@index')->name('member');

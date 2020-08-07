@@ -20,7 +20,7 @@ class UserTest extends Base
     protected $admin;
     protected $role;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->admin = factory(Administrator::class)->create();

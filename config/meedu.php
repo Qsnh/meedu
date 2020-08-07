@@ -132,6 +132,7 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
+            'wechat_mini' => 'miniapp',
             'enabled' => 0,
         ],
         'handPay' => [
@@ -206,6 +207,17 @@ return [
         'sms' => 'aliyun',
         // editor
         'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
+        // 登录
+        'login' => [
+            'limit' => [
+                'rule' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
+            ]
+        ],
+        // 全局css
+        'css' => [
+            'pc' => '',
+            'h5' => '',
+        ],
     ],
 
     // 其它配置

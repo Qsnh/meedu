@@ -20,13 +20,13 @@ class CaptchaSmsTest extends Base
 {
     use MockeryPHPUnitIntegration;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->startMockery();
     }
 
-    public function tearDown(): void
+    public function tearDown():void
     {
         $this->closeMockery();
         parent::tearDown();

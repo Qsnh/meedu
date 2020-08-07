@@ -55,7 +55,7 @@ class OrderTimeoutHandlerCommand extends Command
     {
         // 超时一个小时未支付订单
         $now = Carbon::now()->subMinutes(60);
-        $orders = $this->orderService->getTimeoutOrders($now->toString());
+        $orders = $this->orderService->getTimeoutOrders($now->toDateTimeString());
         if (!$orders) {
             return;
         }

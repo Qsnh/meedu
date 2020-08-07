@@ -31,6 +31,8 @@ class ApiV2Constant
     public const SMS_CODE_EXPIRE = 60;
     public const MOBILE_CODE_CACHE_KEY = 'm:%s';
 
+    public const WECHAT_MINI_LOGIN_SESSION_KEY = 'wxmn:s:%s';
+
     public const ERROR_CODE = 1;
     public const ERROR_NO_AUTH_CODE = 401;
 
@@ -269,7 +271,7 @@ class ApiV2Constant
      * )
      */
     public const MODEL_SLIDER_FIELD = [
-        'thumb', 'url', 'sort',
+        'thumb', 'url', 'sort', 'platform',
     ];
 
     /**

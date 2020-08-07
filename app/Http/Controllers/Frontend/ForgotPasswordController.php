@@ -32,7 +32,8 @@ class ForgotPasswordController extends Controller
 
     public function showPage()
     {
-        return v('frontend.auth.passwords.find');
+        $title = __('title.find_password');
+        return v('frontend.auth.passwords.find', compact('title'));
     }
 
     public function handler(PasswordResetRequest $request)

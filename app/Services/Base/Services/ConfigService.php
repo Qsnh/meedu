@@ -489,4 +489,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.upload.video.aliyun');
     }
+
+    /**
+     * 登录限制规则
+     *
+     * @return int
+     */
+    public function getLoginLimitRule(): int
+    {
+        return (int)config('meedu.system.login.limit.rule');
+    }
 }

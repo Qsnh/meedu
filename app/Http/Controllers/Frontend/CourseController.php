@@ -90,22 +90,30 @@ class CourseController extends FrontendController
     {
         $categoryId = (int)$request->input('category_id');
         $scene = $request->input('scene', '');
+
         $page = $request->input('page', 1);
         $pageSize = $this->configService->getCourseListPageSize();
+
         [
             'total' => $total,
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
         $courses = $this->paginator($list, $total, $page, $pageSize);
+
+        // 分页参数注入
         $courses->appends([
             'category_id' => $categoryId,
             'scene' => $request->input('scene', ''),
         ]);
+
+        // SEO信息
         [
             'title' => $title,
             'keywords' => $keywords,
             'description' => $description,
         ] = $this->configService->getSeoCourseListPage();
+
+        // 课程分类
         $courseCategories = $this->courseCategoryService->all();
 
         $queryParams = function ($param) {

@@ -51,8 +51,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserRegisterEvent\RegisterCredit1RewardListener',
         ],
         'App\Events\UserLoginEvent' => [
-            'App\Listeners\UserLoginEvent\SafeAlertListener',
-            'App\Listeners\UserLoginEvent\BindMobileListener',
+            'App\Listeners\UserLoginEvent\LoginRecordListener',
         ],
         'App\Events\UserInviteBalanceWithdrawCreatedEvent' => [
             'App\Listeners\UserInviteBalanceWithdrawCreatedEvent\NotifyListener',

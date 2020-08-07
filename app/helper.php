@@ -510,3 +510,27 @@ if (!function_exists('get_array_ids')) {
         return array_keys($ids);
     }
 }
+
+if (!function_exists('get_platform')) {
+    /**
+     * @return array|string|null
+     */
+    function get_platform()
+    {
+        // 如果默认读取不到，则将平台统一设置为 ‘APP’
+        $platform = strtoupper(request()->header('meedu-platform', \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP));
+        $platforms = [
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_PC,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_H5,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_IOS,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_ANDROID,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_MINI,
+            \App\Constant\FrontendConstant::LOGIN_PLATFORM_OTHER,
+        ];
+        if (!in_array($platform, $platforms)) {
+            $platform = \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP;
+        }
+        return $platform;
+    }
+}

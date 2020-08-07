@@ -28,8 +28,6 @@ class FrontendConstant
     const PAYMENT_WECHAT_PAY_CACHE_KEY = 'wechat_remote_order_%s';
     const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
 
-    const JSON_ERROR_CODE = 2;
-
     const H5 = 'h5';
 
     const ORDER_PAID_TYPE_PROMO_CODE = 1;
@@ -37,8 +35,10 @@ class FrontendConstant
     const INVITE_BALANCE_WITHDRAW_STATUS_SUCCESS = 1;
     const INVITE_BALANCE_WITHDRAW_STATUS_FAILURE = 2;
 
+    // 登录跳转url存储key
     const LOGIN_CALLBACK_URL_KEY = 'login_callback_url';
 
+    // 登录跳转白名单
     const LOGIN_REFERER_BLACKLIST = [
         '/register',
         '/password/reset',
@@ -49,7 +49,6 @@ class FrontendConstant
     const ORDER_GOODS_TYPE_COURSE = 'COURSE';
     const ORDER_GOODS_TYPE_VIDEO = 'VIDEO';
     const ORDER_GOODS_TYPE_ROLE = 'ROLE';
-    const ORDER_GOODS_TYPE_BOOK = 'BOOK';
 
     const API_GUARD = 'apiv2';
 
@@ -63,4 +62,30 @@ class FrontendConstant
     public const PLAYER_XG = 'xg';
     public const PLAYER_TENCENT = 'tencent';
     public const PLAYER_ALIYUN = 'aliyun';
+
+    public const LOGIN_PLATFORM_PC = 'PC';
+    public const LOGIN_PLATFORM_H5 = 'H5';
+    public const LOGIN_PLATFORM_IOS = 'IOS';
+    public const LOGIN_PLATFORM_ANDROID = 'ANDROID';
+    public const LOGIN_PLATFORM_MINI = 'MINI';
+    public const LOGIN_PLATFORM_APP = 'APP';
+    public const LOGIN_PLATFORM_OTHER = 'OTHER';
+
+    public const USER_LOGIN_AT_COOKIE_NAME = 'last_login_at';
+
+    // 不限制
+    public const LOGIN_LIMIT_RULE_DEFAULT = 1;
+    // 每个平台允许登录一台设备已登录
+    public const LOGIN_LIMIT_RULE_PLATFORM = 2;
+    // 所有平台只允许一台设备已登录
+    public const LOGIN_LIMIT_RULE_ALL = 3;
+
+    // 幻灯片设备
+    public const SLIDER_PLATFORM_PC = 'PC';
+    public const SLIDER_PLATFORM_H5 = 'H5';
+    public const SLIDER_PLATFORM_MINI = 'MINI';
+    public const SLIDER_PLATFORM_APP = 'APP';
+
+    // 微信小程序登录socialite sign
+    public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
 }

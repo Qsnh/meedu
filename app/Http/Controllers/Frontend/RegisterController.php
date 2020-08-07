@@ -35,7 +35,9 @@ class RegisterController extends BaseController
      */
     public function showRegisterPage()
     {
-        return v('frontend.auth.register');
+        $title = __('title.register');
+
+        return v('frontend.auth.register', compact('title'));
     }
 
     /**

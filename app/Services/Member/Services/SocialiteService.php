@@ -39,7 +39,7 @@ class SocialiteService implements SocialiteServiceInterface
      */
     public function getBindUserId(string $app, string $appId): int
     {
-        return intval(Socialite::whereApp($app)->whereAppUserId($appId)->value('user_id'));
+        return (int)Socialite::whereApp($app)->whereAppUserId($appId)->value('user_id');
     }
 
     /**
@@ -52,7 +52,7 @@ class SocialiteService implements SocialiteServiceInterface
      */
     public function bindApp(int $userId, string $app, string $appId, array $data): void
     {
-        $socialite = Socialite::whereUserId($userId)->whereApp($app)->first();
+        $socialite = Socialite::query()->where('app', $app)->where('app_user_id', $appId)->first();
         if ($socialite) {
             throw new ServiceException(__('ban_bind_repeat'));
         }

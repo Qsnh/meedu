@@ -11,9 +11,11 @@
 
 namespace App\Http;
 
+use Fruitcake\Cors\HandleCors;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
+use App\Http\Middleware\LoginStatusCheckMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\BackendPermissionCheckMiddleware;
 
@@ -47,7 +49,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
 //        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Barryvdh\Cors\HandleCors::class,
+        HandleCors::class,
     ];
 
     /**
@@ -94,5 +96,9 @@ class Kernel extends HttpKernel
         'sms.check' => CheckSmsCodeMiddleware::class,
         // 后台权限
         'backend.permission' => BackendPermissionCheckMiddleware::class,
+        // 登录状态检测
+        'login.status.check' => LoginStatusCheckMiddleware::class,
+        // api接口的状态登录检测
+        'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,
     ];
 }

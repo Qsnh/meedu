@@ -15,16 +15,18 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{url('/')}}">首页 <span
+                <li class="nav-item">
+                    <a class="nav-link {{menu_active(['index'])}}" href="{{url('/')}}">首页 <span
                                 class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('courses')}}">所有课程</a>
+                    <a class="nav-link {{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}"
+                       href="{{route('courses')}}">所有课程</a>
                 </li>
                 @foreach($gNavs as $item)
                     <li class="nav-item">
-                        <a class="nav-link" href="{{$item['url']}}">{{$item['name']}}</a>
+                        <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
+                           href="{{$item['url']}}">{{$item['name']}}</a>
                     </li>
                 @endforeach
             </ul>

@@ -32,7 +32,7 @@ class MemberTest extends Base
 {
     protected $member;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->member = factory(User::class)->create();

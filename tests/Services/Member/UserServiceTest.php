@@ -13,6 +13,7 @@ namespace Tests\Services\Member;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Exceptions\ServiceException;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,7 @@ class UserServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setUpFaker();
@@ -59,11 +60,10 @@ class UserServiceTest extends TestCase
         $this->assertEquals($user->id, $u['id']);
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_resetPassword()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
@@ -107,11 +107,10 @@ class UserServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_bindMobile()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
@@ -120,11 +119,10 @@ class UserServiceTest extends TestCase
         $this->service->bindMobile('13909098080');
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_bindMobile_with_exists()
     {
+        $this->expectException(ServiceException::class);
+
         factory(User::class)->create([
             'mobile' => '13909098080',
             'password' => Hash::make('123456'),
@@ -153,11 +151,10 @@ class UserServiceTest extends TestCase
         $this->assertNotEmpty($newMobile);
     }
 
-    /**
-     * @expectedException \App\Exceptions\ServiceException
-     */
     public function test_bindMobile_with_exist_mobile()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
@@ -368,11 +365,10 @@ class UserServiceTest extends TestCase
         $this->assertEquals('188999900011', $user->mobile);
     }
 
-    /**
-     * @expectedException App\Exceptions\ServiceException
-     */
     public function test_changeMobile_exists()
     {
+        $this->expectException(ServiceException::class);
+
         $user = factory(User::class)->create(['mobile' => '199000012341']);
         $user = factory(User::class)->create(['mobile' => '13788889999']);
         $this->service->changeMobile($user->id, '13788889999');

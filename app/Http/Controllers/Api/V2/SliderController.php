@@ -11,7 +11,9 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
+use App\Constant\FrontendConstant;
 use App\Services\Other\Services\SliderService;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 
@@ -34,12 +36,14 @@ class SliderController extends BaseController
      * )
      * @return \Illuminate\Http\JsonResponse
      */
-    public function all(SliderServiceInterface $sliderService)
+    public function all(SliderServiceInterface $sliderService, Request $request)
     {
         /**
          * @var SliderService $sliderService
          */
-        $sliders = $sliderService->all();
+        $platform = $request->input('platform') ?: FrontendConstant::SLIDER_PLATFORM_APP;
+        $platform = strtoupper($platform);
+        $sliders = $sliderService->all($platform);
         $sliders = arr2_clear($sliders, ApiV2Constant::MODEL_SLIDER_FIELD);
         return $this->data($sliders);
     }

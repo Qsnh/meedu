@@ -15,13 +15,13 @@ use Tests\OriginalTestCase;
 
 class InstallLockCommandTest extends OriginalTestCase
 {
-    public function setUp(): void
+    public function setUp():void
     {
         parent::setUp();
         @unlink(storage_path('install.lock'));
     }
 
-    public function tearDown(): void
+    public function tearDown():void
     {
         @unlink(storage_path('install.lock'));
         parent::tearDown();

@@ -33,6 +33,9 @@
   "title.member.promo_code": "PromoCode",
   "title.member.invite_balances": "InviteBalance",
   "title.member.credit1_records": "credit records",
+  "title.login": "login",
+  "title.register": "register",
+  "title.find_password": "find password",
   "comment.content.required": "please input comment content",
   "comment.content.min": "comment content length must >= :count",
   "captcha.required": "please input image captcha",
@@ -106,5 +109,6 @@
   "credit1_remark_other": "other",
   "please buy course": "please buy course",
   "course cant comment": "course baned comment",
-  "video cant comment": "video baned comment"
+  "video cant comment": "video baned comment",
+  "please login again": "please login again"
 }

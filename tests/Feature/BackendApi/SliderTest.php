@@ -13,6 +13,7 @@ namespace Tests\Feature\BackendApi;
 
 use App\Models\Administrator;
 use App\Models\AdministratorRole;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\DB;
 use App\Services\Other\Models\Slider;
 
@@ -26,12 +27,13 @@ class SliderTest extends Base
         'sort' => 1,
         'thumb' => 'thumb',
         'url' => 'http://meedu.vip',
+        'platform' => FrontendConstant::SLIDER_PLATFORM_APP,
     ];
 
     protected $admin;
     protected $role;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->admin = factory(Administrator::class)->create();
@@ -42,7 +44,7 @@ class SliderTest extends Base
         ]);
     }
 
-    public function tearDown()
+    public function tearDown():void
     {
         $this->admin->delete();
         parent::tearDown();

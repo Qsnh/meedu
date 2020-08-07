@@ -21,3 +21,4 @@ php-cs-fixer.phar
 _ide_helper.php
 package-lock.json
 /storage/install.lock
+.phpunit.result.cache

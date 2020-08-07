@@ -19,7 +19,7 @@ class LinkServiceTest extends TestCase
 {
     protected $service;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->service = $this->app->make(LinkServiceInterface::class);

@@ -32,7 +32,7 @@ class PromoCodeTest extends Base
     protected $admin;
     protected $role;
 
-    public function setUp()
+    public function setUp():void
     {
         parent::setUp();
         $this->admin = factory(Administrator::class)->create();
@@ -43,7 +43,7 @@ class PromoCodeTest extends Base
         ]);
     }
 
-    public function tearDown()
+    public function tearDown():void
     {
         $this->admin->delete();
         parent::tearDown();

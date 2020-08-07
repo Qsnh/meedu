@@ -13,5 +13,5 @@ namespace App\Meedu;
 
 class MeEdu
 {
-    const VERSION = 'v3.2.1';
+    const VERSION = 'v3.3';
 }

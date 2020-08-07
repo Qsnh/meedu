@@ -11,14 +11,14 @@
 
 namespace App\Http\Requests\Frontend;
 
+use Illuminate\Support\Str;
+
 class RegisterPasswordRequest extends BaseRequest
 {
     public function rules()
     {
         return [
-            'nick_name' => 'required|max:10',
             'mobile' => 'bail|required',
-            'password' => 'bail|required|min:6|max:16|confirmed',
         ];
     }
 
@@ -37,10 +37,17 @@ class RegisterPasswordRequest extends BaseRequest
 
     public function filldata()
     {
+        $mobile = $this->input('mobile');
+        $nickname = $this->input('nick_name');
+        $password = $this->input('password');
+
+        $nickname = $nickname ? mb_substr($nickname, 0, 10) : mb_substr($mobile, 0, 8) . '_' . Str::random(3);
+        $password = $password ? mb_substr($password, 0, 32) : Str::random(12);
+
         return [
-            'nick_name' => $this->post('nick_name'),
-            'mobile' => $this->post('mobile'),
-            'password' => $this->post('password'),
+            'nick_name' => $nickname,
+            'mobile' => $mobile,
+            'password' => $password,
         ];
     }
 }

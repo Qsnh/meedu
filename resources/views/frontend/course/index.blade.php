@@ -9,6 +9,9 @@
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
                         <a href="{{route('courses')}}?{{$queryParams(['scene' => ''])}}">所有课程</a>
                     </div>
+                    <div class="menu-item {{$scene == 'free' ? 'active' : ''}}">
+                        <a href="{{route('courses')}}?{{$queryParams(['scene' => 'free'])}}">免费课程</a>
+                    </div>
                     <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
                         <a href="{{route('courses')}}?{{$queryParams(['scene' => 'recom'])}}">推荐课程</a>
                     </div>
@@ -30,19 +33,7 @@
             <div class="col-12">
                 <div class="course-list-box">
                     @foreach($courses as $index => $course)
-                        <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-                           class="course-list-item {{(($index + 1) % 4 == 0) ? 'last' : ''}}">
-                            <div class="course-thumb">
-                                <img src="{{$course['thumb']}}" width="280" height="210" alt="{{$course['title']}}">
-                            </div>
-                            <div class="course-title">
-                                {{$course['title']}}
-                            </div>
-                            <div class="course-category">
-                                <span class="video-count-label"><i class="fa fa-user-o" aria-hidden="true"></i> {{$course['user_count']}}</span>
-                                <span class="category-label">{{$course['category']['name']}}</span>
-                            </div>
-                        </a>
+                        @include('frontend.components.course-item', ['course' => $course, 'class' => (($index + 1) % 4 == 0) ? 'last' : ''])
                     @endforeach
                 </div>
             </div>

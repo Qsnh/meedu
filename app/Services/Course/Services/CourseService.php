@@ -63,13 +63,18 @@ class CourseService implements CourseServiceInterface
      */
     public function simplePage(int $page, int $pageSize, int $categoryId = 0, string $scene = ''): array
     {
-        $query = Course::with(['category'])
-            ->show()->published()
+        $query = Course::query()
+            ->with(['category'])
+            ->show()
+            ->published()
             ->withCount(['videos' => function ($query) {
                 $query->show()->published();
             }])
             ->when($categoryId, function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
+            })
+            ->when($scene === 'free', function ($query) {
+                $query->where('is_free', 1);
             });
         if (!$scene) {
             $query->orderByDesc('published_at');

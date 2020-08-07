@@ -25,7 +25,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label><input type="checkbox"
-                                                  name="remember" {{ old('remember') ? 'checked' : '' }}> 记住我</label>
+                                                  name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        15天内免登录</label>
                                     <a href="{{ route('password.request') }}" class="float-right">忘记密码？</a>
                                 </div>
                                 <div class="form-group mt-2">

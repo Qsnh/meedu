@@ -11,11 +11,14 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use Carbon\Carbon;
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
@@ -48,22 +51,34 @@ class LoginController extends BaseController
      */
     protected $userService;
 
+    /**
+     * @var ConfigService
+     */
     protected $configService;
+
+    /**
+     * @var CacheService
+     */
     protected $cacheService;
+
+    /**
+     * @var SocialiteService
+     */
     protected $socialiteService;
 
     /**
+     * LoginController constructor.
      * @param UserServiceInterface $userService
-     * @param ConfigService $configService
-     * @param CacheService $cacheService
-     * @param SocialiteService $socialiteService
+     * @param ConfigServiceInterface $configService
+     * @param CacheServiceInterface $cacheService
+     * @param SocialiteServiceInterface $socialiteService
      */
     public function __construct(
         UserServiceInterface $userService,
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService,
         SocialiteServiceInterface $socialiteService
-        ) {
+    ) {
         $this->userService = $userService;
         $this->configService = $configService;
         $this->cacheService = $cacheService;
@@ -105,15 +120,14 @@ class LoginController extends BaseController
         if (!$user) {
             return $this->error(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
         }
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
         }
-        
-        $token = Auth::guard($this->guard)->tokenById($user['id']);
-
-        event(new UserLoginEvent($user['id']));
-
-        return $this->data(compact('token'));
     }
 
     /**
@@ -150,31 +164,199 @@ class LoginController extends BaseController
             // 直接注册
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
         }
-        $token = Auth::guard($this->guard)->tokenById($user['id']);
-
-        event(new UserLoginEvent($user['id']));
-
-        return $this->data(compact('token'));
     }
 
     /**
-    * @OA\Get(
-    *     path="/login/socialites",
-    *     summary="社交登录app",
-    *     tags={"Auth"},
-    *     @OA\Response(
-    *         description="",response=200,
-    *         @OA\JsonContent(
-    *             @OA\Property(property="code",type="integer",description="状态码"),
-    *             @OA\Property(property="message",type="string",description="消息"),
-    *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
-    *         )
-    *     )
-    * )
-    */
+     * @OA\Post(
+     *     path="/login/wechatMiniMobile",
+     *     summary="微信小程序手机号登录",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="openid",description="openid",type="string"),
+     *         @OA\Property(property="iv",description="iv",type="string"),
+     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="token",type="string",description="token"),
+     *             ),
+     *         )
+     *     )
+     * )
+     */
+    public function wechatMiniMobile(Request $request)
+    {
+        $openid = $request->input('openid');
+        $encryptedData = $request->input('encryptedData');
+        $iv = $request->input('iv');
+        $userInfo = $request->input('userInfo');
+
+        if (
+            !$openid || !$encryptedData || !$iv ||
+            !$userInfo ||
+            !($userInfo['encryptedData'] ?? '') ||
+            !($userInfo['iv'] ?? '') ||
+            !($userInfo['rawData'] ?? '') ||
+            !($userInfo['signature'] ?? '')
+        ) {
+            return $this->error(__('error'));
+        }
+
+        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        if (!$sessionKey) {
+            return $this->error(__('error'));
+        }
+
+        // 校验签名
+        if (sha1($userInfo['rawData'] . $sessionKey) !== $userInfo['signature']) {
+            return $this->error(__('params error'));
+        }
+
+        $mini = Factory::miniProgram($this->configService->getTencentWechatMiniConfig());
+
+        // 解密获取手机号
+        $data = $mini->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+        $mobile = $data['phoneNumber'];
+        // 解密获取用户信息
+        $userData = $mini->encryptor->decryptData($sessionKey, $userInfo['iv'], $userInfo['encryptedData']);
+
+        $user = $this->userService->findMobile($mobile);
+        $socialites = [];
+        if (!$user) {
+            // 直接注册
+            $user = $this->userService->createWithMobile($mobile, '', $userData['nickName'], $userData['avatarUrl']);
+        } else {
+            // socialite
+            $socialites = $this->socialiteService->userSocialites($user['id']);
+            $socialites = array_column($socialites, null, 'app');
+        }
+        if (!isset($socialites[FrontendConstant::WECHAT_MINI_LOGIN_SIGN])) {
+            // 未绑定socialite
+            $this->socialiteService->bindApp($user['id'], FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, $userData);
+        }
+
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/login/wechatMini",
+     *     summary="微信小程序静默授权登录",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(description="",@OA\JsonContent(
+     *         @OA\Property(property="openid",description="openid",type="string"),
+     *         @OA\Property(property="iv",description="iv",type="string"),
+     *         @OA\Property(property="rawData",description="rawData",type="string"),
+     *         @OA\Property(property="signature",description="signature",type="string"),
+     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
+     *     )),
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="object",description="",
+     *                 @OA\Property(property="token",type="string",description="token"),
+     *             ),
+     *         )
+     *     )
+     * )
+     */
+    public function wechatMini(Request $request)
+    {
+        $openid = $request->input('openid');
+        $raw = $request->input('rawData');
+        $signature = $request->input('signature');
+        $encryptedData = $request->input('encryptedData');
+        $iv = $request->input('iv');
+        if (
+            !$openid ||
+            !$raw ||
+            !$signature ||
+            !$encryptedData ||
+            !$iv
+        ) {
+            return $this->error(__('error'));
+        }
+
+        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        if (!$sessionKey) {
+            return $this->error(__('error'));
+        }
+
+        // 验签
+        if (sha1($raw . $sessionKey) !== $signature) {
+            return $this->error(__('error'));
+        }
+
+        $userId = $this->socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
+        if (!$userId) {
+            return $this->error(__('error'));
+        }
+
+        $user = $this->userService->find($userId);
+        try {
+            $token = $this->token($user);
+
+            return $this->data(compact('token'));
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     * @throws ServiceException
+     */
+    protected function token($user)
+    {
+        if ($user['is_lock'] === FrontendConstant::YES) {
+            throw new ServiceException(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+        }
+
+        $loginAt = Carbon::now();
+        $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
+
+        // 登录事件
+        event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
+
+        return $token;
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/login/socialites",
+     *     summary="社交登录app列表",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         description="",response=200,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code",type="integer",description="状态码"),
+     *             @OA\Property(property="message",type="string",description="消息"),
+     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
+     *         )
+     *     )
+     * )
+     */
     public function socialiteApps()
     {
         $apps = $this->configService->getEnabledSocialiteApps();
@@ -185,7 +367,7 @@ class LoginController extends BaseController
             if (!($app['url'] ?? '')) {
                 $app['url'] = route('socialite', $app['app']);
             }
-            
+
             return $app;
         }, $apps);
 
