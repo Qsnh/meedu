@@ -115,13 +115,15 @@ body {
   width: 100%;
   height: auto;
   float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .banner-course-item {
     display: block;
-    width: 50%;
+    width: calc(50% - 4px);
     height: 199px;
     float: left;
-    padding-left: 8px;
     line-height: 1;
     margin-bottom: 15px;
 
