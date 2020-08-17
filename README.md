@@ -13,7 +13,7 @@
 
 ## 安装方式
 
-- [x] 傻瓜安装。傻瓜安装包请到我们的QQ群文件下载，加QQ群请扫描文末的QQ群二维码。
+- [x] 使用傻瓜安装包安装。[下载地址](https://www.yuque.com/meedu/kbanfm) 。
 - [x] 宝塔一键安装。MeEdu 已上架宝塔一键安装服务。
 - [x] 手动安装。[查看安装教程](docs/安装教程.md) 。
 - [x] MeEdu 安装服务。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
@@ -68,7 +68,6 @@
 ## 联系我们
 
 <p>
-<img src="/docs/contact/qqgroup.png" width=200>
 <img src="/docs/contact/wechat1.png" width=200>
 </p>
 
