@@ -100,7 +100,6 @@ class MemberController extends BaseController
         return $this->success();
     }
 
-    // 用户编辑
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -110,9 +109,22 @@ class MemberController extends BaseController
             'is_lock', 'is_active', 'role_id', 'role_expired_at',
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
+
+        // 字段默认值
         $data['role_id'] = (int)($data['role_id'] ?? 0);
+        $data['role_expired_at'] = $data['role_expired_at'] ?? null;
+        // 时间格式不允许空字符串
+        $data['role_expired_at'] = $data['role_expired_at'] ?: null;
+        // 如果删除了时间，那么将roleId重置为0
+        $data['role_expired_at'] || $data['role_id'] = 0;
+        // 如果roleId为0的话，那么role_expired_at也重置为0
+        $data['role_id'] || $data['role_expired_at'] = null;
+
+        // 修改密码
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
+
         $user->fill($data)->save();
+
         return $this->success();
     }
 
