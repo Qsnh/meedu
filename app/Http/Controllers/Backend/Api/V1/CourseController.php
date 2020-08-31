@@ -16,6 +16,7 @@ use App\Constant\BackendApiConstant;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
+use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\CourseRequest;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseUserRecord;
@@ -26,26 +27,35 @@ class CourseController extends BaseController
     {
         $keywords = $request->input('keywords', '');
         $cid = $request->input('cid');
+        $userId = $request->input('user_id');
+
+        // 排序
         $sort = $request->input('sort', 'created_at');
         $order = $request->input('order', 'desc');
-        $courses = Course::when($keywords, function ($query) use ($keywords) {
-            return $query->where('title', 'like', '%' . $keywords . '%');
-        })->when($cid, function ($query) use ($cid) {
-            return $query->whereCategoryId($cid);
-        })
+
+        $courses = Course::query()
+            ->when($keywords, function ($query) use ($keywords) {
+                return $query->where('title', 'like', '%' . $keywords . '%');
+            })
+            ->when($cid, function ($query) use ($cid) {
+                return $query->whereCategoryId($cid);
+            })
+            ->when($userId, function ($query) use ($userId) {
+                $courseIds = UserCourse::query()->where('user_id', $userId)->select(['course_id'])->get()->pluck('course_id')->toArray();
+                $courseIds || $courseIds = [0];
+                $query->whereIn('id', $courseIds);
+            })
             ->orderBy($sort, $order)
-            ->paginate(12);
+            ->paginate($request->input('size', 12));
 
-        $courses->appends($request->input());
-
-        $categories = CourseCategory::select(['id', 'name'])->orderBy('sort')->get();
+        $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get();
 
         return $this->successData(compact('courses', 'categories'));
     }
 
     public function create()
     {
-        $categories = CourseCategory::show()->get();
+        $categories = CourseCategory::query()->select(['id', 'name', 'sort'])->orderBy('sort')->get();
         return $this->successData(compact('categories'));
     }
 
@@ -73,7 +83,6 @@ class CourseController extends BaseController
         $originIsShow = $course->is_show;
         $course->fill($data)->save();
 
-        // 判断是否修改了显示的状态
         if ($originIsShow !== $data['is_show']) {
             // 修改下面的视频显示状态
             Video::where('course_id', $course->id)->update(['is_show' => $data['is_show']]);
@@ -88,6 +97,7 @@ class CourseController extends BaseController
         if ($course->videos()->exists()) {
             return $this->error(BackendApiConstant::COURSE_BAN_DELETE_FOR_VIDEOS);
         }
+
         $course->delete();
 
         return $this->success();
@@ -95,9 +105,47 @@ class CourseController extends BaseController
 
     public function subscribeUsers(Request $request, $courseId)
     {
-        $data = CourseUserRecord::whereCourseId($courseId)->paginate($request->input('size', 12));
-        $users = User::select(['id', 'nick_name', 'avatar', 'mobile'])->whereIn('id', array_column($data->all(), 'user_id'))->get()->keyBy('id');
-        return $this->successData(compact('data', 'users'));
+        $userId = (int)$request->input('user_id');
+        $watchStartAt = $request->input('watched_start_at');
+        $watchEndAt = $request->input('watched_end_at');
+
+        $data = CourseUserRecord::query()
+            ->where('course_id', $courseId)
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->when($watchStartAt && $watchEndAt, function ($query) use ($watchStartAt, $watchEndAt) {
+                $query->whereBetween('watched_at', [$watchStartAt, $watchEndAt]);
+            })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        // 用户
+        $users = User::query()
+            ->select(['id', 'nick_name', 'avatar', 'mobile'])
+            ->whereIn('id', array_column($data->items(), 'user_id'))
+            ->get()
+            ->keyBy('id');
+
+        // 订阅记录
+        $subscribeRecords = UserCourse::query()
+            ->whereIn('user_id', array_column($data->items(), 'user_id'))
+            ->where('course_id', $courseId)
+            ->get()
+            ->keyBy('user_id');
+
+        return $this->successData([
+            'data' => $data,
+            'users' => $users,
+            'subscribe_records' => $subscribeRecords,
+        ]);
+    }
+
+    public function deleteSubscribe(Request $request)
+    {
+        $id = $request->input('id');
+        UserCourse::query()->where('id', $id)->delete();
+        return $this->success();
     }
 
     public function all()
