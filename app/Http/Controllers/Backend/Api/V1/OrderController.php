@@ -20,17 +20,41 @@ class OrderController extends BaseController
 {
     public function index(Request $request)
     {
-        $keywords = $request->input('keywords', '');
         $status = $request->input('status', null);
-        $orders = Order::with(['goods', 'paidRecords'])
+        $userId = $request->input('user_id');
+
+        $orders = Order::query()
+            ->with(['goods', 'paidRecords'])
             ->status($status)
-            ->keywords($keywords)
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
             ->latest()
             ->paginate($request->input('page_size', 10));
-        $userIds = array_column($orders->all(), 'user_id');
-        $users = User::select(['id', 'nick_name', 'avatar', 'mobile'])->whereIn('id', $userIds)->get()->keyBy('id');
+
+        $userIds = array_column($orders->items(), 'user_id');
+        $users = User::query()
+            ->select(['id', 'nick_name', 'avatar', 'mobile'])
+            ->whereIn('id', $userIds)
+            ->get()
+            ->keyBy('id');
 
         return $this->successData(compact('orders', 'users'));
+    }
+
+    public function detail($id)
+    {
+        $order = Order::query()
+            ->with(['goods', 'paidRecords'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $user = User::query()->select(['id', 'nick_name', 'avatar', 'mobile'])->where('id', $order['user_id'])->first();
+
+        return $this->successData([
+            'order' => $order,
+            'user' => $user,
+        ]);
     }
 
     public function finishOrder($id)

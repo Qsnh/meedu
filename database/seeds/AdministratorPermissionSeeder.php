@@ -700,6 +700,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '订单',
+                'display_name' => '订单详情',
+                'slug' => 'order.detail',
+                'method' => 'GET',
+                'url' => 'order/\d+',
+            ],
+            [
+                'group_name' => '订单',
                 'display_name' => '订单完成',
                 'slug' => 'order.finish',
                 'method' => 'GET',

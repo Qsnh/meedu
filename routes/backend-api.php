@@ -195,6 +195,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     // 订单
     Route::group(['prefix' => 'order'], function () {
         Route::get('/', 'OrderController@index');
+        Route::get('/{id}', 'OrderController@detail');
         Route::get('/{id}/finish', 'OrderController@finishOrder');
     });
 

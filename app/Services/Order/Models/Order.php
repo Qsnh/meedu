@@ -11,7 +11,6 @@
 
 namespace App\Services\Order\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Base\Services\ConfigService;
 
@@ -86,25 +85,6 @@ class Order extends Model
         }
 
         return $query->where('status', $status);
-    }
-
-    /**
-     * @param $query
-     * @param $keywords
-     *
-     * @return mixed
-     */
-    public function scopeKeywords($query, $keywords)
-    {
-        if (!$keywords) {
-            return $query;
-        }
-        $memberIds = User::where('nick_name', 'like', "%{$keywords}%")
-            ->orWhere('mobile', 'like', "%{$keywords}%")
-            ->select('id')
-            ->pluck('id');
-
-        return $query->whereIn('user_id', $memberIds);
     }
 
     /**
