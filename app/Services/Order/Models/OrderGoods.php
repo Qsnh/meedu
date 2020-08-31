@@ -18,13 +18,17 @@ class OrderGoods extends Model
     const GOODS_TYPE_COURSE = 'COURSE';
     const GOODS_TYPE_VIDEO = 'VIDEO';
     const GOODS_TYPE_ROLE = 'ROLE';
-    const GOODS_TYPE_BOOK = 'BOOK';
 
     protected $table = 'order_goods';
 
     protected $fillable = [
-        'user_id', 'goods_id', 'goods_type', 'oid',
+        // 订单表orders的id
+        'oid',
+        // 商品信息
+        'goods_id', 'goods_type', 'goods_name', 'goods_thumb', 'goods_charge', 'goods_ori_charge',
+        // 购买数量和价格
         'num', 'charge',
+        'user_id',
         // todo 即将废弃
         'order_id',
     ];

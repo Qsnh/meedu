@@ -70,12 +70,17 @@ class OrderService implements OrderServiceInterface
                 $orderGoodsItems[] = [
                     'user_id' => $userId,
                     'oid' => $order['id'],
-                    // todo 即将废弃
-                    'order_id' => '',
                     'num' => 1,
                     'charge' => $goodsItem['charge'],
                     'goods_id' => $goodsItem['id'],
                     'goods_type' => $goodsItem['type'],
+                    'goods_name' => $goodsItem['goods_name'] ?? '',
+                    'goods_thumb' => $goodsItem['goods_thumb'] ?? '',
+                    'goods_charge' => (int)($goodsItem['goods_charge'] ?? ''),
+                    'goods_ori_charge' => (int)($goodsItem['goods_ori_charge'] ?? ''),
+
+                    // todo 即将废弃
+                    'order_id' => '',
                 ];
             }
             OrderGoods::insert($orderGoodsItems);
@@ -90,7 +95,9 @@ class OrderService implements OrderServiceInterface
             ]);
 
             // 订单支付事件
-            $order['status'] == Order::STATUS_PAID && event(new PaymentSuccessEvent($order->toArray()));
+            if ($order['status'] === Order::STATUS_PAID) {
+                event(new PaymentSuccessEvent($order->toArray()));
+            }
 
             return $order->toArray();
         });
@@ -109,6 +116,10 @@ class OrderService implements OrderServiceInterface
                 'id' => $course['id'],
                 'charge' => $course['charge'],
                 'type' => OrderGoods::GOODS_TYPE_COURSE,
+                'goods_name' => $course['title'] ?? '',
+                'goods_thumb' => $course['thumb'] ?? '',
+                'goods_charge' => $course['charge'] ?? 0,
+                'goods_ori_charge' => $course['charge'] ?? 0,
             ]
         ], $promoCodeId);
     }
@@ -126,6 +137,10 @@ class OrderService implements OrderServiceInterface
                 'id' => $video['id'],
                 'charge' => $video['charge'],
                 'type' => OrderGoods::GOODS_TYPE_VIDEO,
+                'goods_name' => $video['title'] ?? '',
+                'goods_thumb' => '',
+                'goods_charge' => $video['charge'] ?? 0,
+                'goods_ori_charge' => $video['charge'] ?? 0,
             ]
         ], $promoCodeId);
     }
@@ -143,6 +158,10 @@ class OrderService implements OrderServiceInterface
                 'id' => $role['id'],
                 'charge' => $role['charge'],
                 'type' => OrderGoods::GOODS_TYPE_ROLE,
+                'goods_name' => $role['name'] ?? '',
+                'goods_thumb' => '',
+                'goods_charge' => $role['charge'] ?? 0,
+                'goods_ori_charge' => $role['charge'] ?? 0,
             ]
         ], $promoCodeId);
     }
@@ -251,7 +270,7 @@ class OrderService implements OrderServiceInterface
             throw new ServiceException('order status error');
         }
         $order->update(['status' => Order::STATUS_CANCELED]);
-        
+
         event(new OrderCancelEvent($order['id']));
     }
 
