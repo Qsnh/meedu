@@ -23,6 +23,8 @@ class VideoCommentController extends BaseController
     {
         $courseId = $request->input('course_id');
         $videoId = $request->input('video_id');
+        $userId = $request->input('user_id');
+
         $comments = VideoComment::with(['video.course'])
             ->when($courseId, function ($query) use ($courseId) {
                 $videoIds = Video::query()->select(['id'])->where('course_id', $courseId)->get()->pluck('id');
@@ -31,15 +33,14 @@ class VideoCommentController extends BaseController
             ->when($videoId, function ($query) use ($videoId) {
                 $query->where('video_id', $videoId);
             })
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
             ->orderByDesc('id')
-            ->paginate($request->input('size', 20));
+            ->paginate($request->input('size', 10));
 
-        $userIds = [];
-        foreach ($comments->items() as $item) {
-            $userIds[$item->user_id] = 0;
-        }
         $users = User::query()
-            ->whereIn('id', array_keys($userIds))
+            ->whereIn('id', array_column($comments->items(), 'user_id'))
             ->select(['id', 'nick_name', 'avatar', 'mobile'])
             ->get()
             ->keyBy('id');

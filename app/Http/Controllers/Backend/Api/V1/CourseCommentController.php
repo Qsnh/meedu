@@ -21,19 +21,20 @@ class CourseCommentController extends BaseController
     public function index(Request $request)
     {
         $courseId = $request->input('course_id');
+        $userId = $request->input('user_id');
+
         $comments = CourseComment::with(['course'])
             ->when($courseId, function ($query) use ($courseId) {
                 $query->where('course_id', $courseId);
             })
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
             ->orderByDesc('id')
-            ->paginate($request->input('size', 12));
+            ->paginate($request->input('size', 10));
 
-        $userIds = [];
-        foreach ($comments->items() as $item) {
-            $userIds[] = $item->user_id;
-        }
         $users = User::query()
-            ->whereIn('id', array_flip(array_flip($userIds)))
+            ->whereIn('id', array_column($comments->items(), 'user_id'))
             ->select(['id', 'nick_name', 'mobile', 'avatar'])
             ->get()
             ->keyBy('id');
