@@ -475,10 +475,31 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '课程',
-                'display_name' => '课程订阅用户',
-                'slug' => 'course.subscribe_users',
+                'display_name' => '课程观看记录',
+                'slug' => 'course.watchRecords',
                 'method' => 'GET',
-                'url' => 'course/\d+/subscribe/users',
+                'url' => 'course/\d+/watch/records',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅',
+                'slug' => 'course.subscribes',
+                'method' => 'GET',
+                'url' => 'course/\d+/subscribes',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅删除',
+                'slug' => 'course.subscribe.delete',
+                'method' => 'GET',
+                'url' => 'course/\d+/subscribe/delete',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅新增',
+                'slug' => 'course.subscribe.create',
+                'method' => 'POST',
+                'url' => 'course/\d+/subscribe/create',
             ],
 
             // 视频

@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\BackendApiConstant;
 use App\Services\Member\Models\User;
@@ -103,7 +104,8 @@ class CourseController extends BaseController
         return $this->success();
     }
 
-    public function subscribeUsers(Request $request, $courseId)
+    // 课程观看记录
+    public function watchRecords(Request $request, $courseId)
     {
         $userId = (int)$request->input('user_id');
         $watchStartAt = $request->input('watched_start_at');
@@ -141,10 +143,61 @@ class CourseController extends BaseController
         ]);
     }
 
-    public function deleteSubscribe(Request $request)
+    // 订阅记录
+    public function subscribes(Request $request, $courseId)
     {
-        $id = $request->input('id');
-        UserCourse::query()->where('id', $id)->delete();
+        $userId = $request->input('user_id');
+        $subscribeStartAt = $request->input('subscribe_start_at');
+        $subscribeEndAt = $request->input('subscribe_end_at');
+
+        $data = UserCourse::query()
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->when($subscribeStartAt && $subscribeEndAt, function ($query) use ($subscribeStartAt, $subscribeEndAt) {
+                $query->whereBetween('created_at', [$subscribeStartAt, $subscribeEndAt]);
+            })
+            ->where('course_id', $courseId)
+            ->orderByDesc('created_at')
+            ->paginate($request->input('size', 10));
+
+        $users = User::query()
+            ->select(['id', 'nick_name', 'mobile', 'avatar'])
+            ->whereIn('id', array_column($data->items(), 'user_id'))
+            ->get()
+            ->keyBy('id');
+
+        return $this->successData([
+            'data' => $data,
+            'users' => $users,
+        ]);
+    }
+
+    public function createSubscribe(Request $request, $courseId)
+    {
+        $userId = $request->input('user_id');
+        $exists = UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->exists();
+        if ($exists) {
+            return $this->error('订阅关系已存在');
+        }
+        if (!User::query()->where('id', $userId)->exists()) {
+            return $this->error('用户不存在');
+        }
+
+        UserCourse::create([
+            'course_id' => $courseId,
+            'user_id' => $userId,
+            'charge' => 0,
+            'created_at' => Carbon::now(),
+        ]);
+
+        return $this->success();
+    }
+
+    public function deleteSubscribe(Request $request, $courseId)
+    {
+        $userId = $request->input('user_id');
+        UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->delete();
         return $this->success();
     }
 
