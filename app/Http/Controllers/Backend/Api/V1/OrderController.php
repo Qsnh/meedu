@@ -22,16 +22,21 @@ class OrderController extends BaseController
     {
         $status = $request->input('status', null);
         $userId = $request->input('user_id');
+        $orderId = $request->input('order_id');
 
         $orders = Order::query()
             ->with(['goods', 'paidRecords'])
-            ->status($status)
+            ->where('status', $status)
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
+            })
+            ->when($orderId, function ($query) use ($orderId) {
+                $query->where('order_id', $orderId);
             })
             ->latest()
             ->paginate($request->input('page_size', 10));
 
+        // 读取当前读取出来订单的用户
         $userIds = array_column($orders->items(), 'user_id');
         $users = User::query()
             ->select(['id', 'nick_name', 'avatar', 'mobile'])
