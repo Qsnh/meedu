@@ -20,11 +20,19 @@ class PromoCodeController extends BaseController
     public function index(Request $request)
     {
         $key = $request->input('key');
-        $items = PromoCode::query()->when($key, function ($query) use ($key) {
-            $query->where('code', 'like', $key . '%');
-        })
-            ->orderByDesc('id')
-            ->paginate($request->input('size', 20));
+        $userId = $request->input('user_id');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
+
+        $items = PromoCode::query()
+            ->when($key, function ($query) use ($key) {
+                $query->where('code', 'like', '%' . $key . '%');
+            })
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->orderBy($sort, $order)
+            ->paginate($request->input('size', 10));
 
         return $this->successData($items);
     }
