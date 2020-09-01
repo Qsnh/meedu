@@ -18,6 +18,7 @@ use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
 use App\Http\Requests\Backend\CourseVideoRequest;
+use App\Services\Member\Models\UserVideoWatchRecord;
 
 class CourseVideoController extends BaseController
 {
@@ -165,5 +166,35 @@ class CourseVideoController extends BaseController
         $userId = $request->input('user_id');
         UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->delete();
         return $this->success();
+    }
+
+    public function watchRecords(Request $request, $videoId)
+    {
+        $userId = $request->input('user_id');
+        $watchedStartAt = $request->input('watched_start_at');
+        $watchedEndAt = $request->input('watched_end_at');
+
+        $data = UserVideoWatchRecord::query()
+            ->where('video_id', $videoId)
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->when($watchedStartAt && $watchedEndAt, function ($query) use ($watchedStartAt, $watchedEndAt) {
+                $query->whereBetween('watched_at', [$watchedStartAt, $watchedEndAt]);
+            })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        // 用户
+        $users = User::query()
+            ->select(['id', 'nick_name', 'avatar', 'mobile'])
+            ->whereIn('id', array_column($data->items(), 'user_id'))
+            ->get()
+            ->keyBy('id');
+
+        return $this->successData([
+            'data' => $data,
+            'users' => $users,
+        ]);
     }
 }

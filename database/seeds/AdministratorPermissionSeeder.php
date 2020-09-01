@@ -573,6 +573,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'video/\d+/subscribe/delete',
             ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频观看记录',
+                'slug' => 'video.watch.records',
+                'method' => 'GET',
+                'url' => 'video/\d+/watch/records',
+            ],
 
             // 用户
             [
