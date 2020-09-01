@@ -95,6 +95,7 @@ class MemberController extends BaseController
             ->when($status !== -1, function ($query) use ($status) {
                 $query->where('status', $status);
             })
+            ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
         $users = User::query()

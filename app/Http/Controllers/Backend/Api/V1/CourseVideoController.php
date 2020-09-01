@@ -11,9 +11,12 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
+use App\Services\Member\Models\UserVideo;
 use App\Http\Requests\Backend\CourseVideoRequest;
 
 class CourseVideoController extends BaseController
@@ -25,19 +28,18 @@ class CourseVideoController extends BaseController
         $sort = $request->input('sort', 'created_at');
         $order = $request->input('order', 'desc');
 
-        $videos = Video::with(['course'], ['chapter'])
+        $videos = Video::query()
+            ->with(['course', 'chapter'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('title', 'like', "{$keywords}%");
             })
             ->when($courseId, function ($query) use ($courseId) {
-                $query->whereCourseId($courseId);
+                $query->where('course_id', $courseId);
             })
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 20));
 
-        $videos->appends($request->input());
-
-        $courses = \App\Services\Course\Models\Course::select(['id', 'title'])->get();
+        $courses = Course::query()->select(['id', 'title'])->get();
 
         return $this->successData(compact('videos', 'courses'));
     }
@@ -105,6 +107,63 @@ class CourseVideoController extends BaseController
             $this->hook($courseId);
         }
 
+        return $this->success();
+    }
+
+    public function subscribes(Request $request, $videoId)
+    {
+        $userId = $request->input('user_id');
+        $subscribeStartAt = $request->input('subscribe_start_at');
+        $subscribeEndAt = $request->input('subscribe_end_at');
+
+        $data = UserVideo::query()
+            ->where('video_id', $videoId)
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->when($subscribeStartAt && $subscribeEndAt, function ($query) use ($subscribeStartAt, $subscribeEndAt) {
+                $query->whereBetween('created_at', [$subscribeStartAt, $subscribeEndAt]);
+            })
+            ->orderByDesc('created_at')
+            ->paginate($request->input('size', 10));
+
+        $users = User::query()
+            ->select(['id', 'nick_name', 'mobile', 'avatar'])
+            ->whereIn('id', array_column($data->items(), 'user_id'))
+            ->get()
+            ->keyBy('id');
+
+        return $this->successData([
+            'data' => $data,
+            'users' => $users,
+        ]);
+    }
+
+    public function subscribeCreate(Request $request, $videoId)
+    {
+        $userId = $request->input('user_id');
+        if (UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->exists()) {
+            return $this->error('订阅关系已存在');
+        }
+
+        if (!User::query()->where('id', $userId)->exists()) {
+            return $this->error('用户不存在');
+        }
+
+        UserVideo::create([
+            'user_id' => $userId,
+            'video_id' => $videoId,
+            'charge' => 0,
+            'created_at' => Carbon::now(),
+        ]);
+
+        return $this->success();
+    }
+
+    public function subscribeDelete(Request $request, $videoId)
+    {
+        $userId = $request->input('user_id');
+        UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->delete();
         return $this->success();
     }
 }

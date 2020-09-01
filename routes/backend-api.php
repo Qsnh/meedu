@@ -159,6 +159,10 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
         Route::post('/delete/multi', 'CourseVideoController@multiDestroy');
+        // 订阅关系
+        Route::get('/{id}/subscribes', 'CourseVideoController@subscribes');
+        Route::post('/{id}/subscribe/create', 'CourseVideoController@subscribeCreate');
+        Route::get('/{id}/subscribe/delete', 'CourseVideoController@subscribeDelete');
     });
 
     // 会员

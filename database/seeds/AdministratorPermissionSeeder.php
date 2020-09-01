@@ -552,6 +552,27 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'video/delete/multi',
             ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅列表',
+                'slug' => 'video.subscribes',
+                'method' => 'GET',
+                'url' => 'video/\d+/subscribes',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅添加',
+                'slug' => 'video.subscribe.create',
+                'method' => 'POST',
+                'url' => 'video/\d+/subscribe/create',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅删除',
+                'slug' => 'video.subscribe.delete',
+                'method' => 'GET',
+                'url' => 'video/\d+/subscribe/delete',
+            ],
 
             // 用户
             [
