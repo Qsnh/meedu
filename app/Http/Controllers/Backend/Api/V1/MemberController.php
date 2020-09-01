@@ -81,8 +81,28 @@ class MemberController extends BaseController
     // 用户提现订单
     public function inviteBalanceWithdrawOrders(Request $request)
     {
-        $orders = UserInviteBalanceWithdrawOrder::latest()->paginate($request->input('size', 12));
-        $users = \App\Services\Member\Models\User::whereIn('id', $orders->pluck('user_id'))->get()->keyBy('id');
+        $userId = $request->input('user_id');
+        $status = (int)$request->input('status');
+        $name = $request->input('name');
+
+        $orders = UserInviteBalanceWithdrawOrder::query()
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->when($name, function ($query) use ($name) {
+                $query->where('channel_name', 'like', '%' . $name . '%');
+            })
+            ->when($status !== -1, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->paginate($request->input('size', 10));
+
+        $users = User::query()
+            ->select(['id', 'nick_name', 'mobile', 'avatar'])
+            ->whereIn('id', array_column($orders->items(), 'user_id'))
+            ->get()
+            ->keyBy('id');
+
         return $this->successData(compact('orders', 'users'));
     }
 
@@ -92,11 +112,17 @@ class MemberController extends BaseController
         $ids = $request->input('ids');
         $status = $request->input('status');
         $remark = $request->input('remark', '');
-        UserInviteBalanceWithdrawOrder::whereIn('id', $ids)->update([
-            'status' => $status,
-            'remark' => $remark,
-        ]);
+
+        UserInviteBalanceWithdrawOrder::query()
+            ->whereIn('id', $ids)
+            ->update([
+                'status' => $status,
+                'remark' => $remark,
+            ]);
+
+        // 提现处理后事件
         event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
+
         return $this->success();
     }
 
