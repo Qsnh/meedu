@@ -26,14 +26,16 @@ class OrderController extends BaseController
 
         $orders = Order::query()
             ->with(['goods', 'paidRecords'])
-            ->where('status', $status)
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
             ->when($orderId, function ($query) use ($orderId) {
                 $query->where('order_id', $orderId);
             })
-            ->latest()
+            ->orderByDesc('id')
             ->paginate($request->input('page_size', 10));
 
         // 读取当前读取出来订单的用户
