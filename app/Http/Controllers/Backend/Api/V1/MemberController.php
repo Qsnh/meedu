@@ -21,10 +21,12 @@ use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
+use App\Services\Member\Models\UserTag;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Member\Models\UserTagRelation;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
@@ -37,10 +39,11 @@ class MemberController extends BaseController
     {
         $keywords = $request->input('keywords', '');
         $roleId = $request->input('role_id');
+        $tagId = $request->input('tag_id');
         $sort = $request->input('sort', 'created_at');
         $order = $request->input('order', 'desc');
 
-        $members = User::with(['role'])
+        $members = User::with(['role', 'tags'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('nick_name', 'like', "%{$keywords}%")
                     ->orWhere('mobile', 'like', "%{$keywords}%");
@@ -48,14 +51,21 @@ class MemberController extends BaseController
             ->when($roleId, function ($query) use ($roleId) {
                 $query->whereRoleId($roleId)->where('role_expired_at', '>', Carbon::now());
             })
+            ->when($tagId, function ($query) use ($tagId) {
+                $userIds = UserTagRelation::query()->where('tag_id', $tagId)->select(['user_id'])->get()->pluck('user_id');
+                $query->whereIn('id', $userIds);
+            })
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 20));
 
         $members->appends($request->input());
 
-        $roles = Role::select(['id', 'name'])->get();
+        // 全部VIP
+        $roles = Role::query()->select(['id', 'name'])->get();
+        // 全部TAG
+        $tags = UserTag::query()->select(['id', 'name'])->get();
 
-        return $this->successData(compact('members', 'roles'));
+        return $this->successData(compact('members', 'roles', 'tags'));
     }
 
     public function create()
@@ -246,6 +256,7 @@ class MemberController extends BaseController
         ]);
     }
 
+    // 积分记录
     public function credit1Records(Request $request, $id)
     {
         $records = UserCreditRecord::query()
@@ -258,6 +269,7 @@ class MemberController extends BaseController
         ]);
     }
 
+    // 积分变动
     public function credit1Change(Request $request)
     {
         $userId = $request->input('user_id');
@@ -276,6 +288,30 @@ class MemberController extends BaseController
                 'remark' => $remark,
             ]);
         });
+
+        return $this->success();
+    }
+
+    public function tagUpdate(Request $request, $userId)
+    {
+        $tags = $request->input('tags');
+
+        $tagIdMap = UserTag::query()->whereIn('name', $tags)->select(['name', 'id'])->get()->keyBy('name')->toArray();
+        $tagIds = [];
+
+        foreach ($tags as $item) {
+            $id = $tagIdMap[$item]['id'] ?? 0;
+            if (!$id) {
+                // 标签不存在
+                $tmpTag = UserTag::create(['name' => $item]);
+                $id = $tmpTag['id'];
+            }
+
+            $tagIds[] = $id;
+        }
+
+        $user = User::query()->where('id', $userId)->firstOrFail();
+        $user->tags()->sync($tagIds);
 
         return $this->success();
     }

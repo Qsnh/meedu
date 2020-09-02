@@ -701,6 +701,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'member/credit1/change',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户标签',
+                'slug' => 'member.tags',
+                'method' => 'PUT',
+                'url' => 'member/\d+/tags',
+            ],
 
             // 系统配置
             [

@@ -173,6 +173,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/create', 'MemberController@create');
         Route::get('/{id}', 'MemberController@edit');
 
+        // 标签
+        Route::put('/{id}/tags', 'MemberController@tagUpdate');
+
         // 用户详情
         Route::get('/{id}/detail', 'MemberController@detail');
         Route::get('/{id}/detail/userCourses', 'MemberController@userCourses');
