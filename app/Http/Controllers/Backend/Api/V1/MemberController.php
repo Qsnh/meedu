@@ -24,6 +24,7 @@ use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserTag;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserRemark;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserTagRelation;
@@ -56,16 +57,25 @@ class MemberController extends BaseController
                 $query->whereIn('id', $userIds);
             })
             ->orderBy($sort, $order)
-            ->paginate($request->input('size', 20));
-
-        $members->appends($request->input());
+            ->paginate($request->input('size', 10));
 
         // 全部VIP
         $roles = Role::query()->select(['id', 'name'])->get();
         // 全部TAG
         $tags = UserTag::query()->select(['id', 'name'])->get();
+        // 会员备注
+        $userRemarks = UserRemark::query()
+            ->whereIn('user_id', array_column($members->items(), 'id'))
+            ->select(['user_id', 'remark'])
+            ->get()
+            ->keyBy('user_id');
 
-        return $this->successData(compact('members', 'roles', 'tags'));
+        return $this->successData([
+            'data' => $members,
+            'roles' => $roles,
+            'tags' => $tags,
+            'user_remarks' => $userRemarks,
+        ]);
     }
 
     public function create()
@@ -292,6 +302,7 @@ class MemberController extends BaseController
         return $this->success();
     }
 
+    // 用户标签更新
     public function tagUpdate(Request $request, $userId)
     {
         $tags = $request->input('tags');
@@ -312,6 +323,33 @@ class MemberController extends BaseController
 
         $user = User::query()->where('id', $userId)->firstOrFail();
         $user->tags()->sync($tagIds);
+
+        return $this->success();
+    }
+
+    // 用户备注
+    public function remark(Request $request, $id)
+    {
+        $userRemark = UserRemark::query()->where('user_id', $id)->first();
+        $remark = $userRemark ? $userRemark['remark'] : '';
+        return $this->successData([
+            'remark' => $remark,
+        ]);
+    }
+
+    // 更新用户备注
+    public function updateRemark(Request $request, $id)
+    {
+        $remark = $request->input('remark', '');
+        $userRemark = UserRemark::query()->where('user_id', $id)->first();
+        if ($userRemark) {
+            $userRemark->update(['remark' => $remark]);
+        } else {
+            UserRemark::create([
+                'user_id' => $id,
+                'remark' => $remark,
+            ]);
+        }
 
         return $this->success();
     }

@@ -175,6 +175,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
         // 标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
+        // 备注
+        Route::get('/{id}/remark', 'MemberController@remark');
+        Route::put('/{id}/remark', 'MemberController@updateRemark');
 
         // 用户详情
         Route::get('/{id}/detail', 'MemberController@detail');

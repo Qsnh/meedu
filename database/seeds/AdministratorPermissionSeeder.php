@@ -708,6 +708,20 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'PUT',
                 'url' => 'member/\d+/tags',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户备注',
+                'slug' => 'member.remark',
+                'method' => 'GET',
+                'url' => 'member/\d+/remark',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户备注更新',
+                'slug' => 'member.remark.update',
+                'method' => 'PUT',
+                'url' => 'member/\d+/remark',
+            ],
 
             // 系统配置
             [
