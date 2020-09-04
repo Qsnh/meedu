@@ -134,6 +134,18 @@ class AdministratorMenuSeeder extends Seeder
                 ],
             ],
             [
+                'title' => '微信公众号',
+                'key' => 'mp_wechat',
+                'icon' => 'icon-grid',
+                'children' => [
+                    [
+                        'title' => '消息回复',
+                        'key' => 'mpWechatMessageReply',
+                        'permission' => 'mpWechatMessageReply',
+                    ],
+                ],
+            ],
+            [
                 'title' => '系统',
                 'key' => 'system',
                 'icon' => 'icon-cog',

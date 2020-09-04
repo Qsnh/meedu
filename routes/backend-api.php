@@ -273,4 +273,14 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         // 每日课程观看时长统计
         Route::get('/courseWatchDuration', 'StatisticController@courseWatchDuration');
     });
+
+    // 微信公众号消息回复
+    Route::group(['prefix' => 'mpWechatMessageReply'], function () {
+        Route::get('/', 'MpWechatMessageReplyController@index');
+        Route::get('/create', 'MpWechatMessageReplyController@create');
+        Route::post('/', 'MpWechatMessageReplyController@store');
+        Route::get('/{id}', 'MpWechatMessageReplyController@edit');
+        Route::put('/{id}', 'MpWechatMessageReplyController@update');
+        Route::delete('/{id}', 'MpWechatMessageReplyController@destroy');
+    });
 });

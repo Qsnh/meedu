@@ -17,6 +17,7 @@ use App\Services\Other\Services\UploadService;
 use App\Services\Other\Proxies\NavServiceProxy;
 use App\Services\Other\Proxies\SmsServiceProxy;
 use App\Services\Other\Proxies\LinkServiceProxy;
+use App\Services\Other\Services\MpWechatService;
 use App\Services\Other\Proxies\SliderServiceProxy;
 use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
@@ -26,6 +27,7 @@ use App\Services\Other\Proxies\AnnouncementServiceProxy;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Other\Interfaces\UploadServiceInterface;
+use App\Services\Other\Interfaces\MpWechatServiceInterface;
 use App\Services\Other\Interfaces\IndexBannerServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
@@ -41,5 +43,6 @@ class OtherServiceRegisterProvider extends ServiceProvider
         $this->app->instance(UploadServiceInterface::class, $this->app->make(UploadService::class));
         $this->app->instance(IndexBannerServiceInterface::class, $this->app->make(IndexBannerServiceProxy::class));
         $this->app->instance(SliderServiceInterface::class, $this->app->make(SliderServiceProxy::class));
+        $this->app->instance(MpWechatServiceInterface::class, $this->app->make(MpWechatService::class));
     }
 }

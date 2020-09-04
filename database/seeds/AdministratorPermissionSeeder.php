@@ -960,6 +960,50 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'course_attach/\d+',
             ],
+
+            // 微信公众号消息回复
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复列表',
+                'slug' => 'mpWechatMessageReply',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息创建',
+                'slug' => 'mpWechatMessageReply.create',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply/create',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复添加',
+                'slug' => 'mpWechatMessageReply.store',
+                'method' => 'POST',
+                'url' => 'mpWechatMessageReply',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复查看',
+                'slug' => 'mpWechatMessageReply.edit',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复编辑',
+                'slug' => 'mpWechatMessageReply.update',
+                'method' => 'PUT',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复删除',
+                'slug' => 'mpWechatMessageReply.destroy',
+                'method' => 'DELETE',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
         ];
 
         foreach ($permissions as $permission) {

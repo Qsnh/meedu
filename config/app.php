@@ -186,6 +186,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // 埋点服务
+        \App\Providers\HooksRegisterProvider::class,
+
         // Third
         Mews\Captcha\CaptchaServiceProvider::class,
         \SocialiteProviders\Manager\ServiceProvider::class,
