@@ -283,4 +283,13 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::put('/{id}', 'MpWechatMessageReplyController@update');
         Route::delete('/{id}', 'MpWechatMessageReplyController@destroy');
     });
+
+    // 微信公众号
+    Route::group(['prefix' => 'mpWechat'], function () {
+        Route::group(['prefix' => 'menu'], function () {
+            Route::get('/', 'MpWechatController@menu');
+            Route::put('/', 'MpWechatController@menuUpdate');
+            Route::delete('/', 'MpWechatController@menuEmpty');
+        });
+    });
 });

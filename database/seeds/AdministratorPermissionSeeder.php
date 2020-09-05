@@ -1004,6 +1004,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'mpWechatMessageReply/\d+',
             ],
+
+            // 微信公众号操作
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单查询',
+                'slug' => 'mpWechat.menu',
+                'method' => 'GET',
+                'url' => 'mpWechat/menu',
+            ],
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单更新',
+                'slug' => 'mpWechat.menu.update',
+                'method' => 'PUT',
+                'url' => 'mpWechat/menu',
+            ],
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单清空',
+                'slug' => 'mpWechat.menu.empty',
+                'method' => 'DELETE',
+                'url' => 'mpWechat/menu',
+            ],
         ];
 
         foreach ($permissions as $permission) {
