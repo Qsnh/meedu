@@ -509,4 +509,13 @@ class ConfigService implements ConfigServiceInterface
         $config = config('meedu.mp_wechat');
         return $config ? $config : [];
     }
+
+    /**
+     * 获取注册送VIP的配置
+     * @return array
+     */
+    public function getMemberRegisterSendVipConfig(): array
+    {
+        return config('meedu.member.register.vip') ?? [];
+    }
 }

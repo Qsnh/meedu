@@ -1102,6 +1102,32 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+
+            // 注册送VIP
+            [
+                'group' => '注册送VIP',
+                'name' => '开启',
+                'field_type' => 'switch',
+                'sort' => 0,
+                'key' => 'meedu.member.register.vip.enabled',
+                'value' => 0
+            ],
+            [
+                'group' => '注册送VIP',
+                'name' => 'VipID',
+                'field_type' => 'number',
+                'sort' => 1,
+                'key' => 'meedu.member.register.vip.role_id',
+                'value' => 0
+            ],
+            [
+                'group' => '注册送VIP',
+                'name' => '赠送天数',
+                'field_type' => 'number',
+                'sort' => 2,
+                'key' => 'meedu.member.register.vip.days',
+                'value' => 0,
+            ],
         ];
 
         $localConfig = [];

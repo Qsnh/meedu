@@ -49,6 +49,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
             'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
             'App\Listeners\UserRegisterEvent\RegisterCredit1RewardListener',
+            'App\Listeners\UserRegisterEvent\RegisterSendVipListener',
         ],
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
