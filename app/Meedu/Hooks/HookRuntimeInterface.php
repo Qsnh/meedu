@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
+namespace App\Meedu\Hooks;
 
-class MeEdu
+interface HookRuntimeInterface
 {
-    const VERSION = 'v3.4';
+    public function handle(HookParams $params, \Closure $closure);
 }

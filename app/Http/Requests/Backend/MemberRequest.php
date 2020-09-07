@@ -62,7 +62,7 @@ class MemberRequest extends BaseRequest
             'password' => Hash::make($this->post('password')),
             'is_active' => User::ACTIVE_YES,
             'role_id' => (int)$this->input('role_id'),
-            'role_expired_at' => $this->input('role_expired_at', ''),
+            'role_expired_at' => $this->input('role_expired_at') ?: null,
         ];
     }
 }

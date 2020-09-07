@@ -230,12 +230,13 @@ class AppConfigSeeder extends Seeder
             // 微信扫码登录
             [
                 'group' => '登录',
-                'name' => '微信扫码登录',
+                'name' => '微信开放平台扫码登录',
                 'field_type' => 'switch',
                 'sort' => 8,
                 'default_value' => 0,
                 'key' => 'meedu.member.socialite.weixinweb.enabled',
                 'value' => 0,
+                'help' => '申请地址：https://open.weixin.qq.com',
             ],
             [
                 'group' => '登录',
@@ -1062,6 +1063,70 @@ class AppConfigSeeder extends Seeder
                 'sort' => 1,
                 'key' => 'meedu.other.video_list_page_size',
                 'value' => 16,
+            ],
+
+            // 微信公众号
+            [
+                'group' => '微信公众号',
+                'name' => 'AppId',
+                'field_type' => 'text',
+                'sort' => 0,
+                'key' => 'meedu.mp_wechat.app_id',
+                'value' => '',
+                'help' => '微信公众号URL：' . url('api/wechat/serve'),
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => 'AppSecret',
+                'field_type' => 'text',
+                'sort' => 1,
+                'key' => 'meedu.mp_wechat.app_secret',
+                'value' => '',
+                'is_private' => 1,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => 'Token',
+                'field_type' => 'text',
+                'sort' => 2,
+                'key' => 'meedu.mp_wechat.token',
+                'value' => '',
+                'is_private' => 1,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => 'AesKey',
+                'field_type' => 'text',
+                'sort' => 3,
+                'key' => 'meedu.mp_wechat.aes_key',
+                'value' => '',
+                'is_private' => 1,
+            ],
+
+            // 注册送VIP
+            [
+                'group' => '注册送VIP',
+                'name' => '开启',
+                'field_type' => 'switch',
+                'sort' => 0,
+                'key' => 'meedu.member.register.vip.enabled',
+                'value' => 0
+            ],
+            [
+                'group' => '注册送VIP',
+                'name' => 'VipID',
+                'field_type' => 'number',
+                'sort' => 1,
+                'key' => 'meedu.member.register.vip.role_id',
+                'value' => 0
+            ],
+            [
+                'group' => '注册送VIP',
+                'name' => '赠送天数',
+                'field_type' => 'number',
+                'sort' => 2,
+                'key' => 'meedu.member.register.vip.days',
+                'value' => 0,
             ],
         ];
 

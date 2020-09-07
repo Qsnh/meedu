@@ -83,7 +83,19 @@ return [
             'paid_order' => 0,
             // 邀请用户
             'invite' => 0,
-        ]
+        ],
+
+        // 注册送VIP
+        'register' => [
+            'vip' => [
+                // 开启[1:是,0否]
+                'enabled' => 0,
+                // VIP[id]
+                'role_id' => 0,
+                // 赠送天数
+                'days' => 0,
+            ]
+        ],
     ],
 
     // 上传

@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Services\Member\Models\Role;
+use App\Services\Member\Models\User;
 use App\Http\Requests\Backend\RoleRequest;
 
 class RoleController extends BaseController
@@ -53,6 +54,10 @@ class RoleController extends BaseController
 
     public function destroy($id)
     {
+        if (User::query()->where('role_id', $id)->exists()) {
+            return $this->error('有用户是该VIP，无法删除');
+        }
+
         Role::destroy($id);
 
         return $this->success();

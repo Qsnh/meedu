@@ -499,4 +499,23 @@ class ConfigService implements ConfigServiceInterface
     {
         return (int)config('meedu.system.login.limit.rule');
     }
+
+    /**
+     * 微信公众号配置
+     * @return array
+     */
+    public function getMpWechatConfig(): array
+    {
+        $config = config('meedu.mp_wechat');
+        return $config ? $config : [];
+    }
+
+    /**
+     * 获取注册送VIP的配置
+     * @return array
+     */
+    public function getMemberRegisterSendVipConfig(): array
+    {
+        return config('meedu.member.register.vip') ?? [];
+    }
 }

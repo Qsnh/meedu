@@ -134,6 +134,23 @@ class AdministratorMenuSeeder extends Seeder
                 ],
             ],
             [
+                'title' => '微信公众号',
+                'key' => 'mp_wechat',
+                'icon' => 'icon-grid',
+                'children' => [
+                    [
+                        'title' => '消息回复',
+                        'key' => 'mpWechatMessageReply',
+                        'permission' => 'mpWechatMessageReply',
+                    ],
+                    [
+                        'title' => '菜单',
+                        'key' => 'mpWechatMenu',
+                        'permission' => 'mpWechat.menu',
+                    ],
+                ],
+            ],
+            [
                 'title' => '系统',
                 'key' => 'system',
                 'icon' => 'icon-cog',
@@ -170,24 +187,21 @@ class AdministratorMenuSeeder extends Seeder
         foreach ($menus as $index => $menu) {
             $sort = ($index + 1) * 10;
             $model = $this->create($menu, 0, $sort);
-            if ($model === false) {
-                continue;
-            }
             $children = $menu['children'] ?? [];
             if (!$children) {
                 continue;
             }
             foreach ($children as $i => $item) {
-                $this->create($item, $model->id, $sort * 10 + ($i + 1) * 10);
+                $this->create($item, $model['id'], $sort * 10 + ($i + 1) * 10);
             }
         }
     }
 
     protected function create($menu, $parentId = 0, $sort = 0)
     {
-        $exists = \App\Models\AdministratorMenu::query()->where('name', $menu['title'])->where('url', $menu['key'])->exists();
+        $exists = \App\Models\AdministratorMenu::query()->where('name', $menu['title'])->where('url', $menu['key'])->first();
         if ($exists) {
-            return false;
+            return $exists;
         }
         return \App\Models\AdministratorMenu::create([
             'parent_id' => $parentId,

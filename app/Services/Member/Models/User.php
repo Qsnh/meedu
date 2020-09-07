@@ -93,4 +93,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(UserInviteBalanceWithdrawOrder::class, 'user_id');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(UserTag::class, 'user_tag', 'user_id', 'tag_id');
+    }
 }

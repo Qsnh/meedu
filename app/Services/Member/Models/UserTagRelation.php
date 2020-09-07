@@ -9,9 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
+namespace App\Services\Member\Models;
 
-class MeEdu
+use Illuminate\Database\Eloquent\Model;
+
+class UserTagRelation extends Model
 {
-    const VERSION = 'v3.4';
+    protected $table = 'user_tag';
 }

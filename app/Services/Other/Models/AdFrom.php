@@ -21,6 +21,15 @@ class AdFrom extends Model
         'from_name', 'from_key',
     ];
 
+    protected $appends = [
+        'url'
+    ];
+
+    public function getUrlAttribute()
+    {
+        return url('/') . '?from_key=' . $this->from_key;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

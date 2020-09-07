@@ -9,9 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
+namespace App\Meedu\Hooks\Constant;
 
-class MeEdu
+class PositionConstant
 {
-    const VERSION = 'v3.4';
+
+    // 收到微信公证号消息
+    public const MP_WECHAT_RECEIVER_MESSAGE = 'mp_wechat_receive_message';
 }

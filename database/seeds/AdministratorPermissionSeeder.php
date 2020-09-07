@@ -475,10 +475,31 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '课程',
-                'display_name' => '课程订阅用户',
-                'slug' => 'course.subscribe_users',
+                'display_name' => '课程观看记录',
+                'slug' => 'course.watchRecords',
                 'method' => 'GET',
-                'url' => 'course/\d+/subscribe/users',
+                'url' => 'course/\d+/watch/records',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅',
+                'slug' => 'course.subscribes',
+                'method' => 'GET',
+                'url' => 'course/\d+/subscribes',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅删除',
+                'slug' => 'course.subscribe.delete',
+                'method' => 'GET',
+                'url' => 'course/\d+/subscribe/delete',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程订阅新增',
+                'slug' => 'course.subscribe.create',
+                'method' => 'POST',
+                'url' => 'course/\d+/subscribe/create',
             ],
 
             // 视频
@@ -530,6 +551,34 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'video.destroy.multi',
                 'method' => 'POST',
                 'url' => 'video/delete/multi',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅列表',
+                'slug' => 'video.subscribes',
+                'method' => 'GET',
+                'url' => 'video/\d+/subscribes',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅添加',
+                'slug' => 'video.subscribe.create',
+                'method' => 'POST',
+                'url' => 'video/\d+/subscribe/create',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频订阅删除',
+                'slug' => 'video.subscribe.delete',
+                'method' => 'GET',
+                'url' => 'video/\d+/subscribe/delete',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频观看记录',
+                'slug' => 'video.watch.records',
+                'method' => 'GET',
+                'url' => 'video/\d+/watch/records',
             ],
 
             // 用户
@@ -652,6 +701,27 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'member/credit1/change',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户标签',
+                'slug' => 'member.tags',
+                'method' => 'PUT',
+                'url' => 'member/\d+/tags',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户备注',
+                'slug' => 'member.remark',
+                'method' => 'GET',
+                'url' => 'member/\d+/remark',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户备注更新',
+                'slug' => 'member.remark.update',
+                'method' => 'PUT',
+                'url' => 'member/\d+/remark',
+            ],
 
             // 系统配置
             [
@@ -676,6 +746,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'order',
                 'method' => 'GET',
                 'url' => 'order',
+            ],
+            [
+                'group_name' => '订单',
+                'display_name' => '订单详情',
+                'slug' => 'order.detail',
+                'method' => 'GET',
+                'url' => 'order/\d+',
             ],
             [
                 'group_name' => '订单',
@@ -882,6 +959,73 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'course_attach.destroy',
                 'method' => 'DELETE',
                 'url' => 'course_attach/\d+',
+            ],
+
+            // 微信公众号消息回复
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复列表',
+                'slug' => 'mpWechatMessageReply',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息创建',
+                'slug' => 'mpWechatMessageReply.create',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply/create',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复添加',
+                'slug' => 'mpWechatMessageReply.store',
+                'method' => 'POST',
+                'url' => 'mpWechatMessageReply',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复查看',
+                'slug' => 'mpWechatMessageReply.edit',
+                'method' => 'GET',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复编辑',
+                'slug' => 'mpWechatMessageReply.update',
+                'method' => 'PUT',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
+            [
+                'group_name' => '微信公众号消息回复',
+                'display_name' => '微信公众号消息回复删除',
+                'slug' => 'mpWechatMessageReply.destroy',
+                'method' => 'DELETE',
+                'url' => 'mpWechatMessageReply/\d+',
+            ],
+
+            // 微信公众号操作
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单查询',
+                'slug' => 'mpWechat.menu',
+                'method' => 'GET',
+                'url' => 'mpWechat/menu',
+            ],
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单更新',
+                'slug' => 'mpWechat.menu.update',
+                'method' => 'PUT',
+                'url' => 'mpWechat/menu',
+            ],
+            [
+                'group_name' => '微信公众号菜单',
+                'display_name' => '微信公众号菜单清空',
+                'slug' => 'mpWechat.menu.empty',
+                'method' => 'DELETE',
+                'url' => 'mpWechat/menu',
             ],
         ];
 

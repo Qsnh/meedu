@@ -9,9 +9,4 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
-
-class MeEdu
-{
-    const VERSION = 'v3.4';
-}
+Route::any('/wechat/serve', 'Api\\Wechat\\MpWechatController@serve');

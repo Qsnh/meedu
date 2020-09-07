@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Artisan;
 
 class Addons
 {
-    /**
-     * @var 插件存储路径
-     */
     public $path;
 
     /**
