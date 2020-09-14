@@ -33,7 +33,7 @@ class AjaxTest extends TestCase
 {
     protected $user;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->user = factory(User::class)->create([
@@ -41,7 +41,7 @@ class AjaxTest extends TestCase
         ]);
     }
 
-    public function tearDown():void
+    public function tearDown(): void
     {
         $this->user->delete();
         parent::tearDown();
@@ -549,7 +549,10 @@ class AjaxTest extends TestCase
         ])->seeStatusCode(200);
 
         // 创建了用户
-        $this->assertTrue(User::whereMobile('13900000000')->exists());
+        $user = User::query()->where('mobile', '13900000000')->first();
+        $this->assertNotNull($user);
+        $this->assertEquals(0, $user->is_set_nickname);
+        $this->assertEquals(0, $user->is_password_set);
     }
 
     public function test_mobileLogin_with_mobile_exists()
@@ -579,7 +582,6 @@ class AjaxTest extends TestCase
     {
         session(['sms_mock' => 'mock']);
         $this->post('/ajax/auth/register', [
-            'nick_name' => Str::random(6),
             'mobile' => '13988889999',
             'password' => '123123',
             'password_confirmation' => '123123',
@@ -587,7 +589,10 @@ class AjaxTest extends TestCase
             'sms_captcha' => 'mock',
         ])->seeStatusCode(200);
 
-        $this->assertTrue(User::whereMobile('13988889999')->exists());
+        $user = User::query()->where('mobile', '13988889999')->first();
+        $this->assertNotNull($user);
+        $this->assertEquals(0, $user->is_set_nickname);
+        $this->assertEquals(0, $user->is_password_set);
     }
 
     public function test_register_with_exists_mobile()

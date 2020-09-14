@@ -38,10 +38,9 @@ class RegisterPasswordRequest extends BaseRequest
     public function filldata()
     {
         $mobile = $this->input('mobile');
-        $nickname = $this->input('nick_name');
+        $nickname = $this->input('nick_name') ?? '';
         $password = $this->input('password');
 
-        $nickname = $nickname ? mb_substr($nickname, 0, 10) : mb_substr($mobile, 0, 8) . '_' . Str::random(3);
         $password = $password ? mb_substr($password, 0, 32) : Str::random(12);
 
         return [
