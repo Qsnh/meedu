@@ -50,7 +50,7 @@ class MemberController extends BaseController
                     ->orWhere('mobile', 'like', "%{$keywords}%");
             })
             ->when($roleId, function ($query) use ($roleId) {
-                $query->whereRoleId($roleId)->where('role_expired_at', '>', Carbon::now());
+                $query->whereRoleId($roleId);
             })
             ->when($tagId, function ($query) use ($tagId) {
                 $userIds = UserTagRelation::query()->where('tag_id', $tagId)->select(['user_id'])->get()->pluck('user_id');
