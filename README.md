@@ -1,5 +1,5 @@
 <p align="center"><img src="public/images/meedu.jpg"/></p>
-<p align="center">MeEdu - 基于 Laravel 开发的在线教育点播系统。</p>
+<p align="center">MeEdu - 基于 Laravel 开发的在线教育点播系统。 </p>
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/Qsnh/meedu.svg?branch=master" alt="Build Status"></a>
@@ -10,6 +10,8 @@
   <img src="https://codecov.io/gh/Qsnh/meedu/branch/master/graph/badge.svg" />
 </a>
 </p>
+
+[MeEdu使用手册](https://www.yuque.com/meedu/fvvkbf)
 
 ## 安装方式
 
