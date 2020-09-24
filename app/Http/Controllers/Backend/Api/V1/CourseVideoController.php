@@ -171,19 +171,31 @@ class CourseVideoController extends BaseController
     public function watchRecords(Request $request, $videoId)
     {
         $userId = $request->input('user_id');
+        $courseId = $request->input('course_id');
         $watchedStartAt = $request->input('watched_start_at');
         $watchedEndAt = $request->input('watched_end_at');
 
         $data = UserVideoWatchRecord::query()
-            ->where('video_id', $videoId)
+            ->when($videoId, function ($query) use ($videoId) {
+                $query->where('video_id', $videoId);
+            })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
+            })
+            ->when($courseId, function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
             })
             ->when($watchedStartAt && $watchedEndAt, function ($query) use ($watchedStartAt, $watchedEndAt) {
                 $query->whereBetween('watched_at', [$watchedStartAt, $watchedEndAt]);
             })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
+
+        // 视频
+        $videos = Video::query()->select(['id', 'title', 'charge', 'duration'])
+            ->whereIn('id', array_column($data->items(), 'video_id'))
+            ->get()
+            ->keyBy('id');
 
         // 用户
         $users = User::query()
@@ -195,6 +207,7 @@ class CourseVideoController extends BaseController
         return $this->successData([
             'data' => $data,
             'users' => $users,
+            'videos' => $videos,
         ]);
     }
 }
