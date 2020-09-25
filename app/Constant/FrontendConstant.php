@@ -86,6 +86,10 @@ class FrontendConstant
     public const SLIDER_PLATFORM_MINI = 'MINI';
     public const SLIDER_PLATFORM_APP = 'APP';
 
+    // 导航栏平台
+    public const NAV_PLATFORM_PC = 'PC';
+    public const NAV_PLATFORM_H5 = 'h5';
+
     // 微信小程序登录socialite sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
 }

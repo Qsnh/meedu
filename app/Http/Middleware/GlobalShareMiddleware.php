@@ -13,6 +13,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Services\Other\Services\NavService;
@@ -104,7 +105,7 @@ class GlobalShareMiddleware
         View::share('gUnreadMessageCount', $unreadMessageCount);
 
         // nav
-        $navs = $navService->all();
+        $navs = $navService->all(is_h5() ? FrontendConstant::NAV_PLATFORM_H5 : FrontendConstant::NAV_PLATFORM_PC);
         View::share('gNavs', $navs);
 
         // 最新课程

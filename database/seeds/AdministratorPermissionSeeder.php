@@ -209,6 +209,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '首页导航',
+                'display_name' => '首页导航添加参数',
+                'slug' => 'nav.create',
+                'method' => 'GET',
+                'url' => 'nav/create',
+            ],
+            [
+                'group_name' => '首页导航',
                 'display_name' => '首页导航添加',
                 'slug' => 'nav.store',
                 'method' => 'POST',

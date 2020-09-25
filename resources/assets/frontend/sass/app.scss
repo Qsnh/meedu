@@ -23,7 +23,7 @@ $container-max-widths: (
 body {
   background-color: #f8fafb;
   padding-top: 70px;
-  font-family: "微软雅黑";
+  font-family: PingFang SC, Microsoft YaHei, HanHei SC, Helvetica Neue, Open Sans, Arial, Hiragino Sans GB, "\5FAE\8F6F\96C5\9ED1", STHeiti, WenQuanYi Micro Hei, SimSun, sans-serif, HYWenHei-GEW;
 }
 
 input.form-control {
@@ -278,13 +278,12 @@ footer.footer-box {
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0px 4px 10px 0px rgba(153, 153, 158, .2);
-  padding-left: 0;
-  padding-right: 0;
+  box-shadow: 0 4px 10px 0 rgba(153, 153, 158, .2);
+  background-color: white;
 
   nav {
     &.navbar {
-      padding: 0px;
+      padding: 0;
     }
 
     .navbar-brand {
@@ -294,34 +293,83 @@ footer.footer-box {
 
     .navbar-nav {
       margin-left: 4.1%;
-    }
+      width: auto;
+      height: 71px;
+      float: left;
 
-    .nav-item {
-      margin-right: 34px;
-      font-size: 16px;
+      .nav-item {
+        position: relative;
+        width: auto;
+        height: 71px;
+        line-height: 71px;
+        float: left;
+        margin-right: 34px;
 
-      a {
-        color: #333333;
+        a.nav-link {
+          font-size: 16px;
+          color: #333333;
+          padding: 0 8px;
+        }
+
+        a.nav-link.active {
+          color: $primary;
+          font-weight: 800;
+        }
+
+        a.nav-link:hover {
+          color: $primary;
+        }
+
+        // 子元素
+        .nav-children {
+          display: none;
+          position: absolute;
+          top: 70px;
+          left: -66px;
+          width: 186px;
+          height: auto;
+          background-color: white;
+          padding: 12px 22px;
+          border-radius: 2px;
+          border: 1px solid rgb(245, 246, 246);
+          box-shadow: rgba(146, 157, 154, .3) 0 4px 10px 0;
+
+          .children-nav-item {
+            width: 100%;
+            height: auto;
+            float: left;
+            color: #333333;
+            text-align: center;
+            line-height: 36px;
+            font-size: 16px;
+
+            &.active {
+              color: $primary;
+              font-weight: 800;
+            }
+
+            &:hover {
+              color: $primary;
+            }
+          }
+        }
+
+        &:hover {
+          .nav-children {
+            display: block;
+          }
+        }
       }
 
-      a.active {
-        color: $primary;
-        font-weight: 800;
-      }
+      .search-input {
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        font-size: 14px;
+        height: 40px !important;
 
-      a:hover {
-        color: $primary;
-      }
-    }
-
-    .search-input {
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-      font-size: 14px;
-      height: 40px !important;
-
-      &::-webkit-input-placeholder {
-        color: #999999;
+        &::-webkit-input-placeholder {
+          color: #999999;
+        }
       }
     }
 
