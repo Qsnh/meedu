@@ -662,6 +662,7 @@ class UserService implements UserServiceInterface
             ->where('day', $day)
             ->first();
         if ($record) {
+            // todo 用户量大了之后此处频繁写入MySQL的CPU会飚高
             UserWatchStat::query()
                 ->where('id', $record['id'])
                 ->where('seconds', $record['seconds'])

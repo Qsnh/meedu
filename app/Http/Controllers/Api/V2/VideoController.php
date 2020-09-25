@@ -13,14 +13,17 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
 use App\Http\Requests\ApiV2\CommentRequest;
+use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Services\VideoCommentService;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -332,16 +335,40 @@ class VideoController extends BaseController
      *         )
      *     )
      * )
-     * @param CommentRequest $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function recordVideo(Request $request, $id)
     {
+        // 视频已观看时长
         $duration = (int)$request->post('duration', 0);
+        if (!$duration) {
+            return $this->error(__('params error'));
+        }
+
+        // 观看的视频
         $video = $this->videoService->find($id);
+        // 是否看完
         $isWatched = $video['duration'] <= $duration;
+
+        /**
+         * @var CacheService $cacheService
+         */
+        $cacheService = app()->make(CacheServiceInterface::class);
+        $cacheKey = sprintf(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
+        $lastSubmitTimestamp = (int)$cacheService->get($cacheKey);
+
+        // 用户观看时间统计[年/月/日]
+        // 目前的统计方法会有一定的误差，也就是每次缓存过期的第一次用户观看的时间
+        // 将会不纳入用户的观看时间统计里，具体的误差多少时间看前台的轮训周期时间
+        // 比如说前台每10s执行一次的话，那么这个误差的时间就是10s(一个缓存的周期)
+        if ($lastSubmitTimestamp && ($seconds = $duration - $lastSubmitTimestamp) > 0) {
+            $this->userService->watchStatSave($this->id(), $seconds);
+        }
+
         $this->userService->recordUserVideoWatch($this->id(), $video['course_id'], $id, $duration, $isWatched);
+
+        // 提交时间写入缓存
+        $cacheService->put($cacheKey, $duration, CacheConstant::USER_VIDEO_WATCH_DURATION['expire']);
+
         return $this->success();
     }
 }
