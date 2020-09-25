@@ -12,6 +12,7 @@
 namespace App\Providers;
 
 use App\Meedu\Setting;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Base\Providers\BaseServiceRegisterProvider;
@@ -33,6 +34,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->make(Setting::class)->sync();
         // 多模板注册
         $this->registerViewNamespace();
+
+        // 日志链路配置
+        $requestId = Str::random(12);
+        $logger = $this->app->make('log');
+        $logger->pushProcessor(function ($record) use ($requestId) {
+            $record['extra']['request_id'] = $requestId;
+            return $record;
+        });
     }
 
     /**
