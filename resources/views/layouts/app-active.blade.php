@@ -1,17 +1,12 @@
 @include('layouts.common.header')
 <body>
 
-<div class="container-fluid nav-box member-nav-box">
+<div class="nav-box member-nav-box">
     <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="{{url('/')}}">
             <img src="{{$gConfig['system']['white_logo']}}" height="37"
                  alt="{{config('app.name')}}">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-bars"></i>
-        </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -24,10 +19,23 @@
                        href="{{route('courses')}}">所有课程</a>
                 </li>
                 @foreach($gNavs as $item)
-                    <li class="nav-item">
-                        <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
-                           href="{{$item['url']}}">{{$item['name']}}</a>
-                    </li>
+                    @if($item['children'])
+                        <li class="nav-item">
+                            <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
+                               href="{{$item['url']}}">{{$item['name']}}</a>
+                            <div class="nav-children">
+                                @foreach($item['children'] as $childrenItem)
+                                    <a class="children-nav-item {{menu_active(explode(',', $childrenItem['active_routes'] ?? ''))}}"
+                                       href="{{$childrenItem['url']}}">{{$childrenItem['name']}}</a>
+                                @endforeach
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
+                               href="{{$item['url']}}">{{$item['name']}}</a>
+                        </li>
+                    @endif
                 @endforeach
             </ul>
 

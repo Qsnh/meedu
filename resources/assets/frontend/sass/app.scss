@@ -409,7 +409,7 @@ footer.footer-box {
       padding-bottom: 13px;
 
       p {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
 
       .message-count {
@@ -499,7 +499,7 @@ footer.footer-box {
 
     .login-button:hover {
       text-decoration: none;
-      box-shadow: 0px 2px 4px 0px $ce5;
+      box-shadow: 0 2px 4px 0 $ce5;
     }
 
     .login-button-hover {
@@ -515,17 +515,19 @@ footer.footer-box {
 }
 
 .member-nav-box {
-  box-shadow: 0px 0px;
+  box-shadow: none;
   background-color: $primary;
 
   nav {
-    .nav-item {
-      a {
-        color: rgba(255, 255, 255, .4);
-      }
+    .navbar-nav {
+      .nav-item {
+        a.nav-link {
+          color: rgba(255, 255, 255, .4);
+        }
 
-      a:hover, a.active {
-        color: rgba(255, 255, 255, 1);
+        a.nav-link:hover, a.nav-link.active {
+          color: rgba(255, 255, 255, 1);
+        }
       }
     }
 
