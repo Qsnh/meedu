@@ -21,6 +21,11 @@ class CacheService implements CacheServiceInterface
         Cache::put($key, $value, $expire);
     }
 
+    public function get(string $key, $default = null)
+    {
+        return Cache::get($key, $default);
+    }
+
     public function pull(string $key, $default = null)
     {
         return Cache::get($key, $default);

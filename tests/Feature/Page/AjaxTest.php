@@ -15,15 +15,18 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use App\Events\UserLoginEvent;
+use App\Constant\CacheConstant;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Course\Models\Video;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use App\Services\Course\Models\Course;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Course\Models\CourseUserRecord;
@@ -787,5 +790,48 @@ class AjaxTest extends TestCase
         // 前面看完了2个视频奖励工奖励4分+课程完成3分=7分
         $this->user->refresh();
         $this->assertEquals(7, $this->user->credit1);
+    }
+
+    public function test_user_video_watch_record_after_user_watch_stat()
+    {
+        $course = factory(Course::class)->create();
+        $video = factory(Video::class)->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 100,
+            'charge' => 0,
+        ]);
+
+        // 前置判断
+        $this->assertFalse(UserWatchStat::query()->where('user_id', $this->user['id'])->exists());
+
+        // 前置环境
+        $cacheKey = sprintf(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
+        Cache::put($cacheKey, 1, 10);
+
+        // 观看10秒
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
+            'duration' => 10,
+        ])->seeStatusCode(200);
+
+
+        $record = UserWatchStat::query()->where('user_id', $this->user['id'])->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(date('Y'), $record['year']);
+        $this->assertEquals(date('m'), $record['month']);
+        $this->assertEquals(date('d'), $record['day']);
+        $this->assertEquals(9, $record['seconds']);
+
+        // 继续观看
+        $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/watch/record', [
+            'duration' => 29,
+        ])->seeStatusCode(200);
+
+        $record->refresh();
+        $this->assertEquals(28, $record['seconds']);
+
+        // 清空前置配置
+        Cache::forget($cacheKey);
     }
 }

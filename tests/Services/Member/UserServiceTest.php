@@ -24,6 +24,7 @@ use App\Services\Order\Models\PromoCode;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -372,5 +373,25 @@ class UserServiceTest extends TestCase
         $user = factory(User::class)->create(['mobile' => '199000012341']);
         $user = factory(User::class)->create(['mobile' => '13788889999']);
         $this->service->changeMobile($user->id, '13788889999');
+    }
+
+    public function test_watchStatSave()
+    {
+        $userId = 1;
+
+        $this->service->watchStatSave($userId, 10);
+
+        // 记录存在
+        $record = UserWatchStat::query()->where('user_id', $userId)->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(date('Y'), $record['year']);
+        $this->assertEquals(date('m'), $record['month']);
+        $this->assertEquals(date('d'), $record['day']);
+        $this->assertEquals(10, $record['seconds']);
+
+
+        $this->service->watchStatSave($userId, 22);
+        $record->refresh();
+        $this->assertEquals(32, $record['seconds']);
     }
 }
