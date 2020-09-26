@@ -190,6 +190,11 @@ body {
           font-weight: 600;
           color: rgba(255, 64, 64, 1);
           line-height: 10px;
+
+          &.free-charge {
+            background-color: rgba(0, 128, 0, .2);
+            color: rgba(0, 128, 0, .7);
+          }
         }
       }
     }

@@ -5,7 +5,11 @@
     <div class="course-info">
         <div class="course-user-count">{{$course['user_count']}}订阅</div>
         <div class="course-charge">
-            <span class="charge-value"><small>￥</small>{{$course['charge']}}</span>
+            @if($course['is_free'])
+                <span class="charge-value free-charge">免费</span>
+            @else
+                <span class="charge-value"><small>￥</small>{{$course['charge']}}</span>
+            @endif
         </div>
     </div>
 </a>

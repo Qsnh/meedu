@@ -749,6 +749,11 @@ footer.footer-box {
           color: rgba(255, 64, 64, 1);
           background: rgba(255, 64, 64, .1);
           border-radius: 12px;
+
+          &.free-charge {
+            background-color: rgba(0, 128, 0, .2);
+            color: rgba(0, 128, 0, .7);
+          }
         }
       }
     }
