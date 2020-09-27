@@ -383,7 +383,7 @@ class AjaxController extends BaseController
          * @var CacheService $cacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $cacheKey = sprintf(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
+        $cacheKey = get_cache_key(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
         $lastSubmitTimestamp = (int)$cacheService->get($cacheKey);
 
         // 用户观看时间统计[年/月/日]

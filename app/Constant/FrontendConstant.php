@@ -25,9 +25,6 @@ class FrontendConstant
 
     const YES = 1;
 
-    const PAYMENT_WECHAT_PAY_CACHE_KEY = 'wechat_remote_order_%s';
-    const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
-
     const H5 = 'h5';
 
     const ORDER_PAID_TYPE_PROMO_CODE = 1;

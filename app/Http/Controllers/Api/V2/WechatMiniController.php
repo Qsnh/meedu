@@ -11,10 +11,9 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Constant\CacheConstant;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
-use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
@@ -42,8 +41,7 @@ class WechatMiniController extends BaseController
     public function __construct(
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService
-    )
-    {
+    ) {
         $this->configService = $configService;
         $this->cacheService = $cacheService;
 

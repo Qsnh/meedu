@@ -20,6 +20,9 @@ class CacheConstant
     // service 层调用的前缀
     public const PREFIX_S = 's::';
 
+    // 数据自增调用前缀
+    public const PREFIX_I = 'i::';
+
     // 用户观看时间缓存
     // 用户观看时间轮训到服务端，会临时保存该条数据
     // 该数据会与之后轮训的数据进行比对
@@ -38,12 +41,18 @@ class CacheConstant
     // 用户微信小程序登录sessionKey缓存
     public const WECHAT_MINI_SESSION_KEY = [
         'name' => self::PREFIX_C . 'wmsk:%s',
-        'expire' => 60,
+        'expire' => 60 * 12,
     ];
 
     // 微信扫码支付请求返回数据缓存
     public const WECHAT_PAY_SCAN_RETURN_DATA = [
         'name' => self::PREFIX_C . 'wpsrd:%s',
         'expire' => 60 * 3,
+    ];
+
+    // adFrom访问统计
+    public const AD_FROM_INCREMENT_ = [
+        'name' => self::PREFIX_I . 'af:%s:%s',
+        'expire' => 60 * 24,
     ];
 }

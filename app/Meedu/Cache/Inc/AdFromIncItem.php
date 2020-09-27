@@ -11,6 +11,7 @@
 
 namespace App\Meedu\Cache\Inc;
 
+use App\Constant\CacheConstant;
 use App\Services\Base\Services\CacheService;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
@@ -30,7 +31,7 @@ class AdFromIncItem implements IncItem
 
     public function getKey(): string
     {
-        return sprintf('ad_from_%s_%s', $this->adFrom['from_key'], date('Y-m-d'));
+        return get_cache_key(CacheConstant::AD_FROM_INCREMENT_['name'], $this->adFrom['from_key'], date('Y-m-d'));
     }
 
     public function save(): void
