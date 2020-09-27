@@ -151,7 +151,7 @@ class BaseController
          */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
-        $code = $cacheService->pull($key, null);
+        $code = $cacheService->get($key);
         // 取出来之后删除[一个验证码只能用一次]
         $code && $cacheService->forget($key);
         if ($code != $mobileCode) {

@@ -125,7 +125,7 @@ class ServiceProxy
         if (!$cacheInfo) {
             return $this->run([$this->service, $name], $args);
         }
-        $cacheData = $this->cacheService->pull($cacheInfo->getName(), null);
+        $cacheData = $this->cacheService->get($cacheInfo->getName());
         if ($cacheData) {
             return $cacheData;
         }

@@ -222,25 +222,20 @@ class VideoServiceTest extends TestCase
         $this->assertTrue(isset($list[$video2->id]));
     }
 
-    public function test_viewNumInc()
+    public function test_viewNumIncrement()
     {
-        config(['meedu.system.cache.status' => 0]);
-        $video = factory(Video::class)->create(['view_num' => 1]);
-        $this->service->viewNumInc($video['id']);
-        $video->refresh();
-        $this->assertEquals(2, $video->view_num);
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'view_num' => 0,
+        ]);
 
-        config(['meedu.system.cache.status' => 1]);
-        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumIncrement($video['id'], 13);
         $video->refresh();
-        $this->assertEquals(2, $video->view_num);
+        $this->assertEquals(13, $video['view_num']);
 
-        $this->service->viewNumInc($video['id']);
-        $this->service->viewNumInc($video['id']);
-        $this->service->viewNumInc($video['id']);
-        $this->service->viewNumInc($video['id']);
-        $this->service->viewNumInc($video['id']);
+        $this->service->viewNumIncrement($video['id'], 20);
         $video->refresh();
-        $this->assertEquals(8, $video->view_num);
+        $this->assertEquals(33, $video['view_num']);
     }
 }

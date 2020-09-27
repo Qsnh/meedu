@@ -11,11 +11,46 @@
 
 namespace App\Meedu\Cache\Inc;
 
-interface IncItem
+abstract class IncItem
 {
-    public function getKey();
+    protected $inc = 1;
+    protected $limit = 100;
 
-    public function save();
+    /**
+     * @return int
+     */
+    public function getInc(): int
+    {
+        return $this->inc;
+    }
 
-    public function getLimit();
+    /**
+     * @param int $inc
+     */
+    public function setInc(int $inc): void
+    {
+        $this->inc = $inc;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit(int $limit): void
+    {
+        $this->limit = $limit;
+    }
+
+
+    public function getKey(): string
+    {
+    }
+
+    public function save(): void
+    {
+    }
+
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
 }

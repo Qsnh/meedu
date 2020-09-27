@@ -53,7 +53,7 @@ class CacheConstant
     // adFrom访问统计
     public const AD_FROM_INCREMENT_ = [
         'name' => self::PREFIX_I . 'af:%s:%s',
-        'expire' => 60 * 24,
+        'expire' => -1,
     ];
 
     // [courseService]最新课程
@@ -131,6 +131,12 @@ class CacheConstant
     // [SliderService]all
     public const SLIDER_SERVICE_ALL = [
         'name' => self::PREFIX_S . 'o:ss:a:%s',
+        'expire' => -1,
+    ];
+
+    // 视频浏览次数递增
+    public const VIDEO_VIEW_INCREMENT = [
+        'name' => self::PREFIX_I . 'video:%d',
         'expire' => -1,
     ];
 }

@@ -17,12 +17,12 @@ use App\Services\Other\Services\AdFromService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 
-class AdFromIncItem implements IncItem
+class AdFromIncItem extends IncItem
 {
     protected $adFrom;
 
-    public $inc = 1;
-    public $limit = 50;
+    protected $inc = 1;
+    protected $limit = 100;
 
     public function __construct(array $adFrom)
     {
@@ -40,7 +40,7 @@ class AdFromIncItem implements IncItem
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $val = $cacheService->get($this->getKey());
+        $val = $cacheService->pull($this->getKey());
         /**
          * @var $adFromService AdFromService
          */
@@ -54,14 +54,5 @@ class AdFromIncItem implements IncItem
             // 需要创建一条新的记录
             $adFromService->createDay($this->adFrom['id'], $today, (int)$val);
         }
-        $cacheService->forget($this->getKey());
-    }
-
-    /**
-     * @return int
-     */
-    public function getLimit(): int
-    {
-        return $this->limit;
     }
 }

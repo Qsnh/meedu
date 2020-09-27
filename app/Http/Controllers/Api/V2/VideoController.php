@@ -11,10 +11,12 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Meedu\Cache\Inc\Inc;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
+use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
@@ -165,7 +167,7 @@ class VideoController extends BaseController
         $video = $this->videoService->find($id);
 
         // 视频浏览次数自增
-        $this->videoService->viewNumInc($video['id']);
+        Inc::record(new VideoViewIncItem($video['id']));
 
         // 章节
         $chapters = $this->courseService->chapters($video['course_id']);

@@ -28,7 +28,7 @@ class CacheService implements CacheServiceInterface
 
     public function pull(string $key, $default = null)
     {
-        return Cache::get($key, $default);
+        return Cache::pull($key, $default);
     }
 
     public function lock(string $name, int $seconds)
