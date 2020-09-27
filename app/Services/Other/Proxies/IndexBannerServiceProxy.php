@@ -11,6 +11,7 @@
 
 namespace App\Services\Other\Proxies;
 
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\IndexBannerService;
@@ -22,7 +23,10 @@ class IndexBannerServiceProxy extends ServiceProxy implements IndexBannerService
     {
         parent::__construct($service);
         $this->cache['all'] = function () {
-            return new CacheInfo('os:iba', $this->configService->getCacheExpire());
+            return new CacheInfo(
+                get_cache_key(CacheConstant::INDEX_BANNER_SERVICE_ALL['name']),
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

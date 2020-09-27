@@ -18,6 +18,6 @@ class IndexBannerService implements IndexBannerServiceInterface
 {
     public function all(): array
     {
-        return IndexBanner::orderBy('sort')->get()->toArray();
+        return IndexBanner::query()->orderBy('sort')->get()->toArray();
     }
 }

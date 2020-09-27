@@ -103,4 +103,34 @@ class CacheConstant
         'name' => self::PREFIX_S . 'm:u:gcuvc:%d',
         'expire' => -1,
     ];
+
+    // [AnnouncementService]最新一条公告
+    public const ANNOUNCEMENT_SERVICE_LATEST = [
+        'name' => self::PREFIX_S . 'o:as',
+        'expired' => -1,
+    ];
+
+    // [IndexBannerService]all
+    public const INDEX_BANNER_SERVICE_ALL = [
+        'name' => self::PREFIX_S . 'o:ibs:a',
+        'expire' => -1,
+    ];
+
+    // [LinkService]all
+    public const LINK_SERVICE_ALL = [
+        'name' => self::PREFIX_S . 'o:ls:a',
+        'expire' => -1,
+    ];
+
+    // [NavService]all
+    public const NAV_SERVICE_ALL = [
+        'name' => self::PREFIX_S . 'o:ns:a:%s',
+        'expire' => -1,
+    ];
+
+    // [SliderService]all
+    public const SLIDER_SERVICE_ALL = [
+        'name' => self::PREFIX_S . 'o:ss:a:%s',
+        'expire' => -1,
+    ];
 }

@@ -11,6 +11,7 @@
 
 namespace App\Services\Other\Proxies;
 
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\AnnouncementService;
@@ -22,7 +23,10 @@ class AnnouncementServiceProxy extends ServiceProxy implements AnnouncementServi
     {
         parent::__construct($service);
         $this->cache['latest'] = function () {
-            return new CacheInfo('os:as', $this->configService->getCacheExpire());
+            return new CacheInfo(
+                CacheConstant::ANNOUNCEMENT_SERVICE_LATEST['name'],
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

@@ -11,6 +11,7 @@
 
 namespace App\Services\Other\Proxies;
 
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\LinkService;
@@ -22,7 +23,10 @@ class LinkServiceProxy extends ServiceProxy implements LinkServiceInterface
     {
         parent::__construct($service);
         $this->cache['all'] = function () {
-            return new CacheInfo('os:la', $this->configService->getCacheExpire());
+            return new CacheInfo(
+                CacheConstant::LINK_SERVICE_ALL['name'],
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

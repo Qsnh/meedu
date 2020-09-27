@@ -18,6 +18,6 @@ class LinkService implements LinkServiceInterface
 {
     public function all(): array
     {
-        return Link::orderBy('sort')->get()->toArray();
+        return Link::query()->orderBy('sort')->get()->toArray();
     }
 }
