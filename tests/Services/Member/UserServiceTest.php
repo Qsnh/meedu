@@ -319,11 +319,11 @@ class UserServiceTest extends TestCase
         config(['meedu.system.cache.status' => 1]);
         $user = factory(User::class)->create();
         factory(UserCourse::class, 10)->create(['user_id' => $user]);
-        Auth::login($user);
-        $this->assertEquals(10, $this->service->getCurrentUserCourseCount());
+
+        $this->assertEquals(10, $this->service->getUserCourseCount($user['id']));
 
         factory(UserCourse::class, 3)->create(['user_id' => $user]);
-        $this->assertEquals(10, $this->service->getCurrentUserCourseCount());
+        $this->assertEquals(10, $this->service->getUserCourseCount($user['id']));
     }
 
     public function test_getCurrentUserVideoCount()
@@ -331,11 +331,11 @@ class UserServiceTest extends TestCase
         config(['meedu.system.cache.status' => 1]);
         $user = factory(User::class)->create();
         factory(UserVideo::class, 11)->create(['user_id' => $user]);
-        Auth::login($user);
-        $this->assertEquals(11, $this->service->getCurrentUserVideoCount());
+
+        $this->assertEquals(11, $this->service->getUserVideoCount($user['id']));
 
         factory(UserVideo::class, 5)->create(['user_id' => $user]);
-        $this->assertEquals(11, $this->service->getCurrentUserVideoCount());
+        $this->assertEquals(11, $this->service->getUserVideoCount($user['id']));
     }
 
     public function test_inviteBalanceInc()

@@ -409,19 +409,21 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @param int $userId
      * @return int
      */
-    public function getCurrentUserCourseCount(): int
+    public function getUserCourseCount(int $userId): int
     {
-        return (int)UserCourse::whereUserId(Auth::id())->count();
+        return (int)UserCourse::query()->where('user_id', $userId)->count();
     }
 
     /**
+     * @param int $userId
      * @return int
      */
-    public function getCurrentUserVideoCount(): int
+    public function getUserVideoCount(int $userId): int
     {
-        return (int)UserVideo::whereUserId(Auth::id())->count();
+        return (int)UserVideo::query()->where('user_id', $userId)->count();
     }
 
     /**

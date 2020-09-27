@@ -91,4 +91,16 @@ class CacheConstant
         'name' => self::PREFIX_S . 'cs:vs:sp:%d:%d',
         'expire' => -1,
     ];
+
+    // [userService]用户课程数量
+    public const USER_SERVICE_COURSE_COUNT = [
+        'name' => self::PREFIX_S . 'm:u:gcucc:%d',
+        'expire' => -1,
+    ];
+
+    // [userService]用户视频数量
+    public const USER_SERVICE_VIDEO_COUNT = [
+        'name' => self::PREFIX_S . 'm:u:gcuvc:%d',
+        'expire' => -1,
+    ];
 }

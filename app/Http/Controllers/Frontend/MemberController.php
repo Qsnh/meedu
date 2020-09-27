@@ -110,8 +110,8 @@ class MemberController extends FrontendController
     {
         $title = __('page_title_member_index');
 
-        $courseCount = $this->userService->getCurrentUserCourseCount();
-        $videoCount = $this->userService->getCurrentUserVideoCount();
+        $courseCount = $this->userService->getUserCourseCount($this->id());
+        $videoCount = $this->userService->getUserVideoCount($this->id());
 
         $apps = $this->socialiteService->userSocialites(Auth::id());
         $apps = array_column($apps, null, 'app');
