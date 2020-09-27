@@ -55,4 +55,40 @@ class CacheConstant
         'name' => self::PREFIX_I . 'af:%s:%s',
         'expire' => 60 * 24,
     ];
+
+    // [courseService]最新课程
+    public const COURSE_SERVICE_LATEST = [
+        'name' => self::PREFIX_S . 'c:cs:lc:%d',
+        'expire' => -1, // 系统缓存时间决定
+    ];
+
+    // [courseService]课程章节
+    public const COURSE_SERVICE_CHAPTERS = [
+        'name' => self::PREFIX_S . 'c:cs:cc:%d',
+        'expire' => -1,
+    ];
+
+    // [courseService]分页列表
+    public const COURSE_SERVICE_PAGINATOR = [
+        'name' => self::PREFIX_S . 'c:cs:sp:%d:%d:%d',
+        'expire' => -1,
+    ];
+
+    // [videoService]课程视频
+    public const VIDEO_SERVICE_COURSE_VIDEOS = [
+        'name' => self::PREFIX_S . 'cs:vs:c:%d',
+        'expire' => -1,
+    ];
+
+    // [videoService]最新视频
+    public const VIDEO_SERVICE_LATEST = [
+        'name' => self::PREFIX_S . 'cs:vs:lv',
+        'expire' => -1,
+    ];
+
+    // [videoService]分页列表
+    public const VIDEO_SERVICE_PAGINATOR = [
+        'name' => self::PREFIX_S . 'cs:vs:sp:%d:%d',
+        'expire' => -1,
+    ];
 }
