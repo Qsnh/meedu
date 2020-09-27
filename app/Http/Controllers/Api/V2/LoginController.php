@@ -16,6 +16,7 @@ use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use App\Exceptions\ServiceException;
@@ -214,7 +215,7 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        $sessionKey = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
             return $this->error(__('error'));
         }
@@ -297,7 +298,7 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $sessionKey = $this->cacheService->pull(sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid), '');
+        $sessionKey = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
             return $this->error(__('error'));
         }

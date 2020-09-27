@@ -12,7 +12,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
-use App\Constant\FrontendConstant;
+use App\Constant\CacheConstant;
 use App\Exceptions\SystemException;
 use App\Services\Base\Services\CacheService;
 use App\Services\Order\Services\OrderService;
@@ -95,7 +95,7 @@ class PaymentController extends BaseController
         }
 
         // 支付订单数据
-        $data = $this->cacheService->pull(sprintf(FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_KEY, $order['order_id']), []);
+        $data = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']), []);
 
         return $this->data($data);
     }

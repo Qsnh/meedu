@@ -11,6 +11,7 @@
 
 namespace Tests\Feature\Api\V2;
 
+use App\Constant\CacheConstant;
 use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
@@ -32,7 +33,7 @@ class MemberTest extends Base
 {
     protected $member;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->member = factory(User::class)->create();
@@ -50,7 +51,7 @@ class MemberTest extends Base
     public function test_password()
     {
         $cacheService = $this->app->make(CacheServiceInterface::class);
-        $cacheService->put('m:' . $this->member->mobile, 'code', 10);
+        $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $this->member->mobile), 'code', 1);
         $response = $this->user($this->member)->postJson('api/v2/member/detail/password', [
             'mobile_code' => 'code',
             'mobile' => $this->member->mobile,
@@ -64,7 +65,7 @@ class MemberTest extends Base
     public function test_change_mobile()
     {
         $cacheService = $this->app->make(CacheServiceInterface::class);
-        $cacheService->put('m:17898765423', 'code', 10);
+        $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '17898765423'), 'code', 1);
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
             'mobile' => '17898765423',
@@ -78,7 +79,8 @@ class MemberTest extends Base
     {
         factory(User::class)->create(['mobile' => '12345679876']);
         $cacheService = $this->app->make(CacheServiceInterface::class);
-        $cacheService->put('m:12345679876', 'code', 10);
+        $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
+
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
             'mobile' => '12345679876',

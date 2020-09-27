@@ -534,3 +534,15 @@ if (!function_exists('get_platform')) {
         return $platform;
     }
 }
+
+if (!function_exists('get_cache_key')) {
+    /**
+     * @param $key
+     * @param mixed ...$params
+     * @return string
+     */
+    function get_cache_key(string $key, ...$params): string
+    {
+        return sprintf($key, ...$params);
+    }
+}
