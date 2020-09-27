@@ -15,23 +15,16 @@ class ApiV2Constant
 {
     public const YES = 1;
 
-    public const PARAMS_ERROR = 'params error';
     public const PLEASE_INPUT_IMAGE_CAPTCHA = 'image_captcha.required';
     public const IMAGE_CAPTCHA_ERROR = 'image_captcha_error';
 
     public const USER_MOBILE_NOT_EXISTS = 'mobile not exists';
-    public const MOBILE_HAS_EXISTS = 'mobile has exists';
     public const MOBILE_OR_PASSWORD_ERROR = 'mobile not exists or password error';
     public const MOBILE_CODE_ERROR = 'mobile code error';
 
     public const MEMBER_HAS_LOCKED = 'current user was locked,please contact administrator';
 
     public const VIDEO_NO_AUTH = 'please buy this video before see';
-
-    public const SMS_CODE_EXPIRE = 60;
-    public const MOBILE_CODE_CACHE_KEY = 'm:%s';
-
-    public const WECHAT_MINI_LOGIN_SESSION_KEY = 'wxmn:s:%s';
 
     public const ERROR_CODE = 1;
     public const ERROR_NO_AUTH_CODE = 401;

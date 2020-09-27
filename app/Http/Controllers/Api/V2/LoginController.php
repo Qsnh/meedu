@@ -215,7 +215,7 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $sessionKey = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
+        $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
             return $this->error(__('error'));
         }
@@ -298,7 +298,7 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $sessionKey = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
+        $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
             return $this->error(__('error'));
         }

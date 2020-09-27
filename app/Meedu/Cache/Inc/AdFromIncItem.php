@@ -40,7 +40,7 @@ class AdFromIncItem implements IncItem
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $val = $cacheService->pull($this->getKey());
+        $val = $cacheService->get($this->getKey());
         /**
          * @var $adFromService AdFromService
          */

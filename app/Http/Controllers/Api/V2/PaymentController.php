@@ -95,7 +95,7 @@ class PaymentController extends BaseController
         }
 
         // 支付订单数据
-        $data = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']), []);
+        $data = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']), []);
 
         return $this->data($data);
     }

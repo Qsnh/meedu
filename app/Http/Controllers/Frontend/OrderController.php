@@ -116,7 +116,7 @@ class OrderController extends Controller
         $order = $this->orderService->findUser($orderId);
         $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
 
-        $wechatData = $this->cacheService->pull(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']));
+        $wechatData = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']));
         if (!$wechatData) {
             $this->orderService->cancel($order['id']);
             flash(__('error'));

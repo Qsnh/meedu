@@ -89,8 +89,11 @@ class WechatMiniController extends BaseController
         $openid = $info['openid'];
 
         // session_key存入缓存
-        $key = get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid);
-        $this->cacheService->put($key, $info['session_key'], 3600 * 24);
+        $this->cacheService->put(
+            get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid),
+            $info['session_key'],
+            CacheConstant::WECHAT_MINI_SESSION_KEY['expire']
+        );
 
         return $this->data([
             'openid' => $openid,
