@@ -173,11 +173,7 @@ class MemberController extends FrontendController
     }
 
     /**
-     * 头像更换.
-     *
      * @param AvatarChangeRequest $request
-     * @param MemberRepository $repository
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function avatarChangeHandler(AvatarChangeRequest $request)

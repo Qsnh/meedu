@@ -12,14 +12,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use App\Bus\VideoBus;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
-use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
-use App\Services\Base\Services\CacheService;
 use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
@@ -30,7 +29,6 @@ use App\Http\Requests\Frontend\PasswordResetRequest;
 use App\Services\Course\Services\VideoCommentService;
 use App\Services\Course\Services\CourseCommentService;
 use App\Http\Requests\Frontend\RegisterPasswordRequest;
-use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Http\Requests\Frontend\Member\MobileBindRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
@@ -362,10 +360,12 @@ class AjaxController extends BaseController
 
     /**
      * @param Request $request
+     * @param VideoBus $videoBus
      * @param $videoId
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function recordVideo(Request $request, $videoId)
+    public function recordVideo(Request $request, VideoBus $videoBus, $videoId)
     {
         // 这里前台传递的duration时间是用户播放的视频的播放位置
         // 举个例子：如果用户看到了10分10秒，这里的duration的值就是610
@@ -374,31 +374,7 @@ class AjaxController extends BaseController
             return $this->error(__('params error'));
         }
 
-        // 查找观看的视频
-        $video = $this->videoService->find($videoId);
-        // 计算是否看完
-        $isWatched = $video['duration'] <= $duration;
-
-        /**
-         * @var CacheService $cacheService
-         */
-        $cacheService = app()->make(CacheServiceInterface::class);
-        $cacheKey = get_cache_key(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
-        $lastSubmitTimestamp = (int)$cacheService->get($cacheKey);
-
-        // 用户观看时间统计[年/月/日]
-        // 目前的统计方法会有一定的误差，也就是每次缓存过期的第一次用户观看的时间
-        // 将会不纳入用户的观看时间统计里，具体的误差多少时间看前台的轮训周期时间
-        // 比如说前台每10s执行一次的话，那么这个误差的时间就是10s(一个缓存的周期)
-        if ($lastSubmitTimestamp && ($seconds = $duration - $lastSubmitTimestamp) > 0) {
-            $this->userService->watchStatSave($this->id(), $seconds);
-        }
-
-        // 用户视频观看进度
-        $this->userService->recordUserVideoWatch(Auth::id(), $video['course_id'], $videoId, $duration, $isWatched);
-
-        // 提交时间写入缓存
-        $cacheService->put($cacheKey, $duration, CacheConstant::USER_VIDEO_WATCH_DURATION['expire']);
+        $videoBus->userVideoWatchDurationRecord(Auth::id(), (int)$videoId, $duration);
 
         return $this->success();
     }
