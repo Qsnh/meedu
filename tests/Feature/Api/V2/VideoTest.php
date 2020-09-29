@@ -12,13 +12,16 @@
 namespace Tests\Feature\Api\V2;
 
 use Carbon\Carbon;
+use App\Constant\CacheConstant;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
+use Illuminate\Support\Facades\Cache;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Course\Models\VideoComment;
+use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserVideoWatchRecord;
 
 class VideoTest extends Base
@@ -334,5 +337,43 @@ class VideoTest extends Base
         $record->refresh();
         $this->assertEquals(100, $record->watch_seconds);
         $this->assertNotNull($record->watched_at);
+    }
+
+    public function test_video_record_after_user_watch_stat()
+    {
+        $user = factory(User::class)->create();
+        $video = factory(Video::class)->create([
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 100,
+        ]);
+
+        // 前置判断
+        $this->assertFalse(UserWatchStat::query()->where('user_id', $user['id'])->exists());
+
+        // 前置环境
+        $cacheKey = sprintf(CacheConstant::USER_VIDEO_WATCH_DURATION['name'], $video['id']);
+        Cache::put($cacheKey, 1, 10);
+
+        $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 10,
+        ]);
+
+        $record = UserWatchStat::query()->where('user_id', $user['id'])->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(date('Y'), $record['year']);
+        $this->assertEquals(date('m'), $record['month']);
+        $this->assertEquals(date('d'), $record['day']);
+        $this->assertEquals(9, $record['seconds']);
+
+        $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 67,
+        ]);
+
+        $record->refresh();
+        $this->assertEquals(66, $record['seconds']);
+
+        // 清空前置配置
+        Cache::forget($cacheKey);
     }
 }

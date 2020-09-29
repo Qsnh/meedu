@@ -11,6 +11,7 @@
 
 namespace App\Services\Course\Proxies;
 
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Course\Services\CourseService;
@@ -22,13 +23,22 @@ class CourseServiceProxy extends ServiceProxy implements CourseServiceInterface
     {
         parent::__construct($service);
         $this->cache['getLatestCourses'] = function ($limit) {
-            return new CacheInfo('c:cs:lc:' . $limit, $this->configService->getCacheExpire());
+            return new CacheInfo(
+                get_cache_key(CacheConstant::COURSE_SERVICE_LATEST['name'], $limit),
+                $this->configService->getCacheExpire()
+            );
         };
         $this->cache['chapters'] = function ($courseId) {
-            return new CacheInfo('c:cs:cc:' . $courseId, $this->configService->getCacheExpire());
+            return new CacheInfo(
+                get_cache_key(CacheConstant::COURSE_SERVICE_CHAPTERS['name'], $courseId),
+                $this->configService->getCacheExpire()
+            );
         };
         $this->cache['simplePage'] = function (int $page, int $pageSize, int $categoryId = 0) {
-            return new CacheInfo('c:cs:sp:' . $page . '.' . $pageSize . '.' . $categoryId, $this->configService->getCacheExpire());
+            return new CacheInfo(
+                get_cache_key(CacheConstant::COURSE_SERVICE_PAGINATOR['name'], $page, $pageSize, $categoryId),
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

@@ -209,6 +209,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '首页导航',
+                'display_name' => '首页导航添加参数',
+                'slug' => 'nav.create',
+                'method' => 'GET',
+                'url' => 'nav/create',
+            ],
+            [
+                'group_name' => '首页导航',
                 'display_name' => '首页导航添加',
                 'slug' => 'nav.store',
                 'method' => 'POST',
@@ -797,6 +804,20 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'promoCode.destroy.multi',
                 'method' => 'POST',
                 'url' => 'promoCode/delete/multi',
+            ],
+            [
+                'group_name' => '优惠码',
+                'display_name' => '优惠码导入',
+                'slug' => 'promoCode.import',
+                'method' => 'POST',
+                'url' => 'promoCode/import',
+            ],
+            [
+                'group_name' => '优惠码',
+                'display_name' => '优惠码批量生成',
+                'slug' => 'promoCode.generator',
+                'method' => 'POST',
+                'url' => 'promoCode/generator',
             ],
 
             // 课程分类

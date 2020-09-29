@@ -11,17 +11,18 @@
 
 namespace App\Meedu\Cache\Inc;
 
+use App\Constant\CacheConstant;
 use App\Services\Base\Services\CacheService;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 
-class AdFromIncItem implements IncItem
+class AdFromIncItem extends IncItem
 {
     protected $adFrom;
 
-    public $inc = 1;
-    public $limit = 50;
+    protected $inc = 1;
+    protected $limit = 100;
 
     public function __construct(array $adFrom)
     {
@@ -30,7 +31,7 @@ class AdFromIncItem implements IncItem
 
     public function getKey(): string
     {
-        return sprintf('ad_from_%s_%s', $this->adFrom['from_key'], date('Y-m-d'));
+        return get_cache_key(CacheConstant::AD_FROM_INCREMENT_['name'], $this->adFrom['from_key'], date('Y-m-d'));
     }
 
     public function save(): void
@@ -53,14 +54,5 @@ class AdFromIncItem implements IncItem
             // 需要创建一条新的记录
             $adFromService->createDay($this->adFrom['id'], $today, (int)$val);
         }
-        $cacheService->forget($this->getKey());
-    }
-
-    /**
-     * @return int
-     */
-    public function getLimit(): int
-    {
-        return $this->limit;
     }
 }

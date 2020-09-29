@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Mews\Captcha\Captcha;
 use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\CacheService;
@@ -96,7 +97,7 @@ class BaseController
      *
      * @return boolean
      */
-    protected function check():bool
+    protected function check(): bool
     {
         return Auth::guard($this->guard)->check();
     }
@@ -144,13 +145,14 @@ class BaseController
         if (!$mobileCode) {
             throw new ApiV2Exception(__(ApiV2Constant::MOBILE_CODE_ERROR));
         }
+
         /**
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $key = sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile);
-        $code = $cacheService->pull($key, null);
-        // 取出来就删除，防止恶意碰撞攻击
+        $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
+        $code = $cacheService->get($key);
+        // 取出来之后删除[一个验证码只能用一次]
         $code && $cacheService->forget($key);
         if ($code != $mobileCode) {
             throw new ApiV2Exception(__(ApiV2Constant::MOBILE_CODE_ERROR));

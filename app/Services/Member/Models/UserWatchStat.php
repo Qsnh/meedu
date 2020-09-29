@@ -9,20 +9,18 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Services\Other\Models;
+namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Nav extends Model
+class UserWatchStat extends Model
 {
-    protected $table = 'navs';
+    use SoftDeletes;
+
+    protected $table = 'user_watch_stat';
 
     protected $fillable = [
-        'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id',
+        'user_id', 'year', 'month', 'day', 'seconds',
     ];
-
-    public function children()
-    {
-        return $this->hasMany(__CLASS__, 'parent_id');
-    }
 }

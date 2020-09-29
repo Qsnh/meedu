@@ -17,10 +17,20 @@ use App\Services\Other\Interfaces\NavServiceInterface;
 class NavService implements NavServiceInterface
 {
     /**
+     * @param string $platform
      * @return array
      */
-    public function all(): array
+    public function all($platform = ''): array
     {
-        return Nav::orderBy('sort')->get()->toArray();
+        return Nav::query()
+            ->with(['children'])
+            ->select(['id', 'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id',])
+            ->when($platform, function ($query) use ($platform) {
+                $query->where('platform', $platform);
+            })
+            ->where('parent_id', 0)
+            ->orderBy('sort')
+            ->get()
+            ->toArray();
     }
 }

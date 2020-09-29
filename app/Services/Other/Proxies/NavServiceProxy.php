@@ -11,6 +11,7 @@
 
 namespace App\Services\Other\Proxies;
 
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Other\Services\NavService;
@@ -21,8 +22,11 @@ class NavServiceProxy extends ServiceProxy implements NavServiceInterface
     public function __construct(NavService $service)
     {
         parent::__construct($service);
-        $this->cache['all'] = function () {
-            return new CacheInfo('os:na', $this->configService->getCacheExpire());
+        $this->cache['all'] = function ($platform) {
+            return new CacheInfo(
+                get_cache_key(CacheConstant::NAV_SERVICE_ALL['name'], $platform),
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

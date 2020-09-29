@@ -11,7 +11,7 @@
 
 namespace App\Services\Member\Proxies;
 
-use Illuminate\Support\Facades\Auth;
+use App\Constant\CacheConstant;
 use App\Meedu\ServiceProxy\ServiceProxy;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Member\Services\UserService;
@@ -23,11 +23,17 @@ class UserServiceProxy extends ServiceProxy implements UserServiceInterface
     {
         parent::__construct($service);
 
-        $this->cache['getCurrentUserCourseCount'] = function () {
-            return new CacheInfo('m:u:gcucc:' . Auth::id(), $this->configService->getCacheExpire());
+        $this->cache['getUserCourseCount'] = function ($userId) {
+            return new CacheInfo(
+                get_cache_key(CacheConstant::USER_SERVICE_COURSE_COUNT['name'], $userId),
+                $this->configService->getCacheExpire()
+            );
         };
-        $this->cache['getCurrentUserVideoCount'] = function () {
-            return new CacheInfo('m:u:gcuvc:' . Auth::id(), $this->configService->getCacheExpire());
+        $this->cache['getUserVideoCount'] = function ($userId) {
+            return new CacheInfo(
+                get_cache_key(CacheConstant::USER_SERVICE_VIDEO_COUNT['name'], $userId),
+                $this->configService->getCacheExpire()
+            );
         };
     }
 }

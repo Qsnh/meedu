@@ -13,7 +13,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
-use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
@@ -32,7 +32,6 @@ class WechatMiniController extends BaseController
      * @var CacheService
      */
     protected $cacheService;
-
 
     /**
      * WechatMiniController constructor.
@@ -90,8 +89,11 @@ class WechatMiniController extends BaseController
         $openid = $info['openid'];
 
         // session_key存入缓存
-        $key = sprintf(ApiV2Constant::WECHAT_MINI_LOGIN_SESSION_KEY, $openid);
-        $this->cacheService->put($key, $info['session_key'], 3600 * 24);
+        $this->cacheService->put(
+            get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid),
+            $info['session_key'],
+            CacheConstant::WECHAT_MINI_SESSION_KEY['expire']
+        );
 
         return $this->data([
             'openid' => $openid,

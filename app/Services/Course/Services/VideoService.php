@@ -12,10 +12,6 @@
 namespace App\Services\Course\Services;
 
 use App\Services\Course\Models\Video;
-use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoService implements VideoServiceInterface
@@ -94,35 +90,11 @@ class VideoService implements VideoServiceInterface
     }
 
     /**
-     * @param $id
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param int $videoId
+     * @param int $num
      */
-    public function viewNumInc($id): void
+    public function viewNumIncrement(int $videoId, int $num): void
     {
-        /**
-         * @var $configService ConfigService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-        if (!$configService->getCacheStatus()) {
-            Video::whereId($id)->increment('view_num', 1);
-            return;
-        }
-        /**
-         * @var $cacheService CacheService
-         */
-        $cacheService = app()->make(CacheServiceInterface::class);
-        $cacheKey = sprintf('c:vs:vni:%d', $id);
-        if ($cacheService->has($cacheKey)) {
-            $val = $cacheService->pull($cacheKey);
-            $val++;
-            if ($val > 5) {
-                Video::whereId($id)->increment('view_num', $val);
-                $cacheService->forget($cacheKey);
-            } else {
-                $cacheService->put($cacheKey, $val, $configService->getCacheExpire());
-            }
-            return;
-        }
-        $cacheService->put($cacheKey, 1, $configService->getCacheExpire());
+        Video::query()->where('id', $videoId)->increment('view_num', $num);
     }
 }

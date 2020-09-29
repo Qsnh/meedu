@@ -25,9 +25,6 @@ class FrontendConstant
 
     const YES = 1;
 
-    const PAYMENT_WECHAT_PAY_CACHE_KEY = 'wechat_remote_order_%s';
-    const PAYMENT_WECHAT_PAY_CACHE_EXPIRE = 600;
-
     const H5 = 'h5';
 
     const ORDER_PAID_TYPE_PROMO_CODE = 1;
@@ -85,6 +82,10 @@ class FrontendConstant
     public const SLIDER_PLATFORM_H5 = 'H5';
     public const SLIDER_PLATFORM_MINI = 'MINI';
     public const SLIDER_PLATFORM_APP = 'APP';
+
+    // 导航栏平台
+    public const NAV_PLATFORM_PC = 'PC';
+    public const NAV_PLATFORM_H5 = 'h5';
 
     // 微信小程序登录socialite sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';

@@ -13,6 +13,7 @@ namespace Tests\Feature\BackendApi;
 
 use App\Models\Administrator;
 use App\Models\AdministratorRole;
+use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class NavTest extends Base
         'sort' => 11,
         'name' => '首页导航',
         'url' => '/meedu',
+        'platform' => FrontendConstant::NAV_PLATFORM_PC,
     ];
 
     protected $admin;

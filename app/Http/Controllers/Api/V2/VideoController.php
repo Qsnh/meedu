@@ -11,9 +11,12 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Bus\VideoBus;
+use App\Meedu\Cache\Inc\Inc;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -162,7 +165,7 @@ class VideoController extends BaseController
         $video = $this->videoService->find($id);
 
         // 视频浏览次数自增
-        $this->videoService->viewNumInc($video['id']);
+        Inc::record(new VideoViewIncItem($video['id']));
 
         // 章节
         $chapters = $this->courseService->chapters($video['course_id']);
@@ -332,16 +335,17 @@ class VideoController extends BaseController
      *         )
      *     )
      * )
-     * @param CommentRequest $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function recordVideo(Request $request, $id)
+    public function recordVideo(Request $request, VideoBus $videoBus, $id)
     {
+        // 视频已观看时长
         $duration = (int)$request->post('duration', 0);
-        $video = $this->videoService->find($id);
-        $isWatched = $video['duration'] <= $duration;
-        $this->userService->recordUserVideoWatch($this->id(), $video['course_id'], $id, $duration, $isWatched);
+        if (!$duration) {
+            return $this->error(__('params error'));
+        }
+
+        $videoBus->userVideoWatchDurationRecord($this->id(), (int)$id, $duration);
+
         return $this->success();
     }
 }

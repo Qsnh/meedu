@@ -45,7 +45,7 @@ class AvatarChangeRequest extends BaseRequest
 
         return [
             'path' => $path,
-            'url' => Storage::disk($configService->getImageStorageDisk())->url($path),
+            'url' => url(Storage::disk($configService->getImageStorageDisk())->url($path)),
         ];
     }
 }

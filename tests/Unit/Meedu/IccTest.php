@@ -24,7 +24,7 @@ class IccTest extends TestCase
     {
         $adFrom = factory(AdFrom::class)->create();
         $incItem = new AdFromIncItem($adFrom->toArray());
-        $incItem->limit = 2;
+        $incItem->setLimit(2);
         $this->assertEquals(2, $incItem->getLimit());
 
         Inc::record($incItem);

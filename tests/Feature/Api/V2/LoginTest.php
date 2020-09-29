@@ -12,6 +12,7 @@
 namespace Tests\Feature\Api\V2;
 
 use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Base\Services\CacheService;
@@ -71,7 +72,7 @@ class LoginTest extends Base
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $key = sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile);
+        $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, '123456', 100);
 
         $response = $this->postJson('/api/v2/login/mobile', [
@@ -90,7 +91,7 @@ class LoginTest extends Base
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
-        $key = sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile);
+        $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, '123456', 100);
 
         $response = $this->postJson('/api/v2/login/mobile', [

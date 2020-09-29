@@ -171,30 +171,97 @@ class CourseVideoController extends BaseController
     public function watchRecords(Request $request, $videoId)
     {
         $userId = $request->input('user_id');
+        $courseId = $request->input('course_id');
         $watchedStartAt = $request->input('watched_start_at');
         $watchedEndAt = $request->input('watched_end_at');
+        $export = $request->input('export');
+
+        // 分页
+        $page = (int)$request->input('page');
+        $size = $request->input('size', 10);
+        if ($export) {
+            // 数据导出的话，默认第一页，默认最大导出10w条数据
+            // 如果导出数据记录超过最大值，则推荐使用数据路管理工具导出
+            $page = 1;
+            $size = 100000;
+        }
 
         $data = UserVideoWatchRecord::query()
-            ->where('video_id', $videoId)
+            ->when($videoId, function ($query) use ($videoId) {
+                $query->where('video_id', $videoId);
+            })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
+            })
+            ->when($courseId, function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
             })
             ->when($watchedStartAt && $watchedEndAt, function ($query) use ($watchedStartAt, $watchedEndAt) {
                 $query->whereBetween('watched_at', [$watchedStartAt, $watchedEndAt]);
             })
-            ->orderByDesc('id')
-            ->paginate($request->input('size', 10));
+            ->orderByRaw('course_id,video_id,user_id desc')
+            ->paginate($size, ['*'], 'page', $page);
+
+        // 课程
+        $courses = Course::query()->select(['id', 'title', 'charge'])
+            ->whereIn('id', array_column($data->items(), 'course_id'))
+            ->get()
+            ->keyBy('id');
+
+        // 视频
+        $videos = Video::query()->select(['id', 'title', 'charge', 'duration'])
+            ->whereIn('id', array_column($data->items(), 'video_id'))
+            ->get()
+            ->keyBy('id');
 
         // 用户
         $users = User::query()
+            ->with(['tags'])
             ->select(['id', 'nick_name', 'avatar', 'mobile'])
             ->whereIn('id', array_column($data->items(), 'user_id'))
             ->get()
             ->keyBy('id');
 
+        // 数据导出
+        if ($export) {
+            $exportData = [
+                [
+                    'CID', 'VID', 'UID', '课程', '视频', '用户', '标签',
+                    '时长', '已观看', '开始时间', '看完时间', '看完',
+                ]
+            ];
+            foreach ($data->items() as $item) {
+                $tmpVideo = $videos[$item['video_id']] ?? null;
+
+                $tmpUser = $users[$item['user_id']] ?? null;
+                $tag = $tmpUser ? $tmpUser->tags->pluck('name')->implode(',') : '';
+
+                $exportData[] = [
+                    $item['course_id'],
+                    $item['video_id'],
+                    $item['user_id'],
+                    ($courses[$item['course_id']]['title'] ?? ''),
+                    $tmpVideo ? $tmpVideo['title'] : '',
+                    ($users[$item['user_id']]['nick_name'] ?? ''),
+                    $tag,
+                    ($tmpVideo ? $tmpVideo['duration'] : 0) . 's',
+                    $item['watch_seconds'] . 's',
+                    $item['created_at'],
+                    $item['watched_at'] ?: '',
+                    $item['watched_at'] ? '是' : '否',
+                ];
+            }
+
+            return $this->successData([
+                'data' => $exportData,
+            ]);
+        }
+
         return $this->successData([
+            'courses' => $courses,
             'data' => $data,
             'users' => $users,
+            'videos' => $videos,
         ]);
     }
 }

@@ -13,8 +13,8 @@ namespace App\Meedu\Payment\Wechat;
 
 use Exception;
 use Yansongda\Pay\Pay;
+use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
-use App\Constant\FrontendConstant;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\Log;
 use App\Meedu\Payment\Contract\Payment;
@@ -74,9 +74,9 @@ class Wechat implements Payment
 
             // 缓存保存
             $this->cacheService->put(
-                sprintf(FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_KEY, $order['order_id']),
+                get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']),
                 $createResult,
-                FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_EXPIRE
+                CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['expire']
             );
 
             // 构建Response

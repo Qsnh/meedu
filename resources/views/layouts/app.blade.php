@@ -1,32 +1,39 @@
 @include('layouts.common.header')
 <body>
 
-<div class="container-fluid nav-box bg-fff">
-    <nav class="navbar navbar-expand-lg bg-fff">
+<div class="nav-box">
+    <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="{{url('/')}}">
             <img src="{{$gConfig['system']['logo']}}" height="37" alt="{{config('app.name')}}">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-bars"></i>
-        </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{menu_active(['index'])}}" href="{{url('/')}}">首页 <span
-                                class="sr-only">(current)</span></a>
+                    <a class="nav-link {{menu_active(['index'])}}" href="{{url('/')}}">首页</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}"
                        href="{{route('courses')}}">所有课程</a>
                 </li>
                 @foreach($gNavs as $item)
-                    <li class="nav-item">
-                        <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
-                           href="{{$item['url']}}">{{$item['name']}}</a>
-                    </li>
+                    @if($item['children'])
+                        <li class="nav-item">
+                            <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
+                               href="{{$item['url']}}">{{$item['name']}}</a>
+                            <div class="nav-children">
+                                @foreach($item['children'] as $childrenItem)
+                                    <a class="children-nav-item {{menu_active(explode(',', $childrenItem['active_routes'] ?? ''))}}"
+                                       href="{{$childrenItem['url']}}">{{$childrenItem['name']}}</a>
+                                @endforeach
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
+                               href="{{$item['url']}}">{{$item['name']}}</a>
+                        </li>
+                    @endif
                 @endforeach
                 <form class="form-inline ml-4" method="get" action="{{route('search')}}">
                     @csrf

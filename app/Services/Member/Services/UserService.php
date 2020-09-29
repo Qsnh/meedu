@@ -24,6 +24,7 @@ use App\Events\UserVideoWatchedEvent;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Base\Services\ConfigService;
+use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserLoginRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
@@ -408,19 +409,21 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @param int $userId
      * @return int
      */
-    public function getCurrentUserCourseCount(): int
+    public function getUserCourseCount(int $userId): int
     {
-        return (int)UserCourse::whereUserId(Auth::id())->count();
+        return (int)UserCourse::query()->where('user_id', $userId)->count();
     }
 
     /**
+     * @param int $userId
      * @return int
      */
-    public function getCurrentUserVideoCount(): int
+    public function getUserVideoCount(int $userId): int
     {
-        return (int)UserVideo::whereUserId(Auth::id())->count();
+        return (int)UserVideo::query()->where('user_id', $userId)->count();
     }
 
     /**
@@ -642,5 +645,38 @@ class UserService implements UserServiceInterface
             ->orderByDesc('id')
             ->first();
         return $record ? $record->toArray() : [];
+    }
+
+    /**
+     * 用户视频观看时间统计
+     * @param int $userId
+     * @param int $seconds
+     */
+    public function watchStatSave(int $userId, int $seconds): void
+    {
+        $year = date('Y');
+        $month = date('m');
+        $day = date('d');
+        $record = UserWatchStat::query()
+            ->where('user_id', $userId)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->where('day', $day)
+            ->first();
+        if ($record) {
+            // todo 用户量大了之后此处频繁写入MySQL的CPU会飚高
+            UserWatchStat::query()
+                ->where('id', $record['id'])
+                ->where('seconds', $record['seconds'])
+                ->update(['seconds' => $record['seconds'] + $seconds]);
+        } else {
+            UserWatchStat::create([
+                'user_id' => $userId,
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'seconds' => $seconds,
+            ]);
+        }
     }
 }

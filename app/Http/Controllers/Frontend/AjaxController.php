@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use App\Bus\VideoBus;
 use Illuminate\Http\Request;
 use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
@@ -359,15 +360,22 @@ class AjaxController extends BaseController
 
     /**
      * @param Request $request
+     * @param VideoBus $videoBus
      * @param $videoId
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function recordVideo(Request $request, $videoId)
+    public function recordVideo(Request $request, VideoBus $videoBus, $videoId)
     {
+        // 这里前台传递的duration时间是用户播放的视频的播放位置
+        // 举个例子：如果用户看到了10分10秒，这里的duration的值就是610
         $duration = (int)$request->input('duration', 0);
-        $video = $this->videoService->find($videoId);
-        $isWatched = $video['duration'] <= $duration;
-        $this->userService->recordUserVideoWatch(Auth::id(), $video['course_id'], $videoId, $duration, $isWatched);
+        if (!$duration) {
+            return $this->error(__('params error'));
+        }
+
+        $videoBus->userVideoWatchDurationRecord(Auth::id(), (int)$videoId, $duration);
+
         return $this->success();
     }
 }

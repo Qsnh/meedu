@@ -51,8 +51,7 @@ class RegisterController extends BaseController
             'password' => $password,
             'nick_name' => $nickname,
         ] = $request->filldata();
-        $user = $this->userService->findNickname($nickname);
-        if ($user) {
+        if ($nickname && $this->userService->findNickname($nickname)) {
             flash(__('nick_name.unique'));
             return back();
         }

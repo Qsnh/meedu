@@ -13,6 +13,7 @@ namespace Tests\Feature\Page;
 
 use Tests\TestCase;
 use App\Services\Member\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterTest extends TestCase
 {
@@ -34,8 +35,13 @@ class RegisterTest extends TestCase
             ->type('meedu123', 'password')
             ->press('注册');
 
-        $user = User::query()->where('mobile', '13900001111')->exists();
-        $this->assertTrue($user);
+        $user = User::query()->where('mobile', '13900001111')->first();
+        $this->assertNotNull($user);
+        $this->assertTrue(Hash::check('meedu123', $user->password));
+        // 未配置昵称
+        $this->assertEquals(0, $user->is_set_nickname);
+        // 未配置密码
+        $this->assertEquals(0, $user->is_password_set);
     }
 
     public function test_submit_credit1_reward()

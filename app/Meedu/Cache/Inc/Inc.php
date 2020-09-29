@@ -22,6 +22,7 @@ class Inc
          * @var $cacheService CacheService
          */
         $cacheService = app()->make(CacheServiceInterface::class);
+
         if ($cacheService->has($incItem->getKey())) {
             $val = $cacheService->inc($incItem->getKey());
         } else {

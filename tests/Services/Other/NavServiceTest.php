@@ -12,6 +12,7 @@
 namespace Tests\Services\Other;
 
 use Tests\TestCase;
+use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
 use App\Services\Other\Services\NavService;
 use App\Services\Other\Interfaces\NavServiceInterface;
@@ -24,7 +25,7 @@ class NavServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(NavServiceInterface::class);
@@ -35,9 +36,11 @@ class NavServiceTest extends TestCase
         // 开启缓存
         config(['meedu.system.cache.status' => 1]);
 
-        $nav = factory(Nav::class)->create(['sort' => 1]);
+        $platform = 'pc';
 
-        $all = $this->service->all();
+        $nav = factory(Nav::class)->create(['sort' => 1, 'platform' => $platform]);
+
+        $all = $this->service->all($platform);
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->sort, $all[0]['sort']);
@@ -45,8 +48,8 @@ class NavServiceTest extends TestCase
         $this->assertEquals($nav->url, $all[0]['url']);
 
         // 再创建一个
-        $nav1 = factory(Nav::class)->create(['sort' => 2]);
-        $all = $this->service->all();
+        $nav1 = factory(Nav::class)->create(['sort' => 2, 'platform' => $platform]);
+        $all = $this->service->all($platform);
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->name, $all[0]['name']);
@@ -57,9 +60,11 @@ class NavServiceTest extends TestCase
         // 开启缓存
         config(['meedu.system.cache.status' => 0]);
 
-        $nav = factory(Nav::class)->create(['sort' => 1]);
+        $platform = 'pc';
 
-        $all = $this->service->all();
+        $nav = factory(Nav::class)->create(['sort' => 1, 'platform' => $platform]);
+
+        $all = $this->service->all($platform);
 
         $this->assertEquals(1, count($all));
         $this->assertEquals($nav->sort, $all[0]['sort']);
@@ -67,13 +72,29 @@ class NavServiceTest extends TestCase
         $this->assertEquals($nav->url, $all[0]['url']);
 
         // 再创建一个
-        $nav2 = factory(Nav::class)->create(['sort' => 2]);
+        $nav2 = factory(Nav::class)->create(['sort' => 2, 'platform' => $platform]);
 
-        $all = $this->service->all();
+        $all = $this->service->all($platform);
 
         $this->assertEquals(2, count($all));
         // sort升序
         $this->assertEquals($nav->name, $all[0]['name']);
         $this->assertEquals($nav2->name, $all[1]['name']);
+    }
+
+    public function test_platform()
+    {
+        $platform = FrontendConstant::NAV_PLATFORM_PC;
+        factory(Nav::class, 3)->create([
+            'platform' => $platform,
+        ]);
+        factory(Nav::class, 2)->create([
+            'platform' => FrontendConstant::NAV_PLATFORM_H5,
+        ]);
+
+        $navs = $this->service->all($platform);
+        $this->assertEquals(3, count($navs));
+
+        $this->assertEquals(5, count($this->service->all()));
     }
 }

@@ -26,6 +26,8 @@ class SliderService implements SliderServiceInterface
             ->when($platform, function ($query) use ($platform) {
                 $query->where('platform', $platform);
             })
-            ->orderBy('sort')->get()->toArray();
+            ->orderBy('sort')
+            ->get()
+            ->toArray();
     }
 }

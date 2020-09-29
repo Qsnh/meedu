@@ -12,8 +12,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
+use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
-use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\Controller;
@@ -116,7 +116,7 @@ class OrderController extends Controller
         $order = $this->orderService->findUser($orderId);
         $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
 
-        $wechatData = $this->cacheService->pull(sprintf(FrontendConstant::PAYMENT_WECHAT_PAY_CACHE_KEY, $order['order_id']));
+        $wechatData = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']));
         if (!$wechatData) {
             $this->orderService->cancel($order['id']);
             flash(__('error'));

@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     // Nav
     Route::group(['prefix' => 'nav'], function () {
         Route::get('/', 'NavController@index');
+        Route::get('/create', 'NavController@create');
         Route::post('/', 'NavController@store');
         Route::get('/{id}', 'NavController@edit');
         Route::put('/{id}', 'NavController@update');
@@ -223,6 +224,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'PromoCodeController@edit');
         Route::put('/{id}', 'PromoCodeController@update');
         Route::post('/delete/multi', 'PromoCodeController@destroy');
+        Route::post('/import', 'PromoCodeController@import');
+        Route::post('/generator', 'PromoCodeController@generator');
     });
 
     // 课程分类

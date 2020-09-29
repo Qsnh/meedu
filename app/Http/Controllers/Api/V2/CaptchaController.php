@@ -12,13 +12,14 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Mews\Captcha\Captcha;
-use App\Constant\ApiV2Constant;
+use App\Constant\CacheConstant;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ApiV2\SmsRequest;
 use App\Services\Other\Services\SmsService;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 /**
@@ -44,7 +45,7 @@ class CaptchaController extends BaseController
     public function __construct(
         SmsServiceInterface $smsService,
         ConfigServiceInterface $configService,
-        CacheService $cacheService
+        CacheServiceInterface $cacheService
     ) {
         $this->smsService = $smsService;
         $this->configService = $configService;
@@ -118,7 +119,12 @@ class CaptchaController extends BaseController
             Log::info(__METHOD__, compact('code'));
         }
 
-        $this->cacheService->put(sprintf(ApiV2Constant::MOBILE_CODE_CACHE_KEY, $mobile), $code, ApiV2Constant::SMS_CODE_EXPIRE);
+        $this->cacheService->put(
+            get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile),
+            $code,
+            CacheConstant::MOBILE_CODE['expire']
+        );
+
         return $this->success();
     }
 }

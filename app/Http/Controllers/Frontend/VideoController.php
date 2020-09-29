@@ -11,9 +11,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Meedu\Cache\Inc\Inc;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
+use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -97,7 +99,7 @@ class VideoController extends FrontendController
         $video = $this->videoService->find($id);
 
         // 视频浏览次数
-        $this->videoService->viewNumInc($video['id']);
+        Inc::record(new VideoViewIncItem($video['id']));
 
         // 视频评论
         $comments = $this->videoCommentService->videoComments($video['id']);
