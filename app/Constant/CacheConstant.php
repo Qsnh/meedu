@@ -28,26 +28,26 @@ class CacheConstant
     // 该数据会与之后轮训的数据进行比对
     public const USER_VIDEO_WATCH_DURATION = [
         'name' => self::PREFIX_C . 'uvwd:%d',
-        'expire' => 1440 * 3,
+        'expire' => 3600 * 24 * 3,
     ];
 
     // 用户验证码缓存
     // 登录，注册，找回密码等短信验证码
     public const MOBILE_CODE = [
         'name' => self::PREFIX_C . 'm:%s',
-        'expire' => 3,
+        'expire' => 60 * 5,
     ];
 
     // 用户微信小程序登录sessionKey缓存
     public const WECHAT_MINI_SESSION_KEY = [
         'name' => self::PREFIX_C . 'wmsk:%s',
-        'expire' => 60 * 12,
+        'expire' => 3600 * 12,
     ];
 
     // 微信扫码支付请求返回数据缓存
     public const WECHAT_PAY_SCAN_RETURN_DATA = [
         'name' => self::PREFIX_C . 'wpsrd:%s',
-        'expire' => 60 * 3,
+        'expire' => 3600 * 12,
     ];
 
     // adFrom访问统计
