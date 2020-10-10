@@ -28,7 +28,7 @@ class RoleServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(RoleServiceInterface::class);
@@ -78,6 +78,20 @@ class RoleServiceTest extends TestCase
         $user->refresh();
         $this->assertEquals($role->id, $user->role_id);
         $this->assertTrue(abs(Carbon::now()->addDays($role->expire_days)->timestamp - strtotime($user->role_expired_at)) < 5);
+    }
+
+    public function test_userContinueRole_expired()
+    {
+        $role = factory(Role::class)->create(['expire_days' => 2]);
+        $user = factory(User::class)->create([
+            'role_id' => $role->id,
+            'role_expired_at' => '2018/08/08',
+        ]);
+
+        $this->service->userContinueRole($user->toArray(), $role->toArray(), 1);
+
+        $user->refresh();
+        $this->assertTrue(abs(Carbon::parse($user->role_expired_at)->timestamp - Carbon::now()->addDays(2)->timestamp) < 2);
     }
 
     public function test_userContinueRole()
