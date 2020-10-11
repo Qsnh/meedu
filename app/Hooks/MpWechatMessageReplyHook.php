@@ -33,7 +33,7 @@ class MpWechatMessageReplyHook implements HookRuntimeInterface
          * @var HookParams $response
          */
         $response = $next($params);
-        if ($response && $response->getResponse()) {
+        if ($response) {
             // 如果已经有其它的中间件处理了该条消息并返回了值
             // 那么这里就不需要继续处理了
             // 当前中间件的权重是最低的
