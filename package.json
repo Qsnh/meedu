@@ -20,7 +20,7 @@
     "vue": "^2.5.7"
   },
   "dependencies": {
-    "sweetalert": "^2.1.2",
+    "sweetalert2": "^10.6.1",
     "xgplayer": "^2.6.15",
     "xgplayer-hls": "^2.3.2",
     "xgplayer-hls.js": "^2.1.6",
