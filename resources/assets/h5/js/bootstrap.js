@@ -1,4 +1,4 @@
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import Player from 'xgplayer';
 import HlsJsPlayer from 'xgplayer-hls.js';
