@@ -1,4 +1,4 @@
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import Player from 'xgplayer';
 import HlsJsPlayer from 'xgplayer-hls.js';
@@ -42,11 +42,11 @@ window.Player = Player;
 window.HlsJsPlayer = HlsJsPlayer;
 
 window.flashSuccess = function (message) {
-    swal('成功', message, 'success');
+    Swal.fire('成功', message, 'success');
 };
 window.flashWarning = function (message) {
-    swal('警告', message, 'warning');
+    Swal.fire('警告', message, 'warning');
 };
 window.flashError = function (message) {
-    swal('失败', message, 'error');
+    Swal.fire('失败', message, 'error');
 };
