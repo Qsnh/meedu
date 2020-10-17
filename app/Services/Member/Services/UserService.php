@@ -180,6 +180,7 @@ class UserService implements UserServiceInterface
             'role_id' => 0,
             'role_expired_at' => Carbon::now(),
             'is_set_nickname' => $nickname ? 1 : 0,
+            'is_password_set' => $password ? 1 : 0,
         ]);
 
         event(new UserRegisterEvent($user->id));

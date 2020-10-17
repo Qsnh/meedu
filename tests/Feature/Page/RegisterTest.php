@@ -40,8 +40,8 @@ class RegisterTest extends TestCase
         $this->assertTrue(Hash::check('meedu123', $user->password));
         // 未配置昵称
         $this->assertEquals(0, $user->is_set_nickname);
-        // 未配置密码
-        $this->assertEquals(0, $user->is_password_set);
+        // 已配置密码
+        $this->assertEquals(1, $user->is_password_set);
     }
 
     public function test_submit_credit1_reward()

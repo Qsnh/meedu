@@ -595,7 +595,7 @@ class AjaxTest extends TestCase
         $user = User::query()->where('mobile', '13988889999')->first();
         $this->assertNotNull($user);
         $this->assertEquals(0, $user->is_set_nickname);
-        $this->assertEquals(0, $user->is_password_set);
+        $this->assertEquals(1, $user->is_password_set);
     }
 
     public function test_register_with_exists_mobile()
