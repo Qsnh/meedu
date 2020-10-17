@@ -9,10 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Tests\Feature\Api;
+namespace Tests\Feature\Api\V2;
 
 use Illuminate\Support\Str;
-use Tests\Feature\Api\V2\Base;
 use App\Constant\CacheConstant;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
