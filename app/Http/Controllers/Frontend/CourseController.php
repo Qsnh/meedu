@@ -116,17 +116,6 @@ class CourseController extends FrontendController
         // 课程分类
         $courseCategories = $this->courseCategoryService->all();
 
-        $queryParams = function ($param) {
-            $request = \request();
-            $params = [
-                'page' => $request->input('page'),
-                'category_id' => $request->input('category_id', 0),
-                'scene' => $request->input('scene', ''),
-            ];
-            $params = array_merge($params, $param);
-            return http_build_query($params);
-        };
-
         return v('frontend.course.index', compact(
             'courses',
             'title',
@@ -134,8 +123,7 @@ class CourseController extends FrontendController
             'description',
             'courseCategories',
             'categoryId',
-            'scene',
-            'queryParams'
+            'scene'
         ));
     }
 

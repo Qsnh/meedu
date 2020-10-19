@@ -558,3 +558,23 @@ if (!function_exists('get_cache_key')) {
         return sprintf($key, ...$params);
     }
 }
+
+if (!function_exists('query_builder')) {
+    /**
+     * @param array $fields
+     * @param array $rewrite
+     * @return string
+     */
+    function query_builder(array $fields, array $rewrite = []): string
+    {
+        $request = request();
+        $data = [
+            'page' => $request->input('page', 1),
+        ];
+        foreach ($fields as $item) {
+            $data[$item] = $request->input($item, '');
+        }
+        $rewrite && $data = array_merge($data, $rewrite);
+        return http_build_query($data);
+    }
+}

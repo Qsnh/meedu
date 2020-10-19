@@ -31,25 +31,24 @@ body {
   }
 }
 
-.top-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
+.search-bar {
+  display: block;
   width: 100%;
-  height: 52px;
+  height: auto;
   float: left;
-  background-color: $primary;
-  padding: 12px 15px;
-  line-height: 28px;
+  padding: 10px 15px 0 15px;
+  background-color: white;
 
-  .search-button {
-    margin-right: 30px;
-  }
-
-  .avatar {
-    border-radius: 14px;
+  span {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    line-height: 32px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, .1);
+    color: rgba(0, 0, 0, .3);
+    font-size: 14px;
+    text-align: center;
   }
 }
 
@@ -95,129 +94,101 @@ body {
   float: left;
   padding-left: 15px;
   padding-right: 15px;
+  padding-top: 15px;
 
   .banner-title {
     width: 100%;
     height: auto;
     float: left;
-    padding-top: 30px;
     padding-bottom: 10px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bolder;
     color: #333333;
     line-height: 16px;
   }
 }
 
 .courses {
-  padding-top: 10px;
-  padding-bottom: 10px;
   width: 100%;
   height: auto;
   float: left;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 
   .banner-course-item {
-    display: block;
-    width: calc(50% - 4px);
-    height: 199px;
+    width: 100%;
+    height: auto;
+    padding: 8px;
     float: left;
-    line-height: 1;
+    display: flex;
+    background-color: white;
     margin-bottom: 15px;
-
-    &.first {
-      padding-left: 0;
-      padding-right: 7px;
-    }
+    border-radius: 8px;
 
     .course-thumb {
-      width: 100%;
-      height: 125px;
-      float: left;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      width: 120px;
+      height: 90px;
+      margin-right: 15px;
+
+      img {
+        border-radius: 5px;
+      }
     }
 
-    .course-title {
-      width: 100%;
-      height: 44px;
-      float: left;
-      background-color: white;
-      padding: 15px 5px;
-      font-size: 14px;
-      font-weight: 400;
-      color: #333333;
-      line-height: 14px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+    .course-info-box {
+      flex: 1;
 
-    .course-info {
-      width: 100%;
-      height: auto;
-      float: left;
-      background-color: white;
-      padding-bottom: 10px;
-      padding-left: 5px;
-      padding-right: 5px;
-      display: flex;
-
-      .course-user-count {
-        flex: 1;
+      .course-title {
+        width: 100%;
         height: auto;
         float: left;
-        line-height: 18px;
-        font-size: 12px;
+        padding-top: 5px;
+        margin-bottom: 30px;
+        background-color: white;
+        font-size: 1rem;
         font-weight: 400;
-        color: rgba(153, 153, 153, 1);
+        color: #333333;
+        white-space: normal;
+        word-break: break-all;
       }
 
-      .course-charge {
-        flex: 1;
+      .course-info {
+        width: 100%;
         height: auto;
-        text-align: right;
+        float: left;
+        display: flex;
+        line-height: 30px;
 
-        .charge-value {
-          display: inline-block;
-          padding: 4px 8px;
-          background: rgba(255, 64, 64, .1);
-          border-radius: 9px;
-          font-size: 10px;
-          font-weight: 600;
-          color: rgba(255, 64, 64, 1);
-          line-height: 10px;
+        .course-user-count {
+          flex: 1;
+          height: auto;
+          float: left;
+          line-height: 18px;
+          font-size: 12px;
+          font-weight: 400;
+          color: rgba(153, 153, 153, 1);
+        }
 
-          &.free-charge {
-            background-color: rgba(0, 128, 0, .2);
-            color: rgba(0, 128, 0, .7);
+        .course-charge {
+          flex: 1;
+          height: auto;
+          text-align: right;
+
+          .charge-value {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(255, 64, 64, .1);
+            border-radius: 9px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 64, 64, 1);
+            line-height: 10px;
+
+            &.free-charge {
+              background-color: rgba(0, 128, 0, .2);
+              color: rgba(0, 128, 0, .7);
+            }
           }
         }
       }
-    }
-  }
-}
-
-.index-footer {
-  width: 100%;
-  height: auto;
-  float: left;
-  background: rgba(20, 14, 35, 1);
-  text-align: center;
-  padding-top: 30px;
-  padding-bottom: 15px;
-
-  p {
-    font-size: 10px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, .4);
-    margin-bottom: 15px;
-
-    a {
-      color: rgba(255, 255, 255, .4);
     }
   }
 }
@@ -372,52 +343,15 @@ body {
   }
 }
 
-.member-model {
-  display: none;
-  position: fixed;
-  z-index: 888;
-  top: 52px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, .4);
-
-  .menu-box {
-    width: 100%;
-    height: auto;
-    float: left;
-    padding: 5px 7px 20px 7px;
-    background-color: #ffffff;
-
-    .menu-item {
-      display: flex;
-      width: 100%;
-      height: 50px;
-      padding: 15px 8px;
-      float: left;
-      border-bottom: 1px solid rgba(229, 229, 229, 1);
-      color: rgba(51, 51, 51, 1);
-      font-size: 14px;
-      align-content: center;
-
-      .icon {
-        margin-right: 10px;
-      }
-
-      &.vip {
-        color: #D09800;
-      }
-    }
-  }
-}
-
 .courses-menu {
   width: 100%;
   max-width: 100%;
   height: 52px;
   float: left;
   padding: 0 15px;
-  background-color: $primary;
+  border-top: 1px solid #fbfbfb;
+  border-bottom: 1px solid #fbfbfb;
+  background-color: white;
   overflow-y: auto;
   white-space: nowrap;
 
@@ -430,15 +364,15 @@ body {
     margin-right: 15px;
 
     a {
-      color: rgba(255, 255, 255, .6);
+      color: rgba(0, 0, 0, .5);
     }
 
     &.active {
       a {
-        color: #ffffff;
+        color: rgba(0, 0, 0, .8);
       }
 
-      font-weight: 600;
+      font-weight: bolder;
     }
   }
 }
@@ -1297,4 +1231,47 @@ body {
       color: $primary;
     }
   }
+}
+
+.tabbar-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+  display: flex;
+  background-color: white;
+
+  .tabbar-item {
+    flex: 1;
+    text-align: center;
+    color: rgba(0, 0, 0, .3);
+
+    &.active {
+      color: rgba(0, 0, 0, .6);
+    }
+
+    .icon {
+      width: 100%;
+      height: auto;
+      line-height: 19px;
+      font-size: 2rem;
+    }
+
+    .name {
+      width: 100%;
+      height: 20px;
+      line-height: 30px;
+      font-size: .6rem;
+    }
+  }
+}
+
+.clear-block {
+  width: 100%;
+  height: 50px;
+  float: left;
 }

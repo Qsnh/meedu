@@ -11,6 +11,7 @@
     <title>{{$title ?? 'MeEdu'}}</title>
     <link crossorigin="anonymous" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1711080_923nzhdbwy4.css">
     <link rel="stylesheet" href="{{mix('/h5/css/app.css')}}">
     <script crossorigin="anonymous" integrity="sha384-qu2J8HSjv8EaYlbzBdbVeJncuCmfBqnZ4h3UIBZ9WTZ/5Wrqt0/9hofL0046NCkc"
             src="https://lib.baomitu.com/zepto/1.2.0/zepto.min.js"></script>
@@ -23,25 +24,12 @@
         </style>
     @endif
 </head>
-<body style="padding-top: 52px;">
+<body>
 
-<div class="top-header">
-    <a href="{{route('index')}}">
-        <img src="{{$gConfig['system']['white_logo']}}" height="24" width="92">
-    </a>
-    @if($user)
-        <a href="javascript:void(0)" class="float-right" onclick="$('.member-model').toggle()">
-            <img src="{{$user['avatar']}}" class="avatar" width="28" height="28">
-        </a>
-    @else
-        <a href="{{route('login')}}" class="float-right">
-            <img src="{{asset('/h5/images/icons/user.png')}}" width="28" height="28">
-        </a>
-    @endif
-    <a href="{{route('search')}}" class="float-right search-button">
-        <img src="{{asset('/h5/images/icons/search.png')}}" width="20" height="20">
-    </a>
-</div>
+<a href="{{route('search')}}" class="search-bar">
+    <span>请输入搜索内容</span>
+</a>
+
 <div class="top-menu">
     <a href="{{route('index')}}" class="{{menu_active(['index'])}} first">首页</a>
     <a href="{{route('courses')}}" class="{{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}">所有课程</a>
@@ -52,46 +40,6 @@
 </div>
 
 @yield('content')
-
-@if($user)
-    <div class="member-model">
-        <div class="menu-box">
-            @if(app()->make(\App\Businesses\BusinessState::class)->isRole($user))
-                <a href="javascript:void(0)" class="menu-item vip">
-                    <img src="{{asset('/h5/images/icons/vip.png')}}" width="20" height="20" class="icon">
-                    <span>{{$user['role']['name']}}</span>
-                </a>
-            @else
-                <a href="{{route('role.index')}}" class="menu-item vip">
-                    <img src="{{asset('/h5/images/icons/vip.png')}}" width="20" height="20"
-                         class="icon"><span>会员中心</span>
-                </a>
-            @endif
-            <a href="{{route('member.credit1_records')}}" class="menu-item">
-                <img src="{{asset('/h5/images/icons/credit1.png')}}" width="20" height="20" class="icon">
-                <span>我的积分</span>
-            </a>
-            <a href="{{route('member.courses')}}" class="menu-item">
-                <img src="{{asset('/h5/images/icons/course.png')}}" width="20" height="20" class="icon">
-                <span>我的课程</span>
-            </a>
-            <a href="{{route('member.orders')}}" class="menu-item">
-                <img src="{{asset('/h5/images/icons/order.png')}}" width="20" height="20" class="icon">
-                <span>我的订单</span>
-            </a>
-            <a href="javascript:void(0)" class="menu-item" onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">
-                <img src="{{asset('/h5/images/icons/logout.png')}}" width="20" height="20" class="icon">
-                <span>退出登录</span>
-            </a>
-            <form class="d-none" id="logout-form" action="{{ route('logout') }}"
-                  method="POST"
-                  style="display: none;">
-                @csrf
-            </form>
-        </div>
-    </div>
-@endif
 
 <script>
     @if(get_first_flash('success'))
