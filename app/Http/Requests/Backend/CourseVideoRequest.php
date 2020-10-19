@@ -69,6 +69,7 @@ class CourseVideoRequest extends BaseRequest
             'user_id' => $this->input('user_id', 0),
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
+            'slug' => $this->input('slug'),
             'url' => $this->input('url', '') ?? '',
             'aliyun_video_id' => $this->input('aliyun_video_id', '') ?? '',
             'tencent_video_id' => $this->input('tencent_video_id', '') ?? '',
@@ -91,7 +92,7 @@ class CourseVideoRequest extends BaseRequest
             'ban_drag' => (int)$this->input('ban_drag', 0),
         ];
 
-        if ($this->isMethod('post')) {
+        if ($this->isMethod('post') && !$data['slug']) {
             $data['slug'] = implode('-', (new Pinyin())->convert($data['title']));
         }
 
