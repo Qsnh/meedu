@@ -1,22 +1,15 @@
 @extends('layouts.h5-pure')
 
 @section('content')
-
-    @include('h5.components.topbar', ['title' => '所有课程'])
-
-    <div class="courses-menu">
-        <div class="menu-item {{!$scene ? 'active' : ''}}">
-            <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => ''])}}">所有课程</a>
-        </div>
-        <div class="menu-item {{$scene == 'free' ? 'active' : ''}}">
-            <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'free'])}}">免费课程</a>
-        </div>
-        <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
-            <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'recom'])}}">推荐课程</a>
-        </div>
-        <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
-            <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'sub'])}}">订阅最多</a>
-        </div>
+    <div class="nav-menus">
+        <a class="menu-item {{!$scene ? 'active' : ''}}"
+           href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => ''])}}">所有课程</a>
+        <a class="menu-item {{$scene == 'free' ? 'active' : ''}}"
+           href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'free'])}}">免费课程</a>
+        <a class="menu-item {{$scene == 'recom' ? 'active' : ''}}"
+           href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'recom'])}}">推荐课程</a>
+        <a class="menu-item {{$scene == 'sub' ? 'active' : ''}}"
+           href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'sub'])}}">订阅最多</a>
     </div>
 
     <div class="category-box">

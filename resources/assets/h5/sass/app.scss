@@ -161,7 +161,6 @@ body {
           flex: 1;
           height: auto;
           float: left;
-          line-height: 18px;
           font-size: 12px;
           font-weight: 400;
           color: rgba(153, 153, 153, 1);
@@ -178,9 +177,9 @@ body {
             background: rgba(255, 64, 64, .1);
             border-radius: 9px;
             font-size: 10px;
+            line-height: 1;
             font-weight: 600;
             color: rgba(255, 64, 64, 1);
-            line-height: 10px;
 
             &.free-charge {
               background-color: rgba(0, 128, 0, .2);
@@ -1338,6 +1337,27 @@ body {
       }
     }
   }
+
+  .logout-button-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+    padding: 0 15px 15px 15px;
+
+    .logout-button {
+      display: block;
+      width: 100%;
+      height: auto;
+      float: left;
+      background-color: rgba(0, 0, 0, .2);
+      color: #333333;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 44px;
+      border-radius: 10px;
+    }
+  }
 }
 
 .member-courses-page {
@@ -1353,40 +1373,34 @@ body {
   float: left;
   margin-top: 15px;
 
-  .my-credit1 {
+  .credit1-item {
     width: 100%;
     height: auto;
     float: left;
     margin-bottom: 15px;
+    background-color: white;
+    padding: 10px 15px;
+    display: flex;
+    line-height: 1rem;
 
-    .credit1-item {
-      width: 100%;
-      height: auto;
-      float: left;
-      margin-bottom: 5px;
-      background-color: white;
-      padding: 10px 15px;
+    .title {
+      flex: 1;
+      font-size: .8rem;
+      color: rgba(0, 0, 0, .7);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-break: keep-all;
+      text-align: left;
+    }
 
-      .title {
-        width: 100%;
-        height: auto;
-        float: left;
-        font-size: 16px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin-bottom: 10px;
-      }
-
-      .sum {
-        width: 100%;
-        height: auto;
-        float: left;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 20px;
-        color: $primary;
-      }
+    .sum {
+      width: auto;
+      padding-left: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: rgb(red, .8);
     }
   }
 }
@@ -1430,6 +1444,258 @@ body {
       .content {
         color: rgba(0, 0, 0, 1);
       }
+    }
+  }
+}
+
+.member-promoCode-page {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .create-promo-code-button-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 15px;
+
+    .create-promo-code-button {
+      width: 100%;
+      height: 42px;
+      float: left;
+      background-color: $primary;
+      border: 1px solid rgba($primary, .9);
+      color: white;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+      border-radius: 5px;
+    }
+  }
+
+  .promoCode-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: rgba($primary, .9);
+    padding: 15px;
+
+    .name {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: .7rem;
+      color: rgba(white, .4);
+      margin-bottom: 15px;
+    }
+
+    .value {
+      width: 100%;
+      height: auto;
+      float: left;
+      text-align: center;
+
+      span {
+        font-size: 1.5rem;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: rgba(white, .2);
+      }
+    }
+  }
+
+  .promoCode-desc-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: rgba($primary, .9);
+    padding: 15px;
+
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: .9rem;
+      color: rgba(white, .8);
+      line-height: 2rem;
+    }
+  }
+
+  .invite-user-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 15px;
+    background-color: white;
+    margin-bottom: 15px;
+    display: flex;
+    font-size: .8rem;
+    color: rgba(0, 0, 0, .5);
+    line-height: 2rem;
+
+    .invite-user-item-nickname {
+      flex: 1;
+      text-align: left;
+    }
+
+    .invite-user-item-date {
+      flex: 1;
+      text-align: right;
+    }
+  }
+
+  .balance-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: rgba($primary, .9);
+
+    .value {
+      width: 100%;
+      height: auto;
+      float: left;
+      text-align: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+
+      small {
+        font-size: .7rem;
+      }
+    }
+
+    .options {
+      width: 100%;
+      height: auto;
+      float: left;
+      text-align: center;
+
+      a {
+        color: rgba(white, .4);
+        font-size: .7rem;
+      }
+    }
+  }
+
+  .balance-records-box {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 1rem;
+      line-height: 44px;
+      color: rgba(0, 0, 0, .7);
+      padding-left: 15px;
+    }
+
+    .record-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      background-color: white;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+
+      .content {
+        width: 100%;
+        height: auto;
+        float: left;
+        display: flex;
+        font-size: .9rem;
+        line-height: 1rem;
+        margin-bottom: 10px;
+
+        .total {
+          flex: 1;
+          text-align: left;
+          color: rgba(red, .8);
+        }
+
+        .date {
+          flex: 1;
+          text-align: right;
+          color: rgba(0, 0, 0, .5);
+        }
+      }
+
+      .desc {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: .7rem;
+        line-height: 1rem;
+        color: rgba(0, 0, 0, .5);
+      }
+    }
+  }
+
+  .balance-withdraw-submit-box-shadow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 111;
+
+    .balance-withdraw-submit-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: auto;
+      padding: 15px;
+      background-color: white;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+
+      .title {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        color: #333333;
+        text-align: center;
+      }
+
+      .cancel-button {
+        color: rgba(0, 0, 0, .5);
+        line-height: 44px;
+        font-size: .9rem;
+      }
+    }
+  }
+}
+
+.nav-menus {
+  width: 100%;
+  height: auto;
+  float: left;
+  border-top: 1px solid rgba(0, 0, 0, .04);
+  border-bottom: 1px solid rgba(0, 0, 0, .04);
+  display: flex;
+  background-color: white;
+
+  .menu-item {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 44px;
+    color: #333333;
+
+    &.active {
+      font-weight: bolder;
+      font-size: 1.1rem;
+      color: $primary;
     }
   }
 }

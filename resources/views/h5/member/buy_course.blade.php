@@ -4,16 +4,13 @@
 
     @include('h5.components.topbar', ['title' => '我的课程', 'back' => route('member')])
 
-    <div class="courses-menu">
-        <div class="menu-item {{!$scene ? 'active' : ''}}">
-            <a href="{{route('member.courses')}}?{{$queryParams(['scene' => ''])}}">订阅课程</a>
-        </div>
-        <div class="menu-item {{$scene === 'videos' ? 'active' : ''}}">
-            <a href="{{route('member.courses')}}?{{$queryParams(['scene' => 'videos'])}}">已购视频</a>
-        </div>
-        <div class="menu-item {{$scene === 'history' ? 'active' : ''}}">
-            <a href="{{route('member.courses')}}?{{$queryParams(['scene' => 'history'])}}">历史学习</a>
-        </div>
+    <div class="nav-menus">
+        <a class="menu-item {{!$scene ? 'active' : ''}}"
+           href="{{route('member.courses')}}?{{$queryParams(['scene' => ''])}}">订阅课程</a>
+        <a class="menu-item {{$scene === 'videos' ? 'active' : ''}}"
+           href="{{route('member.courses')}}?{{$queryParams(['scene' => 'videos'])}}">已购视频</a>
+        <a class="menu-item {{$scene === 'history' ? 'active' : ''}}"
+           href="{{route('member.courses')}}?{{$queryParams(['scene' => 'history'])}}">历史学习</a>
     </div>
 
     <div class="member-courses-page">

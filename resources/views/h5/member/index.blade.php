@@ -102,13 +102,16 @@
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </div>
                 </a>
-                <a href="" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">安全退出</div>
-                </a>
             </div>
+        </div>
+
+        <div class="logout-button-box">
+            <a href="javascript:void(0)" class="logout-button"
+               onclick="document.getElementById('logout-form').submit();">安全退出</a>
+            <form id="logout-form" action="{{ route('logout') }}"
+                  method="POST">
+                @csrf
+            </form>
         </div>
     </div>
 
