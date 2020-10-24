@@ -587,6 +587,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'video/\d+/watch/records',
             ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频批量导入',
+                'slug' => 'video.import',
+                'method' => 'POST',
+                'url' => 'video/import',
+            ],
 
             // 用户
             [
