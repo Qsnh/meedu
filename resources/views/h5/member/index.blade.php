@@ -3,7 +3,7 @@
 @section('css')
     <style>
         body {
-            background-color: rgba(0, 0, 0, .04);
+            background-color: #F2F6F9;
         }
     </style>
 @endsection
@@ -13,94 +13,56 @@
     <div class="user-detail-page">
         <div class="user-info-box">
             <div class="avatar">
-                <img src="{{$user['avatar']}}" width="60" height="60">
+                <img src="{{$user['avatar']}}" width="66" height="66">
             </div>
             <div class="info">
-                <div class="nickname">{{$user['nick_name']}}</div>
+                <div class="nickname">
+                    {{$user['nick_name']}}
+                </div>
                 <div class="stat">
                     <span>积分 <b>{{$user['credit1']}}</b></span>
                 </div>
             </div>
         </div>
 
-        <div class="user-menus">
-            <div class="body">
-                <a href="{{route('member.courses')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-video-camera" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">我的课程</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
-                </a>
-                <a href="{{route('member.orders')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-list-alt" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">我的订单</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
-                </a>
-                <a href="{{route('member.credit1_records')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-diamond" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">我的积分</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
-                </a>
-                <a href="{{route('member.promo_code')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-users" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">我的邀请</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
-                </a>
-                <a href="{{route('member.messages')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-comments" aria-hidden="true"></i>
-                    </div>
-                    <div class="text">我的消息</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
-                </a>
-            </div>
+        <div class="user-main-menus">
+            <a class="item" href="{{route('member.orders')}}">
+                <div class="icon" style="color: #e4716d"><i class="iconfont iconorder"></i></div>
+                <div class="text">订单</div>
+            </a>
+            <a class="item" href="{{route('member.messages')}}">
+                <div class="icon" style="color: #8dd6a3"><i class="iconfont iconnews"></i></div>
+                <div class="text">消息</div>
+            </a>
+            <a class="item" href="{{route('member.courses')}}?scene=like">
+                <div class="icon" style="color: #f4c348"><i class="iconfont iconcollect"></i></div>
+                <div class="text">收藏</div>
+            </a>
+            <a class="item" href="{{route('member.courses')}}">
+                <div class="icon" style="color: #63aef4"><i class="iconfont icondoc"></i></div>
+                <div class="text">在学</div>
+            </a>
         </div>
 
         <div class="user-menus">
             <div class="body">
-                <a href="{{route('aboutus')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                <a href="{{route('role.index')}}" class="menu-item">
+                    <div class="icon" style="color: #a07726">
+                        <i class="iconfont iconVIP"></i>
                     </div>
-                    <div class="text">关于我们</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
+                    <div class="text">会员中心</div>
                 </a>
-                <a href="{{route('user.protocol')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                <a href="{{route('member.credit1_records')}}" class="menu-item">
+                    <div class="icon" style="color: #e85b56">
+                        <i class="iconfont iconcoin"></i>
                     </div>
-                    <div class="text">用户协议</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
+                    <div class="text">我的积分</div>
                 </a>
-                <a href="{{route('user.private_protocol')}}" class="menu-item">
-                    <div class="icon">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                <a href="{{route('member.promo_code')}}" class="menu-item">
+                    <div class="icon" style="color: #86baea">
+                        <i class="iconfont iconinvite"></i>
                     </div>
-                    <div class="text">用户协议</div>
-                    <div class="right-menu">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
+                    <div class="text">我的邀请</div>
                 </a>
             </div>
         </div>

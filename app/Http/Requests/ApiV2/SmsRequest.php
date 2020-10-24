@@ -16,7 +16,7 @@ class SmsRequest extends BaseRequest
     public function rules()
     {
         $scenes = [
-            'register', 'login', 'password_reset',
+            'register', 'login', 'password_reset', 'mobile_bind',
         ];
         return [
             'mobile' => 'required',

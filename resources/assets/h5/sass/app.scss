@@ -31,49 +31,82 @@ body {
   }
 }
 
-.search-bar {
-  display: block;
+.logo-banner {
   width: 100%;
   height: auto;
   float: left;
-  padding: 10px 15px 0 15px;
-  background-color: white;
+  padding: 12px 15px;
+  display: flex;
 
-  span {
-    display: inline-block;
-    width: 100%;
-    height: auto;
-    line-height: 32px;
-    border-radius: 20px;
-    background-color: rgba(0, 0, 0, .1);
-    color: rgba(0, 0, 0, .3);
-    font-size: 14px;
-    text-align: center;
+  .logo {
+    display: flex;
+    text-align: left;
+  }
+
+  .search-icon-box {
+    display: block;
+    flex: 1;
+    text-align: right;
+    line-height: 24px;
+    color: #666666;
+
+    span {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      margin-left: 5px;
+    }
   }
 }
 
+
 .top-menu {
   width: 100%;
-  max-width: 100%;
-  height: 44px;
+  height: auto;
   float: left;
   overflow-y: auto;
-  padding: 15px;
+  padding: 15px 0 15px 0;
   background-color: #ffffff;
-  font-size: 14px;
-  line-height: 1;
   white-space: nowrap;
 
   a {
+    position: relative;
+    display: inline-block;
     color: #666666;
-    margin-left: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
 
-    &.active {
-      color: $primary;
+    .text {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 15px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 15px;
+      text-align: center;
+      padding-bottom: 6px;
     }
 
-    &.first {
-      margin-left: 0px;
+    .active-bar {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      margin-left: -10px;
+      width: 20px;
+      height: 3px;
+      background-color: white;
+      border-radius: 3px;
+    }
+
+    &.active {
+      .text {
+        color: $primary;
+      }
+
+      .active-bar {
+        background-color: $primary;
+      }
     }
   }
 }
@@ -86,6 +119,10 @@ body {
   padding-right: 15px;
   padding-bottom: 15px;
   background-color: #ffffff;
+
+  img {
+    border-radius: 4px;
+  }
 }
 
 .index-banner-box {
@@ -109,82 +146,96 @@ body {
 }
 
 .courses {
+  padding-top: 10px;
+  padding-bottom: 10px;
   width: 100%;
   height: auto;
   float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .banner-course-item {
-    width: 100%;
-    height: auto;
-    padding: 8px;
+    display: block;
+    width: calc(50% - 4px);
+    height: 199px;
     float: left;
-    display: flex;
-    background-color: white;
+    line-height: 1;
     margin-bottom: 15px;
-    border-radius: 8px;
+    box-shadow: 0 4px 20px 0 rgba(102, 102, 102, 0.1);
+    border-radius: 4px;
+
+    &.first {
+      padding-left: 0;
+      padding-right: 7px;
+    }
 
     .course-thumb {
-      width: 120px;
-      height: 90px;
-      margin-right: 15px;
+      width: 100%;
+      height: auto;
+      float: left;
 
       img {
-        border-radius: 5px;
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
       }
     }
 
-    .course-info-box {
-      flex: 1;
+    .course-title {
+      width: 100%;
+      height: 44px;
+      float: left;
+      background-color: white;
+      padding: 15px 5px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
-      .course-title {
-        width: 100%;
+    .course-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      background-color: white;
+      padding-bottom: 10px;
+      padding-left: 5px;
+      padding-right: 5px;
+      display: flex;
+
+      .course-user-count {
+        flex: 1;
         height: auto;
         float: left;
-        padding-top: 5px;
-        margin-bottom: 30px;
-        background-color: white;
-        font-size: 1rem;
+        line-height: 18px;
+        font-size: 12px;
         font-weight: 400;
-        color: #333333;
-        white-space: normal;
-        word-break: break-all;
+        color: rgba(153, 153, 153, 1);
       }
 
-      .course-info {
-        width: 100%;
+      .course-charge {
+        flex: 1;
         height: auto;
-        float: left;
-        display: flex;
-        line-height: 30px;
+        text-align: right;
 
-        .course-user-count {
-          flex: 1;
-          height: auto;
-          float: left;
-          font-size: 12px;
-          font-weight: 400;
-          color: rgba(153, 153, 153, 1);
-        }
+        .charge-value {
+          display: inline-block;
+          padding: 4px 8px;
+          background: rgba(255, 64, 64, .1);
+          border-radius: 9px;
+          font-size: 10px;
+          font-weight: 600;
+          color: rgba(255, 64, 64, 1);
+          line-height: 10px;
 
-        .course-charge {
-          flex: 1;
-          height: auto;
-          text-align: right;
-
-          .charge-value {
-            display: inline-block;
-            padding: 4px 8px;
-            background: rgba(255, 64, 64, .1);
-            border-radius: 9px;
-            font-size: 10px;
-            line-height: 1;
-            font-weight: 600;
-            color: rgba(255, 64, 64, 1);
-
-            &.free-charge {
-              background-color: rgba(0, 128, 0, .2);
-              color: rgba(0, 128, 0, .7);
-            }
+          &.free-charge {
+            background-color: rgba(0, 128, 0, .2);
+            color: rgba(0, 128, 0, .7);
           }
         }
       }
@@ -795,27 +846,28 @@ body {
   width: 100%;
   height: auto;
   float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .role-item {
-    width: 47%;
+    width: calc(50% - 5px);
     height: auto;
     float: left;
     padding: 15px;
-    box-shadow: 0px 2px 4px 0px rgba(245, 245, 245, 1);
-    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgba(245, 245, 245, 1);
+    border-radius: 8px;
     margin-bottom: 15px;
     border: 1px solid #ffffff;
-    margin-left: 3%;
     background-color: #ffffff;
+
+    &:nth-of-type(even) {
+      margin-left: 10px;
+    }
 
     &.active {
       border: 1px solid rgba(225, 165, 0, 1);
       background: rgba(255, 237, 237, 1);
-    }
-
-    &.first {
-      margin-left: 0;
-      width: 50%;
     }
 
     .name {
@@ -854,7 +906,7 @@ body {
       line-height: 18px;
 
       p {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
   }
@@ -1202,32 +1254,41 @@ body {
   right: 0;
   z-index: 999;
   width: 100%;
-  height: 50px;
-  border-top: 1px solid rgba(0, 0, 0, .1);
+  height: 53px;
+  padding-top: 7px;
+  padding-bottom: 6px;
   display: flex;
   background-color: white;
+  box-shadow: 0 -2px 8px 0 rgba(102, 102, 102, 0.1);
 
   .tabbar-item {
     flex: 1;
     text-align: center;
-    color: rgba(0, 0, 0, .3);
+    color: #999999;
 
     &.active {
-      color: rgba(0, 0, 0, .6);
+      color: $primary;
     }
 
     .icon {
       width: 100%;
-      height: auto;
-      line-height: 19px;
-      font-size: 2rem;
+      height: 24px;
+      float: left;
+      line-height: 24px;
+      margin-bottom: 5px;
+
+      i {
+        font-size: 24px;
+      }
     }
 
     .name {
       width: 100%;
-      height: 20px;
-      line-height: 30px;
-      font-size: .6rem;
+      height: 11px;
+      float: left;
+      font-size: 11px;
+      line-height: 11px;
+      font-weight: 400;
     }
   }
 }
@@ -1251,10 +1312,10 @@ body {
     display: flex;
 
     .avatar {
-      width: 60px;
-      height: 60px;
+      width: 66px;
+      height: 66px;
       float: left;
-      margin-right: 15px;
+      margin-right: 20px;
 
       img {
         border-radius: 50%;
@@ -1268,20 +1329,67 @@ body {
         width: 100%;
         height: auto;
         float: left;
-        font-size: 1.2rem;
+        font-size: 20px;
         color: #333;
-        line-height: 1.5rem;
-        margin-bottom: 10px;
-        padding-top: 5px;
+        line-height: 20px;
+        font-weight: 600;
+        margin-bottom: 13px;
+        padding-top: 10px;
       }
 
       .stat {
         width: 100%;
         height: auto;
         float: left;
-        font-size: .9rem;
-        color: rgba(0, 0, 0, .5);
-        line-height: 20px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 14px;
+      }
+    }
+  }
+
+  .user-main-menus {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 0 15px;
+
+    .item {
+      width: calc(50% - 5px);
+      height: auto;
+      float: left;
+      background-color: white;
+      padding: 25px 24px;
+      display: flex;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      line-height: 30px;
+
+      &:nth-of-type(odd) {
+        margin-right: 5px;
+      }
+
+      &:nth-of-type(even) {
+        margin-left: 5px;
+      }
+
+      .icon {
+        width: 30px;
+        height: 30px;
+        float: left;
+        margin-right: 10px;
+
+        i {
+          font-size: 30px;
+        }
+      }
+
+      .text {
+        flex: 1;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333333;
       }
     }
   }
@@ -1298,41 +1406,34 @@ body {
       width: 100%;
       height: auto;
       float: left;
+      padding: 25px 20px 0 20px;
       background-color: white;
-      border-radius: 15px;
+      border-radius: 8px;
 
       .menu-item {
         display: flex;
         width: 100%;
         height: auto;
         float: left;
-        font-size: .9rem;
-        color: rgba(0, 0, 0, .7);
-        line-height: 44px;
-        padding-left: 15px;
-        padding-right: 15px;
-        border-bottom: 1px solid rgba(0, 0, 0, .02);
+        margin-bottom: 25px;
 
         .icon {
-          width: 30px;
+          width: 25px;
           height: auto;
-          float: left;
-          text-align: left;
+          line-height: 25px;
+          margin-right: 15px;
+
+          i {
+            font-size: 25px;
+          }
         }
 
         .text {
           flex: 1;
-          text-align: left;
-        }
-
-        .right-menu {
-          width: auto;
-          height: auto;
-          text-align: right;
-        }
-
-        &:last-child {
-          border-bottom: 0;
+          font-size: 16px;
+          font-weight: 600;
+          color: #333333;
+          line-height: 25px;
         }
       }
     }
@@ -1350,12 +1451,12 @@ body {
       width: 100%;
       height: auto;
       float: left;
-      background-color: rgba(0, 0, 0, .2);
+      background-color: rgba(0, 0, 0, .1);
       color: #333333;
       text-align: center;
       font-size: 1rem;
       line-height: 44px;
-      border-radius: 10px;
+      border-radius: 5px;
     }
   }
 }
@@ -1379,9 +1480,9 @@ body {
     float: left;
     margin-bottom: 15px;
     background-color: white;
-    padding: 10px 15px;
+    padding: 15px 15px;
     display: flex;
-    line-height: 1rem;
+    line-height: 20px;
 
     .title {
       flex: 1;
@@ -1399,7 +1500,6 @@ body {
       padding-left: 10px;
       font-size: 14px;
       font-weight: 600;
-      line-height: 20px;
       color: rgb(red, .8);
     }
   }
@@ -1693,7 +1793,7 @@ body {
     color: #333333;
 
     &.active {
-      font-weight: bolder;
+      font-weight: bold;
       font-size: 1.1rem;
       color: $primary;
     }

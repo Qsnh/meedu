@@ -6,9 +6,11 @@
 
     <div class="nav-menus">
         <a class="menu-item {{!$scene ? 'active' : ''}}"
-           href="{{route('member.courses')}}?{{$queryParams(['scene' => ''])}}">订阅课程</a>
+           href="{{route('member.courses')}}?{{$queryParams(['scene' => ''])}}">已购课程</a>
         <a class="menu-item {{$scene === 'videos' ? 'active' : ''}}"
            href="{{route('member.courses')}}?{{$queryParams(['scene' => 'videos'])}}">已购视频</a>
+        <a class="menu-item {{$scene === 'like' ? 'active' : ''}}"
+           href="{{route('member.courses')}}?{{$queryParams(['scene' => 'like'])}}">我的收藏</a>
         <a class="menu-item {{$scene === 'history' ? 'active' : ''}}"
            href="{{route('member.courses')}}?{{$queryParams(['scene' => 'history'])}}">历史学习</a>
     </div>

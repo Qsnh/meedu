@@ -11,8 +11,8 @@
     <title>{{$title ?? 'MeEdu'}}</title>
     <link crossorigin="anonymous" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           href="https://lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1711080_923nzhdbwy4.css">
     <link rel="stylesheet" href="{{mix('/h5/css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('/h5/css/iconfont/iconfont.css')}}">
     <script crossorigin="anonymous" integrity="sha384-qu2J8HSjv8EaYlbzBdbVeJncuCmfBqnZ4h3UIBZ9WTZ/5Wrqt0/9hofL0046NCkc"
             src="https://lib.baomitu.com/zepto/1.2.0/zepto.min.js"></script>
     <script src="{{asset('/h5/js/zepto-touch.js')}}"></script>
@@ -26,16 +26,29 @@
 </head>
 <body>
 
-<a href="{{route('search')}}" class="search-bar">
-    <span>请输入搜索内容</span>
-</a>
+<div class="logo-banner">
+    <div class="logo">
+        <img src="{{$gConfig['system']['logo']}}" width="92" height="24">
+    </div>
+    <a href="{{route('search')}}" class="search-icon-box">
+        <i class="iconfont iconsystem-serch"></i>
+        <span>搜索</span>
+    </a>
+</div>
 
 <div class="top-menu">
-    <a href="{{route('index')}}" class="{{menu_active(['index'])}} first">首页</a>
-    <a href="{{route('courses')}}" class="{{menu_active(['courses', 'videos', 'course.show', 'video.show'])}}">所有课程</a>
+    <a href="{{route('index')}}" class="{{menu_active(['index'])}}">
+        <div class="text">
+            首页
+        </div>
+        <div class="active-bar"></div>
+    </a>
     @foreach($gNavs as $item)
         <a class="{{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
-           href="{{$item['url']}}">{{$item['name']}}</a>
+           href="{{$item['url']}}">
+            <div class="text">{{$item['name']}}</div>
+            <div class="active-bar"></div>
+        </a>
     @endforeach
 </div>
 

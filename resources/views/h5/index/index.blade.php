@@ -4,6 +4,9 @@
     <link crossorigin="anonymous" integrity="sha384-K6LrEaceM4QP87RzJ7R4CDXcFN4cFW/A5Q7/fEp/92c2WV+woVw9S9zKDO23sNS+"
           href="https://lib.baomitu.com/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: white;
+        }
         .swiper-pagination {
             bottom: 0 !important;
         }

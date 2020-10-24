@@ -18,8 +18,7 @@
         </div>
         <div class="role-item-box">
             @foreach($gRoles as $index => $roleItem)
-                <div class="role-item {{$index % 2 === 0 ? 'first' : ''}}"
-                     data-url="{{route('member.role.buy', [$roleItem['id']])}}">
+                <div class="role-item" data-url="{{route('member.role.buy', [$roleItem['id']])}}">
                     <div class="name">{{$roleItem['name']}}</div>
                     <div class="price">
                         <small>￥</small>{{$roleItem['charge']}}
