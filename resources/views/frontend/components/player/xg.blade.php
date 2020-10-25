@@ -17,7 +17,7 @@
                 'progress',
             @endif
         ],
-        @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
+        @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
         marquee: {
             value: '{{$user['mobile']}}'
         },

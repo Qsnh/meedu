@@ -23,7 +23,7 @@ let marquee = function () {
             let width = root.offsetWidth;
             width = width > 50 ? (width - 30) : width;
             marquee.style['top'] = randomNumber(0, height) + 'px';
-            marquee.style['right'] = randomNumber(0, height) + 'px';
+            marquee.style['right'] = randomNumber(0, width) + 'px';
             root.appendChild(marquee);
             setTimeout(() => {
                 marquee.remove();
@@ -36,7 +36,9 @@ let marquee = function () {
         }, 2100);
     }
 }
+
 Player.install('marquee', marquee);
+HlsJsPlayer.install('marquee', marquee);
 
 window.Player = Player;
 window.HlsJsPlayer = HlsJsPlayer;

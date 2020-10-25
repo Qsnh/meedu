@@ -19,7 +19,7 @@
                 'progress',
             @endif
         ],
-        @if($gConfig['system']['player']['enabled_bullet_secret'] === 1)
+        @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
         marquee: {
             value: '{{$user['mobile']}}'
         },
@@ -27,15 +27,15 @@
         closeVideoTouch: true,
         closeVideoClick: true,
     };
-            @if($playUrls->first()['format'] === 'm3u8')
+    @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsJsPlayer(XGPlayerConfig);
-            @else
+    @else
     const XGPlayer = new Player(XGPlayerConfig);
     @endif
 
     @if($playUrls->count() > 1)
     XGPlayer.emit('resourceReady', @json($playUrls));
-            @endif
+    @endif
 
     var PREV_SECONDS = 0;
     var recordHandle = function (isEnd = false) {
