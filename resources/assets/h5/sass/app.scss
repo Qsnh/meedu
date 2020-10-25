@@ -101,6 +101,7 @@ body {
 
     &.active {
       .text {
+        font-weight: bolder;
         color: $primary;
       }
 
@@ -1308,7 +1309,7 @@ body {
     width: 100%;
     height: auto;
     float: left;
-    padding: 30px 15px;
+    padding: 30px 15px 20px 15px;
     display: flex;
 
     .avatar {
@@ -1329,12 +1330,30 @@ body {
         width: 100%;
         height: auto;
         float: left;
-        font-size: 20px;
-        color: #333;
-        line-height: 20px;
-        font-weight: 600;
-        margin-bottom: 13px;
-        padding-top: 10px;
+        display: flex;
+
+        .text {
+          flex: 1;
+          text-align: left;
+          font-size: 20px;
+          color: #333;
+          line-height: 20px;
+          font-weight: 600;
+          margin-bottom: 13px;
+          padding-top: 10px;
+        }
+
+        .setting-icon {
+          display: block;
+          width: auto;
+          height: auto;
+          padding-top: 5px;
+
+          i {
+            font-size: 22px;
+            color: #cccccc;
+          }
+        }
       }
 
       .stat {
@@ -1360,7 +1379,7 @@ body {
       height: auto;
       float: left;
       background-color: white;
-      padding: 25px 24px;
+      padding: 25px 20px;
       display: flex;
       border-radius: 8px;
       margin-bottom: 10px;
@@ -1406,7 +1425,7 @@ body {
       width: 100%;
       height: auto;
       float: left;
-      padding: 25px 20px 0 20px;
+      padding: 0 20px;
       background-color: white;
       border-radius: 8px;
 
@@ -1416,6 +1435,7 @@ body {
         height: auto;
         float: left;
         margin-bottom: 25px;
+        margin-top: 25px;
 
         .icon {
           width: 25px;
@@ -1436,27 +1456,6 @@ body {
           line-height: 25px;
         }
       }
-    }
-  }
-
-  .logout-button-box {
-    width: 100%;
-    height: auto;
-    float: left;
-    margin-bottom: 15px;
-    padding: 0 15px 15px 15px;
-
-    .logout-button {
-      display: block;
-      width: 100%;
-      height: auto;
-      float: left;
-      background-color: rgba(0, 0, 0, .1);
-      color: #333333;
-      text-align: center;
-      font-size: 1rem;
-      line-height: 44px;
-      border-radius: 5px;
     }
   }
 }
@@ -1798,4 +1797,39 @@ body {
       color: $primary;
     }
   }
+}
+
+.user-menus-group {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .group-menu-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: white;
+    padding: 18px 15px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 15px;
+    letter-spacing: 1px;
+    margin-bottom: 1px;
+  }
+}
+
+.logout-button {
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3D9FFF;
+  line-height: 15px;
+  margin-top: 10px;
 }
