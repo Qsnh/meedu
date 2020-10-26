@@ -355,6 +355,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'administrator/\d+',
             ],
+            [
+                'group_name' => '管理员',
+                'display_name' => '管理员修改密码',
+                'slug' => 'administrator.password',
+                'method' => 'PUT',
+                'url' => 'administrator/password',
+            ],
 
             // 管理员角色
             [
