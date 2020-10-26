@@ -73,7 +73,7 @@ class SmsController extends FrontendController
      */
     protected function sendHandler($mobile, $sessionKey, $templateId)
     {
-        $code = random_int(1000, 10000);
+        $code = sprintf('%06d', random_int(1, 999999));
         session([$sessionKey => $code]);
 
         if (is_dev()) {
