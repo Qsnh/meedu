@@ -1,8 +1,16 @@
 @extends('layouts.h5-pure')
 
+@section('css')
+    <style>
+        body {
+            background-color: white;
+        }
+    </style>
+@endsection
+
 @section('content')
 
-    @include('h5.components.topbar', ['title' => '课程详情', 'back' => route('course.show', [$course['id'], $course['slug']]), 'class' => 'dark'])
+    @include('h5.components.topbar', ['title' => '视频', 'back' => route('course.show', [$course['id'], $course['slug']])])
 
     <div class="video-play-box">
         @if($user)
@@ -59,9 +67,18 @@
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item" data-dom="course-description">介绍</div>
-        <div class="menu-item active" data-dom="course-chapter">目录</div>
-        <div class="menu-item" data-dom="course-comment">评论</div>
+        <div class="menu-item" data-dom="course-description">
+            介绍
+            <span class="active-bar"></span>
+        </div>
+        <div class="menu-item active" data-dom="course-chapter">
+            目录
+            <span class="active-bar"></span>
+        </div>
+        <div class="menu-item" data-dom="course-comment">
+            评论
+            <span class="active-bar"></span>
+        </div>
     </div>
 
     <div class="course-description course-content-tab-item" style="display: none">
@@ -76,8 +93,7 @@
                 <div class="chapter-title">
                     {{$chapter['title']}}
                     <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
-                        {{count($videosBox)}}节
-                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}} fa-lg"></i>
                     </span>
                 </div>
                 <div class="chapter-videos {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} chapter-videos-{{$chapter['id']}}">
@@ -116,31 +132,12 @@
     </div>
 
     <div class="course-comment course-content-tab-item">
-        @if($canComment)
-            <div class="comment-input-box">
-                <form action="">
-                    <div class="form-group">
-                    <textarea name="comment-content" class="form-control" placeholder="{{$user ? '请输入评论的内容' : '请先登录'}}"
-                              rows="1" {{$user ? '' : 'disabled'}}></textarea>
-                    </div>
-                    @if($user)
-                        <div class="form-group text-right">
-                            <button type="button" class="btn btn-primary btn-sm comment-button"
-                                    data-login-url="{{route('login')}}"
-                                    data-url="{{route('ajax.video.comment', [$video['id']])}}"
-                                    data-login="{{$user ? 1 : 0}}" data-input="comment-content">评论
-                            </button>
-                        </div>
-                    @endif
-                </form>
-            </div>
-        @endif
         <div class="comment-list-box">
             @forelse($comments as $commentItem)
                 <div class="comment-list-item">
                     <div class="comment-user-avatar">
-                        <img src="{{$commentUsers[$commentItem['user_id']]['avatar']}}" width="44"
-                             height="44">
+                        <img src="{{$commentUsers[$commentItem['user_id']]['avatar']}}" width="32"
+                             height="32">
                     </div>
                     <div class="comment-content-box">
                         <div class="comment-user-nickname">{{$commentUsers[$commentItem['user_id']]['nick_name']}}</div>
@@ -156,27 +153,49 @@
                 @include('h5.components.none')
             @endforelse
         </div>
+        @if($canComment)
+            <div class="video-course-comment-icon show-course-comment-box"
+                 data-login="{{$user ? 1 : 0}}"
+                 data-login-url="{{route('login')}}">
+                <i class="iconfont iconcomment"></i>
+            </div>
+        @endif
     </div>
 
-    @if($user && !$canSeeVideo && $video['charge'] > 0)
-        <a href="javascript:void(0);" class="course-info-bottom-bar show-buy-course-model focus-c-white">订阅课程</a>
-    @endif
-
-    <div class="buy-course-model">
-        <div class="buy-course-item-box">
-            <div class="close">
-                <img src="{{asset('/h5/images/icons/close.png')}}" width="18" height="18">
+    <div class="course-comment-input-box-shadow">
+        <div class="course-comment-input-box">
+            <div class="title">
+                <div class="text">课程评论</div>
             </div>
-            <div class="title">此套课程需付费，请选择</div>
-            <a href="{{route('role.index')}}" class="active">成为会员所有视频免费看</a>
-            @if($video['is_ban_sell'] !== \App\Constant\FrontendConstant::YES)
-                <a href="{{route('member.video.buy', [$video['id']])}}">单独购买此条视频 ￥{{$video['charge']}}</a>
-            @endif
-            @if($course['charge'] > 0)
-                <a href="{{route('member.course.buy', [$course['id']])}}">订阅此套课程 ￥{{$course['charge']}}</a>
-            @endif
+            <div class="content">
+                <textarea name="content" rows="3" placeholder="请输入评论内容"></textarea>
+            </div>
+            <div class="buttons">
+                <a href="javascript:void(0)" class="submit-comment-button comment-button" data-input="content"
+                   data-login="{{$user ? 1 : 0}}"
+                   data-login-url="{{route('login')}}"
+                   data-url="{{route('ajax.video.comment', [$video['id']])}}">发布评论</a>
+            </div>
+            <div class="options">
+                <a href="javascript:void(0)" class="cancel-course-comment close-course-comment-box">取消</a>
+            </div>
         </div>
     </div>
+
+    @if(!$canSeeVideo)
+        <div class="course-detail-bottom-bar">
+            @if($course['charge'] > 0)
+                <a href="{{route('member.course.buy', [$course['id']])}}" class="buy-course-button-item button-item">课程
+                    ￥{{$course['charge']}}</a>
+            @endif
+            @if($video['is_ban_sell'] !== 1 && $video['charge'] > 0)
+                <a href="{{route('member.video.buy', [$video['id']])}}" class="buy-course-button-item button-item">视频
+                    ￥{{$video['charge']}}</a>
+            @endif
+            <a href="{{route('role.index')}}" class="buy-role-button-item button-item">会员免费看</a>
+        </div>
+        <div class="course-detail-bottom-bar-block"></div>
+    @endif
 
 @endsection
 

@@ -86,10 +86,6 @@ $(function () {
             }, 1000);
 
         }, 'json');
-    }).on('tap', '.show-buy-course-model', function () {
-        $('.buy-course-model').show();
-    }).on('tap', '.buy-course-model .close', function () {
-        $('.buy-course-model').hide();
     }).on('tap', '.role-item', function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('.role-subscribe-button').attr('href', $(this).attr('data-url'));
@@ -146,26 +142,10 @@ $(function () {
             if (res.code !== 0) {
                 flashError(res.message);
             } else {
-                flashSuccess('评论成功');
-                let data = res.data;
-                let html = `
-<div class="comment-list-item">
-                                <div class="comment-user-avatar">
-                                    <img src="${data.user.avatar}" width="44" height="44">
-                                </div>
-                                <div class="comment-content-box">
-                                    <div class="comment-user-nickname">${data.user.nick_name}</div>
-                                    <div class="comment-content">
-                                    ${data.content}
-                                    </div>
-                                    <div class="comment-info">
-                                        <span class="comment-createAt">${data.created_at}</span>
-                                    </div>
-                                </div>
-                            </div>
-                    `;
-                $(`textarea[name=${input}]`).val('');
-                $('.comment-list-box').prepend(html);
+                flashSuccess('评论提交成功');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 600);
             }
         }, 'json');
     }).on('tap', '.course-info-menu .menu-item', function () {
@@ -215,5 +195,41 @@ $(function () {
         }, 'json');
     }).on('tap', '.invite-balance-withdraw-box-toggle', function () {
         $('.balance-withdraw-submit-box-shadow').toggle();
+    }).on('tap', '.back-button', function () {
+        if (window.history.length <= 2) {
+            window.location.href = $(this).attr('data-url');
+        } else {
+            window.history.back();
+        }
+    }).on('tap', '.like-button', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            window.location.href = $(this).attr('data-login-url');
+            return;
+        }
+        let url = $(this).attr('data-url');
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                flashError(res.message);
+            } else {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                } else {
+                    $(this).addClass('active');
+                }
+            }
+        }, 'json');
+    }).on('tap', '.show-course-comment-box', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            window.location.href = $(this).attr('data-login-url');
+            return;
+        }
+        $('.course-comment-input-box-shadow').show();
+    }).on('tap', '.close-course-comment-box', function () {
+        $('.course-comment-input-box-shadow').hide();
     });
 });

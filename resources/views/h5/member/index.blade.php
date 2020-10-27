@@ -43,6 +43,8 @@
                         </a>
                     </div>
                     <div class="stat">
+                        <span>{{$user['role'] ? $user['role']['name'] : '免费会员'}}</span>
+                        <span>&nbsp;·&nbsp;</span>
                         <span>积分 <b>{{$user['credit1']}}</b></span>
                     </div>
                 </div>

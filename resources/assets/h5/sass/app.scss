@@ -505,57 +505,92 @@ body {
 
   .course-thumb {
     width: 100%;
-    height: 192px;
+    height: auto;
     float: left;
     position: relative;
 
     .title {
       position: absolute;
-      bottom: 0;
+      top: 0;
       z-index: 11;
       width: 100%;
       height: auto;
       float: left;
-      padding: 0 15px;
-      font-size: 14px;
-      line-height: 36px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      background-color: rgba(0, 0, 0, .5);
-      color: white;
+      padding-top: 12px;
+      padding-right: 15px;
+      padding-left: 10px;
+      display: flex;
+      background: linear-gradient(180deg, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, 0) 100%);
+
+      .back {
+        display: block;
+        width: auto;
+        height: auto;
+        float: left;
+        margin-right: 10px;
+      }
+
+      .text {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 400;
+        color: white;
+        line-height: 14px;
+        padding-top: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
 
 .course-info-menu {
-  position: relative;
   width: 100%;
-  height: 52px;
+  height: auto;
   float: left;
-  padding: 19px 15px;
-  background-color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 15px;
+  background-color: white;
   display: flex;
-  border-bottom: 1px solid #f2f2f2;
+  flex-wrap: nowrap;
 
   .menu-item {
-    flex: 1;
-    height: 14px;
-    font-size: 14px;
+    position: relative;
+    width: auto;
+    height: auto;
+    font-size: 15px;
     font-weight: 400;
-    line-height: 1;
-    color: rgba(102, 102, 102, 1);
+    color: #333333;
+    line-height: 55px;
     text-align: center;
+    margin-right: 40px;
+
+    .active-bar {
+      position: absolute;
+      display: block;
+      bottom: 10px;
+      left: 50%;
+      margin-left: -10px;
+      width: 20px;
+      height: 3px;
+      background: white;
+      border-radius: 3px;
+    }
 
     &.active {
-      font-weight: 600;
+      font-weight: bolder;
       color: $primary;
+
+      .active-bar {
+        background-color: $primary;
+      }
     }
   }
 }
 
 .course-description {
-  margin-top: 10px;
   width: 100%;
   height: auto;
   float: left;
@@ -566,10 +601,10 @@ body {
 
   p {
     margin-bottom: 0;
+  }
 
-    img {
-      max-width: 100%;
-    }
+  img {
+    max-width: 100% !important;
   }
 }
 
@@ -578,11 +613,56 @@ body {
   width: 100%;
   height: auto;
   float: left;
-  margin-top: 10px;
+  padding: 20px 15px 0 15px;
   background-color: white;
 
-  table {
-    margin-bottom: 0;
+  .course-attach-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 20px;
+    display: flex;
+    padding: 20px;
+    background-color: #F2F6F9;
+    border-radius: 8px;
+
+    .file {
+      flex: 1;
+
+      .name {
+        width: 100%;
+        height: auto;
+        float: left;
+        word-break: break-all;
+        font-size: 15px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 15px;
+        margin-bottom: 20px;
+      }
+
+      .size {
+        width: 100%;
+        height: auto;
+        float: left;
+        font-size: 13px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 13px;
+      }
+    }
+
+    .download-button {
+      width: 28px;
+      height: auto;
+      line-height: 48px;
+      margin-left: 10px;
+
+      i {
+        font-size: 28px;
+        color: #cccccc;
+      }
+    }
   }
 }
 
@@ -598,9 +678,9 @@ body {
     height: auto;
     float: left;
     padding: 15px;
-    font-size: 13px;
-    font-weight: 400;
-    color: rgba(102, 102, 102, 1);
+    font-size: 15px;
+    color: #333333;
+    font-weight: bolder;
 
     .videos-count {
       float: right;
@@ -664,38 +744,32 @@ body {
 }
 
 .course-comment {
+  position: relative;
   display: none;
   width: 100%;
   height: auto;
   float: left;
 
-  .comment-input-box {
-    width: 100%;
-    height: auto;
-    float: left;
-    padding: 15px 15px 0 15px;
-    background-color: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
   .comment-list-box {
     width: 100%;
     height: auto;
     float: left;
-    margin-bottom: 60px;
 
     .comment-list-item {
       display: flex;
       padding: 15px;
-      background-color: white;
       margin-bottom: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, .07);
+
+      &:last-child {
+        border-bottom: 0;
+      }
 
       .comment-user-avatar {
-        width: 59px;
-        height: 44px;
+        width: 32px;
+        height: 32px;
         float: left;
-        padding-right: 15px;
+        margin-right: 15px;
 
         img {
           border-radius: 50%;
@@ -741,21 +815,6 @@ body {
   }
 }
 
-.course-info-bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 88;
-  height: 49px;
-  line-height: 49px;
-  background: rgba(11, 118, 222, 1);
-  color: #ffffff;
-  text-align: center;
-  cursor: pointer;
-}
-
 .video-play-box {
   width: 100%;
   height: 192px;
@@ -766,69 +825,6 @@ body {
 #xiaoteng-player {
   width: 100%;
   height: 100%;
-}
-
-.buy-course-model {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 88;
-  background-color: rgba(0, 0, 0, .6);
-
-  .close {
-    position: absolute;
-    right: 0;
-    top: -38px;
-    width: 18px;
-    height: 18px;
-  }
-
-
-  .buy-course-item-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -123px;
-    margin-left: -137px;
-    background-color: #ffffff;
-    width: 275px;
-    height: auto;
-    text-align: center;
-    padding: 20px 22px 10px 22px;
-    border-radius: 4px;
-
-    .title {
-      font-size: 16px;
-      font-weight: 500;
-      color: rgba(51, 51, 51, 1);
-      line-height: 16px;
-      margin-bottom: 30px;
-    }
-
-    a {
-      display: inline-block;
-      width: 232px;
-      height: 40px;
-      float: left;
-      margin-bottom: 20px;
-      border-radius: 23px;
-      border: 1px solid rgba(229, 229, 229, 1);
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(51, 51, 51, 1);
-      line-height: 40px;
-
-      &.active {
-        border: 1px solid $primary;
-        color: $primary;
-      }
-    }
-  }
 }
 
 .role-page-title, .page-title {
@@ -1832,4 +1828,197 @@ body {
   color: #3D9FFF;
   line-height: 15px;
   margin-top: 10px;
+}
+
+.course-detail-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 888;
+  background-color: white;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 7px;
+  border-top: 1px solid rgba(0, 0, 0, .07);
+
+  .like-button {
+    width: 27px;
+    height: auto;
+    margin-right: 22px;
+
+    .icon {
+      width: 100%;
+      height: 25px;
+      text-align: center;
+      margin-bottom: 3px;
+      margin-top: 5px;
+
+      i {
+        font-size: 25px;
+        color: rgba(0, 0, 0, .3);
+      }
+    }
+
+    .text {
+      width: 100%;
+      height: 26px;
+      float: left;
+      line-height: 26px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666666;
+      text-align: center;
+    }
+
+    &.active {
+      .icon {
+        i {
+          color: #FFC219;
+        }
+      }
+    }
+  }
+
+  .button-item {
+    flex: 1;
+    display: block;
+    text-align: center;
+    margin: 10px 8px;
+    border-radius: 20px;
+    line-height: 40px;
+    font-size: 15px;
+    font-weight: 400;
+    color: white;
+  }
+
+  .buy-course-button-item, .see-button-item {
+    background-color: $primary;
+    color: white;
+  }
+
+  .buy-role-button-item {
+    background-color: #E1B100;
+    color: white;
+  }
+}
+
+.course-detail-bottom-bar-block {
+  width: 100%;
+  height: 60px;
+  float: left;
+}
+
+.course-comment-input-box-shadow {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, .5);
+
+  .course-comment-input-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    padding: 30px 15px 0 15px;
+    background-color: white;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 1.1rem;
+      font-weight: bolder;
+      color: #333333;
+      line-height: 1;
+      margin-bottom: 30px;
+    }
+
+    .content {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-bottom: 15px;
+
+      textarea {
+        width: 100%;
+        height: auto;
+        float: left;
+        border: 0;
+        outline: none;
+        resize: none;
+        font-size: .8rem;
+        background-color: rgba(0, 0, 0, .02);
+        padding: 15px;
+
+        &:focus {
+          outline: none;
+          border: 0;
+        }
+      }
+    }
+
+    .buttons {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-bottom: 15px;
+
+      .submit-comment-button {
+        display: block;
+        width: 100%;
+        height: 44px;
+        float: left;
+        border-radius: 22px;
+        text-align: center;
+        font-size: 1rem;
+        line-height: 44px;
+        background-color: $primary;
+        color: white;
+      }
+    }
+
+    .options {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-bottom: 30px;
+      text-align: center;
+
+      .cancel-course-comment {
+        color: #cccccc;
+        font-size: .9rem;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.video-course-comment-icon {
+  position: fixed;
+  bottom: 100px;
+  right: 15px;
+  z-index: 666;
+  width: 46px;
+  height: 46px;
+  line-height: 46px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 4px 8px 0 rgba(102, 102, 102, 0.2);
+  border-radius: 50%;
+
+  i {
+    color: #999999;
+    font-size: 20px;
+  }
 }
