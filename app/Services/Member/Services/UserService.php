@@ -12,6 +12,7 @@
 namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Events\UserVideoWatchedEvent;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserProfile;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
@@ -678,6 +680,32 @@ class UserService implements UserServiceInterface
                 'day' => $day,
                 'seconds' => $seconds,
             ]);
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return array
+     */
+    public function getProfile(int $userId): array
+    {
+        $profile = UserProfile::query()->where('user_id', $userId)->first();
+        return $profile ? $profile->toArray() : [];
+    }
+
+    /**
+     * @param int $userId
+     * @param array $profileData
+     */
+    public function saveProfile(int $userId, array $profileData): void
+    {
+        $profileData = Arr::only($profileData, UserProfile::EDIT_COLUMNS);
+        $profile = UserProfile::query()->where('user_id', $userId)->first();
+        if ($profile) {
+            $profile->fill($profileData)->save();
+        } else {
+            $profileData['user_id'] = $userId;
+            UserProfile::create($profileData);
         }
     }
 }

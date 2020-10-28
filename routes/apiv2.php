@@ -104,6 +104,8 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
         Route::get('credit1Records', 'MemberController@credit1Records');
+        Route::get('profile', 'MemberController@profile');
+        Route::post('profile', 'MemberController@profileUpdate');
     });
 
     // 上传图片

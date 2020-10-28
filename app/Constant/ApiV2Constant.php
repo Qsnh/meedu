@@ -317,4 +317,31 @@ class ApiV2Constant
     public const MODEL_COURSE_ATTACH_FIELD = [
         'id', 'name', 'size', 'extension',
     ];
+
+    /**
+     * @OpenApi\Annotations\Schemas(
+     *     @OA\Schema(
+     *         schema="MemberProfile",
+     *         type="object",
+     *         title="用户资料",
+     *         @OA\Property(property="real_name",type="string",description="真实姓名"),
+     *         @OA\Property(property="age",type="integer",description="年龄"),
+     *         @OA\Property(property="gender",type="string",description="性别"),
+     *         @OA\Property(property="birthday",type="string",description="生日"),
+     *         @OA\Property(property="profession",type="string",description="职业"),
+     *         @OA\Property(property="address",type="string",description="住址"),
+     *         @OA\Property(property="graduated_school",type="string",description="毕业院校"),
+     *         @OA\Property(property="diploma",type="string",description="毕业证书照"),
+     *         @OA\Property(property="id_number",type="string",description="身份证号"),
+     *         @OA\Property(property="id_frontend_thumb",type="string",description="身份证正面照"),
+     *         @OA\Property(property="id_backend_thumb",type="string",description="身份证反面照"),
+     *         @OA\Property(property="id_hand_thumb",type="string",description="手持身份证照"),
+     *     ),
+     * )
+     */
+    public const MODEL_MEMBER_PROFILE_FIELD = [
+        'real_name', 'gender', 'age', 'birthday', 'profession', 'address',
+        'graduated_school', 'diploma',
+        'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
+    ];
 }

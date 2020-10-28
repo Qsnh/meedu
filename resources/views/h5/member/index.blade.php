@@ -77,6 +77,12 @@
                         </div>
                         <div class="text">会员中心</div>
                     </a>
+                    <a href="{{route('member.profile')}}" class="menu-item">
+                        <div class="icon" style="color: #FA8C16">
+                            <i class="iconfont iconperson"></i>
+                        </div>
+                        <div class="text">我的资料</div>
+                    </a>
                     <a href="{{route('member.credit1_records')}}" class="menu-item">
                         <div class="icon" style="color: #FF4D4F">
                             <i class="iconfont iconcoin"></i>

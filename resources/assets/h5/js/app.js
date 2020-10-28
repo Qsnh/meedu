@@ -232,5 +232,79 @@ $(function () {
         $('.course-comment-input-box-shadow').show();
     }).on('tap', '.close-course-comment-box', function () {
         $('.course-comment-input-box-shadow').hide();
+    }).on('tap', '.upload-image-button', function () {
+        let fileId = '#' + $(this).attr('data-file-id');
+        let input = $(this).attr('data-input');
+        let viewId = $(this).attr('data-view-id');
+        let url = $(this).attr('data-url');
+        $(fileId).off('change');
+        // 允许上传的图片类型
+        var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+        // 1024KB，也就是 1MB
+        var maxSize = 2 * 1024 * 1024;
+        $(fileId).change(function (e) {
+            if (e.target.files.length === 0) {
+                flashWarning('请选择图片');
+                return;
+            }
+            let file = e.target.files[0];
+            if (allowTypes.indexOf(file.type) === -1) {
+                flashWarning('仅支持jpg,jpeg,png,gif图片格式');
+                return;
+            }
+            if (file.size > maxSize) {
+                flashWarning('图片大小不能超过2mb');
+                return;
+            }
+            let token = $('meta[name="csrf-token"]').attr('content');
+            let formData = new FormData();
+            formData.append("file", file);
+            formData.append("_token", token);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: res => {
+                    if (res.code !== 0) {
+                        flashError(res.message);
+                    } else {
+                        let url = res.data.url;
+                        $('input[name=' + input + ']').val(url);
+                        let viewDom = '.' + viewId;
+                        if ($(viewDom).find('img').length > 0) {
+                            $(viewDom).find('img').attr('src', url);
+                        } else {
+                            $(viewDom).append(`<img src="${url}" width="100" height="100" />`);
+                        }
+                    }
+                },
+                error: () => {
+                    flasError('上传图片出错')
+                }
+            })
+        });
+        $(fileId).click();
+    }).on('tap', '.save-profile-button', function () {
+        let inputFile = [
+            'real_name', 'age', 'birthday', 'profession', 'address', 'graduated_school',
+            'diploma', 'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
+        ];
+        let data = {};
+        for (let i = 0; i < inputFile.length; i++) {
+            let key = inputFile[i];
+            data[key] = $(`input[name="${key}"]`).val();
+        }
+        data['gender'] = $('input[name="gender"]:checked').val();
+        data['_token'] = $('meta[name="csrf-token"]').attr('content');
+        let url = $(this).attr('data-url');
+        $.post(url, data, () => {
+            flashSuccess('保存成功');
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        });
     });
 });

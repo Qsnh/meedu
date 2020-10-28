@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Member\Models\UserProfile;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
@@ -325,5 +326,88 @@ class MemberTest extends Base
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(3, $response['data']['total']);
         $this->assertEquals(0, count($response['data']['data']));
+    }
+
+    public function test_profile()
+    {
+        $response = $this->user($this->member)->getJson('api/v2/member/profile');
+        $response = $this->assertResponseSuccess($response);
+        $this->assertEmpty($response['data']);
+
+        $profileData = [
+            'user_id' => $this->member->id,
+            'real_name' => 'meedu',
+            'age' => 20,
+            'birthday' => '20180610',
+            'address' => '杭州西湖',
+            'profession' => '开发',
+            'graduated_school' => '嘟嘟嘟嘟',
+            'id_number' => '1919828292',
+        ];
+
+        UserProfile::create($profileData);
+
+        $response = $this->user($this->member)->getJson('api/v2/member/profile');
+        $response = $this->assertResponseSuccess($response);
+        $data = $response['data'];
+        $this->assertEquals($profileData['real_name'], $data['real_name']);
+        $this->assertEquals($profileData['age'], $data['age']);
+        $this->assertEquals($profileData['birthday'], $data['birthday']);
+        $this->assertEquals($profileData['address'], $data['address']);
+        $this->assertEquals($profileData['profession'], $data['profession']);
+        $this->assertEquals($profileData['graduated_school'], $data['graduated_school']);
+        $this->assertEquals($profileData['id_number'], $data['id_number']);
+    }
+
+    public function test_profile_update()
+    {
+        $profileData = [
+            'user_id' => $this->member->id,
+            'real_name' => 'meedu',
+            'age' => 20,
+            'birthday' => '20180610',
+            'address' => '杭州西湖',
+            'profession' => '开发',
+            'graduated_school' => '嘟嘟嘟嘟',
+            'id_number' => '1919828292',
+        ];
+        $response = $this->user($this->member)->postJson('api/v2/member/profile', $profileData);
+        $this->assertResponseSuccess($response);
+
+        $data = UserProfile::query()->where('user_id', $this->member->id)->first();
+        $this->assertEquals($profileData['real_name'], $data['real_name']);
+        $this->assertEquals($profileData['age'], $data['age']);
+        $this->assertEquals($profileData['birthday'], $data['birthday']);
+        $this->assertEquals($profileData['address'], $data['address']);
+        $this->assertEquals($profileData['profession'], $data['profession']);
+        $this->assertEquals($profileData['graduated_school'], $data['graduated_school']);
+        $this->assertEquals($profileData['id_number'], $data['id_number']);
+    }
+
+    public function test_profile_update_has_exists_profile()
+    {
+        UserProfile::create(['user_id' => $this->member->id]);
+
+        $profileData = [
+            'user_id' => $this->member->id,
+            'real_name' => 'meedu',
+            'age' => 20,
+            'birthday' => '20180610',
+            'address' => '杭州西湖',
+            'profession' => '开发',
+            'graduated_school' => '嘟嘟嘟嘟',
+            'id_number' => '1919828292',
+        ];
+        $response = $this->user($this->member)->postJson('api/v2/member/profile', $profileData);
+        $this->assertResponseSuccess($response);
+
+        $data = UserProfile::query()->where('user_id', $this->member->id)->first();
+        $this->assertEquals($profileData['real_name'], $data['real_name']);
+        $this->assertEquals($profileData['age'], $data['age']);
+        $this->assertEquals($profileData['birthday'], $data['birthday']);
+        $this->assertEquals($profileData['address'], $data['address']);
+        $this->assertEquals($profileData['profession'], $data['profession']);
+        $this->assertEquals($profileData['graduated_school'], $data['graduated_school']);
+        $this->assertEquals($profileData['id_number'], $data['id_number']);
     }
 }

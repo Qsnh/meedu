@@ -17,7 +17,7 @@ class UploadController extends FrontendController
 {
     public function imageHandler(UploadImageRequest $request)
     {
-        [$path, $url] = $request->filldata();
+        ['path' => $path, 'url' => $url] = $request->filldata();
         $value = encrypt($url);
 
         return $this->data(compact('path', 'url', 'value'));
