@@ -152,8 +152,9 @@ $(function () {
         $('.course-content-tab-item').hide();
         $('.' + $(this).attr('data-dom')).show();
         $(this).addClass('active').siblings().removeClass('active');
-    }).on('tap', '.videos-count', function () {
+    }).on('tap', '.show-chapter-videos-box', function () {
         let dom = $(this).attr('data-dom');
+        // 显示目标dom
         $('.' + dom).toggle();
         let iconDom = $(this).find('i');
         if ($(iconDom).hasClass('fa-angle-down')) {

@@ -51,9 +51,9 @@
         @if($chapters)
             @foreach($chapters as $chapterIndex => $chapter)
                 @if($videosBox = $videos[$chapter['id']] ?? [])@endif
-                <div class="chapter-title">
+                <div class="chapter-title show-chapter-videos-box" data-dom="chapter-videos-{{$chapter['id']}}">
                     {{$chapter['title']}}
-                    <span class="videos-count" data-dom="chapter-videos-{{$chapter['id']}}">
+                    <span class="videos-count">
                         <i class="fa {{$chapterIndex === 0 ? 'fa-angle-up' : 'fa-angle-down'}} fa-lg"></i>
                     </span>
                 </div>

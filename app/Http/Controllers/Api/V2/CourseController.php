@@ -91,6 +91,7 @@ class CourseController extends BaseController
      *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
      *     @OA\Parameter(in="query",name="category_id",description="分类id",required=false,@OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query",name="scene",description="场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]",required=false,@OA\Schema(type="string")),
      *     @OA\Response(
      *         description="",response=200,
      *         @OA\JsonContent(
@@ -109,12 +110,13 @@ class CourseController extends BaseController
     public function paginate(Request $request)
     {
         $categoryId = intval($request->input('category_id'));
+        $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
         $pageSize = $request->input('page_size', $this->configService->getCourseListPageSize());
         [
             'total' => $total,
             'list' => $list
-        ] = $this->courseService->simplePage($page, $pageSize, $categoryId);
+        ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
         $list = arr2_clear($list, ApiV2Constant::MODEL_COURSE_FIELD);
         $courses = $this->paginator($list, $total, $page, $pageSize);
 
