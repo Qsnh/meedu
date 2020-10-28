@@ -232,7 +232,7 @@ $(function () {
         $('.course-comment-input-box-shadow').show();
     }).on('tap', '.close-course-comment-box', function () {
         $('.course-comment-input-box-shadow').hide();
-    }).on('tap', '.upload-image-button', function () {
+    }).on('tap', '.upload-image-button', function (e) {
         let fileId = '#' + $(this).attr('data-file-id');
         let input = $(this).attr('data-input');
         let viewId = $(this).attr('data-view-id');
@@ -287,6 +287,7 @@ $(function () {
             })
         });
         $(fileId).click();
+        e.preventDefault();
     }).on('tap', '.save-profile-button', function () {
         let inputFile = [
             'real_name', 'age', 'birthday', 'profession', 'address', 'graduated_school',

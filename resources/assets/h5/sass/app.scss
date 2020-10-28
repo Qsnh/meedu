@@ -444,7 +444,7 @@ body {
   width: 100%;
   height: auto;
   float: left;
-  padding: 15px 15px 0px 15px;
+  padding: 15px 15px 0 15px;
 
   .category-box-item {
     width: auto;
@@ -453,7 +453,7 @@ body {
     font-size: 14px;
     font-weight: 400;
     color: rgba(102, 102, 102, 1);
-    line-height: 14px;
+    line-height: 1;
     margin-right: 30px;
     margin-bottom: 15px;
 
@@ -1479,13 +1479,13 @@ body {
   width: 100%;
   height: auto;
   float: left;
-  margin-top: 15px;
+  margin-top: 10px;
 
   .credit1-item {
     width: 100%;
     height: auto;
     float: left;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: white;
     padding: 15px 15px;
     display: flex;
@@ -1785,22 +1785,26 @@ body {
 
 .nav-menus {
   width: 100%;
-  height: auto;
+  height: 45px;
   float: left;
   border-bottom: 1px solid rgba(0, 0, 0, .04);
-  display: flex;
   background-color: white;
+  overflow-x: auto;
+  text-align: left;
+  white-space: nowrap;
+  padding-left: 15px;
 
   .menu-item {
-    flex: 1;
-    text-align: center;
-    font-size: 1rem;
+    display: inline;
+    width: auto;
+    margin-right: 40px;
+    font-size: 15px;
     line-height: 44px;
-    color: #333333;
+    color: #666666;
 
     &.active {
-      font-weight: bold;
-      font-size: 1.1rem;
+      font-weight: bolder;
+      font-size: 16px;
       color: $primary;
     }
   }
@@ -2038,7 +2042,7 @@ body {
   width: 100%;
   height: auto;
   float: left;
-  margin-top: 15px;
+  margin-top: 10px;
 
   .profile-item {
     width: 100%;
@@ -2064,6 +2068,13 @@ body {
       flex: 1;
       text-align: right;
       line-height: 55px;
+      color: rgba(0, 0, 0, .6);
+
+      label {
+        margin: 0;
+        padding: 0;
+        margin-left: 10px;
+      }
 
       input[type=text] {
         width: 100%;
@@ -2117,6 +2128,38 @@ body {
         margin-right: 15px;
         margin-bottom: 10px;
       }
+
+      .upload-image-button {
+        width: 100px;
+        height: 100px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
     }
+  }
+}
+
+.watched-over {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 50px;
+  text-align: center;
+  display: none;
+
+  .next-video-button {
+    display: inline-block;
+    width: 95px;
+    height: 40px;
+    background-color: $primary;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    color: white;
+  }
+
+  .repeat-view-button {
+    color: white;
+    font-size: 15px;
   }
 }

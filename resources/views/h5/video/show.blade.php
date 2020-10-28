@@ -27,13 +27,18 @@
                     @endif
                 @endif
                 @if($nextVideo)
-                    <div style="margin-top: 60px;display: none" class="text-center watched-over">
-                        <a class="btn btn-primary"
-                           href="{{route('video.show', [$nextVideo['course_id'], $nextVideo['id'], $nextVideo['slug']])}}">下一集</a>
+                    <div class="text-center watched-over">
+                        <p>
+                            <a class="next-video-button"
+                               href="{{route('video.show', [$nextVideo['course_id'], $nextVideo['id'], $nextVideo['slug']])}}">下一集</a>
+                        </p>
+                        <p>
+                            <a href="javascript:void(0)" onclick="window.location.reload()" class="repeat-view-button">重新观看</a>
+                        </p>
                     </div>
                 @else
-                    <div style="margin-top: 60px;display: none;" class="text-center watched-over">
-                        <span style="color: white">厉害，当前课程已全部看完！</span>
+                    <div class="text-center watched-over">
+                        <span style="color: white">厉害，当前课程已完成！</span>
                     </div>
                 @endif
             @else
