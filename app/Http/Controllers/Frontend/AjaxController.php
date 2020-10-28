@@ -386,7 +386,6 @@ class AjaxController extends BaseController
     public function profileUpdate(Request $request)
     {
         $data = $request->all();
-        isset($data['age']) && $data['age'] = (int)$data['age'];
         $this->userService->saveProfile($this->id(), $data);
         return $this->success();
     }

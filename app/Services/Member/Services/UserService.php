@@ -700,6 +700,7 @@ class UserService implements UserServiceInterface
     public function saveProfile(int $userId, array $profileData): void
     {
         $profileData = Arr::only($profileData, UserProfile::EDIT_COLUMNS);
+        isset($profileData['age']) && $profileData['age'] = (int)$profileData['age'];
         $profile = UserProfile::query()->where('user_id', $userId)->first();
         if ($profile) {
             $profile->fill($profileData)->save();
