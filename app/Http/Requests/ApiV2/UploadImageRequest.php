@@ -9,16 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Http\Requests\Frontend\Member;
+namespace App\Http\Requests\ApiV2;
 
-use App\Http\Requests\Frontend\BaseRequest;
-
-class AvatarChangeRequest extends BaseRequest
+class UploadImageRequest extends BaseRequest
 {
     public function rules()
     {
         return [
-            'file' => 'required|image|max:1024',
+            'file' => 'required|image|max:2048',
         ];
     }
 
@@ -27,7 +25,7 @@ class AvatarChangeRequest extends BaseRequest
         return [
             'file.required' => __('file.required'),
             'file.image' => __('file.image'),
-            'file.max' => __('file.max', ['size' => '1M']),
+            'file.max' => __('file.max', ['size' => '2M']),
         ];
     }
 

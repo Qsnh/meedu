@@ -11,8 +11,6 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Backend\ImageUploadRequest;
 
 class UploadController extends BaseController
@@ -20,14 +18,12 @@ class UploadController extends BaseController
     public function tinymceImageUpload(ImageUploadRequest $request)
     {
         $file = $request->filldata();
-        $disk = config('meedu.upload.image.disk');
-        $path = $file->store(config('meedu.upload.image.path'), $disk);
-        $url = url(Storage::disk($disk)->url($path));
+        $data = save_image($file);
 
-        return ['location' => $url, 'path' => $path];
+        return ['location' => $data['url'], 'path' => $data['path']];
     }
 
-    public function imageUpload(Request $request)
+    public function imageUpload()
     {
         return $this->error('function offline');
     }

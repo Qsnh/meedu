@@ -578,3 +578,23 @@ if (!function_exists('query_builder')) {
         return http_build_query($data);
     }
 }
+
+if (!function_exists('save_image')) {
+    function save_image($file): array
+    {
+        /**
+         * @var \Illuminate\Http\UploadedFile $file
+         */
+
+        /**
+         * @var $configService \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $disk = $configService->getImageStorageDisk();
+        $path = $file->store($configService->getImageStoragePath(), compact('disk'));
+        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+        $data = compact('path', 'url', 'disk');
+        $data['encryptData'] = $encryptData = encrypt(json_encode($data));
+        return $data;
+    }
+}

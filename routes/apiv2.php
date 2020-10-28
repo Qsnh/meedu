@@ -105,4 +105,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
         Route::get('credit1Records', 'MemberController@credit1Records');
     });
+
+    // 上传图片
+    Route::post('/upload/image', 'UploadController@image');
 });

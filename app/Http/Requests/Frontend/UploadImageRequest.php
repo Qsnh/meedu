@@ -11,10 +11,6 @@
 
 namespace App\Http\Requests\Frontend;
 
-use Illuminate\Support\Facades\Storage;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
-
 class UploadImageRequest extends BaseRequest
 {
     public function rules()
@@ -35,13 +31,6 @@ class UploadImageRequest extends BaseRequest
 
     public function filldata()
     {
-        /**
-         * @var $configService ConfigService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-        $disk = $configService->getImageStorageDisk();
-        $path = $this->file('file')->store($configService->getImageStoragePath(), compact('disk'));
-
-        return [$path, Storage::disk($disk)->url($path)];
+        return save_image($this->file('file'));
     }
 }
