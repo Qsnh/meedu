@@ -26,6 +26,7 @@ class CourseController extends BaseController
 {
     public function index(Request $request)
     {
+        $id = $request->input('id');
         $keywords = $request->input('keywords', '');
         $cid = $request->input('cid');
         $userId = $request->input('user_id');
@@ -35,6 +36,9 @@ class CourseController extends BaseController
         $order = $request->input('order', 'desc');
 
         $courses = Course::query()
+            ->when($id, function ($query) use ($id) {
+                $query->where('id', $id);
+            })
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('title', 'like', '%' . $keywords . '%');
             })

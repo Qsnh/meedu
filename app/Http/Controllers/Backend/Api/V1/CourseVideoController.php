@@ -27,6 +27,7 @@ class CourseVideoController extends BaseController
 {
     public function index(Request $request)
     {
+        $id = $request->input('id');
         $keywords = $request->input('keywords', '');
         $courseId = $request->input('course_id');
         $sort = $request->input('sort', 'created_at');
@@ -34,6 +35,9 @@ class CourseVideoController extends BaseController
 
         $videos = Video::query()
             ->with(['course', 'chapter'])
+            ->when($id, function ($query) use ($id) {
+                $query->where('id', $id);
+            })
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('title', 'like', "{$keywords}%");
             })
