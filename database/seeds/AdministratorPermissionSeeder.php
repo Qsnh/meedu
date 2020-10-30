@@ -355,6 +355,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'administrator/\d+',
             ],
+            [
+                'group_name' => '管理员',
+                'display_name' => '管理员修改密码',
+                'slug' => 'administrator.password',
+                'method' => 'PUT',
+                'url' => 'administrator/password',
+            ],
 
             // 管理员角色
             [
@@ -586,6 +593,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'video.watch.records',
                 'method' => 'GET',
                 'url' => 'video/\d+/watch/records',
+            ],
+            [
+                'group_name' => '视频',
+                'display_name' => '视频批量导入',
+                'slug' => 'video.import',
+                'method' => 'POST',
+                'url' => 'video/import',
             ],
 
             // 用户

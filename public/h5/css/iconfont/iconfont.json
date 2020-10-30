@@ -1,0 +1,338 @@
+{
+  "id": "1711080",
+  "name": "MeEdu",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "17873842",
+      "name": "comment",
+      "font_class": "comment",
+      "unicode": "e711",
+      "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "17840260",
+      "name": "download",
+      "font_class": "download",
+      "unicode": "e710",
+      "unicode_decimal": 59152
+    },
+    {
+      "icon_id": "17840187",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "17829864",
+      "name": "invite",
+      "font_class": "invite",
+      "unicode": "e70e",
+      "unicode_decimal": 59150
+    },
+    {
+      "icon_id": "17829862",
+      "name": "coin",
+      "font_class": "coin",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
+    },
+    {
+      "icon_id": "17829861",
+      "name": "VIP",
+      "font_class": "VIP",
+      "unicode": "e70c",
+      "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "17829858",
+      "name": "person",
+      "font_class": "person",
+      "unicode": "e70b",
+      "unicode_decimal": 59147
+    },
+    {
+      "icon_id": "17829852",
+      "name": "doc",
+      "font_class": "doc",
+      "unicode": "e70a",
+      "unicode_decimal": 59146
+    },
+    {
+      "icon_id": "17829851",
+      "name": "collect",
+      "font_class": "collect",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "17829850",
+      "name": "news",
+      "font_class": "news",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "17829849",
+      "name": "order",
+      "font_class": "order",
+      "unicode": "e707",
+      "unicode_decimal": 59143
+    },
+    {
+      "icon_id": "17829846",
+      "name": "personal",
+      "font_class": "personal",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    },
+    {
+      "icon_id": "17829845",
+      "name": "lesson",
+      "font_class": "lesson1",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "17829839",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e704",
+      "unicode_decimal": 59140
+    },
+    {
+      "icon_id": "17764537",
+      "name": "tuangou",
+      "font_class": "tuangou",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "17764094",
+      "name": "danye",
+      "font_class": "danye",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "17764095",
+      "name": "gongzhonghao",
+      "font_class": "gongzhonghao",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "17764096",
+      "name": "huati",
+      "font_class": "huati",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "17764097",
+      "name": "k12",
+      "font_class": "k12",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "17764098",
+      "name": "miaosha",
+      "font_class": "miaosha",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "17764099",
+      "name": "kaoshi",
+      "font_class": "kaoshi",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "17764100",
+      "name": "muban",
+      "font_class": "muban",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "17764101",
+      "name": "zhibo",
+      "font_class": "zhibo",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "17764102",
+      "name": "wenda",
+      "font_class": "wenda",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "15903497",
+      "name": "test",
+      "font_class": "test",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "15903498",
+      "name": "practice",
+      "font_class": "practice",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "15733256",
+      "name": "tag",
+      "font_class": "tag1",
+      "unicode": "e6e9",
+      "unicode_decimal": 59113
+    },
+    {
+      "icon_id": "15733257",
+      "name": "subscribe",
+      "font_class": "subscribe",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "15097101",
+      "name": "copylink",
+      "font_class": "copylink",
+      "unicode": "e6e2",
+      "unicode_decimal": 59106
+    },
+    {
+      "icon_id": "15097102",
+      "name": "like",
+      "font_class": "like",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "15097103",
+      "name": "share",
+      "font_class": "share",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "13193414",
+      "name": "WeChat",
+      "font_class": "WeChat",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "13193416",
+      "name": "moments",
+      "font_class": "moments",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "14894070",
+      "name": "微信支付",
+      "font_class": "weixinzhifu",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "14894071",
+      "name": "银行卡",
+      "font_class": "yinhangka",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
+    },
+    {
+      "icon_id": "14894072",
+      "name": "支付宝",
+      "font_class": "zhifubao",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
+      "icon_id": "14892867",
+      "name": "selected",
+      "font_class": "selected",
+      "unicode": "e6da",
+      "unicode_decimal": 59098
+    },
+    {
+      "icon_id": "14892868",
+      "name": " system-serch",
+      "font_class": "system-serch",
+      "unicode": "e6db",
+      "unicode_decimal": 59099
+    },
+    {
+      "icon_id": "14892577",
+      "name": "section",
+      "font_class": "section",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
+      "icon_id": "14856691",
+      "name": "me",
+      "font_class": "me",
+      "unicode": "e6d4",
+      "unicode_decimal": 59092
+    },
+    {
+      "icon_id": "14856692",
+      "name": "homepage",
+      "font_class": "homepage",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
+    },
+    {
+      "icon_id": "14856693",
+      "name": "lesson",
+      "font_class": "lesson",
+      "unicode": "e6d6",
+      "unicode_decimal": 59094
+    },
+    {
+      "icon_id": "14856694",
+      "name": "study",
+      "font_class": "study",
+      "unicode": "e6d7",
+      "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "14030359",
+      "name": "icon-tab",
+      "font_class": "icon-tab",
+      "unicode": "e6d0",
+      "unicode_decimal": 59088
+    },
+    {
+      "icon_id": "13659777",
+      "name": "article",
+      "font_class": "article",
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
+    },
+    {
+      "icon_id": "13659778",
+      "name": "backtop",
+      "font_class": "backtop",
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
+    },
+    {
+      "icon_id": "13659779",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    }
+  ]
+}

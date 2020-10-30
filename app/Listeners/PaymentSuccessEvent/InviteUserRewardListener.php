@@ -17,8 +17,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
+use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
@@ -40,19 +42,27 @@ class InviteUserRewardListener implements ShouldQueue
     protected $userInviteBalanceService;
 
     /**
+     * @var OrderService
+     */
+    protected $orderService;
+
+    /**
      * InviteUserRewardListener constructor.
      * @param UserServiceInterface $userService
      * @param ConfigServiceInterface $configService
      * @param UserInviteBalanceServiceInterface $userInviteBalanceService
+     * @param OrderServiceInterface $orderService
      */
     public function __construct(
         UserServiceInterface $userService,
         ConfigServiceInterface $configService,
-        UserInviteBalanceServiceInterface $userInviteBalanceService
+        UserInviteBalanceServiceInterface $userInviteBalanceService,
+        OrderServiceInterface $orderService
     ) {
         $this->userService = $userService;
         $this->userInviteBalanceService = $userInviteBalanceService;
         $this->configService = $configService;
+        $this->orderService = $orderService;
     }
 
     /**
@@ -78,7 +88,8 @@ class InviteUserRewardListener implements ShouldQueue
             // 未设置抽成
             return;
         }
-        $drawTotal = (int)($event->order['charge'] * $perOrderDraw);
+        $orderTotal = $this->orderService->getDirectPaidTotal($event->order['id']);
+        $drawTotal = (int)($orderTotal * $perOrderDraw);
         if (!$drawTotal) {
             // 抽成少于一块钱
             return;

@@ -355,4 +355,16 @@ class OrderService implements OrderServiceInterface
     {
         OrderPaidRecord::whereOrderId($id)->delete();
     }
+
+    /**
+     * @param int $orderId
+     * @return int
+     */
+    public function getDirectPaidTotal(int $orderId): int
+    {
+        return (int)OrderPaidRecord::query()
+            ->where('order_id', $orderId)
+            ->where('paid_type', OrderPaidRecord::PAID_TYPE_DEFAULT)
+            ->sum('paid_total');
+    }
 }

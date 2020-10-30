@@ -11,7 +11,7 @@
 
 namespace App\Http\Requests\Backend;
 
-use App\User;
+use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class MemberRequest extends BaseRequest

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('h5.components.topbar', ['title' => '登录', 'back' => route('index')])
+    @include('h5.components.topbar', ['title' => '登录'])
 
     <div class="box">
         <div class="login-title">

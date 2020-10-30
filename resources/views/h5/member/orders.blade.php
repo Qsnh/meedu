@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('h5.components.topbar', ['title' => '我的订单', 'back' => route('index'), 'class' => 'primary'])
+    @include('h5.components.topbar', ['title' => '我的订单', 'back' => route('member')])
 
     <div class="my-orders">
         @forelse($orders as $order)

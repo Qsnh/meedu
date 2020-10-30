@@ -42,7 +42,6 @@ class BackendApiConstant
         'dashboard/system/info' => true,
         'dashboard/check' => true,
         'role/all' => true,
-        'administrator/password' => true,
         'administrator_permission' => true,
         'course/all' => true,
         'upload/image/tinymce' => true,

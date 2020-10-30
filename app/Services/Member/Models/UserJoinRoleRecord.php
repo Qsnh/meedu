@@ -11,7 +11,6 @@
 
 namespace App\Services\Member\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class UserJoinRoleRecord extends Model

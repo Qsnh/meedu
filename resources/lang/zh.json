@@ -56,6 +56,7 @@
   "image_captcha_error": "图片验证码错误",
   "sms_scene_error": "短信验证码参数错误",
   "mobile code error": "手机短信验证码错误",
+  "please_input_mobile_code": "请输入短信验证码",
   "old_password_error": "原密码错误",
   "socialite_account_has_bind_user": "该账户已经绑定过其它用户啦",
   "ban_bind_repeat": "请勿重复绑定",
@@ -127,5 +128,6 @@
   "credit1_remark_other": "其它",
   "please buy course": "请购买课程",
   "course cant comment": "当前课程无法评论",
-  "video cant comment": "当前视频无法评论"
+  "video cant comment": "当前视频无法评论",
+  "member.profile.edit": "用户资料编辑"
 }

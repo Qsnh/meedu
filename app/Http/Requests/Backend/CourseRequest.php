@@ -61,6 +61,7 @@ class CourseRequest extends BaseRequest
             'user_id' => $this->input('user_id', 0),
             'category_id' => $this->input('category_id'),
             'title' => $this->input('title'),
+            'slug' => $this->input('slug'),
             'thumb' => $this->input('thumb'),
             'charge' => $this->input('charge', 0),
             'short_description' => $this->input('short_description'),
@@ -74,7 +75,7 @@ class CourseRequest extends BaseRequest
             'comment_status' => (int)$this->input('comment_status', Course::COMMENT_STATUS_CLOSE),
         ];
 
-        if ($this->isMethod('post')) {
+        if ($this->isMethod('post') && !$data['slug']) {
             $slug = implode('-', (new Pinyin())->convert($this->input('title')));
             $data['slug'] = $slug;
         }

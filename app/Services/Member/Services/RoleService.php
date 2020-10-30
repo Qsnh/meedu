@@ -63,14 +63,14 @@ class RoleService implements RoleServiceInterface
     /**
      * @param array $user
      * @param array $role
-     * @param int   $charge
+     * @param int $charge
      */
     public function userJoinRole(array $user, array $role, int $charge): void
     {
         // 当前用户是免费会员
         DB::transaction(function () use ($user, $role, $charge) {
             $now = Carbon::now();
-            $expiredAt =(clone $now)->addDays($role['expire_days']);
+            $expiredAt = (clone $now)->addDays($role['expire_days']);
             // 创建购买记录
             UserJoinRoleRecord::create([
                 'user_id' => $user['id'],
@@ -89,6 +89,7 @@ class RoleService implements RoleServiceInterface
         // 用户续费套餐
         DB::transaction(function () use ($user, $role, $charge) {
             $startAt = Carbon::parse($user['role_expired_at']);
+            $startAt = $startAt->gt(Carbon::now()) ? $startAt : Carbon::now();
             $expiredAt = (clone $startAt)->addDays($role['expire_days']);
             // 创建购买记录
             UserJoinRoleRecord::create([

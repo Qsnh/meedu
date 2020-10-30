@@ -30,7 +30,18 @@ class VideoUploadController extends BaseController
 
         try {
             aliyun_sdk_client();
-            $result = \AlibabaCloud\Vod\Vod::v20170321()->createUploadVideo()->withTitle($title)->withFileName($filename)->request();
+
+            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
+                ->product('Vod')
+                ->version('2017-03-21')
+                ->action('CreateUploadVideo')
+                ->options([
+                    'query' => [
+                        'Title' => $title,
+                        'FileName' => $filename,
+                    ]
+                ])
+                ->request();
 
             return $this->successData([
                 'upload_auth' => $result['UploadAuth'],
@@ -51,7 +62,17 @@ class VideoUploadController extends BaseController
 
         try {
             aliyun_sdk_client();
-            $result = \AlibabaCloud\Vod\Vod::v20170321()->refreshUploadVideo()->withVideoId($videoId)->request();
+
+            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
+                ->product('Vod')
+                ->version('2017-03-21')
+                ->action('RefreshUploadVideo')
+                ->options([
+                    'query' => [
+                        'VideoId' => $videoId,
+                    ]
+                ])
+                ->request();
 
             return $this->successData([
                 'upload_auth' => $result['UploadAuth'],

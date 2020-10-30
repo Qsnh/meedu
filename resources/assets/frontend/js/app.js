@@ -1,4 +1,3 @@
-
 require('./bootstrap');
 
 window.showAuthBox = function ($box) {
@@ -46,11 +45,11 @@ $(function () {
             }
         }, 'json');
     }).on('click', '.captcha', function () {
-        let src = $(this).attr('src');
+        let src = $(this).attr('src'), now = Date.now();
         if (src.indexOf('?') !== -1) {
-            src = src + "&1";
+            src = src.split('?')[0] + '?t=' + now;
         } else {
-            src = src + "?" + Date.now()
+            src = src + "?t=" + now;
         }
         $(this).attr('src', src);
     }).on('click', '.send-sms-captcha', function () {

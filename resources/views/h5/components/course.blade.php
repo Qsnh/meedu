@@ -1,6 +1,8 @@
 <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
    class="banner-course-item">
-    <div class="course-thumb" style="background-image: url('{{$course['thumb']}}')"></div>
+    <div class="course-thumb">
+        <img src="{{$course['thumb']}}" width="100%">
+    </div>
     <div class="course-title">{{$course['title']}}</div>
     <div class="course-info">
         <div class="course-user-count">{{$course['user_count']}}订阅</div>

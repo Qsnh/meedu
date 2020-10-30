@@ -208,6 +208,14 @@ class BusinessState
             return false;
         }
         /**
+         * @var CourseService $courseService
+         */
+        $courseService = app()->make(CourseServiceInterface::class);
+        $course = $courseService->find($courseId);
+        if ($course['is_free'] === Course::IS_FREE_YES) {
+            return true;
+        }
+        /**
          * @var $userService UserService
          */
         $userService = app()->make(UserServiceInterface::class);

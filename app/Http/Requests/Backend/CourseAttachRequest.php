@@ -44,7 +44,7 @@ class CourseAttachRequest extends BaseRequest
             $size = $file->getSize();
             $path = $this->file('file')->store(config('meedu.upload.attach.course.path'), ['disk' => config('meedu.upload.attach.course.disk')]);
             $data['extension'] = $file->getClientOriginalExtension();
-            $data['size'] = $file->getSize();
+            $data['size'] = $size;
             $data['disk'] = config('meedu.upload.attach.course.disk');
         }
 

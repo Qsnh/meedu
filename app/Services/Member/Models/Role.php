@@ -11,7 +11,6 @@
 
 namespace App\Services\Member\Models;
 
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
@@ -36,16 +35,6 @@ class Role extends Model
     public function getDescRowsAttribute()
     {
         return explode("\n", $this->description);
-    }
-
-    /**
-     * 当前会员下的用户.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users()
-    {
-        return $this->hasMany(User::class, 'user_id');
     }
 
     /**

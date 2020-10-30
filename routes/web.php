@@ -87,6 +87,7 @@ Route::group([
     Route::post('/promo_code', 'MemberController@generatePromoCode');
     Route::post('/invite_balance_withdraw_orders', 'MemberController@createInviteBalanceWithdrawOrder');
     Route::get('/credit1_records', 'MemberController@credit1Records')->name('member.credit1_records');
+    Route::get('/profile', 'MemberController@showProfilePage')->name('member.profile');
 
     // 图片上传
     Route::post('/upload/image', 'UploadController@imageHandler')->name('upload.image');
@@ -121,5 +122,8 @@ Route::group([
         Route::post('/message/read', 'AjaxController@notificationMarkAsRead')->name('ajax.message.read');
         Route::post('/inviteBalanceWithdraw', 'AjaxController@inviteBalanceWithdraw')->name('ajax.invite_balance.withdraw');
         Route::post('/course/like/{id}', 'AjaxController@likeACourse')->name('ajax.course.like');
+
+        // 用户资料编辑
+        Route::post('/member/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
     });
 });

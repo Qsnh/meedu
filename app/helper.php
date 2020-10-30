@@ -105,11 +105,18 @@ if (!function_exists('aliyun_play_auth')) {
         ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
         try {
             aliyun_sdk_client();
-            $request = \AlibabaCloud\Vod\Vod::v20170321()
-                ->getVideoPlayAuth()
-                ->withVideoId($video['aliyun_video_id']);
-            $playConfig && $request = $request->withPlayConfig(json_encode($playConfig));
-            $result = $request->request();
+
+            $query = ['VideoId' => $video['aliyun_video_id']];
+            $playConfig && $query['PlayConfig'] = json_encode($playConfig);
+
+            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
+                ->product('Vod')
+                ->version('2017-03-21')
+                ->action('GetVideoPlayAuth')
+                ->options([
+                    'query' => $query,
+                ])
+                ->request();
 
             return $result['PlayAuth'];
         } catch (Exception $exception) {
@@ -135,11 +142,16 @@ if (!function_exists('aliyun_play_url')) {
             $playConfig = [];
             ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
 
-            $request = \AlibabaCloud\Vod\Vod::v20170321()
-                ->getPlayInfo()
-                ->withVideoId($video['aliyun_video_id']);
-            $playConfig && $request = $request->withPlayConfig(json_encode($playConfig));
-            $result = $request->request();
+            $query = ['VideoId' => $video['aliyun_video_id']];
+            $playConfig && $query['PlayConfig'] = json_encode($playConfig);
+            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
+                ->product('Vod')
+                ->version('2017-03-21')
+                ->action('GetPlayInfo')
+                ->options([
+                    'query' => $query,
+                ])
+                ->request();
 
             $playInfo = $result['PlayInfoList']['PlayInfo'];
             $rows = [];
@@ -171,8 +183,8 @@ if (!function_exists('aliyun_sdk_client')) {
         $aliyunVodConfig = $configService->getAliyunVodConfig();
         \AlibabaCloud\Client\AlibabaCloud::accessKeyClient($aliyunVodConfig['access_key_id'], $aliyunVodConfig['access_key_secret'])
             ->regionId($aliyunVodConfig['region'])
-            ->connectTimeout(1)
-            ->timeout(15)
+            ->connectTimeout(3)
+            ->timeout(30)
             ->asDefaultClient();
     }
 }
@@ -544,5 +556,45 @@ if (!function_exists('get_cache_key')) {
     function get_cache_key(string $key, ...$params): string
     {
         return sprintf($key, ...$params);
+    }
+}
+
+if (!function_exists('query_builder')) {
+    /**
+     * @param array $fields
+     * @param array $rewrite
+     * @return string
+     */
+    function query_builder(array $fields, array $rewrite = []): string
+    {
+        $request = request();
+        $data = [
+            'page' => $request->input('page', 1),
+        ];
+        foreach ($fields as $item) {
+            $data[$item] = $request->input($item, '');
+        }
+        $rewrite && $data = array_merge($data, $rewrite);
+        return http_build_query($data);
+    }
+}
+
+if (!function_exists('save_image')) {
+    function save_image($file): array
+    {
+        /**
+         * @var \Illuminate\Http\UploadedFile $file
+         */
+
+        /**
+         * @var $configService \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $disk = $configService->getImageStorageDisk();
+        $path = $file->store($configService->getImageStoragePath(), compact('disk'));
+        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+        $data = compact('path', 'url', 'disk');
+        $data['encryptData'] = $encryptData = encrypt(json_encode($data));
+        return $data;
     }
 }

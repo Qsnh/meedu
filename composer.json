@@ -12,7 +12,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*",
-        "alibabacloud/sdk": "^1.8",
+        "alibabacloud/client": "^1.5",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",

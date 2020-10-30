@@ -176,7 +176,7 @@ class MemberController extends BaseController
 
     public function detail($id)
     {
-        $user = User::query()->with(['role', 'invitor'])->where('id', $id)->firstOrFail();
+        $user = User::query()->with(['role', 'invitor', 'profile'])->where('id', $id)->firstOrFail();
 
         return $this->successData([
             'data' => $user,

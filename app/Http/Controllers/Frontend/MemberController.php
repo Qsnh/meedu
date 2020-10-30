@@ -451,4 +451,13 @@ class MemberController extends FrontendController
         $title = __('title.member.credit1_records');
         return v('frontend.member.credit1_records', compact('title', 'records'));
     }
+
+    public function showProfilePage()
+    {
+        $profile = $this->userService->getProfile($this->id());
+
+        $title = __('member.profile.edit');
+
+        return v('frontend.member.profile', compact('profile', 'title'));
+    }
 }

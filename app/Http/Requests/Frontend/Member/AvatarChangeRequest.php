@@ -11,10 +11,7 @@
 
 namespace App\Http\Requests\Frontend\Member;
 
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Frontend\BaseRequest;
-use App\Services\Base\Services\ConfigService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class AvatarChangeRequest extends BaseRequest
 {
@@ -36,15 +33,6 @@ class AvatarChangeRequest extends BaseRequest
 
     public function filldata()
     {
-        /**
-         * @var $configService ConfigService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-
-        $disk = $configService->getImageStorageDisk();
-        $path = $this->file('file')->store($configService->getImageStoragePath(), compact('disk'));
-        $url = Storage::disk($disk)->url($path);
-
-        return compact('url');
+        return save_image($this->file('file'));
     }
 }

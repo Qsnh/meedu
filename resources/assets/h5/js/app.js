@@ -34,14 +34,14 @@ $(function () {
             }
         }, 'json');
     }).on('tap', '.captcha', function () {
-        let src = $(this).attr('src');
+        let src = $(this).attr('src'), now = Date.now();
         if (src.indexOf('?') !== -1) {
-            src = src + "&1";
+            src = src.split('?')[0] + '?t=' + now;
         } else {
-            src = src + "?" + Date.now()
+            src = src + "?t=" + now
         }
         $(this).attr('src', src);
-        $('input[name="captcha"]').val('')
+        $('input[name="captcha"]').val('');
     }).on('tap', '.send-sms-captcha', function () {
         if (window.SMS_LOCK === true) {
             return;
@@ -86,10 +86,6 @@ $(function () {
             }, 1000);
 
         }, 'json');
-    }).on('tap', '.show-buy-course-model', function () {
-        $('.buy-course-model').show();
-    }).on('tap', '.buy-course-model .close', function () {
-        $('.buy-course-model').hide();
     }).on('tap', '.role-item', function () {
         $(this).addClass('active').siblings().removeClass('active');
         $('.role-subscribe-button').attr('href', $(this).attr('data-url'));
@@ -146,34 +142,19 @@ $(function () {
             if (res.code !== 0) {
                 flashError(res.message);
             } else {
-                flashSuccess('评论成功');
-                let data = res.data;
-                let html = `
-<div class="comment-list-item">
-                                <div class="comment-user-avatar">
-                                    <img src="${data.user.avatar}" width="44" height="44">
-                                </div>
-                                <div class="comment-content-box">
-                                    <div class="comment-user-nickname">${data.user.nick_name}</div>
-                                    <div class="comment-content">
-                                    ${data.content}
-                                    </div>
-                                    <div class="comment-info">
-                                        <span class="comment-createAt">${data.created_at}</span>
-                                    </div>
-                                </div>
-                            </div>
-                    `;
-                $(`textarea[name=${input}]`).val('');
-                $('.comment-list-box').prepend(html);
+                flashSuccess('评论提交成功');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 600);
             }
         }, 'json');
     }).on('tap', '.course-info-menu .menu-item', function () {
         $('.course-content-tab-item').hide();
         $('.' + $(this).attr('data-dom')).show();
         $(this).addClass('active').siblings().removeClass('active');
-    }).on('tap', '.videos-count', function () {
+    }).on('tap', '.show-chapter-videos-box', function () {
         let dom = $(this).attr('data-dom');
+        // 显示目标dom
         $('.' + dom).toggle();
         let iconDom = $(this).find('i');
         if ($(iconDom).hasClass('fa-angle-down')) {
@@ -181,5 +162,150 @@ $(function () {
         } else {
             $(iconDom).removeClass('fa-angle-up').addClass('fa-angle-down');
         }
+    }).on('tap', '.invite-balance-withdraw-button', function () {
+        let total = $('input[name="total"]').val();
+        let channel_name = $('select[name="channel[name]"]').val();
+        let channel_username = $('input[name="channel[username]"]').val();
+        let channel_account = $('input[name="channel[account]"]').val();
+        if (channel_name === '' || channel_username === '' || channel_account === '') {
+            window.flashError('请输入信息');
+            return false;
+        }
+        $(this).disabled = true;
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let data = {
+            _token: token,
+            total: total,
+            channel: {
+                name: channel_name,
+                username: channel_username,
+                account: channel_account
+            }
+        };
+        $.post($(this).attr('data-action'), data, function (res) {
+            if (res.code !== 0) {
+                $(this).disabled = false;
+                window.flashError(res.message);
+            } else {
+                // 成功跳转到登录界面
+                flashSuccess('提现提交成功');
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+        }, 'json');
+    }).on('tap', '.invite-balance-withdraw-box-toggle', function () {
+        $('.balance-withdraw-submit-box-shadow').toggle();
+    }).on('tap', '.back-button', function () {
+        if (window.history.length <= 2) {
+            window.location.href = $(this).attr('data-url');
+        } else {
+            window.history.back();
+        }
+    }).on('tap', '.like-button', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            window.location.href = $(this).attr('data-login-url');
+            return;
+        }
+        let url = $(this).attr('data-url');
+        let token = $('meta[name="csrf-token"]').attr('content');
+        $.post(url, {
+            _token: token
+        }, res => {
+            if (res.code !== 0) {
+                flashError(res.message);
+            } else {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                } else {
+                    $(this).addClass('active');
+                }
+            }
+        }, 'json');
+    }).on('tap', '.show-course-comment-box', function () {
+        let isLogin = parseInt($(this).attr('data-login'));
+        if (isLogin === 0) {
+            window.location.href = $(this).attr('data-login-url');
+            return;
+        }
+        $('.course-comment-input-box-shadow').show();
+    }).on('tap', '.close-course-comment-box', function () {
+        $('.course-comment-input-box-shadow').hide();
+    }).on('tap', '.upload-image-button', function (e) {
+        let fileId = '#' + $(this).attr('data-file-id');
+        let input = $(this).attr('data-input');
+        let viewId = $(this).attr('data-view-id');
+        let url = $(this).attr('data-url');
+        $(fileId).off('change');
+        // 允许上传的图片类型
+        var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+        // 1024KB，也就是 1MB
+        var maxSize = 2 * 1024 * 1024;
+        $(fileId).change(function (e) {
+            if (e.target.files.length === 0) {
+                flashWarning('请选择图片');
+                return;
+            }
+            let file = e.target.files[0];
+            if (allowTypes.indexOf(file.type) === -1) {
+                flashWarning('仅支持jpg,jpeg,png,gif图片格式');
+                return;
+            }
+            if (file.size > maxSize) {
+                flashWarning('图片大小不能超过2mb');
+                return;
+            }
+            let token = $('meta[name="csrf-token"]').attr('content');
+            let formData = new FormData();
+            formData.append("file", file);
+            formData.append("_token", token);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: res => {
+                    if (res.code !== 0) {
+                        flashError(res.message);
+                    } else {
+                        let url = res.data.url;
+                        $('input[name=' + input + ']').val(url);
+                        let viewDom = '.' + viewId;
+                        if ($(viewDom).find('img').length > 0) {
+                            $(viewDom).find('img').attr('src', url);
+                        } else {
+                            $(viewDom).append(`<img src="${url}" width="100" height="100" />`);
+                        }
+                    }
+                },
+                error: () => {
+                    flasError('上传图片出错')
+                }
+            })
+        });
+        $(fileId).click();
+        e.preventDefault();
+    }).on('tap', '.save-profile-button', function () {
+        let inputFile = [
+            'real_name', 'age', 'birthday', 'profession', 'address', 'graduated_school',
+            'diploma', 'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
+        ];
+        let data = {};
+        for (let i = 0; i < inputFile.length; i++) {
+            let key = inputFile[i];
+            data[key] = $(`input[name="${key}"]`).val();
+        }
+        data['gender'] = $('input[name="gender"]:checked').val();
+        data['_token'] = $('meta[name="csrf-token"]').attr('content');
+        let url = $(this).attr('data-url');
+        $.post(url, data, () => {
+            flashSuccess('保存成功');
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        });
     });
 });

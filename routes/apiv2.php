@@ -12,7 +12,10 @@
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
 Route::post('/captcha/sms', 'CaptchaController@sentSms');
-
+// 手机短信注册
+Route::post('/register/sms', 'RegisterController@smsHandler');
+// 密码重置
+Route::post('/password/reset', 'PasswordController@reset');
 // 密码登录
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
@@ -101,5 +104,10 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
         Route::get('credit1Records', 'MemberController@credit1Records');
+        Route::get('profile', 'MemberController@profile');
+        Route::post('profile', 'MemberController@profileUpdate');
     });
+
+    // 上传图片
+    Route::post('/upload/image', 'UploadController@image');
 });

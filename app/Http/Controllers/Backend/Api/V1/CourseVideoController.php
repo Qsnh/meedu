@@ -12,11 +12,14 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use Overtrue\Pinyin\Pinyin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
+use App\Services\Course\Models\CourseChapter;
 use App\Http\Requests\Backend\CourseVideoRequest;
 use App\Services\Member\Models\UserVideoWatchRecord;
 
@@ -24,6 +27,7 @@ class CourseVideoController extends BaseController
 {
     public function index(Request $request)
     {
+        $id = $request->input('id');
         $keywords = $request->input('keywords', '');
         $courseId = $request->input('course_id');
         $sort = $request->input('sort', 'created_at');
@@ -31,6 +35,9 @@ class CourseVideoController extends BaseController
 
         $videos = Video::query()
             ->with(['course', 'chapter'])
+            ->when($id, function ($query) use ($id) {
+                $query->where('id', $id);
+            })
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('title', 'like', "{$keywords}%");
             })
@@ -263,5 +270,92 @@ class CourseVideoController extends BaseController
             'users' => $users,
             'videos' => $videos,
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $data = $request->input('data');
+        if (!$data) {
+            return $this->error('数据为空');
+        }
+
+        $courseNameArr = array_column($data, 0);
+        $courses = Course::query()->whereIn('title', $courseNameArr)->select(['id', 'title'])->get()->pluck('id', 'title');
+
+        $rows = [];
+        $now = Carbon::now();
+        $py = new Pinyin();
+        foreach ($data as $index => $item) {
+            $line = $index + 2;
+            $courseName = $item[0] ?? '';
+            if (!$courseName) {
+                return $this->error(sprintf('第%d行课程名为空', $line));
+            }
+            $courseId = $courses[$courseName] ?? 0;
+            if (!$courseId) {
+                return $this->error(sprintf('第%d行课程不存在', $line));
+            }
+
+            $chapterName = $item[1] ?? '';
+            $chapterId = 0;
+            if ($chapterName) {
+                $chapter = CourseChapter::query()->where('course_id', $courseId)->where('title', $chapterName)->select(['id'])->first();
+                if (!$chapter) {
+                    $chapter = CourseChapter::create(['title' => $chapterName, 'course_id' => $courseId]);
+                }
+                $chapterId = $chapter['id'];
+            }
+
+            $videoName = $item[2] ?? '';
+            if (!$videoName) {
+                return $this->error(sprintf('第%d视频名为空', $line));
+            }
+
+            $duration = (int)($item[3] ?? 0);
+            $tencentVideoId = $item[4] ?? '';
+            $url = $item[5] ?? '';
+            $aliyunVideoId = $item[6] ?? '';
+            $charge = (int)($item[7] ?? 0);
+            $shortDescription = $item[8] ?? '';
+
+            // 上架时间
+            $publishedAt = $item[9] ?? '';
+            $publishedAt = $publishedAt ? Carbon::parse($publishedAt) : $now;
+
+            $seoKeywords = $item[10] ?? '';
+            $seoDescription = $item[11] ?? '';
+
+            // 试看秒数
+            $freeSeconds = (int)($item[12] ?? 0);
+
+            $rows[] = [
+                'user_id' => 0,
+                'course_id' => $courseId,
+                'chapter_id' => $chapterId,
+                'title' => $videoName,
+                'slug' => implode('-', $py->convert($videoName)),
+                'url' => $url,
+                'short_description' => $shortDescription,
+                'seo_keywords' => $seoKeywords,
+                'seo_description' => $seoDescription,
+                'published_at' => $publishedAt,
+                'charge' => $charge,
+                'aliyun_video_id' => $aliyunVideoId,
+                'tencent_video_id' => $tencentVideoId,
+                'free_seconds' => $freeSeconds,
+                'duration' => $duration,
+                'is_show' => Video::IS_SHOW_YES,
+                'original_desc' => $shortDescription,
+                'render_desc' => $shortDescription,
+            ];
+        }
+
+        DB::transaction(function () use ($rows) {
+            foreach (array_chunk($rows, 100) as $item) {
+                Video::insert($item);
+            }
+        });
+
+        return $this->success();
     }
 }

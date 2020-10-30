@@ -378,4 +378,15 @@ class AjaxController extends BaseController
 
         return $this->success();
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function profileUpdate(Request $request)
+    {
+        $data = $request->all();
+        $this->userService->saveProfile($this->id(), $data);
+        return $this->success();
+    }
 }

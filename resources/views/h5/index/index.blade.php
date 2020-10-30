@@ -4,6 +4,9 @@
     <link crossorigin="anonymous" integrity="sha384-K6LrEaceM4QP87RzJ7R4CDXcFN4cFW/A5Q7/fEp/92c2WV+woVw9S9zKDO23sNS+"
           href="https://lib.baomitu.com/Swiper/4.5.0/css/swiper.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: white;
+        }
         .swiper-pagination {
             bottom: 0 !important;
         }
@@ -36,12 +39,11 @@
         </div>
     @endforeach
 
-    <footer class="index-footer">
-        <p>Powered By <a href="https://meedu.vip">MeEdu</a></p>
-        <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://www.beian.miit.gov.cn"
-                                                       target="_blank">{{$gConfig['system']['icp']}}</a></p>
-    </footer>
+    @include('h5.components.tabbar', ['active' => 'index'])
 
+@endsection
+
+@section('js')
     <script crossorigin="anonymous" integrity="sha384-fOtis9P3S4B2asdoye1/YBpXMaRmuXu925gZhfQA/gnU3dLnftD8zvpk/lhP0YSG"
             src="https://lib.baomitu.com/Swiper/4.5.0/js/swiper.min.js"></script>
     <script>
@@ -54,5 +56,4 @@
             },
         });
     </script>
-
 @endsection
