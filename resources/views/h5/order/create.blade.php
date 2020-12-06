@@ -30,7 +30,7 @@
             </div>
             <div class="promo-code">
                 <div class="title">
-                    邀请码
+                    邀请码/优惠码
                     <small>（选填）</small>
                 </div>
                 <div class="input">

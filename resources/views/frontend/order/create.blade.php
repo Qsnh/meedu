@@ -29,11 +29,11 @@
                         </div>
                         <div class="promo-code">
                             <div class="promo-code-title">
-                                邀请码
+                                邀请码/优惠码
                             </div>
                             <div class="promo-code-input">
                                 <input type="hidden" name="promo_code_id" value="">
-                                <input type="text" placeholder="邀请码" name="promo_code" class="form-control">
+                                <input type="text" placeholder="邀请码/优惠码" name="promo_code" class="form-control">
                                 <button type="button" class="promo-code-check-button"
                                         data-url="{{route('ajax.promo_code.check')}}">验证
                                 </button>
