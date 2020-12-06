@@ -482,7 +482,7 @@ $(function () {
         $('.select-payment-model').show();
     }).on('click', '.close-select-payment-model', function () {
         $('.select-payment-model').hide();
-    }).on('click', '.videos-count', function () {
+    }).on('click', '.course-chapter-title', function () {
         let dom = $(this).attr('data-dom');
         $('.' + dom).toggle();
         let iconDom = $(this).find('i');

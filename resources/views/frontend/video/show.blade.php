@@ -130,11 +130,12 @@
                             @foreach($chapters as $chapterIndex => $chapter)
                                 @if($videosBox = $videos[$chapter['id']] ?? [])@endif
                                 @if($videosBoxIds = array_column($videosBox, 'id'))@endif
-                                <div class="course-chapter-title">
+                                <div class="course-chapter-title" data-dom="course-videos-box-{{$chapter['id']}}">
                                     {{$chapter['title']}}
-                                    <small class="videos-count"
-                                           data-dom="course-videos-box-{{$chapter['id']}}">{{count($videosBox)}}节 <i
-                                                class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i></small>
+                                    <small class="videos-count">
+                                        {{count($videosBox)}}节
+                                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                                    </small>
                                 </div>
                                 @foreach($videosBox as $videoItem)
                                     <div class="course-videos-box {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} course-videos-box-{{$chapter['id']}}">
