@@ -31,7 +31,7 @@
                 <div class="create-promo-code-button-box">
                     <form action="" method="post">
                         @csrf
-                        <button type="submit" class="create-promo-code-button">生成我的专属优惠码</button>
+                        <button type="submit" class="create-promo-code-button">生成我的专属邀请码</button>
                     </form>
                 </div>
             @endif
