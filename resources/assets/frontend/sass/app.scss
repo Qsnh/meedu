@@ -287,12 +287,10 @@ footer.footer-box {
     }
 
     .navbar-brand {
-      margin-left: 2.5%;
-      margin-right: 0;
+      margin-right: 60px;
     }
 
     .navbar-nav {
-      margin-left: 4.1%;
       width: auto;
       height: 71px;
       float: left;
@@ -303,21 +301,17 @@ footer.footer-box {
         height: 71px;
         line-height: 71px;
         float: left;
-        margin-right: 34px;
+        margin-right: 30px;
 
         a.nav-link {
           font-size: 16px;
           color: #333333;
           padding: 0 8px;
-        }
 
-        a.nav-link.active {
-          color: $primary;
-          font-weight: 800;
-        }
-
-        a.nav-link:hover {
-          color: $primary;
+          &:hover, &.active {
+            color: $primary;
+            font-weight: 600;
+          }
         }
 
         // 子元素
@@ -389,46 +383,16 @@ footer.footer-box {
       padding-bottom: 13px;
 
       p {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
 
-    .role-vip-button:hover, .message-button:hover, .user-avatar-button:hover, .role-vip-button.active, .message-button.active {
+    .role-vip-button:hover, .user-avatar-button:hover, .role-vip-button.active {
       opacity: .6;
       text-decoration: none;
     }
 
-    .message-button {
-      position: relative;
-      width: 80px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 400;
-      color: #999999;
-      padding-top: 13px;
-      padding-bottom: 13px;
-
-      p {
-        margin-bottom: 0;
-      }
-
-      .message-count {
-        position: absolute;
-        top: 13px;
-        right: 13px;
-        z-index: 11;
-        border-radius: 6px;
-        background-color: #FF4040;
-        color: #ffffff;
-        font-size: 10px;
-        padding-left: 4px;
-        padding-right: 4px;
-      }
-    }
-
     .user-avatar {
-      margin-right: 2.6%;
-
       .user-avatar-button {
         display: inline-block;
         width: 80px;
@@ -443,8 +407,8 @@ footer.footer-box {
       }
 
       .dropdown-menu {
-        padding-top: 0px;
-        padding-bottom: 0px;
+        padding-top: 0;
+        padding-bottom: 0;
         min-width: 126px;
         left: -63px;
 
@@ -454,7 +418,7 @@ footer.footer-box {
           line-height: 48px;
           font-size: 14px;
           font-weight: 400;
-          padding: 0px 17px !important;
+          padding: 0 17px !important;
 
           &:hover {
             background-color: rgba(11, 118, 222, .1);

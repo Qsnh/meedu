@@ -24,7 +24,7 @@ class MemberInviteCodePageTest extends TestCase
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
             ->assertResponseStatus(200)
-            ->see('生成我的专属优惠码');
+            ->see('生成我的专属邀请码');
     }
 
     public function test_member_promo_code_submit()
@@ -35,8 +35,8 @@ class MemberInviteCodePageTest extends TestCase
         ]);
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
-            ->press('生成我的专属优惠码')
-            ->see('使用该优惠码的用户将获得');
+            ->press('生成我的专属邀请码')
+            ->see('使用该邀请码的用户将获得');
     }
 
     public function test_member_promo_code_submit_with_free_user()
@@ -47,14 +47,14 @@ class MemberInviteCodePageTest extends TestCase
         ]);
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
-            ->press('生成我的专属优惠码')
-            ->see('生成我的专属优惠码');
+            ->press('生成我的专属邀请码')
+            ->see('生成我的专属邀请码');
 
         config(['meedu.member.invite.free_user_enabled' => 1]);
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
-            ->press('生成我的专属优惠码')
-            ->see('使用该优惠码的用户将获得');
+            ->press('生成我的专属邀请码')
+            ->see('使用该邀请码的用户将获得');
     }
 
     public function test_member_promo_code_with_exists_promo_code()

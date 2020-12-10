@@ -22,7 +22,7 @@ $(function () {
                 let total = $('.total-price').attr('data-total');
                 let m = total - discount;
                 m = m > 0 ? m : 0;
-                $('.promo-code-info').text('此邀请码有效，已抵扣' + discount + '元').show();
+                $('.promo-code-info').text('此码有效，已抵扣' + discount + '元').show();
                 $('.promo-code-price-text').text(discount);
                 $('.total-price').text(m);
                 $('input[name="promo_code_id"]').val(res.data.id);
