@@ -14,17 +14,28 @@ namespace App\Services\Member\Services;
 use Carbon\Carbon;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
+use App\Services\Course\Services\CourseService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
 
 class DeliverService implements DeliverServiceInterface
 {
+    /**
+     * @var UserService
+     */
     protected $userService;
+
+    /**
+     * @var RoleService
+     */
     protected $roleService;
 
-    public function __construct(UserServiceInterface $userService, RoleServiceInterface $roleService)
-    {
+    public function __construct(
+        UserServiceInterface $userService,
+        RoleServiceInterface $roleService
+    ) {
         $this->userService = $userService;
         $this->roleService = $roleService;
     }
@@ -44,6 +55,13 @@ class DeliverService implements DeliverServiceInterface
             'charge' => $charge,
             'created_at' => Carbon::now(),
         ]);
+
+        // 课程订阅数目统计
+        /**
+         * @var CourseService $courseService
+         */
+        $courseService = app()->make(CourseServiceInterface::class);
+        $courseService->userCountInc($courseId, 1);
     }
 
     /**

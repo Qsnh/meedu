@@ -186,7 +186,7 @@ class VideoController extends BaseController
         if ($this->check()) {
             $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
             // 记录观看人数
-            $isWatch && $this->courseService->recordUserCount($this->id(), $course['id']);
+            $isWatch && $this->courseService->createCourseUserRecord($this->id(), $course['id']);
 
             // 当前用户视频观看进度记录
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);

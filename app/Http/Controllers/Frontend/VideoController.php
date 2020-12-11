@@ -121,7 +121,7 @@ class VideoController extends FrontendController
 
         if ($this->check()) {
             $canSeeVideo = $this->businessState->canSeeVideo($this->user(), $video['course'], $video);
-            $canSeeVideo && $this->courseService->recordUserCount($this->id(), $course['id']);
+            $canSeeVideo && $this->courseService->createCourseUserRecord($this->id(), $course['id']);
 
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
