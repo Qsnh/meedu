@@ -23,18 +23,18 @@
                                 @if($item['children'])
                                     <li class="nav-item">
                                         <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
-                                           href="{{$item['url']}}">{{$item['name']}}</a>
+                                           href="{{$item['url']}}" {!! $item['blank'] ? 'target="_blank"' : '' !!}>{{$item['name']}}</a>
                                         <div class="nav-children">
                                             @foreach($item['children'] as $childrenItem)
                                                 <a class="children-nav-item {{menu_active(explode(',', $childrenItem['active_routes'] ?? ''))}}"
-                                                   href="{{$childrenItem['url']}}">{{$childrenItem['name']}}</a>
+                                                   href="{{$childrenItem['url']}}" {!! $childrenItem['blank'] ? 'target="_blank"' : '' !!}>{{$childrenItem['name']}}</a>
                                             @endforeach
                                         </div>
                                     </li>
                                 @else
                                     <li class="nav-item">
                                         <a class="nav-link {{menu_active(explode(',', $item['active_routes'] ?? ''))}}"
-                                           href="{{$item['url']}}">{{$item['name']}}</a>
+                                           href="{{$item['url']}}" {!! $item['blank'] ? 'target="_blank"' : '' !!}>{{$item['name']}}</a>
                                     </li>
                                 @endif
                             @endforeach

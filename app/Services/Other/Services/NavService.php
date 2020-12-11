@@ -24,7 +24,7 @@ class NavService implements NavServiceInterface
     {
         return Nav::query()
             ->with(['children'])
-            ->select(['id', 'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id',])
+            ->select(['id', 'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id', 'blank'])
             ->when($platform, function ($query) use ($platform) {
                 $query->where('platform', $platform);
             })

@@ -57,6 +57,7 @@ class NavRequest extends BaseRequest
             'name' => $this->input('name'),
             'url' => $this->input('url'),
             'active_routes' => $this->input('active_routes', '') ?: '',
+            'blank' => (int)$this->input('blank'),
         ];
     }
 }
