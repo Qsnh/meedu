@@ -12,9 +12,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use App\Bus\AuthBus;
 use App\Bus\VideoBus;
 use Illuminate\Http\Request;
-use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
@@ -180,11 +180,7 @@ class AjaxController extends BaseController
         ]);
     }
 
-    /**
-     * @param LoginPasswordRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function passwordLogin(LoginPasswordRequest $request)
+    public function passwordLogin(LoginPasswordRequest $request, AuthBus $bus)
     {
         [
             'mobile' => $mobile,
@@ -197,31 +193,34 @@ class AjaxController extends BaseController
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
-        Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
+        $bus->webLogin(
+            $user['id'],
+            $request->has('remember'),
+            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
+        );
 
         return $this->data(['redirect_url' => $this->redirectTo()]);
     }
 
-    /**
-     * @param MobileLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function mobileLogin(MobileLoginRequest $request)
+    public function mobileLogin(MobileLoginRequest $request, AuthBus $bus)
     {
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
-            // 直接注册
+            // 手机号不存在=>直接注册
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
+
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
-        Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
+        $bus->webLogin(
+            $user['id'],
+            $request->has('remember'),
+            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
+        );
 
         return $this->data(['redirect_url' => $this->redirectTo()]);
     }
@@ -266,11 +265,6 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    /**
-     * @param MobileBindRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ServiceException
-     */
     public function mobileBind(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();

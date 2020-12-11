@@ -11,10 +11,9 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Carbon\Carbon;
+use App\Bus\AuthBus;
 use EasyWeChat\Factory;
 use Illuminate\Http\Request;
-use App\Events\UserLoginEvent;
 use App\Constant\ApiV2Constant;
 use App\Constant\CacheConstant;
 use App\Constant\FrontendConstant;
@@ -334,13 +333,12 @@ class LoginController extends BaseController
             throw new ServiceException(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
 
-        $loginAt = Carbon::now();
-        $token = Auth::guard($this->guard)->claims(['last_login_at' => $loginAt->timestamp])->tokenById($user['id']);
+        /**
+         * @var AuthBus $authBus
+         */
+        $authBus = app()->make(AuthBus::class);
 
-        // 登录事件
-        event(new UserLoginEvent($user['id'], get_platform(), $loginAt->toDateTimeString()));
-
-        return $token;
+        return $authBus->tokenLogin($user['id'], get_platform());
     }
 
     /**
