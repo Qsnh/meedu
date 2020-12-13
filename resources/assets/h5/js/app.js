@@ -263,6 +263,7 @@ $(function () {
             $.ajax({
                 url: url,
                 type: 'POST',
+                dataType: 'json',
                 cache: false,
                 data: formData,
                 processData: false,
@@ -282,7 +283,7 @@ $(function () {
                     }
                 },
                 error: () => {
-                    flasError('上传图片出错')
+                    flashError('上传图片出错')
                 }
             })
         });
