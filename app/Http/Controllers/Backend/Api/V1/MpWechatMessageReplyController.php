@@ -58,7 +58,15 @@ class MpWechatMessageReplyController extends BaseController
 
     public function store(MpWechatMessageReplyRequest $request)
     {
-        MpWechatMessageReply::create($request->filldata());
+        $data = $request->filldata();
+        if ($data['type'] === MpWechatMessageReply::TYPE_TEXT && $data['rule']) {
+            try {
+                preg_match('#' . $data['rule'] . '#', 'test');
+            } catch (\Exception $e) {
+                return $this->error('规则不合格');
+            }
+        }
+        MpWechatMessageReply::create($data);
         return $this->success();
     }
 
@@ -72,8 +80,17 @@ class MpWechatMessageReplyController extends BaseController
 
     public function update(MpWechatMessageReplyRequest $request, $id)
     {
+        $data = $request->filldata();
+        if ($data['type'] === MpWechatMessageReply::TYPE_TEXT && $data['rule']) {
+            try {
+                preg_match('#' . $data['rule'] . '#', 'test');
+            } catch (\Exception $e) {
+                return $this->error('规则不合格');
+            }
+        }
+
         $message = MpWechatMessageReply::query()->where('id', $id)->firstOrFail();
-        $message->fill($request->filldata())->save();
+        $message->fill($data)->save();
         return $this->success();
     }
 
