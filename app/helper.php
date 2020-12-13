@@ -60,7 +60,6 @@ if (!function_exists('exception_record')) {
         $request = request();
         $data = [
             'message' => $exception->getMessage(),
-            'file' => $exception->getFile(),
             'code' => $exception->getCode(),
             'line' => $exception->getLine(),
             'params' => $request->all(),
