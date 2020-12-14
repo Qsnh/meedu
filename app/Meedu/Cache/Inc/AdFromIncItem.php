@@ -22,7 +22,7 @@ class AdFromIncItem extends IncItem
     protected $adFrom;
 
     protected $inc = 1;
-    protected $limit = 100;
+    protected $limit = 20;
 
     public function __construct(array $adFrom)
     {

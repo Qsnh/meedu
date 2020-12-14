@@ -59,7 +59,7 @@ class AdFromController extends BaseController
         $ad = AdFrom::findOrFail($id);
         $startDate = Carbon::parse($request->input('start_date', Carbon::now()->subMonths(1)));
         $endDate = Carbon::parse($request->input('end_date', Carbon::now()));
-        $records = $ad->numbers()->select(['day', 'num'])->whereBetween('day', [$startDate->timestamp, $endDate->timestamp])->get();
+        $records = $ad->numbers()->select(['day', 'num'])->whereBetween('day', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])->get();
         $data = [];
         while ($startDate->lt($endDate)) {
             $data[$startDate->format('Y-m-d')] = 0;
