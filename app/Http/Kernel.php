@@ -13,6 +13,7 @@ namespace App\Http;
 
 use Fruitcake\Cors\HandleCors;
 use App\Http\Middleware\GlobalShareMiddleware;
+use App\Http\Middleware\WechatLoginMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
 use App\Http\Middleware\PromoCodeSaveMiddleware;
 use App\Http\Middleware\LoginStatusCheckMiddleware;
@@ -100,5 +101,7 @@ class Kernel extends HttpKernel
         'login.status.check' => LoginStatusCheckMiddleware::class,
         // api接口的状态登录检测
         'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,
+        // 微信公众号授权登录[微信浏览器里]
+        'wechat.login' => WechatLoginMiddleware::class,
     ];
 }

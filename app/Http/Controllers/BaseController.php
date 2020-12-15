@@ -26,6 +26,11 @@ class BaseController extends Controller
         return Auth::id();
     }
 
+    public function check()
+    {
+        return Auth::check();
+    }
+
     /**
      * @return mixed
      */

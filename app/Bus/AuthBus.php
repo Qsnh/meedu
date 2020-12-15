@@ -47,13 +47,18 @@ class AuthBus
         return $token;
     }
 
-    public function recordSocialiteTokenWay($bool)
+    public function recordSocialiteTokenWay()
     {
-        session([self::SOCIALITE_TOKEN_WAY_KEY => $bool]);
+        session([self::SOCIALITE_TOKEN_WAY_KEY => request()->has('use_token')]);
     }
 
-    public function recordSocialitePlatform($platform)
+    public function recordSocialitePlatform()
     {
+        $platform = request()->input('platform');
+        if (!$platform) {
+            $platform = is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC;
+        }
+
         session([self::SOCIALITE_PLATFORM => $platform]);
     }
 

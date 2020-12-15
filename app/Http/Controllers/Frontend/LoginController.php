@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Bus\AuthBus;
+use App\Meedu\Wechat;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
@@ -100,33 +101,42 @@ class LoginController extends BaseController
 
     public function socialLogin(Request $request, AuthBus $bus, $app)
     {
+        // 登录后的跳转地址
         $redirect = $request->input('redirect');
         $redirect && $bus->recordSocialiteRedirectTo($redirect);
+
+        // 指定token登录
+        $bus->recordSocialiteTokenWay();
+
+        // 指定登录的平台[pc,h5,android,ios等]
+        $bus->recordSocialitePlatform();
 
         return Socialite::driver($app)->redirect();
     }
 
-    public function socialiteLoginCallback(Request $request, AuthBus $bus, $app)
+    public function socialiteLoginCallback(AuthBus $bus, $app)
     {
-        $user = Socialite::driver($app)->user();
-        $appId = $user->getId();
+        if ($app === 'wechat') {
+            // 微信公众号授权登录
+            $user = Wechat::getInstance()->oauth->user();
+            $appId = $user->getId();
+            $user = [
+                'id' => $user->getId(),
+                'nickname' => $user->getNickname(),
+                'avatar' => $user->getAvatar(),
+            ];
+        } else {
+            // 其它社交登录
+            $user = Socialite::driver($app)->user();
+            $appId = $user->getId();
+        }
 
         // 已登录的情况下，执行社交账号的绑定操作
-        if (Auth::check()) {
-            $this->socialiteService->bindApp(Auth::id(), $app, $appId, (array)$user);
+        if ($this->check()) {
+            $this->socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
             flash(__('socialite bind success'), 'success');
             return redirect('member');
         }
-
-        // 指定token登录
-        $tokenWay = $request->has('use_token');
-        $bus->recordSocialiteTokenWay($tokenWay);
-        // 指定登录的平台[pc,h5,android,ios等]
-        $platform = $request->input('platform');
-        if (!$platform) {
-            $platform = is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC;
-        }
-        $bus->recordSocialitePlatform($platform);
 
         // 读取当前社交账号绑定的用户id
         $userId = $this->socialiteService->getBindUserId($app, $appId);
@@ -139,7 +149,7 @@ class LoginController extends BaseController
                 return back();
             }
 
-            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId, $platform, $tokenWay)));
+            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }
 
         // 接下来，当前社交账号是一个全新的账号
@@ -155,7 +165,7 @@ class LoginController extends BaseController
         if (!$mustBindMobileStatus) {
             // 未开启手机号的强制绑定
             $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
-            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId, $platform, $tokenWay)));
+            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }
 
         // 缓存当前的社交登录用户信息
