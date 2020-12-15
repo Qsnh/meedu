@@ -593,7 +593,7 @@ if (!function_exists('save_image')) {
         $path = $file->store($configService->getImageStoragePath(), compact('disk'));
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
         $data = compact('path', 'url', 'disk');
-        $data['encryptData'] = $encryptData = encrypt(json_encode($data));
+        $data['encryptData'] = encrypt(json_encode($data));
         return $data;
     }
 }
