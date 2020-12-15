@@ -99,10 +99,6 @@
                 <div class="course-menu-box mt-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
                         <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}"
-                           data-page="video-show-page-desc" class="video-show-page-item">视频介绍</a>
-                    </div>
-                    <div class="menu-item {{$scene === 'chapter' ? 'active' : ''}}">
-                        <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}?scene=chapter"
                            data-page="video-show-page-chapter" class="video-show-page-item">课程目录</a>
                     </div>
                     <div class="menu-item {{$scene === 'comment' ? 'active' : ''}}">
@@ -115,14 +111,7 @@
     </div>
 
     <div class="container-fluid">
-        <div class="container {{!$scene ? '' : 'display-none'}} video-show-page-desc">
-            <div class="row">
-                <div class="col-12">
-                    {!! $video['render_desc'] !!}
-                </div>
-            </div>
-        </div>
-        <div class="container {{$scene === 'chapter' ? '' : 'display-none'}} video-show-page-chapter">
+        <div class="container {{!$scene ? '' : 'display-none'}} video-show-page-chapter">
             <div class="row">
                 <div class="col-12">
                     <div class="course-chapter">

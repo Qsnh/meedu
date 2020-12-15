@@ -30,7 +30,7 @@ class CourseVideoController extends BaseController
         $id = $request->input('id');
         $keywords = $request->input('keywords', '');
         $courseId = $request->input('course_id');
-        $sort = $request->input('sort', 'created_at');
+        $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
         $videos = Video::query()
@@ -233,7 +233,7 @@ class CourseVideoController extends BaseController
         if ($export) {
             $exportData = [
                 [
-                    'CID', 'VID', 'UID', '课程', '视频', '用户', '标签',
+                    '课程ID', '视频ID', '用户ID', '课程', '视频', '用户', '标签',
                     '时长', '已观看', '开始时间', '看完时间', '看完',
                 ]
             ];
@@ -316,17 +316,16 @@ class CourseVideoController extends BaseController
             $url = $item[5] ?? '';
             $aliyunVideoId = $item[6] ?? '';
             $charge = (int)($item[7] ?? 0);
-            $shortDescription = $item[8] ?? '';
 
             // 上架时间
-            $publishedAt = $item[9] ?? '';
+            $publishedAt = $item[8] ?? '';
             $publishedAt = $publishedAt ? Carbon::parse($publishedAt) : $now;
 
-            $seoKeywords = $item[10] ?? '';
-            $seoDescription = $item[11] ?? '';
+            $seoKeywords = $item[9] ?? '';
+            $seoDescription = $item[10] ?? '';
 
             // 试看秒数
-            $freeSeconds = (int)($item[12] ?? 0);
+            $freeSeconds = (int)($item[11] ?? 0);
 
             $rows[] = [
                 'user_id' => 0,
@@ -335,7 +334,7 @@ class CourseVideoController extends BaseController
                 'title' => $videoName,
                 'slug' => implode('-', $py->convert($videoName)),
                 'url' => $url,
-                'short_description' => $shortDescription,
+                'short_description' => '',
                 'seo_keywords' => $seoKeywords,
                 'seo_description' => $seoDescription,
                 'published_at' => $publishedAt,
@@ -345,8 +344,8 @@ class CourseVideoController extends BaseController
                 'free_seconds' => $freeSeconds,
                 'duration' => $duration,
                 'is_show' => Video::IS_SHOW_YES,
-                'original_desc' => $shortDescription,
-                'render_desc' => $shortDescription,
+                'original_desc' => '',
+                'render_desc' => '',
             ];
         }
 
