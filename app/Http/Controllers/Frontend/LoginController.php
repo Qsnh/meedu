@@ -15,6 +15,7 @@ use App\Bus\AuthBus;
 use App\Meedu\Wechat;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use Laravel\Socialite\Facades\Socialite;
@@ -133,9 +134,18 @@ class LoginController extends BaseController
 
         // 已登录的情况下，执行社交账号的绑定操作
         if ($this->check()) {
-            $this->socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
-            flash(__('socialite bind success'), 'success');
-            return redirect('member');
+            // 经过测试，已登录下访问绑定的url将会陷入重定向死循环
+            // 所以这里捕获异常做单独处理
+            try {
+                $this->socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
+                flash(__('socialite bind success'), 'success');
+                return redirect('member');
+            } catch (ServiceException $e) {
+                flash($e->getMessage());
+                return redirect(route('member'));
+            } catch (\Exception $e) {
+                abort(500);
+            }
         }
 
         // 读取当前社交账号绑定的用户id
@@ -148,7 +158,6 @@ class LoginController extends BaseController
                 flash(__('current user was locked,please contact administrator'));
                 return back();
             }
-
             return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }
 
