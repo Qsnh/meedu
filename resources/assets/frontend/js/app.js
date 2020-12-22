@@ -365,6 +365,13 @@ $(function () {
             }
         }, 'json');
     }).on('click', '.login-auth', function () {
+        let pathname = window.location.pathname;
+        if (pathname === '/login') {
+            return false;
+        }
+        if (pathname === '/register' || pathname === '/password/reset') {
+            return true;
+        }
         let loginStatus = parseInt($(this).attr('data-login'));
         if (loginStatus === 0) {
             showAuthBox('login-box');
@@ -433,7 +440,7 @@ $(function () {
                 let total = $('.total-price-val').attr('data-total');
                 let m = total - discount;
                 m = m > 0 ? m : 0;
-                $('.promo-code-info').text('此邀请码有效，已抵扣' + discount + '元').show();
+                $('.promo-code-info').text('此码有效，已抵扣' + discount + '元').show();
                 $('.promo-code-price').text(discount);
                 $('.total-price-val').text(m);
                 $('input[name="promo_code_id"]').val(res.data.id);
@@ -482,7 +489,7 @@ $(function () {
         $('.select-payment-model').show();
     }).on('click', '.close-select-payment-model', function () {
         $('.select-payment-model').hide();
-    }).on('click', '.videos-count', function () {
+    }).on('click', '.course-chapter-title', function () {
         let dom = $(this).attr('data-dom');
         $('.' + dom).toggle();
         let iconDom = $(this).find('i');

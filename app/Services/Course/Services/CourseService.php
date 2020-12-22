@@ -190,14 +190,19 @@ class CourseService implements CourseServiceInterface
      * @param int $userId
      * @param int $courseId
      */
-    public function recordUserCount(int $userId, int $courseId): void
+    public function createCourseUserRecord(int $userId, int $courseId): void
     {
-        $userCourseRecord = CourseUserRecord::whereUserId($userId)->whereCourseId($courseId)->exists();
+        $userCourseRecord = CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->exists();
         if ($userCourseRecord) {
             return;
         }
-        CourseUserRecord::create(['user_id' => $userId, 'course_id' => $courseId]);
-        Course::whereId($courseId)->increment('user_count', 1);
+        CourseUserRecord::create([
+            'user_id' => $userId,
+            'course_id' => $courseId,
+        ]);
     }
 
     /**
@@ -277,5 +282,14 @@ class CourseService implements CourseServiceInterface
     public function getAttach(int $id): array
     {
         return CourseAttach::query()->where('id', $id)->firstOrFail()->toArray();
+    }
+
+    /**
+     * @param int $id
+     * @param int $num
+     */
+    public function userCountInc(int $id, int $num): void
+    {
+        Course::query()->where('id', $id)->increment('user_count', $num);
     }
 }

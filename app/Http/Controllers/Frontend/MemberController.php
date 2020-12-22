@@ -11,8 +11,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Bus\AuthBus;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -140,10 +142,27 @@ class MemberController extends FrontendController
      *
      * @throws \App\Exceptions\ServiceException
      */
-    public function mobileBindHandler(MobileBindRequest $request)
+    public function mobileBindHandler(MobileBindRequest $request, AuthBus $bus)
     {
         ['mobile' => $mobile] = $request->filldata();
-        $this->userService->bindMobile($mobile);
+
+        if ($this->check()) {
+            // 已登录用户
+            $this->userService->bindMobile($mobile);
+        } elseif (session()->has(FrontendConstant::SOCIALITE_USER_INFO_KEY)) {
+            // 社交登录用户需要强制绑定手机号
+            // 当前状态下是没有登录的
+            // 需要绑定指定的手机号之后才能做自动登录
+            $socialiteApp = session(FrontendConstant::SOCIALITE_USER_INFO_KEY . '.app');
+            $socialiteAppId = session(FrontendConstant::SOCIALITE_USER_INFO_KEY . '.app_id');
+            $socialiteUser = session(FrontendConstant::SOCIALITE_USER_INFO_KEY . '.user');
+
+            $userId = $bus->socialiteMobileBind($socialiteApp, $socialiteAppId, $socialiteUser, $mobile);
+
+            // 自动登录
+            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
+        }
+
         flash(__('success'), 'success');
 
         return redirect(route('member'));

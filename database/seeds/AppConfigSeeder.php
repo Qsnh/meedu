@@ -1128,6 +1128,17 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.member.register.vip.days',
                 'value' => 0,
             ],
+
+            // 高德地图配置
+            [
+                'group' => '高德地图',
+                'name' => '应用Key',
+                'field_type' => 'text',
+                'sort' => 1,
+                'key' => 'meedu.services.imap.key',
+                'value' => '',
+                'is_private' => 1,
+            ],
         ];
 
         $localConfig = [];

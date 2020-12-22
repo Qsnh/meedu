@@ -60,7 +60,6 @@ if (!function_exists('exception_record')) {
         $request = request();
         $data = [
             'message' => $exception->getMessage(),
-            'file' => $exception->getFile(),
             'code' => $exception->getCode(),
             'line' => $exception->getLine(),
             'params' => $request->all(),
@@ -594,7 +593,7 @@ if (!function_exists('save_image')) {
         $path = $file->store($configService->getImageStoragePath(), compact('disk'));
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
         $data = compact('path', 'url', 'disk');
-        $data['encryptData'] = $encryptData = encrypt(json_encode($data));
+        $data['encryptData'] = encrypt(json_encode($data));
         return $data;
     }
 }

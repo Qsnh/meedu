@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('h5.components.topbar', ['title' => '绑定手机号', 'back' => route('index')])
+    @include('h5.components.topbar', ['title' => '绑定手机号'])
 
     <div class="box">
         <div class="login-title">

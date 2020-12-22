@@ -19,6 +19,7 @@ class Nav extends Model
 
     protected $fillable = [
         'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id',
+        'blank',
     ];
 
     public function children()

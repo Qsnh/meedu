@@ -11,15 +11,19 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Socialite;
+use App\Bus\AuthBus;
+use App\Meedu\Wechat;
 use Illuminate\Http\Request;
-use App\Events\UserLoginEvent;
 use App\Constant\FrontendConstant;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\LoginPasswordRequest;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
@@ -47,10 +51,6 @@ class LoginController extends BaseController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function showLoginPage(Request $request)
     {
         // 主动配置redirect
@@ -74,17 +74,14 @@ class LoginController extends BaseController
         return v('frontend.auth.login', compact('title'));
     }
 
-    /**
-     * @param LoginPasswordRequest $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function passwordLoginHandler(LoginPasswordRequest $request)
+    public function passwordLoginHandler(LoginPasswordRequest $request, AuthBus $bus)
     {
         [
             'mobile' => $mobile,
             'password' => $password,
         ] = $request->filldata();
         $user = $this->userService->passwordLogin($mobile, $password);
+
         if (!$user) {
             flash(__('mobile not exists or password error'), 'error');
             return back();
@@ -93,81 +90,109 @@ class LoginController extends BaseController
             flash(__('current user was locked,please contact administrator'));
             return back();
         }
-        Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
+        $bus->webLogin(
+            $user['id'],
+            $request->has('remember'),
+            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
+        );
 
-        return redirect($this->redirectTo());
+        return redirect($bus->redirectTo());
     }
 
-    /**
-     * 社交登录
-     *
-     * @param Request $request
-     * @param string $app
-     */
-    public function socialLogin(Request $request, $app)
+    public function socialLogin(Request $request, AuthBus $bus, $app)
     {
+        // 登录后的跳转地址
         $redirect = $request->input('redirect');
-        $redirect && session(['socialite_login_redirect' => $redirect]);
+        $redirect && $bus->recordSocialiteRedirectTo($redirect);
 
-        // 开始跳转
+        // 指定token登录
+        $bus->recordSocialiteTokenWay();
+
+        // 指定登录的平台[pc,h5,android,ios等]
+        $bus->recordSocialitePlatform();
+
         return Socialite::driver($app)->redirect();
     }
 
-    public function socialiteLoginCallback(Request $request, $app)
+    public function socialiteLoginCallback(AuthBus $bus, $app)
     {
-        $user = Socialite::driver($app)->user();
-        $appId = $user->getId();
-        if (Auth::check()) {
-            $this->socialiteService->bindApp(Auth::id(), $app, $appId, (array)$user);
-            flash(__('socialite bind success'), 'success');
-            return redirect('member');
+        if ($app === 'wechat') {
+            // 微信公众号授权登录
+            $user = Wechat::getInstance()->oauth->user();
+            $appId = $user->getId();
+            $user = [
+                'id' => $user->getId(),
+                'nickname' => $user->getNickname(),
+                'avatar' => $user->getAvatar(),
+            ];
+        } else {
+            // 其它社交登录
+            $user = Socialite::driver($app)->user();
+            $appId = $user->getId();
         }
+
+        // 已登录的情况下，执行社交账号的绑定操作
+        if ($this->check()) {
+            // 经过测试，已登录下访问绑定的url将会陷入重定向死循环
+            // 所以这里捕获异常做单独处理
+            try {
+                $this->socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
+                flash(__('socialite bind success'), 'success');
+                return redirect('member');
+            } catch (ServiceException $e) {
+                flash($e->getMessage());
+                return redirect(route('member'));
+            } catch (\Exception $e) {
+                abort(500);
+            }
+        }
+
+        // 读取当前社交账号绑定的用户id
         $userId = $this->socialiteService->getBindUserId($app, $appId);
-        if (!$userId) {
+        // 当前社交账号已经绑定了用户id可以直接登录
+        if ($userId) {
+            // 用户是否锁定检测
+            $user = $this->userService->find($userId);
+            if ($user['is_lock'] === FrontendConstant::YES) {
+                flash(__('current user was locked,please contact administrator'));
+                return back();
+            }
+            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
+        }
+
+        // 接下来，当前社交账号是一个全新的账号
+        // 如果系统开启了强制绑定手机号的操作，则进入手机号绑定的流程
+        // 如果系统未开启手机号绑定，则直接创建匿名手机号新用户，然后直接登录
+
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        $mustBindMobileStatus = $configService->getEnabledMobileBindAlert();
+
+        if (!$mustBindMobileStatus) {
+            // 未开启手机号的强制绑定
             $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }
 
-        // 用户是否锁定检测
-        $user = $this->userService->find($userId);
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            flash(__('current user was locked,please contact administrator'));
-            return back();
-        }
+        // 缓存当前的社交登录用户信息
+        // 跳转到强制绑定手机号的界面
+        // 需要配置中间件做检测
+        session([FrontendConstant::SOCIALITE_USER_INFO_KEY => [
+            'app' => $app,
+            'app_id' => $appId,
+            'user' => (array)$user,
+        ]]);
 
-        // 登录该用户
-        Auth::loginUsingId($userId, true);
-
-        // 登录事件
-        event(new UserLoginEvent($userId, is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
-
-        if ($redirect = session('socialite_login_redirect')) {
-            $token = Auth::guard(FrontendConstant::API_GUARD)->tokenById($userId);
-            $redirect .= (strpos($redirect, '?') === false ? '?' : '&') . 'token=' . $token;
-            return redirect($redirect);
-        }
-
-        return redirect($this->redirectTo());
+        return redirect(route('member.mobile.bind'));
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function logout()
     {
         Auth::logout();
         flash(__('success'), 'success');
         return redirect(url('/'));
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed|string
-     */
-    protected function redirectTo()
-    {
-        $redirectTo = session(FrontendConstant::LOGIN_CALLBACK_URL_KEY);
-        $redirectTo = $redirectTo ?: route('index');
-        return $redirectTo;
     }
 }

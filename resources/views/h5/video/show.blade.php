@@ -72,10 +72,6 @@
     </div>
 
     <div class="course-info-menu">
-        <div class="menu-item" data-dom="course-description">
-            介绍
-            <span class="active-bar"></span>
-        </div>
         <div class="menu-item active" data-dom="course-chapter">
             目录
             <span class="active-bar"></span>
@@ -84,10 +80,6 @@
             评论
             <span class="active-bar"></span>
         </div>
-    </div>
-
-    <div class="course-description course-content-tab-item" style="display: none">
-        {!! $video['render_desc'] !!}
     </div>
 
     <div class="course-chapter course-content-tab-item" style="display: block">
@@ -202,12 +194,4 @@
         <div class="course-detail-bottom-bar-block"></div>
     @endif
 
-@endsection
-
-@section('js')
-    <script>
-        $(function () {
-            $('.course-description').find('img').attr('width', 'auto').attr('height', 'auto');
-        });
-    </script>
 @endsection

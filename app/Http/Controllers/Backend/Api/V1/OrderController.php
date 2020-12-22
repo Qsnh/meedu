@@ -36,7 +36,7 @@ class OrderController extends BaseController
                 $query->where('order_id', $orderId);
             })
             ->orderByDesc('id')
-            ->paginate($request->input('page_size', 10));
+            ->paginate($request->input('size', 10));
 
         // 读取当前读取出来订单的用户
         $userIds = array_column($orders->items(), 'user_id');

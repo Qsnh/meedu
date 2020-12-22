@@ -11,13 +11,15 @@
 
 return [
 
-    'characters' => '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ',
+    'characters' => '2346789abcdefghmnpqrtuxyzABCDEFGHMNPQRTUXYZ',
 
     'default' => [
         'length' => 4,
         'width' => 120,
         'height' => 36,
         'quality' => 90,
+        // 验证码过期时间 - 5分钟
+        'expire' => 300,
     ],
 
     'flat' => [

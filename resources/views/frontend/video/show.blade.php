@@ -99,10 +99,6 @@
                 <div class="course-menu-box mt-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
                         <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}"
-                           data-page="video-show-page-desc" class="video-show-page-item">视频介绍</a>
-                    </div>
-                    <div class="menu-item {{$scene === 'chapter' ? 'active' : ''}}">
-                        <a href="{{route('video.show', [$course['id'], $video['id'], $video['slug']])}}?scene=chapter"
                            data-page="video-show-page-chapter" class="video-show-page-item">课程目录</a>
                     </div>
                     <div class="menu-item {{$scene === 'comment' ? 'active' : ''}}">
@@ -115,14 +111,7 @@
     </div>
 
     <div class="container-fluid">
-        <div class="container {{!$scene ? '' : 'display-none'}} video-show-page-desc">
-            <div class="row">
-                <div class="col-12">
-                    {!! $video['render_desc'] !!}
-                </div>
-            </div>
-        </div>
-        <div class="container {{$scene === 'chapter' ? '' : 'display-none'}} video-show-page-chapter">
+        <div class="container {{!$scene ? '' : 'display-none'}} video-show-page-chapter">
             <div class="row">
                 <div class="col-12">
                     <div class="course-chapter">
@@ -130,11 +119,12 @@
                             @foreach($chapters as $chapterIndex => $chapter)
                                 @if($videosBox = $videos[$chapter['id']] ?? [])@endif
                                 @if($videosBoxIds = array_column($videosBox, 'id'))@endif
-                                <div class="course-chapter-title">
+                                <div class="course-chapter-title" data-dom="course-videos-box-{{$chapter['id']}}">
                                     {{$chapter['title']}}
-                                    <small class="videos-count"
-                                           data-dom="course-videos-box-{{$chapter['id']}}">{{count($videosBox)}}节 <i
-                                                class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i></small>
+                                    <small class="videos-count">
+                                        {{count($videosBox)}}节
+                                        <i class="fa {{in_array($video['id'], $videosBoxIds) ? 'fa-angle-up' : 'fa-angle-down'}}"></i>
+                                    </small>
                                 </div>
                                 @foreach($videosBox as $videoItem)
                                     <div class="course-videos-box {{in_array($video['id'], $videosBoxIds) ? 'active' : ''}} course-videos-box-{{$chapter['id']}}">

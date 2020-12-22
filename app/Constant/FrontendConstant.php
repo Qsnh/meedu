@@ -34,6 +34,8 @@ class FrontendConstant
 
     // 登录跳转url存储key
     const LOGIN_CALLBACK_URL_KEY = 'login_callback_url';
+    // 社交登录用户信息临时存储key
+    const SOCIALITE_USER_INFO_KEY = 'socialite_login_user_data';
 
     // 登录跳转白名单
     const LOGIN_REFERER_BLACKLIST = [

@@ -246,4 +246,13 @@ return [
         'user_id' => env('MEEDUCLOUD_USER_ID'),
         'password' => env('MEEDUCLOUD_PASSWORD'),
     ],
+
+    // 第三方服务
+    'services' => [
+        // 高德地图配置（用于ip解析）
+        'amap' => [
+            // @see https://lbs.amap.com/api/webservice/guide/create-project/get-key
+            'key' => '',
+        ],
+    ],
 ];

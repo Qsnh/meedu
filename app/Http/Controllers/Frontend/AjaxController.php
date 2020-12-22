@@ -12,12 +12,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use App\Bus\AuthBus;
 use App\Bus\VideoBus;
 use Illuminate\Http\Request;
-use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use App\Services\Member\Services\UserService;
 use App\Services\Course\Services\VideoService;
@@ -98,11 +97,6 @@ class AjaxController extends BaseController
         $this->userInviteBalanceService = $userInviteBalanceService;
     }
 
-    /**
-     * @param CourseOrVideoCommentCreateRequest $request
-     * @param $courseId
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function courseCommentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
     {
         $user = $this->user();
@@ -127,11 +121,6 @@ class AjaxController extends BaseController
         ]);
     }
 
-    /**
-     * @param CourseOrVideoCommentCreateRequest $request
-     * @param $videoId
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function videoCommentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
     {
         $video = $this->videoService->find($videoId);
@@ -140,7 +129,7 @@ class AjaxController extends BaseController
         }
         ['content' => $content] = $request->filldata();
         $comment = $this->videoCommentService->create($video['id'], $content);
-        $user = $this->userService->find(Auth::id(), ['role']);
+        $user = $this->userService->find($this->id(), ['role']);
 
         return $this->data([
             'content' => $comment['render_content'],
@@ -153,11 +142,6 @@ class AjaxController extends BaseController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function promoCodeCheck(Request $request)
     {
         $promoCode = $request->input('promo_code');
@@ -180,11 +164,7 @@ class AjaxController extends BaseController
         ]);
     }
 
-    /**
-     * @param LoginPasswordRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function passwordLogin(LoginPasswordRequest $request)
+    public function passwordLogin(LoginPasswordRequest $request, AuthBus $bus)
     {
         [
             'mobile' => $mobile,
@@ -197,39 +177,38 @@ class AjaxController extends BaseController
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
-        Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
+        $bus->webLogin(
+            $user['id'],
+            $request->has('remember'),
+            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
+        );
 
-        return $this->data(['redirect_url' => $this->redirectTo()]);
+        return $this->data(['redirect_url' => $bus->redirectTo()]);
     }
 
-    /**
-     * @param MobileLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function mobileLogin(MobileLoginRequest $request)
+    public function mobileLogin(MobileLoginRequest $request, AuthBus $bus)
     {
         ['mobile' => $mobile] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
-            // 直接注册
+            // 手机号不存在=>直接注册
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
+
         if ($user['is_lock'] === FrontendConstant::YES) {
             return $this->error(__('current user was locked,please contact administrator'));
         }
-        Auth::loginUsingId($user['id'], $request->has('remember'));
 
-        event(new UserLoginEvent($user['id'], is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC));
+        $bus->webLogin(
+            $user['id'],
+            $request->has('remember'),
+            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
+        );
 
-        return $this->data(['redirect_url' => $this->redirectTo()]);
+        return $this->data(['redirect_url' => $bus->redirectTo()]);
     }
 
-    /**
-     * @param RegisterPasswordRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function register(RegisterPasswordRequest $request)
     {
         [
@@ -250,10 +229,6 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    /**
-     * @param PasswordResetRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function passwordReset(PasswordResetRequest $request)
     {
         [
@@ -266,11 +241,6 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    /**
-     * @param MobileBindRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ServiceException
-     */
     public function mobileBind(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();
@@ -278,69 +248,39 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    protected function redirectTo()
-    {
-        $callbackUrl = session()->has(FrontendConstant::LOGIN_CALLBACK_URL_KEY) ?
-            session(FrontendConstant::LOGIN_CALLBACK_URL_KEY) : url('/');
-        return $callbackUrl;
-    }
-
-    /**
-     * @param MemberPasswordResetRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
     public function changePassword(MemberPasswordResetRequest $request)
     {
         ['old_password' => $oldPassword, 'new_password' => $newPassword] = $request->filldata();
-        $this->userService->resetPassword(Auth::id(), $oldPassword, $newPassword);
+        $this->userService->resetPassword($this->id(), $oldPassword, $newPassword);
         return $this->success();
     }
 
-    /**
-     * @param AvatarChangeRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function changeAvatar(AvatarChangeRequest $request)
     {
         ['url' => $url] = $request->filldata();
-        $this->userService->updateAvatar(Auth::id(), $url);
+        $this->userService->updateAvatar($this->id(), $url);
         return $this->success();
     }
 
-    /**
-     * @param NicknameChangeRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ServiceException
-     */
     public function changeNickname(NicknameChangeRequest $request)
     {
         ['nick_name' => $nickName] = $request->filldata();
-        $this->userService->updateNickname(Auth::id(), $nickName);
+        $this->userService->updateNickname($this->id(), $nickName);
         return $this->success();
     }
 
-    /**
-     * @param ReadAMessageRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function notificationMarkAsRead(ReadAMessageRequest $request)
     {
         ['id' => $id] = $request->filldata();
-        $this->userService->notificationMarkAsRead(Auth::id(), $id);
+        $this->userService->notificationMarkAsRead($this->id(), $id);
         return $this->success();
     }
 
-    /**
-     * @param InviteBalanceWithdrawRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ServiceException
-     */
     public function inviteBalanceWithdraw(InviteBalanceWithdrawRequest $request)
     {
         $data = $request->filldata();
         $total = $request->post('total');
-        $user = $this->userService->find(Auth::id());
+        $user = $this->userService->find($this->id());
         if ($user['invite_balance'] < $total) {
             return $this->error(__('Insufficient invite balance'));
         }
@@ -348,23 +288,12 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function likeACourse($id)
     {
-        $result = $this->userService->likeACourse(Auth::id(), $id);
+        $result = $this->userService->likeACourse($this->id(), $id);
         return $this->data($result);
     }
 
-    /**
-     * @param Request $request
-     * @param VideoBus $videoBus
-     * @param $videoId
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function recordVideo(Request $request, VideoBus $videoBus, $videoId)
     {
         // 这里前台传递的duration时间是用户播放的视频的播放位置
@@ -374,15 +303,11 @@ class AjaxController extends BaseController
             return $this->error(__('params error'));
         }
 
-        $videoBus->userVideoWatchDurationRecord(Auth::id(), (int)$videoId, $duration);
+        $videoBus->userVideoWatchDurationRecord($this->id(), (int)$videoId, $duration);
 
         return $this->success();
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function profileUpdate(Request $request)
     {
         $data = $request->all();

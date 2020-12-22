@@ -11,27 +11,26 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
 use App\Http\Requests\Backend\NavRequest;
 
 class NavController extends BaseController
 {
-    public function index(Request $request)
+    public function index()
     {
         $navs = Nav::query()
             ->with(['children'])
             ->where('parent_id', 0)
-            ->orderByRaw('platform asc,sort desc')
-            ->paginate($request->input('size', 10));
+            ->orderByDesc('sort')
+            ->get();
 
         return $this->successData($navs);
     }
 
     public function create()
     {
-        $navs = Nav::query()->where('parent_id', 0)->get()->toArray();
+        $navs = Nav::query()->where('parent_id', 0)->where('platform', FrontendConstant::NAV_PLATFORM_PC)->get()->toArray();
         $platforms = [
             [
                 'id' => FrontendConstant::NAV_PLATFORM_PC,

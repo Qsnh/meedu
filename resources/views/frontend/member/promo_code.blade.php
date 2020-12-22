@@ -25,9 +25,9 @@
                                 <span>邀请码权益</span>
                             </div>
                             <div class="promo_code_intro_content">
-                                <p>1.使用该优惠码的用户将获得 {{$userPromoCode['invited_user_reward']}} 元抵扣。</p>
-                                <p>2.当用户使用您的优惠码支付并完成订单的时候，您也将获得 {{$userPromoCode['invite_user_reward']}} 元奖励。</p>
-                                <p>3.使用您的优惠码完成支付的用户将会自动成为您的下级，TA的每一笔已支付订单您都将享有 {{$inviteConfig['per_order_draw']*100}}%
+                                <p>1.使用该邀请码的用户将获得 {{$userPromoCode['invited_user_reward']}} 元抵扣。</p>
+                                <p>2.当用户使用您的邀请码支付并完成订单的时候，您也将获得 {{$userPromoCode['invite_user_reward']}} 元奖励。</p>
+                                <p>3.使用您的邀请码完成支付的用户将会自动成为您的下级，TA的每一笔已支付订单您都将享有 {{$inviteConfig['per_order_draw']*100}}%
                                     的抽成。</p>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                 <div class="col-12 my-5 text-center">
                     <form action="" method="post">
                         @csrf
-                        <button type="submit" class="btn btn-primary">生成我的专属优惠码</button>
+                        <button type="submit" class="btn btn-primary">生成我的专属邀请码</button>
                     </form>
                 </div>
             </div>

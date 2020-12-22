@@ -30,7 +30,7 @@ class CourseServiceTest extends TestCase
      */
     protected $courseService;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->courseService = $this->app->make(CourseServiceInterface::class);
@@ -217,17 +217,15 @@ class CourseServiceTest extends TestCase
         $this->assertEquals(3, count($res));
     }
 
-    public function test_recordUserCount()
+    public function test_createCourseUserRecord()
     {
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create();
-        $this->courseService->recordUserCount($user->id, $course->id);
-        $this->assertTrue(CourseUserRecord::whereUserId($user->id)->whereCourseId($course->id)->exists());
+        $this->courseService->createCourseUserRecord($user->id, $course->id);
+        $this->assertTrue(CourseUserRecord::query()->where('user_id', $user->id)->where('course_id', $course->id)->exists());
         $course->refresh();
-        $this->assertEquals(1, $course->user_count);
-        $this->courseService->recordUserCount($user->id, $course->id);
+        $this->courseService->createCourseUserRecord($user->id, $course->id);
         // 不会重复记录
         $course->refresh();
-        $this->assertEquals(1, $course->user_count);
     }
 }

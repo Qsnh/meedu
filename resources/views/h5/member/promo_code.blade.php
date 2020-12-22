@@ -22,16 +22,16 @@
                     </div>
                 </div>
                 <div class="promoCode-desc-box">
-                    <p>1.使用该优惠码的用户将获得 <b>{{$userPromoCode['invited_user_reward']}}</b> 元抵扣。</p>
-                    <p>2.当用户使用您的优惠码支付并完成订单的时候，您也将获得 <b>{{$userPromoCode['invite_user_reward']}}</b> 元奖励。</p>
-                    <p>3.使用您的优惠码完成支付的用户将会自动成为您的下级，TA的每一笔已支付订单您都将享有 <b>{{$inviteConfig['per_order_draw']*100}}%</b>
+                    <p>1.使用该邀请码的用户将获得 <b>{{$userPromoCode['invited_user_reward']}}</b> 元抵扣。</p>
+                    <p>2.当用户使用您的邀请码支付并完成订单的时候，您也将获得 <b>{{$userPromoCode['invite_user_reward']}}</b> 元奖励。</p>
+                    <p>3.使用您的邀请码完成支付的用户将会自动成为您的下级，TA的每一笔已支付订单您都将享有 <b>{{$inviteConfig['per_order_draw']*100}}%</b>
                         的抽成。</p>
                 </div>
             @else
                 <div class="create-promo-code-button-box">
                     <form action="" method="post">
                         @csrf
-                        <button type="submit" class="create-promo-code-button">生成我的专属优惠码</button>
+                        <button type="submit" class="create-promo-code-button">生成我的专属邀请码</button>
                     </form>
                 </div>
             @endif

@@ -518,4 +518,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.member.register.vip') ?? [];
     }
+
+    /**
+     * 获取高德地图应用key
+     *
+     * @return string
+     */
+    public function getAmapkey(): string
+    {
+        return config('meedu.services.amap.key', '');
+    }
 }

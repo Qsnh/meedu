@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-Route::get('/', 'Frontend\IndexController@index')->name('index');
+Route::get('/', 'Frontend\IndexController@index')->name('index')->middleware(['wechat.login']);
 Route::redirect('/home', '/');
 Route::get('/user/protocol', 'Frontend\IndexController@userProtocol')->name('user.protocol');
 Route::get('/user/private_protocol', 'Frontend\IndexController@userPrivateProtocol')->name('user.private_protocol');
@@ -42,35 +42,35 @@ Route::get('/login/{app}', 'Frontend\LoginController@socialLogin')->name('social
 Route::get('/login/{app}/callback', 'Frontend\LoginController@socialiteLoginCallback');
 
 // 课程列表
-Route::get('/courses', 'Frontend\CourseController@index')->name('courses');
+Route::get('/courses', 'Frontend\CourseController@index')->name('courses')->middleware(['wechat.login']);
 // 视频列表
-Route::get('/videos', 'Frontend\VideoController@index')->name('videos');
+Route::get('/videos', 'Frontend\VideoController@index')->name('videos')->middleware(['wechat.login']);
 // 课程详情
-Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show');
+Route::get('/course/{id}/{slug}', 'Frontend\CourseController@show')->name('course.show')->middleware(['wechat.login']);
 Route::get('/course/attach/{id}/download', 'Frontend\CourseController@attachDownload')->name('course.attach.download')->middleware(['auth']);
 // 视频详情
-Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show');
+Route::get('/course/{course_id}/video/{id}/{slug}', 'Frontend\VideoController@show')->name('video.show')->middleware(['wechat.login']);
 // 搜索
-Route::get('/search', 'Frontend\SearchController@searchHandler')->name('search');
+Route::get('/search', 'Frontend\SearchController@searchHandler')->name('search')->middleware(['wechat.login']);
 
 // VIP
-Route::get('/vip', 'Frontend\RoleController@index')->name('role.index');
+Route::get('/vip', 'Frontend\RoleController@index')->name('role.index')->middleware(['wechat.login']);
 // 支付回调
 Route::post('/payment/callback/{payment}', 'Frontend\PaymentController@callback')->name('payment.callback');
 
 // 公告
 Route::get('/announcement/{id}', 'Frontend\AnnouncementController@show')->name('announcement.show');
 
+// 手机号绑定
+Route::get('/member/mobile/bind', 'Frontend\MemberController@showMobileBindPage')->name('member.mobile.bind');
+Route::post('/member/mobile/bind', 'Frontend\MemberController@mobileBindHandler')->middleware('sms.check');
+
 Route::group([
     'prefix' => '/member',
-    'middleware' => ['auth', 'login.status.check'],
+    'middleware' => ['wechat.login', 'auth', 'login.status.check'],
     'namespace' => 'Frontend'
 ], function () {
     Route::get('/', 'MemberController@index')->name('member');
-
-    // 绑定手机号
-    Route::get('/mobile/bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
-    Route::post('/mobile/bind', 'MemberController@mobileBindHandler')->middleware('sms.check');
 
     Route::get('/password_reset', 'MemberController@showPasswordResetPage')->name('member.password_reset');
     Route::post('/password_reset', 'MemberController@passwordResetHandler');

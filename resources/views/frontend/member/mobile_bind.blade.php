@@ -1,6 +1,6 @@
-@extends('layouts.member')
+@extends('layouts.app')
 
-@section('member')
+@section('content')
 
     <div class="container my-5">
         <div class="row justify-content-center">
@@ -11,7 +11,8 @@
                         <form method="post" action="">
                             @csrf
                             @include('frontend.components.mobile', ['smsCaptchaKey' => 'mobile_bind'])
-                            <div class="form-group text-right mt-5">
+                            <div class="form-group auth-box-errors" style="color: red;"></div>
+                            <div class="form-group text-right mt-3">
                                 <button class="btn btn-primary btn-block" type="submit">确定绑定该手机号</button>
                             </div>
                         </form>
