@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="category-box">
-                    <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => 0])}}"
+                    <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => 0, 'page' => 1])}}"
                        class="category-box-item {{!$categoryId ? 'active' : ''}}">不限</a>
                     @foreach($courseCategories as $category)
                         <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => $category['id'], 'page' => 1])}}"
