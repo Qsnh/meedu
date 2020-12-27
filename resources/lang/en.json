@@ -112,5 +112,7 @@
   "video cant comment": "video baned comment",
   "please login again": "please login again",
   "please_input_mobile_code": "please input mobile code",
-  "member.profile.edit": "member profile edit"
+  "member.profile.edit": "member profile edit",
+  "wechat.pay.page.title": "wechat pay",
+  "hand.pay.page.title": "hand pay"
 }
