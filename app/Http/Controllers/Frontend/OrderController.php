@@ -126,7 +126,9 @@ class OrderController extends Controller
 
         $qrcodeUrl = $wechatData['code_url'];
 
-        return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal'));
+        $title = __('wechat.pay.page.title');
+
+        return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal', 'title'));
     }
 
     /**
@@ -138,6 +140,9 @@ class OrderController extends Controller
         $order = $this->orderService->findUser($orderId);
         $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
         $intro = $this->configService->getHandPayIntroducation();
-        return v('frontend.order.hand_pay', compact('order', 'intro', 'needPaidTotal'));
+
+        $title = __('hand.pay.page.title');
+
+        return v('frontend.order.hand_pay', compact('order', 'intro', 'needPaidTotal', 'title'));
     }
 }

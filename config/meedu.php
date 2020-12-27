@@ -255,4 +255,13 @@ return [
             'key' => '',
         ],
     ],
+
+    // 微信公众号配置
+    'mp_wechat' => [
+        'app_id' => '',
+        'app_secret' => '',
+        'token' => '',
+        'aes_key' => '',
+        'enabled_oauth_login' => 0,
+    ],
 ];

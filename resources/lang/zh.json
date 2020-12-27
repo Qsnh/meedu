@@ -129,5 +129,7 @@
   "please buy course": "请购买课程",
   "course cant comment": "当前课程无法评论",
   "video cant comment": "当前视频无法评论",
-  "member.profile.edit": "用户资料编辑"
+  "member.profile.edit": "用户资料编辑",
+  "wechat.pay.page.title": "微信支付",
+  "hand.pay.page.title": "手动打款"
 }

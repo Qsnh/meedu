@@ -156,7 +156,7 @@ class LoginController extends BaseController
             $user = $this->userService->find($userId);
             if ($user['is_lock'] === FrontendConstant::YES) {
                 flash(__('current user was locked,please contact administrator'));
-                return back();
+                return redirect(url('/?skip_wechat=1'));
             }
             return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }

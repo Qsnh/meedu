@@ -293,4 +293,20 @@ class BusinessState
         }
         return false;
     }
+
+    /**
+     * 是否开启微信公众号授权登录
+     *
+     * @return bool
+     */
+    public function isEnabledMpOAuthLogin(): bool
+    {
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        $mpWechatConfig = $configService->getMpWechatConfig();
+        $enabledOAuthLogin = (int)($mpWechatConfig['enabled_oauth_login'] ?? 0);
+        return $enabledOAuthLogin === 1;
+    }
 }

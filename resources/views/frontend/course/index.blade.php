@@ -7,24 +7,24 @@
             <div class="col-12">
                 <div class="course-menu-box">
                     <div class="menu-item {{!$scene ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => ''])}}">所有课程</a>
+                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => '', 'page' => 1])}}">所有课程</a>
                     </div>
                     <div class="menu-item {{$scene == 'free' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'free'])}}">免费课程</a>
+                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'free', 'page' => 1])}}">免费课程</a>
                     </div>
                     <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'recom'])}}">推荐课程</a>
+                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'recom', 'page' => 1])}}">推荐课程</a>
                     </div>
                     <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['scene' => 'sub'])}}">订阅最多</a>
+                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'sub', 'page' => 1])}}">订阅最多</a>
                     </div>
                 </div>
 
                 <div class="category-box">
-                    <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['category_id' => 0])}}"
+                    <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => 0, 'page' => 1])}}"
                        class="category-box-item {{!$categoryId ? 'active' : ''}}">不限</a>
                     @foreach($courseCategories as $category)
-                        <a href="{{route('courses')}}?{{query_builder(['category_id', 'scene'], ['category_id' => $category['id']])}}"
+                        <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => $category['id'], 'page' => 1])}}"
                            class="category-box-item {{$categoryId == $category['id'] ? 'active' : ''}}">{{$category['name']}}</a>
                     @endforeach
                 </div>

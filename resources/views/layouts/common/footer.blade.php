@@ -208,8 +208,12 @@
             </div>
         </div>
         <div class="form-group auth-box-errors"></div>
-        <div class="form-group mb-0">
+        <div class="form-group">
             <button type="button" class="btn btn-primary btn-block mobile-bind-button">立即绑定</button>
+        </div>
+        <div class="form-group text-center mb-0">
+            <a href="javascript:void(0)" onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">退出登录</a>
         </div>
     </form>
 </script>
