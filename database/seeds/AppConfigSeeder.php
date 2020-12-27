@@ -1102,6 +1102,14 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+            [
+                'group' => '微信公众号',
+                'name' => '启用授权登录',
+                'field_type' => 'switch',
+                'sort' => 6,
+                'key' => 'meedu.mp_wechat.enabled_oauth_login',
+                'value' => 0,
+            ],
 
             // 注册送VIP
             [

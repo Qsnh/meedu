@@ -14,6 +14,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
+use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 
 class WechatLoginMiddleware
@@ -31,12 +32,17 @@ class WechatLoginMiddleware
          * @var AuthBus $bus
          */
         $bus = app()->make(AuthBus::class);
+        /**
+         * @var BusinessState $busState
+         */
+        $busState = app()->make(BusinessState::class);
 
         if (
+            $busState->isEnabledMpOAuthLogin() &&
             is_h5() &&
             is_wechat() &&
             !Auth::check() &&
-            !$request->routeIs(['login.wechat.callback'])
+            !$request->has('skip_wechat')
         ) {
             // 指定token登录
             $bus->recordSocialiteTokenWay();
