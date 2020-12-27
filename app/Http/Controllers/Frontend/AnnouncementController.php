@@ -32,6 +32,7 @@ class AnnouncementController extends Controller
     {
         $a = $this->announcementService->findOrFail($id);
         $this->announcementService->viewTimesInc($id);
-        return v('frontend.announcement.show', compact('a'));
+        $title = $a['title'];
+        return v('frontend.announcement.show', compact('a', 'title'));
     }
 }
