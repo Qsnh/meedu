@@ -105,28 +105,42 @@ class AuthBus
              */
             $socialiteService = app()->make(SocialiteServiceInterface::class);
 
+            // 判断当前的社交账号是否已经绑定了账户
+            // 如果绑定了就不能继续进行绑定的操作
+            if ($socialiteService->getBindUserId($app, $appId)) {
+                throw new ServiceException(__('socialite_account_has_bind_user'));
+            }
+
             /**
              * @var UserService $userService
              */
             $userService = app()->make(UserServiceInterface::class);
 
-            if ($userService->findMobile($mobile)) {
-                throw new ServiceException(__('mobile has exists'));
+            // 检测当前手机号用户是否已经绑定同app的账号了
+            $mobileUser = $userService->findMobile($mobile);
+            if ($mobileUser) {
+                $bindSocialites = $socialiteService->userSocialites($mobileUser['id']);
+                $apps = array_column($bindSocialites, 'app');
+                if (in_array($app, $apps)) {
+                    throw new ServiceException(__('socialite_account_has_bind_user'));
+                }
             }
 
-            /**
-             * @var ConfigService $configService
-             */
-            $configService = app()->make(ConfigServiceInterface::class);
+            if ($mobileUser) {
+                $user = $mobileUser;
+            } else {
+                // 如果手机号还没有创建用户则创建新用户
+                /**
+                 * @var ConfigService $configService
+                 */
+                $configService = app()->make(ConfigServiceInterface::class);
+                $defaultAvatar = url($configService->getMemberDefaultAvatar());
 
-            if ($socialiteService->getBindUserId($app, $appId)) {
-                throw new ServiceException(__('socialite_account_has_bind_user'));
+                $nickname = $userData['nickname'] ? $userData['nickname'] . Str::random(3) : Str::random(6);
+                $avatar = $userData['avatar'] ?? $defaultAvatar;
+
+                $user = $userService->createWithMobile($mobile, '', $nickname, $avatar);
             }
-
-            // 创建新用户
-            $nickname = $userData['nickname'] ? $userData['nickname'] . Str::random(3) : Str::random(6);
-            $avatar = $userData['avatar'] ?? url($configService->getMemberDefaultAvatar());
-            $user = $userService->createWithMobile($mobile, '', $nickname, $avatar);
 
             // 将社交账号与新用户绑定
             $socialiteService->bindApp($user['id'], $app, $appId, $userData);
