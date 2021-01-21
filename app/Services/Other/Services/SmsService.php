@@ -12,7 +12,7 @@
 namespace App\Services\Other\Services;
 
 use Illuminate\Support\Str;
-use Overtrue\EasySms\EasySms;
+use App\Meedu\Sms\SmsInterface;
 use App\Services\Other\Models\SmsRecord;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
@@ -34,23 +34,19 @@ class SmsService implements SmsServiceInterface
      * @param $mobile
      * @param $code
      * @param $scene
-     *
-     * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
-     * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
     public function sendCode($mobile, $code, $scene): void
     {
         $sceneMethod = sprintf('get%sSceneTemplateId', Str::camel($scene));
         $templateId = $this->$sceneMethod();
-        $easySms = new EasySms($this->configService->getSms());
-        $data = [
-            'content' => str_replace('#code#', $code, $templateId),
-            'template' => $templateId,
-            'data' => ['code' => $code],
-        ];
-        $sendResponse = $easySms->send($mobile, $data);
 
-        SmsRecord::createData($mobile, $data, $sendResponse);
+        /**
+         * @var SmsInterface $sms
+         */
+        $sms = app()->make(SmsInterface::class);
+        $sms->sendCode($mobile, $code, $templateId);
+
+        SmsRecord::createData($mobile, compact('code'), []);
     }
 
     protected function getLoginSceneTemplateId()

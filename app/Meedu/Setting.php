@@ -11,6 +11,7 @@
 
 namespace App\Meedu;
 
+use App\Meedu\Sms\SmsInterface;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -59,7 +60,8 @@ class Setting
     protected function specialSync(): void
     {
         // 短信服务注册
-        config(['sms.default.gateways' => [config('meedu.system.sms')]]);
+        $smsService = ucfirst(config('meedu.system.sms'));
+        app()->instance(SmsInterface::class, app()->make('App\\Meedu\\Sms\\' . $smsService));
     }
 
     /**

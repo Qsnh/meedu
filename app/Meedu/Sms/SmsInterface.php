@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace App\Meedu;
+namespace App\Meedu\Sms;
 
-class MeEdu
+interface SmsInterface
 {
-    const VERSION = 'v3.7.4';
+    public function sendCode(string $mobile, $code, $template);
 }
