@@ -68,8 +68,7 @@ class SmsController extends FrontendController
      * @param $sessionKey
      * @param $templateId
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
-     * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
+     * @throws Exception
      */
     protected function sendHandler($mobile, $sessionKey, $templateId)
     {

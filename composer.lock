@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d849a8b6fd22d3370a0dc157c5f9326",
+    "content-hash": "6fdc6cfbf9981f7f7009724a156db2f3",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -3017,58 +3017,6 @@
                 "source": "https://github.com/opis/closure/tree/3.6.1"
             },
             "time": "2020-11-07T02:01:34+00:00"
-        },
-        {
-            "name": "overtrue/easy-sms",
-            "version": "1.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/overtrue/easy-sms.git",
-                "reference": "85040b891b9fcd20954c63889e10e7d26bf49ec9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/easy-sms/zipball/85040b891b9fcd20954c63889e10e7d26bf49ec9",
-                "reference": "85040b891b9fcd20954c63889e10e7d26bf49ec9",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "^6.2 || ^7.0",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "mockery/mockery": "1.3.1",
-                "phpunit/phpunit": "^5.7 || ^7.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Overtrue\\EasySms\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "overtrue",
-                    "email": "i@overtrue.me"
-                }
-            ],
-            "description": "The easiest way to send short message.",
-            "support": {
-                "issues": "https://github.com/overtrue/easy-sms/issues",
-                "source": "https://github.com/overtrue/easy-sms/tree/1.3.1"
-            },
-            "time": "2021-01-20T01:51:30+00:00"
         },
         {
             "name": "overtrue/pinyin",
@@ -7060,16 +7008,16 @@
         },
         {
             "name": "tencentcloud/tencentcloud-sdk-php",
-            "version": "3.0.321",
+            "version": "3.0.323",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TencentCloud/tencentcloud-sdk-php.git",
-                "reference": "6d8d68f8076ab986c211f3be573987ea66ff0435"
+                "reference": "87cfbd6d95a22b4993c3ee7b05598e604e6bad17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/6d8d68f8076ab986c211f3be573987ea66ff0435",
-                "reference": "6d8d68f8076ab986c211f3be573987ea66ff0435",
+                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/87cfbd6d95a22b4993c3ee7b05598e604e6bad17",
+                "reference": "87cfbd6d95a22b4993c3ee7b05598e604e6bad17",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -7108,9 +7056,9 @@
             "homepage": "https://github.com/TencentCloud/tencentcloud-sdk-php",
             "support": {
                 "issues": "https://github.com/TencentCloud/tencentcloud-sdk-php/issues",
-                "source": "https://github.com/TencentCloud/tencentcloud-sdk-php/tree/3.0.321"
+                "source": "https://github.com/TencentCloud/tencentcloud-sdk-php/tree/3.0.323"
             },
-            "time": "2021-01-19T06:29:14+00:00"
+            "time": "2021-01-21T07:21:49+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -7263,16 +7211,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.6.7",
+            "version": "v3.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "2065beda6cbe75e2603686907b2e45f6f3a5ad82"
+                "reference": "5e679f7616db829358341e2d5cccbd18773bdab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2065beda6cbe75e2603686907b2e45f6f3a5ad82",
-                "reference": "2065beda6cbe75e2603686907b2e45f6f3a5ad82",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/5e679f7616db829358341e2d5cccbd18773bdab8",
+                "reference": "5e679f7616db829358341e2d5cccbd18773bdab8",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -7289,7 +7237,7 @@
             "require-dev": {
                 "ext-filter": "*",
                 "ext-pcre": "*",
-                "phpunit/phpunit": "^4.8.35 || ^5.7.27 || ^6.5.6 || ^7.0"
+                "phpunit/phpunit": "^4.8.36 || ^5.7.27 || ^6.5.14 || ^7.5.20"
             },
             "suggest": {
                 "ext-filter": "Required to use the boolean validator.",
@@ -7330,7 +7278,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-                "source": "https://github.com/vlucas/phpdotenv/tree/v3.6.7"
+                "source": "https://github.com/vlucas/phpdotenv/tree/v3.6.8"
             },
             "funding": [
                 {
@@ -7342,7 +7290,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-14T19:04:52+00:00"
+            "time": "2021-01-20T14:39:46+00:00"
         },
         {
             "name": "yansongda/laravel-pay",

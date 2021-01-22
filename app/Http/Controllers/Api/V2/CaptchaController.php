@@ -102,8 +102,6 @@ class CaptchaController extends BaseController
      * @param SmsRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\ApiV2Exception
-     * @throws \Overtrue\EasySms\Exceptions\InvalidArgumentException
-     * @throws \Overtrue\EasySms\Exceptions\NoGatewayAvailableException
      */
     public function sentSms(SmsRequest $request)
     {
