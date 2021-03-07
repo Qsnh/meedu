@@ -612,23 +612,6 @@ class AjaxTest extends TestCase
         $this->assertResponseError($response, __('mobile.unique'));
     }
 
-    public function test_register_with_exists_nickname()
-    {
-        $this->user->nick_name = '我是昵称';
-        $this->user->save();
-
-        session(['sms_mock' => 'mock']);
-        $response = $this->post('/ajax/auth/register', [
-            'nick_name' => '我是昵称',
-            'mobile' => '13877779999',
-            'password' => '123123',
-            'password_confirmation' => '123123',
-            'sms_captcha_key' => 'mock',
-            'sms_captcha' => 'mock',
-        ])->response;
-        $this->assertResponseError($response, __('nick_name.unique'));
-    }
-
     public function test_passwordReset()
     {
         $this->user->password = Hash::make('123456');

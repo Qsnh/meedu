@@ -214,17 +214,12 @@ class AjaxController extends BaseController
         [
             'mobile' => $mobile,
             'password' => $password,
-            'nick_name' => $nickname,
         ] = $request->filldata();
-        $user = $this->userService->findNickname($nickname);
-        if ($user) {
-            return $this->error(__('nick_name.unique'));
-        }
         $user = $this->userService->findMobile($mobile);
         if ($user) {
             return $this->error(__('mobile.unique'));
         }
-        $this->userService->createWithMobile($mobile, $password, $nickname);
+        $this->userService->createWithMobile($mobile, $password, '');
 
         return $this->success();
     }

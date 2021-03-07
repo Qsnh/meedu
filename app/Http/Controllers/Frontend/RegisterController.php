@@ -49,18 +49,13 @@ class RegisterController extends BaseController
         [
             'mobile' => $mobile,
             'password' => $password,
-            'nick_name' => $nickname,
         ] = $request->filldata();
-        if ($nickname && $this->userService->findNickname($nickname)) {
-            flash(__('nick_name.unique'));
-            return back();
-        }
         $user = $this->userService->findMobile($mobile);
         if ($user) {
             flash(__('mobile.unique'));
             return back();
         }
-        $this->userService->createWithMobile($mobile, $password, $nickname);
+        $this->userService->createWithMobile($mobile, $password, '');
         flash(__('register success'), 'success');
         return redirect(route('login'));
     }
