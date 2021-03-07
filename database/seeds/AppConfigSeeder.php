@@ -106,26 +106,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
             ],
 
-            // 缓存
-            [
-                'group' => '缓存',
-                'name' => '开启缓存',
-                'field_type' => 'switch',
-                'sort' => 0,
-                'default_value' => 0,
-                'key' => 'meedu.system.cache.status',
-                'value' => 0,
-            ],
-            [
-                'group' => '缓存',
-                'name' => '缓存时间(秒)',
-                'field_type' => 'number',
-                'sort' => 1,
-                'default_value' => 3600,
-                'key' => 'meedu.system.cache.expire',
-                'value' => 3600,
-            ],
-
             // 登录
             [
                 'group' => '登录',
