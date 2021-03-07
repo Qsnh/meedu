@@ -52,12 +52,34 @@ class VideoService implements VideoServiceInterface
 
     /**
      * @param int $id
+     * @param array $with
+     *
+     * @return mixed
+     */
+    public function findOrNull(int $id, $with = [])
+    {
+        $video = Video::query()
+            ->with($with)
+            ->where('id', $id)
+            ->show()
+            ->published()
+            ->first();
+        return $video ?: null;
+    }
+
+    /**
+     * @param int $id
      *
      * @return array
      */
     public function find(int $id): array
     {
-        return Video::with(['course'])->show()->published()->findOrFail($id)->toArray();
+        return Video::query()
+            ->with(['course'])
+            ->show()
+            ->published()
+            ->findOrFail($id)
+            ->toArray();
     }
 
     /**

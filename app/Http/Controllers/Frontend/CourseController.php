@@ -134,6 +134,7 @@ class CourseController extends FrontendController
         $course = $this->courseService->find($id);
         $chapters = $this->courseService->chapters($course['id']);
         $videos = $this->videoService->courseVideos($course['id']);
+        $attach = $this->courseService->getCourseAttach($course['id']);
 
         // 课程评论
         $comments = $this->courseCommentService->courseComments($course['id']);
@@ -145,9 +146,6 @@ class CourseController extends FrontendController
         $keywords = $course['seo_keywords'];
         $description = $course['seo_description'];
 
-        // 课程附件
-        $attach = $this->courseService->getCourseAttach($course['id']);
-
         // 是否购买
         $isBuy = false;
         // 喜欢课程
@@ -156,11 +154,11 @@ class CourseController extends FrontendController
         $firstVideo = [];
         // 课程视频观看进度
         $videoWatchedProgress = [];
-        // 课程评论
+        // 课程评论开关
         $canComment = $this->businessState->courseCanComment($this->user(), $course);
 
         // 已登录用户的一些判断
-        if (Auth::check()) {
+        if ($this->check()) {
             // 是否购买
             $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             // 是否收藏当前课程
@@ -170,7 +168,7 @@ class CourseController extends FrontendController
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
             // 最近一条观看记录
             $latestWatchRecord = $this->userService->getLatestRecord($this->id(), $course['id']);
-            $latestWatchRecord && $firstVideo = $this->videoService->find($latestWatchRecord['video_id']);
+            $latestWatchRecord && $firstVideo = $this->videoService->findOrNull($latestWatchRecord['video_id']);
         }
 
         if (!$firstVideo) {
