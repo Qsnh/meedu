@@ -181,7 +181,12 @@ return [
 
     // 系统配置
     'system' => [
+        // ICP备案
         'icp' => '',
+        'icp_link' => '',
+        // 公安网备案
+        'icp2' => '',
+        'icp2_link' => '',
         'logo' => '/images/logo.png',
         'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',

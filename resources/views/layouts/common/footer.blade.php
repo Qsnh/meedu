@@ -223,8 +223,20 @@
         <div class="row">
             <div class="col-12 text-center">
                 <p>Powered By <a href="https://meedu.vip" target="_blank">MeEdu</a></p>
-                <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://beian.miit.gov.cn"
-                                                               target="_blank">{{$gConfig['system']['icp']}}</a></p>
+                <p>
+                    &copy;
+                    {{date('Y')}}
+                    {{config('app.name')}}
+                    @if($gConfig['system']['icp'])
+                    &bull;
+                    <a href="{{$gConfig['system']['icp_link'] ?: 'http://beian.miit.gov.cn'}}"
+                       target="_blank">{{$gConfig['system']['icp']}}</a>
+                    @endif
+                    @if($gConfig['system']['icp2'])
+                    &bull;
+                    <a href="{{$gConfig['system']['icp2_link']}}" target="_blank">{{$gConfig['system']['icp2']}}</a>
+                    @endif
+                </p>
             </div>
         </div>
     </div>
