@@ -198,7 +198,10 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
         Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
 
+        // 积分变更
         Route::post('/credit1/change', 'MemberController@credit1Change');
+        // 发送站内消息
+        Route::post('/{id}/message', 'MemberController@sendMessage');
     });
 
     // 网站配置

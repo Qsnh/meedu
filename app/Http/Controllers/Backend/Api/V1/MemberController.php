@@ -32,6 +32,7 @@ use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberController extends BaseController
 {
@@ -46,7 +47,8 @@ class MemberController extends BaseController
         $members = User::with(['role', 'tags'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('nick_name', 'like', "%{$keywords}%")
-                    ->orWhere('mobile', 'like', "%{$keywords}%");
+                    ->orWhere('mobile', 'like', "%{$keywords}%")
+                    ->orWhere('id', $keywords);
             })
             ->when($roleId, function ($query) use ($roleId) {
                 $query->whereRoleId($roleId);
@@ -349,6 +351,19 @@ class MemberController extends BaseController
                 'remark' => $remark,
             ]);
         }
+
+        return $this->success();
+    }
+
+    public function sendMessage(Request $request, $userId)
+    {
+        $user = User::query()->where('id', $userId)->firstOrFail();
+        $message = $request->input('message');
+        if (!$message) {
+            return $this->error(__('params error'));
+        }
+
+        $user->notify(new SimpleMessageNotification($message));
 
         return $this->success();
     }

@@ -743,6 +743,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'PUT',
                 'url' => 'member/\d+/remark',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '给用户发站内消息',
+                'slug' => 'member.message.send',
+                'method' => 'POST',
+                'url' => 'member/\d+/message',
+            ],
 
             // 系统配置
             [
