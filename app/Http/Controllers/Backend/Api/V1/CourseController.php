@@ -19,8 +19,10 @@ use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\CourseRequest;
+use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseUserRecord;
+use App\Services\Member\Models\UserVideoWatchRecord;
 
 class CourseController extends BaseController
 {
@@ -209,5 +211,62 @@ class CourseController extends BaseController
     {
         $courses = Course::query()->select(['id', 'title'])->get();
         return $this->successData(['data' => $courses]);
+    }
+
+    public function videoWatchRecords($courseId, $userId)
+    {
+        $course = Course::query()->where('id', $courseId)->firstOrFail();
+        $chapters = CourseChapter::query()
+            ->where('course_id', $course['id'])
+            ->orderBy('sort')
+            ->get();
+        $videos = Video::query()
+            ->select(['id', 'title', 'duration', 'course_id', 'chapter_id'])
+            ->where('course_id', $course['id'])
+            ->orderBy('published_at')
+            ->get();
+
+        // 视频观看记录
+        $videoWatchRecords = UserVideoWatchRecord::query()
+            ->where('user_id', $userId)
+            ->whereIn('video_id', $videos->pluck('id')->toArray())
+            ->get()
+            ->keyBy('video_id');
+
+        $data = [];
+
+        if ($chapters->isEmpty()) {
+            foreach ($videos as $videoItem) {
+                $tmp = [
+                    'video_title' => $videoItem['title'],
+                    'duration' => $videoItem['duration'],
+                    'watch_seconds' => $videoWatchRecords[$videoItem['id']]['watch_seconds'] ?? 0,
+                    'watched_at' => $videoWatchRecords[$videoItem['id']]['watched_at'] ?? '',
+                ];
+                $data[] = $tmp;
+            }
+        } else {
+            $videos = $videos->groupBy('chapter_id')->toArray();
+            foreach ($chapters as $chapter) {
+                $list = $videos[$chapter['id']];
+                if (!$list) {
+                    continue;
+                }
+
+                foreach ($list as $videoItem) {
+                    $tmp = [
+                        'video_title' => sprintf('%s-%s', $chapter['title'], $videoItem['title']),
+                        'duration' => $videoItem['duration'],
+                        'watch_seconds' => $videoWatchRecords[$videoItem['id']]['watch_seconds'] ?? 0,
+                        'watched_at' => $videoWatchRecords[$videoItem['id']]['watched_at'] ?? '',
+                    ];
+                    $data[] = $tmp;
+                }
+            }
+        }
+
+        return $this->successData([
+            'data' => $data,
+        ]);
     }
 }

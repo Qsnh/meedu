@@ -515,6 +515,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'course/\d+/subscribe/create',
             ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程用户详细观看记录',
+                'slug' => 'course.user.watch.records',
+                'method' => 'GET',
+                'url' => 'course/\d+/user/\d+/watch/records',
+            ],
 
             // 视频
             [

@@ -142,6 +142,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
+        Route::get('/{id}/user/{userId}/watch/records', 'CourseController@videoWatchRecords');
     });
 
     // 课程
