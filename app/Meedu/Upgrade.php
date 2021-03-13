@@ -32,5 +32,17 @@ class Upgrade
                 'meedu.system.cache.expire',
             ])
             ->delete();
+
+        // 删除github登录
+        // 现在大陆服务器访问github经常出现超时的情况
+        // 已经严重影响了用户体验
+        AppConfig::query()
+            ->whereIn('key', [
+                'meedu.member.socialite.github.enabled',
+                'services.github.client_id',
+                'services.github.client_secret',
+                'services.github.redirect',
+            ])
+            ->delete();
     }
 }

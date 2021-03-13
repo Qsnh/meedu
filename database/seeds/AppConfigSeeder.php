@@ -157,43 +157,6 @@ class AppConfigSeeder extends Seeder
                 'value' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
                 'help' => '单平台限制=每一个平台仅允许一台设备登录.全平台限制=所有平台仅允许一台设备登录',
             ],
-            [
-                'group' => '登录',
-                'name' => 'Github登录',
-                'field_type' => 'switch',
-                'sort' => 0,
-                'default_value' => 0,
-                'key' => 'meedu.member.socialite.github.enabled',
-                'value' => 0,
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github ClientId',
-                'field_type' => 'text',
-                'sort' => 1,
-                'default_value' => '',
-                'key' => 'services.github.client_id',
-                'value' => '',
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github ClientSecret',
-                'field_type' => 'text',
-                'sort' => 2,
-                'default_value' => '',
-                'key' => 'services.github.client_secret',
-                'value' => '',
-                'is_private' => 1,
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github Redirect',
-                'field_type' => 'text',
-                'sort' => 3,
-                'default_value' => url('login/github/callback'),
-                'key' => 'services.github.redirect',
-                'value' => url('login/github/callback'),
-            ],
 
             // QQ登录
             [

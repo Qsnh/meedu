@@ -32,13 +32,6 @@ return [
 
         // Socialite
         'socialite' => [
-            // Github登录
-            'github' => [
-                'app' => 'github',
-                'name' => 'Github',
-                'logo' => '/images/icons/github.svg',
-                'enabled' => 0,
-            ],
             // QQ登录
             'qq' => [
                 'app' => 'qq',
