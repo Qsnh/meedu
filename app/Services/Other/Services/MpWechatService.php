@@ -45,10 +45,10 @@ class MpWechatService implements MpWechatServiceInterface
     /**
      * 获取事件的回复内容
      * @param string $event
-     * @param string $eventKey
+     * @param mixed $eventKey
      * @return string
      */
-    public function eventMessageReplyFind(string $event, string $eventKey = ''): string
+    public function eventMessageReplyFind(string $event, $eventKey = ''): string
     {
         $message = MpWechatMessageReply::query()
             ->where('type', MpWechatMessageReply::TYPE_EVENT)
