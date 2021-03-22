@@ -92,17 +92,6 @@ class CourseServiceTest extends TestCase
         $c = $this->courseService->find($course->id);
     }
 
-    public function test_find_with_no_show()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $course = factory(Course::class)->create([
-            'is_show' => Course::SHOW_NO,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $c = $this->courseService->find($course->id);
-    }
-
     public function test_chapters()
     {
         $course = factory(Course::class)->create();

@@ -12,14 +12,30 @@
 namespace App\Meedu\Player;
 
 use Illuminate\Support\Str;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class TencentKey
 {
+    protected $appId;
+
     protected $key;
+
+    protected $pcfg;
 
     public function __construct()
     {
-        $this->key = config('meedu.system.player.tencent_play_key');
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+
+        $tencentVodConfig = $configService->getTencentVodConfig();
+        $this->appId = $tencentVodConfig['app_id'];
+
+        $config = $configService->getPlayer();
+        $this->key = $config['tencent_play_key'] ?? '';
+        $this->pcfg = $config['tencent_pcfg'] ?? '';
     }
 
     /**
@@ -33,12 +49,15 @@ class TencentKey
         $urlInfo = parse_url($url);
         $dir = pathinfo($urlInfo['path'], PATHINFO_DIRNAME) . '/';
         // 默认三个小时
-        $t = time() + 3600 * 1.5;
-        // 试看
+        $t = time() + 3600 * 3;
+        // 试看[不少于30s]
         $exper = $isTry ? ($video['free_seconds'] ?? 0) : 0;
-        // 最多只允许一个ip访问
+        // ip限制[1个]
         $rlimit = 1;
-        $us = Str::random(16);
+        // 标识符
+        $us = Str::random(6);
+
+        // 生成签名
         $sign = md5($this->key . $dir . $t . $exper . $rlimit . $us);
         return sprintf('%s?t=%s&exper=%d&rlimit=%d&us=%s&sign=%s', $url, $t, $exper, $rlimit, $us, $sign);
     }
@@ -53,14 +72,22 @@ class TencentKey
             'typ' => 'JWT',
         ];
         $data = [
-            'appId' => (int)config('tencent.vod.app_id'),
+            'appId' => (int)$this->appId,
             'fileId' => $video['tencent_video_id'],
+            // 链接生成时间
             'currentTimeStamp' => time(),
-            'expireTimeStamp' => time() + 3600 * 1.5,
+            // 链接到期时间[3小时]
+            'expireTimeStamp' => time() + 3600 * 3,
             'urlAccessInfo' => [
+                // 仅允许一个ip访问
                 'rlimit' => 1,
+                // 标识符
                 'us' => Str::random(6),
+                // 试看[不小于30s]
+                'exper' => $isTry ? (int)($video['free_seconds'] ?? 0) : 0,
             ],
+            // 播放自适应的码流
+            'pcfg' => $this->pcfg,
         ];
         if ($isTry) {
             $data['urlAccessInfo']['exper'] = (int)($video['free_seconds'] / 0.8);

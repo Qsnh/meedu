@@ -34,18 +34,6 @@ class CourseDetailTest extends TestCase
             ->seeText($courseShow->charge);
     }
 
-    // 创建一个课程，发布时间为前一天，但是不显示
-    // 断言这个课程是无法访问的
-    public function test_course_show_no()
-    {
-        $courseNoShow = factory(Course::class)->create([
-            'is_show' => Course::SHOW_NO,
-            'published_at' => Carbon::now()->subDay(1),
-        ]);
-        $response = $this->get(route('course.show', [$courseNoShow->id, $courseNoShow->slug]));
-        $response->assertResponseStatus(404);
-    }
-
     // 创建课程可以显示，但是时间在明天
     // 这种情况下课程是无法访问的
     public function test_course_no_published_show()

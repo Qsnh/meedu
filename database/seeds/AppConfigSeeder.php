@@ -699,6 +699,15 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云超级播放器配置',
+                'field_type' => 'text',
+                'sort' => 7,
+                'default_value' => 'default',
+                'key' => 'meedu.system.player.tencent_pcfg',
+                'value' => 'default',
+            ],
 
             // 会员配置
             [

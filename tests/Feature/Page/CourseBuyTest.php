@@ -31,20 +31,6 @@ class CourseBuyTest extends TestCase
             ->see($course->title);
     }
 
-    public function test_member_orders_page_with_no_show()
-    {
-        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
-
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
-            'is_show' => Course::SHOW_NO,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $this->actingAs($user)
-            ->visit(route('member.course.buy', [$course->id]))
-            ->see($course->title);
-    }
-
     public function test_member_orders_page_with_no_published()
     {
         $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);

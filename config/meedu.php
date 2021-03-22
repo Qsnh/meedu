@@ -192,6 +192,8 @@ return [
             'enabled_aliyun_private' => 0,
             // 腾讯云播放key
             'tencent_play_key' => '',
+            // 腾讯云超级播放器配置
+            'tencent_pcfg' => 'default',
         ],
 
         // 缓存开关

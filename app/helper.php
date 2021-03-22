@@ -405,9 +405,6 @@ if (!function_exists('get_tencent_play_url')) {
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
             $req->FileIds[] = $vid;
             $req->SubAppId = (int)$config['app_id'];
-            /**
-             * @var $response \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosResponse
-             */
             $response = $client->DescribeMediaInfos($req);
             if (!$response->MediaInfoSet) {
                 // 无法获取url地址

@@ -9,7 +9,7 @@
         fileID: '{{$video['tencent_video_id']}}',
         appID: '{{config('tencent.vod.app_id')}}',
         poster: '{{$gConfig['system']['player_thumb']}}',
-        playbackRates: [0.5, 1, 1.25, 1.5, 2],
+        playbackRates: [0.5, 1, 1.5, 2],
         plugins: {
             ContinuePlay: {},
         },
