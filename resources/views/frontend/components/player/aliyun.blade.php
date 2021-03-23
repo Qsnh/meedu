@@ -91,6 +91,14 @@
         "encryptType": 1,
         @endif
         components: [
+            {
+                name: 'RateComponent',
+                type: AliPlayerComponent.RateComponent
+            },
+            {
+                name: 'QualityComponent',
+                type: AliPlayerComponent.QualityComponent
+            },
                 @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
             {
                 name: 'BulletScreenComponent',
