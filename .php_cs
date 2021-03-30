@@ -40,4 +40,5 @@ return PhpCsFixer\Config::create()
             ->exclude('templates')
             ->exclude('vendor')
             ->in(__DIR__)
-    );
+    )
+    ->setUsingCache(false);
