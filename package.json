@@ -14,19 +14,15 @@
     "cross-env": "^5.1",
     "jquery": "^3.2",
     "laravel-mix": "^5.0",
-    "lodash": "^4.17.5",
-    "popper.js": "^1.16.1",
     "resolve-url-loader": "^3.1.0",
     "sass": "^1.27.0",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
-    "sweetalert2": "^10.6.1",
-    "xgplayer": "^2.6.15",
-    "xgplayer-hls": "^2.3.2",
-    "xgplayer-hls.js": "^2.1.6",
-    "xgplayer-mp4": "^1.1.8",
-    "zepto-webpack": "^1.2.1"
+    "sweetalert2": "10.15.7",
+    "xgplayer": "2.9.5",
+    "xgplayer-hls": "2.4.16",
+    "zepto-webpack": "1.2.1"
   }
 }
