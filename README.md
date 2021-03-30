@@ -12,11 +12,13 @@
 
 - [x] 使用傻瓜安装包安装 [下载地址](https://www.yuque.com/meedu/kbanfm)
 - [x] [宝塔一键安装（适合技术能力一般的用户）](https://www.yuque.com/meedu/fvvkbf/qvb006)
-- [x] [手动安装教程（适合技能能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
-- [x] MeEdu 安装服务。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
+- [x] [手动安装教程（适合技术能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
+- [x] MeEdu 安装服务（适合小白用户）。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
 
 ## FAQ
 
+- [MeEdu 官网](https://meedu.vip)
+- [MeEdu 插件商城](https://meedu.vip/addons)
 - [MeEdu 功能概览](https://www.yuque.com/meedu/fvvkbf/gkg87z)
 - [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
 - [MeEdu 常见问题总结](https://www.yuque.com/meedu/yr7rek)
@@ -37,5 +39,5 @@
 | 昵称 | |
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
-| `逸企邦` | [https://easeco.cn/](https://easeco.cn) |
+| `逸企邦` | [https://easeco.cn](https://easeco.cn) |
 | `Aunger` | [https://www.aunwen.com](https://www.aunwen.com) |
