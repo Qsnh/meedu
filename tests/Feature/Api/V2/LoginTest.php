@@ -100,16 +100,12 @@ class LoginTest extends Base
 
     public function test_socialites()
     {
-        config(['meedu.member.socialite.github.enabled' => 0]);
         config(['meedu.member.socialite.qq.enabled' => 1]);
-        config(['meedu.member.socialite.weixinweb.enabled' => 0]);
 
         $response = $this->get('/api/v2/login/socialites');
         $response = $this->assertResponseSuccess($response);
         $apps = $response['data'];
         $apps = array_column($apps, null, 'app');
         $this->assertTrue(isset($apps['qq']));
-        $this->assertFalse(isset($apps['github']));
-        $this->assertFalse(isset($apps['weixinweb']));
     }
 }

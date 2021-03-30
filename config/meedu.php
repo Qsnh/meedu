@@ -29,18 +29,10 @@ return [
 
         // Socialite
         'socialite' => [
-            // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
                 'logo' => '/images/icons/qq.svg',
-                'enabled' => 0,
-            ],
-            // 微信登录
-            'weixinweb' => [
-                'app' => 'weixinweb',
-                'name' => '微信',
-                'logo' => '/images/icons/weixin.svg',
                 'enabled' => 0,
             ],
         ],

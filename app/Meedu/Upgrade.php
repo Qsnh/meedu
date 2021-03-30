@@ -33,12 +33,18 @@ class Upgrade
         // 删除github登录
         // 现在大陆服务器访问github经常出现超时的情况
         // 已经严重影响了用户体验
+        // 删除微信web扫码登录那
         AppConfig::query()
             ->whereIn('key', [
                 'meedu.member.socialite.github.enabled',
                 'services.github.client_id',
                 'services.github.client_secret',
                 'services.github.redirect',
+
+                'meedu.member.socialite.weixinweb.enabled',
+                'services.weixinweb.client_id',
+                'services.weixinweb.client_secret',
+                'services.weixinweb.redirect',
             ])
             ->delete();
     }

@@ -194,46 +194,6 @@ class AppConfigSeeder extends Seeder
                 'value' => url('login/qq/callback'),
             ],
 
-            // 微信扫码登录
-            [
-                'group' => '登录',
-                'name' => '微信开放平台扫码登录',
-                'field_type' => 'switch',
-                'sort' => 8,
-                'default_value' => 0,
-                'key' => 'meedu.member.socialite.weixinweb.enabled',
-                'value' => 0,
-                'help' => '申请地址：https://open.weixin.qq.com',
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 ClientId',
-                'field_type' => 'text',
-                'sort' => 9,
-                'default_value' => '',
-                'key' => 'services.weixinweb.client_id',
-                'value' => '',
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 ClientSecret',
-                'field_type' => 'text',
-                'sort' => 10,
-                'default_value' => '',
-                'key' => 'services.weixinweb.client_secret',
-                'value' => '',
-                'is_private' => 1,
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 Redirect',
-                'field_type' => 'text',
-                'sort' => 11,
-                'default_value' => url('login/weixinweb/callback'),
-                'key' => 'services.weixinweb.redirect',
-                'value' => url('login/weixinweb/callback'),
-            ],
-
             // 短信配置
             [
                 'group' => '短信',

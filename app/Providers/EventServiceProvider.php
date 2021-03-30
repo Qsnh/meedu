@@ -31,7 +31,6 @@ class EventServiceProvider extends ServiceProvider
             '\App\Listeners\OrderCancelEvent\InviteBalanceResumeListener',
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
-            'SocialiteProviders\\WeixinWeb\\WeixinWebExtendSocialite@handle',
             'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
         ],
         'App\Events\CourseCommentEvent' => [

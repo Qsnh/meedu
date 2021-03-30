@@ -23,19 +23,16 @@ class MemberSocialiteTest extends TestCase
     public function test_enabled_app()
     {
         config(['meedu.member.socialite.qq.enabled' => 1]);
-        config(['meedu.member.socialite.weixinweb.enabled' => 0]);
         $user = factory(User::class)->create();
         $this->actingAs($user)
             ->visit(route('member.socialite'))
             ->seeStatusCode(200)
-            ->dontSee('微信')
             ->see('QQ');
     }
 
     public function test_cancel_button()
     {
         config(['meedu.member.socialite.qq.enabled' => 1]);
-        config(['meedu.member.socialite.weixinweb.enabled' => 1]);
         $user = factory(User::class)->create();
         factory(Socialite::class)->create([
             'user_id' => $user->id,
