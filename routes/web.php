@@ -26,15 +26,6 @@ Route::post('/register', 'RegisterController@passwordRegisterHandler')->middlewa
 Route::get('/password/reset', 'ForgotPasswordController@showPage')->name('password.request');
 Route::post('/password/reset', 'ForgotPasswordController@handler')->middleware(['throttle:10,1', 'sms.check']);
 
-// Auth Ajax
-Route::group(['prefix' => 'ajax'], function () {
-    Route::post('/auth/login/password', 'AjaxController@passwordLogin')->name('ajax.login.password');
-    Route::post('/auth/login/mobile', 'AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
-    Route::post('/auth/register', 'AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
-    Route::post('/auth/password/reset', 'AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
-    Route::post('/auth/mobile/bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check', 'auth']);
-});
-
 // 发送短信
 Route::post('/sms/send', 'SmsController@send')->name('sms.send');
 
@@ -60,13 +51,13 @@ Route::get('/announcement/{id}', 'AnnouncementController@show')->name('announcem
 
 Route::group([
     'prefix' => '/member',
-    'middleware' => ['wechat.login', 'auth', 'login.status.check'],
+    'middleware' => ['auth', 'login.status.check'],
 ], function () {
-    // 安全登出
-    Route::post('/logout', 'MemberController@logout')->name('logout');
-
     // 用户首页
     Route::get('/', 'MemberController@index')->name('member');
+
+    // 安全退出
+    Route::post('/logout', 'MemberController@logout')->name('logout');
 
     // 手机号绑定
     Route::get('/mobile/bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
@@ -147,4 +138,13 @@ Route::group([
         // 用户资料编辑
         Route::post('/member/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
     });
+});
+
+// Auth Ajax
+Route::group(['prefix' => 'ajax'], function () {
+    Route::post('/auth/login/password', 'AjaxController@passwordLogin')->name('ajax.login.password');
+    Route::post('/auth/login/mobile', 'AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
+    Route::post('/auth/register', 'AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
+    Route::post('/auth/password/reset', 'AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
+    Route::post('/auth/mobile/bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check', 'auth']);
 });

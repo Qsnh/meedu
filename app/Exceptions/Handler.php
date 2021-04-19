@@ -11,6 +11,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
+use App\Businesses\BusinessState;
 use App\Constant\BackendApiConstant;
 use Illuminate\Auth\AuthenticationException;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
@@ -74,6 +75,25 @@ class Handler extends ExceptionHandler
                     $exception instanceof AuthenticationException && $code = ApiV2Constant::ERROR_NO_AUTH_CODE;
                     return $this->error(__('error'), $code);
                 }
+            }
+        }
+
+        // 未登录异常处理
+        // 当用户是H5访问，开启了微信授权登录，微信浏览器中，且url中未包含跳过登录标识
+        if ($exception instanceof AuthenticationException) {
+            /**
+             * @var BusinessState $busState
+             */
+            $busState = app()->make(BusinessState::class);
+
+            if (
+                $busState->isEnabledMpOAuthLogin() &&
+                is_h5() &&
+                is_wechat() &&
+                !$request->has('skip_wechat')
+            ) {
+                $redirect = $request->fullUrl();
+                return redirect(url_append_query(route('login.wechat.oauth'), ['redirect' => $redirect]));
             }
         }
 

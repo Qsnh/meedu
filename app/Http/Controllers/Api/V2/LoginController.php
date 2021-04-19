@@ -355,7 +355,8 @@ class LoginController extends BaseController
             return $this->error(__('params error'));
         }
 
-        $redirectUrl = route('api.v2.login.wechat.callback') . '?s_url=' . urlencode($successRedirect) . '&f_url=' . urlencode($failedRedirect);
+        $redirectUrl = route('api.v2.login.wechat.callback');
+        $redirectUrl = url_append_query($redirectUrl, ['s_url' => urlencode($successRedirect), 'f_url' => urlencode($failedRedirect)]);
 
         return Wechat::getInstance()->oauth->redirect($redirectUrl);
     }
@@ -410,14 +411,11 @@ class LoginController extends BaseController
         }
 
         // 修改回调地址
-        config(['services.' . $app . '.redirect' => route('api.v2.login.socialite.callback', [$app])]);
+        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
+        $redirectUrl = url_append_query($redirectUrl, ['s_url' => urlencode($successRedirect), 'f_url' => urlencode($failedRedirect)]);
+        config(['services.' . $app . '.redirect' => $redirectUrl]);
 
-        return Socialite::driver($app)
-            ->with([
-                's_url' => urlencode($successRedirect),
-                'f_url' => urlencode($failedRedirect),
-            ])
-            ->redirect();
+        return Socialite::driver($app)->stateless()->redirect();
     }
 
     // 社交登录回调

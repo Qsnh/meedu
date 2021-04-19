@@ -6,7 +6,7 @@
  * (c) XiaoTeng <616896861@qq.com>
  */
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Backend;
 
 use Closure;
 use App\Constant\BackendApiConstant;
