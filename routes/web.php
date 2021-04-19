@@ -54,7 +54,7 @@ Route::get('/announcement/{id}', 'AnnouncementController@show')->name('announcem
 
 Route::group([
     'prefix' => '/member',
-    'middleware' => ['auth', 'login.status.check'],
+    'middleware' => ['auth', 'login.status.check', 'mobile.bind.check'],
 ], function () {
     // 用户首页
     Route::get('/', 'MemberController@index')->name('member');
@@ -64,7 +64,7 @@ Route::group([
 
     // 手机号绑定
     Route::get('/mobile/bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
-    Route::post('/mobile/bind', 'MemberController@mobileBindHandler')->middleware('sms.check');
+    Route::post('/mobile/bind', 'MemberController@mobileBindHandler')->name('member.mobile.bind.submit')->middleware('sms.check');
 
     // 密码重置
     Route::get('/password_reset', 'MemberController@showPasswordResetPage')->name('member.password_reset');

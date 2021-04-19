@@ -81,5 +81,13 @@ class FrontendConstant
     // 微信小程序登录socialite sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
 
+    // 微信公众号登录sign
     public const WECHAT_LOGIN_SIGN = 'wechat';
+
+    // 手机号强制绑定路由检测白名单
+    public const MOBILE_BIND_ROUTE_WHITELIST = [
+        'member.mobile.bind',
+        'member.mobile.bind.submit',
+        'logout',
+    ];
 }

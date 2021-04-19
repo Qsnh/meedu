@@ -11,6 +11,7 @@ namespace App\Http;
 use Fruitcake\Cors\HandleCors;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
+use App\Http\Middleware\MobileBindCheckMiddleware;
 use App\Http\Middleware\LoginStatusCheckMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\Backend\BackendPermissionCheckMiddleware;
@@ -95,5 +96,7 @@ class Kernel extends HttpKernel
         'login.status.check' => LoginStatusCheckMiddleware::class,
         // api接口的状态登录检测
         'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,
+        // 手机号绑定检测
+        'mobile.bind.check' => MobileBindCheckMiddleware::class,
     ];
 }
