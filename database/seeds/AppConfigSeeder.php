@@ -1037,6 +1037,14 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.mp_wechat.enabled_oauth_login',
                 'value' => 0,
             ],
+            [
+                'group' => '微信公众号',
+                'name' => '启用PC扫码登录',
+                'field_type' => 'switch',
+                'sort' => 7,
+                'key' => 'meedu.mp_wechat.enabled_scan_login',
+                'value' => 0,
+            ],
 
             // 注册送VIP
             [

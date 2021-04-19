@@ -136,4 +136,10 @@ class CacheConstant
         'name' => self::PREFIX_I . 'video:%d',
         'expire' => -1,
     ];
+
+    // 微信公众号扫码登录
+    public const WECHAT_SCAN_LOGIN = [
+        'name' => self::PREFIX_C . 'wechat:s:l:%s',
+        'expire' => 30,
+    ];
 }

@@ -35,7 +35,7 @@
         @if(!enabled_socialites()->isEmpty())
             @foreach(enabled_socialites() as $socialite)
                 <a class="mr-3"
-                   href="{{route('socialite', $socialite['app'])}}">
+                   href="{{url_append_query(route('socialite', $socialite['app']), ['redirect' => request()->input('redirect', '')])}}">
                     <img src="{{$socialite['logo']}}" width="48" height="48">
                 </a>
             @endforeach
@@ -58,7 +58,9 @@
                                                                              href="{{route('password.request')}}">忘记密码？</a>
                 </div>
                 <div class="form-item">
-                    <button type="button" data-url="{{route('ajax.login.mobile')}}" class="btn btn-primary btn-block login-button mobile-login-button">登录</button>
+                    <button type="button" data-url="{{route('ajax.login.mobile')}}"
+                            class="btn btn-primary btn-block login-button mobile-login-button">登录
+                    </button>
                 </div>
             </div>
         </form>

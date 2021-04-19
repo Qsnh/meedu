@@ -306,4 +306,22 @@ class BusinessState
         $enabledOAuthLogin = (int)($mpWechatConfig['enabled_oauth_login'] ?? 0);
         return $enabledOAuthLogin === 1;
     }
+
+    /**
+     * @return bool
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function enabledMpScanLogin(): bool
+    {
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+
+        $mpWechatConfig = $configService->getMpWechatConfig();
+
+        $enabledOAuthLogin = (int)($mpWechatConfig['enabled_scan_login'] ?? 0);
+
+        return $enabledOAuthLogin === 1;
+    }
 }

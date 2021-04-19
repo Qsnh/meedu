@@ -252,5 +252,6 @@ return [
         'token' => '',
         'aes_key' => '',
         'enabled_oauth_login' => 0,
+        'enabled_scan_login' => 0,
     ],
 ];

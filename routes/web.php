@@ -13,6 +13,9 @@ Route::get('/aboutus', 'IndexController@aboutus')->name('aboutus');
 // 登录
 Route::get('/login', 'LoginController@showLoginPage')->name('login');
 Route::post('/login', 'LoginController@passwordLoginHandler')->middleware(['throttle:30,1']);
+// 微信公众号扫码登录
+Route::get('/login/wechat/scan', 'LoginController@wechatScanLogin')->name('login.wechat.scan');
+Route::get('/login/wechat/scan/query', 'LoginController@wechatScanLoginQuery')->name('login.wechat.scan.query');
 // 微信公众号授权登录
 Route::get('/login/wechat/oauth', 'LoginController@wechatLogin')->name('login.wechat.oauth');
 Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback')->name('login.wechat.oauth.callback');

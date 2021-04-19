@@ -48,7 +48,10 @@ class MpWechatMessageReplyHook implements HookRuntimeInterface
                 return $mpWechatService->textMessageReplyFind($params->getValue('raw.Content', ''));
             } elseif ($msgType === self::MSG_TYPE_EVENT) {
                 // 事件消息
-                return $mpWechatService->eventMessageReplyFind($params->getValue('raw.Event'), $params->getValue('raw.EventKey'));
+                $event = $params->getValue('raw.Event');
+                $eventKey = $params->getValue('raw.EventKey');
+
+                return $mpWechatService->eventMessageReplyFind($event, $eventKey);
             }
         } catch (\Exception $e) {
             exception_record($e);

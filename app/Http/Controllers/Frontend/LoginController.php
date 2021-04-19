@@ -8,14 +8,21 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use QrCode;
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Constant\CacheConstant;
+use App\Businesses\BusinessState;
 use App\Exceptions\ServiceException;
 use App\Http\Controllers\BaseController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Services\Base\Services\CacheService;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\LoginPasswordRequest;
+use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
@@ -152,7 +159,56 @@ class LoginController extends BaseController
         return redirect($this->redirectTo());
     }
 
-    public function wechatScanLogin()
+    // 微信公众号扫码登录
+    public function wechatScanLogin(BusinessState $businessState)
     {
+        if (!$businessState->enabledMpScanLogin()) {
+            throw new ServiceException(__('未开启微信公众号扫码登录'));
+        }
+
+        $this->recordRedirectTo();
+
+        // 获取登录的二维码url
+        $code = Str::random(10);
+
+        $result = Wechat::getInstance()->qrcode->temporary($code, 3600);
+        $url = $result['url'] ?? '';
+        $image = 'data:image/png;base64, ' . base64_encode(QrCode::format('png')->size(300)->generate($url));
+
+        $title = __('微信公众号扫码登录');
+
+        return v('frontend.auth.wechat_scan_login', compact('title', 'code', 'image'));
+    }
+
+    public function wechatScanLoginQuery(Request $request, AuthBus $authBus)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('params error'));
+        }
+
+        /**
+         * @var CacheService $cacheService
+         */
+        $cacheService = app()->make(CacheServiceInterface::class);
+
+        $cacheKey = get_cache_key(CacheConstant::WECHAT_SCAN_LOGIN['name'], $code);
+        $userId = (int)$cacheService->pull($cacheKey);
+
+        if (!$userId) {
+            return $this->data(['status' => 0]);
+        }
+
+        $user = $this->userService->find($userId);
+        if ((int)$user['is_lock'] === 1) {
+            return $this->error(__('current user was locked,please contact administrator'));
+        }
+
+        $authBus->webLogin($userId, 1, $this->userPlatform());
+
+        return $this->data([
+            'status' => 1,
+            'redirect_url' => $this->redirectTo(),
+        ]);
     }
 }

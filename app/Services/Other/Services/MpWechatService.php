@@ -47,16 +47,38 @@ class MpWechatService implements MpWechatServiceInterface
      */
     public function eventMessageReplyFind(string $event, $eventKey = ''): string
     {
-        $message = MpWechatMessageReply::query()
+        $messages = MpWechatMessageReply::query()
             ->where('type', MpWechatMessageReply::TYPE_EVENT)
             ->where('event_type', $event)
-            ->when($eventKey, function ($query) use ($eventKey) {
-                $query->where('event_key', $eventKey);
-            })
-            ->first();
-        if (!$message) {
+            ->orderByDesc('id')
+            ->get();
+
+        if ($messages->isEmpty()) {
             return '';
         }
-        return $message['reply_content'] ?? '';
+
+        $content = '';
+
+        if ($eventKey) {
+            foreach ($messages as $message) {
+                if (!$message['event_key']) {
+                    continue;
+                }
+
+                if (preg_match('#' . $message['event_key'] . '#us', $eventKey)) {
+                    $content = $message['reply_content'];
+                    break;
+                }
+            }
+        } else {
+            foreach ($messages as $message) {
+                if (!$message['event_key']) {
+                    $content = $message['reply_content'];
+                    break;
+                }
+            }
+        }
+
+        return $content;
     }
 }
