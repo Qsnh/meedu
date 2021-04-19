@@ -522,7 +522,7 @@ if (!function_exists('get_platform')) {
      */
     function get_platform()
     {
-        // 如果默认读取不到，则将平台统一设置为 ‘APP’
+        // 如果默认读取不到，则将平台统一设置为APP
         $platform = strtoupper(request()->header('meedu-platform', \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP));
         $platforms = [
             \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP,
@@ -589,5 +589,19 @@ if (!function_exists('save_image')) {
         $data = compact('path', 'url', 'disk');
         $data['encryptData'] = encrypt(json_encode($data));
         return $data;
+    }
+}
+
+if (!function_exists('url_append_query')) {
+    function url_append_query(string $url, array $data): string
+    {
+        $query = http_build_query($data);
+        if (\Illuminate\Support\Str::contains($url, '?')) {
+            $url .= '&' . $query;
+        } else {
+            $url .= '?' . $query;
+        }
+
+        return $url;
     }
 }

@@ -236,7 +236,7 @@ class AjaxController extends BaseController
     public function mobileBind(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();
-        $this->userService->bindMobile($mobile);
+        $this->userService->bindMobile($mobile, $this->id());
         return $this->success();
     }
 

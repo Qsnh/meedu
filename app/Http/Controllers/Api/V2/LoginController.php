@@ -9,14 +9,14 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Bus\AuthBus;
-use EasyWeChat\Factory;
+use App\Meedu\Wechat;
+use App\Meedu\WechatMini;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Constant\CacheConstant;
-use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use App\Exceptions\ServiceException;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
@@ -155,7 +155,9 @@ class LoginController extends BaseController
     public function mobileLogin(MobileLoginRequest $request)
     {
         $this->mobileCodeCheck();
+
         ['mobile' => $mobile] = $request->filldata();
+
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
@@ -193,7 +195,7 @@ class LoginController extends BaseController
      *     )
      * )
      */
-    public function wechatMiniMobile(Request $request)
+    public function wechatMiniMobile(Request $request, AuthBus $authBus)
     {
         $openid = $request->input('openid');
         $encryptedData = $request->input('encryptedData');
@@ -221,7 +223,7 @@ class LoginController extends BaseController
             return $this->error(__('params error'));
         }
 
-        $mini = Factory::miniProgram($this->configService->getTencentWechatMiniConfig());
+        $mini = WechatMini::getInstance();
 
         // 解密获取手机号
         $data = $mini->encryptor->decryptData($sessionKey, $iv, $encryptedData);
@@ -229,20 +231,14 @@ class LoginController extends BaseController
         // 解密获取用户信息
         $userData = $mini->encryptor->decryptData($sessionKey, $userInfo['iv'], $userInfo['encryptedData']);
 
-        $user = $this->userService->findMobile($mobile);
-        $socialites = [];
-        if (!$user) {
-            // 直接注册
-            $user = $this->userService->createWithMobile($mobile, '', $userData['nickName'], $userData['avatarUrl']);
-        } else {
-            // socialite
-            $socialites = $this->socialiteService->userSocialites($user['id']);
-            $socialites = array_column($socialites, null, 'app');
+        if ($openid !== $userData['openId']) {
+            return $this->error(__('error'));
         }
-        if (!isset($socialites[FrontendConstant::WECHAT_MINI_LOGIN_SIGN])) {
-            // 未绑定socialite
-            $this->socialiteService->bindApp($user['id'], FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid, $userData);
-        }
+
+        // unionId
+        $unionId = $userData['unionId'] ?? '';
+
+        $user = $authBus->wechatMiniMobileLogin($openid, $unionId, $mobile, $userData);
 
         try {
             $token = $this->token($user);
@@ -277,13 +273,14 @@ class LoginController extends BaseController
      *     )
      * )
      */
-    public function wechatMini(Request $request)
+    public function wechatMini(Request $request, AuthBus $authBus)
     {
         $openid = $request->input('openid');
         $raw = $request->input('rawData');
         $signature = $request->input('signature');
         $encryptedData = $request->input('encryptedData');
         $iv = $request->input('iv');
+
         if (
             !$openid ||
             !$raw ||
@@ -304,7 +301,17 @@ class LoginController extends BaseController
             return $this->error(__('error'));
         }
 
-        $userId = $this->socialiteService->getBindUserId(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openid);
+        // 解密获取用户信息
+        $userData = WechatMini::getInstance()->encryptor->decryptData($sessionKey, $iv, $encryptedData);
+
+        if ($openid !== $userData['openId']) {
+            return $this->error(__('error'));
+        }
+
+        // unionId
+        $unionId = $userData['unionId'] ?? '';
+
+        $userId = $authBus->wechatMiniLogin($openid, $unionId);
         if (!$userId) {
             return $this->error(__('error'));
         }
@@ -326,7 +333,7 @@ class LoginController extends BaseController
      */
     protected function token($user)
     {
-        if ($user['is_lock'] === FrontendConstant::YES) {
+        if ((int)$user['is_lock'] === 1) {
             throw new ServiceException(__(ApiV2Constant::MEMBER_HAS_LOCKED));
         }
 
@@ -338,35 +345,106 @@ class LoginController extends BaseController
         return $authBus->tokenLogin($user['id'], get_platform());
     }
 
-    /**
-     * @OA\Get(
-     *     path="/login/socialites",
-     *     summary="社交登录app列表",
-     *     tags={"Auth"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/SocailiteApp")),
-     *         )
-     *     )
-     * )
-     */
-    public function socialiteApps()
+    // 微信公众号授权登录
+    public function wechatLogin(Request $request)
     {
-        $apps = $this->configService->getEnabledSocialiteApps();
-        $apps = array_map(function ($app) {
-            $app['logo'] = url($app['logo']);
+        $successRedirect = $request->input('success_redirect');
+        $failedRedirect = $request->input('failed_redirect');
 
-            // 授权地址
-            if (!($app['url'] ?? '')) {
-                $app['url'] = route('socialite', $app['app']);
-            }
+        if (!$successRedirect || !$failedRedirect) {
+            return $this->error(__('params error'));
+        }
 
-            return $app;
-        }, $apps);
+        $redirectUrl = route('api.v2.login.wechat.callback') . '?s_url=' . urlencode($successRedirect) . '&f_url=' . urlencode($failedRedirect);
 
-        return $this->data($apps);
+        return Wechat::getInstance()->oauth->redirect($redirectUrl);
+    }
+
+    // 微信公众号授权登录[回调]
+    public function wechatLoginCallback(Request $request, AuthBus $authBus)
+    {
+        $successRedirectUrl = $request->input('s_url');
+        $failedRedirectUrl = $request->input('f_url');
+
+        $user = Wechat::getInstance()->oauth->user();
+
+        if (!$user) {
+            return redirect(url_append_query($failedRedirectUrl, ['msg' => __('error')]));
+        }
+
+        $originalData = $user['original'];
+
+        $openid = $originalData['openid'];
+        $unionId = $originalData['unionid'] ?? '';
+
+        $userId = $authBus->wechatLogin($openid, $unionId, $originalData);
+
+        $user = $this->userService->find($userId);
+
+        try {
+            $token = $this->token($user);
+
+            return redirect(url_append_query($successRedirectUrl, ['token' => $token]));
+        } catch (ServiceException $e) {
+            return redirect(url_append_query($failedRedirectUrl, ['msg' => $e->getMessage()]));
+        }
+    }
+
+    // 社交登录
+    public function socialiteLogin(Request $request, ConfigServiceInterface $configService, $app)
+    {
+        /**
+         * @var ConfigService $configService
+         */
+
+        $successRedirect = $request->input('success_redirect');
+        $failedRedirect = $request->input('failed_redirect');
+
+        if (!$successRedirect || !$failedRedirect) {
+            return $this->error(__('params error'));
+        }
+
+        $enabledSocialites = $configService->getEnabledSocialiteApps();
+        if (!in_array($app, array_column($enabledSocialites, 'app'))) {
+            return $this->error(__('params error'));
+        }
+
+        // 修改回调地址
+        config(['services.' . $app . '.redirect' => route('api.v2.login.socialite.callback', [$app])]);
+
+        return Socialite::driver($app)
+            ->with([
+                's_url' => urlencode($successRedirect),
+                'f_url' => urlencode($failedRedirect),
+            ])
+            ->redirect();
+    }
+
+    // 社交登录回调
+    public function socialiteLoginCallback(Request $request, $app)
+    {
+        $successRedirectUrl = $request->input('s_url');
+        $failedRedirectUrl = $request->input('f_url');
+
+        $user = Socialite::driver($app)->stateless()->user();
+
+        $appId = $user->getId();
+
+        $userId = $this->socialiteService->getBindUserId($app, $appId);
+
+        if (!$userId) {
+            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+        }
+
+        // 用户是否锁定检测
+        $user = $this->userService->find($userId);
+
+        try {
+            $token = $this->token($user);
+
+            return redirect(url_append_query($successRedirectUrl, ['token' => $token]));
+        } catch (ServiceException $e) {
+            return redirect(url_append_query($failedRedirectUrl, ['msg' => $e->getMessage()]));
+        }
     }
 }

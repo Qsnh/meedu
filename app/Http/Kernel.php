@@ -12,7 +12,6 @@ use Fruitcake\Cors\HandleCors;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Http\Middleware\WechatLoginMiddleware;
 use App\Http\Middleware\CheckSmsCodeMiddleware;
-use App\Http\Middleware\PromoCodeSaveMiddleware;
 use App\Http\Middleware\LoginStatusCheckMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\BackendPermissionCheckMiddleware;
@@ -64,7 +63,6 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            PromoCodeSaveMiddleware::class,
         ],
 
         'api' => [

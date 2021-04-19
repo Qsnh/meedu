@@ -9,8 +9,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Bus\AuthBus;
-use App\Meedu\Wechat;
 use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,10 +24,6 @@ class WechatLoginMiddleware
     public function handle($request, Closure $next)
     {
         /**
-         * @var AuthBus $bus
-         */
-        $bus = app()->make(AuthBus::class);
-        /**
          * @var BusinessState $busState
          */
         $busState = app()->make(BusinessState::class);
@@ -41,19 +35,8 @@ class WechatLoginMiddleware
             !Auth::check() &&
             !$request->has('skip_wechat')
         ) {
-            // 指定token登录
-            $bus->recordSocialiteTokenWay();
-
-            // 跳转的url
-            $redirectTo = $request->input('redirect');
-            $redirectTo || $redirectTo = $request->fullUrl();
-            $bus->recordSocialiteRedirectTo($redirectTo);
-
-            // 登录平台
-            $bus->recordSocialitePlatform();
-
-            // 开始跳转到微信公众号授权登录
-            return Wechat::getInstance()->oauth->redirect();
+            $redirect = $request->fullUrl();
+            return redirect(route('login.wechat.oauth') . '?redirect=' . $redirect);
         }
         return $next($request);
     }

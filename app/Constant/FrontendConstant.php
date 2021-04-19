@@ -88,4 +88,6 @@ class FrontendConstant
 
     // 微信小程序登录socialite sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
+
+    public const WECHAT_LOGIN_SIGN = 'wechat';
 }

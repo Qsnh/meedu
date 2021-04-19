@@ -84,7 +84,7 @@ class SocialiteServiceTest extends TestCase
         $app = 'app1';
         $appUserId = Str::random();
         $this->service->bindApp($user->id, $app, $appUserId, []);
-        $this->service->cancelBind($app);
+        $this->service->cancelBind($app, $user['id']);
         $this->assertEmpty(Socialite::whereUserId($user->id)->where('app', $app)->whereAppUserId($appUserId)->first());
     }
 }

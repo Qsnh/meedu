@@ -47,5 +47,11 @@ class Upgrade
                 'services.weixinweb.redirect',
             ])
             ->delete();
+
+        // 删除QQ互联登录的回调地址配置
+        // meedu v4.0版本开始无需手动配置
+        AppConfig::query()
+            ->where('key', 'services.qq.redirect')
+            ->delete();
     }
 }

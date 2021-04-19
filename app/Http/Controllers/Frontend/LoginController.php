@@ -10,17 +10,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
-use Illuminate\Http\Request;
-use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController;
 use Laravel\Socialite\Facades\Socialite;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\SocialiteService;
 use App\Http\Requests\Frontend\LoginPasswordRequest;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
@@ -37,159 +32,127 @@ class LoginController extends BaseController
      */
     protected $socialiteService;
 
-    public function __construct(UserServiceInterface $userService, SocialiteServiceInterface $socialiteService)
-    {
+    public function __construct(
+        UserServiceInterface $userService,
+        SocialiteServiceInterface $socialiteService
+    ) {
+        parent::__construct();
+
         $this->userService = $userService;
         $this->socialiteService = $socialiteService;
-        $this->middleware('guest')->except(
-            'logout',
-            'socialLogin',
-            'socialiteLoginCallback'
-        );
+
+        $this->middleware('guest');
     }
 
-    public function showLoginPage(Request $request)
+    // 登录界面
+    public function showLoginPage()
     {
-        // 主动配置redirect
-        $redirect = $request->input('redirect');
-
-        if (!$redirect && $redirect = request()->server('HTTP_REFERER')) {
-            // 当为配置redirect的时候，检测http_referer
-            foreach (FrontendConstant::LOGIN_REFERER_BLACKLIST as $item) {
-                if (preg_match("#{$item}#ius", $redirect)) {
-                    $redirect = '';
-                    break;
-                }
-            }
-        }
-
-        // 存储redirectTo
-        $redirect && session([FrontendConstant::LOGIN_CALLBACK_URL_KEY => $redirect]);
+        $this->recordRedirectTo();
 
         $title = __('title.login');
 
         return v('frontend.auth.login', compact('title'));
     }
 
+    // 密码登录
     public function passwordLoginHandler(LoginPasswordRequest $request, AuthBus $bus)
     {
         [
             'mobile' => $mobile,
             'password' => $password,
         ] = $request->filldata();
+
         $user = $this->userService->passwordLogin($mobile, $password);
 
         if (!$user) {
-            flash(__('mobile not exists or password error'), 'error');
-            return back();
-        }
-        if ($user['is_lock'] == FrontendConstant::YES) {
-            flash(__('current user was locked,please contact administrator'));
-            return back();
+            throw new ServiceException(__('mobile not exists or password error'));
         }
 
-        $bus->webLogin(
-            $user['id'],
-            $request->has('remember'),
-            is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC
-        );
+        if ((int)$user['is_lock'] === 1) {
+            throw new ServiceException(__('current user was locked,please contact administrator'));
+        }
 
-        return redirect($bus->redirectTo());
+        $bus->webLogin($user['id'], $request->has('remember'), $this->userPlatform());
+
+        return redirect($this->redirectTo());
     }
 
-    public function socialLogin(Request $request, AuthBus $bus, $app)
+    // 社交登录
+    public function socialLogin($app)
     {
-        // 登录后的跳转地址
-        $redirect = $request->input('redirect');
-        $redirect && $bus->recordSocialiteRedirectTo($redirect);
+        $this->recordRedirectTo();
 
-        // 指定token登录
-        $bus->recordSocialiteTokenWay();
+        $enabledSocialites = $this->configService->getEnabledSocialiteApps();
+        if (!in_array($app, array_column($enabledSocialites, 'app'))) {
+            return $this->error(__('登录方式不存在'));
+        }
 
-        // 指定登录的平台[pc,h5,android,ios等]
-        $bus->recordSocialitePlatform();
+        // 修改回调地址
+        config(['services.' . $app . '.redirect' => route('socialite.callback', [$app])]);
 
         return Socialite::driver($app)->redirect();
     }
 
+    // 社交登录回调
     public function socialiteLoginCallback(AuthBus $bus, $app)
     {
-        if ($app === 'wechat') {
-            // 微信公众号授权登录
-            $user = Wechat::getInstance()->oauth->user();
-            $appId = $user->getId();
-            $user = [
-                'id' => $user->getId(),
-                'nickname' => $user->getNickname(),
-                'avatar' => $user->getAvatar(),
-            ];
-        } else {
-            // 其它社交登录
-            $user = Socialite::driver($app)->user();
-            $appId = $user->getId();
-        }
+        $user = Socialite::driver($app)->user();
+        $appId = $user->getId();
 
-        // 已登录的情况下，执行社交账号的绑定操作
-        if ($this->check()) {
-            // 经过测试，已登录下访问绑定的url将会陷入重定向死循环
-            // 所以这里捕获异常做单独处理
-            try {
-                $this->socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
-                flash(__('socialite bind success'), 'success');
-                return redirect('member');
-            } catch (ServiceException $e) {
-                flash($e->getMessage());
-                return redirect(route('member'));
-            } catch (\Exception $e) {
-                abort(500);
-            }
-        }
-
-        // 读取当前社交账号绑定的用户id
         $userId = $this->socialiteService->getBindUserId($app, $appId);
-        // 当前社交账号已经绑定了用户id可以直接登录
-        if ($userId) {
-            // 用户是否锁定检测
-            $user = $this->userService->find($userId);
-            if ($user['is_lock'] === FrontendConstant::YES) {
-                flash(__('current user was locked,please contact administrator'));
-                return redirect(url('/?skip_wechat=1'));
-            }
-            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
-        }
 
-        // 接下来，当前社交账号是一个全新的账号
-        // 如果系统开启了强制绑定手机号的操作，则进入手机号绑定的流程
-        // 如果系统未开启手机号绑定，则直接创建匿名手机号新用户，然后直接登录
-
-        /**
-         * @var ConfigService $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-        $mustBindMobileStatus = $configService->getEnabledMobileBindAlert();
-
-        if (!$mustBindMobileStatus) {
-            // 未开启手机号的强制绑定
+        if (!$userId) {
             $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
-            return redirect($bus->socialiteRedirectTo($bus->socialiteLogin($userId)));
         }
 
-        // 缓存当前的社交登录用户信息
-        // 跳转到强制绑定手机号的界面
-        // 需要配置中间件做检测
-        session([FrontendConstant::SOCIALITE_USER_INFO_KEY => [
-            'app' => $app,
-            'app_id' => $appId,
-            'user' => (array)$user,
-        ]]);
+        // 用户是否锁定检测
+        $user = $this->userService->find($userId);
 
-        return redirect(route('member.mobile.bind'));
+        if ((int)$user['is_lock'] === 1) {
+            flash(__('current user was locked,please contact administrator'));
+            return redirect(url('/'));
+        }
+
+        $bus->webLogin($userId, 1, $this->userPlatform());
+
+        return redirect($this->redirectTo());
     }
 
-    public function logout()
+    // 微信公众号授权登录
+    public function wechatLogin()
     {
-        Auth::logout();
-        flash(__('success'), 'success');
-        return redirect(url('/'));
+        $this->recordRedirectTo();
+
+        return Wechat::getInstance()->oauth->redirect();
+    }
+
+    // 微信公众号授权登录回调
+    public function wechatLoginCallback(AuthBus $authBus)
+    {
+        $user = Wechat::getInstance()->oauth->user();
+        if (!$user) {
+            abort(500);
+        }
+
+        $originalData = $user['original'];
+
+        $openid = $originalData['openid'];
+        $unionId = $originalData['unionid'] ?? '';
+
+        $userId = $authBus->wechatLogin($openid, $unionId, $originalData);
+
+        $user = $this->userService->find($userId);
+        if ((int)$user['is_lock'] === 1) {
+            flash(__('current user was locked,please contact administrator'));
+            return redirect(url('/'));
+        }
+
+        $authBus->webLogin($userId, 1, $this->userPlatform());
+
+        return redirect($this->redirectTo());
+    }
+
+    public function wechatScanLogin()
+    {
     }
 }

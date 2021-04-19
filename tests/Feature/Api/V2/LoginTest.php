@@ -97,15 +97,4 @@ class LoginTest extends Base
         ]);
         $this->assertResponseSuccess($response);
     }
-
-    public function test_socialites()
-    {
-        config(['meedu.member.socialite.qq.enabled' => 1]);
-
-        $response = $this->get('/api/v2/login/socialites');
-        $response = $this->assertResponseSuccess($response);
-        $apps = $response['data'];
-        $apps = array_column($apps, null, 'app');
-        $this->assertTrue(isset($apps['qq']));
-    }
 }

@@ -184,15 +184,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
-            [
-                'group' => '登录',
-                'name' => 'QQ Redirect',
-                'field_type' => 'text',
-                'sort' => 7,
-                'default_value' => url('login/qq/callback'),
-                'key' => 'services.qq.redirect',
-                'value' => url('login/qq/callback'),
-            ],
 
             // 短信配置
             [

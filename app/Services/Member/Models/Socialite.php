@@ -15,7 +15,7 @@ class Socialite extends Model
     protected $table = 'socialite';
 
     protected $fillable = [
-        'user_id', 'app', 'app_user_id', 'data',
+        'user_id', 'app', 'app_user_id', 'data', 'union_id',
     ];
 
     /**

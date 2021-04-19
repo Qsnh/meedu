@@ -48,10 +48,9 @@ class Wechat
                         ],
                     ],
                 ],
-                // 授权登录
                 'oauth' => [
                     'scopes' => ['snsapi_userinfo'],
-                    'callback' => url('/login/wechat/callback'),
+                    'callback' => route('login.wechat.oauth.callback'),
                 ],
             ];
             self::$instance = Factory::officialAccount($config);

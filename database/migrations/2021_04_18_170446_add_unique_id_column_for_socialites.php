@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSocialiteTable extends Migration
+class AddUniqueIdColumnForSocialites extends Migration
 {
     /**
      * Run the migrations.
@@ -19,13 +19,8 @@ class CreateSocialiteTable extends Migration
      */
     public function up()
     {
-        Schema::create('socialite', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->default(0);
-            $table->string('app')->default('');
-            $table->string('app_user_id', 128)->default('');
-            $table->string('data', 2222)->default('');
-            $table->timestamps();
+        Schema::table('socialite', function (Blueprint $table) {
+            $table->string('union_id', 256)->nullable(true)->default(null)->comment('union_id');
         });
     }
 
@@ -36,6 +31,8 @@ class CreateSocialiteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('socialite');
+        Schema::table('socialite', function (Blueprint $table) {
+            $table->dropColumn('union_id');
+        });
     }
 }

@@ -17,12 +17,16 @@ Route::post('/password/reset', 'PasswordController@reset');
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
-// 微信小程序登录
+// 微信小程序静默登录
 Route::post('/login/wechatMini', 'LoginController@wechatMini');
 // 微信小程序手机号登录
 Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile');
-// 无状态的社交登录app列表
-Route::get('/login/socialites', 'LoginController@socialiteApps');
+// 微信公众号授权登录
+Route::get('/login/wechat/oauth', 'LoginController@wechatLogin');
+Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback')->name('api.v2.login.wechat.callback');
+// 社交登录
+Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin');
+Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v2.login.socialite.callback');
 
 // 课程搜索
 Route::get('/search', 'SearchController@index');
