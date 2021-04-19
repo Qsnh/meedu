@@ -482,24 +482,6 @@ class AppConfigSeeder extends Seeder
                 'is_private' => 1,
                 'help' => 'RSA2加密方式',
             ],
-            [
-                'group' => '支付',
-                'name' => '支付宝返回地址',
-                'field_type' => 'text',
-                'sort' => 4,
-                'default_value' => url('member/order/pay/success'),
-                'key' => 'pay.alipay.return_url',
-                'value' => url('member/order/pay/success'),
-            ],
-            [
-                'group' => '支付',
-                'name' => '支付宝回调地址',
-                'field_type' => 'text',
-                'sort' => 5,
-                'default_value' => url('payment/callback/alipay'),
-                'key' => 'pay.alipay.notify_url',
-                'value' => url('payment/callback/alipay'),
-            ],
 
             // 微信支付
             [
@@ -547,15 +529,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'pay.wechat.key',
                 'value' => '',
                 'is_private' => 1,
-            ],
-            [
-                'group' => '支付',
-                'name' => '微信支付回调地址',
-                'field_type' => 'text',
-                'sort' => 12,
-                'default_value' => url('payment/callback/wechat'),
-                'key' => 'pay.wechat.notify_url',
-                'value' => url('payment/callback/wechat'),
             ],
 
             // 手动打款

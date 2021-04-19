@@ -46,15 +46,29 @@ class MeEduUpgradeCommand extends Command
     public function handle()
     {
         // 数据库迁移命令
+        $this->info('执行数据库迁移...');
         Artisan::call('migrate', ['--force' => true]);
 
         // 同步meedu最新配置
+        $this->info('同步最新配置...');
         Artisan::call('install', ['action' => 'config']);
 
         // 同步管理角色和权限
+        $this->info('同步后台管理权限...');
         Artisan::call('install', ['action' => 'role']);
 
         // 执行升级业务逻辑
+        $this->info('执行升级业务逻辑...');
         (new Upgrade)->run();
+
+        // 清空路由缓存
+        $this->info('清除路由缓存...');
+        Artisan::call('route:clear');
+
+        // 清空配置缓存
+        $this->info('清除配置缓存...');
+        Artisan::call('config:clear');
+
+        $this->info('升级成功');
     }
 }

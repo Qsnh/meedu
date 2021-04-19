@@ -64,10 +64,10 @@ class Wechat implements Payment
             $payOrderData = array_merge($payOrderData, $extra);
 
             $config = $this->configService->getWechatPay();
+            // 回调地址
+            $config['notify_url'] = route('payment.callback', ['wechat']);
 
             $createResult = Pay::wechat($config)->{$order['payment_method']}($payOrderData);
-
-            Log::info(__METHOD__, compact('createResult'));
 
             // 缓存保存
             $this->cacheService->put(

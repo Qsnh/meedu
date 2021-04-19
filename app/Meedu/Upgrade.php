@@ -53,5 +53,16 @@ class Upgrade
         AppConfig::query()
             ->where('key', 'services.qq.redirect')
             ->delete();
+
+        // 删除支付宝和微信支付的url配置
+        // meedu v4.0将会自动解析
+        AppConfig::query()
+            ->whereIn('key', [
+                'pay.alipay.return_url',
+                'pay.alipay.notify_url',
+
+                'pay.wechat.notify_url',
+            ])
+            ->delete();
     }
 }
