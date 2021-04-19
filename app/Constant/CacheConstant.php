@@ -140,6 +140,6 @@ class CacheConstant
     // 微信公众号扫码登录
     public const WECHAT_SCAN_LOGIN = [
         'name' => self::PREFIX_C . 'wechat:s:l:%s',
-        'expire' => 30,
+        'expire' => 60 * 30,
     ];
 }
