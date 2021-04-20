@@ -65,4 +65,10 @@ class AdFromServiceTest extends TestCase
 
         $this->assertEquals($num, $number['num']);
     }
+
+    public function test_findFromKey()
+    {
+        $result = $this->service->findFromKey('123');
+        $this->assertEmpty($result);
+    }
 }

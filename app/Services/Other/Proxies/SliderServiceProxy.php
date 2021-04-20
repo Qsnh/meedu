@@ -19,7 +19,9 @@ class SliderServiceProxy extends ServiceProxy implements SliderServiceInterface
     public function __construct(SliderService $service)
     {
         parent::__construct($service);
-        $this->cache['all'] = function ($platform) {
+        $this->cache['all'] = function ($platform = '') {
+            $platform || $platform = 'all';
+
             return new CacheInfo(
                 get_cache_key(CacheConstant::SLIDER_SERVICE_ALL['name'], $platform),
                 $this->configService->getCacheExpire()
