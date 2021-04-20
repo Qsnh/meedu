@@ -251,7 +251,20 @@ return [
         'app_secret' => '',
         'token' => '',
         'aes_key' => '',
+        // 开启授权登录
         'enabled_oauth_login' => 0,
+        // 开启PC扫码登录
         'enabled_scan_login' => 0,
+        // 开启微信浏览器的分享
+        'enabled_share' => 0,
+        // 微信H5分享自定义内容
+        'share' => [
+            // 分享标题
+            'title' => '',
+            // 分享描述
+            'desc' => '',
+            // 分享的图片
+            'imgUrl' => '',
+        ],
     ],
 ];

@@ -1018,6 +1018,38 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.mp_wechat.enabled_scan_login',
                 'value' => 0,
             ],
+            [
+                'group' => '微信公众号',
+                'name' => '启用微信分享',
+                'field_type' => 'switch',
+                'sort' => 8,
+                'key' => 'meedu.mp_wechat.enabled_share',
+                'value' => 0,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享标题',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'meedu.mp_wechat.share.title',
+                'value' => '',
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享描述',
+                'field_type' => 'text',
+                'sort' => 11,
+                'key' => 'meedu.mp_wechat.share.desc',
+                'value' => '',
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享图片',
+                'field_type' => 'image',
+                'sort' => 12,
+                'key' => 'meedu.mp_wechat.share.imgUrl',
+                'value' => '',
+            ],
 
             // 注册送VIP
             [

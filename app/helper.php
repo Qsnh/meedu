@@ -605,3 +605,22 @@ if (!function_exists('url_append_query')) {
         return $url;
     }
 }
+
+if (!function_exists('wechat_jssdk')) {
+    /**
+     * @param array $apiList
+     *
+     * @return array
+     *
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    function wechat_jssdk(array $apiList): array
+    {
+        $app = \App\Meedu\Wechat::getInstance();
+        return $app->jssdk->buildConfig($apiList, is_dev(), false, false);
+    }
+}

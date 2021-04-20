@@ -195,3 +195,14 @@
     @endif
 
 @endsection
+
+@section('js')
+    <script>
+        // 微信分享
+        window.wechatShareInfo = {
+            title: '{{$video['title']}}',
+            desc: '{{$video['short_description']}}',
+            imgUrl: '{{$course['thumb']}}'
+        };
+    </script>
+@endsection

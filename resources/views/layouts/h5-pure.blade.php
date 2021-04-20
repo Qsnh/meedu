@@ -39,8 +39,11 @@
     flashError("{{get_first_flash('error')}}");
     @endif
 </script>
-@include('h5.components.mobile_bind')
+
 @yield('js')
+
+@include('h5.components.wechat-jssdk')
+
 <div style="display:none">{!! config('meedu.system.js') !!}</div>
 </body>
 </html>

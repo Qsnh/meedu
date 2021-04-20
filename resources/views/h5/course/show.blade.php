@@ -191,5 +191,12 @@
         $(function () {
             $('.course-description').find('img').attr('width', 'auto').attr('height', 'auto');
         });
+
+        // 微信分享
+        window.wechatShareInfo = {
+            title: '{{$course['title']}}',
+            desc: '{{$course['short_description']}}',
+            imgUrl: '{{$course['thumb']}}'
+        };
     </script>
 @endsection
