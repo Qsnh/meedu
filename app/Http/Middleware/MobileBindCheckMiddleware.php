@@ -12,6 +12,8 @@ use Closure;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class MobileBindCheckMiddleware
 {
@@ -30,7 +32,12 @@ class MobileBindCheckMiddleware
              */
             $bus = app()->make(BusinessState::class);
 
-            if ($bus->isNeedBindMobile(Auth::user()->toArray())) {
+            /**
+             * @var ConfigService $configService
+             */
+            $configService = app()->make(ConfigServiceInterface::class);
+
+            if ($configService->getEnabledMobileBindAlert() && $bus->isNeedBindMobile(Auth::user()->toArray())) {
                 return redirect(route('member.mobile.bind'));
             }
         }

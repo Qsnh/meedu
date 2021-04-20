@@ -38,6 +38,12 @@
                        href="{{route('socialite', $socialite['app'])}}"><img src="{{$socialite['logo']}}" width="44"
                                                                              height="44"></a>
                 @endforeach
+                @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
+                    <a class="socialite-item"
+                       href="{{url_append_query(route('login.wechat.scan'), ['redirect' => request()->input('redirect', '')])}}">
+                        <img src="{{asset('/images/icons/wechat.svg')}}" width="44" height="44">
+                    </a>
+                @endif
             </div>
         </div>
     </form>

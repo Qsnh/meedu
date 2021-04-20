@@ -32,7 +32,7 @@
                                 <div class="form-group mt-2">
                                     <button class="btn btn-primary btn-block">登录</button>
                                 </div>
-                                @if(!enabled_socialites()->isEmpty())
+                                @if(enabled_socialites()->isNotEmpty() || (int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
                                     <div class="form-group text-center c-2">
                                         <p>其它方式登录</p>
                                     </div>

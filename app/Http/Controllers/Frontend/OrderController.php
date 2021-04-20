@@ -120,6 +120,10 @@ class OrderController extends Controller
     // 微信jsapi支付
     public function wechatJSAPI(Request $request)
     {
+        // 跳转地址
+        $sUrl = $request->input('s_url');
+        $fUrl = $request->input('f_url');
+
         $data = $request->input('data');
         if (!$data) {
             throw new ServiceException(__('params error'));
@@ -146,7 +150,15 @@ class OrderController extends Controller
         $openid || $openid = session('wechat_jsapi_openid');
         if (!$openid) {
             // 微信授权登录获取openid
-            $redirect = url_append_query(route('order.pay.wechat.jsapi', $orderId), ['oauth' => 1, 'data' => $data]);
+            $redirect = url_append_query(
+                route('order.pay.wechat.jsapi', $orderId),
+                [
+                    'oauth' => 1,
+                    'data' => $data,
+                    's_url' => $sUrl,
+                    'f_url' => $fUrl,
+                ]
+            );
             return Wechat::getInstance()->oauth->redirect($redirect);
         }
 
