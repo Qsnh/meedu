@@ -14,26 +14,24 @@ use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
 use App\Exceptions\SystemException;
 use App\Exceptions\ServiceException;
-use App\Http\Controllers\Controller;
 use App\Meedu\Payment\Wechat\WechatJSAPI;
 use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
-class OrderController extends Controller
+class OrderController extends FrontendController
 {
     /**
      * @var OrderService
      */
     protected $orderService;
+
     /**
-     * @var ConfigService
+     * @var BusinessState
      */
-    protected $configService;
     protected $businessState;
+
     /**
      * @var CacheService
      */
@@ -41,12 +39,12 @@ class OrderController extends Controller
 
     public function __construct(
         OrderServiceInterface $orderService,
-        ConfigServiceInterface $configService,
         BusinessState $businessState,
         CacheServiceInterface $cacheService
     ) {
+        parent::__construct();
+
         $this->orderService = $orderService;
-        $this->configService = $configService;
         $this->businessState = $businessState;
         $this->cacheService = $cacheService;
     }
@@ -87,7 +85,7 @@ class OrderController extends Controller
     }
 
     // 支付成功界面
-    public function success(Request $request)
+    public function paySuccess(Request $request)
     {
         $orderId = $request->input('out_trade_no', '');
         $order = $this->orderService->findUser($orderId);

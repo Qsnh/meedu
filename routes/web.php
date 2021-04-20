@@ -125,7 +125,7 @@ Route::group([
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
 
     // 支付成功界面
-    Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
+    Route::get('/order/pay/success', 'OrderController@paySuccess')->name('order.pay.success');
     // 发起支付
     Route::get('/order/pay', 'OrderController@pay')->name('order.pay');
     // 微信PC扫码支付

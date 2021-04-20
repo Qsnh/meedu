@@ -8,11 +8,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Services\Other\Services\AnnouncementService;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
-class AnnouncementController extends Controller
+class AnnouncementController extends FrontendController
 {
 
     /**
@@ -22,6 +21,8 @@ class AnnouncementController extends Controller
 
     public function __construct(AnnouncementServiceInterface $announcementService)
     {
+        parent::__construct();
+
         $this->announcementService = $announcementService;
     }
 

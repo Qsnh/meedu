@@ -8,21 +8,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Services\Base\Services\ConfigService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
-
 class PaymentController extends FrontendController
 {
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
-
-    public function __construct(ConfigServiceInterface $configService)
-    {
-        $this->configService = $configService;
-    }
-
     /**
      * @param $payment
      * @return mixed

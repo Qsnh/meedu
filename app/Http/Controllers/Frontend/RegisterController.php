@@ -23,6 +23,8 @@ class RegisterController extends BaseController
 
     public function __construct(UserServiceInterface $userService)
     {
+        parent::__construct();
+
         $this->userService = $userService;
         $this->middleware('guest');
     }
@@ -47,13 +49,18 @@ class RegisterController extends BaseController
             'mobile' => $mobile,
             'password' => $password,
         ] = $request->filldata();
+
         $user = $this->userService->findMobile($mobile);
+
         if ($user) {
             flash(__('mobile.unique'));
             return back();
         }
+
         $this->userService->createWithMobile($mobile, $password, '');
+
         flash(__('register success'), 'success');
+
         return redirect(route('login'));
     }
 }

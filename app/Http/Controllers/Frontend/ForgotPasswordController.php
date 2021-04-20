@@ -8,12 +8,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\Frontend\PasswordResetRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
-class ForgotPasswordController extends Controller
+class ForgotPasswordController extends FrontendController
 {
 
     /**
@@ -23,6 +22,8 @@ class ForgotPasswordController extends Controller
 
     public function __construct(UserServiceInterface $userService)
     {
+        parent::__construct();
+
         $this->userService = $userService;
         $this->middleware('guest');
     }

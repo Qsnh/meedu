@@ -84,6 +84,8 @@ class AjaxController extends BaseController
         BusinessState $businessState,
         UserInviteBalanceServiceInterface $userInviteBalanceService
     ) {
+        parent::__construct();
+
         $this->videoCommentService = $videoCommentService;
         $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;

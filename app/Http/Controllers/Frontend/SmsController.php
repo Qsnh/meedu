@@ -24,6 +24,8 @@ class SmsController extends FrontendController
 
     public function __construct(SmsServiceInterface $smsService)
     {
+        parent::__construct();
+
         $this->smsService = $smsService;
     }
 
