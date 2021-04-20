@@ -52,6 +52,11 @@ Route::post('/payment/callback/{payment}', 'PaymentController@callback')->name('
 // 公告
 Route::get('/announcement/{id}', 'AnnouncementController@show')->name('announcement.show');
 
+// 微信JSAPI支付
+Route::get('/member/order/pay/wechat/jsapi/page', 'OrderController@wechatJSAPI')->name('order.pay.wechat.jsapi');
+// 手动打款支付
+Route::get('/member/order/pay/handPay', 'OrderController@handPay')->name('order.pay.handPay');
+
 Route::group([
     'prefix' => '/member',
     'middleware' => ['auth', 'login.status.check', 'mobile.bind.check'],
@@ -119,11 +124,12 @@ Route::group([
     Route::get('/vip/{id}/buy', 'RoleController@showBuyPage')->name('member.role.buy');
     Route::post('/vip/{id}/buy', 'RoleController@buyHandler');
 
-    // 收银台
+    // 支付成功界面
     Route::get('/order/pay/success', 'OrderController@success')->name('order.pay.success');
+    // 发起支付
     Route::get('/order/pay', 'OrderController@pay')->name('order.pay');
-    Route::get('/order/pay/wechat/{order_id}', 'OrderController@wechat')->name('order.pay.wechat');
-    Route::get('/order/pay/handPay/{order_id}', 'OrderController@handPay')->name('order.pay.handPay');
+    // 微信PC扫码支付
+    Route::get('/order/pay/wechat/{order_id}/scan', 'OrderController@wechatScan')->name('order.pay.wechat');
 
     Route::group(['prefix' => 'ajax'], function () {
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');

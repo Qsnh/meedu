@@ -110,6 +110,7 @@ return [
     // 支付网关
     'payment' => [
         'alipay' => [
+            'enabled' => 0,
             'handler' => \App\Meedu\Payment\Alipay\Alipay::class,
             'name' => '支付宝',
             'logo' => '/images/icons/alipay.png',
@@ -117,19 +118,27 @@ return [
             'default_method' => 'web',
             'pc' => 'web',
             'h5' => 'wap',
-            'enabled' => 0,
         ],
         'wechat' => [
-            'handler' => \App\Meedu\Payment\Wechat\Wechat::class,
+            'enabled' => 0,
+            'handler' => \App\Meedu\Payment\Wechat\WechatScan::class,
             'name' => '微信支付',
             'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
             'wechat_mini' => 'miniapp',
-            'enabled' => 0,
+        ],
+        'wechat-jsapi' => [
+            'enabled' => 1,
+            'name' => '微信支付',
+            'logo' => '/images/icons/wechat-pay.png',
+            'sign' => 'wechat-jsapi',
+            'handler' => \App\Meedu\Payment\Wechat\WechatJSAPI::class,
+            'wechat' => 'mp',
         ],
         'handPay' => [
+            'enabled' => 0,
             'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
             'name' => '手动打款',
             'logo' => '/images/icons/handpay.png',
@@ -138,7 +147,6 @@ return [
             'pc' => 'hand',
             'h5' => 'hand',
             'wechat' => 'hand',
-            'enabled' => 0,
         ],
     ],
 

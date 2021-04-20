@@ -119,5 +119,7 @@
   "当前渠道账号已绑定了其它账号": "The current channel account has been bound to other accounts",
   "登录方式不存在": "Login mode does not exist",
   "微信公众号扫码登录": "WeChat official account scan code login",
-  "未开启微信公众号扫码登录": "No official account of WeChat public code was entered"
+  "未开启微信公众号扫码登录": "No official account of WeChat public code was entered",
+  "点播课程": "On demand course",
+  "视频": "Video"
 }

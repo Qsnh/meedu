@@ -10,12 +10,9 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
-use App\Exceptions\SystemException;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Order\Services\OrderService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
@@ -26,21 +23,17 @@ class RoleController extends FrontendController
      */
     protected $roleService;
     /**
-     * @var ConfigService
-     */
-    protected $configService;
-    /**
      * @var OrderService
      */
     protected $orderService;
 
     public function __construct(
         RoleServiceInterface $roleService,
-        ConfigServiceInterface $configService,
         OrderServiceInterface $orderService
     ) {
+        parent::__construct();
+
         $this->roleService = $roleService;
-        $this->configService = $configService;
         $this->orderService = $orderService;
     }
 
@@ -56,11 +49,7 @@ class RoleController extends FrontendController
         return v('frontend.role.index', compact('roles', 'title', 'keywords', 'description'));
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
+    // 收银台界面
     public function showBuyPage($id)
     {
         $role = $this->roleService->find($id);
@@ -79,12 +68,7 @@ class RoleController extends FrontendController
         return v('frontend.order.create', compact('title', 'goods', 'total', 'payments', 'scene'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     * @throws SystemException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
+    // 支付
     public function buyHandler(Request $request)
     {
         $id = $request->input('goods_id');
@@ -100,6 +84,17 @@ class RoleController extends FrontendController
         $paymentScene = $request->input('payment_scene');
         $payment = $request->input('payment_sign');
 
-        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
+        return redirect(
+            route(
+                'order.pay',
+                [
+                    'scene' => $paymentScene,
+                    'payment' => $payment,
+                    'order_id' => $order['order_id'],
+                    // 支付成功后的跳转地址
+                    's_url' => route('member'),
+                ]
+            )
+        );
     }
 }

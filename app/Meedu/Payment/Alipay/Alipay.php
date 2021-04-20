@@ -64,13 +64,13 @@ class Alipay implements Payment
         $config = $this->configService->getAlipayPay();
         // 回调地址
         $config['notify_url'] = route('payment.callback', ['alipay']);
-        $config['return_url'] = route('order.pay.success');
+        // 同步返回地址
+        $returnUrl = request()->input('redirect');
+        $returnUrl || $returnUrl = request()->input('s_url');
+        $returnUrl || $returnUrl = route('order.pay.success');
+        $config['return_url'] = $returnUrl;
 
-        // 覆盖同步返回的地址
-        if (request()->has('redirect')) {
-            $config['return_url'] = request()->input('redirect');
-        }
-
+        // 创建支付宝支付订单
         $createResult = Pay::alipay($config)->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);
