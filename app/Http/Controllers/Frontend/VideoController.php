@@ -59,6 +59,8 @@ class VideoController extends FrontendController
         BusinessState $businessState,
         OrderServiceInterface $orderService
     ) {
+        parent::__construct();
+
         $this->videoService = $videoService;
         $this->videoCommentService = $videoCommentService;
         $this->userService = $userService;

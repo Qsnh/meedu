@@ -90,6 +90,7 @@ return [
         'video' => [
             'aliyun' => [
                 'region' => 'cn-shanghai',
+                'host' => '',
                 'access_key_id' => '',
                 'access_key_secret' => '',
             ],

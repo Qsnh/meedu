@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
 use Illuminate\Http\Request;
+use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
 {
@@ -20,15 +22,22 @@ class VideoUploadController extends BaseController
         return $this->successData(compact('signature'));
     }
 
-    public function aliyunCreateVideoToken(Request $request)
+    public function aliyunCreateVideoToken(Request $request, ConfigServiceInterface $configService)
     {
+        /**
+         * @var ConfigService $configService
+         */
+
         $title = $request->input('title');
         $filename = $request->input('filename');
 
         try {
             aliyun_sdk_client();
 
+            $config = $configService->getAliyunVodConfig();
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
+                ->host($config['host'])
                 ->product('Vod')
                 ->version('2017-03-21')
                 ->action('CreateUploadVideo')
@@ -53,15 +62,22 @@ class VideoUploadController extends BaseController
         }
     }
 
-    public function aliyunRefreshVideoToken(Request $request)
+    public function aliyunRefreshVideoToken(Request $request, ConfigServiceInterface $configService)
     {
+        /**
+         * @var ConfigService $configService
+         */
+
         $videoId = $request->input('video_id');
 
         try {
             aliyun_sdk_client();
 
+            $config = $configService->getAliyunVodConfig();
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
+                ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('RefreshUploadVideo')
                 ->options([

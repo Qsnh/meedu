@@ -99,14 +99,23 @@ if (!function_exists('aliyun_play_auth')) {
         // 试看参数封装
         $playConfig = [];
         ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
+
+        /**
+         * @var \App\Services\Base\Services\ConfigService $configService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+
         try {
             aliyun_sdk_client();
 
             $query = ['VideoId' => $video['aliyun_video_id']];
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
 
+            $config = $configService->getAliyunVodConfig();
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
+                ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetVideoPlayAuth')
                 ->options([
@@ -132,6 +141,12 @@ if (!function_exists('aliyun_play_url')) {
      */
     function aliyun_play_url(array $video, $isTry = false)
     {
+        /**
+         * @var \App\Services\Base\Services\ConfigService $configService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $config = $configService->getAliyunVodConfig();
+
         try {
             aliyun_sdk_client();
 
@@ -142,6 +157,7 @@ if (!function_exists('aliyun_play_url')) {
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
+                ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetPlayInfo')
                 ->options([
