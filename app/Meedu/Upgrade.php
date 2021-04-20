@@ -8,6 +8,7 @@
 
 namespace App\Meedu;
 
+use App\Models\AdministratorMenu;
 use App\Services\Base\Model\AppConfig;
 
 class Upgrade
@@ -64,5 +65,15 @@ class Upgrade
                 'pay.wechat.notify_url',
             ])
             ->delete();
+
+        // 删除后台视频列表menu
+        AdministratorMenu::query()
+            ->where('url', 'Video')
+            ->delete();
+
+        // 更新后台视频Menu的文案
+        AdministratorMenu::query()
+            ->where('url', 'videomanage')
+            ->update(['name' => '点播']);
     }
 }

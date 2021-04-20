@@ -109,7 +109,7 @@ class AdministratorMenuSeeder extends Seeder
                 ],
             ],
             [
-                'title' => '视频',
+                'title' => '点播',
                 'key' => 'videomanage',
                 'icon' => 'icon-video',
                 'children' => [
@@ -122,11 +122,6 @@ class AdministratorMenuSeeder extends Seeder
                         'title' => '课程',
                         'key' => 'Course',
                         'permission' => 'course',
-                    ],
-                    [
-                        'title' => '视频',
-                        'key' => 'Video',
-                        'permission' => 'video',
                     ],
                 ],
             ],
