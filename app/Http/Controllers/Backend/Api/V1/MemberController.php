@@ -27,6 +27,7 @@ use App\Services\Member\Models\UserTagRelation;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 use App\Services\Member\Notifications\SimpleMessageNotification;
@@ -363,5 +364,27 @@ class MemberController extends BaseController
         $user->notify(new SimpleMessageNotification($message));
 
         return $this->success();
+    }
+
+    public function userVideoWatchRecords(Request $request, $id)
+    {
+        $records = UserVideoWatchRecord::query()
+            ->select([
+                'id', 'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at',
+            ])
+            ->where('user_id', $id)
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        $videos = [];
+        $videoIds = array_column($records->items(), 'video_id');
+        if ($videoIds) {
+            $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title'])->get()->keyBy('id');
+        }
+
+        return $this->successData([
+            'data' => $records,
+            'videos' => $videos,
+        ]);
     }
 }

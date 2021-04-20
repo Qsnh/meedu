@@ -191,7 +191,7 @@ class AdministratorMenuSeeder extends Seeder
 
     protected function create($menu, $parentId = 0, $sort = 0)
     {
-        $exists = \App\Models\AdministratorMenu::query()->where('name', $menu['title'])->where('url', $menu['key'])->first();
+        $exists = \App\Models\AdministratorMenu::query()->where('url', $menu['key'])->first();
         if ($exists) {
             return $exists;
         }
