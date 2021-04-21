@@ -14,7 +14,11 @@
             @if($course['is_free'])
                 <span class="charge-value free-charge">免费</span>
             @else
-                <span class="charge-value"><small>￥</small>{{$course['charge']}}</span>
+                @if($course['charge'])
+                    <span class="charge-value"><small>￥</small>{{$course['charge']}}</span>
+                @else
+                    <span class="charge-value">按视频购买</span>
+                @endif
             @endif
         </div>
     </div>

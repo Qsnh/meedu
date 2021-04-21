@@ -38,6 +38,12 @@
                        href="{{route('socialite', $socialite['app'])}}"><img src="{{$socialite['logo']}}" width="44"
                                                                              height="44"></a>
                 @endforeach
+                @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
+                    <a class="socialite-item"
+                       href="{{url_append_query(route('login.wechat.scan'), ['redirect' => request()->input('redirect', '')])}}">
+                        <img src="{{asset('/images/icons/wechat.svg')}}" width="44" height="44">
+                    </a>
+                @endif
             </div>
         </div>
     </form>
@@ -180,51 +186,25 @@
     </form>
 </script>
 
-<script id="mobile-bind-box" type="text/html">
-    <form class="login-box" action="{{route('ajax.mobile.bind')}}" method="post">
-        <div class="login-box-title" style="margin-bottom: 30px;">
-            <span class="title">手机号绑定</span>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" name="mobile" placeholder="请输入手机号">
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
-                <div class="input-group-append">
-                    <img src="{{ captcha_src() }}" class="captcha" width="120" height="48">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control" required>
-                <input type="hidden" name="sms_captcha_key" value="mobile_bind">
-                <div class="input-group-append">
-                    <button type="button" style="width: 120px;"
-                            class="send-sms-captcha btn btn-outline-primary">发送验证码
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="form-group auth-box-errors"></div>
-        <div class="form-group">
-            <button type="button" class="btn btn-primary btn-block mobile-bind-button">立即绑定</button>
-        </div>
-        <div class="form-group text-center mb-0">
-            <a href="javascript:void(0)" onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">退出登录</a>
-        </div>
-    </form>
-</script>
-
 <footer class="container-fluid footer-box">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
                 <p>Powered By <a href="https://meedu.vip" target="_blank">MeEdu</a></p>
-                <p>© {{date('Y')}} {{config('app.name')}} · <a href="http://beian.miit.gov.cn"
-                                                               target="_blank">{{$gConfig['system']['icp']}}</a></p>
+                <p>
+                    &copy;
+                    {{date('Y')}}
+                    {{config('app.name')}}
+                    @if($gConfig['system']['icp'])
+                    &bull;
+                    <a href="{{$gConfig['system']['icp_link'] ?: 'http://beian.miit.gov.cn'}}"
+                       target="_blank">{{$gConfig['system']['icp']}}</a>
+                    @endif
+                    @if($gConfig['system']['icp2'])
+                    &bull;
+                    <a href="{{$gConfig['system']['icp2_link']}}" target="_blank">{{$gConfig['system']['icp2']}}</a>
+                    @endif
+                </p>
             </div>
         </div>
     </div>
@@ -252,10 +232,5 @@
         return false;
     };
 </script>
-@if($bindMobileState)
-    <script>
-        showAuthBox('mobile-bind-box');
-    </script>
-@endif
 @yield('js')
 <div style="display:none">{!! config('meedu.system.js') !!}</div>

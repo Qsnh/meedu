@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace Tests\Services\Course;
@@ -88,17 +85,6 @@ class CourseServiceTest extends TestCase
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
-        ]);
-        $c = $this->courseService->find($course->id);
-    }
-
-    public function test_find_with_no_show()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $course = factory(Course::class)->create([
-            'is_show' => Course::SHOW_NO,
-            'published_at' => Carbon::now()->subDays(1),
         ]);
         $c = $this->courseService->find($course->id);
     }

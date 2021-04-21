@@ -14,7 +14,7 @@
         <form action="" method="post">
             @csrf
             <div class="login-form">
-                @include('h5.components.mobile', ['smsCaptchaKey' => 'register'])
+                @include('h5.components.mobile', ['smsCaptchaKey' => 'password_reset'])
                 <div class="form-item">
                     <input type="password" name="password" class="form-input-item" placeholder="密码" required>
                 </div>

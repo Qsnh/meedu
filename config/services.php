@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 return [
@@ -44,22 +41,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID', ''),
-        'client_secret' => env('GITHUB_CLIENT_SECRET', ''),
-        'redirect' => env('GITHUB_CALLBACK_URL', ''),
-    ],
-
     'qq' => [
         'client_id' => env('QQ_KEY'),
         'client_secret' => env('QQ_SECRET'),
         'redirect' => env('QQ_CALLBACK_URL')
-    ],
-
-    'weixinweb' => [
-        'client_id' => env('WEIXINWEB_KEY'),
-        'client_secret' => env('WEIXINWEB_SECRET'),
-        'redirect' => env('WEIXINWEB_REDIRECT_URI')
     ],
 
 ];

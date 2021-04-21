@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Meedu\Payment\Alipay;
@@ -65,12 +62,15 @@ class Alipay implements Payment
 
         // 支付宝配置
         $config = $this->configService->getAlipayPay();
-        // 覆盖同步返回的地址
-        if (request()->has('redirect')) {
-            $config['return_url'] = request()->input('redirect');
-        }
-        Log::info(__METHOD__, $config);
-        
+        // 回调地址
+        $config['notify_url'] = route('payment.callback', ['alipay']);
+        // 同步返回地址
+        $returnUrl = request()->input('redirect');
+        $returnUrl || $returnUrl = request()->input('s_url');
+        $returnUrl || $returnUrl = route('order.pay.success');
+        $config['return_url'] = $returnUrl;
+
+        // 创建支付宝支付订单
         $createResult = Pay::alipay($config)->{$order['payment_method']}($payOrderData);
 
         return new PaymentStatus(true, $createResult);

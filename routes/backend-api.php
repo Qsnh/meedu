@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 Route::post('/login', 'LoginController@login');
@@ -142,6 +139,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
+        Route::get('/{id}/user/{userId}/watch/records', 'CourseController@videoWatchRecords');
     });
 
     // 课程
@@ -192,13 +190,17 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/detail/userOrders', 'MemberController@userOrders');
         Route::get('/{id}/detail/userInvite', 'MemberController@userInvite');
         Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
+        Route::get('/{id}/detail/videoWatchRecords', 'MemberController@userVideoWatchRecords');
 
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
         Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
 
+        // 积分变更
         Route::post('/credit1/change', 'MemberController@credit1Change');
+        // 发送站内消息
+        Route::post('/{id}/message', 'MemberController@sendMessage');
     });
 
     // 网站配置

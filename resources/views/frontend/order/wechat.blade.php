@@ -19,7 +19,7 @@
                             <p>请使用微信扫一扫支付</p>
                         </div>
                         <div class="col-12 text-right">
-                            <a href="{{route('member.orders')}}" class="btn btn-primary">支付完成</a>
+                            <a href="{{request()->input('redirect_url')}}" class="btn btn-primary">支付完成</a>
                         </div>
                     </div>
                 </div>

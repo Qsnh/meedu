@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace Tests\Feature\Page;
@@ -610,23 +607,6 @@ class AjaxTest extends TestCase
             'sms_captcha' => 'mock',
         ])->response;
         $this->assertResponseError($response, __('mobile.unique'));
-    }
-
-    public function test_register_with_exists_nickname()
-    {
-        $this->user->nick_name = '我是昵称';
-        $this->user->save();
-
-        session(['sms_mock' => 'mock']);
-        $response = $this->post('/ajax/auth/register', [
-            'nick_name' => '我是昵称',
-            'mobile' => '13877779999',
-            'password' => '123123',
-            'password_confirmation' => '123123',
-            'sms_captcha_key' => 'mock',
-            'sms_captcha' => 'mock',
-        ])->response;
-        $this->assertResponseError($response, __('nick_name.unique'));
     }
 
     public function test_passwordReset()

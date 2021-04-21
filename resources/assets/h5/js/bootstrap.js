@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 import Player from 'xgplayer';
-import HlsJsPlayer from 'xgplayer-hls.js';
+import HlsPlayer from 'xgplayer-hls';
 
 let marquee = function () {
     let player = this;
@@ -37,11 +37,12 @@ let marquee = function () {
     }
 }
 
+// 安装跑马灯插件
 Player.install('marquee', marquee);
-HlsJsPlayer.install('marquee', marquee);
+HlsPlayer.install('marquee', marquee);
 
 window.Player = Player;
-window.HlsJsPlayer = HlsJsPlayer;
+window.HlsPlayer = HlsPlayer;
 
 window.flashSuccess = function (message) {
     Swal.fire('成功', message, 'success');

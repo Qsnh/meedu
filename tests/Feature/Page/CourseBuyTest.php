@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace Tests\Feature\Page;
@@ -24,20 +21,6 @@ class CourseBuyTest extends TestCase
         $user = factory(User::class)->create();
         $course = factory(Course::class)->create([
             'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $this->actingAs($user)
-            ->visit(route('member.course.buy', [$course->id]))
-            ->see($course->title);
-    }
-
-    public function test_member_orders_page_with_no_show()
-    {
-        $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
-
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
-            'is_show' => Course::SHOW_NO,
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $this->actingAs($user)

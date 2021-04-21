@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace Tests\Services\Other;
@@ -67,5 +64,11 @@ class AdFromServiceTest extends TestCase
         $number = $this->service->getDay($from->id, $date);
 
         $this->assertEquals($num, $number['num']);
+    }
+
+    public function test_findFromKey()
+    {
+        $result = $this->service->findFromKey('123');
+        $this->assertEmpty($result);
     }
 }

@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -15,14 +12,12 @@ use App\Meedu\Cache\Inc\Inc;
 use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Inc\AdFromIncItem;
 use App\Services\Other\Services\LinkService;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Other\Services\SliderService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Other\Services\IndexBannerService;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -35,10 +30,7 @@ class IndexController extends FrontendController
      * @var LinkService
      */
     protected $linkService;
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
+
     /**
      * @var SliderService
      */
@@ -66,15 +58,15 @@ class IndexController extends FrontendController
 
     public function __construct(
         LinkServiceInterface $linkService,
-        ConfigServiceInterface $configService,
         SliderServiceInterface $sliderService,
         CourseServiceInterface $courseService,
         CourseCategoryServiceInterface $courseCategoryService,
         IndexBannerServiceInterface $indexBannerService,
         AdFromServiceInterface $adFromService
     ) {
+        parent::__construct();
+
         $this->linkService = $linkService;
-        $this->configService = $configService;
         $this->sliderService = $sliderService;
         $this->courseService = $courseService;
         $this->courseCategoryService = $courseCategoryService;

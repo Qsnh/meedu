@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -87,6 +84,8 @@ class AjaxController extends BaseController
         BusinessState $businessState,
         UserInviteBalanceServiceInterface $userInviteBalanceService
     ) {
+        parent::__construct();
+
         $this->videoCommentService = $videoCommentService;
         $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;
@@ -214,17 +213,12 @@ class AjaxController extends BaseController
         [
             'mobile' => $mobile,
             'password' => $password,
-            'nick_name' => $nickname,
         ] = $request->filldata();
-        $user = $this->userService->findNickname($nickname);
-        if ($user) {
-            return $this->error(__('nick_name.unique'));
-        }
         $user = $this->userService->findMobile($mobile);
         if ($user) {
             return $this->error(__('mobile.unique'));
         }
-        $this->userService->createWithMobile($mobile, $password, $nickname);
+        $this->userService->createWithMobile($mobile, $password, '');
 
         return $this->success();
     }
@@ -244,7 +238,7 @@ class AjaxController extends BaseController
     public function mobileBind(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();
-        $this->userService->bindMobile($mobile);
+        $this->userService->bindMobile($mobile, $this->id());
         return $this->success();
     }
 

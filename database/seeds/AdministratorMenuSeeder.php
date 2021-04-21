@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 use Illuminate\Database\Seeder;
@@ -112,7 +109,7 @@ class AdministratorMenuSeeder extends Seeder
                 ],
             ],
             [
-                'title' => '视频',
+                'title' => '点播',
                 'key' => 'videomanage',
                 'icon' => 'icon-video',
                 'children' => [
@@ -125,11 +122,6 @@ class AdministratorMenuSeeder extends Seeder
                         'title' => '课程',
                         'key' => 'Course',
                         'permission' => 'course',
-                    ],
-                    [
-                        'title' => '视频',
-                        'key' => 'Video',
-                        'permission' => 'video',
                     ],
                 ],
             ],
@@ -199,7 +191,7 @@ class AdministratorMenuSeeder extends Seeder
 
     protected function create($menu, $parentId = 0, $sort = 0)
     {
-        $exists = \App\Models\AdministratorMenu::query()->where('name', $menu['title'])->where('url', $menu['key'])->first();
+        $exists = \App\Models\AdministratorMenu::query()->where('url', $menu['key'])->first();
         if ($exists) {
             return $exists;
         }

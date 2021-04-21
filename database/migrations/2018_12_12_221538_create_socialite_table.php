@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 use Illuminate\Support\Facades\Schema;
@@ -24,10 +21,10 @@ class CreateSocialiteTable extends Migration
     {
         Schema::create('socialite', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('app');
-            $table->string('app_user_id', 128);
-            $table->string('data', 2222);
+            $table->integer('user_id')->default(0);
+            $table->string('app')->default('');
+            $table->string('app_user_id', 128)->default('');
+            $table->string('data', 2222)->default('');
             $table->timestamps();
         });
     }

@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Backend\Api\V1;
@@ -27,29 +24,15 @@ class CourseVideoController extends BaseController
 {
     public function index(Request $request)
     {
-        $id = $request->input('id');
-        $keywords = $request->input('keywords', '');
-        $courseId = $request->input('course_id');
-        $sort = $request->input('sort', 'id');
-        $order = $request->input('order', 'desc');
+        $courseId = $request->input('cid');
 
         $videos = Video::query()
-            ->with(['course', 'chapter'])
-            ->when($id, function ($query) use ($id) {
-                $query->where('id', $id);
-            })
-            ->when($keywords, function ($query) use ($keywords) {
-                return $query->where('title', 'like', "{$keywords}%");
-            })
-            ->when($courseId, function ($query) use ($courseId) {
-                $query->where('course_id', $courseId);
-            })
-            ->orderBy($sort, $order)
-            ->paginate($request->input('size', 20));
+            ->with(['chapter:id,title'])
+            ->where('course_id', $courseId)
+            ->orderBy('published_at')
+            ->paginate($request->input('size', 10));
 
-        $courses = Course::query()->select(['id', 'title'])->get();
-
-        return $this->successData(compact('videos', 'courses'));
+        return $this->successData(compact('videos'));
     }
 
     public function create()
@@ -177,21 +160,14 @@ class CourseVideoController extends BaseController
 
     public function watchRecords(Request $request, $videoId)
     {
-        $userId = $request->input('user_id');
         $courseId = $request->input('course_id');
+        $userId = $request->input('user_id');
         $watchedStartAt = $request->input('watched_start_at');
         $watchedEndAt = $request->input('watched_end_at');
-        $export = $request->input('export');
 
         // 分页
         $page = (int)$request->input('page');
         $size = $request->input('size', 10);
-        if ($export) {
-            // 数据导出的话，默认第一页，默认最大导出10w条数据
-            // 如果导出数据记录超过最大值，则推荐使用数据路管理工具导出
-            $page = 1;
-            $size = 100000;
-        }
 
         $data = UserVideoWatchRecord::query()
             ->when($videoId, function ($query) use ($videoId) {
@@ -228,41 +204,6 @@ class CourseVideoController extends BaseController
             ->whereIn('id', array_column($data->items(), 'user_id'))
             ->get()
             ->keyBy('id');
-
-        // 数据导出
-        if ($export) {
-            $exportData = [
-                [
-                    '课程ID', '视频ID', '用户ID', '课程', '视频', '用户', '标签',
-                    '时长', '已观看', '开始时间', '看完时间', '看完',
-                ]
-            ];
-            foreach ($data->items() as $item) {
-                $tmpVideo = $videos[$item['video_id']] ?? null;
-
-                $tmpUser = $users[$item['user_id']] ?? null;
-                $tag = $tmpUser ? $tmpUser->tags->pluck('name')->implode(',') : '';
-
-                $exportData[] = [
-                    $item['course_id'],
-                    $item['video_id'],
-                    $item['user_id'],
-                    ($courses[$item['course_id']]['title'] ?? ''),
-                    $tmpVideo ? $tmpVideo['title'] : '',
-                    ($users[$item['user_id']]['nick_name'] ?? ''),
-                    $tag,
-                    ($tmpVideo ? $tmpVideo['duration'] : 0) . 's',
-                    $item['watch_seconds'] . 's',
-                    $item['created_at'],
-                    $item['watched_at'] ?: '',
-                    $item['watched_at'] ? '是' : '否',
-                ];
-            }
-
-            return $this->successData([
-                'data' => $exportData,
-            ]);
-        }
 
         return $this->successData([
             'courses' => $courses,

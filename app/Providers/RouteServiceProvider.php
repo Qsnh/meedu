@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Providers;
@@ -52,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware(['web', 'global.share'])
-            ->namespace($this->namespace)
+            ->namespace('App\Http\Controllers\Frontend')
             ->group(base_path('routes/web.php'));
     }
 

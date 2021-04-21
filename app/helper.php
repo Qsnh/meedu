@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 if (!function_exists('flash')) {
@@ -102,14 +99,23 @@ if (!function_exists('aliyun_play_auth')) {
         // 试看参数封装
         $playConfig = [];
         ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
+
+        /**
+         * @var \App\Services\Base\Services\ConfigService $configService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+
         try {
             aliyun_sdk_client();
 
             $query = ['VideoId' => $video['aliyun_video_id']];
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
 
+            $config = $configService->getAliyunVodConfig();
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
+                ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetVideoPlayAuth')
                 ->options([
@@ -135,6 +141,12 @@ if (!function_exists('aliyun_play_url')) {
      */
     function aliyun_play_url(array $video, $isTry = false)
     {
+        /**
+         * @var \App\Services\Base\Services\ConfigService $configService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $config = $configService->getAliyunVodConfig();
+
         try {
             aliyun_sdk_client();
 
@@ -145,6 +157,7 @@ if (!function_exists('aliyun_play_url')) {
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
+                ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetPlayInfo')
                 ->options([
@@ -405,9 +418,6 @@ if (!function_exists('get_tencent_play_url')) {
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
             $req->FileIds[] = $vid;
             $req->SubAppId = (int)$config['app_id'];
-            /**
-             * @var $response \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosResponse
-             */
             $response = $client->DescribeMediaInfos($req);
             if (!$response->MediaInfoSet) {
                 // 无法获取url地址
@@ -528,7 +538,7 @@ if (!function_exists('get_platform')) {
      */
     function get_platform()
     {
-        // 如果默认读取不到，则将平台统一设置为 ‘APP’
+        // 如果默认读取不到，则将平台统一设置为APP
         $platform = strtoupper(request()->header('meedu-platform', \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP));
         $platforms = [
             \App\Constant\FrontendConstant::LOGIN_PLATFORM_APP,
@@ -595,5 +605,38 @@ if (!function_exists('save_image')) {
         $data = compact('path', 'url', 'disk');
         $data['encryptData'] = encrypt(json_encode($data));
         return $data;
+    }
+}
+
+if (!function_exists('url_append_query')) {
+    function url_append_query(string $url, array $data): string
+    {
+        $query = http_build_query($data);
+        if (\Illuminate\Support\Str::contains($url, '?')) {
+            $url .= '&' . $query;
+        } else {
+            $url .= '?' . $query;
+        }
+
+        return $url;
+    }
+}
+
+if (!function_exists('wechat_jssdk')) {
+    /**
+     * @param array $apiList
+     *
+     * @return array
+     *
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    function wechat_jssdk(array $apiList): array
+    {
+        $app = \App\Meedu\Wechat::getInstance();
+        return $app->jssdk->buildConfig($apiList, is_dev(), false, false);
     }
 }

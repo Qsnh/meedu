@@ -28,7 +28,7 @@
         closeVideoClick: true,
     };
     @if($playUrls->first()['format'] === 'm3u8')
-    const XGPlayer = new HlsJsPlayer(XGPlayerConfig);
+    const XGPlayer = new HlsPlayer(XGPlayerConfig);
     @else
     const XGPlayer = new Player(XGPlayerConfig);
     @endif

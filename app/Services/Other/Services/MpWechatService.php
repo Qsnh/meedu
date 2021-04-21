@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Other\Services;
@@ -45,21 +42,43 @@ class MpWechatService implements MpWechatServiceInterface
     /**
      * 获取事件的回复内容
      * @param string $event
-     * @param string $eventKey
+     * @param mixed $eventKey
      * @return string
      */
-    public function eventMessageReplyFind(string $event, string $eventKey = ''): string
+    public function eventMessageReplyFind(string $event, $eventKey = ''): string
     {
-        $message = MpWechatMessageReply::query()
+        $messages = MpWechatMessageReply::query()
             ->where('type', MpWechatMessageReply::TYPE_EVENT)
             ->where('event_type', $event)
-            ->when($eventKey, function ($query) use ($eventKey) {
-                $query->where('event_key', $eventKey);
-            })
-            ->first();
-        if (!$message) {
+            ->orderByDesc('id')
+            ->get();
+
+        if ($messages->isEmpty()) {
             return '';
         }
-        return $message['reply_content'] ?? '';
+
+        $content = '';
+
+        if ($eventKey) {
+            foreach ($messages as $message) {
+                if (!$message['event_key']) {
+                    continue;
+                }
+
+                if (preg_match('#' . $message['event_key'] . '#us', $eventKey)) {
+                    $content = $message['reply_content'];
+                    break;
+                }
+            }
+        } else {
+            foreach ($messages as $message) {
+                if (!$message['event_key']) {
+                    $content = $message['reply_content'];
+                    break;
+                }
+            }
+        }
+
+        return $content;
     }
 }

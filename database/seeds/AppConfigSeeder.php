@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 use Illuminate\Database\Seeder;
@@ -64,11 +61,38 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '系统',
-                'name' => '备案号',
+                'name' => 'ICP备案号',
                 'field_type' => 'text',
                 'sort' => 6,
                 'default_value' => '',
                 'key' => 'meedu.system.icp',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => 'ICP备案号点击链接',
+                'field_type' => 'text',
+                'sort' => 6,
+                'default_value' => '',
+                'key' => 'meedu.system.icp_link',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => '公安网备案号',
+                'field_type' => 'text',
+                'sort' => 6,
+                'default_value' => '',
+                'key' => 'meedu.system.icp2',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => '公安网备案号点击链接',
+                'field_type' => 'text',
+                'sort' => 6,
+                'default_value' => '',
+                'key' => 'meedu.system.icp2_link',
                 'value' => '',
             ],
             [
@@ -106,26 +130,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
             ],
 
-            // 缓存
-            [
-                'group' => '缓存',
-                'name' => '开启缓存',
-                'field_type' => 'switch',
-                'sort' => 0,
-                'default_value' => 0,
-                'key' => 'meedu.system.cache.status',
-                'value' => 0,
-            ],
-            [
-                'group' => '缓存',
-                'name' => '缓存时间(秒)',
-                'field_type' => 'number',
-                'sort' => 1,
-                'default_value' => 3600,
-                'key' => 'meedu.system.cache.expire',
-                'value' => 3600,
-            ],
-
             // 登录
             [
                 'group' => '登录',
@@ -149,43 +153,6 @@ class AppConfigSeeder extends Seeder
                 ]),
                 'value' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
                 'help' => '单平台限制=每一个平台仅允许一台设备登录.全平台限制=所有平台仅允许一台设备登录',
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github登录',
-                'field_type' => 'switch',
-                'sort' => 0,
-                'default_value' => 0,
-                'key' => 'meedu.member.socialite.github.enabled',
-                'value' => 0,
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github ClientId',
-                'field_type' => 'text',
-                'sort' => 1,
-                'default_value' => '',
-                'key' => 'services.github.client_id',
-                'value' => '',
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github ClientSecret',
-                'field_type' => 'text',
-                'sort' => 2,
-                'default_value' => '',
-                'key' => 'services.github.client_secret',
-                'value' => '',
-                'is_private' => 1,
-            ],
-            [
-                'group' => '登录',
-                'name' => 'Github Redirect',
-                'field_type' => 'text',
-                'sort' => 3,
-                'default_value' => url('login/github/callback'),
-                'key' => 'services.github.redirect',
-                'value' => url('login/github/callback'),
             ],
 
             // QQ登录
@@ -216,55 +183,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'services.qq.client_secret',
                 'value' => '',
                 'is_private' => 1,
-            ],
-            [
-                'group' => '登录',
-                'name' => 'QQ Redirect',
-                'field_type' => 'text',
-                'sort' => 7,
-                'default_value' => url('login/qq/callback'),
-                'key' => 'services.qq.redirect',
-                'value' => url('login/qq/callback'),
-            ],
-
-            // 微信扫码登录
-            [
-                'group' => '登录',
-                'name' => '微信开放平台扫码登录',
-                'field_type' => 'switch',
-                'sort' => 8,
-                'default_value' => 0,
-                'key' => 'meedu.member.socialite.weixinweb.enabled',
-                'value' => 0,
-                'help' => '申请地址：https://open.weixin.qq.com',
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 ClientId',
-                'field_type' => 'text',
-                'sort' => 9,
-                'default_value' => '',
-                'key' => 'services.weixinweb.client_id',
-                'value' => '',
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 ClientSecret',
-                'field_type' => 'text',
-                'sort' => 10,
-                'default_value' => '',
-                'key' => 'services.weixinweb.client_secret',
-                'value' => '',
-                'is_private' => 1,
-            ],
-            [
-                'group' => '登录',
-                'name' => '微信开放平台 Redirect',
-                'field_type' => 'text',
-                'sort' => 11,
-                'default_value' => url('login/weixinweb/callback'),
-                'key' => 'services.weixinweb.redirect',
-                'value' => url('login/weixinweb/callback'),
             ],
 
             // 短信配置
@@ -564,24 +482,6 @@ class AppConfigSeeder extends Seeder
                 'is_private' => 1,
                 'help' => 'RSA2加密方式',
             ],
-            [
-                'group' => '支付',
-                'name' => '支付宝返回地址',
-                'field_type' => 'text',
-                'sort' => 4,
-                'default_value' => url('member/order/pay/success'),
-                'key' => 'pay.alipay.return_url',
-                'value' => url('member/order/pay/success'),
-            ],
-            [
-                'group' => '支付',
-                'name' => '支付宝回调地址',
-                'field_type' => 'text',
-                'sort' => 5,
-                'default_value' => url('payment/callback/alipay'),
-                'key' => 'pay.alipay.notify_url',
-                'value' => url('payment/callback/alipay'),
-            ],
 
             // 微信支付
             [
@@ -630,15 +530,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
-            [
-                'group' => '支付',
-                'name' => '微信支付回调地址',
-                'field_type' => 'text',
-                'sort' => 12,
-                'default_value' => url('payment/callback/wechat'),
-                'key' => 'pay.wechat.notify_url',
-                'value' => url('payment/callback/wechat'),
-            ],
 
             // 手动打款
             [
@@ -666,8 +557,15 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频Region',
                 'field_type' => 'text',
                 'sort' => 0,
-                'default_value' => '',
                 'key' => 'meedu.upload.video.aliyun.region',
+                'value' => '',
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云视频Host',
+                'field_type' => 'text',
+                'sort' => 0,
+                'key' => 'meedu.upload.video.aliyun.host',
                 'value' => '',
             ],
             [
@@ -675,7 +573,6 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频AccessKeyId',
                 'field_type' => 'text',
                 'sort' => 1,
-                'default_value' => '',
                 'key' => 'meedu.upload.video.aliyun.access_key_id',
                 'value' => '',
             ],
@@ -684,7 +581,6 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频AccessKeySecret',
                 'field_type' => 'text',
                 'sort' => 2,
-                'default_value' => '',
                 'key' => 'meedu.upload.video.aliyun.access_key_secret',
                 'value' => '',
                 'is_private' => 1,
@@ -728,6 +624,15 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.tencent_play_key',
                 'value' => '',
                 'is_private' => 1,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云超级播放器配置',
+                'field_type' => 'text',
+                'sort' => 7,
+                'default_value' => 'default',
+                'key' => 'meedu.system.player.tencent_pcfg',
+                'value' => 'default',
             ],
 
             // 会员配置
@@ -1109,6 +1014,46 @@ class AppConfigSeeder extends Seeder
                 'sort' => 6,
                 'key' => 'meedu.mp_wechat.enabled_oauth_login',
                 'value' => 0,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '启用PC扫码登录',
+                'field_type' => 'switch',
+                'sort' => 7,
+                'key' => 'meedu.mp_wechat.enabled_scan_login',
+                'value' => 0,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '启用微信分享',
+                'field_type' => 'switch',
+                'sort' => 8,
+                'key' => 'meedu.mp_wechat.enabled_share',
+                'value' => 0,
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享标题',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'meedu.mp_wechat.share.title',
+                'value' => '',
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享描述',
+                'field_type' => 'text',
+                'sort' => 11,
+                'key' => 'meedu.mp_wechat.share.desc',
+                'value' => '',
+            ],
+            [
+                'group' => '微信公众号',
+                'name' => '微信分享图片',
+                'field_type' => 'image',
+                'sort' => 12,
+                'key' => 'meedu.mp_wechat.share.imgUrl',
+                'value' => '',
             ],
 
             // 注册送VIP

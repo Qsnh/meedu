@@ -5,7 +5,7 @@
         "meedu"
     ],
     "homepage": "https://meedu.vip",
-    "license": "MIT",
+    "license": "BSD-3-Clause",
     "type": "project",
     "require": {
         "php": ">=7.2",

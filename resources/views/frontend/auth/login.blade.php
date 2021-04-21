@@ -32,17 +32,24 @@
                                 <div class="form-group mt-2">
                                     <button class="btn btn-primary btn-block">登录</button>
                                 </div>
-                                @if(!enabled_socialites()->isEmpty())
+                                @if(enabled_socialites()->isNotEmpty() || (int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
                                     <div class="form-group text-center c-2">
                                         <p>其它方式登录</p>
                                     </div>
                                     <div class="form-group text-center">
                                         @foreach(enabled_socialites() as $socialite)
                                             <a class="mr-2 text-decoration-none"
-                                               href="{{route('socialite', $socialite['app'])}}">
-                                                <img src="{{$socialite['logo']}}" width="24" height="24">
+                                               href="{{url_append_query(route('socialite', $socialite['app']), ['redirect' => request()->input('redirect', '')])}}">
+                                                <img src="{{$socialite['logo']}}" width="32" height="32">
                                             </a>
                                         @endforeach
+
+                                        @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
+                                            <a class="mr-2 text-decoration-none"
+                                               href="{{url_append_query(route('login.wechat.scan'), ['redirect' => request()->input('redirect', '')])}}">
+                                                <img src="{{asset('/images/icons/wechat.svg')}}" width="32" height="32">
+                                            </a>
+                                        @endif
                                     </div>
                                 @endif
                             </form>

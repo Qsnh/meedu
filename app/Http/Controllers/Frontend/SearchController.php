@@ -4,19 +4,16 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Frontend\SearchRequest;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 
-class SearchController extends Controller
+class SearchController extends BaseController
 {
     /**
      * @var CourseService
@@ -25,6 +22,8 @@ class SearchController extends Controller
 
     public function __construct(CourseServiceInterface $courseService)
     {
+        parent::__construct();
+
         $this->courseService = $courseService;
     }
 

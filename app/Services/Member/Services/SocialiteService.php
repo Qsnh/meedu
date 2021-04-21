@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Member\Services;
@@ -14,7 +11,6 @@ namespace App\Services\Member\Services;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
@@ -34,12 +30,30 @@ class SocialiteService implements SocialiteServiceInterface
     /**
      * @param string $app
      * @param string $appId
+     * @return array
+     */
+    public function findBind(string $app, string $appId): array
+    {
+        $record = Socialite::query()
+            ->where('app', $app)
+            ->where('app_user_id', $appId)
+            ->first();
+
+        return $record ? $record->toArray() : [];
+    }
+
+    /**
+     * @param string $app
+     * @param string $appId
      *
      * @return int
      */
     public function getBindUserId(string $app, string $appId): int
     {
-        return (int)Socialite::whereApp($app)->whereAppUserId($appId)->value('user_id');
+        return (int)Socialite::query()
+            ->where('app', $app)
+            ->where('app_user_id', $appId)
+            ->value('user_id');
     }
 
     /**
@@ -47,10 +61,11 @@ class SocialiteService implements SocialiteServiceInterface
      * @param string $app
      * @param string $appId
      * @param array $data
+     * @param string $unionId
      *
      * @throws ServiceException
      */
-    public function bindApp(int $userId, string $app, string $appId, array $data): void
+    public function bindApp(int $userId, string $app, string $appId, array $data, string $unionId = ''): void
     {
         $socialite = Socialite::query()->where('app', $app)->where('app_user_id', $appId)->first();
         if ($socialite) {
@@ -61,6 +76,7 @@ class SocialiteService implements SocialiteServiceInterface
             'app' => $app,
             'app_user_id' => $appId,
             'data' => serialize($data),
+            'union_id' => $unionId,
         ]);
     }
 
@@ -68,21 +84,29 @@ class SocialiteService implements SocialiteServiceInterface
      * @param string $app
      * @param string $appId
      * @param array $data
-     *
+     * @param string $unionId
      * @return int
      */
-    public function bindAppWithNewUser(string $app, string $appId, array $data): int
+    public function bindAppWithNewUser(string $app, string $appId, array $data, string $unionId = ''): int
     {
-        return DB::transaction(function () use ($app, $appId, $data) {
+        return DB::transaction(function () use ($app, $appId, $data, $unionId) {
             $avatar = $data['avatar'] ?? '';
-            $nickname = $data['nickname'] ?? '';
-            $nickname && $nickname .= '_' . Str::random(3);
+
+            $nickname = ($data['nickname'] ?? '') ?: Str::random(6);
+            // 防止昵称过长
+            if (mb_strlen($nickname) > 12) {
+                $nickname = mb_substr($nickname, 0, 12);
+            }
+            $nickname .= '_' . Str::random(3);
+
             $user = $this->userService->createWithoutMobile($avatar, $nickname);
+
             Socialite::create([
                 'user_id' => $user['id'],
                 'app' => $app,
                 'app_user_id' => $appId,
                 'data' => serialize($data),
+                'union_id' => $unionId,
             ]);
 
             return $user['id'];
@@ -96,18 +120,47 @@ class SocialiteService implements SocialiteServiceInterface
      */
     public function userSocialites(int $userId): array
     {
-        return Socialite::whereUserId($userId)->get()->toArray();
+        return Socialite::query()
+            ->where('user_id', $userId)
+            ->get()
+            ->toArray();
     }
 
     /**
      * @param string $app
+     * @param int $userId
      */
-    public function cancelBind(string $app): void
+    public function cancelBind(string $app, int $userId): void
     {
-        $bindApps = Socialite::whereUserId(Auth::id())->get()->keyBy('app')->toArray();
+        $bindApps = Socialite::query()
+            ->where('user_id', $userId)
+            ->get()
+            ->keyBy('app')
+            ->toArray();
+
         if (!isset($bindApps[$app])) {
             return;
         }
-        Socialite::whereId($bindApps[$app]['id'])->delete();
+
+        Socialite::query()->where('id', $bindApps[$app]['id'])->delete();
+    }
+
+    /**
+     * @param string $unionId
+     * @return array
+     */
+    public function findUnionId(string $unionId): array
+    {
+        $record = Socialite::query()->where('union_id', $unionId)->first();
+        return $record ? $record->toArray() : [];
+    }
+
+    /**
+     * @param int $id
+     * @param string $unionId
+     */
+    public function updateUnionId(int $id, string $unionId): void
+    {
+        Socialite::query()->where('id', $id)->update(['union_id' => $unionId]);
     }
 }

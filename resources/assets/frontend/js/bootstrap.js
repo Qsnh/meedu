@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import Player from 'xgplayer';
-import HlsJsPlayer from 'xgplayer-hls.js';
+import HlsPlayer from 'xgplayer-hls';
 
 let marquee = function () {
     let player = this;
@@ -37,22 +37,10 @@ let marquee = function () {
 }
 
 Player.install('marquee', marquee);
-HlsJsPlayer.install('marquee', marquee);
+HlsPlayer.install('marquee', marquee);
 
-window._ = require('lodash');
+window.$ = window.jQuery = require('jquery');
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-
-try {
-    window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-} catch (e) {
-}
 
 window.flashSuccess = function (message) {
     Swal.fire('成功', message, 'success');
@@ -65,4 +53,4 @@ window.flashError = function (message) {
 };
 
 window.Player = Player;
-window.HlsJsPlayer = HlsJsPlayer;
+window.HlsPlayer = HlsPlayer;

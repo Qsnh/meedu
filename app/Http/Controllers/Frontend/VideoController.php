@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -16,13 +13,11 @@ use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Services\VideoCommentService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
@@ -35,10 +30,6 @@ class VideoController extends FrontendController
      * @var VideoService
      */
     protected $videoService;
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
     /**
      * @var VideoCommentService
      */
@@ -62,15 +53,15 @@ class VideoController extends FrontendController
 
     public function __construct(
         VideoServiceInterface $videoService,
-        ConfigServiceInterface $configService,
         VideoCommentServiceInterface $videoCommentService,
         UserServiceInterface $userService,
         CourseServiceInterface $courseService,
         BusinessState $businessState,
         OrderServiceInterface $orderService
     ) {
+        parent::__construct();
+
         $this->videoService = $videoService;
-        $this->configService = $configService;
         $this->videoCommentService = $videoCommentService;
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -192,65 +183,85 @@ class VideoController extends FrontendController
         ));
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
+    // 收银台
     public function showBuyPage($id)
     {
         $video = $this->videoService->find($id);
+
         if ($this->userService->hasVideo($this->id(), $video['id'])) {
             flash(__('You have already purchased this course'), 'success');
             return back();
         }
+
         if ($video['is_ban_sell'] === FrontendConstant::YES) {
             flash(__('this video cannot be sold'));
             return back();
         }
+
         $course = $this->courseService->find($video['course_id']);
+
+        // 页面标题
         $title = __('buy video', ['video' => $video['title']]);
+
         $goods = [
             'id' => $video['id'],
             'title' => $video['title'],
             'thumb' => $course['thumb'],
             'charge' => $video['charge'],
-            'label' => '单节视频',
+            'label' => __('视频'),
         ];
+
         $total = $video['charge'];
+
         $scene = get_payment_scene();
         $payments = get_payments($scene);
 
         return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
+    // 发起支付
     public function buyHandler(Request $request)
     {
         $id = $request->input('goods_id');
         $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $video = $this->videoService->find($id);
+
+        // 禁止单独销售
         if ($video['is_ban_sell'] === FrontendConstant::YES) {
             flash(__('this video cannot be sold'));
             return back();
         }
+
+        // 价格为0无法购买
         if ($video['charge'] <= 0) {
             flash(__('video cant buy'));
             return back();
         }
+
+        // 创建订单
         $order = $this->orderService->createVideoOrder($this->id(), $video, $promoCodeId);
 
+        $videoUrl = route('video.show', [$video['course_id'], $video['id'], $video['slug']]);
+
+        // 如果直接抵扣的话则订单完成
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
-            return redirect(route('video.show', [$video['course_id'], $video['id'], $video['slug']]));
+            return redirect($videoUrl);
         }
 
         $paymentScene = $request->input('payment_scene');
         $payment = $request->input('payment_sign');
 
-        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
+        return redirect(
+            route(
+                'order.pay',
+                [
+                    'scene' => $paymentScene,
+                    'payment' => $payment,
+                    'order_id' => $order['order_id'],
+                    's_url' => $videoUrl,
+                ]
+            )
+        );
     }
 }

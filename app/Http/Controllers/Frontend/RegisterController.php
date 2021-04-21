@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -26,6 +23,8 @@ class RegisterController extends BaseController
 
     public function __construct(UserServiceInterface $userService)
     {
+        parent::__construct();
+
         $this->userService = $userService;
         $this->middleware('guest');
     }
@@ -49,19 +48,19 @@ class RegisterController extends BaseController
         [
             'mobile' => $mobile,
             'password' => $password,
-            'nick_name' => $nickname,
         ] = $request->filldata();
-        if ($nickname && $this->userService->findNickname($nickname)) {
-            flash(__('nick_name.unique'));
-            return back();
-        }
+
         $user = $this->userService->findMobile($mobile);
+
         if ($user) {
             flash(__('mobile.unique'));
             return back();
         }
-        $this->userService->createWithMobile($mobile, $password, $nickname);
+
+        $this->userService->createWithMobile($mobile, $password, '');
+
         flash(__('register success'), 'success');
+
         return redirect(route('login'));
     }
 }

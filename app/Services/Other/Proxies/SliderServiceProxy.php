@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Other\Proxies;
@@ -22,7 +19,9 @@ class SliderServiceProxy extends ServiceProxy implements SliderServiceInterface
     public function __construct(SliderService $service)
     {
         parent::__construct($service);
-        $this->cache['all'] = function ($platform) {
+        $this->cache['all'] = function ($platform = '') {
+            $platform || $platform = 'all';
+
             return new CacheInfo(
                 get_cache_key(CacheConstant::SLIDER_SERVICE_ALL['name'], $platform),
                 $this->configService->getCacheExpire()

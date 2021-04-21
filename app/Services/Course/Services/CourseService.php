@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Course\Services;
@@ -97,7 +94,7 @@ class CourseService implements CourseServiceInterface
      */
     public function find(int $id): array
     {
-        $course = Course::show()->published()->findOrFail($id);
+        $course = Course::query()->published()->findOrFail($id);
 
         return $course->toArray();
     }
@@ -109,7 +106,11 @@ class CourseService implements CourseServiceInterface
      */
     public function chapters(int $courseId): array
     {
-        return CourseChapter::whereCourseId($courseId)->orderBy('sort')->get()->toArray();
+        return CourseChapter::query()
+            ->where('course_id', $courseId)
+            ->orderBy('sort')
+            ->get()
+            ->toArray();
     }
 
     /**
@@ -119,10 +120,11 @@ class CourseService implements CourseServiceInterface
      */
     public function getLatestCourses(int $limit): array
     {
-        $courses = Course::withCount(['videos' => function ($query) {
-            $query->show()->published();
-        }])
-            ->with(['category'])
+        $courses = Course::query()
+            ->withCount(['videos' => function ($query) {
+                $query->show()->published();
+            }])
+            ->with(['category:id,name'])
             ->show()
             ->published()
             ->orderByDesc('published_at')
@@ -138,10 +140,11 @@ class CourseService implements CourseServiceInterface
      */
     public function getRecCourses(int $limit): array
     {
-        $courses = Course::withCount(['videos' => function ($query) {
-            $query->show()->published();
-        }])
-            ->with(['category'])
+        $courses = Course::query()
+            ->withCount(['videos' => function ($query) {
+                $query->show()->published();
+            }])
+            ->with(['category:id,name'])
             ->show()
             ->published()
             ->recommend()
@@ -159,10 +162,15 @@ class CourseService implements CourseServiceInterface
      */
     public function getList(array $ids): array
     {
-        return Course::with(['category'])
+        return Course::query()
+            ->with(['category:id,name'])
             ->withCount(['videos'])
-            ->show()->published()
-            ->whereIn('id', $ids)->orderByDesc('published_at')->get()->toArray();
+            ->whereIn('id', $ids)
+            ->show()
+            ->published()
+            ->orderByDesc('published_at')
+            ->get()
+            ->toArray();
     }
 
     /**
@@ -248,7 +256,10 @@ class CourseService implements CourseServiceInterface
      */
     public function userLearningCoursesPaginate(int $userId, int $page, int $pageSize): array
     {
-        $query = CourseUserRecord::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
+        $query = CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->orderByDesc('id')
+            ->forPage($page, $pageSize);
 
         $total = $query->count();
         $list = $query->get()->toArray();
@@ -263,7 +274,11 @@ class CourseService implements CourseServiceInterface
      */
     public function getCourseAttach(int $courseId): array
     {
-        return CourseAttach::query()->select(['name', 'id', 'extension', 'size', 'download_times'])->where('course_id', $courseId)->get()->toArray();
+        return CourseAttach::query()
+            ->select(['name', 'id', 'extension', 'size', 'download_times'])
+            ->where('course_id', $courseId)
+            ->get()
+            ->toArray();
     }
 
     /**

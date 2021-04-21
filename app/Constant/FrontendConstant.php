@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Constant;
@@ -34,14 +31,6 @@ class FrontendConstant
 
     // 登录跳转url存储key
     const LOGIN_CALLBACK_URL_KEY = 'login_callback_url';
-    // 社交登录用户信息临时存储key
-    const SOCIALITE_USER_INFO_KEY = 'socialite_login_user_data';
-
-    // 登录跳转白名单
-    const LOGIN_REFERER_BLACKLIST = [
-        '/register',
-        '/password/reset',
-    ];
 
     const PASSWORD_SET = 1;
 
@@ -91,4 +80,14 @@ class FrontendConstant
 
     // 微信小程序登录socialite sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
+
+    // 微信公众号登录sign
+    public const WECHAT_LOGIN_SIGN = 'wechat';
+
+    // 手机号强制绑定路由检测白名单
+    public const MOBILE_BIND_ROUTE_WHITELIST = [
+        'member.mobile.bind',
+        'member.mobile.bind.submit',
+        'logout',
+    ];
 }

@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Constant;
@@ -138,5 +135,11 @@ class CacheConstant
     public const VIDEO_VIEW_INCREMENT = [
         'name' => self::PREFIX_I . 'video:%d',
         'expire' => -1,
+    ];
+
+    // 微信公众号扫码登录
+    public const WECHAT_SCAN_LOGIN = [
+        'name' => self::PREFIX_C . 'wechat:s:l:%s',
+        'expire' => 60 * 30,
     ];
 }

@@ -4,83 +4,39 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Bus;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Events\UserLoginEvent;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Services\SocialiteService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class AuthBus
 {
-    const SOCIALITE_TOKEN_WAY_KEY = 'socialite_token_way';
-    const SOCIALITE_PLATFORM = 'socialite_platform';
-    const SOCIALITE_REDIRECT_TO = 'socialite_login_redirect';
-
     public function webLogin(int $userId, int $remember, string $platform): void
     {
         Auth::loginUsingId($userId, $remember);
+
         $this->login($userId, $platform, Carbon::now()->toDateTimeString());
     }
 
     public function tokenLogin(int $userId, string $platform)
     {
         $loginAt = Carbon::now();
-        $token = Auth::guard('apiv2')->claims(['last_login_at' => $loginAt->timestamp])->tokenById($userId);
+
+        $token = Auth::guard('apiv2')
+            ->claims(['last_login_at' => $loginAt->timestamp])
+            ->tokenById($userId);
 
         $this->login($userId, $platform, $loginAt->toDateTimeString());
 
         return $token;
-    }
-
-    public function recordSocialiteTokenWay()
-    {
-        session([self::SOCIALITE_TOKEN_WAY_KEY => request()->has('use_token')]);
-    }
-
-    public function recordSocialitePlatform()
-    {
-        $platform = request()->input('platform');
-        if (!$platform) {
-            $platform = is_h5() ? FrontendConstant::LOGIN_PLATFORM_H5 : FrontendConstant::LOGIN_PLATFORM_PC;
-        }
-
-        session([self::SOCIALITE_PLATFORM => $platform]);
-    }
-
-    public function recordSocialiteRedirectTo($redirectTo)
-    {
-        session([self::SOCIALITE_REDIRECT_TO => $redirectTo]);
-    }
-
-    public function socialiteLogin(int $userId, string $platform = null, $tokenWay = null): string
-    {
-        if (is_null($tokenWay)) {
-            $tokenWay = session(self::SOCIALITE_TOKEN_WAY_KEY);
-        }
-        if (is_null($platform)) {
-            $platform = session(self::SOCIALITE_PLATFORM);
-        }
-
-        if (!$tokenWay) {
-            $this->webLogin($userId, true, $platform);
-            return '';
-        }
-        return $this->tokenLogin($userId, $platform);
     }
 
     protected function login(int $userId, string $platform, string $loginAt)
@@ -88,81 +44,90 @@ class AuthBus
         event(new UserLoginEvent($userId, $platform, $loginAt));
     }
 
-    /**
-     * 社交账户绑定
-     *
-     * @param $app
-     * @param $appId
-     * @param $userData
-     * @param $mobile
-     * @return int
-     */
-    public function socialiteMobileBind($app, $appId, $userData, $mobile)
-    {
-        return DB::transaction(function () use ($app, $appId, $userData, $mobile) {
-            /**
-             * @var SocialiteService $socialiteService
-             */
-            $socialiteService = app()->make(SocialiteServiceInterface::class);
-
-            // 判断当前的社交账号是否已经绑定了账户
-            // 如果绑定了就不能继续进行绑定的操作
-            if ($socialiteService->getBindUserId($app, $appId)) {
-                throw new ServiceException(__('socialite_account_has_bind_user'));
-            }
-
-            /**
-             * @var UserService $userService
-             */
-            $userService = app()->make(UserServiceInterface::class);
-
-            // 检测当前手机号用户是否已经绑定同app的账号了
-            $mobileUser = $userService->findMobile($mobile);
-            if ($mobileUser) {
-                $bindSocialites = $socialiteService->userSocialites($mobileUser['id']);
-                $apps = array_column($bindSocialites, 'app');
-                if (in_array($app, $apps)) {
-                    throw new ServiceException(__('socialite_account_has_bind_user'));
-                }
-            }
-
-            if ($mobileUser) {
-                $user = $mobileUser;
-            } else {
-                // 如果手机号还没有创建用户则创建新用户
-                /**
-                 * @var ConfigService $configService
-                 */
-                $configService = app()->make(ConfigServiceInterface::class);
-                $defaultAvatar = url($configService->getMemberDefaultAvatar());
-
-                $nickname = $userData['nickname'] ? $userData['nickname'] . Str::random(3) : Str::random(6);
-                $avatar = $userData['avatar'] ?? $defaultAvatar;
-
-                $user = $userService->createWithMobile($mobile, '', $nickname, $avatar);
-            }
-
-            // 将社交账号与新用户绑定
-            $socialiteService->bindApp($user['id'], $app, $appId, $userData);
-
-            return $user['id'];
-        });
-    }
-
-    public function socialiteRedirectTo($token = '')
-    {
-        if ($redirect = session(self::SOCIALITE_REDIRECT_TO)) {
-            $redirect .= (strpos($redirect, '?') === false ? '?' : '&') . 'token=' . $token;
-            return $redirect;
-        }
-
-        return $this->redirectTo();
-    }
-
     public function redirectTo()
     {
         $redirectTo = session(FrontendConstant::LOGIN_CALLBACK_URL_KEY);
         $redirectTo = $redirectTo ?: route('index');
         return $redirectTo;
+    }
+
+    public function wechatLogin(string $openId, string $unionId, $data): int
+    {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+        $socialiteService = app()->make(SocialiteServiceInterface::class);
+
+        if ($unionId && $socialiteRecord = $socialiteService->findUnionId($unionId)) {
+            return $socialiteRecord['user_id'];
+        }
+
+        $socialiteRecord = $socialiteService->findBind(FrontendConstant::WECHAT_LOGIN_SIGN, $openId);
+        if ($socialiteRecord) {
+            // 更新unionId
+            $unionId && $socialiteService->updateUnionId($socialiteRecord['id'], $unionId);
+
+            return $socialiteRecord['user_id'];
+        }
+
+        // 创建新的用户
+        $data = [
+            'nickname' => $data['nickname'] ?? '',
+            'avatar' => $data['headimgurl'] ?? '',
+        ];
+
+        return $socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_LOGIN_SIGN, $openId, $data, $unionId);
+    }
+
+    public function wechatMiniLogin(string $openId, string $unionId)
+    {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+        $socialiteService = app()->make(SocialiteServiceInterface::class);
+
+        if ($unionId && $socialiteRecord = $socialiteService->findUnionId($unionId)) {
+            return $socialiteRecord['user_id'];
+        }
+
+        $socialiteRecord = $socialiteService->findBind(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openId);
+        if ($socialiteRecord) {
+            // 更新unionId
+            $unionId && $socialiteService->updateUnionId($socialiteRecord['id'], $unionId);
+
+            return $socialiteRecord['user_id'];
+        }
+
+        return 0;
+    }
+
+    public function wechatMiniMobileLogin(string $openId, string $unionId, string $mobile, $data)
+    {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+        $socialiteService = app()->make(SocialiteServiceInterface::class);
+        /**
+         * @var UserService $userService
+         */
+        $userService = app()->make(UserServiceInterface::class);
+
+        $user = $userService->findMobile($mobile);
+        $userSocialites = [];
+
+        if ($user) {
+            // 读取已经绑定的socialite
+            $userSocialites = $socialiteService->userSocialites($user['id']);
+        } else {
+            // 创建新的账户
+            $user = $userService->createWithMobile($mobile, '', $data['nickName'], $data['avatarUrl']);
+        }
+
+        if (!in_array(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, array_column($userSocialites, 'app'))) {
+            // 当前用户未绑定当前的小程序账户的话
+            $socialiteService->bindApp($user['id'], FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openId, $data, $unionId);
+        }
+
+        return $user;
     }
 }

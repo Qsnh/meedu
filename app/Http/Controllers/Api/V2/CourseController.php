@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Api\V2;
@@ -297,10 +294,14 @@ class CourseController extends BaseController
     public function attachDownload($id)
     {
         $courseAttach = $this->courseService->getAttach($id);
-        if (!$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
+        $course = $this->courseService->find($courseAttach['course_id']);
+
+        if ($course['charge'] > 0 && !$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
             return $this->error(__('please buy course'));
         }
+
         $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);
+
         return response()->download(storage_path('app/attach/' . $courseAttach['path']));
     }
 }

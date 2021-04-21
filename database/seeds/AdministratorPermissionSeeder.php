@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 use Illuminate\Database\Seeder;
@@ -515,6 +512,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'course/\d+/subscribe/create',
             ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程用户详细观看记录',
+                'slug' => 'course.user.watch.records',
+                'method' => 'GET',
+                'url' => 'course/\d+/user/\d+/watch/records',
+            ],
 
             // 视频
             [
@@ -742,6 +746,20 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'member.remark.update',
                 'method' => 'PUT',
                 'url' => 'member/\d+/remark',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '给用户发站内消息',
+                'slug' => 'member.message.send',
+                'method' => 'POST',
+                'url' => 'member/\d+/message',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户视频观看记录',
+                'slug' => 'member.video.watch.records',
+                'method' => 'GET',
+                'url' => 'member/\d+/detail/videoWatchRecords',
             ],
 
             // 系统配置

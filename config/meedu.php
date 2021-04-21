@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 return [
@@ -32,25 +29,10 @@ return [
 
         // Socialite
         'socialite' => [
-            // Github登录
-            'github' => [
-                'app' => 'github',
-                'name' => 'Github',
-                'logo' => '/images/icons/github.svg',
-                'enabled' => 0,
-            ],
-            // QQ登录
             'qq' => [
                 'app' => 'qq',
                 'name' => 'QQ',
                 'logo' => '/images/icons/qq.svg',
-                'enabled' => 0,
-            ],
-            // 微信登录
-            'weixinweb' => [
-                'app' => 'weixinweb',
-                'name' => '微信',
-                'logo' => '/images/icons/weixin.svg',
                 'enabled' => 0,
             ],
         ],
@@ -108,6 +90,7 @@ return [
         'video' => [
             'aliyun' => [
                 'region' => 'cn-shanghai',
+                'host' => '',
                 'access_key_id' => '',
                 'access_key_secret' => '',
             ],
@@ -128,6 +111,7 @@ return [
     // 支付网关
     'payment' => [
         'alipay' => [
+            'enabled' => 0,
             'handler' => \App\Meedu\Payment\Alipay\Alipay::class,
             'name' => '支付宝',
             'logo' => '/images/icons/alipay.png',
@@ -135,19 +119,27 @@ return [
             'default_method' => 'web',
             'pc' => 'web',
             'h5' => 'wap',
-            'enabled' => 0,
         ],
         'wechat' => [
-            'handler' => \App\Meedu\Payment\Wechat\Wechat::class,
+            'enabled' => 0,
+            'handler' => \App\Meedu\Payment\Wechat\WechatScan::class,
             'name' => '微信支付',
             'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
             'wechat_mini' => 'miniapp',
-            'enabled' => 0,
+        ],
+        'wechat-jsapi' => [
+            'enabled' => 1,
+            'name' => '微信支付',
+            'logo' => '/images/icons/wechat-pay.png',
+            'sign' => 'wechat-jsapi',
+            'handler' => \App\Meedu\Payment\Wechat\WechatJSAPI::class,
+            'wechat' => 'mp',
         ],
         'handPay' => [
+            'enabled' => 0,
             'handler' => \App\Meedu\Payment\HandPay\HandPay::class,
             'name' => '手动打款',
             'logo' => '/images/icons/handpay.png',
@@ -156,7 +148,6 @@ return [
             'pc' => 'hand',
             'h5' => 'hand',
             'wechat' => 'hand',
-            'enabled' => 0,
         ],
     ],
 
@@ -181,7 +172,12 @@ return [
 
     // 系统配置
     'system' => [
+        // ICP备案
         'icp' => '',
+        'icp_link' => '',
+        // 公安网备案
+        'icp2' => '',
+        'icp2_link' => '',
         'logo' => '/images/logo.png',
         'white_logo' => '/images/white-logo.png',
         'player_thumb' => '/images/player-thumb.png',
@@ -194,6 +190,8 @@ return [
             'enabled_aliyun_private' => 0,
             // 腾讯云播放key
             'tencent_play_key' => '',
+            // 腾讯云超级播放器配置
+            'tencent_pcfg' => 'default',
         ],
 
         // 缓存开关
@@ -262,6 +260,20 @@ return [
         'app_secret' => '',
         'token' => '',
         'aes_key' => '',
+        // 开启授权登录
         'enabled_oauth_login' => 0,
+        // 开启PC扫码登录
+        'enabled_scan_login' => 0,
+        // 开启微信浏览器的分享
+        'enabled_share' => 0,
+        // 微信H5分享自定义内容
+        'share' => [
+            // 分享标题
+            'title' => '',
+            // 分享描述
+            'desc' => '',
+            // 分享的图片
+            'imgUrl' => '',
+        ],
     ],
 ];

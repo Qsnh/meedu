@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Course\Services;
@@ -52,12 +49,34 @@ class VideoService implements VideoServiceInterface
 
     /**
      * @param int $id
+     * @param array $with
+     *
+     * @return mixed
+     */
+    public function findOrNull(int $id, $with = [])
+    {
+        $video = Video::query()
+            ->with($with)
+            ->where('id', $id)
+            ->show()
+            ->published()
+            ->first();
+        return $video ?: null;
+    }
+
+    /**
+     * @param int $id
      *
      * @return array
      */
     public function find(int $id): array
     {
-        return Video::with(['course'])->show()->published()->findOrFail($id)->toArray();
+        return Video::query()
+            ->with(['course'])
+            ->show()
+            ->published()
+            ->findOrFail($id)
+            ->toArray();
     }
 
     /**

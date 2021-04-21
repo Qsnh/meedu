@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -15,15 +12,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Course\Services\CourseCommentService;
 use App\Services\Course\Services\CourseCategoryService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
@@ -37,10 +31,6 @@ class CourseController extends FrontendController
      * @var CourseService
      */
     protected $courseService;
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
     /**
      * @var CourseCommentService
      */
@@ -68,7 +58,6 @@ class CourseController extends FrontendController
 
     public function __construct(
         CourseServiceInterface $courseService,
-        ConfigServiceInterface $configService,
         CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
@@ -76,8 +65,9 @@ class CourseController extends FrontendController
         CourseCategoryServiceInterface $courseCategoryService,
         BusinessState $businessState
     ) {
+        parent::__construct();
+
         $this->courseService = $courseService;
-        $this->configService = $configService;
         $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;
         $this->videoService = $videoService;
@@ -134,6 +124,7 @@ class CourseController extends FrontendController
         $course = $this->courseService->find($id);
         $chapters = $this->courseService->chapters($course['id']);
         $videos = $this->videoService->courseVideos($course['id']);
+        $attach = $this->courseService->getCourseAttach($course['id']);
 
         // 课程评论
         $comments = $this->courseCommentService->courseComments($course['id']);
@@ -145,9 +136,6 @@ class CourseController extends FrontendController
         $keywords = $course['seo_keywords'];
         $description = $course['seo_description'];
 
-        // 课程附件
-        $attach = $this->courseService->getCourseAttach($course['id']);
-
         // 是否购买
         $isBuy = false;
         // 喜欢课程
@@ -156,11 +144,11 @@ class CourseController extends FrontendController
         $firstVideo = [];
         // 课程视频观看进度
         $videoWatchedProgress = [];
-        // 课程评论
+        // 课程评论开关
         $canComment = $this->businessState->courseCanComment($this->user(), $course);
 
         // 已登录用户的一些判断
-        if (Auth::check()) {
+        if ($this->check()) {
             // 是否购买
             $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             // 是否收藏当前课程
@@ -170,7 +158,7 @@ class CourseController extends FrontendController
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
             // 最近一条观看记录
             $latestWatchRecord = $this->userService->getLatestRecord($this->id(), $course['id']);
-            $latestWatchRecord && $firstVideo = $this->videoService->find($latestWatchRecord['video_id']);
+            $latestWatchRecord && $firstVideo = $this->videoService->findOrNull($latestWatchRecord['video_id']);
         }
 
         if (!$firstVideo) {
@@ -202,57 +190,87 @@ class CourseController extends FrontendController
         ));
     }
 
+    // 收银台
     public function showBuyPage($id)
     {
         $course = $this->courseService->find($id);
-        if ($this->userService->hasCourse(Auth::id(), $id)) {
+
+        if ($this->userService->hasCourse($this->id(), $id)) {
             flash(__('You have already purchased this course'), 'success');
             return back();
         }
+
+        // 页面标题
         $title = __('buy course', ['course' => $course['title']]);
+
         $goods = [
             'id' => $course['id'],
             'title' => $course['title'],
             'thumb' => $course['thumb'],
             'charge' => $course['charge'],
-            'label' => '整套课程',
+            'label' => __('点播课程'),
         ];
+
         $total = $course['charge'];
+
         $scene = get_payment_scene();
         $payments = get_payments($scene);
 
         return v('frontend.order.create', compact('goods', 'title', 'total', 'scene', 'payments'));
     }
 
+    // 发起支付
     public function buyHandler(Request $request)
     {
         $id = $request->input('goods_id');
         $promoCodeId = abs((int)$request->input('promo_code_id'));
         $course = $this->courseService->find($id);
+
+        // 价格为0则无法按购买
         if ($course['charge'] <= 0) {
             flash(__('course cant buy'));
             return back();
         }
-        $order = $this->orderService->createCourseOrder(Auth::id(), $course, $promoCodeId);
 
+        // 创建订单
+        $order = $this->orderService->createCourseOrder($this->id(), $course, $promoCodeId);
+
+        $courseUrl = route('course.show', [$course['id'], $course['slug']]);
+
+        // 如果直接抵扣的话则直接完成
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
             flash(__('success'), 'success');
-            return redirect(route('course.show', [$course['id'], $course['slug']]));
+            return redirect($courseUrl);
         }
 
         $paymentScene = $request->input('payment_scene');
         $payment = $request->input('payment_sign');
 
-        return redirect(route('order.pay', ['scene' => $paymentScene, 'payment' => $payment, 'order_id' => $order['order_id']]));
+        return redirect(
+            route(
+                'order.pay',
+                [
+                    'scene' => $paymentScene,
+                    'payment' => $payment,
+                    'order_id' => $order['order_id'],
+                    's_url' => $courseUrl,
+                ]
+            )
+        );
     }
 
+    // 附件下载
     public function attachDownload($id)
     {
         $courseAttach = $this->courseService->getAttach($id);
-        if (!$this->businessState->isBuyCourse(Auth::id(), $courseAttach['course_id'])) {
+        $course = $this->courseService->find($courseAttach['course_id']);
+
+        if ($course['charge'] > 0 && !$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
             abort(403, __('please buy course'));
         }
+
         $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);
+
         return response()->download(storage_path('app/attach/' . $courseAttach['path']));
     }
 }

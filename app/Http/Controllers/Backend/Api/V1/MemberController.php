@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Http\Controllers\Backend\Api\V1;
@@ -30,8 +27,10 @@ use App\Services\Member\Models\UserTagRelation;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Events\UserInviteBalanceWithdrawHandledEvent;
 use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberController extends BaseController
 {
@@ -46,7 +45,8 @@ class MemberController extends BaseController
         $members = User::with(['role', 'tags'])
             ->when($keywords, function ($query) use ($keywords) {
                 return $query->where('nick_name', 'like', "%{$keywords}%")
-                    ->orWhere('mobile', 'like', "%{$keywords}%");
+                    ->orWhere('mobile', 'like', "%{$keywords}%")
+                    ->orWhere('id', $keywords);
             })
             ->when($roleId, function ($query) use ($roleId) {
                 $query->whereRoleId($roleId);
@@ -351,5 +351,40 @@ class MemberController extends BaseController
         }
 
         return $this->success();
+    }
+
+    public function sendMessage(Request $request, $userId)
+    {
+        $user = User::query()->where('id', $userId)->firstOrFail();
+        $message = $request->input('message');
+        if (!$message) {
+            return $this->error(__('params error'));
+        }
+
+        $user->notify(new SimpleMessageNotification($message));
+
+        return $this->success();
+    }
+
+    public function userVideoWatchRecords(Request $request, $id)
+    {
+        $records = UserVideoWatchRecord::query()
+            ->select([
+                'id', 'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at',
+            ])
+            ->where('user_id', $id)
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        $videos = [];
+        $videoIds = array_column($records->items(), 'video_id');
+        if ($videoIds) {
+            $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title'])->get()->keyBy('id');
+        }
+
+        return $this->successData([
+            'data' => $records,
+            'videos' => $videos,
+        ]);
     }
 }

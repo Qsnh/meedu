@@ -4,9 +4,6 @@
  * This file is part of the Qsnh/meedu.
  *
  * (c) XiaoTeng <616896861@qq.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
  */
 
 namespace App\Services\Member\Services;
@@ -174,7 +171,7 @@ class UserService implements UserServiceInterface
     {
         $user = User::create([
             'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
-            'nick_name' => $nickname ?: Str::random(16),
+            'nick_name' => $nickname ?: Str::random(12),
             'mobile' => $mobile,
             'password' => Hash::make($password ?: Str::random(10)),
             'is_lock' => $this->configService->getMemberLockStatus(),
@@ -192,17 +189,22 @@ class UserService implements UserServiceInterface
 
     /**
      * @param string $mobile
+     * @param int $userId
+     *
      * @throws ServiceException
      */
-    public function bindMobile(string $mobile): void
+    public function bindMobile(string $mobile, int $userId): void
     {
-        $user = User::findOrFail(Auth::id());
+        $user = User::query()->where('id', $userId)->first();
+
         if (!$this->businessState->isNeedBindMobile($user->toArray())) {
             throw new ServiceException(__('cant bind mobile'));
         }
-        if (User::whereMobile($mobile)->exists()) {
+
+        if (User::query()->where('mobile', $mobile)->exists()) {
             throw new ServiceException(__('mobile has exists'));
         }
+
         $user->mobile = $mobile;
         $user->save();
     }
