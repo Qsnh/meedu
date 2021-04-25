@@ -364,8 +364,8 @@ class LoginController extends BaseController
     // 微信公众号授权登录[回调]
     public function wechatLoginCallback(Request $request, AuthBus $authBus)
     {
-        $successRedirectUrl = $request->input('s_url');
-        $failedRedirectUrl = $request->input('f_url');
+        $successRedirectUrl = urldecode($request->input('s_url', ''));
+        $failedRedirectUrl = urldecode($request->input('f_url'));
 
         $user = Wechat::getInstance()->oauth->user();
 
@@ -421,8 +421,8 @@ class LoginController extends BaseController
     // 社交登录回调
     public function socialiteLoginCallback(Request $request, $app)
     {
-        $successRedirectUrl = $request->input('s_url');
-        $failedRedirectUrl = $request->input('f_url');
+        $successRedirectUrl = urldecode($request->input('s_url'));
+        $failedRedirectUrl = urldecode($request->input('f_url'));
 
         $user = Socialite::driver($app)->stateless()->user();
 
