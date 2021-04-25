@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "sweetalert2": "10.15.7",
-    "xgplayer": "2.9.5",
-    "xgplayer-hls": "2.4.16",
+    "xgplayer": "latest",
+    "xgplayer-hls.js": "^2.4.2",
     "zepto-webpack": "1.2.1"
   }
 }

@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import Player from 'xgplayer';
-import HlsPlayer from 'xgplayer-hls';
+import HlsPlayer from 'xgplayer-hls.js';
 
 let marquee = function () {
     let player = this;
