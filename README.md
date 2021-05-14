@@ -1,4 +1,4 @@
-<p align="center"><img src="public/images/meedu.jpg"/></p>
+<p align="center"><img src="public/images/meedu.png"/></p>
 <p align="center">MeEdu - 开源的在线视频点播系统。</p>
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
@@ -14,6 +14,7 @@
 - [x] [宝塔一键安装（适合技术能力一般的用户）](https://www.yuque.com/meedu/fvvkbf/qvb006)
 - [x] [手动安装教程（适合技术能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
 - [x] MeEdu 安装服务（适合小白用户）。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
+- [x] [MeEdu 宝塔手动安装最新版(手把手教学)](https://www.yuque.com/meedu/fvvkbf/gkape0)
 
 ## FAQ
 
