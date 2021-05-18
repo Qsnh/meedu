@@ -410,21 +410,27 @@ class LoginController extends BaseController
             return $this->error(__('params error'));
         }
 
-        // 修改回调地址
         $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
-        $redirectUrl = url_append_query($redirectUrl, ['s_url' => urlencode($successRedirect), 'f_url' => urlencode($failedRedirect)]);
-        config(['services.' . $app . '.redirect' => $redirectUrl]);
+        $redirectUrl = url_append_query($redirectUrl, [
+            's_url' => urlencode($successRedirect),
+            'f_url' => urlencode($failedRedirect),
+        ]);
 
-        return Socialite::driver($app)->stateless()->redirect();
+        return Socialite::driver($app)
+            ->redirectUrl($redirectUrl)
+            ->stateless()
+            ->redirect();
     }
 
     // 社交登录回调
     public function socialiteLoginCallback(Request $request, $app)
     {
+        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
+
         $successRedirectUrl = urldecode($request->input('s_url'));
         $failedRedirectUrl = urldecode($request->input('f_url'));
 
-        $user = Socialite::driver($app)->stateless()->user();
+        $user = Socialite::driver($app)->redirectUrl($redirectUrl)->stateless()->user();
 
         $appId = $user->getId();
 

@@ -94,16 +94,16 @@ class LoginController extends BaseController
             return $this->error(__('登录方式不存在'));
         }
 
-        // 修改回调地址
-        config(['services.' . $app . '.redirect' => route('socialite.callback', [$app])]);
+        $redirectUrl = route('socialite.callback', [$app]);
 
-        return Socialite::driver($app)->redirect();
+        return Socialite::driver($app)->redirectUrl($redirectUrl)->redirect();
     }
 
     // 社交登录回调
     public function socialiteLoginCallback(AuthBus $bus, $app)
     {
-        $user = Socialite::driver($app)->user();
+        $redirectUrl = route('socialite.callback', [$app]);
+        $user = Socialite::driver($app)->redirectUrl($redirectUrl)->user();
         $appId = $user->getId();
 
         $userId = $this->socialiteService->getBindUserId($app, $appId);
