@@ -9,9 +9,9 @@
 
     <!-- 公告 -->
     @if($gAnnouncement)
-        <div class="w-full px-3 py-6 md:max-w-6xl md:mx-auto md:px-0">
+        <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto lg:px-0">
             <a href="{{route('announcement.show', [$gAnnouncement['id']])}}"
-               class="block px-5 py-3 rounded bg-blue-500 text-white shadow hover:bg-blue-400">
+               class="block px-5 py-3 rounded bg-blue-500 text-white shadow hover:bg-blue-400 text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-6 w-6" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -23,7 +23,7 @@
     @endif
 
     @if($sliders)
-        <div class="w-full px-3 pb-6 md:max-w-6xl md:mx-auto md:px-0">
+        <div class="w-full px-3 pb-6 lg:max-w-6xl lg:mx-auto lg:px-0">
             <div class="swiper-container shadow rounded">
                 <div class="swiper-wrapper">
                     @foreach($sliders as $slider)
@@ -38,7 +38,7 @@
     @endif
 
     <!-- 首页推荐 -->
-    <div class="w-full px-3 pb-6 pt-10 md:max-w-6xl md:mx-auto md:px-0">
+    <div class="w-full px-3 pb-6 pt-10 lg:max-w-6xl lg:mx-auto lg:px-0">
         @foreach($banners as $i => $banner)
             <div class="{{$loop->last ? '' : 'mb-16'}}">
                 <div class="text-2xl font-bold text-gray-900 mb-20 text-center">
@@ -49,7 +49,7 @@
                     </svg>
                     {{$banner['name']}}
                 </div>
-                <div class="grid gap-6 grid-cols-1 md:grid-cols-4">
+                <div class="grid gap-6 grid-cols-1 lg:grid-cols-4">
                     @foreach($banner['courses'] as $index => $course)
                         @include('frontend.components.course-item', ['course' => $course])
                     @endforeach
@@ -59,7 +59,7 @@
     </div>
 
     <!-- 友情链接 -->
-    <div class="w-full px-3 pb-6 pt-10 md:max-w-6xl md:mx-auto md:px-0">
+    <div class="w-full px-3 pb-6 pt-10 lg:max-w-6xl lg:mx-auto lg:px-0">
         <div class="text-xl font-bold text-gray-900 mb-6">{{__('友情链接')}}</div>
         <div>
             @foreach($links as $link)
