@@ -30,6 +30,8 @@ class CreateUserWatchStatTable extends Migration
             $table->softDeletes();
 
             $table->index(['user_id', 'year', 'month', 'day'], 'u_ymd');
+
+            $table->engine = 'InnoDB';
         });
     }
 

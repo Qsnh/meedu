@@ -28,6 +28,8 @@ class CreateAdministratorsTable extends Migration
             $table->timestamp('last_login_date')->nullable(true)->comment('最后登录时间');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

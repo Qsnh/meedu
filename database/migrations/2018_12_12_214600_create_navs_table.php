@@ -25,6 +25,8 @@ class CreateNavsTable extends Migration
             $table->string('name')->comment('链接名');
             $table->string('url')->comment('链接地址');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

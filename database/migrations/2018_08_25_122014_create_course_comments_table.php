@@ -26,6 +26,8 @@ class CreateCourseCommentsTable extends Migration
             $table->text('content')->nullable(true);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

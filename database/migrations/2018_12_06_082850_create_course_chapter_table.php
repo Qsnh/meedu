@@ -24,6 +24,8 @@ class CreateCourseChapterTable extends Migration
             $table->integer('course_id');
             $table->string('title');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

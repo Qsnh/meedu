@@ -32,6 +32,8 @@ class CreateWebconfigTable extends Migration
             $table->tinyInteger('is_private')->default(0)->comment('是否私密信息');
             $table->string('help')->default('')->comment('帮助信息');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

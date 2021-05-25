@@ -25,6 +25,8 @@ class CreateAdFromNumberTable extends Migration
             $table->date('day');
             $table->integer('num');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

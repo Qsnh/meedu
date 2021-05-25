@@ -33,6 +33,8 @@ class CreateCourseAttachTables extends Migration
             $table->softDeletes();
 
             $table->index(['course_id']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

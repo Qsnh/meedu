@@ -27,6 +27,8 @@ class CreateJobsTable extends Migration
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
+
+            $table->engine = 'InnoDB';
         });
     }
 

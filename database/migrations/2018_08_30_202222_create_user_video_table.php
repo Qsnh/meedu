@@ -24,6 +24,8 @@ class CreateUserVideoTable extends Migration
             $table->integer('video_id');
             $table->integer('charge')->default(0)->comment('收费');
             $table->timestamp('created_at')->default(null)->nullable(true);
+
+            $table->engine = 'InnoDB';
         });
     }
 

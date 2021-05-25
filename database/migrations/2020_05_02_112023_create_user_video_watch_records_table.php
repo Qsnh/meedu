@@ -30,6 +30,8 @@ class CreateUserVideoWatchRecordsTable extends Migration
             $table->softDeletes();
 
             $table->index(['user_id', 'course_id', 'video_id']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

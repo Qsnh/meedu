@@ -22,6 +22,8 @@ class CreateAdministratorRoleRelationTbale extends Migration
         Schema::create('administrator_role_relation', function (Blueprint $table) {
             $table->integer('administrator_id')->index();
             $table->integer('role_id')->index();
+
+            $table->engine = 'InnoDB';
         });
     }
 

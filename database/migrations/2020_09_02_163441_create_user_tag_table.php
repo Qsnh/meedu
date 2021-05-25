@@ -22,6 +22,8 @@ class CreateUserTagTable extends Migration
         Schema::create('user_tag', function (Blueprint $table) {
             $table->bigInteger('user_id');
             $table->bigInteger('tag_id');
+
+            $table->engine = 'InnoDB';
         });
     }
 

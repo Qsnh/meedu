@@ -27,6 +27,8 @@ class CreateAdministratorMenusTable extends Migration
             $table->string('name')->comment('链接');
             $table->string('url')->comment('地址');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

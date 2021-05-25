@@ -24,6 +24,8 @@ class CreateUserRemarksTable extends Migration
             $table->bigInteger('user_id')->unique();
             $table->text('remark')->nullable(true)->default(null)->comment('备注');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

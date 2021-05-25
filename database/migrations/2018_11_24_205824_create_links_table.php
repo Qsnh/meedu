@@ -25,6 +25,8 @@ class CreateLinksTable extends Migration
             $table->string('name');
             $table->string('url');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

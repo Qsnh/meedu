@@ -29,6 +29,8 @@ class CreateOrdersTable extends Migration
             $table->string('extra', 512)->default('')->comment('额外信息');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

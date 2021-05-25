@@ -27,6 +27,8 @@ class CreateUserInviteBalanceRecordsTable extends Migration
             $table->string('desc')->default('')->nullable(false);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

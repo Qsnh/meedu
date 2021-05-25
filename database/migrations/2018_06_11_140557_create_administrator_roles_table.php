@@ -25,6 +25,8 @@ class CreateAdministratorRolesTable extends Migration
             $table->string('slug')->comment('slug');
             $table->string('description')->comment('角色描述');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -32,6 +32,8 @@ class CreateInviteBalanceWithdrawRecordsTable extends Migration
             $table->string('remark')->nullable(true)->comment('备注');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 
