@@ -33,7 +33,7 @@
                         </svg>
                     </a>
                 </h2>
-                <div class="h-24 text-gray-500 mb-5 leading-loose text-center lg:text-left overflow-ellipsis">
+                <div class="h-24 text-gray-500 mb-5 leading-loose text-center lg:text-left overflow-ellipsis overflow-hidden">
                     {{$course['short_description']}}
                 </div>
                 <div class="w-full lg:w-auto lg:flex">

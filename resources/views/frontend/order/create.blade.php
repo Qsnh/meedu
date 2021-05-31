@@ -68,7 +68,7 @@
                     </div>
                     <div class="flex-1 text-right">
                         <div class="mb-3">
-                            <span>{{__('邀请码已抵扣')}}</span>
+                            <span>{{__('已抵扣')}}</span>
                             <span class="promo-code-discount text-xl text-red-500 mr-1">
                             <small>{{__('￥')}}</small><span class="promo-code-discount-value">0</span>
                        </span>

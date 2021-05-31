@@ -52,7 +52,7 @@
                 @else
 
                     <a href="{{route('member.messages')}}"
-                       class="relative rounded mr-5 text-gray-500 text-center hover:text-gray-800">
+                       class="relative rounded mr-5 text-gray-800 text-center hover:text-gray-900">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  class="inline-block h-5 w-5"
@@ -78,7 +78,7 @@
                         </a>
                         <div class="absolute z-50 right-0 top-full pt-5 hidden children">
                             <div class="float-left shadow-xl bg-white border border-gray-100 rounded">
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-500 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
+                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
                                    href="{{route('member')}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                          viewBox="0 0 24 24"
@@ -88,7 +88,7 @@
                                     </svg>
                                     <span class="ml-2 text-sm">{{__('用户中心')}}</span>
                                 </a>
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-500 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
+                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
                                    href="{{route('member.profile')}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                          viewBox="0 0 24 24"
@@ -100,7 +100,7 @@
                                     </svg>
                                     <span class="ml-2 text-sm">{{__('我的资料')}}</span>
                                 </a>
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-500 hover:bg-gray-100 overflow-hidden rounded-bl rounded-br"
+                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-bl rounded-br"
                                    href="javascript:void(0);"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4" fill="none"

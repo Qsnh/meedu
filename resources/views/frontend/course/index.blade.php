@@ -5,7 +5,7 @@
     <div class="pt-10 pb-6 bg-gray-100">
         <div class="w-full px-3 lg:max-w-6xl lg:mx-auto">
             <a href="javascript:void(0)"
-               class="inline-block text-gray-800 py-2 mr-10 mb-4 font-medium text-sm">{{__('分类')}}</a>
+               class="inline-block text-gray-500 py-2 mr-10 mb-4 text-sm">{{__('分类')}}</a>
             <a href="?category_id=0"
                class="inline-block {{$categoryId === 0 ? 'bg-blue-600 text-white' : 'text-gray-800'}} px-5 py-2 mr-4 mb-4 text-sm rounded-md">{{__('全部')}}</a>
             @foreach($courseCategories as $item)
@@ -18,11 +18,11 @@
     <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
         <div class="mb-6">
             <a href="?category_id={{$categoryId}}&scene={{$scene === 'free' ? '' : 'free'}}"
-               class="mr-3 text-sm rounded px-2 py-1 {{$scene === 'free' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('免费')}}</a>
+               class="mr-3 text-sm rounded px-2 py-1 {{$scene === 'free' ? 'bg-gray-800 text-white' : 'text-gray-600'}}">{{__('免费')}}</a>
             <a href="?category_id={{$categoryId}}&scene={{$scene === 'sub' ? '' : 'sub'}}"
-               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'sub' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('热门')}}</a>
+               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'sub' ? 'bg-gray-800 text-white' : 'text-gray-600'}}">{{__('热门')}}</a>
             <a href="?category_id={{$categoryId}}&scene={{$scene === 'recom' ? '' : 'recom'}}"
-               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'recom' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('推荐')}}</a>
+               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'recom' ? 'bg-gray-800 text-white' : 'text-gray-600'}}">{{__('推荐')}}</a>
         </div>
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($courses as $courseItem)

@@ -11,7 +11,7 @@
     @if($gAnnouncement)
         <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
             <a href="{{route('announcement.show', [$gAnnouncement['id']])}}"
-               class="block py-3 rounded bg-blue-500 text-white shadow hover:bg-blue-400 flex justify-center">
+               class="block py-3 rounded bg-blue-600 text-white shadow hover:bg-blue-700 flex justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-6 w-6" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

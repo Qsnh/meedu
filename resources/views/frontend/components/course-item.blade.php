@@ -4,7 +4,7 @@
         <img src="{{$course['thumb']}}" class="rounded-t" width="100%"
              alt="{{$course['title']}}">
     </div>
-    <div class="w-full pt-2 px-2 text-gray-500 group-hover:text-gray-800">
+    <div class="w-full pt-2 px-2 text-gray-800 group-hover:text-gray-900 truncate">
         {{$course['title']}}
     </div>
     <div class="w-full flex py-2 px-2 items-center">
