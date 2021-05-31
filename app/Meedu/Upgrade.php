@@ -16,6 +16,8 @@ class Upgrade
     public function run()
     {
         $this->fromV374to4();
+
+        $this->toV42();
     }
 
     public function fromV374to4()
@@ -75,5 +77,13 @@ class Upgrade
         AdministratorMenu::query()
             ->where('url', 'videomanage')
             ->update(['name' => '点播']);
+    }
+
+    public function toV42()
+    {
+        // 删除白色logo配置
+        AppConfig::query()
+            ->where('key', 'meedu.system.white_logo')
+            ->delete();
     }
 }

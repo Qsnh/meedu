@@ -20,6 +20,7 @@
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/postcss7-compat": "^2.1.2",
     "autoprefixer": "^9",
     "postcss": "^7",

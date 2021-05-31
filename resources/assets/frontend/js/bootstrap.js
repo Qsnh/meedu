@@ -10,7 +10,6 @@ let marquee = function () {
         return Math.floor(Math.random() * (m - n + 1) + n);
     };
     if (typeof player.config.marquee !== 'undefined' && typeof player.config.marquee.value !== 'undefined') {
-
         let randomMarquee = () => {
             let str = Math.random().toString(36).slice(-6);
             let marquee = util.createDom('xg-' + str, player.config.marquee.value, {}, '');

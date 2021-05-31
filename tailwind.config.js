@@ -1,4 +1,4 @@
-// const colors = require('tailwindcss/colors')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
     purge: {
@@ -9,14 +9,19 @@ module.exports = {
     },
     darkMode: 'media', // or 'media' or 'class'
     theme: {
-        // colors: colors,
         container: {
             center: true,
         },
-        extend: {},
+        extend: {
+            colors: {
+                rose: colors.rose,
+            },
+        },
     },
     variants: {
         extend: {},
     },
-    plugins: [],
+    plugins: [
+        // require('@tailwindcss/forms'),
+    ],
 }

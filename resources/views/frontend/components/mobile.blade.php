@@ -1,31 +1,35 @@
-<div class="form-group">
-    <label>手机号</label>
-    <input type="text" name="mobile" class="form-control" placeholder="手机号" required>
+<div class="mb-5">
+    <input type="text" name="mobile"
+           placeholder="{{__('请输入手机号')}}"
+           autocomplete="off"
+           class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white" required>
 </div>
-<div class="form-group">
-    <label>验证码</label>
-    <div class="row">
-        <div class="col">
-            <div class="input-group">
-                <input type="text" name="captcha" placeholder="验证码" class="form-control" required>
-                <div class="input-group-append">
-                    <img src="{{ captcha_src() }}" class="captcha" width="120" height="48">
-                </div>
-            </div>
-        </div>
+<div class="mb-5 flex items-center">
+    <div class="flex-1">
+        <input type="text" name="captcha"
+               placeholder="{{__('图形验证码')}}"
+               autocomplete="off"
+               class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+               required>
+    </div>
+    <div class="flex-shrink-0 ml-3">
+        <img src="{{ captcha_src() }}" class="captcha object-cover rounded" height="48">
     </div>
 </div>
-<div class="form-group">
-    <label>手机验证码</label>
-    <div class="row">
-        <div class="col">
-            <div class="input-group">
-                <input type="text" name="sms_captcha" placeholder="手机验证码" class="form-control" required>
-                <input type="hidden" name="sms_captcha_key" value="{{$smsCaptchaKey ?? ''}}">
-                <div class="input-group-append">
-                    <button type="button" style="width: 120px;" class="send-sms-captcha btn btn-primary">发送验证码</button>
-                </div>
-            </div>
-        </div>
+<div class="mb-5 flex items-center">
+    <div class="flex-1">
+        <input type="hidden" name="sms_captcha_key" value="{{$smsCaptchaKey ?? ''}}">
+        <input type="text" name="sms_captcha"
+               placeholder="{{__('短信验证码')}}"
+               autocomplete="off"
+               class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+               required>
+    </div>
+    <div class="flex-shrink-0 ml-3">
+        <button type="button"
+                style="width: 120px"
+                class="send-sms-captcha rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
+            {{__('发送验证码')}}
+        </button>
     </div>
 </div>

@@ -50,7 +50,7 @@ class BaseController extends Controller
         // 主动配置redirect
         $redirect = $request->input('redirect');
         if (!$redirect) {
-            $redirect = session('_previous.url') ?: url('/');
+            $redirect = url('/');
         }
 
         // 存储redirectTo

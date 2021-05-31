@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.transform-rotate--180 {
+    transform: rotate(-180deg);
+}
+
+/* 课程列表图片动效 */
+.course-item > .thumb-box {
+    overflow: hidden;
+}
+
+.course-item > .thumb-box > img {
+    transition: all .5s;
+}
+
+.course-item:hover > .thumb-box > img {
+    transform: scale(1.1, 1.1);
+}
+
+/* tabs组件 */
+.tabs {
+    width: 100%;
+    height: 42px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.tabs > .tabs-item {
+    @apply text-gray-500;
+
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.tabs > .tabs-item.active {
+    @apply text-gray-800;
+
+    font-weight: bold;
+}
+
+.tabs > .scroll-banner {
+    @apply bg-gray-800;
+
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    border-radius: 2px;
+    transition: all .2s;
+    transform: translateX(30px);
+}
+
+/* 提现 */
+.withdraw-box-shadow {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 111;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.withdraw-box-shadow .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 112;
+}
+
+.withdraw-box-shadow > .withdraw-box {
+    position: absolute;
+    top: 100px;
+}

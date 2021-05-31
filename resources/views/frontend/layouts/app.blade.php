@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-login-status" content="{{ $user ? 1 : 0 }}">
     <meta name="keywords" content="{{$keywords ?? ''}}">
     <meta name="description" content="{{$description ?? ''}}">
     <title>{{$title ?? 'MeEdu'}}</title>

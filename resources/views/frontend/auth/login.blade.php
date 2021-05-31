@@ -1,61 +1,82 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 
-    <div class="container-fluid my-5">
-        <div class="row">
-            <div class="col-12 my-5">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
-                            <h3 class="mb-5">账号登录
-                                <small class="fs-14px"><a href="{{route('register')}}">没有账号？点此注册</a></small>
-                            </h3>
-                            <form action="" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="mobile">手机号</label>
-                                    <input id="mobile" type="mobile" class="form-control" placeholder="手机号"
-                                           name="mobile" value="{{ old('mobile') }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">密码</label>
-                                    <input id="password" type="password" class="form-control" placeholder="密码"
-                                           name="password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label><input type="checkbox"
-                                                  name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        15天内免登录</label>
-                                    <a href="{{ route('password.request') }}" class="float-right">忘记密码？</a>
-                                </div>
-                                <div class="form-group mt-2">
-                                    <button class="btn btn-primary btn-block">登录</button>
-                                </div>
-                                @if(enabled_socialites()->isNotEmpty() || (int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
-                                    <div class="form-group text-center c-2">
-                                        <p>其它方式登录</p>
+    <div class="w-full px-3 mt-20 mb-20 lg:max-w-6xl lg:mx-auto">
+        <div class="flex justify-center">
+            <div class="w-full lg:w-96">
+                <form action="{{route('login')}}" method="post">
+                    @csrf
+                    <div class="bg-white rounded p-5 shadow">
+                        <div class="text-2xl font-bold text-gray-800 mb-10 text-center mt-5">{{__('登录')}}</div>
+                        <div class="mb-5">
+                            <div class="mb-5">
+                                <input type="text" name="mobile"
+                                       placeholder="{{__('请输入手机号')}}"
+                                       autocomplete="off"
+                                       class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                       required>
+                            </div>
+                            <div class="mb-5">
+                                <input type="password" name="password"
+                                       placeholder="{{__('请输入密码')}}"
+                                       autocomplete="off"
+                                       class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                       required>
+                            </div>
+                            <div class="mb-5 flex items-center">
+                                <div class="flex-1 flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input id="remember" type="checkbox"
+                                               name="remember" {{ old('remember') ? 'checked' : '' }}
+                                               class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                     </div>
-                                    <div class="form-group text-center">
+                                    <div class="ml-1 text-sm">
+                                        <label for="remember" class="text-gray-500">{{__('15天内免登录')}}</label>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 text-right">
+                                    <a class="text-gray-500 text-sm hover:text-gray-600"
+                                       href="{{route('password.request')}}">{{__('忘记密码？')}}</a>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <button type="submit"
+                                        class="flex-1 rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
+                                    {{__('登录')}}
+                                </button>
+                            </div>
+                            <div class="my-3 text-right">
+                                <a class="text-sm text-gray-500 hover:text-gray-600"
+                                   href="{{route('register')}}">{{__('没有账号？点此注册')}}</a>
+                            </div>
+                            @if(enabled_socialites()->isNotEmpty() || (int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
+                                <div class="mt-10">
+                                    <div class="text-sm text-gray-500 text-center mb-5">
+                                        {{__('第三方账号登录')}}
+                                    </div>
+                                    <div class="flex justify-center">
                                         @foreach(enabled_socialites() as $socialite)
-                                            <a class="mr-2 text-decoration-none"
+                                            <a class="text-decoration-none mr-2"
                                                href="{{url_append_query(route('socialite', $socialite['app']), ['redirect' => request()->input('redirect', '')])}}">
-                                                <img src="{{$socialite['logo']}}" width="32" height="32">
+                                                <img src="{{$socialite['logo']}}" class="object-cover" width="36"
+                                                     height="36">
                                             </a>
                                         @endforeach
 
                                         @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
-                                            <a class="mr-2 text-decoration-none"
+                                            <a class="ml-2"
                                                href="{{url_append_query(route('login.wechat.scan'), ['redirect' => request()->input('redirect', '')])}}">
-                                                <img src="{{asset('/images/icons/wechat.svg')}}" width="32" height="32">
+                                                <img class="object-cover" src="{{asset('/images/icons/wechat.svg')}}"
+                                                     width="36" height="36">
                                             </a>
                                         @endif
                                     </div>
-                                @endif
-                            </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

@@ -34,8 +34,6 @@ Route::post('/sms/send', 'SmsController@send')->name('sms.send');
 
 // 课程列表
 Route::get('/courses', 'CourseController@index')->name('courses');
-// 视频列表
-Route::get('/videos', 'VideoController@index')->name('videos');
 // 课程详情
 Route::get('/course/{id}/{slug}', 'CourseController@show')->name('course.show');
 Route::get('/course/attach/{id}/download', 'CourseController@attachDownload')->name('course.attach.download')->middleware(['auth']);
@@ -68,16 +66,8 @@ Route::group([
     Route::post('/logout', 'MemberController@logout')->name('logout');
 
     // 手机号绑定
-    Route::get('/mobile/bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
-    Route::post('/mobile/bind', 'MemberController@mobileBindHandler')->name('member.mobile.bind.submit')->middleware('sms.check');
-
-    // 密码重置
-    Route::get('/password_reset', 'MemberController@showPasswordResetPage')->name('member.password_reset');
-    Route::post('/password_reset', 'MemberController@passwordResetHandler');
-
-    // 头像更换
-    Route::get('/avatar', 'MemberController@showAvatarChangePage')->name('member.avatar');
-    Route::post('/avatar', 'MemberController@avatarChangeHandler');
+    Route::get('/mobile_bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
+    Route::post('/mobile_bind', 'MemberController@mobileBindHandler')->middleware('sms.check');
 
     // VIP会员购买记录
     Route::get('/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');
@@ -95,15 +85,14 @@ Route::group([
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
 
     // 社交登录
-    Route::get('/socialite', 'MemberController@showSocialitePage')->name('member.socialite');
     Route::get('/socialite/{app}/bind', 'MemberController@socialiteBind')->name('member.socialite.bind');
     Route::get('/socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('member.socialite.bind.callback');
-    Route::post('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
+    Route::get('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');
 
     // 邀请码
     Route::get('/promo_code', 'MemberController@showPromoCodePage')->name('member.promo_code');
-    Route::post('/promo_code', 'MemberController@generatePromoCode');
-    Route::post('/invite_balance_withdraw_orders', 'MemberController@createInviteBalanceWithdrawOrder');
+
+    // 积分明细
     Route::get('/credit1_records', 'MemberController@credit1Records')->name('member.credit1_records');
 
     // 我的资料
@@ -132,28 +121,44 @@ Route::group([
     Route::get('/order/pay/wechat/{order_id}/scan', 'OrderController@wechatScan')->name('order.pay.wechat');
 
     Route::group(['prefix' => 'ajax'], function () {
+        // 点播课程评论
         Route::post('/course/{id}/comment', 'AjaxController@courseCommentHandler')->name('ajax.course.comment');
+        // 点播视频评论
         Route::post('/video/{id}/comment', 'AjaxController@videoCommentHandler')->name('ajax.video.comment');
+        // 视频观看时长统计
         Route::post('/video/{id}/watch/record', 'AjaxController@recordVideo')->name('ajax.video.watch.record');
+        // promoCode有效性检测
         Route::post('/promoCodeCheck', 'AjaxController@promoCodeCheck')->name('ajax.promo_code.check');
-
+        // 修改密码
         Route::post('/password/change', 'AjaxController@changePassword')->name('ajax.password.change');
+        // 修改头像
         Route::post('/avatar/change', 'AjaxController@changeAvatar')->name('ajax.avatar.change');
+        // 修改昵称
         Route::post('/nickname/change', 'AjaxController@changeNickname')->name('ajax.nickname.change');
+        // 标记站内消息已读
         Route::post('/message/read', 'AjaxController@notificationMarkAsRead')->name('ajax.message.read');
+        Route::post('/message/read/all', 'AjaxController@notificationMarkAllAsRead')->name('ajax.message.read.all');
+        // 提现
         Route::post('/inviteBalanceWithdraw', 'AjaxController@inviteBalanceWithdraw')->name('ajax.invite_balance.withdraw');
+        // 收藏课程
         Route::post('/course/like/{id}', 'AjaxController@likeACourse')->name('ajax.course.like');
-
         // 用户资料编辑
-        Route::post('/member/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
+        Route::post('/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
+        // 手机号绑定
+        Route::post('/mobile_bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check']);
     });
 });
 
-// Auth Ajax
 Route::group(['prefix' => 'ajax'], function () {
+    // 密码登录
     Route::post('/auth/login/password', 'AjaxController@passwordLogin')->name('ajax.login.password');
-    Route::post('/auth/login/mobile', 'AjaxController@mobileLogin')->name('ajax.login.mobile')->middleware(['sms.check']);
-    Route::post('/auth/register', 'AjaxController@register')->name('ajax.register')->middleware(['sms.check']);
-    Route::post('/auth/password/reset', 'AjaxController@passwordReset')->name('ajax.password.reset')->middleware(['sms.check']);
-    Route::post('/auth/mobile/bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check', 'auth']);
+
+    Route::group(['middleware' => ['sms.check']], function () {
+        // 手机号短信登录
+        Route::post('/auth/login/mobile', 'AjaxController@mobileLogin')->name('ajax.login.mobile');
+        // 注册
+        Route::post('/auth/register', 'AjaxController@register')->name('ajax.register');
+        // 密码重置
+        Route::post('/auth/password/reset', 'AjaxController@passwordReset')->name('ajax.password.reset');
+    });
 });

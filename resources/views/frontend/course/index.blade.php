@@ -1,49 +1,37 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="course-menu-box">
-                    <div class="menu-item {{!$scene ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => '', 'page' => 1])}}">所有课程</a>
-                    </div>
-                    <div class="menu-item {{$scene == 'free' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'free', 'page' => 1])}}">免费课程</a>
-                    </div>
-                    <div class="menu-item {{$scene == 'recom' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'recom', 'page' => 1])}}">推荐课程</a>
-                    </div>
-                    <div class="menu-item {{$scene == 'sub' ? 'active' : ''}}">
-                        <a href="{{route('courses')}}?{{query_builder(['category_id'], ['scene' => 'sub', 'page' => 1])}}">订阅最多</a>
-                    </div>
-                </div>
-
-                <div class="category-box">
-                    <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => 0, 'page' => 1])}}"
-                       class="category-box-item {{!$categoryId ? 'active' : ''}}">不限</a>
-                    @foreach($courseCategories as $category)
-                        <a href="{{route('courses')}}?{{query_builder(['scene'], ['category_id' => $category['id'], 'page' => 1])}}"
-                           class="category-box-item {{$categoryId == $category['id'] ? 'active' : ''}}">{{$category['name']}}</a>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div class="course-list-box">
-                    @foreach($courses as $index => $course)
-                        @include('frontend.components.course-item', ['course' => $course, 'class' => (($index + 1) % 4 == 0) ? 'last' : ''])
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="col-12">
-                {!! str_replace('pagination', 'pagination justify-content-center', $courses->render()) !!}
-            </div>
+    <div class="pt-10 pb-6 bg-gray-100">
+        <div class="w-full px-3 lg:max-w-6xl lg:mx-auto">
+            <a href="javascript:void(0)"
+               class="inline-block text-gray-800 py-2 mr-10 mb-4 font-medium text-sm">{{__('分类')}}</a>
+            <a href="?category_id=0"
+               class="inline-block {{$categoryId === 0 ? 'bg-blue-600 text-white' : 'text-gray-800'}} px-5 py-2 mr-4 mb-4 text-sm rounded-md">{{__('全部')}}</a>
+            @foreach($courseCategories as $item)
+                <a href="?category_id={{$item['id']}}"
+                   class="inline-block {{$categoryId === $item['id'] ? 'bg-blue-600 text-white' : 'text-gray-800'}} px-5 py-2 mr-4 mb-4 text-sm rounded-md">{{$item['name']}}</a>
+            @endforeach
         </div>
     </div>
 
-    @include('frontend.components.recom_courses')
+    <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
+        <div class="mb-6">
+            <a href="?category_id={{$categoryId}}&scene={{$scene === 'free' ? '' : 'free'}}"
+               class="mr-3 text-sm rounded px-2 py-1 {{$scene === 'free' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('免费')}}</a>
+            <a href="?category_id={{$categoryId}}&scene={{$scene === 'sub' ? '' : 'sub'}}"
+               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'sub' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('热门')}}</a>
+            <a href="?category_id={{$categoryId}}&scene={{$scene === 'recom' ? '' : 'recom'}}"
+               class="mr-3 text-sm rounded px-2 py-1  {{$scene === 'recom' ? 'bg-gray-800 text-white' : 'text-gray-800'}}">{{__('推荐')}}</a>
+        </div>
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            @foreach($courses as $courseItem)
+                @include('frontend.components.course-item', ['course' => $courseItem])
+            @endforeach
+        </div>
+        <div class="mt-10">
+            {{$courses->render('frontend.components.common.paginator')}}
+        </div>
+    </div>
 
 @endsection

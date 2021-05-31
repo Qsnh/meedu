@@ -2,8 +2,8 @@
 <script>
     const XGPlayerConfig = {
         el: document.querySelector('#meedu-player'),
-        width: 1200,
-        height: 675,
+        width: '100%',
+        height: 500,
         poster: "{{$gConfig['system']['player_thumb']}}",
         playsinline: true,
         playbackRate: [0.5, 0.75, 1, 1.5, 2],
@@ -24,15 +24,15 @@
         @endif
         definitionActive: 'click',
     };
-            @if($playUrls->first()['format'] === 'm3u8')
+    @if($playUrls->first()['format'] === 'm3u8')
     const XGPlayer = new HlsPlayer(XGPlayerConfig);
-            @else
+    @else
     const XGPlayer = new Player(XGPlayerConfig);
     @endif
 
     @if($playUrls->count() > 1)
     XGPlayer.emit('resourceReady', @json($playUrls));
-            @endif
+    @endif
 
     var PREV_SECONDS = 0;
     var recordHandle = function (isEnd = false) {
@@ -50,6 +50,6 @@
     XGPlayer.on('ended', function () {
         recordHandle(true);
         $('#meedu-player').hide();
-        $('.need-login').show();
+        $('.video-play-alert-info').show();
     });
 </script>

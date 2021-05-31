@@ -1,47 +1,34 @@
-@extends('layouts.member')
+@extends('frontend.layouts.member')
 
 @section('member')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="my-orders">
-                    @forelse($orders as $order)
-                        <div class="orders-item">
-                            @if(count($order['goods']) > 1 || count($order['goods']) === 0)
-                                <img src="/images/icons/order-goods.png" width="24" height="24">
-                            @else
-                                @switch($order['goods'][0]['goods_type'])
-                                    @case(\App\Constant\FrontendConstant::ORDER_GOODS_TYPE_COURSE)
-                                    <img src="/images/icons/course-hover.png" width="24" height="24">
-                                    @break
-                                    @case(\App\Constant\FrontendConstant::ORDER_GOODS_TYPE_ROLE)
-                                    <img src="/images/icons/member/vip.png" width="24" height="24">
-                                    @break
-                                    @default
-                                    <img src="/images/icons/order-goods.png" width="24" height="24">
-                                @endswitch
-                            @endif
-                            <span class="order-goods-title">
-                                {{ implode(',', array_column($order['goods'] ?? [], 'goods_text')) }} [{{$order['order_id']}}]
-                            </span>
-                            <span class="order-goods-status member-list-item-right">{{$order['status_text']}}</span>
-                            <span class="order-goods-payment member-list-item-right">{{$order['payment_text'] ?: '暂无'}}</span>
-                            <span class="order-goods-date member-list-item-right">{{ \Carbon\Carbon::parse($order['created_at'])->format('Y-m-d') }}</span>
-                            <span class="order-goods-charge member-list-item-right">￥{{ $order['charge'] }}</span>
-                        </div>
-                    @empty
-                        @include('frontend.components.none')
-                    @endforelse
+    @forelse($orders as $orderItem)
+        <div class="bg-white p-5 shadow rounded mb-5">
+            <div class="flex items-center text-sm text-gray-500">
+                <div class="flex-1">
+                    <div class="font-medium text-xl mb-3 text-gray-800">{{$orderItem['order_id']}}</div>
+                    <div>
+                        <span>{{ implode(',', array_column($orderItem['goods'] ?? [], 'goods_name')) }}</span>
+                        <span class="text-gray-300">-</span>
+                        <span class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($orderItem['created_at'])->format('Y-m-d') }}</span>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-red-500 font-medium">
+                            <small>{{__('￥')}}</small>{{ $orderItem['charge'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    {{$orderItem['status_text']}}
                 </div>
             </div>
-
-            @if($orders->total() > $orders->perPage())
-                <div class="col-12">
-                    {!! str_replace('pagination', 'pagination justify-content-center', $orders->render()) !!}
-                </div>
-            @endif
         </div>
+    @empty
+        @include('frontend.components.none')
+    @endforelse
+
+    <div class="">
+        {{$orders->render('frontend.components.common.paginator')}}
     </div>
 
 @endsection

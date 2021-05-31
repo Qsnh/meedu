@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <div class="w-full text-center">
+    <div class="w-full text-center pagination">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
             <a href="javascript:void(0)" class="inline-block px-3 mx-2 my-1 text-gray-400 text-sm">上一页</a>

@@ -883,6 +883,13 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@tailwindcss/forms@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.npm.taobao.org/@tailwindcss/forms/download/@tailwindcss/forms-0.3.2.tgz#e28c4514a53e69f725416a5a2a6d0f221683f069"
+  integrity sha1-4oxFFKU+afclQWpaKm0PIhaD8Gk=
+  dependencies:
+    mini-svg-data-uri "^1.2.3"
+
 "@tailwindcss/postcss7-compat@^2.1.2", "tailwindcss@npm:@tailwindcss/postcss7-compat":
   version "2.1.2"
   resolved "https://registry.nlark.com/@tailwindcss/postcss7-compat/download/@tailwindcss/postcss7-compat-2.1.2.tgz#4ae2a3a3c05622ee04307997b0f8bea5c8dbc2b6"
@@ -4686,6 +4693,11 @@ mime@^2.4.4:
   version "2.5.2"
   resolved "https://registry.nlark.com/mime/download/mime-2.5.2.tgz#6e3dc6cc2b9510643830e5f19d5cb753da5eeabe"
   integrity sha1-bj3GzCuVEGQ4MOXxnVy3U9pe6r4=
+
+mini-svg-data-uri@^1.2.3:
+  version "1.3.3"
+  resolved "https://registry.nlark.com/mini-svg-data-uri/download/mini-svg-data-uri-1.3.3.tgz#91d2c09f45e056e5e1043340b8b37ba7b50f4fac"
+  integrity sha1-kdLAn0XgVuXhBDNAuLN7p7UPT6w=
 
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"

@@ -1,30 +1,29 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-12 bg-fff br-8 px-5 py-4">
-                <div class="w-100 float-left">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2>支付成功</h2>
-                        </div>
-                        <div class="col-12">
-                            <p class="mt-4 text-right">订单号 <span class="ml-3">{{$order['order_id']}}</span></p>
-                        </div>
-                        <div class="col-12 py-3 text-center text-success">
-                            <i class="fa fa-check-circle-o fa-5x" aria-hidden="true"></i>
-                        </div>
-                        <div class="col-12 text-right">
-                            <a href="{{route('member.orders')}}" class="btn btn-primary">我的订单</a>
-                        </div>
+    <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
+        <div class="bg-white p-10 shadow rounded">
+            <div class="flex py-10 justify-center">
+                <div class="flex items-center">
+                    <div class="text-green-500 mr-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="text-green-500 text-2xl">
+                        支付成功
                     </div>
                 </div>
             </div>
+
+            <div class="mt-10 flex justify-center">
+                <a href="{{route('member.orders')}}" class="text-blue-500">{{__('我的订单')}}</a>
+            </div>
         </div>
     </div>
-
-    @include('frontend.components.recom_courses')
 
 @endsection

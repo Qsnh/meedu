@@ -5,44 +5,47 @@
     <video id="xiaoteng-player" preload="auto" playsinline webkit-playsinline></video>
 </div>
 <script>
-    window.tcPlayer = TCPlayer('xiaoteng-player', {
-        fileID: '{{$video['tencent_video_id']}}',
-        appID: '{{config('tencent.vod.app_id')}}',
-        poster: '{{$gConfig['system']['player_thumb']}}',
-        playbackRates: [0.5, 1, 1.5, 2],
-        plugins: {
-            ContinuePlay: {},
-        },
-        controlBar: {
-            @if($video['ban_drag'] === 1)
-            progressControl: false,
-            @endif
-            playToggle: true,
-            QualitySwitcherMenuButton: true
-        },
-        psign: '{{app()->make(\App\Meedu\Player\TencentKey::class)->psign($video, isset($isTry) ? $isTry : false)}}'
-    });
-
-    var PREV_SECONDS = 0;
-    var recordHandle = function (isEnd = false) {
-        var s = parseInt(window.tcPlayer.currentTime());
-        if (s > PREV_SECONDS) {
-            PREV_SECONDS = s;
-            $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
-                _token: '{{csrf_token()}}',
-                duration: (isEnd ? s + 1 : s)
-            }, function (res) {
-            }, 'json');
-        }
-    };
-    setInterval('recordHandle()', 10000);
-    window.tcPlayer.on('ended', function () {
-        recordHandle(true);
-        $('#meedu-player').hide();
-        $('.need-login').show();
-    });
-    // 按空格键暂停播放
     $(function () {
+        window.tcPlayer = TCPlayer('xiaoteng-player', {
+            width: document.getElementById('meedu-player').offsetWidth,
+            height: 500,
+            fileID: '{{$video['tencent_video_id']}}',
+            appID: '{{config('tencent.vod.app_id')}}',
+            poster: '{{$gConfig['system']['player_thumb']}}',
+            playbackRates: [0.5, 1, 1.5, 2],
+            plugins: {
+                ContinuePlay: {},
+            },
+            controlBar: {
+                @if($video['ban_drag'] === 1)
+                progressControl: false,
+                @endif
+                playToggle: true,
+                QualitySwitcherMenuButton: true
+            },
+            psign: '{{app()->make(\App\Meedu\Player\TencentKey::class)->psign($video, isset($isTry) ? $isTry : false)}}'
+        });
+
+        var PREV_SECONDS = 0;
+        var recordHandle = function (isEnd = false) {
+            var s = parseInt(window.tcPlayer.currentTime());
+            if (s > PREV_SECONDS) {
+                PREV_SECONDS = s;
+                $.post('{{route('ajax.video.watch.record', [$video['id']])}}', {
+                    _token: '{{csrf_token()}}',
+                    duration: (isEnd ? s + 1 : s)
+                }, function (res) {
+                }, 'json');
+            }
+        };
+        setInterval('recordHandle()', 10000);
+        window.tcPlayer.on('ended', function () {
+            recordHandle(true);
+            $('#meedu-player').hide();
+            $('.video-play-alert-info').show();
+        });
+
+        // 按空格键暂停播放
         $('body').keypress(function (e) {
             if (e.keyCode === 32) {
                 var currentTime = window.tcPlayer.currentTime();

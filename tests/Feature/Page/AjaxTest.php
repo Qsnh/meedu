@@ -91,7 +91,7 @@ class AjaxTest extends TestCase
             'content' => '哈哈哈哈，我要评论下',
         ])->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
-        $this->assertEquals(__('course cant comment'), $response['message']);
+        $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_course_comment_only_vip()
@@ -153,7 +153,7 @@ class AjaxTest extends TestCase
             'content' => '哈哈哈哈，我要评论下',
         ])->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
-        $this->assertEquals(__('video cant comment'), $response['message']);
+        $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_close_and_vip()
@@ -172,7 +172,7 @@ class AjaxTest extends TestCase
             'content' => '哈哈哈哈，我要评论下',
         ])->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
-        $this->assertEquals(__('video cant comment'), $response['message']);
+        $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_only_paid()
@@ -186,7 +186,7 @@ class AjaxTest extends TestCase
             'content' => '哈哈哈哈，我要评论下',
         ])->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
-        $this->assertEquals(__('video cant comment'), $response['message']);
+        $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_only_paid_for_vip()
@@ -634,7 +634,7 @@ class AjaxTest extends TestCase
         $this->user->save();
 
         session(['sms_mock' => 'mock']);
-        $response = $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+        $response = $this->actingAs($this->user)->post('/member/ajax/mobile_bind', [
             'mobile' => '13899990000',
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',
@@ -651,7 +651,7 @@ class AjaxTest extends TestCase
         $this->user->save();
 
         session(['sms_mock' => 'mock']);
-        $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+        $this->actingAs($this->user)->post('/member/ajax/mobile_bind', [
             'mobile' => '13899990000',
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',
@@ -667,7 +667,7 @@ class AjaxTest extends TestCase
         factory(User::class)->create(['mobile' => '13666667777']);
 
         session(['sms_mock' => 'mock']);
-        $this->actingAs($this->user)->post('/ajax/auth/mobile/bind', [
+        $this->actingAs($this->user)->post('/member/ajax/mobile_bind', [
             'mobile' => '13666667777',
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',

@@ -69,20 +69,6 @@ class VideoController extends FrontendController
         $this->orderService = $orderService;
     }
 
-    public function index(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $this->configService->getVideoListPageSize();
-        [
-            'list' => $list,
-            'total' => $total
-        ] = $this->videoService->simplePage($page, $pageSize);
-        $videos = $this->paginator($list, $total, $page, $pageSize);
-        $title = __('all videos');
-
-        return v('frontend.video.index', compact('videos', 'title'));
-    }
-
     public function show(Request $request, $courseId, $id, $slug)
     {
         $scene = $request->input('scene');
