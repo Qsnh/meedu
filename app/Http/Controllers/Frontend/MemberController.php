@@ -265,7 +265,8 @@ class MemberController extends FrontendController
 
         $hasBindSocialites = $socialiteService->userSocialites($this->id());
         if (in_array($app, array_column($hasBindSocialites, 'app'))) {
-            throw new ServiceException(__('您已经绑定了该渠道的账号'));
+            flash(__('您已经绑定了该渠道的账号'), 'error');
+            return redirect(route('member'));
         }
 
         $redirectUrl = route('member.socialite.bind.callback', [$app]);
@@ -276,7 +277,8 @@ class MemberController extends FrontendController
         // 读取当前社交账号绑定的用户id
         $userId = $socialiteService->getBindUserId($app, $appId);
         if ($userId) {
-            throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
+            flash(__('当前渠道账号已绑定了其它账号'), 'error');
+            return redirect(route('member'));
         }
 
         // 绑定操作

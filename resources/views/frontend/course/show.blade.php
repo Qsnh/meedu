@@ -72,7 +72,7 @@
                 @include('frontend.components.common.tabs', ['tabs' => [['name' => __('课程介绍'), 'dom' => 'course-desc'], ['name' => __('课程目录'), 'dom' => 'lessons'], ['name' => __('课程评论'), 'dom' => 'comments'],['name' => __('课程附件'), 'dom' => 'attach-list']], 'active' => 0])
             </div>
             <div class="">
-                <div class="course-desc leading-loose text-gray-800">
+                <div class="course-desc leading-loose text-gray-800 break-all overflow-hidden">
                     {!! $course['render_desc'] !!}
                 </div>
                 <div class="lessons hidden">

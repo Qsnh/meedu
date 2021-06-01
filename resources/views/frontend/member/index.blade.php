@@ -116,7 +116,7 @@
                         </div>
                         @if(isset($apps[$socialiteItem['app']]))
                             <div class="text-gray-500 text-sm mb-3">
-                                {{mb_substr($apps[$socialiteItem['sign']]['app_user_id'], 0, 8)}}
+                                {{mb_substr($apps[$socialiteItem['app']]['app_user_id'], 0, 8)}}
                                 ***
                             </div>
                             <div>
