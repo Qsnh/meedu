@@ -91,7 +91,7 @@
                         </div>
                         @if(isset($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]))
                             <div class="text-gray-500 text-sm mb-3">
-                                {{mb_substr($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]['app_user_id'], 0, 8)}}
+                                {{mb_substr($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]['app_user_id'], 0, 4)}}
                                 ***
                             </div>
                             <div>

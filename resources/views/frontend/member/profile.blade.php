@@ -23,7 +23,7 @@
                             <input type="text" name="nickname"
                                    placeholder="{{__('请输入昵称')}}"
                                    autocomplete="off"
-                                   class="flex-1 rounded border-gray-200 bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   class="flex-1 rounded border-gray-200 bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                    required>
                             <button type="button"
                                     data-message-required="{{__('请输入昵称')}}"
@@ -54,7 +54,7 @@
                 <div data-url="{{route('ajax.avatar.change')}}"
                      data-message-required="{{__('请选择头像')}}"
                      data-message-success="{{__('成功')}}"
-                     class="btn-avatar-change flex-1 px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-100">
+                     class="btn-avatar-change flex-1 px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-100 hover:text-gray-600 hover:bg-gray-100">
                     <div class="mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-7 w-7 "
                              fill="none"
@@ -82,7 +82,7 @@
                         <input type="text" name="real_name" value="{{$profile['real_name'] ?? ''}}"
                                placeholder="{{__('真实姓名')}}"
                                autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                required>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                         <input type="text" name="id_number" value="{{$profile['id_number'] ?? ''}}"
                                placeholder="{{__('身份证号码')}}"
                                autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                required>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         <input type="number" name="age" value="{{$profile['age'] ?? ''}}"
                                placeholder="{{__('年龄')}}"
                                autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                required>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     <div class="text-gray-500 text-sm mb-2">{{__('性别')}}</div>
                     <div>
                         <select name="gender"
-                                class="block py-2 text-base border-gray-300 bg-gray-200 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
+                                class="block py-2 text-base border-gray-300 bg-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
                             <option value="0" {{(int)($profile['gender'] ?? 0) === 0 ? 'selected' : ''}}>{{__('不公开')}}</option>
                             <option value="1" {{(int)($profile['gender'] ?? 0) === 1 ? 'selected' : ''}}>{{__('男')}}</option>
                             <option value="2" {{(int)($profile['gender'] ?? 0) === 2 ? 'selected' : ''}}>{{__('女')}}</option>
@@ -128,13 +128,13 @@
                             <input type="text" name="birthday"
                                    value="{{\Carbon\Carbon::parse($profile['birthday'])->format('Y-m-d')}}"
                                    autocomplete="off"
-                                   class="date w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                    required>
                         @else
                             <input type="text" name="birthday"
                                    placeholder="{{__('请选择出生年月日')}}"
                                    autocomplete="off"
-                                   class="date w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                    required>
                         @endif
                     </div>
@@ -146,7 +146,7 @@
                         <input type="text" name="profession" value="{{$profile['profession'] ?? ''}}"
                                placeholder="{{__('职业')}}"
                                autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                required>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                         <input type="text" name="graduated_school" value="{{$profile['graduated_school'] ?? ''}}"
                                placeholder="{{__('毕业院校')}}"
                                autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-200 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                required>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                              data-file-input-name="file_diploma"
                              data-message-required="{{__('请选择图片')}}"
                              data-message-success="{{__('成功')}}"
-                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-100">
+                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-100 hover:text-gray-600 hover:bg-gray-100">
                             <div class="mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-7 w-7 "
                                      fill="none"
@@ -222,7 +222,7 @@
                              data-file-input-name="file_id_frontend_thumb"
                              data-message-required="{{__('请选择图片')}}"
                              data-message-success="{{__('成功')}}"
-                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-100">
+                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-100 hover:text-gray-600 hover:bg-gray-100">
                             <div class="mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-7 w-7 "
                                      fill="none"
@@ -257,7 +257,7 @@
                              data-file-input-name="file_id_backend_thumb"
                              data-message-required="{{__('请选择图片')}}"
                              data-message-success="{{__('成功')}}"
-                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-100">
+                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-100 hover:text-gray-600 hover:bg-gray-100">
                             <div class="mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-7 w-7 "
                                      fill="none"
@@ -291,7 +291,7 @@
                              data-file-input-name="file_id_hand_thumb"
                              data-message-required="{{__('请选择图片')}}"
                              data-message-success="{{__('成功')}}"
-                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-100">
+                             class="btn-image-upload px-5 py-7 rounded cursor-pointer text-center text-gray-500 bg-gray-100 hover:text-gray-600 hover:bg-gray-100">
                             <div class="mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-7 w-7 "
                                      fill="none"

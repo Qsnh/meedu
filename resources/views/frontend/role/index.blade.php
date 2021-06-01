@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="w-full px-3 pt-24 pb-10 lg:max-w-6xl lg:mx-auto">
+    <div class="w-full px-3 py-32 lg:max-w-6xl lg:mx-auto">
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:max-w-7xl lg:grid-cols-3">
             @foreach($gRoles as $index => $roleItem)
                 <div class="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col">

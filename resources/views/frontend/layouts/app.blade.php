@@ -11,6 +11,7 @@
     <meta name="description" content="{{$description ?? ''}}">
     <title>{{$title ?? 'MeEdu'}}</title>
     <link rel="stylesheet" href="{{mix('/frontend/css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('/frontend/css/iconfont/iconfont.css')}}?v=4.2">
     <script src="{{mix('frontend/js/frontend.js')}}"></script>
     @yield('css')
     @if($css = $gConfig['system']['css']['pc'] ?? '')
@@ -18,6 +19,10 @@
             {{$css}}
         </style>
     @endif
+
+    <style>
+
+    </style>
 </head>
 <body class="bg-gray-50">
 

@@ -37,7 +37,7 @@
                                 </button>
                             </div>
                             <div class="my-3 text-center">
-                                <a class="text-sm text-gray-500 hover:text-gray-600"
+                                <a class="text-sm text-gray-500 hover:text-blue-600"
                                    href="{{route('login')}}">{{__('已有账号？点此登录')}}</a>
                             </div>
                         </div>

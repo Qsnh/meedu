@@ -2,18 +2,20 @@
 
 @section('content')
 
-    <div class="pt-10 pb-6 bg-gray-100">
-        <div class="w-full px-3 lg:max-w-6xl lg:mx-auto">
-            <a href="javascript:void(0)"
-               class="inline-block text-gray-500 py-2 mr-10 mb-4 text-sm">{{__('分类')}}</a>
-            <a href="?category_id=0"
-               class="inline-block {{$categoryId === 0 ? 'bg-blue-600 text-white' : 'text-gray-800'}} px-5 py-2 mr-4 mb-4 text-sm rounded-md">{{__('全部')}}</a>
-            @foreach($courseCategories as $item)
-                <a href="?category_id={{$item['id']}}"
-                   class="inline-block {{$categoryId === $item['id'] ? 'bg-blue-600 text-white' : 'text-gray-800'}} px-5 py-2 mr-4 mb-4 text-sm rounded-md">{{$item['name']}}</a>
-            @endforeach
-        </div>
-    </div>
+   <div class="w-full bg-white">
+       <div class="pt-6 pb-2">
+           <div class="w-full px-3 lg:max-w-6xl lg:mx-auto">
+               <a href="javascript:void(0)"
+                  class="inline-block text-gray-800 py-2 mr-10 mb-4 text-sm">{{__('分类')}}</a>
+               <a href="?category_id=0"
+                  class="inline-block {{$categoryId === 0 ? 'bg-blue-100 text-blue-600 font-medium' : 'text-gray-600'}} px-2 py-1 mr-4 mb-4 text-sm rounded-md">{{__('全部')}}</a>
+               @foreach($courseCategories as $item)
+                   <a href="?category_id={{$item['id']}}"
+                      class="inline-block {{$categoryId === $item['id'] ? 'bg-blue-100 text-blue-600 font-medium' : 'text-gray-600'}} px-2 py-1 mr-4 mb-4 text-sm rounded-md">{{$item['name']}}</a>
+               @endforeach
+           </div>
+       </div>
+   </div>
 
     <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
         <div class="mb-6">

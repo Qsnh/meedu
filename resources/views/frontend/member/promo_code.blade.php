@@ -75,38 +75,27 @@
             <div class="grid grid-cols-3 gap-6">
                 <a href="?scene="
                    class="block text-center {{!$scene ? 'text-blue-600 hover:text-blue-700' : 'text-gray-500 hover:text-gray-600'}}">
-                    <div class="mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-8 w-8" viewBox="0 0 20 20"
-                             fill="currentColor">
-                            <path fill-rule="evenodd"
-                                  d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z"
-                                  clip-rule="evenodd"/>
-                            <path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"/>
-                        </svg>
+                    <div class="mb-2">
+                        <i class="iconfont icon-yaoqingjilu inline-block"
+                           style="font-size: 30px"></i>
                     </div>
                     <div class="text-sm">{{__('邀请记录')}}</div>
                 </a>
 
                 <a href="?scene=records"
                    class="block text-center {{$scene === 'records' ? 'text-blue-600 hover:text-blue-700' : 'text-gray-500 hover:text-gray-600'}}">
-                    <div class="mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-8 w-8" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
-                        </svg>
+                    <div class="mb-2">
+                        <i class="iconfont icon-yue inline-block"
+                           style="font-size: 30px"></i>
                     </div>
                     <div class="text-sm">{{__('余额明细')}}</div>
                 </a>
 
                 <a href="?scene=withdraw"
                    class="block text-center {{$scene === 'withdraw' ? 'text-blue-600 hover:text-blue-700' : 'text-gray-500 hover:text-gray-600'}}">
-                    <div class="mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-8 w-8" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
+                    <div class="mb-2">
+                        <i class="iconfont icon-tixian inline-block"
+                           style="font-size: 30px"></i>
                     </div>
                     <div class="text-sm">{{__('提现明细')}}</div>
                 </a>

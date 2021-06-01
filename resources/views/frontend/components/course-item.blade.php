@@ -1,5 +1,5 @@
 <a href="{{route('course.show', [$course['id'], $course['slug']])}}"
-   class="shadow rounded bg-white hover:shadow-lg course-item group">
+   class="rounded bg-white hover:shadow-lg course-item group">
     <div class="w-full thumb-box rounded-t">
         <img src="{{$course['thumb']}}" class="rounded-t" width="100%"
              alt="{{$course['title']}}">

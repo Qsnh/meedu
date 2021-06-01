@@ -4,9 +4,9 @@
 
     <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
         <div class="text-sm">
-            <a href="{{route('index')}}" class="text-gray-500 hover:text-gray-600">{{__('首页')}}</a>
+            <a href="{{route('index')}}" class="text-gray-500 hover:text-blue-600">{{__('首页')}}</a>
             <span class="px-1 text-gray-400">/</span>
-            <a href="{{route('courses')}}" class="text-gray-500 hover:text-gray-600">{{__('课程列表')}}</a>
+            <a href="{{route('courses')}}" class="text-gray-500 hover:text-blue-600">{{__('课程列表')}}</a>
             <span class="px-1 text-gray-400">/</span>
             <span class="text-gray-600">{{$course['title']}}</span>
         </div>
@@ -26,11 +26,7 @@
                        class="hidden lg:flex-shrink-0 lg:block lg:flex lg:items-center btn-like-course {{$isLikeCourse ? 'text-blue-600' : 'text-gray-400'}}"
                        data-url="{{route('ajax.course.like', [$course['id']])}}"
                        data-like-status="{{$isLikeCourse?1:0}}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                  clip-rule="evenodd"/>
-                        </svg>
+                        <i class="iconfont icon-jifen1 inline-block" style="font-size: 30px"></i>
                     </a>
                 </h2>
                 <div class="h-24 text-gray-500 mb-5 leading-loose text-center lg:text-left overflow-ellipsis overflow-hidden">
@@ -41,7 +37,7 @@
                         @if($isBuy)
                             @if($firstVideo)
                                 <a href="{{route('video.show', [$firstVideo['course_id'], $firstVideo['id'], $firstVideo['slug']])}}"
-                                   class="inline-block px-5 rounded py-2 bg-blue-600 text-white text-center text-base hover:bg-blue-500 shadow">{{__('开始学习')}}</a>
+                                   class="inline-block px-5 rounded py-2 bg-blue-600 text-white text-center text-base hover:bg-blue-500">{{__('开始学习')}}</a>
                             @else
                                 <a href="javascript:void(0);" onclick="flashWarning('{{__('暂无视频')}}')"
                                    class="inline-block px-5 rounded py-2 bg-blue-600 text-white text-center text-base hover:bg-blue-500">{{__('开始学习')}}</a>
@@ -49,13 +45,15 @@
                         @else
                             @if($course['charge'] > 0)
                                 <a href="{{route('member.course.buy', [$course['id']])}}"
-                                   class="inline-block bg-gradient-to-r from-red-400 to-pink-600 hover:to-pink-700 hover:from-red-500 text-white rounded px-5 py-2 shadow">
+                                   class="inline-block text-white rounded px-5 py-2"
+                                   style="background-color: #FF5068">
                                     <span>{{__('购买课程')}}</span>
                                     <span><small>{{__('￥')}}</small>{{$course['charge']}}</span>
                                 </a>
 
                                 <a href="{{route('role.index')}}"
-                                   class="inline-block ml-3 bg-gradient-to-r from-yellow-400 to-yellow-800 hover:to-yellow-900 hover:from-yellow-500 text-white rounded shadow px-5 py-2">
+                                   class="inline-block ml-3 text-white rounded px-5 py-2"
+                                   style="background-color: #E1A500">
                                     {{__('VIP会员免费观看')}}
                                 </a>
                             @endif

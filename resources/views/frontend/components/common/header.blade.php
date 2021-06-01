@@ -8,18 +8,18 @@
                 </a>
             </div>
 
-            <div class="flex-1 px-10 flex justify-center">
-                <div class="block" style="width: 360px">
+            <div class="flex-1 pr-12 flex justify-end">
+                <div class="search-form-box">
                     <form action="{{route('search')}}" method="get">
-                        <div class="flex">
+                        <div class="relative">
                             <input type="text" name="keywords"
-                                   class="flex-1 border border-gray-200 rounded-tl rounded-bl px-3 py-2 text-sm outline-none focus:ring-0 focus:border-gray-200"
+                                   class="search-input border border-gray-200 text-sm outline-none"
                                    autocomplete="off"
                                    required
                                    placeholder="{{__('请输入关键字')}}">
-                            <button type="submit"
-                                    class="text-sm px-4 py-2 text-sm text-white rounded-tr rounded-br bg-blue-600 hover:bg-blue-500 outline-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            <button type="submit" class="btn-search focus:ring-0">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="text-gray-500 hover:text-gray-600 h-5 w-5" fill="none" viewBox="0 0 24 24"
                                      stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -32,36 +32,27 @@
 
             <div class="flex-initial flex items-center">
                 <a href="{{route('role.index')}}"
-                   class="rounded mr-5 text-blue-600 text-center hover:text-blue-700">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-5 w-5" fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
-                        </svg>
+                   class="rounded mr-12 text-center color-vip">
+                    <div style="height: 20px">
+                        <i class="iconfont icon-huiyuan" style="font-size: 20px"></i>
                     </div>
-                    <div class="text-xs text-center font-medium">{{__('VIP会员')}}</div>
+                    <div class="text-sm mt-1 text-center font-medium">{{__('VIP会员')}}</div>
                 </a>
 
                 @if(!$user)
                     <a href="{{route('login')}}"
-                       class="text-sm px-4 py-2 text-white rounded bg-blue-600 hover:bg-blue-500">{{__('登录')}}</a>
+                       class="text-sm py-2 text-gray-500">{{__('登录')}}</a>
+                    <span class="text-gray-300 mx-2">|</span>
                     <a href="{{route('register')}}"
-                       class="text-sm px-4 py-2 text-blue-600 border border-blue-600 rounded bg-white ml-2 hover:bg-blue-100">{{__('注册')}}</a>
+                       class="text-sm py-2 text-gray-500">{{__('注册')}}</a>
                 @else
 
                     <a href="{{route('member.messages')}}"
-                       class="relative rounded mr-5 text-gray-800 text-center hover:text-gray-900">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="inline-block h-5 w-5"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
+                       class="relative rounded mr-12 text-gray-500 text-center hover:text-gray-900">
+                        <div style="height: 20px">
+                            <i class="iconfont icon-xioaxi" style="font-size: 20px"></i>
                         </div>
-                        <div class="text-xs text-center">
+                        <div class="text-sm mt-1 text-center">
                             <span>{{__('我的消息')}}</span>
                         </div>
                         @if($gUnreadMessageCount > 0)
@@ -78,37 +69,18 @@
                         </a>
                         <div class="absolute z-50 right-0 top-full pt-5 hidden children">
                             <div class="float-left shadow-xl bg-white border border-gray-100 rounded">
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
+                                <a class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-tl rounded-tr"
                                    href="{{route('member')}}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                                    </svg>
-                                    <span class="ml-2 text-sm">{{__('用户中心')}}</span>
+                                    {{__('用户中心')}}
                                 </a>
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-tl rounded-tr"
+                                <a class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-tl rounded-tr"
                                    href="{{route('member.profile')}}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    <span class="ml-2 text-sm">{{__('我的资料')}}</span>
+                                    {{__('我的资料')}}
                                 </a>
-                                <a class="block w-32 flex items-center justify-center float-left px-5 py-2 text-base text-gray-800 hover:bg-gray-100 overflow-hidden rounded-bl rounded-br"
+                                <a class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-bl rounded-br"
                                    href="javascript:void(0);"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4" fill="none"
-                                         viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                    </svg>
-                                    <span class="ml-2 text-sm">{{__('安全退出')}}</span>
+                                    {{__('安全退出')}}
                                 </a>
 
                                 <form class="d-none" id="logout-form" action="{{ route('logout') }}"

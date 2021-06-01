@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-shrink-0 text-right">
-                                    <a class="text-gray-500 text-sm hover:text-gray-600"
+                                    <a class="text-gray-500 text-sm hover:text-blue-600"
                                        href="{{route('password.request')}}">{{__('忘记密码？')}}</a>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                 </button>
                             </div>
                             <div class="my-3 text-right">
-                                <a class="text-sm text-gray-500 hover:text-gray-600"
+                                <a class="text-sm text-gray-500 hover:text-blue-600"
                                    href="{{route('register')}}">{{__('没有账号？点此注册')}}</a>
                             </div>
                             @if(enabled_socialites()->isNotEmpty() || (int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
