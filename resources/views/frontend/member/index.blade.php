@@ -101,7 +101,8 @@
                             </div>
                         @else
                             <div>
-                                <a href="" class="text-sm text-blue-600">{{__('绑定')}}</a>
+                                <a href="{{route('member.socialite.wechat.bind')}}"
+                                   class="text-sm text-blue-600">{{__('绑定')}}</a>
                             </div>
                         @endif
                     </div>
@@ -116,8 +117,7 @@
                         </div>
                         @if(isset($apps[$socialiteItem['app']]))
                             <div class="text-gray-500 text-sm mb-3">
-                                {{mb_substr($apps[$socialiteItem['app']]['app_user_id'], 0, 8)}}
-                                ***
+                                {{mb_substr($apps[$socialiteItem['app']]['app_user_id'], 0, 4)}}***
                             </div>
                             <div>
                                 <a href="{{route('member.socialite.delete', [$socialiteItem['app']])}}"

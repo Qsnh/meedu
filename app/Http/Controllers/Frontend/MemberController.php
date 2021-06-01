@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Bus\WechatBindBus;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Exceptions\ServiceException;
@@ -239,54 +240,38 @@ class MemberController extends FrontendController
     }
 
     // 社交登录[绑定操作]
-    public function socialiteBind(SocialiteServiceInterface $socialiteService, $app)
+    public function socialiteBind($app)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
-        $hasBindSocialites = $socialiteService->userSocialites($this->id());
-        if (in_array($app, array_column($hasBindSocialites, 'app'))) {
-            throw new ServiceException(__('您已经绑定了该渠道的账号'));
-        }
-
-        // 临时修改配置的回调地址
         $redirectUrl = route('member.socialite.bind.callback', [$app]);
-
         return Socialite::driver($app)->redirectUrl($redirectUrl)->redirect();
     }
 
     // 社交登录[绑定回调]
-    public function socialiteBindCallback(SocialiteServiceInterface $socialiteService, $app)
+    public function socialiteBindCallback(SocialiteServiceInterface $socialiteService, BusinessState $businessState, $app)
     {
         /**
          * @var SocialiteService $socialiteService
          */
 
-        $hasBindSocialites = $socialiteService->userSocialites($this->id());
-        if (in_array($app, array_column($hasBindSocialites, 'app'))) {
-            flash(__('您已经绑定了该渠道的账号'), 'error');
-            return redirect(route('member'));
-        }
-
         $redirectUrl = route('member.socialite.bind.callback', [$app]);
-
         $user = Socialite::driver($app)->redirectUrl($redirectUrl)->user();
         $appId = $user->getId();
 
-        // 读取当前社交账号绑定的用户id
-        $userId = $socialiteService->getBindUserId($app, $appId);
-        if ($userId) {
-            flash(__('当前渠道账号已绑定了其它账号'), 'error');
+        try {
+            $businessState->socialiteBindCheck($this->id(), $app, $appId);
+
+            $socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
+
+            flash(__('success'), 'success');
+
             return redirect(route('member'));
+        } catch (ServiceException $exception) {
+            flash($exception->getMessage(), 'error');
+            return redirect(route('member'));
+        } catch (\Exception $e) {
+            exception_record($e);
+            abort(500);
         }
-
-        // 绑定操作
-        $socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
-
-        flash(__('success'), 'success');
-
-        return redirect(route('member'));
     }
 
     // 社交登录[取消绑定]
@@ -408,5 +393,15 @@ class MemberController extends FrontendController
         Auth::logout();
         flash(__('success'), 'success');
         return redirect(url('/'));
+    }
+
+    public function showWechatBind(WechatBindBus $bus)
+    {
+        $title = __('微信账号绑定');
+
+        // 生成登录二维码
+        ['code' => $code, 'image' => $image] = $bus->qrcode($this->id());
+
+        return v('frontend.member.wechat_bind', compact('title', 'code', 'image'));
     }
 }

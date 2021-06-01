@@ -85,6 +85,7 @@ Route::group([
     Route::get('/orders', 'MemberController@showOrdersPage')->name('member.orders');
 
     // 社交登录
+    Route::get('/socialite/wechat/bind', 'MemberController@showWechatBind')->name('member.socialite.wechat.bind');
     Route::get('/socialite/{app}/bind', 'MemberController@socialiteBind')->name('member.socialite.bind');
     Route::get('/socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('member.socialite.bind.callback');
     Route::get('/socialite/{app}/delete', 'MemberController@cancelBindSocialite')->name('member.socialite.delete');

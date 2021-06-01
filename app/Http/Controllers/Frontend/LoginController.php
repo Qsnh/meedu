@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use QrCode;
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
 use Illuminate\Support\Str;
@@ -168,12 +167,9 @@ class LoginController extends BaseController
 
         $this->recordRedirectTo();
 
-        // 获取登录的二维码url
+        // 生成登录二维码
         $code = Str::random(10);
-
-        $result = Wechat::getInstance()->qrcode->temporary($code, 3600);
-        $url = $result['url'] ?? '';
-        $image = 'data:image/png;base64, ' . base64_encode(QrCode::format('png')->size(300)->generate($url));
+        $image = wechat_qrcode_image($code);
 
         $title = __('微信公众号扫码登录');
 
