@@ -78,62 +78,64 @@
         </div>
     </div>
 
-    <div class="mt-5 mb-5">
-        <div class="bg-white px-5 rounded shadow">
-            <div class="text-gray-800 text-base font-medium pt-5 mb-10">{{__('社交账号')}}</div>
-            <div class="pb-10 flex items-center">
-            @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
-                <!-- 微信账号绑定 -->
-                    <div class="text-center px-10 mr-5">
-                        <div class="mb-3">
-                            <img src="{{asset('images/icons/wechat.svg')}}" class="inline object-cover" width="30"
-                                 height="30">
+    @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1 || enabled_socialites()->isNotEmpty())
+        <div class="mt-5 mb-5">
+            <div class="bg-white px-5 rounded shadow">
+                <div class="text-gray-800 text-base font-medium pt-5 mb-10">{{__('社交账号')}}</div>
+                <div class="pb-10 flex items-center">
+                @if((int)$gConfig['mp_wechat']['enabled_scan_login'] === 1)
+                    <!-- 微信账号绑定 -->
+                        <div class="text-center px-10 mr-5">
+                            <div class="mb-3">
+                                <img src="{{asset('images/icons/wechat.svg')}}" class="inline object-cover" width="30"
+                                     height="30">
+                            </div>
+                            @if(isset($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]))
+                                <div class="text-gray-500 text-sm mb-3">
+                                    {{mb_substr($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]['app_user_id'], 0, 4)}}
+                                    ***
+                                </div>
+                                <div>
+                                    <a href="{{route('member.socialite.delete', [\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN])}}"
+                                       onclick="return confirm('{{__('确认操作？')}}')"
+                                       class="text-sm text-blue-600">{{__('取消绑定')}}</a>
+                                </div>
+                            @else
+                                <div>
+                                    <a href="{{route('member.socialite.wechat.bind')}}"
+                                       class="text-sm text-blue-600">{{__('绑定')}}</a>
+                                </div>
+                            @endif
                         </div>
-                        @if(isset($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]))
-                            <div class="text-gray-500 text-sm mb-3">
-                                {{mb_substr($apps[\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN]['app_user_id'], 0, 4)}}
-                                ***
-                            </div>
-                            <div>
-                                <a href="{{route('member.socialite.delete', [\App\Constant\FrontendConstant::WECHAT_LOGIN_SIGN])}}"
-                                   onclick="return confirm('{{__('确认操作？')}}')"
-                                   class="text-sm text-blue-600">{{__('取消绑定')}}</a>
-                            </div>
-                        @else
-                            <div>
-                                <a href="{{route('member.socialite.wechat.bind')}}"
-                                   class="text-sm text-blue-600">{{__('绑定')}}</a>
-                            </div>
-                        @endif
-                    </div>
-            @endif
+                @endif
 
-            <!-- 其它社交账号 -->
-                @foreach(enabled_socialites() as $socialiteItem)
-                    <div class="text-center px-10 mr-5">
-                        <div class="mb-3">
-                            <img src="{{$socialiteItem['logo']}}" class="inline object-cover" width="30"
-                                 height="30">
+                <!-- 其它社交账号 -->
+                    @foreach(enabled_socialites() as $socialiteItem)
+                        <div class="text-center px-10 mr-5">
+                            <div class="mb-3">
+                                <img src="{{$socialiteItem['logo']}}" class="inline object-cover" width="30"
+                                     height="30">
+                            </div>
+                            @if(isset($apps[$socialiteItem['app']]))
+                                <div class="text-gray-500 text-sm mb-3">
+                                    {{mb_substr($apps[$socialiteItem['app']]['app_user_id'], 0, 4)}}***
+                                </div>
+                                <div>
+                                    <a href="{{route('member.socialite.delete', [$socialiteItem['app']])}}"
+                                       onclick="return confirm('{{__('确认操作？')}}')"
+                                       class="text-sm text-blue-600">{{__('取消绑定')}}</a>
+                                </div>
+                            @else
+                                <div>
+                                    <a href="{{route('member.socialite.bind', [$socialiteItem['app']])}}"
+                                       class="text-sm text-blue-600">{{__('绑定')}}</a>
+                                </div>
+                            @endif
                         </div>
-                        @if(isset($apps[$socialiteItem['app']]))
-                            <div class="text-gray-500 text-sm mb-3">
-                                {{mb_substr($apps[$socialiteItem['app']]['app_user_id'], 0, 4)}}***
-                            </div>
-                            <div>
-                                <a href="{{route('member.socialite.delete', [$socialiteItem['app']])}}"
-                                   onclick="return confirm('{{__('确认操作？')}}')"
-                                   class="text-sm text-blue-600">{{__('取消绑定')}}</a>
-                            </div>
-                        @else
-                            <div>
-                                <a href="{{route('member.socialite.bind', [$socialiteItem['app']])}}"
-                                   class="text-sm text-blue-600">{{__('绑定')}}</a>
-                            </div>
-                        @endif
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
 @endsection

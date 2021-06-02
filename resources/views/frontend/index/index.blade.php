@@ -46,7 +46,7 @@
     </div>
 
     <!-- 友情链接 -->
-    <div class="w-full" style="background-color: #0F0B1E">
+    <div class="w-full" style="background-color: #0F0B1E;margin-bottom: -150px">
         <div class="w-full px-3 pb-6 pt-10 lg:max-w-6xl lg:mx-auto">
             <div class="text-xl text-white mb-6">{{__('友情链接')}}</div>
             <div>

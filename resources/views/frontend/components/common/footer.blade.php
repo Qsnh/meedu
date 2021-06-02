@@ -1,4 +1,4 @@
-<div style="background-color: #0F0B1E">
+<div style="background-color: #0F0B1E;margin-top: 150px">
     <div class="max-w-7xl mx-auto py-12 overflow-hidden">
         <div class="text-center text-sm text-gray-600">
             &copy;

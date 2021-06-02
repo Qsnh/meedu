@@ -41,10 +41,10 @@
 
                 @if(!$user)
                     <a href="{{route('login')}}"
-                       class="text-sm py-2 text-gray-500">{{__('登录')}}</a>
+                       class="text-sm py-2 text-gray-500 hover:text-blue-600">{{__('登录')}}</a>
                     <span class="text-gray-300 mx-2">|</span>
                     <a href="{{route('register')}}"
-                       class="text-sm py-2 text-gray-500">{{__('注册')}}</a>
+                       class="text-sm py-2 text-gray-500 hover:text-blue-600">{{__('注册')}}</a>
                 @else
 
                     <a href="{{route('member.messages')}}"
