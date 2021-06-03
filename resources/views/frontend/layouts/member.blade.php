@@ -47,6 +47,8 @@
                         <i class="iconfont icon-jifen inline-block mr-2" style="font-size: 20px"></i>
                         <span class="truncate">{{__('积分明细')}}</span>
                     </a>
+
+                    {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_MEMBER_INDEX_LEFT_MENUS) !!}
                 </nav>
             </div>
             <div class="flex-1 ml-5">

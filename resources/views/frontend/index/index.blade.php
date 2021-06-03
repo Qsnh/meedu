@@ -28,6 +28,8 @@
         </div>
     @endif
 
+    {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_INDEX_SECTION_1) !!}
+
     <!-- 首页推荐 -->
     <div class="w-full px-3 pt-20 pb-6 lg:max-w-6xl lg:mx-auto">
         @foreach($banners as $i => $banner)
@@ -44,6 +46,8 @@
             </div>
         @endforeach
     </div>
+
+    {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_INDEX_SECTION_2) !!}
 
     <!-- 友情链接 -->
     <div class="w-full" style="background-color: #0F0B1E;margin-bottom: -150px">

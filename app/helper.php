@@ -649,3 +649,10 @@ if (!function_exists('wechat_qrcode_image')) {
         return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($url));
     }
 }
+
+if (!function_exists('view_hook')) {
+    function view_hook(string $position)
+    {
+        return \App\Meedu\Hooks\HookRun::run($position, new \App\Meedu\Hooks\HookParams([]));
+    }
+}
