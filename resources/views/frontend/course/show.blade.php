@@ -13,7 +13,7 @@
     </div>
 
     <div class="w-full px-3 pb-6 lg:max-w-6xl lg:mx-auto">
-        <div class="bg-white p-5 rounded shadow lg:flex">
+        <div class="bg-white p-5 rounded border border-gray-200 lg:flex">
             <div class="w-full pb-5 lg:pb-0 lg:w-auto px-3 lg:px-0 lg:flex-shrink-0 text-center">
                 <img src="{{$course['thumb']}}" width="300" class="inline object-cover rounded">
             </div>
@@ -65,7 +65,7 @@
     </div>
 
     <div class="w-full px-3 pb-6 lg:max-w-6xl lg:mx-auto">
-        <div class="bg-white p-5 rounded shadow">
+        <div class="bg-white p-5 rounded border border-gray-200">
             <div class="pb-5">
                 @include('frontend.components.common.tabs', ['tabs' => [['name' => __('课程介绍'), 'dom' => 'course-desc'], ['name' => __('课程目录'), 'dom' => 'lessons'], ['name' => __('课程评论'), 'dom' => 'comments'],['name' => __('课程附件'), 'dom' => 'attach-list']], 'active' => 0])
             </div>

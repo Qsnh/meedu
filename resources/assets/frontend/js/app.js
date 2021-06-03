@@ -177,7 +177,7 @@ $(function () {
 
         var dom = $(this).attr('data-dom');
         if (dom) {
-            $('.' + dom).show(200).siblings().hide();
+            $('.' + dom).show().siblings().hide();
         }
     }).on('click', '.btn-submit-comment', function () {
         // 提交评论
