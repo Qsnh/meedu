@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="w-full bg-white">
+    <div class="w-full bg-white -mt-1 shadow-lg">
         <div class="pt-6 pb-2">
             <div class="w-full px-3 lg:max-w-6xl lg:mx-auto">
                 <a href="javascript:void(0)"

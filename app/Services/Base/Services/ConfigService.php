@@ -525,4 +525,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.services.amap.key', '');
     }
+
+    /**
+     * 获取微信扫码登录成功回复语
+     *
+     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
+     */
+    public function getMpWechatScanLoginAlert()
+    {
+        return config('meedu.mp_wechat.scan_login_alert');
+    }
 }

@@ -272,6 +272,8 @@ return [
         'enabled_oauth_login' => 0,
         // 开启PC扫码登录
         'enabled_scan_login' => 0,
+        // 扫码登录后的提示语
+        'scan_login_alert' => '',
         // 开启微信浏览器的分享
         'enabled_share' => 0,
         // 微信H5分享自定义内容

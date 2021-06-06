@@ -1025,6 +1025,14 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '微信公众号',
+                'name' => '扫码登录成功回复信息',
+                'field_type' => 'textarea',
+                'sort' => 7,
+                'key' => 'meedu.mp_wechat.scan_login_alert',
+                'value' => '',
+            ],
+            [
+                'group' => '微信公众号',
                 'name' => '启用微信分享',
                 'field_type' => 'switch',
                 'sort' => 8,
