@@ -640,3 +640,19 @@ if (!function_exists('wechat_jssdk')) {
         return $app->jssdk->buildConfig($apiList, is_dev(), false, false);
     }
 }
+
+if (!function_exists('wechat_qrcode_image')) {
+    function wechat_qrcode_image(string $code): string
+    {
+        $result = \App\Meedu\Wechat::getInstance()->qrcode->temporary($code, 3600);
+        $url = $result['url'] ?? '';
+        return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($url));
+    }
+}
+
+if (!function_exists('view_hook')) {
+    function view_hook(string $position)
+    {
+        return \App\Meedu\Hooks\HookRun::run($position, new \App\Meedu\Hooks\HookParams([]));
+    }
+}

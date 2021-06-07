@@ -27,6 +27,8 @@ class CreateUserJoinRoleRecordsTable extends Migration
             $table->timestamp('started_at')->nullable(true);
             $table->timestamp('expired_at')->nullable(true);
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

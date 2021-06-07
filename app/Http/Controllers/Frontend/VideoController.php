@@ -69,23 +69,8 @@ class VideoController extends FrontendController
         $this->orderService = $orderService;
     }
 
-    public function index(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $this->configService->getVideoListPageSize();
-        [
-            'list' => $list,
-            'total' => $total
-        ] = $this->videoService->simplePage($page, $pageSize);
-        $videos = $this->paginator($list, $total, $page, $pageSize);
-        $title = __('all videos');
-
-        return v('frontend.video.index', compact('videos', 'title'));
-    }
-
     public function show(Request $request, $courseId, $id, $slug)
     {
-        $scene = $request->input('scene');
         $course = $this->courseService->find($courseId);
         $video = $this->videoService->find($id);
 
@@ -149,16 +134,6 @@ class VideoController extends FrontendController
             return $nextVideo;
         });
 
-        // 播放地址
-        $playUrls = collect([]);
-        if (!($video['aliyun_video_id'] && $this->configService->getAliyunPrivatePlayStatus())) {
-            $playUrls = get_play_url($video, $trySee);
-            if ($playUrls->isEmpty()) {
-                flash('没有播放地址');
-                return back();
-            }
-        }
-
         $title = $video['title'];
         $keywords = $video['seo_keywords'];
         $description = $video['seo_description'];
@@ -174,8 +149,6 @@ class VideoController extends FrontendController
             'videos',
             'chapters',
             'canSeeVideo',
-            'scene',
-            'playUrls',
             'nextVideo',
             'videoWatchedProgress',
             'trySee',

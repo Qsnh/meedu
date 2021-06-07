@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
@@ -39,7 +41,7 @@ class MemberController extends BaseController
         $keywords = $request->input('keywords', '');
         $roleId = $request->input('role_id');
         $tagId = $request->input('tag_id');
-        $sort = $request->input('sort', 'created_at');
+        $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
         $members = User::with(['role', 'tags'])
@@ -386,5 +388,50 @@ class MemberController extends BaseController
             'data' => $records,
             'videos' => $videos,
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        // ([0] => mobile, [1] => password)
+        $users = $request->input('users');
+        if (!$users || !is_array($users)) {
+            return $this->error(__('请导入数据'));
+        }
+
+        $mobiles = array_column($users, 0);
+
+        // 手机号存在检测
+        $mobileChunk = array_chunk($mobiles, 500);
+        foreach ($mobileChunk as $item) {
+            $exists = User::query()->whereIn('mobile', $item)->select(['mobile'])->get();
+            if ($exists->isNotEmpty()) {
+                return $this->error(sprintf('%s已存在', implode(',', $exists->pluck('mobile')->toArray())));
+            }
+        }
+
+        DB::transaction(function () use ($users) {
+            // 批量添加
+            foreach (array_chunk($users, 500) as $usersItem) {
+                $data = [];
+                foreach ($usersItem as $item) {
+                    $data[] = [
+                        'mobile' => $item[0],
+                        'avatar' => url(config('meedu.member.default_avatar')),
+                        'nick_name' => mb_substr($item[0], 0, 8) . '_' . Str::random(5),
+                        'is_active' => config('meedu.member.is_active_default'),
+                        'is_lock' => config('meedu.member.is_lock_default'),
+                        'password' => Hash::make($item[1]),
+                        'created_at' => Carbon::now(),
+                    ];
+                }
+                if (!$data) {
+                    continue;
+                }
+
+                User::insert($data);
+            }
+        });
+
+        return $this->success();
     }
 }

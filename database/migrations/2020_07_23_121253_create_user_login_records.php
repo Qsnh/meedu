@@ -29,6 +29,8 @@ class CreateUserLoginRecords extends Migration
             $table->timestamps();
 
             $table->index(['user_id']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

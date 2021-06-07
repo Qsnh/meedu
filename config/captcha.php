@@ -13,7 +13,7 @@ return [
     'default' => [
         'length' => 4,
         'width' => 120,
-        'height' => 36,
+        'height' => 48,
         'quality' => 90,
         // 验证码过期时间 - 5分钟
         'expire' => 300,

@@ -1,24 +1,22 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 
-    <div class="container-fluid my-5">
-        <div class="row">
-            <div class="col-12 my-5">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
-                            <h3 class="text-center">微信扫码登录</h3>
-                            <div class="text-center mb-3" style="color: rgba(0,0,0,.5)">(请使用微信扫描下方二维码)</div>
-                            <div class="text-center">
-                                <img src="{{$image}}" width="300" height="300">
-                            </div>
-                            <div class="text-center">
-                                登录即代表您同意 <a target="_blank" href="{{route('user.protocol')}}"><b>用户协议</b></a> 和 <a
-                                        target="_blank"
-                                        href="{{route('user.private_protocol')}}"><b>用户隐私协议</b></a>
-                            </div>
-                        </div>
+    <div class="w-full px-3 mt-20 mb-20 lg:max-w-6xl lg:mx-auto">
+        <div class="flex justify-center">
+            <div class="w-full lg:w-96">
+                <div class="bg-white rounded p-5 shadow">
+                    <div class="text-2xl font-bold text-gray-800 mb-2 text-center mt-5">{{__('微信扫码登录')}}</div>
+                    <div class="text-gray-500 text-sm text-center mb-5">{{__('请使用微信扫码下方二维码登录')}}</div>
+                    <div class="mb-5 text-center">
+                        <img src="{{$image}}" class="inline object-cover" width="300" height="300">
+                    </div>
+                    <div class="text-center text-gray-500 text-sm">
+                        <span>{{__('登录即代表您同意')}}</span>
+                        <a target="_blank" class="text-blue-600"
+                           href="{{route('user.protocol')}}">{{__('《用户协议》')}}</a>
+                        <a target="_blank" class="text-blue-600"
+                           href="{{route('user.private_protocol')}}">{{__('《用户隐私协议》')}}</a>
                     </div>
                 </div>
             </div>
@@ -39,6 +37,7 @@
                 }
             });
         }
+
         setInterval(queryHandler, 1000);
     </script>
 

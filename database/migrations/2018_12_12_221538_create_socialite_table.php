@@ -26,6 +26,8 @@ class CreateSocialiteTable extends Migration
             $table->string('app_user_id', 128)->default('');
             $table->string('data', 2222)->default('');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

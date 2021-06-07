@@ -28,6 +28,8 @@ class CreateCourseCategoriesTable extends Migration
             $table->integer('sort')->default(0)->comment('升序');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

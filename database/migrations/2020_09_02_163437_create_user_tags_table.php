@@ -23,6 +23,8 @@ class CreateUserTagsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 24)->unique()->comment('标签名');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

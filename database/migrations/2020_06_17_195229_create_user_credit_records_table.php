@@ -29,6 +29,8 @@ class CreateUserCreditRecordsTable extends Migration
             $table->softDeletes();
 
             $table->index(['user_id', 'field']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

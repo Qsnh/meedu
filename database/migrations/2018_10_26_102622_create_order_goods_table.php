@@ -28,6 +28,8 @@ class CreateOrderGoodsTable extends Migration
             $table->integer('num')->default(1)->comment('商品数量');
             $table->integer('charge')->comment('商品价格');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

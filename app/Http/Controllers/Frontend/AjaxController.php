@@ -44,14 +44,6 @@ use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 class AjaxController extends BaseController
 {
     /**
-     * @var VideoCommentService
-     */
-    protected $videoCommentService;
-    /**
-     * @var CourseCommentService
-     */
-    protected $courseCommentService;
-    /**
      * @var UserService
      */
     protected $userService;
@@ -63,51 +55,44 @@ class AjaxController extends BaseController
      * @var VideoService
      */
     protected $videoService;
-    /**
-     * @var PromoCodeService
-     */
-    protected $promoCodeService;
+
     protected $businessState;
 
-    /**
-     * @var UserInviteBalanceService
-     */
-    protected $userInviteBalanceService;
-
     public function __construct(
-        VideoCommentServiceInterface $videoCommentService,
-        CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface $userService,
         VideoServiceInterface $videoService,
         CourseServiceInterface $courseService,
-        PromoCodeServiceInterface $promoCodeService,
-        BusinessState $businessState,
-        UserInviteBalanceServiceInterface $userInviteBalanceService
+        BusinessState $businessState
     ) {
         parent::__construct();
 
-        $this->videoCommentService = $videoCommentService;
-        $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;
         $this->videoService = $videoService;
         $this->courseService = $courseService;
-        $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
-        $this->userInviteBalanceService = $userInviteBalanceService;
     }
 
-    public function courseCommentHandler(CourseOrVideoCommentCreateRequest $request, $courseId)
-    {
-        $user = $this->user();
+    public function courseCommentHandler(
+        CourseOrVideoCommentCreateRequest $request,
+        CourseCommentServiceInterface $courseCommentService,
+        $courseId
+    ) {
+        /**
+         * @var CourseCommentService $courseCommentService
+         */
+
         $course = $this->courseService->find($courseId);
+
+        $user = $this->userService->find($this->id(), ['role']);
+
         if ($this->businessState->courseCanComment($user, $course) === false) {
-            return $this->error(__('course cant comment'));
+            return $this->error(__('无权限'));
         }
 
         ['content' => $content] = $request->filldata();
-        $comment = $this->courseCommentService->create($course['id'], $content);
 
-        $user = $this->userService->find($this->id(), ['role']);
+        $comment = $courseCommentService->create($course['id'], $content);
+
 
         return $this->data([
             'content' => $comment['render_content'],
@@ -115,20 +100,31 @@ class AjaxController extends BaseController
             'user' => [
                 'nick_name' => $user['nick_name'],
                 'avatar' => $user['avatar'],
-                'role' => $user['role'] ? $user['role']['name'] : '免费会员',
+                'role' => $user['role'] ? $user['role']['name'] : __('免费会员'),
             ],
         ]);
     }
 
-    public function videoCommentHandler(CourseOrVideoCommentCreateRequest $request, $videoId)
-    {
+    public function videoCommentHandler(
+        CourseOrVideoCommentCreateRequest $request,
+        VideoCommentServiceInterface $videoCommentService,
+        $videoId
+    ) {
+        /**
+         * @var VideoCommentService $videoCommentService
+         */
+
         $video = $this->videoService->find($videoId);
-        if ($this->businessState->videoCanComment($this->user(), $video) === false) {
-            return $this->error(__('video cant comment'));
-        }
-        ['content' => $content] = $request->filldata();
-        $comment = $this->videoCommentService->create($video['id'], $content);
+
         $user = $this->userService->find($this->id(), ['role']);
+
+        if ($this->businessState->videoCanComment($this->user(), $video) === false) {
+            return $this->error(__('无权限'));
+        }
+
+        ['content' => $content] = $request->filldata();
+
+        $comment = $videoCommentService->create($video['id'], $content);
 
         return $this->data([
             'content' => $comment['render_content'],
@@ -136,18 +132,22 @@ class AjaxController extends BaseController
             'user' => [
                 'nick_name' => $user['nick_name'],
                 'avatar' => $user['avatar'],
-                'role' => $user['role'] ? $user['role']['name'] : '免费会员',
+                'role' => $user['role'] ? $user['role']['name'] : __('免费会员'),
             ],
         ]);
     }
 
-    public function promoCodeCheck(Request $request)
+    public function promoCodeCheck(Request $request, PromoCodeServiceInterface $promoCodeService)
     {
+        /**
+         * @var PromoCodeService $promoCodeService
+         */
+
         $promoCode = $request->input('promo_code');
         if (!$promoCode) {
             return $this->error(__('error'));
         }
-        $code = $this->promoCodeService->findCode($promoCode);
+        $code = $promoCodeService->findCode($promoCode);
         if (!$code) {
             return $this->error(__('promo code not exists'));
         }
@@ -270,15 +270,25 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
-    public function inviteBalanceWithdraw(InviteBalanceWithdrawRequest $request)
+    public function notificationMarkAllAsRead()
     {
+        $this->userService->notificationMarkAllAsRead($this->id());
+        return $this->success();
+    }
+
+    public function inviteBalanceWithdraw(InviteBalanceWithdrawRequest $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
+    {
+        /**
+         * @var UserInviteBalanceService $userInviteBalanceService
+         */
+
         $data = $request->filldata();
         $total = $request->post('total');
         $user = $this->userService->find($this->id());
         if ($user['invite_balance'] < $total) {
             return $this->error(__('Insufficient invite balance'));
         }
-        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
+        $userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
     }
 
@@ -307,5 +317,39 @@ class AjaxController extends BaseController
         $data = $request->all();
         $this->userService->saveProfile($this->id(), $data);
         return $this->success();
+    }
+
+    public function getPlayUrls(Request $request, BusinessState $businessState)
+    {
+        $data = $request->input('data');
+        if (!$data) {
+            return $this->error(__('参数错误'));
+        }
+        $data = decrypt($data);
+        if (!$data) {
+            return $this->error(__('参数错误'));
+        }
+        $time = $data['time'] ?? 0;
+        if ((time() - $time) > 300) {
+            return $this->error(__('参数已过期'));
+        }
+
+        $isTry = (int)$data['is_try'];
+        $videoId = $data['video_id'];
+
+        $video = $this->videoService->find($videoId);
+        $course = $this->courseService->find($video['course_id']);
+
+        if ($businessState->canSeeVideo($this->user(), $course, $video) === false) {
+            return $this->error(__('无法观看当前视频'));
+        }
+
+        $playUrls = get_play_url($video, $isTry ? true : false);
+
+        if (!$playUrls) {
+            return $this->error(__('无法获取播放地址'));
+        }
+
+        return $this->data($playUrls);
     }
 }

@@ -8,15 +8,7 @@
 </a>
 </p>
 
-## 安装方式
-
-- [x] 使用傻瓜安装包安装 [下载地址](https://www.yuque.com/meedu/kbanfm)
-- [x] [宝塔一键安装（适合技术能力一般的用户）](https://www.yuque.com/meedu/fvvkbf/qvb006)
-- [x] [手动安装教程（适合技术能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
-- [x] MeEdu 安装服务（适合小白用户）。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
-- [x] [MeEdu 宝塔手动安装最新版(手把手教学)](https://www.yuque.com/meedu/fvvkbf/gkape0)
-
-## FAQ
+## 常用链接
 
 - [MeEdu 官网](https://meedu.vip)
 - [MeEdu 插件商城](https://meedu.vip/addons)
@@ -25,19 +17,19 @@
 - [MeEdu 常见问题总结](https://www.yuque.com/meedu/yr7rek)
 - [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
 
-## 收费插件
+## 安装
 
-| 插件 | 插件 | 插件 |
-| --- | --- | --- | 
-| [问答模块](https://meedu.vip/addons/38/Wenda) | [试题插件](https://meedu.vip/addons/36/Paper) | [团购](https://meedu.vip/addons/33/TuanGou) |
-| [秒杀](https://meedu.vip/addons/32/MiaoSha) | [阿里云HLS加密播放](https://meedu.vip/addons/30/AliyunHls) | [腾讯云HLS加密播放](https://meedu.vip/addons/27/TencentCloudHls) |
-| [学习路径](https://meedu.vip/addons/26/LearningPaths) | [图文收费](https://meedu.vip/addons/16/MeeduTopics) | [电子书模块](https://meedu.vip/addons/17/MeeduBooks) |
+- [x] 使用傻瓜安装包安装 [下载地址](https://www.yuque.com/meedu/kbanfm)
+- [x] [宝塔一键安装（适合技术能力一般的用户）](https://www.yuque.com/meedu/fvvkbf/qvb006)
+- [x] [手动安装教程（适合技术能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
+- [x] MeEdu 安装服务（适合小白用户）。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
+- [x] [MeEdu 宝塔手动安装最新版(手把手教学)](https://www.yuque.com/meedu/fvvkbf/gkape0)
 
 ## 鸣谢
 
 感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
 
-| 昵称 | |
+| 昵称 | 网址 |
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
 | `逸企邦` | [https://easeco.cn](https://easeco.cn) |

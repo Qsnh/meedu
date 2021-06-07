@@ -36,6 +36,8 @@ class CreateUserProfilesTable extends Migration
             $table->string('id_hand_thumb', 255)->default('')->comment('手持身份证照');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

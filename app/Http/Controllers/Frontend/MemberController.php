@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Bus\AuthBus;
+use App\Bus\WechatBindBus;
 use Illuminate\Http\Request;
 use App\Businesses\BusinessState;
 use App\Exceptions\ServiceException;
@@ -27,14 +27,11 @@ use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
-use App\Http\Requests\Frontend\Member\AvatarChangeRequest;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Interfaces\CreditServiceInterface;
 use App\Services\Member\Services\UserInviteBalanceService;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
-use App\Http\Requests\Frontend\Member\MemberPasswordResetRequest;
-use App\Http\Requests\Frontend\Member\InviteBalanceWithdrawRequest;
 use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberController extends FrontendController
@@ -69,28 +66,14 @@ class MemberController extends FrontendController
         $courseCount = $this->userService->getUserCourseCount($this->id());
         $videoCount = $this->userService->getUserVideoCount($this->id());
 
+        // 社交登录账号
         $apps = $socialiteService->userSocialites($this->id());
         $apps = array_column($apps, null, 'app');
 
-        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount', 'apps'));
-    }
+        // 邀请人数
+        $inviteCount = $this->userService->inviteCount($this->id());
 
-    // 密码重置[界面]
-    public function showPasswordResetPage()
-    {
-        $title = __('title.member.password.change');
-
-        return v('frontend.member.password_reset', compact('title'));
-    }
-
-    // 密码重置[提交]
-    public function passwordResetHandler(MemberPasswordResetRequest $request)
-    {
-        ['old_password' => $oldPassword, 'new_password' => $newPassword] = $request->filldata();
-        $this->userService->resetPassword($this->id(), $oldPassword, $newPassword);
-        flash(__('success'), 'success');
-
-        return back();
+        return v('frontend.member.index', compact('title', 'courseCount', 'videoCount', 'apps', 'inviteCount'));
     }
 
     // 手机号绑定[界面]
@@ -102,7 +85,7 @@ class MemberController extends FrontendController
     }
 
     // 手机号绑定[提交]
-    public function mobileBindHandler(MobileBindRequest $request, AuthBus $bus)
+    public function mobileBindHandler(MobileBindRequest $request)
     {
         ['mobile' => $mobile] = $request->filldata();
 
@@ -111,26 +94,6 @@ class MemberController extends FrontendController
         flash(__('success'), 'success');
 
         return redirect(route('member'));
-    }
-
-    // 头像修改[界面]
-    public function showAvatarChangePage()
-    {
-        $title = __('title.member.avatar');
-
-        return v('frontend.member.avatar', compact('title'));
-    }
-
-    // 头像修改[提交]
-    public function avatarChangeHandler(AvatarChangeRequest $request)
-    {
-        ['url' => $url] = $request->filldata();
-
-        $this->userService->updateAvatar($this->id(), $url);
-
-        flash(__('success'), 'success');
-
-        return back();
     }
 
     // VIP会员购买记录
@@ -185,7 +148,7 @@ class MemberController extends FrontendController
 
         $page = $request->input('page', 1);
         $scene = $request->input('scene');
-        $pageSize = 10;
+        $pageSize = 12;
 
         if (!$scene) {
             [
@@ -219,21 +182,15 @@ class MemberController extends FrontendController
             $list = collect($videos)->groupBy('course_id')->toArray();
             $total = count($list);
         }
+
         $records = $this->paginator($list, $total, $page, $pageSize);
+        $records->appends([
+            'scene' => $scene,
+        ]);
 
-        $title = __('title.member.courses');
+        $title = __('点播课程');
 
-        $queryParams = function ($param) {
-            $request = \request();
-            $params = [
-                'page' => $request->input('page'),
-                'scene' => $request->input('scene', ''),
-            ];
-            $params = array_merge($params, $param);
-            return http_build_query($params);
-        };
-
-        return v('frontend.member.buy_course', compact('records', 'title', 'courses', 'scene', 'queryParams'));
+        return v('frontend.member.vod_courses', compact('records', 'title', 'courses', 'scene'));
     }
 
     // 我的视频
@@ -250,12 +207,14 @@ class MemberController extends FrontendController
             'list' => $list,
         ] = $this->userService->getUserBuyVideos($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
+
+        // 本次查询出来的video
         $videos = $videoService->getList(array_column($list, 'video_id'));
         $videos = array_column($videos, null, 'id');
 
-        $title = __('title.member.videos');
+        $title = __('点播视频');
 
-        return v('frontend.member.buy_video', compact('videos', 'title', 'records'));
+        return v('frontend.member.vod_videos', compact('videos', 'title', 'records'));
     }
 
     // 我的订单
@@ -280,68 +239,39 @@ class MemberController extends FrontendController
         return v('frontend.member.orders', compact('orders', 'title'));
     }
 
-    // 社交登录界面
-    public function showSocialitePage(SocialiteServiceInterface $socialiteService)
-    {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
-        $enabledApps = $this->configService->getEnabledSocialiteApps();
-
-        $apps = $socialiteService->userSocialites($this->id());
-        $apps = array_column($apps, null, 'app');
-
-        $title = __('title.member.socialite');
-
-        return v('frontend.member.socialite', compact('apps', 'title', 'enabledApps'));
-    }
-
     // 社交登录[绑定操作]
-    public function socialiteBind(SocialiteServiceInterface $socialiteService, $app)
+    public function socialiteBind($app)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
-        $hasBindSocialites = $socialiteService->userSocialites($this->id());
-        if (in_array($app, array_column($hasBindSocialites, 'app'))) {
-            throw new ServiceException(__('您已经绑定了该渠道的账号'));
-        }
-
-        // 临时修改配置的回调地址
-        config(['services.qq.redirect' => route('member.socialite.bind.callback', [$app])]);
-
-        return Socialite::driver($app)->redirect();
+        $redirectUrl = route('member.socialite.bind.callback', [$app]);
+        return Socialite::driver($app)->redirectUrl($redirectUrl)->redirect();
     }
 
     // 社交登录[绑定回调]
-    public function socialiteBindCallback(SocialiteServiceInterface $socialiteService, $app)
+    public function socialiteBindCallback(SocialiteServiceInterface $socialiteService, BusinessState $businessState, $app)
     {
         /**
          * @var SocialiteService $socialiteService
          */
 
-        $hasBindSocialites = $socialiteService->userSocialites($this->id());
-        if (in_array($app, array_column($hasBindSocialites, 'app'))) {
-            throw new ServiceException(__('您已经绑定了该渠道的账号'));
-        }
-
-        $user = Socialite::driver($app)->user();
+        $redirectUrl = route('member.socialite.bind.callback', [$app]);
+        $user = Socialite::driver($app)->redirectUrl($redirectUrl)->user();
         $appId = $user->getId();
 
-        // 读取当前社交账号绑定的用户id
-        $userId = $socialiteService->getBindUserId($app, $appId);
-        if ($userId) {
-            throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
+        try {
+            $businessState->socialiteBindCheck($this->id(), $app, $appId);
+
+            $socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
+
+            flash(__('success'), 'success');
+
+            return redirect(route('member'));
+        } catch (ServiceException $exception) {
+            flash($exception->getMessage(), 'error');
+            return redirect(route('member'));
+        } catch (\Exception $e) {
+            exception_record($e);
+            abort(500);
         }
-
-        // 绑定操作
-        $socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
-
-        flash(__('success'), 'success');
-
-        return redirect(route('member'));
     }
 
     // 社交登录[取消绑定]
@@ -373,8 +303,14 @@ class MemberController extends FrontendController
 
         // 当前用户邀请码
         $userPromoCode = $promoCodeService->userPromoCode();
+        if (!$userPromoCode && $this->businessState->canGenerateInviteCode($this->user())) {
+            // 如果可以生成邀请码的话则直接创建邀请码
+            $promoCodeService->userCreate($this->user());
+            $userPromoCode = $promoCodeService->userPromoCode();
+        }
 
-        $inviteConfig = $this->configService->getMemberInviteConfig();
+        // 邀请人数
+        $inviteCount = $this->userService->inviteCount($this->id());
 
         $inviteUsers = [];
         $balanceRecords = [];
@@ -406,66 +342,20 @@ class MemberController extends FrontendController
             $withdrawOrders->appends($request->all());
         }
 
-        // 分页
-        $queryParams = function ($param) {
-            $request = \request();
-            $params = [
-                'page' => $request->input('page'),
-                'scene' => $request->input('scene', ''),
-            ];
-            $params = array_merge($params, $param);
-            return http_build_query($params);
-        };
+        $inviteConfig = $this->configService->getMemberInviteConfig();
 
         $title = __('title.member.promo_code');
 
         return v('frontend.member.promo_code', compact(
             'userPromoCode',
             'title',
-            'inviteConfig',
             'inviteUsers',
             'scene',
-            'queryParams',
             'balanceRecords',
-            'withdrawOrders'
+            'withdrawOrders',
+            'inviteCount',
+            'inviteConfig'
         ));
-    }
-
-    // 生成我的邀请码
-    public function generatePromoCode(PromoCodeServiceInterface $promoCodeService)
-    {
-        /**
-         * @var PromoCodeService $promoCodeService
-         */
-
-        if (!$this->businessState->canGenerateInviteCode($this->user())) {
-            flash(__('current user cant generate promo code'));
-            return back();
-        }
-
-        $promoCodeService->userCreate($this->user());
-
-        flash(__('success'), 'success');
-        return redirect(route('member.promo_code'));
-    }
-
-    public function createInviteBalanceWithdrawOrder(
-        InviteBalanceWithdrawRequest $request,
-        UserInviteBalanceServiceInterface $inviteBalanceService
-    ) {
-        /**
-         * @var UserInviteBalanceService $inviteBalanceService
-         */
-
-        $total = $request->post('total');
-        if ($this->user()['invite_balance'] < $total) {
-            flash(__('Insufficient invite balance'));
-            return back();
-        }
-        $data = $request->filldata();
-        $inviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
-        flash(__('success'), 'success');
-        return back();
     }
 
     // 积分记录
@@ -476,11 +366,14 @@ class MemberController extends FrontendController
          */
         $page = $request->input('page', 1);
         $pageSize = 10;
-        $records = $creditService->getCredit1RecordsPaginate($this->id(), $page, $pageSize);
+
+        $list = $creditService->getCredit1RecordsPaginate($this->id(), $page, $pageSize);
         $total = $creditService->getCredit1RecordsCount($this->id());
-        $records = $this->paginator($records, $total, $page, $pageSize);
+
+        $records = $this->paginator($list, $total, $page, $pageSize);
 
         $title = __('title.member.credit1_records');
+
         return v('frontend.member.credit1_records', compact('title', 'records'));
     }
 
@@ -500,5 +393,15 @@ class MemberController extends FrontendController
         Auth::logout();
         flash(__('success'), 'success');
         return redirect(url('/'));
+    }
+
+    public function showWechatBind(WechatBindBus $bus)
+    {
+        $title = __('微信账号绑定');
+
+        // 生成登录二维码
+        ['code' => $code, 'image' => $image] = $bus->qrcode($this->id());
+
+        return v('frontend.member.wechat_bind', compact('title', 'code', 'image'));
     }
 }

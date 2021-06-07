@@ -1,54 +1,50 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 
 @section('content')
 
-    <div class="container-fluid my-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-4 bg-fff pt-5 pb-3 px-5 br-8 box-shadow1 fs-14px">
-                            <h3 class="mb-5">账号注册
-                                <small class="fs-14px"><a href="{{route('login')}}">已有账号？点此登录</a></small>
-                            </h3>
-                            <form action="" method="post" onsubmit="return formSubmitCheck();">
-                                @csrf
-                                @include('frontend.components.mobile', ['smsCaptchaKey' => 'register'])
-                                <div class="form-group">
-                                    <label for="password">密码</label>
-                                    <input id="password" type="password" class="form-control" placeholder="密码"
-                                           name="password" required>
+    <div class="w-full px-3 mt-20 mb-20 lg:max-w-6xl lg:mx-auto">
+        <div class="flex justify-center">
+            <div class="w-full lg:w-96">
+                <form action="{{route('register')}}" method="post" class="register-form">
+                    @csrf
+                    <div class="bg-white rounded p-5 shadow">
+                        <div class="text-2xl font-bold text-gray-800 mb-10 text-center mt-5">{{__('注册')}}</div>
+                        <div class="mb-5">
+                            @include('frontend.components.mobile', ['smsCaptchaKey' => 'register'])
+                            <div class="mb-5">
+                                <input type="password" name="password"
+                                       placeholder="{{__('请输入密码')}}"
+                                       class="w-full rounded border-gray-200 bg-gray-200 px-3 py-3 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                       required>
+                            </div>
+                            <div class="mb-5">
+                                <div class="flex items-center h-5">
+                                    <input id="agree-protocol" type="checkbox" name="agree_protocol"
+                                           class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                    <div class="ml-1 text-sm text-gray-500">
+                                        <a href="{{route('user.protocol')}}" target="_blank"
+                                           class="text-blue-600">{{__('《用户协议》')}}</a>
+                                        和
+                                        <a href="{{route('user.private_protocol')}}" class="text-blue-600"
+                                           target="_blank">{{__('《用户隐私协议》')}}</a>
+                                    </div>
                                 </div>
-                                <div class="form-group auth-box-errors" style="color: red;"></div>
-                                <div class="form-group">
-                                    <label><input type="checkbox"
-                                                  name="agree_protocol" {{ old('remember') ? 'checked' : '' }}> 同意
-                                        <a href="{{route('user.protocol')}}" target="_blank">《用户协议》</a> 和 <a
-                                                href="{{route('user.private_protocol')}}"
-                                                target="_blank">《隐私政策》</a></label>
-                                </div>
-                                <div class="form-group mt-2">
-                                    <button class="btn btn-primary btn-block">注册</button>
-                                </div>
-                            </form>
+                            </div>
+                            <div class="flex">
+                                <button type="submit"
+                                        class="flex-1 rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
+                                    {{__('注册')}}
+                                </button>
+                            </div>
+                            <div class="my-3 text-center">
+                                <a class="text-sm text-gray-500 hover:text-blue-600"
+                                   href="{{route('login')}}">{{__('已有账号？点此登录')}}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-
         </div>
     </div>
 
-@endsection
-
-@section('js')
-    <script>
-        function formSubmitCheck() {
-            if ($('input[name="agree_protocol"]').is(':checked') === false) {
-                flashWarning('请同意协议');
-                return false;
-            }
-            return true;
-        }
-    </script>
 @endsection

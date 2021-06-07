@@ -20,9 +20,12 @@
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.3.2",
+    "@tailwindcss/postcss7-compat": "^2.1.2",
+    "autoprefixer": "^9",
+    "postcss": "^7",
     "sweetalert2": "10.15.7",
-    "xgplayer": "latest",
-    "xgplayer-hls.js": "^2.4.2",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "zepto-webpack": "1.2.1"
   }
 }

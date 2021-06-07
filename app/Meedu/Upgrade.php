@@ -16,6 +16,8 @@ class Upgrade
     public function run()
     {
         $this->fromV374to4();
+
+        $this->toV42();
     }
 
     public function fromV374to4()
@@ -75,5 +77,17 @@ class Upgrade
         AdministratorMenu::query()
             ->where('url', 'videomanage')
             ->update(['name' => '点播']);
+    }
+
+    public function toV42()
+    {
+        AppConfig::query()
+            ->whereIn('key', [
+                // 白色logo配置
+                'meedu.system.white_logo',
+                // 阿里云私密播放配置
+                'meedu.system.player.enabled_aliyun_private',
+            ])
+            ->delete();
     }
 }

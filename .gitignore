@@ -22,3 +22,5 @@ _ide_helper.php
 package-lock.json
 /storage/install.lock
 .phpunit.result.cache
+
+public/mix-manifest.json

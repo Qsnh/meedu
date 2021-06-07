@@ -27,6 +27,8 @@ class CreateRolesTable extends Migration
             $table->integer('weight')->default(0)->comment('权重，升序');
             $table->string('description')->default('')->comment('详细描述，一行一个');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

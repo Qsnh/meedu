@@ -761,6 +761,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'member/\d+/detail/videoWatchRecords',
             ],
+            [
+                'group_name' => '用户',
+                'display_name' => '批量导入',
+                'slug' => 'member.import',
+                'method' => 'POST',
+                'url' => 'member/import',
+            ],
 
             // 系统配置
             [

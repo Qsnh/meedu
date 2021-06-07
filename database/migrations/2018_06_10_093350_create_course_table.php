@@ -34,6 +34,8 @@ class CreateCourseTable extends Migration
             $table->tinyInteger('is_show')->comment('1显示,-1隐藏');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

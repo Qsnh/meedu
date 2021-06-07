@@ -26,6 +26,8 @@ class CreateIndexBannersTable extends Migration
             $table->string('course_ids')->comment('课程id,英文逗号分隔');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

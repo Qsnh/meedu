@@ -30,6 +30,8 @@ class CreatePromoCodesTable extends Migration
             $table->integer('used_times')->default(0)->comment('已使用次数');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

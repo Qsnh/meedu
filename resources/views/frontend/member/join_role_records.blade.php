@@ -1,40 +1,32 @@
-@extends('layouts.member')
+@extends('frontend.layouts.member')
 
 @section('member')
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="w-100 float-left py-4 mt-4 br-8 px-3 bg-fff">
-                    <span>当前会员：<b class="fs-24px">{{$user['role'] ? $user['role']['name'] : '免费会员'}}</b></span>
-                    <span class="ml-4">到期时间：<b
-                                class="fs-24px">{{$user['role'] ? $user['role_expired_at'] : '-'}}</b></span>
+    @forelse($records as $recordItem)
+        @continue(!$recordItem['role'])
+        <div class="bg-white p-5 shadow rounded mb-5">
+            <div class="flex items-center text-sm text-gray-500">
+                <div class="flex-1">
+                    <div class="font-medium text-xl mb-3 text-gray-800">
+                        {{$recordItem['role']['name']}}
+                    </div>
+                    <div class="text-gray-400 text-xs">
+                        <span>{{$recordItem['started_at']}}</span>
+                        <span class="text-gray-300">-</span>
+                        <span>{{$recordItem['expired_at']}}</span>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <span class="text-red-500 text-xl font-medium"><small>{{__('￥')}}</small>{{ $recordItem['charge'] }}</span>
                 </div>
             </div>
         </div>
+    @empty
+        @include('frontend.components.none')
+    @endforelse
+
+    <div class="">
+        {{$records->render('frontend.components.common.paginator')}}
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="invite-user-box">
-                    @forelse($records as $record)
-                        <div class="invite-user-item">
-                            <span class="invite-user-item-nickname">{{$record['role']['name']}}</span>
-                            <span class="invite-user-item-date">{{$record['expired_at']}}</span>
-                            <span class="invite-user-item-date">{{$record['started_at']}}</span>
-                            <span class="invite-user-item-date">￥{{$record['charge']}}</span>
-                        </div>
-                    @empty
-                        @include('frontend.components.none')
-                    @endforelse
-                </div>
-            </div>
-            @if($records->total() > $records->perPage())
-                <div class="col-12">
-                    {!! str_replace('pagination', 'pagination justify-content-center', $records->render()) !!}
-                </div>
-            @endif
-        </div>
-    </div>
 @endsection

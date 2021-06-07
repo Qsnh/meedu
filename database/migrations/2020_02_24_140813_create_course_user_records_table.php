@@ -28,6 +28,8 @@ class CreateCourseUserRecordsTable extends Migration
 
             $table->index(['user_id']);
             $table->index(['course_id']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -711,4 +711,36 @@ class UserService implements UserServiceInterface
             UserProfile::create($profileData);
         }
     }
+
+    public function getUserWatchStatForYear(int $userId, int $year): int
+    {
+        return (int)UserWatchStat::query()
+            ->where('user_id', $userId)
+            ->where('year', $year)
+            ->sum('seconds');
+    }
+
+    public function getUserWatchStatForMonth(int $userId, int $year, int $month): int
+    {
+        return (int)UserWatchStat::query()
+            ->where('user_id', $userId)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->sum('seconds');
+    }
+
+    public function getUserWatchStatForDay(int $userId, int $year, int $month, int $day): int
+    {
+        return (int)UserWatchStat::query()
+            ->where('user_id', $userId)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->where('day', $day)
+            ->sum('seconds');
+    }
+
+    public function inviteCount(int $userId): int
+    {
+        return (int)User::query()->where('invite_user_id', $userId)->count();
+    }
 }

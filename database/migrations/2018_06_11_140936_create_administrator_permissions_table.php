@@ -27,6 +27,8 @@ class CreateAdministratorPermissionsTable extends Migration
             $table->string('method')->comment('HTTP动作');
             $table->string('url')->comment('URL');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

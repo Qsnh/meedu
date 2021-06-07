@@ -38,6 +38,8 @@ class CreateVideoTable extends Migration
             $table->tinyInteger('is_show')->comment('1显示,-1隐藏');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -24,6 +24,8 @@ class CreateAnnouncementsTable extends Migration
             $table->integer('admin_id')->default(0);
             $table->text('announcement');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

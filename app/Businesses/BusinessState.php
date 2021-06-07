@@ -10,6 +10,7 @@ namespace App\Businesses;
 
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -18,11 +19,13 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
+use App\Services\Member\Services\SocialiteService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Order\Interfaces\PromoCodeServiceInterface;
+use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class BusinessState
 {
@@ -323,5 +326,23 @@ class BusinessState
         $enabledOAuthLogin = (int)($mpWechatConfig['enabled_scan_login'] ?? 0);
 
         return $enabledOAuthLogin === 1;
+    }
+
+    public function socialiteBindCheck(int $userId, string $app, string $appId): void
+    {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+        $socialiteService = app()->make(SocialiteServiceInterface::class);
+
+        $hasBindSocialites = $socialiteService->userSocialites($userId);
+        if (in_array($app, array_column($hasBindSocialites, 'app'))) {
+            throw new ServiceException(__('您已经绑定了该渠道的账号'));
+        }
+
+        // 读取当前社交账号绑定的用户id
+        if ($socialiteService->getBindUserId($app, $appId)) {
+            throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
+        }
     }
 }

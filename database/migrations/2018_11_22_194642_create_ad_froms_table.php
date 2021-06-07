@@ -24,6 +24,8 @@ class CreateAdFromsTable extends Migration
             $table->string('from_name');
             $table->string('from_key');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

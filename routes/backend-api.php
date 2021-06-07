@@ -170,9 +170,14 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
     // 会员
     Route::group(['prefix' => 'member'], function () {
+        // 批量导入
+        Route::post('/import', 'MemberController@import');
+
         Route::get('/', 'MemberController@index');
         Route::get('/create', 'MemberController@create');
         Route::get('/{id}', 'MemberController@edit');
+        Route::post('/', 'MemberController@store');
+        Route::put('/{id}', 'MemberController@update');
 
         // 标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
@@ -192,8 +197,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
         Route::get('/{id}/detail/videoWatchRecords', 'MemberController@userVideoWatchRecords');
 
-        Route::post('/', 'MemberController@store');
-        Route::put('/{id}', 'MemberController@update');
         Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
         Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
 

@@ -47,12 +47,13 @@ class RoleBuyTest extends TestCase
             'is_show' => Role::IS_SHOW_YES,
             'charge' => 100,
         ]);
+
         $this->actingAs($user)
             ->visit(route('member.role.buy', [$role->id]))
             ->type($role->id, 'goods_id')
             ->type('pc', 'payment_scene')
             ->type('handPay', 'payment_sign')
-            ->press('确认支付')
-            ->see('手动');
+            ->press(__('立即支付'))
+            ->see(__('手动打款'));
     }
 }

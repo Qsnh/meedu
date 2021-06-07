@@ -178,16 +178,15 @@ return [
         // 公安网备案
         'icp2' => '',
         'icp2_link' => '',
+        // 网站logo
         'logo' => '/images/logo.png',
-        'white_logo' => '/images/white-logo.png',
+        // 播放器封面
         'player_thumb' => '/images/player-thumb.png',
 
         // 播放器
         'player' => [
             // 跑马灯
             'enabled_bullet_secret' => 0,
-            // 阿里云私密播放
-            'enabled_aliyun_private' => 0,
             // 腾讯云播放key
             'tencent_play_key' => '',
             // 腾讯云超级播放器配置
@@ -196,9 +195,10 @@ return [
 
         // 缓存开关
         'cache' => [
-            'status' => 0,
+            'status' => (int)env('MEEDU_CACHE_ENABLED', 0),
             'expire' => 3600 * 10,
         ],
+
         // 短信频率
         'limiter' => [
             'sms' => [
@@ -206,23 +206,29 @@ return [
                 'minutes' => 1,
             ]
         ],
+
         // 统计代码
         'js' => '',
+
         // 主题
         'theme' => [
             'use' => 'default',
             'path' => base_path(env('TEMPLATE_PATH') ?: 'resources/views'),
         ],
+
         // 默认短信服务商
         'sms' => 'aliyun',
+
         // editor
         'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
+
         // 登录
         'login' => [
             'limit' => [
                 'rule' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
             ]
         ],
+
         // 全局css
         'css' => [
             'pc' => '',
@@ -264,6 +270,8 @@ return [
         'enabled_oauth_login' => 0,
         // 开启PC扫码登录
         'enabled_scan_login' => 0,
+        // 扫码登录后的提示语
+        'scan_login_alert' => '',
         // 开启微信浏览器的分享
         'enabled_share' => 0,
         // 微信H5分享自定义内容

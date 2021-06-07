@@ -26,6 +26,8 @@ class CreateSlidersTable extends Migration
             $table->string('url');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

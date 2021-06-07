@@ -28,6 +28,8 @@ class CreateOrderPaidRecordsTable extends Migration
             $table->integer('paid_type_id')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -27,6 +27,8 @@ class CreateUserLikeCoursesTable extends Migration
             $table->softDeletes();
 
             $table->index(['user_id', 'course_id']);
+
+            $table->engine = 'InnoDB';
         });
     }
 

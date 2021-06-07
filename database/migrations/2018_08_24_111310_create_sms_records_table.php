@@ -25,6 +25,8 @@ class CreateSmsRecordsTable extends Migration
             $table->text('send_data')->nullable(true)->comment('发送数据');
             $table->text('response_data')->nullable(true)->comment('响应数据');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 
