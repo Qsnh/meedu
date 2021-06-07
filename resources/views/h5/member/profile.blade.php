@@ -76,7 +76,7 @@
                 </div>
                 <div class="image upload-image-button" data-view-id="img-diploma" data-url="{{route('upload.image')}}"
                      data-file-id="file-diploma" data-input="diploma"
-                     style="background-image: url('{{asset('/images/icons/uploadImage.png')}}')">
+                     style="background-image: url('{{asset('/h5/images/icons/uploadImage.png')}}')">
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@
                 <div class="image upload-image-button" data-view-id="img-id_frontend_thumb"
                      data-url="{{route('upload.image')}}"
                      data-file-id="file-id_frontend_thumb" data-input="id_frontend_thumb"
-                     style="background-image: url('{{asset('/images/icons/uploadImage.png')}}')">
+                     style="background-image: url('{{asset('/h5/images/icons/uploadImage.png')}}')">
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@
                 <div class="image upload-image-button" data-view-id="img-id_backend_thumb"
                      data-url="{{route('upload.image')}}"
                      data-file-id="file-id_backend_thumb" data-input="id_backend_thumb"
-                     style="background-image: url('{{asset('/images/icons/uploadImage.png')}}')">
+                     style="background-image: url('{{asset('/h5/images/icons/uploadImage.png')}}')">
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
                 <div class="image upload-image-button" data-view-id="img-id_hand_thumb"
                      data-url="{{route('upload.image')}}"
                      data-file-id="file-id_hand_thumb" data-input="id_hand_thumb"
-                     style="background-image: url('{{asset('/images/icons/uploadImage.png')}}')">
+                     style="background-image: url('{{asset('/h5/images/icons/uploadImage.png')}}')">
                 </div>
             </div>
         </div>
