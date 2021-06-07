@@ -28,11 +28,8 @@
                         的抽成。</p>
                 </div>
             @else
-                <div class="create-promo-code-button-box">
-                    <form action="" method="post">
-                        @csrf
-                        <button type="submit" class="create-promo-code-button">生成我的专属邀请码</button>
-                    </form>
+                <div class="create-promo-code-button-box text-center">
+                    无权限
                 </div>
             @endif
 
