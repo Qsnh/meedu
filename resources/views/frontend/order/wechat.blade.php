@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex-shrink-0 ml-10 flex">
                     <div>
-                        <a href="{{route('member.orders')}}"
+                        <a href="{{request()->input('redirect_url') ?: route('member.orders')}}"
                            class="rounded px-8 py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-700 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
