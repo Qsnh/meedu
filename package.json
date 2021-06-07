@@ -26,8 +26,6 @@
     "postcss": "^7",
     "sweetalert2": "10.15.7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "xgplayer": "latest",
-    "xgplayer-hls.js": "^2.4.2",
     "zepto-webpack": "1.2.1"
   }
 }

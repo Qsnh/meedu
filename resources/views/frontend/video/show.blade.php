@@ -1,5 +1,14 @@
 @extends('frontend.layouts.app')
 
+@section('css')
+    <style>
+        @if($video['ban_drag'] === 1)
+        .dplayer-bar-wrap {
+            display: none
+        }
+        @endif
+    </style>
+
 @section('content')
 
     <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
@@ -20,9 +29,8 @@
             @if($user)
                 @if($canSeeVideo)
                     <div class="player-render-box">
-                        @include('frontend.components.player.render', ['video' => $video, 'isTry' => false])
+                        @include('frontend.components.player.dplayer', ['videoItem' => $video, 'isTry' => false])
                     </div>
-
 
                     @if($nextVideo)
                     <!-- 还有下一集 -->
@@ -48,7 +56,7 @@
                     @if($trySee)
                     <!-- 当前视频配置了试看，可以试看N秒，结束后提示购买 -->
                         <div class="player-render-box">
-                            @include('frontend.components.player.render', ['video' => $video, 'isTry' => true])
+                            @include('frontend.components.player.dplayer', ['videoItem' => $video, 'isTry' => true])
                         </div>
 
                         <div class="video-play-alert-info hidden">
@@ -290,4 +298,12 @@
         </div>
     </div>
 
+@endsection
+
+@section('js')
+    <script crossorigin="anonymous" integrity="sha384-NowxCVrymxfs88Gx+ygXX3HCvpP7JE1nsDUuIshgWg2gO2eFCaePIdAuOfnG6ZjM"
+            src="https://lib.baomitu.com/hls.js/8.0.0-beta.3/hls.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha512-1t2U1/0xGhBZAriD+/9llOhjPs5nFBDZ7KbnHB4SGwAUPrzyS+02Kus1cz0exk5eMyXxwfHxj/1JLuie/p6xXA=="
+            src="https://lib.baomitu.com/dplayer/1.26.0/DPlayer.min.js"></script>
 @endsection

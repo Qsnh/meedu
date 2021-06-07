@@ -147,6 +147,8 @@ Route::group([
         Route::post('/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
         // 手机号绑定
         Route::post('/mobile_bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check']);
+        // 视频播放地址
+        Route::post('/video/urls', 'AjaxController@getPlayUrls')->name('ajax.video.playUrls');
     });
 });
 

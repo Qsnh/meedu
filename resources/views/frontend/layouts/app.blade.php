@@ -19,10 +19,6 @@
             {{$css}}
         </style>
     @endif
-
-    <style>
-
-    </style>
 </head>
 <body class="bg-gray-50">
 

@@ -1839,7 +1839,7 @@ chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.3.2, chalk@^2.4.1, chalk@^2.4.2:
+chalk@^2.0.0, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.nlark.com/chalk/download/chalk-2.4.2.tgz?cache=0&sync_timestamp=1618995297666&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fchalk%2Fdownload%2Fchalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha1-zUJUFnelQzPPVBpJEIwUMrRMlCQ=
@@ -2034,7 +2034,7 @@ commander@2.17.x:
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1616364021418&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
   integrity sha1-vXerfebelCBc6sxy8XFtKfIKd78=
 
-commander@^2.15.1, commander@^2.19.0, commander@^2.20.0, commander@^2.9.0:
+commander@^2.19.0, commander@^2.20.0, commander@^2.9.0:
   version "2.20.3"
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1616364021418&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha1-/UhehMA+tIgcIHIrpIA16FMa6zM=
@@ -2458,13 +2458,6 @@ d@1, d@^1.0.1:
     es5-ext "^0.10.50"
     type "^1.0.1"
 
-danmu.js@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.npm.taobao.org/danmu.js/download/danmu.js-0.3.3.tgz#fabf6c51be69e84afdac75bcd1058904f0e24e61"
-  integrity sha1-+r9sUb5p6Er9rHW80QWJBPDiTmE=
-  dependencies:
-    event-emitter "^0.3.5"
-
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/de-indent/download/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -2512,11 +2505,6 @@ deep-equal@^1.0.1:
     object-is "^1.0.1"
     object-keys "^1.1.1"
     regexp.prototype.flags "^1.2.0"
-
-deepmerge@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.nlark.com/deepmerge/download/deepmerge-2.0.1.tgz#25c1c24f110fb914f80001b925264dd77f3f4312"
-  integrity sha1-JcHCTxEPuRT4AAG5JSZN138/QxI=
 
 deepmerge@^2.1.0:
   version "2.2.1"
@@ -2710,19 +2698,6 @@ dotenv@^6.2.0:
   resolved "https://registry.npm.taobao.org/dotenv/download/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha1-lBwEEFNdlCyL7PKNPzV9vZ1HYGQ=
 
-downloadjs@1.4.7:
-  version "1.4.7"
-  resolved "https://registry.npm.taobao.org/downloadjs/download/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
-  integrity sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=
-
-draggabilly@^2.2.0:
-  version "2.3.0"
-  resolved "https://registry.npm.taobao.org/draggabilly/download/draggabilly-2.3.0.tgz#e0e653e09b938eb7ae654c4b7600114b24a2ee50"
-  integrity sha1-4OZT4JuTjreuZUxLdgARSySi7lA=
-  dependencies:
-    get-size "^2.0.2"
-    unidragger "^2.3.0"
-
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"
   resolved "https://registry.nlark.com/duplexify/download/duplexify-3.7.1.tgz#2a4df5317f6ccfd91f86d6fd25d8d8a103b88309"
@@ -2854,7 +2829,7 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-es5-ext@^0.10.35, es5-ext@^0.10.50, es5-ext@~0.10.14:
+es5-ext@^0.10.35, es5-ext@^0.10.50:
   version "0.10.53"
   resolved "https://registry.npm.taobao.org/es5-ext/download/es5-ext-0.10.53.tgz#93c5a3acfdbef275220ad72644ad02ee18368de1"
   integrity sha1-k8WjrP2+8nUiCtcmRK0C7hg2jeE=
@@ -2948,20 +2923,7 @@ etag@~1.8.1:
   resolved "https://registry.nlark.com/etag/download/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-ev-emitter@^1.0.1:
-  version "1.1.1"
-  resolved "https://registry.npm.taobao.org/ev-emitter/download/ev-emitter-1.1.1.tgz#8f18b0ce5c76a5d18017f71c0a795c65b9138f2a"
-  integrity sha1-jxiwzlx2pdGAF/ccCnlcZbkTjyo=
-
-event-emitter@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.npm.taobao.org/event-emitter/download/event-emitter-0.3.5.tgz#df8c69eef1647923c7157b9ce83840610b02cc39"
-  integrity sha1-34xp7vFkeSPHFXuc6DhAYQsCzDk=
-  dependencies:
-    d "1"
-    es5-ext "~0.10.14"
-
-eventemitter3@^4.0.0, eventemitter3@^4.0.7:
+eventemitter3@^4.0.0:
   version "4.0.7"
   resolved "https://registry.npm.taobao.org/eventemitter3/download/eventemitter3-4.0.7.tgz?cache=0&sync_timestamp=1598517819668&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feventemitter3%2Fdownload%2Feventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha1-Lem2j2Uo1WRO9cWVJqG0oHMGFp8=
@@ -3379,11 +3341,6 @@ get-intrinsic@^1.0.2, get-intrinsic@^1.1.1:
     function-bind "^1.1.1"
     has "^1.0.3"
     has-symbols "^1.0.1"
-
-get-size@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.npm.taobao.org/get-size/download/get-size-2.0.3.tgz#54a1d0256b20ea7ac646516756202769941ad2ef"
-  integrity sha1-VKHQJWsg6nrGRlFnViAnaZQa0u8=
 
 get-stream@^4.0.0:
   version "4.1.0"
@@ -7005,13 +6962,6 @@ unicode-property-aliases-ecmascript@^1.0.4:
   resolved "https://registry.npm.taobao.org/unicode-property-aliases-ecmascript/download/unicode-property-aliases-ecmascript-1.1.0.tgz#dd57a99f6207bedff4628abefb94c50db941c8f4"
   integrity sha1-3Vepn2IHvt/0Yoq++5TFDblByPQ=
 
-unidragger@^2.3.0:
-  version "2.3.1"
-  resolved "https://registry.npm.taobao.org/unidragger/download/unidragger-2.3.1.tgz#2e8c34feff61affa96dc895234ddfc1ea4ec7515"
-  integrity sha1-Low0/v9hr/qW3IlSNN38HqTsdRU=
-  dependencies:
-    unipointer "^2.3.0"
-
 union-value@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/union-value/download/union-value-1.0.1.tgz#0b6fe7b835aecda61c6ea4d4f02c14221e109847"
@@ -7021,13 +6971,6 @@ union-value@^1.0.0:
     get-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^2.0.1"
-
-unipointer@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.npm.taobao.org/unipointer/download/unipointer-2.3.0.tgz#ba0dc462ce31c2a88e80810e19c3bae0ce47ed9f"
-  integrity sha1-ug3EYs4xwqiOgIEOGcO64M5H7Z8=
-  dependencies:
-    ev-emitter "^1.0.1"
 
 uniq@^1.0.1:
   version "1.0.1"
@@ -7457,35 +7400,6 @@ ws@^6.2.1:
   integrity sha1-RC/fCkftZPWbal2P8TD0dI7VJPs=
   dependencies:
     async-limiter "~1.0.0"
-
-xgplayer-hls.js@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.npm.taobao.org/xgplayer-hls.js/download/xgplayer-hls.js-2.4.2.tgz#e84e9599065f6664d03a21759e663c5b92c24650"
-  integrity sha1-6E6VmQZfZmTQOiF1nmY8W5LCRlA=
-  dependencies:
-    deepmerge "2.0.1"
-    event-emitter "^0.3.5"
-    eventemitter3 "^4.0.7"
-
-xgplayer-subtitles@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.npm.taobao.org/xgplayer-subtitles/download/xgplayer-subtitles-1.0.9.tgz?cache=0&sync_timestamp=1617849170634&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fxgplayer-subtitles%2Fdownload%2Fxgplayer-subtitles-1.0.9.tgz#4227fb1c868b1c73dd060b17ce120ce31c726f22"
-  integrity sha1-Qif7HIaLHHPdBgsXzhIM4xxybyI=
-  dependencies:
-    event-emitter "^0.3.5"
-
-xgplayer@latest:
-  version "2.19.1"
-  resolved "https://registry.nlark.com/xgplayer/download/xgplayer-2.19.1.tgz#19f4e4bd4ee4c13c1d7a985bf9aa6d612281d120"
-  integrity sha1-GfTkvU7kwTwdephb+aptYSKB0SA=
-  dependencies:
-    chalk "^2.3.2"
-    commander "^2.15.1"
-    danmu.js "^0.3.3"
-    downloadjs "1.4.7"
-    draggabilly "^2.2.0"
-    event-emitter "^0.3.5"
-    xgplayer-subtitles "^1.0.9"
 
 xtend@^4.0.0, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"

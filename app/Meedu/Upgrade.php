@@ -81,9 +81,13 @@ class Upgrade
 
     public function toV42()
     {
-        // 删除白色logo配置
         AppConfig::query()
-            ->where('key', 'meedu.system.white_logo')
+            ->whereIn('key', [
+                // 白色logo配置
+                'meedu.system.white_logo',
+                // 阿里云私密播放配置
+                'meedu.system.player.enabled_aliyun_private',
+            ])
             ->delete();
     }
 }

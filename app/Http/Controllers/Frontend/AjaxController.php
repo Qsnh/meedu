@@ -318,4 +318,38 @@ class AjaxController extends BaseController
         $this->userService->saveProfile($this->id(), $data);
         return $this->success();
     }
+
+    public function getPlayUrls(Request $request, BusinessState $businessState)
+    {
+        $data = $request->input('data');
+        if (!$data) {
+            return $this->error(__('参数错误'));
+        }
+        $data = decrypt($data);
+        if (!$data) {
+            return $this->error(__('参数错误'));
+        }
+        $time = $data['time'] ?? 0;
+        if ((time() - $time) > 300) {
+            return $this->error(__('参数已过期'));
+        }
+
+        $isTry = (int)$data['is_try'];
+        $videoId = $data['video_id'];
+
+        $video = $this->videoService->find($videoId);
+        $course = $this->courseService->find($video['course_id']);
+
+        if ($businessState->canSeeVideo($this->user(), $course, $video) === false) {
+            return $this->error(__('无法观看当前视频'));
+        }
+
+        $playUrls = get_play_url($video, $isTry ? true : false);
+
+        if (!$playUrls) {
+            return $this->error(__('无法获取播放地址'));
+        }
+
+        return $this->data($playUrls);
+    }
 }

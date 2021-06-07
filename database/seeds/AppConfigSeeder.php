@@ -52,15 +52,6 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '系统',
-                'name' => '白色logo',
-                'field_type' => 'image',
-                'sort' => 4,
-                'default_value' => asset('/images/white-logo.png'),
-                'key' => 'meedu.system.white_logo',
-                'value' => asset('/images/white-logo.png'),
-            ],
-            [
-                'group' => '系统',
                 'name' => 'ICP备案号',
                 'field_type' => 'text',
                 'sort' => 6,
@@ -940,15 +931,6 @@ class AppConfigSeeder extends Seeder
                 'sort' => 1,
                 'default_value' => 0,
                 'key' => 'meedu.system.player.enabled_bullet_secret',
-                'value' => 0,
-            ],
-            [
-                'group' => '播放器配置',
-                'name' => '阿里云私密播放',
-                'field_type' => 'switch',
-                'sort' => 2,
-                'default_value' => 0,
-                'key' => 'meedu.system.player.enabled_aliyun_private',
                 'value' => 0,
             ],
 

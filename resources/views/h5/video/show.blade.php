@@ -5,6 +5,12 @@
         body {
             background-color: white;
         }
+
+        @if($video['ban_drag'] === 1)
+        .dplayer-bar-wrap {
+            display: none
+        }
+        @endif
     </style>
 @endsection
 
@@ -15,17 +21,7 @@
     <div class="video-play-box">
         @if($user)
             @if($canSeeVideo)
-                @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
-                    @include('h5.components.player.aliyun', ['video' => $video])
-                @else
-                    @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
-                        @include('h5.components.player.aliyun', ['video' => $video])
-                    @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
-                        @include('h5.components.player.tencent', ['video' => $video])
-                    @else
-                        @include('h5.components.player.xg', ['video' => $video])
-                    @endif
-                @endif
+                @include('h5.components.player.dplayer', ['videoItem' => $video, 'isTry' => false])
                 @if($nextVideo)
                     <div class="text-center watched-over">
                         <p>
@@ -43,17 +39,7 @@
                 @endif
             @else
                 @if($trySee)
-                    @if($video['aliyun_video_id'] && (int)($gConfig['system']['player']['enabled_aliyun_private'] ?? 0) === 1)
-                        @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
-                    @else
-                        @if($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_ALIYUN)
-                            @include('h5.components.player.aliyun', ['video' => $video, 'isTry' => true])
-                        @elseif($video['player_h5'] === \App\Constant\FrontendConstant::PLAYER_TENCENT)
-                            @include('h5.components.player.tencent', ['video' => $video, 'isTry' => true])
-                        @else
-                            @include('h5.components.player.xg', ['video' => $video, 'isTry' => true])
-                        @endif
-                    @endif
+                    @include('h5.components.player.dplayer', ['videoItem' => $video, 'isTry' => true])
                     <div style="margin-top: 60px;display: none;" class="text-center watched-over show-buy-course-model">
                         <span style="color: white">您当前观看的是试看内容，如需观看完整内容请订阅课程！</span>
                     </div>
@@ -197,6 +183,11 @@
 @endsection
 
 @section('js')
+    <script crossorigin="anonymous" integrity="sha384-NowxCVrymxfs88Gx+ygXX3HCvpP7JE1nsDUuIshgWg2gO2eFCaePIdAuOfnG6ZjM"
+            src="https://lib.baomitu.com/hls.js/8.0.0-beta.3/hls.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha512-1t2U1/0xGhBZAriD+/9llOhjPs5nFBDZ7KbnHB4SGwAUPrzyS+02Kus1cz0exk5eMyXxwfHxj/1JLuie/p6xXA=="
+            src="https://lib.baomitu.com/dplayer/1.26.0/DPlayer.min.js"></script>
     <script>
         // 微信分享
         window.wechatShareInfo = {
