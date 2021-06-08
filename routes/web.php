@@ -67,7 +67,7 @@ Route::group([
 
     // 手机号绑定
     Route::get('/mobile_bind', 'MemberController@showMobileBindPage')->name('member.mobile.bind');
-    Route::post('/mobile_bind', 'MemberController@mobileBindHandler')->middleware('sms.check');
+    Route::post('/mobile_bind', 'MemberController@mobileBindHandler')->name('member.mobile.bind.submit')->middleware('sms.check');
 
     // VIP会员购买记录
     Route::get('/join_role_records', 'MemberController@showJoinRoleRecordsPage')->name('member.join_role_records');

@@ -69,6 +69,8 @@ class MeEduUpgradeCommand extends Command
         $this->info('清除配置缓存...');
         Artisan::call('config:clear');
 
-        $this->info('升级成功');
+        // 清空视图缓存
+        $this->info('清除视图缓存...');
+        Artisan::call('view:clear');
     }
 }
