@@ -10,7 +10,7 @@
 
             <div class="flex-1 pr-12 flex justify-end">
                 <div class="search-form-box">
-                    <form action="{{route('search')}}" method="get">
+                    <form action="{{route('search')}}" method="get" style="margin-block-end: 0">
                         <div class="relative">
                             <input type="text" name="keywords"
                                    class="search-input border border-gray-200 text-sm outline-none"
