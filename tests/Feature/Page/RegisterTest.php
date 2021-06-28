@@ -18,8 +18,7 @@ class RegisterTest extends TestCase
     {
         $response = $this->get(route('register'));
         $response->assertResponseStatus(200);
-        $response->see('注册');
-        $response->see('登录');
+        $response->see(__('注册'));
     }
 
     public function test_submit()
@@ -30,7 +29,7 @@ class RegisterTest extends TestCase
             ->type('smscode', 'sms_captcha')
             ->type('register', 'sms_captcha_key')
             ->type('meedu123', 'password')
-            ->press('注册');
+            ->press(__('注册'));
 
         $user = User::query()->where('mobile', '13900001111')->first();
         $this->assertNotNull($user);
@@ -51,7 +50,7 @@ class RegisterTest extends TestCase
             ->type('smscode', 'sms_captcha')
             ->type('register', 'sms_captcha_key')
             ->type('meedu123', 'password')
-            ->press('注册');
+            ->press(__('注册'));
 
         $user = User::query()->where('mobile', '13900001111')->first();
         $this->assertNotEmpty($user);

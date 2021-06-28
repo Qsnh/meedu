@@ -12,7 +12,6 @@ use App\Bus\AuthBus;
 use App\Meedu\Wechat;
 use App\Meedu\WechatMini;
 use Illuminate\Http\Request;
-use App\Constant\ApiV2Constant;
 use App\Constant\CacheConstant;
 use App\Exceptions\ApiV2Exception;
 use App\Exceptions\ServiceException;
@@ -115,7 +114,7 @@ class LoginController extends BaseController
         ] = $request->filldata();
         $user = $this->userService->passwordLogin($mobile, $password);
         if (!$user) {
-            return $this->error(__(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
+            return $this->error(__('手机号或密码错误'));
         }
 
         try {
@@ -210,17 +209,17 @@ class LoginController extends BaseController
             !($userInfo['rawData'] ?? '') ||
             !($userInfo['signature'] ?? '')
         ) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // 校验签名
         if (sha1($userInfo['rawData'] . $sessionKey) !== $userInfo['signature']) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $mini = WechatMini::getInstance();
@@ -232,7 +231,7 @@ class LoginController extends BaseController
         $userData = $mini->encryptor->decryptData($sessionKey, $userInfo['iv'], $userInfo['encryptedData']);
 
         if ($openid !== $userData['openId']) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // unionId
@@ -288,24 +287,24 @@ class LoginController extends BaseController
             !$encryptedData ||
             !$iv
         ) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
         if (!$sessionKey) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // 验签
         if (sha1($raw . $sessionKey) !== $signature) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // 解密获取用户信息
         $userData = WechatMini::getInstance()->encryptor->decryptData($sessionKey, $iv, $encryptedData);
 
         if ($openid !== $userData['openId']) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // unionId
@@ -313,7 +312,7 @@ class LoginController extends BaseController
 
         $userId = $authBus->wechatMiniLogin($openid, $unionId);
         if (!$userId) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         $user = $this->userService->find($userId);
@@ -334,7 +333,7 @@ class LoginController extends BaseController
     protected function token($user)
     {
         if ((int)$user['is_lock'] === 1) {
-            throw new ServiceException(__(ApiV2Constant::MEMBER_HAS_LOCKED));
+            throw new ServiceException(__('账号已被锁定'));
         }
 
         /**
@@ -352,7 +351,7 @@ class LoginController extends BaseController
         $failedRedirect = $request->input('failed_redirect');
 
         if (!$successRedirect || !$failedRedirect) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $redirectUrl = route('api.v2.login.wechat.callback');
@@ -370,7 +369,7 @@ class LoginController extends BaseController
         $user = Wechat::getInstance()->oauth->user();
 
         if (!$user) {
-            return redirect(url_append_query($failedRedirectUrl, ['msg' => __('error')]));
+            return redirect(url_append_query($failedRedirectUrl, ['msg' => __('错误')]));
         }
 
         $originalData = $user['original'];
@@ -402,12 +401,12 @@ class LoginController extends BaseController
         $failedRedirect = $request->input('failed_redirect');
 
         if (!$successRedirect || !$failedRedirect) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $enabledSocialites = $configService->getEnabledSocialiteApps();
         if (!in_array($app, array_column($enabledSocialites, 'app'))) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $redirectUrl = route('api.v2.login.socialite.callback', [$app]);

@@ -8,7 +8,6 @@
 
 namespace App\Listeners\UserCourseWatchedEvent;
 
-use App\Constant\FrontendConstant;
 use App\Events\UserCourseWatchedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -63,7 +62,7 @@ class UserCourseWatchedCredit1RewardListener implements ShouldQueue
         if ($credit1 <= 0) {
             return;
         }
-        $message = __(FrontendConstant::CREDIT1_REMARK_WATCHED_COURSE);
+        $message = sprintf(__('看完点播课程送%d积分'), $credit1);
         $this->creditService->createCredit1Record($event->userId, $credit1, $message);
         $this->notificationService->notifyCredit1Message($event->userId, $credit1, $message);
     }

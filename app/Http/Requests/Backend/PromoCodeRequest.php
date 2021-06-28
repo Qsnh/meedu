@@ -41,8 +41,8 @@ class PromoCodeRequest extends BaseRequest
     public function messages()
     {
         return [
-            'code.required' => '请输入code',
-            'code.unique' => 'code已存在',
+            'code.required' => __('请输入优惠码'),
+            'code.unique' => __('优惠码已存在'),
         ];
     }
 

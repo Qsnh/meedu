@@ -22,11 +22,6 @@ class SearchRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [];
@@ -35,7 +30,7 @@ class SearchRequest extends FormRequest
     public function messages()
     {
         return [
-            'keywords.required' => __('keywords.required'),
+            'keywords.required' => __('请输入搜索关键字'),
         ];
     }
 

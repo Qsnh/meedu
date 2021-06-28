@@ -43,7 +43,7 @@ class SearchController extends BaseController
          */
         $keywords = $request->input('keywords', '');
         if (!$keywords) {
-            return $this->error('请输入关键字');
+            return $this->error(__('请输入关键字'));
         }
         $courses = $courseService->titleSearch($keywords, 10);
         $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);

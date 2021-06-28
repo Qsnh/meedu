@@ -43,12 +43,12 @@ class CourseRequest extends BaseRequest
     public function messages()
     {
         return [
-            'title.required' => '请输入课程标题',
-            'title.max' => '课程标题的长度不能超过120个字符',
-            'thumb.required' => '请上传课程封面',
-            'short_description.required' => '请输入课程的简短介绍',
-            'original_desc.required' => '请输入课程详情介绍',
-            'published_at' => '请输入课程发布时间',
+            'title.required' => __('请输入点播课程标题'),
+            'title.max' => __('课程标题的长度不能超过:size个字符', ['size' => 120]),
+            'thumb.required' => __('请上传课程封面'),
+            'short_description.required' => __('请输入课程的简短介绍'),
+            'original_desc.required' => __('请输入课程详情介绍'),
+            'published_at' => __('请选择课程发布时间'),
         ];
     }
 

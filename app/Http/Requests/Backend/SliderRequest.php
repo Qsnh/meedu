@@ -20,15 +20,9 @@ class SliderRequest extends BaseRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            'sort' => 'required',
             'thumb' => 'required',
             'url' => 'required',
             'platform' => 'required',
@@ -38,17 +32,16 @@ class SliderRequest extends BaseRequest
     public function messages()
     {
         return [
-            'sort.required' => '请输入排序数值',
-            'thumb.required' => '请上传图片',
-            'url.required' => '请输入链接地址',
-            'platform.required' => '请选择平台',
+            'thumb.required' => __('请上传图片'),
+            'url.required' => __('请输入链接地址'),
+            'platform.required' => __('请选择平台'),
         ];
     }
 
     public function filldata()
     {
         return [
-            'sort' => $this->input('sort'),
+            'sort' => (int)$this->input('sort'),
             'thumb' => $this->input('thumb'),
             'url' => $this->input('url'),
             'platform' => $this->input('platform'),

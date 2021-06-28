@@ -41,12 +41,12 @@ class MemberRequest extends BaseRequest
     public function messages()
     {
         return [
-            'avatar.required' => '请上传头像',
-            'nick_name.required' => '请输入昵称',
-            'nick_name.unique' => '昵称已经存在',
-            'mobile.required' => '请输入手机号',
-            'mobile.unique' => '手机号已经存在',
-            'password.required' => '请输入密码',
+            'avatar.required' => __('请上传头像'),
+            'nick_name.required' => __('请输入昵称'),
+            'nick_name.unique' => __('昵称已经存在'),
+            'mobile.required' => __('请输入手机号'),
+            'mobile.unique' => __('手机号已存在'),
+            'password.required' => __('请输入密码'),
         ];
     }
 

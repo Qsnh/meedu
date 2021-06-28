@@ -26,7 +26,7 @@ class MeEduUpgradeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'meedu升级命令';
+    protected $description = 'MeEdu升级处理命令';
 
     /**
      * Create a new command instance.

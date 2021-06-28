@@ -58,7 +58,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
                 </svg>
-                <span class="ml-1">邀请奖励规则</span>
+                <span class="ml-1">{{__('邀请奖励规则')}}</span>
             </div>
             <div class="px-3 pt-3">
                 <p>1.{{sprintf(__('使用该邀请码的用户将获得%d元的抵扣'), $userPromoCode['invited_user_reward'])}}</p>
@@ -212,7 +212,7 @@
                                data-message-required="{{__('请输入支付宝账号，姓名，提现金额')}}"
                                data-message-success="{{__('成功')}}"
                                data-url="{{route('ajax.invite_balance.withdraw')}}"
-                               class="btn-submit-withdraw rounded px-3 py-2 bg-blue-600 text-white text-center text-base hover:bg-blue-500">申请提现</a>
+                               class="btn-submit-withdraw rounded px-3 py-2 bg-blue-600 text-white text-center text-base hover:bg-blue-500">{{__('申请提现')}}</a>
                         </div>
                     </div>
                     <form class="withdraw-form">

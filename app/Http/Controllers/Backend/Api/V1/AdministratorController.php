@@ -20,7 +20,9 @@ class AdministratorController extends BaseController
 {
     public function index()
     {
-        $administrators = Administrator::orderByDesc('created_at')->paginate(request()->input('size', 12));
+        $administrators = Administrator::query()
+            ->orderByDesc('id')
+            ->paginate(request()->input('size', 10));
 
         return $this->successData($administrators);
     }
@@ -46,14 +48,14 @@ class AdministratorController extends BaseController
 
     public function edit($id)
     {
-        $administrator = Administrator::findOrFail($id);
+        $administrator = Administrator::query()->where('id', $id)->firstOrFail();
 
         return $this->successData($administrator);
     }
 
     public function update(AdministratorRequest $request, $id)
     {
-        $administrator = Administrator::findOrFail($id);
+        $administrator = Administrator::query()->where('id', $id)->firstOrFail();
 
         $administrator->fill($request->filldata())->save();
 
@@ -62,18 +64,14 @@ class AdministratorController extends BaseController
         return $this->success();
     }
 
-    // 修改密码
     public function editPasswordHandle(EditPasswordRequest $request)
     {
         $administrator = Auth::guard(BackendApiConstant::GUARD)->user();
-        if (
-        !Hash::check(
-            $request->input('old_password'),
-            $administrator->password
-        )
-        ) {
-            return $this->error(BackendApiConstant::OLD_PASSWORD_ERROR);
+
+        if (!Hash::check($request->input('old_password'), $administrator['password'])) {
+            return $this->error(__('原密码错误'));
         }
+
         $administrator->fill($request->filldata())->save();
 
         return $this->success();
@@ -81,9 +79,9 @@ class AdministratorController extends BaseController
 
     public function destroy($id)
     {
-        $administrator = Administrator::findOrFail($id);
+        $administrator = Administrator::query()->where('id', $id)->firstOrFail();
         if ($administrator->couldDestroy()) {
-            return $this->error(BackendApiConstant::ADMINISTRATOR_ACCOUNT_CANT_DELETE);
+            return $this->error(__('当前用户是超级管理员账户无法删除'));
         }
         $administrator->delete();
 

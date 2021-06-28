@@ -15,6 +15,7 @@ class SmsRequest extends BaseRequest
         $scenes = [
             'register', 'login', 'password_reset', 'mobile_bind',
         ];
+
         return [
             'mobile' => 'required',
             'image_captcha' => 'required',
@@ -26,10 +27,10 @@ class SmsRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => __('mobile.required'),
-            'image_captcha.required' => __('image_captcha.required'),
-            'image_key.required' => __('image_key.required'),
-            'scene.in' => __('sms_scene_error'),
+            'mobile.required' => __('请输入手机号'),
+            'image_captcha.required' => __('请输入图形验证码'),
+            'image_key.required' => __('参数错误'),
+            'scene.in' => __('参数错误'),
         ];
     }
 

@@ -28,7 +28,7 @@ class OrderHandlerCommand extends Command
      *
      * @var string
      */
-    protected $description = 'order handler tool.';
+    protected $description = '订单改为已支付';
 
     /**
      * @var OrderService
@@ -41,7 +41,7 @@ class OrderHandlerCommand extends Command
      * OrderHandlerCommand constructor.
      *
      * @param OrderServiceInterface $orderService
-     * @param BusinessState         $businessState
+     * @param BusinessState $businessState
      */
     public function __construct(OrderServiceInterface $orderService, BusinessState $businessState)
     {

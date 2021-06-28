@@ -151,7 +151,7 @@ class ServiceProxy
         $lock = $this->cacheService->lock($lockInfo->getName(), $lockInfo->getSeconds());
         if (!$lock->get()) {
             // 无法获取锁
-            throw new SystemException(__('error'));
+            throw new SystemException(__('错误'));
         }
         $response = $this->run([$this->service, $name], $args);
         $lock->release();
@@ -179,7 +179,7 @@ class ServiceProxy
          */
         $rateLimiter = app()->make(RateLimiter::class);
         if ($rateLimiter->tooManyAttempts($limiterInfo->getName(), $limiterInfo->getMaxTimes())) {
-            throw new SystemException(__('error'));
+            throw new SystemException(__('错误'));
         }
         $rateLimiter->hit($limiterInfo->getName(), $limiterInfo->getMinutes());
     }

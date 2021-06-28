@@ -205,7 +205,7 @@ class CourseController extends BaseController
     {
         $course = $this->courseService->find($id);
         if ($this->businessState->courseCanComment($this->user(), $course) == false) {
-            return $this->error(__('course cant comment'));
+            return $this->error(__('课程无法评论'));
         }
         ['content' => $content] = $request->filldata();
         $this->courseCommentService->create($id, $content);
@@ -297,7 +297,7 @@ class CourseController extends BaseController
         $course = $this->courseService->find($courseAttach['course_id']);
 
         if ($course['charge'] > 0 && !$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
-            return $this->error(__('please buy course'));
+            return $this->error(__('请购买课程'));
         }
 
         $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);

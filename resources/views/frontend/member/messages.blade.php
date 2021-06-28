@@ -6,7 +6,7 @@
         <div class="mb-3 text-right">
             <a href="javascript:void(0)" data-url="{{route('ajax.message.read.all')}}"
                data-message-success="{{__('成功')}}"
-               class="btn-read-all-message text-gray-500 hover:text-gray-600 text-sm">全部已读</a>
+               class="btn-read-all-message text-gray-500 hover:text-gray-600 text-sm">{{__('全部已读')}}</a>
         </div>
         @foreach($messages as $messageItem)
             <div class="bg-white p-5 mb-5 rounded shadow message-item cursor-pointer"

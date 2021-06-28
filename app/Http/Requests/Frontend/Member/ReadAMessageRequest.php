@@ -19,6 +19,13 @@ class ReadAMessageRequest extends BaseRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'id.required' => __('参数错误'),
+        ];
+    }
+
     public function filldata()
     {
         return [

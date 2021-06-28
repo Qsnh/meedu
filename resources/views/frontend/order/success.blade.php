@@ -15,7 +15,7 @@
                         </svg>
                     </div>
                     <div class="text-green-500 text-2xl">
-                        支付成功
+                        {{__('支付成功')}}
                     </div>
                 </div>
             </div>

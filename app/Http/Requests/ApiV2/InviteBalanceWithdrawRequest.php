@@ -30,7 +30,7 @@ class InviteBalanceWithdrawRequest extends FormRequest
     public function rules()
     {
         return [
-            'total' => 'required|integer',
+            'total' => 'required',
             'channel' => 'required',
             'channel_name' => 'required',
             'channel_account' => 'required',
@@ -40,18 +40,17 @@ class InviteBalanceWithdrawRequest extends FormRequest
     public function messages()
     {
         return [
-            'total.required' => __('please input withdraw money'),
-            'total.integer' => __('withdraw money must be integer'),
-            'channel.required' => __('please input withdraw info'),
-            'channel_name.required' => __('please select withdraw channel'),
-            'channel_account.required' => __('please input withdraw account'),
+            'total.required' => __('请输入提现金额'),
+            'channel.required' => __('请输入提现账户信息'),
+            'channel_name.required' => __('请输入提现支付渠道姓名'),
+            'channel_account.required' => __('请输入提现支付渠道账号'),
         ];
     }
 
     public function filldata()
     {
         return [
-            'total' => $this->post('total'),
+            'total' => (int)$this->post('total'),
             'channel' => [
                 'name' => $this->input('channel'),
                 'account' => $this->input('channel_account', '') ?? '',

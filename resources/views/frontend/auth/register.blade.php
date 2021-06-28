@@ -5,7 +5,8 @@
     <div class="w-full px-3 mt-20 mb-20 lg:max-w-6xl lg:mx-auto">
         <div class="flex justify-center">
             <div class="w-full lg:w-96">
-                <form action="{{route('register')}}" method="post" class="register-form">
+                <form action="{{route('register')}}" method="post" data-message-protocol="{{__('请同意用户协议，用户隐私协议')}}"
+                      class="register-form">
                     @csrf
                     <div class="bg-white rounded p-5 shadow">
                         <div class="text-2xl font-bold text-gray-800 mb-10 text-center mt-5">{{__('注册')}}</div>
@@ -24,7 +25,7 @@
                                     <div class="ml-1 text-sm text-gray-500">
                                         <a href="{{route('user.protocol')}}" target="_blank"
                                            class="text-blue-600">{{__('《用户协议》')}}</a>
-                                        和
+                                        <span>,</span>
                                         <a href="{{route('user.private_protocol')}}" class="text-blue-600"
                                            target="_blank">{{__('《用户隐私协议》')}}</a>
                                     </div>

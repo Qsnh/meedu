@@ -15,6 +15,7 @@
                         <span>{{__('登录即代表您同意')}}</span>
                         <a target="_blank" class="text-blue-600"
                            href="{{route('user.protocol')}}">{{__('《用户协议》')}}</a>
+                        <span>,</span>
                         <a target="_blank" class="text-blue-600"
                            href="{{route('user.private_protocol')}}">{{__('《用户隐私协议》')}}</a>
                     </div>

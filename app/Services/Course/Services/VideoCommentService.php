@@ -11,18 +11,10 @@ namespace App\Services\Course\Services;
 use App\Events\VideoCommentEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\VideoComment;
-use App\Services\Base\Interfaces\RenderServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 
 class VideoCommentService implements VideoCommentServiceInterface
 {
-    protected $renderService;
-
-    public function __construct(RenderServiceInterface $renderService)
-    {
-        $this->renderService = $renderService;
-    }
-
     /**
      * @param int $courseId
      * @return array
@@ -42,12 +34,11 @@ class VideoCommentService implements VideoCommentServiceInterface
      */
     public function create(int $videoId, string $originalContent): array
     {
-        $renderContent = $this->renderService->render($originalContent);
         $comment = VideoComment::create([
             'user_id' => Auth::id(),
             'video_id' => $videoId,
             'original_content' => $originalContent,
-            'render_content' => $renderContent,
+            'render_content' => $originalContent,
         ]);
 
         event(new VideoCommentEvent($videoId, $comment['id']));

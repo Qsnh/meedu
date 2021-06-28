@@ -99,11 +99,11 @@
         <div class="py-4">
             <a href="{{route('index')}}"
                class="inline-block text-base {{request()->routeIs(['index', 'announcement.show']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 pr-5">
-                首页
+                {{__('首页')}}
             </a>
             <a href="{{route('courses')}}"
                class="inline-block text-base {{request()->routeIs(['courses', 'course.show', 'videos', 'video.show', 'search']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 px-5">
-                录播课
+                {{__('点播课程')}}
             </a>
             @foreach($gNavs as $item)
                 <div class="inline-block relative px-5 nav-menu">

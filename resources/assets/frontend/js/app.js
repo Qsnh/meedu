@@ -20,6 +20,8 @@ $(function () {
         $(this).attr('src', src);
     }).on('click', '.send-sms-captcha', function () {
         // 发送短信验证码
+        var btnText = $(this).attr('data-btn-text');
+        var messageRequired = $(this).attr('data-message-required');
 
         const SMS_CYCLE_TIME = 120;
         var SMS_CURRENT_TIME = 0;
@@ -27,7 +29,7 @@ $(function () {
         var imageCaptcha = $('input[name="captcha"]').val();
         var mobile = $('input[name="mobile"]').val();
         if (imageCaptcha === '' || mobile === '') {
-            window.flashError('请输入手机号和图形验证码');
+            window.flashError(messageRequired);
             return;
         }
         var token = $('meta[name="csrf-token"]').attr('content');
@@ -48,7 +50,7 @@ $(function () {
             SMS_CURRENT_TIME = SMS_CYCLE_TIME;
             var smsInterval = setInterval(() => {
                 if (SMS_CURRENT_TIME <= 1) {
-                    $(this).text('发送验证码');
+                    $(this).text(btnText);
                     $(this).attr('disabled', false);
                     clearInterval(smsInterval);
                     return;
@@ -62,7 +64,7 @@ $(function () {
     }).on('submit', '.register-form', function () {
         // 注册表单提交验证
         if ($('input[name="agree_protocol"]:checked').length === 0) {
-            window.flashError('请同意用户协议和隐私协议');
+            window.flashError($(this).attr('data-message-protocol'));
             return false;
         }
         return true;
@@ -184,6 +186,8 @@ $(function () {
 
         loginCheck();
 
+        var messageSuccess = $(this).attr('data-message-success');
+
         var content = $('textarea[name="comment-content"]').val();
         if (content.trim().length === 0) {
             return;
@@ -196,7 +200,7 @@ $(function () {
             content: content,
         }, function (res) {
             if (res.code === 0) {
-                flashSuccess('成功');
+                flashSuccess(messageSuccess);
                 setTimeout(function () {
                     window.location.reload();
                 }, 1000);

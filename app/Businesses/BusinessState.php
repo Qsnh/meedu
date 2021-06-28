@@ -164,7 +164,7 @@ class BusinessState
          */
         $userService = app()->make(UserServiceInterface::class);
         $user = $userService->find(Auth::id());
-        if ($user['is_used_promo_code'] === FrontendConstant::YES) {
+        if ((int)$user['is_used_promo_code'] === 1) {
             // 用户邀请优惠码只能使用一次
             return false;
         }

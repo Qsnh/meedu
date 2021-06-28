@@ -8,7 +8,6 @@
 
 namespace App\Listeners\UserVideoWatchedEvent;
 
-use App\Constant\FrontendConstant;
 use App\Events\UserVideoWatchedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -64,7 +63,7 @@ class UserVideoWatchedCredit1RewardListener implements ShouldQueue
             return;
         }
 
-        $message = __(FrontendConstant::CREDIT1_REMARK_WATCHED_VIDEO);
+        $message = sprintf(__('看完视频送%d积分'), $credit1);
         $this->creditService->createCredit1Record($event->userId, $credit1, $message);
         $this->notificationService->notifyCredit1Message($event->userId, $credit1, $message);
     }

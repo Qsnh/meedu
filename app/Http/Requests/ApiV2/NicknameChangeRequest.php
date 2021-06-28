@@ -20,7 +20,7 @@ class NicknameChangeRequest extends BaseRequest
     public function messages()
     {
         return [
-            'nick_name.required' => __('nick_name.required'),
+            'nick_name.required' => __('请输入昵称'),
         ];
     }
 

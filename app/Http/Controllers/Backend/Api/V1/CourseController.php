@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Constant\BackendApiConstant;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -99,7 +98,7 @@ class CourseController extends BaseController
     {
         $course = Course::findOrFail($id);
         if ($course->videos()->exists()) {
-            return $this->error(BackendApiConstant::COURSE_BAN_DELETE_FOR_VIDEOS);
+            return $this->error(__('当前课程下存在视频无法删除'));
         }
 
         $course->delete();
@@ -181,10 +180,10 @@ class CourseController extends BaseController
         $userId = $request->input('user_id');
         $exists = UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->exists();
         if ($exists) {
-            return $this->error('订阅关系已存在');
+            return $this->error(__('订阅关系已存在'));
         }
         if (!User::query()->where('id', $userId)->exists()) {
-            return $this->error('用户不存在');
+            return $this->error(__('用户不存在'));
         }
 
         UserCourse::create([

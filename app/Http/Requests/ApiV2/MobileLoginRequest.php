@@ -20,7 +20,7 @@ class MobileLoginRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => __('mobile.required'),
+            'mobile.required' => __('请输入手机号'),
         ];
     }
 

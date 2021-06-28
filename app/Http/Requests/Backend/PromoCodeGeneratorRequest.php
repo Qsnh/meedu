@@ -19,4 +19,14 @@ class PromoCodeGeneratorRequest extends BaseRequest
             'expired_at' => 'required',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'prefix.required' => __('请输入优惠码前缀'),
+            'num.required' => __('请输入生成优惠码数量'),
+            'money.required' => __('请输入优惠码面值'),
+            'expired_at.required' => __('请输入优惠码过期时间'),
+        ];
+    }
 }

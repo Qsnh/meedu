@@ -196,12 +196,12 @@ class CourseController extends FrontendController
         $course = $this->courseService->find($id);
 
         if ($this->userService->hasCourse($this->id(), $id)) {
-            flash(__('You have already purchased this course'), 'success');
+            flash(__('请勿重复购买'), 'success');
             return back();
         }
 
         // 页面标题
-        $title = __('buy course', ['course' => $course['title']]);
+        $title = sprintf(__('购买点播课程%s'), $course['title']);
 
         $goods = [
             'id' => $course['id'],
@@ -228,7 +228,7 @@ class CourseController extends FrontendController
 
         // 价格为0则无法按购买
         if ($course['charge'] <= 0) {
-            flash(__('course cant buy'));
+            flash(__('当前课程无法购买'));
             return back();
         }
 
@@ -239,7 +239,7 @@ class CourseController extends FrontendController
 
         // 如果直接抵扣的话则直接完成
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
-            flash(__('success'), 'success');
+            flash(__('成功'), 'success');
             return redirect($courseUrl);
         }
 
@@ -266,7 +266,7 @@ class CourseController extends FrontendController
         $course = $this->courseService->find($courseAttach['course_id']);
 
         if ($course['charge'] > 0 && !$this->businessState->isBuyCourse($this->id(), $courseAttach['course_id'])) {
-            abort(403, __('please buy course'));
+            abort(403, __('请购买课程'));
         }
 
         $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);

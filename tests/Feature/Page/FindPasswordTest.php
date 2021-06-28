@@ -20,8 +20,7 @@ class FindPasswordTest extends TestCase
     {
         $this->get(route('password.request'))
             ->assertResponseStatus(200)
-            ->see('手机号')
-            ->seeInElement('button', '重置密码');
+            ->seeInElement('button', __('重置密码'));
     }
 
     public function test_submit()
@@ -39,7 +38,7 @@ class FindPasswordTest extends TestCase
             ->type('password_reset', 'sms_captcha_key')
             ->type('123123', 'password')
             ->type('123123', 'password_confirmation')
-            ->press('重置密码')
+            ->press(__('重置密码'))
             ->seePageIs('login');
 
         $user->refresh();

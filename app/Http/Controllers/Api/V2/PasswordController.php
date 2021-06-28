@@ -26,7 +26,7 @@ class PasswordController extends BaseController
 
         $user = $userService->findMobile($mobile);
         if (!$user) {
-            return $this->error(__('mobile not exists'));
+            return $this->error(__('手机号不存在'));
         }
 
         $userService->changePassword($user['id'], $password);

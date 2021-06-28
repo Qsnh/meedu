@@ -83,7 +83,7 @@ class MemberTest extends Base
             'mobile_code' => 'code',
             'mobile' => '12345679876',
         ]);
-        $this->assertResponseError($response, __('mobile has exists'));
+        $this->assertResponseError($response, __('手机号已存在'));
     }
 
     public function test_nickname()
@@ -106,7 +106,7 @@ class MemberTest extends Base
         $response = $this->user($this->member)->postJson('api/v2/member/detail/nickname', [
             'nick_name' => 'nick1',
         ]);
-        $this->assertResponseError($response, __('current user cant set nickname'));
+        $this->assertResponseError($response, __('当前用户已配置昵称'));
     }
 
     public function test_avatar()
@@ -124,7 +124,7 @@ class MemberTest extends Base
         $response = $this->user($this->member)->postJson('api/v2/member/detail/avatar', [
             'file' => UploadedFile::fake()->image('avatar.jpg')->size(1025),
         ]);
-        $this->assertResponseError($response, __('file.max', ['size' => '1M']));
+        $this->assertResponseError($response, __('文件不能超过:size', ['size' => '1M']));
     }
 
     public function test_roles()

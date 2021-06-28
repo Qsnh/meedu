@@ -35,8 +35,8 @@ class ImageUploadRequest extends BaseRequest
     public function messages()
     {
         return [
-            'file.required' => '请上传图片',
-            'file.image' => '请上传有效图片',
+            'file.required' => __('请上传文件'),
+            'file.image' => __('请上传图片文件'),
         ];
     }
 

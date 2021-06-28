@@ -48,7 +48,7 @@ class UserRegisterIpToAreaJob implements ShouldQueue
             $userService = app()->make(UserServiceInterface::class);
             $user = $userService->find($this->userId);
             if (!$user['register_ip']) {
-                Log::info(__METHOD__ . '|用户注册ip为空', ['id' => $this->userId]);
+                Log::info(__METHOD__ . '|ip_empty', ['id' => $this->userId]);
                 return;
             }
 

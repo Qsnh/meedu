@@ -55,7 +55,7 @@ class LoginController extends BaseController
     {
         $this->recordRedirectTo();
 
-        $title = __('title.login');
+        $title = __('登录');
 
         return v('frontend.auth.login', compact('title'));
     }
@@ -71,11 +71,11 @@ class LoginController extends BaseController
         $user = $this->userService->passwordLogin($mobile, $password);
 
         if (!$user) {
-            throw new ServiceException(__('mobile not exists or password error'));
+            throw new ServiceException(__('手机号或密码错误'));
         }
 
         if ((int)$user['is_lock'] === 1) {
-            throw new ServiceException(__('current user was locked,please contact administrator'));
+            throw new ServiceException(__('账号已被锁定'));
         }
 
         $bus->webLogin($user['id'], $request->has('remember'), $this->userPlatform());
@@ -115,7 +115,7 @@ class LoginController extends BaseController
         $user = $this->userService->find($userId);
 
         if ((int)$user['is_lock'] === 1) {
-            flash(__('current user was locked,please contact administrator'));
+            flash(__('账号已被锁定'));
             return redirect(url('/'));
         }
 
@@ -149,7 +149,7 @@ class LoginController extends BaseController
 
         $user = $this->userService->find($userId);
         if ((int)$user['is_lock'] === 1) {
-            flash(__('current user was locked,please contact administrator'));
+            flash(__('账号已被锁定'));
             return redirect(url('/'));
         }
 
@@ -180,7 +180,7 @@ class LoginController extends BaseController
     {
         $code = $request->input('code');
         if (!$code) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         /**
@@ -197,7 +197,7 @@ class LoginController extends BaseController
 
         $user = $this->userService->find($userId);
         if ((int)$user['is_lock'] === 1) {
-            return $this->error(__('current user was locked,please contact administrator'));
+            return $this->error(__('账号已被锁定'));
         }
 
         $authBus->webLogin($userId, 1, $this->userPlatform());

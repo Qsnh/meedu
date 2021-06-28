@@ -25,7 +25,7 @@ class AddonsProviderMapGenrator extends Command
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = '重新生成已安装插件的map文件';
 
     /**
      * Create a new command instance.

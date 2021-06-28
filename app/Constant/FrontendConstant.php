@@ -10,21 +10,13 @@ namespace App\Constant;
 
 class FrontendConstant
 {
-    const RENDER_MARKDOWN = 'markdown';
-    const RENDER_HTML = 'html';
-
     const PAYMENT_SCENE_PC = 'pc';
     const PAYMENT_SCENE_WECHAT_MINI = 'wechat_mini';
     const PAYMENT_SCENE_H5 = 'h5';
     const PAYMENT_SCENE_WECHAT_OPEN = 'wechat';
 
+    // 订单已支付
     const ORDER_PAID = 9;
-
-    const YES = 1;
-
-    const H5 = 'h5';
-
-    const ORDER_PAID_TYPE_PROMO_CODE = 1;
 
     const INVITE_BALANCE_WITHDRAW_STATUS_SUCCESS = 1;
     const INVITE_BALANCE_WITHDRAW_STATUS_FAILURE = 2;
@@ -32,24 +24,8 @@ class FrontendConstant
     // 登录跳转url存储key
     const LOGIN_CALLBACK_URL_KEY = 'login_callback_url';
 
-    const PASSWORD_SET = 1;
-
-    const ORDER_GOODS_TYPE_COURSE = 'COURSE';
-    const ORDER_GOODS_TYPE_VIDEO = 'VIDEO';
-    const ORDER_GOODS_TYPE_ROLE = 'ROLE';
-
+    // api会员认证driver
     const API_GUARD = 'apiv2';
-
-    public const CREDIT1_REMARK_REGISTER = 'credit1_remark_register';
-    public const CREDIT1_REMARK_WATCHED_COURSE = 'credit1_remark_watched_course';
-    public const CREDIT1_REMARK_WATCHED_VIDEO = 'credit1_remark_watched_video';
-    public const CREDIT1_REMARK_WATCHED_ORDER = 'credit1_remark_order';
-    public const CREDIT1_REMARK_WATCHED_INVITE = 'credit1_remark_invite';
-    public const CREDIT1_REMARK_WATCHED_OTHER = 'credit1_remark_other';
-
-    public const PLAYER_XG = 'xg';
-    public const PLAYER_TENCENT = 'tencent';
-    public const PLAYER_ALIYUN = 'aliyun';
 
     public const LOGIN_PLATFORM_PC = 'PC';
     public const LOGIN_PLATFORM_H5 = 'H5';
@@ -78,7 +54,7 @@ class FrontendConstant
     public const NAV_PLATFORM_PC = 'PC';
     public const NAV_PLATFORM_H5 = 'h5';
 
-    // 微信小程序登录socialite sign
+    // 微信小程序登录sign
     public const WECHAT_MINI_LOGIN_SIGN = 'WECHAT-MINI';
 
     // 微信公众号登录sign

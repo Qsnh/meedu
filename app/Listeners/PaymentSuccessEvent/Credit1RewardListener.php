@@ -8,7 +8,6 @@
 
 namespace App\Listeners\PaymentSuccessEvent;
 
-use App\Constant\FrontendConstant;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -66,7 +65,7 @@ class Credit1RewardListener implements ShouldQueue
             return;
         }
 
-        $message = __(FrontendConstant::CREDIT1_REMARK_WATCHED_ORDER);
+        $message = sprintf(__('已支付订单送%d积分'), $credit1);
         $this->creditService->createCredit1Record($event->order['user_id'], $credit, $message);
         $this->notificationService->notifyCredit1Message($event->order['user_id'], $credit, $message);
     }

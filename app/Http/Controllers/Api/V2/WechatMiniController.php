@@ -81,7 +81,7 @@ class WechatMiniController extends BaseController
         $code = $request->input('code');
         $info = $this->app->auth->session($code);
         if (!isset($info['openid'])) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
         $openid = $info['openid'];
 

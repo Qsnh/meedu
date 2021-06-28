@@ -40,11 +40,11 @@ class MpWechatMessageReplyController extends BaseController
         $types = [
             [
                 'id' => 'text',
-                'name' => '文本消息',
+                'name' => __('文本消息'),
             ],
             [
                 'id' => 'event',
-                'name' => '事件',
+                'name' => __('事件'),
             ]
         ];
 
@@ -60,7 +60,7 @@ class MpWechatMessageReplyController extends BaseController
             try {
                 preg_match('#' . $data['rule'] . '#', 'test');
             } catch (\Exception $e) {
-                return $this->error('规则不合格');
+                return $this->error(__('无效规则'));
             }
         }
         MpWechatMessageReply::create($data);
@@ -82,7 +82,7 @@ class MpWechatMessageReplyController extends BaseController
             try {
                 preg_match('#' . $data['rule'] . '#', 'test');
             } catch (\Exception $e) {
-                return $this->error('规则不合格');
+                return $this->error(__('无效规则'));
             }
         }
 

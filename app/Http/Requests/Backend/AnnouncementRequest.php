@@ -39,8 +39,8 @@ class AnnouncementRequest extends BaseRequest
     public function messages()
     {
         return [
-            'title.required' => __('please input announcement title'),
-            'announcement.required' => __('please input announcement content'),
+            'title.required' => __('请输入公告标题'),
+            'announcement.required' => __('请输入公告内容'),
         ];
     }
 

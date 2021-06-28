@@ -47,7 +47,7 @@ class OrderTest extends Base
             'course_id' => $course->id,
             'promo_code' => 0,
         ]);
-        $this->assertResponseError($response, __('course cant buy'));
+        $this->assertResponseError($response, __('当前课程无法购买'));
     }
 
     public function test_createCourseOrder_with_purchased()
@@ -66,7 +66,7 @@ class OrderTest extends Base
             'course_id' => $course->id,
             'promo_code' => 0,
         ]);
-        $this->assertResponseError($response, __('course purchased'));
+        $this->assertResponseError($response, __('请勿重复购买'));
     }
 
     public function test_createCourseOrder_with_promo_code()
@@ -207,7 +207,7 @@ class OrderTest extends Base
             'video_id' => $video->id,
             'promo_code' => 0,
         ]);
-        $this->assertResponseError($response, __('video cant buy'));
+        $this->assertResponseError($response, __('当前视频无法购买'));
     }
 
     public function test_createVideoOrder_with_purchased()
@@ -226,7 +226,7 @@ class OrderTest extends Base
             'video_id' => $video->id,
             'promo_code' => 0,
         ]);
-        $this->assertResponseError($response, __('video purchased'));
+        $this->assertResponseError($response, __('请勿重复购买'));
     }
 
     public function test_createVideoOrder_with_promo_code()

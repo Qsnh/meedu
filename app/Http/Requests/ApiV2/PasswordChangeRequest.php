@@ -22,9 +22,9 @@ class PasswordChangeRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => __('mobile.required'),
-            'mobile_code.required' => __('mobile_code.required'),
-            'password.required' => __('password.required'),
+            'mobile.required' => __('请输入手机号'),
+            'mobile_code.required' => __('请输入短信验证码'),
+            'password.required' => __('请输入密码'),
         ];
     }
 

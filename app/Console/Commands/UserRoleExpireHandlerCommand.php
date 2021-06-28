@@ -26,7 +26,7 @@ class UserRoleExpireHandlerCommand extends Command
      *
      * @var string
      */
-    protected $description = '用户会员过期处理';
+    protected $description = '用户VIP过期自动清除命令';
 
     /**
      * Create a new command instance.
@@ -50,6 +50,6 @@ class UserRoleExpireHandlerCommand extends Command
          */
         $userService = app()->make(UserServiceInterface::class);
         $count = $userService->resetRoleExpiredUsers();
-        $this->line(sprintf('本次处理%d位过期用户', $count));
+        $this->line(sprintf(__('本次处理%d位VIP已过期用户'), $count));
     }
 }

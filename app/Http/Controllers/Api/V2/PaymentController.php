@@ -73,7 +73,7 @@ class PaymentController extends BaseController
 
         $payments = get_payments('wechat_mini');
         if (!$payments) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         // 更新订单的支付方式
@@ -88,7 +88,7 @@ class PaymentController extends BaseController
         $paymentHandler = app()->make($payments['wechat']['handler']);
         $createResult = $paymentHandler->create($order, ['openid' => $openid]);
         if ($createResult->status == false) {
-            throw new SystemException(__('remote order create failed'));
+            throw new SystemException(__('系统错误'));
         }
 
         // 支付订单数据
@@ -162,10 +162,10 @@ class PaymentController extends BaseController
 
         $payments = get_payments($payemntScene);
         if (!$payments) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
         if (!isset($payments[$payment])) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
         $paymentMethod = $payments[$payment][$payemntScene];
 
@@ -181,7 +181,7 @@ class PaymentController extends BaseController
         $paymentHandler = app()->make($payments[$payment]['handler']);
         $createResult = $paymentHandler->create($order);
         if ($createResult->status == false) {
-            throw new SystemException(__('remote order create failed'));
+            throw new SystemException(__('系统错误'));
         }
 
         return $createResult->data;

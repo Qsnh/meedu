@@ -219,9 +219,6 @@ return [
         // 默认短信服务商
         'sms' => 'aliyun',
 
-        // editor
-        'editor' => \App\Constant\FrontendConstant::RENDER_MARKDOWN,
-
         // 登录
         'login' => [
             'limit' => [

@@ -68,24 +68,6 @@ if (!function_exists('exception_record')) {
     }
 }
 
-if (!function_exists('markdown_to_html')) {
-    /**
-     * markdown转换为html.
-     *
-     * @param $content
-     *
-     * @return string
-     */
-    function markdown_to_html($content)
-    {
-        $content = (new Parsedown())->setBreaksEnabled(true)->parse($content);
-        $content = clean($content);
-        $content = preg_replace('#<table>#', '<table class="table table-hover table-bordered">', $content);
-
-        return $content;
-    }
-}
-
 if (!function_exists('aliyun_play_auth')) {
     /**
      * 获取阿里云视频的播放Auth
@@ -315,21 +297,6 @@ if (!function_exists('get_payments')) {
         });
 
         return $payments;
-    }
-}
-
-if (!function_exists('get_at_users')) {
-    /**
-     * @param string $content
-     * @return array
-     */
-    function get_at_users(string $content): array
-    {
-        preg_match_all('/@(.*?)\s{1}/', $content, $result);
-        if (count($result[1] ?? []) === 0) {
-            return [];
-        }
-        return $result[1];
     }
 }
 

@@ -33,14 +33,6 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\\QQ\\QqExtendSocialite@handle',
         ],
-        'App\Events\CourseCommentEvent' => [
-            'App\Listeners\CourseCommentEvent\NotifyOwnerListener',
-            'App\Listeners\CourseCommentEvent\AtEventListener',
-        ],
-        'App\Events\VideoCommentEvent' => [
-            'App\Listeners\VideoCommentEvent\NotifyOwnerListener',
-            'App\Listeners\VideoCommentEvent\AtEventListener',
-        ],
         'App\Events\UserRegisterEvent' => [
             'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
             'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
@@ -49,9 +41,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
-        ],
-        'App\Events\UserInviteBalanceWithdrawCreatedEvent' => [
-            'App\Listeners\UserInviteBalanceWithdrawCreatedEvent\NotifyListener',
         ],
         'App\Events\UserInviteBalanceWithdrawHandledEvent' => [
             'App\Listeners\UserInviteBalanceWithdrawHandledEvent\NotifyListener',

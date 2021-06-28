@@ -136,7 +136,7 @@ class VideoTest extends Base
     public function test_video_id_with_no_id()
     {
         $r = $this->getJson('api/v2/video/' . random_int(0, 1000));
-        $this->assertResponseError($r, __('error'));
+        $this->assertResponseError($r, __('错误'));
     }
 
     public function test_video_id_no_show()
@@ -146,7 +146,7 @@ class VideoTest extends Base
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $r = $this->getJson('api/v2/video/' . $video->id);
-        $this->assertResponseError($r, __('error'));
+        $this->assertResponseError($r, __('错误'));
     }
 
     public function test_video_id_no_published()
@@ -156,7 +156,7 @@ class VideoTest extends Base
             'published_at' => Carbon::now()->addDays(1),
         ]);
         $r = $this->getJson('api/v2/video/' . $video->id);
-        $this->assertResponseError($r, __('error'));
+        $this->assertResponseError($r, __('错误'));
     }
 
     public function test_video_comment()
@@ -190,7 +190,7 @@ class VideoTest extends Base
         $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
         ]);
-        $this->assertResponseError($response, __('video cant comment'));
+        $this->assertResponseError($response, __('视频无法评论'));
     }
 
     public function test_video_comment_only_paid()
@@ -205,7 +205,7 @@ class VideoTest extends Base
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
         ]);
-        $this->assertResponseError($r, __('video cant comment'));
+        $this->assertResponseError($r, __('视频无法评论'));
     }
 
     public function test_video_comment_only_paid_for_vip()

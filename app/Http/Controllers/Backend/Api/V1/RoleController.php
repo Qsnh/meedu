@@ -52,7 +52,7 @@ class RoleController extends BaseController
     public function destroy($id)
     {
         if (User::query()->where('role_id', $id)->exists()) {
-            return $this->error('有用户是该VIP，无法删除');
+            return $this->error(__('当前VIP下存在用户无法删除'));
         }
 
         Role::destroy($id);

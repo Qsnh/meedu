@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="flex-shrink-0 text-right">
                                     <a class="text-gray-500 text-sm hover:text-blue-600"
-                                       href="{{route('password.request')}}">{{__('忘记密码？')}}</a>
+                                       href="{{route('password.request')}}">{{__('忘记密码')}}</a>
                                 </div>
                             </div>
                             <div class="flex">

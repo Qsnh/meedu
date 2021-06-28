@@ -9,7 +9,6 @@
 namespace App\Listeners\UserRegisterEvent;
 
 use App\Events\UserRegisterEvent;
-use App\Constant\FrontendConstant;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Base\Services\ConfigService;
@@ -65,7 +64,7 @@ class RegisterCredit1RewardListener implements ShouldQueue
             return;
         }
 
-        $message = __(FrontendConstant::CREDIT1_REMARK_REGISTER);
+        $message = sprintf(__('注册送%d积分'), $credit1);
         $this->creditService->createCredit1Record($event->userId, $credit1, $message);
         $this->notificationService->notifyCredit1Message($event->userId, $credit1, $message);
     }

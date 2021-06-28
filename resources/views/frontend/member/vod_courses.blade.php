@@ -10,7 +10,7 @@
                     <i class="iconfont icon-zhanghaoquanxian_moren2x inline-block"
                        style="font-size: 30px"></i>
                 </div>
-                <div class="text-sm">{{__('已购录播课程')}}</div>
+                <div class="text-sm">{{__('已购课程')}}</div>
             </a>
 
             <a href="?scene=videos"
@@ -19,7 +19,7 @@
                     <i class="iconfont icon-yigoushiping inline-block"
                        style="font-size: 30px"></i>
                 </div>
-                <div class="text-sm">{{__('已购录播视频')}}</div>
+                <div class="text-sm">{{__('已购视频')}}</div>
             </a>
 
             <a href="?scene=history"
@@ -28,7 +28,7 @@
                     <i class="iconfont icon-lishi inline-block"
                        style="font-size: 30px"></i>
                 </div>
-                <div class="text-sm">{{__('录播课程观看')}}</div>
+                <div class="text-sm">{{__('观看记录')}}</div>
             </a>
 
             <a href="?scene=like"
@@ -37,7 +37,7 @@
                     <i class="iconfont icon-jifen1 inline-block"
                        style="font-size: 30px"></i>
                 </div>
-                <div class="text-sm">{{__('录播课程收藏')}}</div>
+                <div class="text-sm">{{__('收藏课程')}}</div>
             </a>
         </div>
     </div>
@@ -85,7 +85,7 @@
             @endif
         @else
             @if($records->isNotEmpty())
-                <div class="grid gap-6 grid-cols-2 lg:grid-cols-3">
+                <div class="grid gap-6 grid-cols-2 lg:grid-cols-4">
                     @foreach($records as $recordItem)
                         @continue(!isset($courses[$recordItem['course_id']]))
                         @include('frontend.components.course-item', ['course' => $courses[$recordItem['course_id']]])

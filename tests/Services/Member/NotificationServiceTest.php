@@ -40,10 +40,9 @@ class NotificationServiceTest extends TestCase
 
         $this->service->notifyRegisterMessage($user->id);
         $this->service->notifyBindMobileMessage($user->id);
-        $this->service->notifyAtNotification($user->id, $user->id, 'course', 'link');
         $unreadCount = $this->service->getUnreadCount();
-        $this->assertEquals(4, $unreadCount);
-        $this->assertEquals(4, $this->service->getUserUnreadCount($user->id));
+        $this->assertEquals(3, $unreadCount);
+        $this->assertEquals(3, $this->service->getUserUnreadCount($user->id));
 
         $this->service->markAllRead($user->id);
         $this->assertEquals(0, $this->service->getUnreadCount());

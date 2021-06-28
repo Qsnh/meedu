@@ -58,12 +58,12 @@ class OrderController extends FrontendController
         $scene = $request->input('scene');
         $payment = $request->input('payment');
         if (!$payment) {
-            throw new ServiceException(__('payment not exists'));
+            throw new ServiceException(__('支付网关不存在'));
         }
         $payments = get_payments($scene);
         $paymentMethod = $payments[$payment][$scene] ?? '';
         if (!$paymentMethod) {
-            throw new SystemException(__('payment method not exists'));
+            throw new SystemException(__('支付网关不存在'));
         }
 
         // 更新订单的支付方式
@@ -78,7 +78,7 @@ class OrderController extends FrontendController
         $paymentHandler = app()->make($payments[$payment]['handler']);
         $createResult = $paymentHandler->create($order);
         if ($createResult->status === false) {
-            throw new SystemException(__('remote order create failed'));
+            throw new SystemException(__('系统错误'));
         }
 
         return $createResult->data;
@@ -105,12 +105,12 @@ class OrderController extends FrontendController
         if (!$wechatData) {
             $this->orderService->cancel($order['id']);
 
-            throw new ServiceException(__('error'));
+            throw new ServiceException(__('错误'));
         }
 
         $qrcodeUrl = $wechatData['code_url'];
 
-        $title = __('wechat.pay.page.title');
+        $title = __('微信扫码支付');
 
         return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal', 'title'));
     }
@@ -124,7 +124,7 @@ class OrderController extends FrontendController
 
         $data = $request->input('data');
         if (!$data) {
-            throw new ServiceException(__('params error'));
+            throw new ServiceException(__('参数错误'));
         }
         try {
             // 解密数据
@@ -132,7 +132,7 @@ class OrderController extends FrontendController
             // 获取orderId
             $orderId = $decryptData['order_id'];
         } catch (\Exception $e) {
-            throw new ServiceException(__('params error'));
+            throw new ServiceException(__('参数错误'));
         }
 
         $openid = null;
@@ -173,7 +173,7 @@ class OrderController extends FrontendController
         $data = $jsapi->createDirect($order, $openid);
 
         // 页面标题
-        $title = __('wechat.pay.page.title');
+        $title = __('微信JSAPI支付');
 
         return v('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data'));
     }
@@ -183,7 +183,7 @@ class OrderController extends FrontendController
     {
         $data = $request->input('data');
         if (!$data) {
-            throw new ServiceException(__('params error'));
+            throw new ServiceException(__('参数错误'));
         }
         try {
             // 解密数据
@@ -191,7 +191,7 @@ class OrderController extends FrontendController
             // 获取orderId
             $orderId = $decryptData['order_id'];
         } catch (\Exception $e) {
-            throw new ServiceException(__('params error'));
+            throw new ServiceException(__('参数错误'));
         }
 
         // 订单
@@ -202,7 +202,7 @@ class OrderController extends FrontendController
         // 手动支付内容
         $intro = $this->configService->getHandPayIntroducation();
 
-        $title = __('hand.pay.page.title');
+        $title = __('手动打款支付');
 
         return v('frontend.order.hand_pay', compact('order', 'intro', 'needPaidTotal', 'title'));
     }

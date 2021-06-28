@@ -24,15 +24,16 @@ class CheckSmsCodeMiddleware
     {
         $sessionKey = 'sms_' . $request->post('sms_captcha_key', '');
         $captcha = (string)session($sessionKey);
+
         if (!$captcha || $captcha !== $request->post('sms_captcha', '')) {
             if ($request->wantsJson()) {
                 return response()->json([
                     'code' => 1,
-                    'message' => __('mobile code error'),
+                    'message' => __('短信验证码错误'),
                 ]);
             }
-            flash(__('mobile code error'));
 
+            flash(__('短信验证码错误'));
             return back();
         }
         session()->forget($sessionKey);

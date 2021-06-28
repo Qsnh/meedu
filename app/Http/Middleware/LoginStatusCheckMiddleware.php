@@ -49,11 +49,11 @@ class LoginStatusCheckMiddleware
 
         $rule = $this->configService->getLoginLimitRule();
         if ($rule === FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM || $rule === FrontendConstant::LOGIN_LIMIT_RULE_ALL) {
-            $lastLoginAt = $request->cookie('last_login_at');
+            $lastLoginAt = $request->cookie(FrontendConstant::USER_LOGIN_AT_COOKIE_NAME);
             if (!$lastLoginAt) {
                 // cookie为空
                 Auth::logout();
-                flash(__('please login again'));
+                flash(__('请重新登录'));
                 return redirect(route('login'));
             }
 
@@ -66,14 +66,14 @@ class LoginStatusCheckMiddleware
             if (!$userLastLoginRecord) {
                 // 登录记录不存在
                 Auth::logout();
-                flash(__('please login again'));
+                flash(__('请重新登录'));
                 return redirect(route('login'));
             }
             
             if ($lastLoginAt != strtotime($userLastLoginRecord['at'])) {
                 // 最近一次登录时间不等
                 Auth::logout();
-                flash(__('please login again'));
+                flash(__('请重新登录'));
                 return redirect(route('login'));
             }
         }

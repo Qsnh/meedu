@@ -39,11 +39,11 @@ class EditPasswordRequest extends BaseRequest
     public function messages()
     {
         return [
-            'old_password.required' => '请输入原密码',
-            'new_password.required' => '请输入新密码',
-            'new_password.min' => '新密码长度不能低于6个字符',
-            'new_password.max' => '新密码长度不能超过16个字符',
-            'new_password.confirmed' => '两次输入密码不一致',
+            'old_password.required' => __('请输入原密码'),
+            'new_password.required' => __('请输入新密码'),
+            'new_password.min' => __('密码长度不能少于:size个字符', ['size' => 6]),
+            'new_password.max' => __('密码长度不能多于:size个字符', ['size' => 16]),
+            'new_password.confirmed' => __('两次输入密码不一致'),
         ];
     }
 
