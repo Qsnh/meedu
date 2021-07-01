@@ -10,7 +10,7 @@
                     <div class="bg-white rounded p-5 shadow">
                         <div class="text-2xl font-bold text-gray-800 mb-10 text-center mt-5">{{__('重置密码')}}</div>
                         <div class="mb-5">
-                            @include('frontend.components.mobile', ['smsCaptchaKey' => 'register'])
+                            @include('frontend.components.mobile', ['smsCaptchaKey' => 'password_reset'])
                             <div class="mb-5">
                                 <input type="password" name="password"
                                        placeholder="{{__('请输入密码')}}"
