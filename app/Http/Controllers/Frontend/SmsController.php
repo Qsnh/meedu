@@ -38,7 +38,7 @@ class SmsController extends FrontendController
         } catch (Exception $exception) {
             exception_record($exception);
 
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
     }
 

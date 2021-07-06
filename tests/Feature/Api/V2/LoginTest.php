@@ -8,7 +8,6 @@
 
 namespace Tests\Feature\Api\V2;
 
-use App\Constant\ApiV2Constant;
 use App\Constant\CacheConstant;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +40,7 @@ class LoginTest extends Base
             'mobile' => $user->mobile,
             'password' => '123123',
         ]);
-        $this->assertResponseError($response, __(ApiV2Constant::MEMBER_HAS_LOCKED));
+        $this->assertResponseError($response, __('账号已被锁定'));
     }
 
     public function test_with_error_password()
@@ -54,7 +53,7 @@ class LoginTest extends Base
             'mobile' => $user->mobile,
             'password' => 'asd12312',
         ]);
-        $this->assertResponseError($response, __(ApiV2Constant::MOBILE_OR_PASSWORD_ERROR));
+        $this->assertResponseError($response, __('手机号或密码错误'));
     }
 
     public function test_mobile_login()

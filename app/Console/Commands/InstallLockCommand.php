@@ -24,7 +24,7 @@ class InstallLockCommand extends Command
      *
      * @var string
      */
-    protected $description = '生成安装锁🔐';
+    protected $description = '生成安装锁，防止已安装之后再次访问install.php';
 
     /**
      * Create a new command instance.

@@ -21,8 +21,8 @@ class LoginPasswordRequest extends BaseRequest
     public function messages()
     {
         return [
-            'mobile.required' => __('mobile.required'),
-            'password.required' => __('password.required'),
+            'mobile.required' => __('请输入手机号'),
+            'password.required' => __('请输入密码'),
         ];
     }
 

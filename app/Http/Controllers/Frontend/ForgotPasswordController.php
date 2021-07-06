@@ -30,7 +30,7 @@ class ForgotPasswordController extends FrontendController
 
     public function showPage()
     {
-        $title = __('title.find_password');
+        $title = __('找回密码');
         return v('frontend.auth.passwords.find', compact('title'));
     }
 
@@ -43,7 +43,7 @@ class ForgotPasswordController extends FrontendController
 
         $this->userService->findPassword($mobile, $password);
 
-        flash(__('password change success'), 'success');
+        flash(__('成功'), 'success');
 
         return redirect(route('login'));
     }

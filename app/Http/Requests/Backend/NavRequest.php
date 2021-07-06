@@ -28,7 +28,6 @@ class NavRequest extends BaseRequest
     public function rules()
     {
         return [
-            'sort' => 'required',
             'name' => 'required',
             'url' => 'required',
             'platform' => 'required',
@@ -38,10 +37,9 @@ class NavRequest extends BaseRequest
     public function messages()
     {
         return [
-            'sort.required' => '请输入排序值',
-            'name.required' => '请输入链接名',
-            'url.required' => '请输入链接地址',
-            'platform.required' => '请选择平台',
+            'name.required' => __('请输入链接名'),
+            'url.required' => __('请输入链接地址'),
+            'platform.required' => __('请选择平台'),
         ];
     }
 
@@ -50,7 +48,7 @@ class NavRequest extends BaseRequest
         return [
             'parent_id' => (int)$this->input('parent_id'),
             'platform' => $this->input('platform'),
-            'sort' => $this->input('sort'),
+            'sort' => (int)$this->input('sort', 0),
             'name' => $this->input('name'),
             'url' => $this->input('url'),
             'active_routes' => $this->input('active_routes', '') ?: '',

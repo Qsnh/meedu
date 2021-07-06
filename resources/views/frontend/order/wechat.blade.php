@@ -4,7 +4,7 @@
 
     <div class="w-full px-3 py-6 lg:max-w-6xl lg:mx-auto">
         <div class="bg-white rounded shadow p-5">
-            <div class="text-xl text-gray-800 font-bold mb-10">{{__('手动打款')}}</div>
+            <div class="text-xl text-gray-800 font-bold mb-10">{{__('微信支付')}}</div>
             <div class="flex items-center">
                 <div class="flex-1">
                     <div class="text-gray-500 py-2 flex items-center">

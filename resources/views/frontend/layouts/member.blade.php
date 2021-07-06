@@ -21,7 +21,7 @@
                     <a href="{{route('member.courses')}}"
                        class="{{request()->routeIs(['member.courses']) ? 'bg-white text-blue-600 font-medium' : 'text-gray-500'}} hover:bg-white group rounded px-3 py-3 flex items-center justify-center text-base">
                         <i class="iconfont icon-tikuziyuan_moren2x inline-block mr-2" style="font-size: 20px"></i>
-                        <span class="truncate">{{__('录播课程')}}</span>
+                        <span class="truncate">{{__('点播课程')}}</span>
                     </a>
 
                     <a href="{{route('member.orders')}}"
@@ -39,7 +39,7 @@
                     <a href="{{route('member.promo_code')}}"
                        class="{{request()->routeIs(['member.promo_code']) ? 'bg-white text-blue-600 font-medium' : 'text-gray-500'}} hover:bg-white group rounded px-3 py-3 flex items-center justify-center text-base">
                         <i class="iconfont icon-xueyuanguanli2x1 inline-block mr-2" style="font-size: 20px"></i>
-                        <span class="truncate">{{__('我的邀请')}}</span>
+                        <span class="truncate">{{__('邀请码')}}</span>
                     </a>
 
                     <a href="{{route('member.credit1_records')}}"

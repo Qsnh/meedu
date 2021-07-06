@@ -48,7 +48,7 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
             'user_id' => $userId,
             'type' => UserInviteBalanceRecord::TYPE_DEFAULT,
             'total' => $reward,
-            'desc' => __('invite reward'),
+            'desc' => __('邀请奖励'),
         ]);
         User::find($userId)->increment('invite_balance', $reward);
     }
@@ -67,7 +67,7 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
             'user_id' => $userId,
             'type' => UserInviteBalanceRecord::TYPE_ORDER_DRAW,
             'total' => $drawTotal,
-            'desc' => __('order draw', ['orderid' => $order['order_id']]),
+            'desc' => __('订单:orderId抽成', ['orderId' => $order['order_id']]),
         ]);
         app()->make(UserServiceInterface::class)->inviteBalanceInc($userId, $drawTotal);
     }
@@ -85,7 +85,7 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
         $userService = app()->make(UserServiceInterface::class);
         $user = $userService->currentUser();
         if ($user['invite_balance'] < $total) {
-            throw new ServiceException(__('Insufficient invite balance'));
+            throw new ServiceException(__('邀请余额不足'));
         }
         // 扣除余额
         $userService->inviteBalanceInc($user['id'], -$total);
@@ -94,7 +94,7 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
             'user_id' => $user['id'],
             'type' => UserInviteBalanceRecord::TYPE_ORDER_WITHDRAW,
             'total' => -$total,
-            'desc' => __('invite balance withdraw'),
+            'desc' => __('提现'),
         ]);
         // 创建提现订单
         UserInviteBalanceWithdrawOrder::create([
@@ -144,7 +144,7 @@ class UserInviteBalanceService implements UserInviteBalanceServiceInterface
             'user_id' => $order['user_id'],
             'type' => UserInviteBalanceRecord::TYPE_ORDER_WITHDRAW_BACK,
             'total' => $order['total'],
-            'desc' => __('invite balance withdraw refund'),
+            'desc' => __('提现失败退还'),
         ]);
         // 扣除余额
         app()->make(UserServiceInterface::class)->inviteBalanceInc($order['user_id'], $order['total']);

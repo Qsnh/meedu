@@ -27,7 +27,7 @@ class OrderTimeoutHandlerCommand extends Command
      *
      * @var string
      */
-    protected $description = 'order pay timeout.';
+    protected $description = '订单超时处理（自动置为已取消=无法继续支付）';
 
     /**
      * @var OrderService

@@ -73,7 +73,7 @@ class Handler extends ExceptionHandler
                 if (Str::contains($request->getUri(), '/api/v2')) {
                     $code = ApiV2Constant::ERROR_CODE;
                     $exception instanceof AuthenticationException && $code = ApiV2Constant::ERROR_NO_AUTH_CODE;
-                    return $this->error(__('error'), $code);
+                    return $this->error(__('错误'), $code);
                 }
             }
         }

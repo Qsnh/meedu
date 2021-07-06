@@ -134,11 +134,11 @@ class CourseVideoController extends BaseController
     {
         $userId = $request->input('user_id');
         if (UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->exists()) {
-            return $this->error('订阅关系已存在');
+            return $this->error(__('订阅关系已存在'));
         }
 
         if (!User::query()->where('id', $userId)->exists()) {
-            return $this->error('用户不存在');
+            return $this->error(__('用户不存在'));
         }
 
         UserVideo::create([
@@ -217,7 +217,7 @@ class CourseVideoController extends BaseController
     {
         $data = $request->input('data');
         if (!$data) {
-            return $this->error('数据为空');
+            return $this->error(__('数据为空'));
         }
 
         $courseNameArr = array_column($data, 0);
@@ -230,11 +230,11 @@ class CourseVideoController extends BaseController
             $line = $index + 2;
             $courseName = $item[0] ?? '';
             if (!$courseName) {
-                return $this->error(sprintf('第%d行课程名为空', $line));
+                return $this->error(sprintf(__('第%d行课程名为空'), $line));
             }
             $courseId = $courses[$courseName] ?? 0;
             if (!$courseId) {
-                return $this->error(sprintf('第%d行课程不存在', $line));
+                return $this->error(sprintf(__('第%d行课程不存在'), $line));
             }
 
             $chapterName = $item[1] ?? '';
@@ -249,7 +249,7 @@ class CourseVideoController extends BaseController
 
             $videoName = $item[2] ?? '';
             if (!$videoName) {
-                return $this->error(sprintf('第%d视频名为空', $line));
+                return $this->error(sprintf(__('第%d视频名为空'), $line));
             }
 
             $duration = (int)($item[3] ?? 0);

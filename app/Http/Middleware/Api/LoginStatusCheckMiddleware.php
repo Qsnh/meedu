@@ -51,10 +51,10 @@ class LoginStatusCheckMiddleware
 
         $rule = $this->configService->getLoginLimitRule();
         if ($rule === FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM || $rule === FrontendConstant::LOGIN_LIMIT_RULE_ALL) {
-            $lastLoginAt = Auth::guard($guard)->payload()['last_login_at'] ?? '';
+            $lastLoginAt = Auth::guard($guard)->payload()[FrontendConstant::USER_LOGIN_AT_COOKIE_NAME] ?? '';
             if (!$lastLoginAt) {
                 Auth::guard($guard)->logout();
-                return $this->error(__('please login again'), 401);
+                return $this->error(__('请重新登录'), 401);
             }
 
             $platform = $rule === FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM ? get_platform() : '';
@@ -62,13 +62,13 @@ class LoginStatusCheckMiddleware
             if (!$userLastLoginRecord) {
                 // 登录记录不存在
                 Auth::guard($guard)->logout();
-                return $this->error(__('please login again'), 401);
+                return $this->error(__('请重新登录'), 401);
             }
 
             if ($lastLoginAt != strtotime($userLastLoginRecord['at'])) {
                 // 最近一次登录时间不等
                 Auth::guard($guard)->logout();
-                return $this->error(__('please login again'), 401);
+                return $this->error(__('请重新登录'), 401);
             }
         }
         return $next($request);

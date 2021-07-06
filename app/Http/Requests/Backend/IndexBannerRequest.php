@@ -28,16 +28,24 @@ class IndexBannerRequest extends BaseRequest
     public function rules()
     {
         return [
-            'sort' => 'required',
             'name' => 'required',
             'course_ids' => 'required|array',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => __('请输入banner名'),
+            'course_ids.required' => __('请选择课程'),
+            'course_ids.array' => __('请选择课程'),
         ];
     }
 
     public function filldata()
     {
         return [
-            'sort' => $this->input('sort'),
+            'sort' => (int)$this->input('sort', 0),
             'name' => $this->input('name'),
             'course_ids' => implode(',', $this->input('course_ids')),
         ];

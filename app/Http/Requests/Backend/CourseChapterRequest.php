@@ -35,7 +35,7 @@ class CourseChapterRequest extends BaseRequest
     public function messages()
     {
         return [
-            'title.required' => '请输入章节名',
+            'title.required' => __('请输入章节名'),
         ];
     }
 

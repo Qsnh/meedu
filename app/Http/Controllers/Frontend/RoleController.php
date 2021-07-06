@@ -40,6 +40,7 @@ class RoleController extends FrontendController
     public function index()
     {
         $roles = $this->roleService->all();
+
         [
             'title' => $title,
             'keywords' => $keywords,
@@ -53,7 +54,9 @@ class RoleController extends FrontendController
     public function showBuyPage($id)
     {
         $role = $this->roleService->find($id);
-        $title = __('buy role', ['role' => $role['name']]);
+
+        $title = sprintf(__('购买VIP会员%s'), $role['name']);
+
         $goods = [
             'id' => $role['id'],
             'thumb' => asset('/images/icons/vip.jpg'),
@@ -61,6 +64,7 @@ class RoleController extends FrontendController
             'charge' => $role['charge'],
             'label' => $role['name'],
         ];
+
         $total = $role['charge'];
         $scene = get_payment_scene();
         $payments = get_payments($scene);
@@ -77,7 +81,7 @@ class RoleController extends FrontendController
 
         $order = $this->orderService->createRoleOrder(Auth::id(), $role, $promoCodeId);
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
-            flash(__('success'), 'success');
+            flash(__('成功'), 'success');
             return redirect(route('member.orders'));
         }
 

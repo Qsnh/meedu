@@ -1,5 +1,7 @@
+## [MeEdu(杭州白书科技有限公司)](https://www.qcc.com/firm/a19b4d324cca2c006b1997f1ea057424.html) 正在寻求天使轮股权融资。计划融资200万人民币，出让20%的股权。有兴趣可微信联系
+
 <p align="center"><img src="public/images/meedu.png"/></p>
-<p align="center">MeEdu - 开源的在线视频点播系统。</p>
+<p align="center">MeEdu - 知识付费解决方案。</p>
 <p align="center">
 <a href="https://github.styleci.io/repos/127536154"><img src="https://github.styleci.io/repos/127536154/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/Qsnh/meedu"><img src="https://travis-ci.org/Qsnh/meedu.svg?branch=master" alt="Build Status"></a>
@@ -8,28 +10,29 @@
 </a>
 </p>
 
+## 联系我们
+
+<img src="https://meedu.vip/images/index/footer/contact2.png?v=20210612" width="120" height="120" />
+
 ## 常用链接
 
 - [MeEdu 官网](https://meedu.vip)
-- [MeEdu 插件商城](https://meedu.vip/addons)
-- [MeEdu 功能概览](https://www.yuque.com/meedu/fvvkbf/gkg87z)
+- [MeEdu 付费解决方案](https://meedu.vip/price.html)
+- [MeEdu 演示站](https://meedu.vip/cases.html)
+- [MeEdu 开源版本功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
 - [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
-- [MeEdu 常见问题总结](https://www.yuque.com/meedu/yr7rek)
 - [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
 
-## 安装
+## MeEdu 安装
 
-- [x] 使用傻瓜安装包安装 [下载地址](https://www.yuque.com/meedu/kbanfm)
-- [x] [宝塔一键安装（适合技术能力一般的用户）](https://www.yuque.com/meedu/fvvkbf/qvb006)
-- [x] [手动安装教程（适合技术能力较强的用户）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
-- [x] MeEdu 安装服务（适合小白用户）。由 MeEdu 作者亲自帮您安装。具体查看：[MeEdu托管服务](https://meedu.vip/topic/205) 。
+- [x] [腾讯云云开发安装部署](https://app.cloud.tencent.com/?app=MeEdu)
+- [x] [宝塔一键安装（技术能力较弱）](https://www.yuque.com/meedu/fvvkbf/qvb006)
+- [x] [手动安装教程（技术能力较强）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
 - [x] [MeEdu 宝塔手动安装最新版(手把手教学)](https://www.yuque.com/meedu/fvvkbf/gkape0)
 
 ## 鸣谢
 
-感谢下面小伙伴提供支付宝和微信相关支付账号（排名不分前后）：  
-
-| 昵称 | 网址 |
+| 昵称 | 地址 |
 | --- | --- |
 | `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
 | `逸企邦` | [https://easeco.cn](https://easeco.cn) |

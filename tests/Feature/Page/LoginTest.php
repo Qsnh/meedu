@@ -20,9 +20,7 @@ class LoginTest extends TestCase
     {
         $response = $this->get(route('login'));
         $response->assertResponseStatus(200);
-        $response->see('登录');
-        $response->see('忘记密码');
-        $response->see('注册');
+        $response->see(__('登录'));
     }
 
     // 正确的手机号和密码登录时可以登录的
@@ -36,7 +34,7 @@ class LoginTest extends TestCase
         $this->visit(route('login'))
             ->type($user->mobile, 'mobile')
             ->type($password, 'password')
-            ->press('登录')
+            ->press(__('登录'))
             ->seePageIs('/');
     }
 
@@ -49,7 +47,7 @@ class LoginTest extends TestCase
         $this->visit(route('login'))
             ->type($user->mobile, 'mobile')
             ->type($user->password, 'password')
-            ->press('登录')
+            ->press(__('登录'))
             ->seePageIs('/login');
     }
 
@@ -61,7 +59,7 @@ class LoginTest extends TestCase
         $this->visit(route('login'))
             ->type($user->mobile, 'mobile')
             ->type($user->password, 'password')
-            ->press('登录')
+            ->press(__('登录'))
             ->seePageIs('/login');
     }
 }

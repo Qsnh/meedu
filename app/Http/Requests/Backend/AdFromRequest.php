@@ -36,8 +36,8 @@ class AdFromRequest extends BaseRequest
     public function messages()
     {
         return [
-            'from_name.required' => '请输入推广链接名',
-            'from_key.required' => '请输入推广链接特征值',
+            'from_name.required' => __('请输入推广链接名'),
+            'from_key.required' => __('请输入推广链接特征值'),
         ];
     }
 

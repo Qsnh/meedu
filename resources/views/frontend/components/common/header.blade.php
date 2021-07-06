@@ -10,7 +10,7 @@
 
             <div class="flex-1 pr-12 flex justify-end">
                 <div class="search-form-box">
-                    <form action="{{route('search')}}" method="get">
+                    <form action="{{route('search')}}" method="get" style="margin-block-end: 0">
                         <div class="relative">
                             <input type="text" name="keywords"
                                    class="search-input border border-gray-200 text-sm outline-none"
@@ -99,11 +99,11 @@
         <div class="py-4">
             <a href="{{route('index')}}"
                class="inline-block text-base {{request()->routeIs(['index', 'announcement.show']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 pr-5">
-                首页
+                {{__('首页')}}
             </a>
             <a href="{{route('courses')}}"
                class="inline-block text-base {{request()->routeIs(['courses', 'course.show', 'videos', 'video.show', 'search']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 px-5">
-                录播课
+                {{__('点播课程')}}
             </a>
             @foreach($gNavs as $item)
                 <div class="inline-block relative px-5 nav-menu">

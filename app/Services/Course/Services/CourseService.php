@@ -9,7 +9,6 @@
 namespace App\Services\Course\Services;
 
 use Carbon\Carbon;
-use App\Constant\FrontendConstant;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseAttach;
 use App\Services\Base\Services\ConfigService;
@@ -75,10 +74,10 @@ class CourseService implements CourseServiceInterface
             });
         if (!$scene) {
             $query->orderByDesc('published_at');
-        } elseif ($scene == 'sub') {
+        } elseif ($scene === 'sub') {
             $query->orderByDesc('user_count');
-        } elseif ($scene == 'recom') {
-            $query->whereIsRec(FrontendConstant::YES)->orderByDesc('id');
+        } elseif ($scene === 'recom') {
+            $query->where('is_rec', 1)->orderByDesc('id');
         }
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();

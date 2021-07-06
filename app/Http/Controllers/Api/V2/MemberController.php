@@ -217,7 +217,7 @@ class MemberController extends BaseController
         ['password' => $password, 'mobile' => $mobile] = $request->filldata();
         $user = $this->userService->find($this->id());
         if ($user['mobile'] != $mobile) {
-            return $this->error(ApiV2Constant::MOBILE_CODE_ERROR);
+            return $this->error(__('短信验证码错误'));
         }
         $this->userService->changePassword($this->id(), $password);
 
@@ -272,7 +272,6 @@ class MemberController extends BaseController
      * )
      *
      * @param NicknameChangeRequest $request
-     * @return void
      */
     public function nicknameChange(NicknameChangeRequest $request)
     {
@@ -683,7 +682,7 @@ class MemberController extends BaseController
     public function generatePromoCode()
     {
         if (!$this->businessState->canGenerateInviteCode($this->user())) {
-            return $this->error(__('current user cant generate promo code'));
+            return $this->error(__('当前用户无权限使用邀请码'));
         }
         $this->promoCodeService->userCreate($this->user());
         return $this->success();
@@ -791,7 +790,7 @@ class MemberController extends BaseController
             $mobile = '******' . mb_substr($item['mobile'], 6);
             return [
                 'mobile' => $mobile,
-                'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
+                'created_at' => Carbon::parse($item['created_at'])->format('Y - m - d'),
             ];
         }, $list);
 

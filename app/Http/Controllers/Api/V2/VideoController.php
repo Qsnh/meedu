@@ -229,7 +229,7 @@ class VideoController extends BaseController
     {
         $video = $this->videoService->find($id);
         if ($this->businessState->videoCanComment($this->user(), $video) === false) {
-            return $this->error(__('video cant comment'));
+            return $this->error(__('视频无法评论'));
         }
         ['content' => $content] = $request->filldata();
         $this->videoCommentService->create($id, $content);
@@ -302,13 +302,13 @@ class VideoController extends BaseController
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
         if (!$this->businessState->canSeeVideo($this->user(), $course, $video)) {
-            return $this->error(__(ApiV2Constant::VIDEO_NO_AUTH));
+            return $this->error(__('请购买后观看'));
         }
 
         $urls = get_play_url($video, $isTry);
 
         if (!$urls) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
 
         return $this->data(compact('urls'));
@@ -338,7 +338,7 @@ class VideoController extends BaseController
         // 视频已观看时长
         $duration = (int)$request->post('duration', 0);
         if (!$duration) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $videoBus->userVideoWatchDurationRecord($this->id(), (int)$id, $duration);

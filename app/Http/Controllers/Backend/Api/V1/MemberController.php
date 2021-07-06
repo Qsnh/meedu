@@ -329,7 +329,7 @@ class MemberController extends BaseController
     }
 
     // 用户备注
-    public function remark(Request $request, $id)
+    public function remark($id)
     {
         $userRemark = UserRemark::query()->where('user_id', $id)->first();
         $remark = $userRemark ? $userRemark['remark'] : '';
@@ -360,7 +360,7 @@ class MemberController extends BaseController
         $user = User::query()->where('id', $userId)->firstOrFail();
         $message = $request->input('message');
         if (!$message) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $user->notify(new SimpleMessageNotification($message));
@@ -405,7 +405,7 @@ class MemberController extends BaseController
         foreach ($mobileChunk as $item) {
             $exists = User::query()->whereIn('mobile', $item)->select(['mobile'])->get();
             if ($exists->isNotEmpty()) {
-                return $this->error(sprintf('%s已存在', implode(',', $exists->pluck('mobile')->toArray())));
+                return $this->error(sprintf(__('账号%s已存在'), implode(',', $exists->pluck('mobile')->toArray())));
             }
         }
 

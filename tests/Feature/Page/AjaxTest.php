@@ -56,7 +56,7 @@ class AjaxTest extends TestCase
         $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '',
         ])->seeStatusCode(302);
-        $this->assertEquals(__('comment.content.required'), get_first_flash('warning'));
+        $this->assertEquals(__('请输入评论'), get_first_flash('warning'));
     }
 
     public function test_course_comment_with_min_length()
@@ -65,7 +65,7 @@ class AjaxTest extends TestCase
         $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '12345',
         ])->seeStatusCode(302);
-        $this->assertEquals(__('comment.content.min', ['count' => 6]), get_first_flash('warning'));
+        $this->assertEquals(__('评论内容不能少于:count个字', ['count' => 6]), get_first_flash('warning'));
     }
 
     public function test_course_comment()
@@ -269,7 +269,7 @@ class AjaxTest extends TestCase
         $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
             'promo_code' => Str::random(6),
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('promo code not exists'));
+        $this->assertResponseError($response, __('该码不存在'));
     }
 
     // 过期的优惠码无法使用
@@ -286,7 +286,7 @@ class AjaxTest extends TestCase
         $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
             'promo_code' => $promoCode->code,
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('promo code has expired'));
+        $this->assertResponseError($response, __('该码已过期'));
     }
 
     // 优惠码使用次数用完了
@@ -302,7 +302,7 @@ class AjaxTest extends TestCase
         $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
             'promo_code' => $promoCode->code,
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('user cant use this promo code'));
+        $this->assertResponseError($response, __('该码无法使用'));
     }
 
     // 自己的优惠码无法使用
@@ -319,7 +319,7 @@ class AjaxTest extends TestCase
         $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
             'promo_code' => $promoCode->code,
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('user cant use this promo code'));
+        $this->assertResponseError($response, __('该码无法使用'));
     }
 
     // 已使用过该优惠码
@@ -344,7 +344,7 @@ class AjaxTest extends TestCase
         $response = $this->actingAs($this->user)->post('/member/ajax/promoCodeCheck', [
             'promo_code' => $promoCode->code,
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('user cant use this promo code'));
+        $this->assertResponseError($response, __('该码无法使用'));
     }
 
     public function test_promoCodeCheck()
@@ -385,7 +385,7 @@ class AjaxTest extends TestCase
             'new_password_confirmation' => '123456',
             'old_password' => '123456',
         ])->response;
-        $this->assertEquals(__('old_password_error'), get_first_flash('warning'));
+        $this->assertEquals(__('原密码错误'), get_first_flash('warning'));
     }
 
     public function test_changePassword_with_first_reset_password()
@@ -429,7 +429,7 @@ class AjaxTest extends TestCase
         $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
             'nick_name' => 'meedu123',
         ]);
-        $this->assertEquals(__('current user cant set nickname'), get_first_flash('warning'));
+        $this->assertEquals(__('当前用户已配置昵称'), get_first_flash('warning'));
     }
 
     public function test_nicknameChange_repeat()
@@ -439,7 +439,7 @@ class AjaxTest extends TestCase
         $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
             'nick_name' => 'meedu123',
         ]);
-        $this->assertEquals(__('nick_name.unique'), get_first_flash('warning'));
+        $this->assertEquals(__('昵称已经存在'), get_first_flash('warning'));
     }
 
     public function test_inviteBalanceWithdraw_insufficient()
@@ -452,7 +452,7 @@ class AjaxTest extends TestCase
                 'username' => '账号名',
             ]
         ])->response;
-        $this->assertResponseError($response, __('Insufficient invite balance'));
+        $this->assertResponseError($response, __('邀请余额不足'));
     }
 
     public function test_inviteBalanceWithdraw()
@@ -492,7 +492,7 @@ class AjaxTest extends TestCase
             'mobile' => $this->user->mobile,
             'password' => '123456',
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('mobile not exists or password error'));
+        $this->assertResponseError($response, __('手机号或密码错误'));
     }
 
     public function test_passwordLogin_with_lock()
@@ -506,7 +506,7 @@ class AjaxTest extends TestCase
             'mobile' => $this->user->mobile,
             'password' => '123123',
         ])->seeStatusCode(200)->response;
-        $this->assertResponseError($response, __('current user was locked,please contact administrator'));
+        $this->assertResponseError($response, __('账号已被锁定'));
     }
 
     public function test_passwordLogin()
@@ -536,7 +536,7 @@ class AjaxTest extends TestCase
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock123',
         ])->seeStatusCode(302);
-        $this->assertEquals(__('mobile code error'), get_first_flash('warning'));
+        $this->assertEquals(__('短信验证码错误'), get_first_flash('warning'));
     }
 
     public function test_mobileLogin_with_mobile_not_exists()
@@ -606,7 +606,7 @@ class AjaxTest extends TestCase
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',
         ])->response;
-        $this->assertResponseError($response, __('mobile.unique'));
+        $this->assertResponseError($response, __('手机号已存在'));
     }
 
     public function test_passwordReset()
@@ -656,7 +656,7 @@ class AjaxTest extends TestCase
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',
         ])->seeStatusCode(302);
-        $this->assertEquals(__('cant bind mobile'), get_first_flash('warning'));
+        $this->assertEquals(__('该账号已绑定手机号'), get_first_flash('warning'));
     }
 
     public function test_mobileBind_with_mobile_exsits()
@@ -672,7 +672,7 @@ class AjaxTest extends TestCase
             'sms_captcha_key' => 'mock',
             'sms_captcha' => 'mock',
         ])->seeStatusCode(302);
-        $this->assertEquals(__('mobile has exists'), get_first_flash('warning'));
+        $this->assertEquals(__('手机号已存在'), get_first_flash('warning'));
     }
 
     public function test_user_video_watch_record()

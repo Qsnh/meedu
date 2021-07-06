@@ -9,7 +9,6 @@
 namespace App\Listeners\PaymentSuccessEvent;
 
 use App\Businesses\BusinessState;
-use App\Constant\FrontendConstant;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -112,7 +111,7 @@ class PromoCodeListener implements ShouldQueue
 
             // 邀请积分奖励
             if ($credit1 = $this->configService->getInviteSceneCredit1()) {
-                $message = __(FrontendConstant::CREDIT1_REMARK_WATCHED_INVITE);
+                $message = sprintf(__('邀请用户注册送%d积分'), $credit1);
                 $this->creditService->createCredit1Record($code['user_id'], $credit1, $message);
                 $this->notificationService->notifyCredit1Message($code['user_id'], $credit1, $message);
             }
@@ -120,7 +119,7 @@ class PromoCodeListener implements ShouldQueue
 
         // 记录用户使用invite_promo_code的状态
         // 每个用户只能只能使用一次其它用户的邀请码
-        if ($orderUser['is_used_promo_code'] !== FrontendConstant::YES) {
+        if ((int)$orderUser['is_used_promo_code'] !== 1) {
             $this->userService->setUsedPromoCode($orderUser['id']);
         }
     }

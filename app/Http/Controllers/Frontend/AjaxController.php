@@ -145,17 +145,17 @@ class AjaxController extends BaseController
 
         $promoCode = $request->input('promo_code');
         if (!$promoCode) {
-            return $this->error(__('error'));
+            return $this->error(__('错误'));
         }
         $code = $promoCodeService->findCode($promoCode);
         if (!$code) {
-            return $this->error(__('promo code not exists'));
+            return $this->error(__('该码不存在'));
         }
         if ($code['expired_at'] && Carbon::now()->gt($code['expired_at'])) {
-            return $this->error(__('promo code has expired'));
+            return $this->error(__('该码已过期'));
         }
         if (!$this->businessState->promoCodeCanUse($code)) {
-            return $this->error(__('user cant use this promo code'));
+            return $this->error(__('该码无法使用'));
         }
         return $this->data([
             'id' => $code['id'],
@@ -171,10 +171,10 @@ class AjaxController extends BaseController
         ] = $request->filldata();
         $user = $this->userService->passwordLogin($mobile, $password);
         if (!$user) {
-            return $this->error(__('mobile not exists or password error'));
+            return $this->error(__('手机号或密码错误'));
         }
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__('current user was locked,please contact administrator'));
+        if ((int)$user['is_lock'] === 1) {
+            return $this->error(__('账号已被锁定'));
         }
 
         $bus->webLogin(
@@ -195,8 +195,8 @@ class AjaxController extends BaseController
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
 
-        if ($user['is_lock'] === FrontendConstant::YES) {
-            return $this->error(__('current user was locked,please contact administrator'));
+        if ((int)$user['is_lock'] === 1) {
+            return $this->error(__('账号已被锁定'));
         }
 
         $bus->webLogin(
@@ -216,7 +216,7 @@ class AjaxController extends BaseController
         ] = $request->filldata();
         $user = $this->userService->findMobile($mobile);
         if ($user) {
-            return $this->error(__('mobile.unique'));
+            return $this->error(__('手机号已存在'));
         }
         $this->userService->createWithMobile($mobile, $password, '');
 
@@ -286,7 +286,7 @@ class AjaxController extends BaseController
         $total = $request->post('total');
         $user = $this->userService->find($this->id());
         if ($user['invite_balance'] < $total) {
-            return $this->error(__('Insufficient invite balance'));
+            return $this->error(__('邀请余额不足'));
         }
         $userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
@@ -304,7 +304,7 @@ class AjaxController extends BaseController
         // 举个例子：如果用户看到了10分10秒，这里的duration的值就是610
         $duration = (int)$request->input('duration', 0);
         if (!$duration) {
-            return $this->error(__('params error'));
+            return $this->error(__('参数错误'));
         }
 
         $videoBus->userVideoWatchDurationRecord($this->id(), (int)$videoId, $duration);
@@ -331,7 +331,7 @@ class AjaxController extends BaseController
         }
         $time = $data['time'] ?? 0;
         if ((time() - $time) > 300) {
-            return $this->error(__('参数已过期'));
+            return $this->error(__('参数错误'));
         }
 
         $isTry = (int)$data['is_try'];
@@ -341,13 +341,13 @@ class AjaxController extends BaseController
         $course = $this->courseService->find($video['course_id']);
 
         if ($businessState->canSeeVideo($this->user(), $course, $video) === false) {
-            return $this->error(__('无法观看当前视频'));
+            return $this->error(__('当前视频无法观看'));
         }
 
         $playUrls = get_play_url($video, $isTry ? true : false);
 
         if (!$playUrls) {
-            return $this->error(__('无法获取播放地址'));
+            return $this->error(__('系统错误'));
         }
 
         return $this->data($playUrls);

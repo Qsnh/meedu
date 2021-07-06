@@ -58,7 +58,7 @@ class PasswordTest extends Base
             'mobile_code' => $mobileCode,
             'password' => $newPassword,
         ]);
-        $this->assertResponseError($response, __('mobile code error'));
+        $this->assertResponseError($response, __('短信验证码错误'));
     }
 
     public function test_mobile_not_exists()
@@ -81,6 +81,6 @@ class PasswordTest extends Base
             'mobile_code' => $mobileCode,
             'password' => $newPassword,
         ]);
-        $this->assertResponseError($response, __('mobile not exists'));
+        $this->assertResponseError($response, __('手机号不存在'));
     }
 }

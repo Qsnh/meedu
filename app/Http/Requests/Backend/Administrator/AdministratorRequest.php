@@ -31,7 +31,7 @@ class AdministratorRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'name' => 'bail|required|max:16',
+            'name' => 'bail|required',
             'email' => ['bail', 'email'],
         ];
 
@@ -46,15 +46,14 @@ class AdministratorRequest extends BaseRequest
     public function messages()
     {
         return [
-            'name.required' => '请输入姓名',
-            'name.max' => '姓名长度不能超过16个字符',
-            'email.required' => '请输入邮箱',
-            'email.email' => '请输入合法邮箱',
-            'email.unique' => '邮箱已经存在',
-            'password.required' => '请输入密码',
-            'password.min' => '密码长度不能小于6个字符',
-            'password.max' => '密码长度不能超过16个字符',
-            'password.confirmed' => '两次输入密码不一致',
+            'name.required' => __('请输入管理员昵称'),
+            'email.required' => __('请输入邮箱'),
+            'email.email' => __('请输入合法邮箱'),
+            'email.unique' => __('邮箱已经存在'),
+            'password.required' => __('请输入密码'),
+            'password.min' => __('密码长度不能少于:size个字符', ['size' => 6]),
+            'password.max' => __('密码长度不能多于:size个字符', ['size' => 16]),
+            'password.confirmed' => __('两次输入密码不一致'),
         ];
     }
 

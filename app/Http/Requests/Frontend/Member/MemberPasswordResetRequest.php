@@ -35,11 +35,11 @@ class MemberPasswordResetRequest extends BaseRequest
     public function messages()
     {
         return [
-            'old_password.required' => __('old_password.required'),
-            'new_password.required' => __('new_password.required'),
-            'new_password.min' => __('password.min'),
-            'new_password.max' => __('password.max'),
-            'new_password.confirmed' => __('password.confirmed'),
+            'old_password.required' => __('请输入原密码'),
+            'new_password.required' => __('请输入新密码'),
+            'new_password.min' => __('密码长度不能少于:size个字符', ['size' => 6]),
+            'new_password.max' => __('密码长度不能多于:size个字符', ['size' => 16]),
+            'new_password.confirmed' => __('两次输入密码不一致'),
         ];
     }
 

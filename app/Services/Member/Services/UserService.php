@@ -13,7 +13,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
-use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -106,7 +105,7 @@ class UserService implements UserServiceInterface
     {
         $user = User::findOrFail($userId);
         if ($oldPassword && !Hash::check($oldPassword, $user->password)) {
-            throw new ServiceException(__('old_password_error'));
+            throw new ServiceException(__('原密码错误'));
         }
         $this->changePassword($user->id, $newPassword);
     }
@@ -131,7 +130,7 @@ class UserService implements UserServiceInterface
     {
         User::whereId($userId)->update([
             'password' => Hash::make($password),
-            'is_password_set' => FrontendConstant::PASSWORD_SET,
+            'is_password_set' => 1,
         ]);
     }
 
@@ -198,11 +197,11 @@ class UserService implements UserServiceInterface
         $user = User::query()->where('id', $userId)->first();
 
         if (!$this->businessState->isNeedBindMobile($user->toArray())) {
-            throw new ServiceException(__('cant bind mobile'));
+            throw new ServiceException(__('该账号已绑定手机号'));
         }
 
         if (User::query()->where('mobile', $mobile)->exists()) {
-            throw new ServiceException(__('mobile has exists'));
+            throw new ServiceException(__('手机号已存在'));
         }
 
         $user->mobile = $mobile;
@@ -220,7 +219,7 @@ class UserService implements UserServiceInterface
     {
         $exists = $this->findMobile($mobile);
         if ($exists) {
-            throw new ServiceException(__('mobile has exists'));
+            throw new ServiceException(__('手机号已存在'));
         }
         $user = User::findOrFail($userId);
         $user->mobile = $mobile;
@@ -233,7 +232,7 @@ class UserService implements UserServiceInterface
      */
     public function updateAvatar(int $userId, string $avatar): void
     {
-        User::whereId($userId)->update(['avatar' => $avatar]);
+        User::query()->where('id', $userId)->update(['avatar' => $avatar]);
     }
 
     /**
@@ -244,17 +243,20 @@ class UserService implements UserServiceInterface
     public function updateNickname(int $userId, string $nickname): void
     {
         $user = $this->find($userId);
-        if ($user['is_set_nickname'] === FrontendConstant::YES) {
-            throw new ServiceException(__('current user cant set nickname'));
+        if ((int)$user['is_set_nickname'] === 1) {
+            throw new ServiceException(__('当前用户已配置昵称'));
         }
-        $exists = User::where('id', '<>', $userId)->whereNickName($nickname)->exists();
+        $exists = User::query()->where('id', '<>', $userId)->where('nick_name', $nickname)->exists();
         if ($exists) {
-            throw new ServiceException(__('nick_name.unique'));
+            throw new ServiceException(__('昵称已经存在'));
         }
-        User::whereId($userId)->update([
-            'nick_name' => $nickname,
-            'is_set_nickname' => FrontendConstant::YES,
-        ]);
+
+        User::query()
+            ->where('id', $userId)
+            ->update([
+                'nick_name' => $nickname,
+                'is_set_nickname' => 1,
+            ]);
     }
 
     /**

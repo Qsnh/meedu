@@ -46,7 +46,7 @@ class RegisterController extends BaseController
         ['mobile' => $mobile, 'password' => $password] = $request->filldata();
 
         if ($userService->findMobile($mobile)) {
-            return $this->error(__('mobile.unique'));
+            return $this->error(__('手机号已存在'));
         }
 
         $userService->createWithMobile($mobile, $password, '');

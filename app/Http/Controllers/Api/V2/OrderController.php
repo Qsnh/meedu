@@ -99,10 +99,10 @@ class OrderController extends BaseController
         $courseId = $request->input('course_id');
         $course = $this->courseService->find($courseId);
         if ($course['charge'] === 0) {
-            return $this->error(__('course cant buy'));
+            return $this->error(__('当前课程无法购买'));
         }
         if ($this->userService->hasCourse($this->id(), $course['id'])) {
-            return $this->error(__('course purchased'));
+            return $this->error(__('请勿重复购买'));
         }
         $code = $request->input('promo_code');
         $promoCode = [];
@@ -174,14 +174,14 @@ class OrderController extends BaseController
     {
         $videoId = $request->input('video_id');
         $video = $this->videoService->find($videoId);
-        if ($video['is_ban_sell'] === ApiV2Constant::YES) {
-            return $this->error(__('this video cannot be sold'));
+        if ((int)$video['is_ban_sell'] === 1) {
+            return $this->error(__('当前视频无法购买'));
         }
         if ($video['charge'] === 0) {
-            return $this->error(__('video cant buy'));
+            return $this->error(__('当前视频无法购买'));
         }
         if ($this->userService->hasVideo($this->id(), $video['id'])) {
-            return $this->error(__('video purchased'));
+            return $this->error(__('请勿重复购买'));
         }
         $code = $request->input('promo_code');
         $promoCode = [];

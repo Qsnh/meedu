@@ -8,7 +8,6 @@
 
 namespace Tests\Services\Course;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -50,25 +49,6 @@ class VideoCommentServiceTest extends TestCase
 
         $this->assertEquals('我是评价的内容', $comment['original_content']);
         $this->assertEquals($user->id, $comment['user_id']);
-    }
-
-    public function test_create_with_at()
-    {
-        $user = factory(User::class)->create();
-        $user1 = factory(User::class)->create();
-        Auth::login($user);
-        $video = factory(Video::class)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-
-        $content = '我是评价@' . $user1->nick_name . ' 的内容';
-        $comment = $this->service->create($video->id, $content);
-
-        $this->assertEquals($content, $comment['original_content']);
-        $this->assertEquals($user->id, $comment['user_id']);
-
-        $this->assertEquals(1, $this->notificationService->getUserUnreadCount($user1->id));
     }
 
     public function test_courseComments()

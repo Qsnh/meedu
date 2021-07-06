@@ -65,6 +65,6 @@ class RegisterTest extends Base
             'mobile_code' => $mobileCode,
             'password' => $password,
         ]);
-        $this->assertResponseError($response, __('mobile.unique'));
+        $this->assertResponseError($response, __('手机号已存在'));
     }
 }

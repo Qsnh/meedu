@@ -15,7 +15,7 @@ class InviteBalanceWithdrawRequest extends BaseRequest
     public function rules()
     {
         return [
-            'total' => 'required|integer',
+            'total' => 'required',
             'channel' => 'required|array',
             'channel.name' => 'required',
             'channel.username' => 'required',
@@ -26,13 +26,12 @@ class InviteBalanceWithdrawRequest extends BaseRequest
     public function messages()
     {
         return [
-            'total.required' => __('please input withdraw money'),
-            'total.integer' => __('withdraw money must be integer'),
-            'channel.required' => __('please input withdraw info'),
-            'channel.array' => __('please input withdraw info'),
-            'channel.name.required' => __('please select withdraw channel'),
-            'channel.username.required' => __('please input withdraw username'),
-            'channel.account.required' => __('please input withdraw account'),
+            'total.required' => __('请输入提现金额'),
+            'channel.required' => __('请输入提现账户信息'),
+            'channel.array' => __('请输入提现账户信息'),
+            'channel.name.required' => __('请输入提现支付渠道'),
+            'channel.username.required' => __('请输入提现支付渠道姓名'),
+            'channel.account.required' => __('请输入提现支付渠道账号'),
         ];
     }
 

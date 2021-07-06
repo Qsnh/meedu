@@ -28,6 +28,8 @@
     <div class="flex-shrink-0 ml-3">
         <button type="button"
                 style="width: 120px"
+                data-btn-text="{{__('发送验证码')}}"
+                data-message-required="{{__('请输入手机号和验证码')}}"
                 class="send-sms-captcha rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
             {{__('发送验证码')}}
         </button>

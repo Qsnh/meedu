@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Constant\BackendApiConstant;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseChapter;
 use App\Http\Requests\Backend\CourseChapterRequest;
@@ -51,7 +50,7 @@ class CourseChapterController extends BaseController
     {
         $courseChapter = CourseChapter::findOrFail($id);
         if ($courseChapter->videos()->count()) {
-            return $this->error(BackendApiConstant::COURSE_CHAPTER_BAN_DELETE_FOR_VIDEOS);
+            return $this->error(__('当前章节下存在视频无法删除'));
         }
         $courseChapter->delete();
 

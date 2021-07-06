@@ -21,8 +21,8 @@ class MpWechatMessageReplyRequest extends BaseRequest
     public function messages()
     {
         return [
-            'type.required' => '请选择消息类型',
-            'reply_content.required' => '请输入回复内容',
+            'type.required' => __('请选择消息类型'),
+            'reply_content.required' => __('请输入回复内容'),
         ];
     }
 

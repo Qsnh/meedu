@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Not Found</title>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Styles -->
     <style>
         html,
@@ -49,21 +45,18 @@
             text-align: center;
         }
 
-        .message>a {
+        .message > a {
             text-decoration: none;
             color: #636b6f;
         }
     </style>
 </head>
-
 <body>
-    <div class="flex-center position-ref full-height">
-        <div class="code">
-            404 </div>
+<div class="flex-center position-ref full-height">
+    <div class="code">404</div>
 
-        <div class="message" style="padding: 10px;">
-            <a href="{{url('/')}}">返回首页</a> </div>
-    </div>
+    <div class="message" style="padding: 10px;">
+        <a href="{{url('/')}}">{{__('返回首页')}}</a></div>
+</div>
 </body>
-
 </html>

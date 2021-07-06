@@ -6,7 +6,7 @@
         <div class="text-sm">
             <a href="{{route('index')}}" class="text-gray-500 hover:text-blue-600">{{__('首页')}}</a>
             <span class="px-1 text-gray-400">/</span>
-            <a href="{{route('courses')}}" class="text-gray-500 hover:text-blue-600">{{__('课程列表')}}</a>
+            <a href="{{route('courses')}}" class="text-gray-500 hover:text-blue-600">{{__('点播课程')}}</a>
             <span class="px-1 text-gray-400">/</span>
             <span class="text-gray-600">{{$course['title']}}</span>
         </div>
@@ -223,6 +223,7 @@
                                     <div class="mt-3 text-right">
                                         <button type="button"
                                                 data-url="{{route('ajax.course.comment', [$course['id']])}}"
+                                                data-message-success="{{__('成功')}}"
                                                 class="btn-submit-comment inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             {{__('评论')}}
                                         </button>

@@ -8,7 +8,6 @@
 
 namespace App\Services\Base\Services;
 
-use App\Constant\FrontendConstant;
 use App\Services\Base\Model\AppConfig;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -269,7 +268,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getCacheStatus(): bool
     {
-        return (int)config('meedu.system.cache.status') === FrontendConstant::YES;
+        return (int)config('meedu.system.cache.status') === 1;
     }
 
     /**

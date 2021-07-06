@@ -40,7 +40,7 @@ class VideoBuyPageTest extends TestCase
         $this->actingAs($user)
             ->get(route('member.video.buy', [$video->id]));
         $this->assertTrue(session()->has('warning'));
-        $this->assertEquals(__('this video cannot be sold'), session()->get('warning')->first());
+        $this->assertEquals(__('当前视频无法购买'), session()->get('warning')->first());
     }
 
     public function test_member_orders_page_with_no_published()

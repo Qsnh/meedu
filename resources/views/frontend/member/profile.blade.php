@@ -34,7 +34,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="text-gray-500 text-xs mt-2 pl-2">昵称只可修改一次</div>
+                    <div class="text-gray-500 text-xs mt-2 pl-2">{{__('昵称只可修改一次')}}</div>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
                         </svg>
                     </div>
                     <div class="text-xs">
-                        {{__('支持PNG,JPG,GIF格式图片，大小不超过1M')}}
+                        {{__('支持PNG,JPG,GIF格式图片，大小不超过2M')}}
                     </div>
                 </div>
             </div>

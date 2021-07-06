@@ -34,7 +34,7 @@ class RegisterController extends BaseController
      */
     public function showRegisterPage()
     {
-        $title = __('title.register');
+        $title = __('注册');
 
         return v('frontend.auth.register', compact('title'));
     }
@@ -53,13 +53,13 @@ class RegisterController extends BaseController
         $user = $this->userService->findMobile($mobile);
 
         if ($user) {
-            flash(__('mobile.unique'));
+            flash(__('手机号已存在'));
             return back();
         }
 
         $this->userService->createWithMobile($mobile, $password, '');
 
-        flash(__('register success'), 'success');
+        flash(__('成功'), 'success');
 
         return redirect(route('login'));
     }

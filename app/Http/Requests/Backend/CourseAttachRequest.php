@@ -21,9 +21,9 @@ class CourseAttachRequest extends BaseRequest
     public function messages()
     {
         return [
-            'name.required' => '请输入附件名',
-            'file.required' => '请上传附件',
-            'file.mimes' => '格式错误，仅支持：zip,pdf,jpeg,jpg,gif,png,md,doc,txt,csv格式',
+            'name.required' => __('请输入附件名'),
+            'file.required' => __('请上传文件'),
+            'file.mimes' => __('请上传:format格式文件', ['format' => 'zip,pdf,jpeg,jpg,gif,png,md,doc,txt,csv']),
         ];
     }
 

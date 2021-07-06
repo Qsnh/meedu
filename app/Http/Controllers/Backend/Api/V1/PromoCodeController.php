@@ -70,13 +70,13 @@ class PromoCodeController extends BaseController
     {
         $data = $request->input('data');
         if (!$data) {
-            return $this->error('empty data');
+            return $this->error(__('数据为空'));
         }
 
         // 删除表头
         unset($data[0]);
         if (empty($data)) {
-            return $this->error('empty data.1');
+            return $this->error(__('数据为空'));
         }
 
         $insertData = [];
@@ -92,13 +92,13 @@ class PromoCodeController extends BaseController
             }
 
             if (!$code) {
-                return $this->error(sprintf('第%d行优惠码为空', $index + 1));
+                return $this->error(sprintf(__('第%d行优惠码为空'), $index + 1));
             }
             if (!$invitedReward) {
-                return $this->error(sprintf('第%d行折扣为0', $index + 1));
+                return $this->error(sprintf(__('第%d行优惠码折扣为0'), $index + 1));
             }
             if (!$expiredAt) {
-                return $this->error(sprintf('第%d行过期时间为空', $index + 1));
+                return $this->error(sprintf(__('第%d行优惠码过期时间为空'), $index + 1));
             }
 
             $insertData[] = [
@@ -115,7 +115,7 @@ class PromoCodeController extends BaseController
 
         $existsData = PromoCode::query()->whereIn('code', array_column($insertData, 'code'))->select(['code'])->get()->pluck('code')->toArray();
         if ($existsData) {
-            return $this->error(sprintf('下面优惠码重复：%s', implode(',', $existsData)));
+            return $this->error(sprintf(__('优惠码%s已存在'), implode(',', $existsData)));
         }
 
         PromoCode::insert($insertData);
@@ -145,7 +145,7 @@ class PromoCodeController extends BaseController
 
         $existsData = PromoCode::query()->whereIn('code', array_column($insertData, 'code'))->select(['code'])->get()->pluck('code')->toArray();
         if ($existsData) {
-            return $this->error('该前缀下有优惠码重复，无法生成');
+            return $this->error(__('该优惠码前缀无法生成优惠码'));
         }
 
         PromoCode::insert($insertData);

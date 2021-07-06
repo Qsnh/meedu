@@ -61,7 +61,7 @@ class MemberController extends FrontendController
          * @var SocialiteService $socialiteService
          */
 
-        $title = __('page_title_member_index');
+        $title = __('会员中心');
 
         $courseCount = $this->userService->getUserCourseCount($this->id());
         $videoCount = $this->userService->getUserVideoCount($this->id());
@@ -79,7 +79,7 @@ class MemberController extends FrontendController
     // 手机号绑定[界面]
     public function showMobileBindPage()
     {
-        $title = __('title.member.bind.mobile');
+        $title = __('绑定手机号');
 
         return v('frontend.member.mobile_bind', compact('title'));
     }
@@ -91,7 +91,7 @@ class MemberController extends FrontendController
 
         $this->userService->bindMobile($mobile, $this->id());
 
-        flash(__('success'), 'success');
+        flash(__('成功'), 'success');
 
         return redirect(route('member'));
     }
@@ -113,7 +113,7 @@ class MemberController extends FrontendController
 
         $records = $this->paginator($list, $total, $page, $pageSize);
 
-        $title = __('title.member.vip');
+        $title = __('VIP记录');
 
         return v('frontend.member.join_role_records', compact('records', 'title'));
     }
@@ -131,7 +131,7 @@ class MemberController extends FrontendController
 
         $messages = $this->paginator($list, $total, $page, $pageSize);
 
-        $title = __('title.member.notification');
+        $title = __('我的消息');
 
         return v('frontend.member.messages', compact('messages', 'title'));
     }
@@ -234,7 +234,7 @@ class MemberController extends FrontendController
 
         $orders = $this->paginator($list, $total, $page, $pageSize);
 
-        $title = __('title.member.orders');
+        $title = __('我的订单');
 
         return v('frontend.member.orders', compact('orders', 'title'));
     }
@@ -262,7 +262,7 @@ class MemberController extends FrontendController
 
             $socialiteService->bindApp($this->id(), $app, $appId, (array)$user);
 
-            flash(__('success'), 'success');
+            flash(__('成功'), 'success');
 
             return redirect(route('member'));
         } catch (ServiceException $exception) {
@@ -279,7 +279,7 @@ class MemberController extends FrontendController
     {
         $socialiteService->cancelBind($app, $this->id());
 
-        flash(__('success'), 'success');
+        flash(__('成功'), 'success');
 
         return back();
     }
@@ -344,7 +344,7 @@ class MemberController extends FrontendController
 
         $inviteConfig = $this->configService->getMemberInviteConfig();
 
-        $title = __('title.member.promo_code');
+        $title = __('我的邀请码');
 
         return v('frontend.member.promo_code', compact(
             'userPromoCode',
@@ -372,7 +372,7 @@ class MemberController extends FrontendController
 
         $records = $this->paginator($list, $total, $page, $pageSize);
 
-        $title = __('title.member.credit1_records');
+        $title = __('我的积分');
 
         return v('frontend.member.credit1_records', compact('title', 'records'));
     }
@@ -382,7 +382,7 @@ class MemberController extends FrontendController
     {
         $profile = $this->userService->getProfile($this->id());
 
-        $title = __('member.profile.edit');
+        $title = __('我的资料编辑');
 
         return v('frontend.member.profile', compact('profile', 'title'));
     }
@@ -391,7 +391,7 @@ class MemberController extends FrontendController
     public function logout()
     {
         Auth::logout();
-        flash(__('success'), 'success');
+        flash(__('成功'), 'success');
         return redirect(url('/'));
     }
 

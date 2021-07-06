@@ -162,19 +162,19 @@ class VideoController extends FrontendController
         $video = $this->videoService->find($id);
 
         if ($this->userService->hasVideo($this->id(), $video['id'])) {
-            flash(__('You have already purchased this course'), 'success');
+            flash(__('请勿重复购买'));
             return back();
         }
 
-        if ($video['is_ban_sell'] === FrontendConstant::YES) {
-            flash(__('this video cannot be sold'));
+        if ((int)$video['is_ban_sell'] === 1) {
+            flash(__('当前视频无法购买'));
             return back();
         }
 
         $course = $this->courseService->find($video['course_id']);
 
         // 页面标题
-        $title = __('buy video', ['video' => $video['title']]);
+        $title = sprintf(__('购买视频%s'), $video['title']);
 
         $goods = [
             'id' => $video['id'],
@@ -199,15 +199,8 @@ class VideoController extends FrontendController
         $promoCodeId = abs((int)$request->input('promo_code_id', 0));
         $video = $this->videoService->find($id);
 
-        // 禁止单独销售
-        if ($video['is_ban_sell'] === FrontendConstant::YES) {
-            flash(__('this video cannot be sold'));
-            return back();
-        }
-
-        // 价格为0无法购买
-        if ($video['charge'] <= 0) {
-            flash(__('video cant buy'));
+        if ((int)$video['is_ban_sell'] === 1 || $video['charge'] <= 0) {
+            flash(__('当前视频无法购买'));
             return back();
         }
 
@@ -218,7 +211,7 @@ class VideoController extends FrontendController
 
         // 如果直接抵扣的话则订单完成
         if ($order['status'] === FrontendConstant::ORDER_PAID) {
-            flash(__('success'), 'success');
+            flash(__('成功'), 'success');
             return redirect($videoUrl);
         }
 

@@ -19,12 +19,6 @@ class UserInviteBalanceWithdrawOrder extends Model
     const STATUS_SUCCESS = 1;
     const STATUS_FAILURE = 2;
 
-    const STATUS_TEXT_MAP = [
-        self::STATUS_DEFAULT => '已提交',
-        self::STATUS_SUCCESS => '成功',
-        self::STATUS_FAILURE => '失败',
-    ];
-
     protected $table = 'user_ib_withdraw_orders';
 
     protected $fillable = [
@@ -39,6 +33,15 @@ class UserInviteBalanceWithdrawOrder extends Model
 
     public function getStatusTextAttribute()
     {
-        return self::STATUS_TEXT_MAP[$this->status] ?? '';
+        return $this->statusMapText()[$this->status] ?? '';
+    }
+
+    public function statusMapText()
+    {
+        return [
+            self::STATUS_DEFAULT => __('已提交'),
+            self::STATUS_SUCCESS => __('成功'),
+            self::STATUS_FAILURE => __('失败'),
+        ];
     }
 }

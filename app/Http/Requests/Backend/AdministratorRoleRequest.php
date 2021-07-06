@@ -42,10 +42,10 @@ class AdministratorRoleRequest extends BaseRequest
     public function messages()
     {
         return [
-            'display_name.required' => '请输入角色名',
-            'slug.required' => '请输入Slug',
-            'slug.unique' => 'Slug值已经存在',
-            'description.required' => '请输入角色描述',
+            'display_name.required' => __('请输入后台管理角色名'),
+            'slug.required' => __('请输入后台管理角色slug'),
+            'slug.unique' => __('后台管理角色slug已存在'),
+            'description.required' => __('请输入后台管理角色描述'),
         ];
     }
 

@@ -10,22 +10,11 @@ namespace App\Services\Course\Services;
 
 use App\Events\CourseCommentEvent;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\RenderService;
 use App\Services\Course\Models\CourseComment;
-use App\Services\Base\Interfaces\RenderServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseCommentService implements CourseCommentServiceInterface
 {
-    /**
-     * @var RenderService
-     */
-    protected $renderService;
-
-    public function __construct(RenderServiceInterface $renderService)
-    {
-        $this->renderService = $renderService;
-    }
 
     /**
      * @param int $courseId
@@ -46,12 +35,11 @@ class CourseCommentService implements CourseCommentServiceInterface
      */
     public function create(int $courseId, string $originalContent): array
     {
-        $renderContent = $this->renderService->render($originalContent);
         $comment = CourseComment::create([
             'user_id' => Auth::id(),
             'course_id' => $courseId,
             'original_content' => $originalContent,
-            'render_content' => $renderContent,
+            'render_content' => $originalContent,
         ]);
 
         event(new CourseCommentEvent($courseId, $comment['id']));
