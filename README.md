@@ -19,7 +19,7 @@
 - [MeEdu 官网](https://meedu.vip)
 - [MeEdu 付费解决方案](https://meedu.vip/price.html)
 - [MeEdu 演示站](https://meedu.vip/cases.html)
-- [MeEdu 开源版本功能概览](https://www.yuque.com/meedu/fvvkbf/gkg87z)
+- [MeEdu 开源版本功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
 - [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
 - [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
 
