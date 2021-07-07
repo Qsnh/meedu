@@ -231,6 +231,9 @@ return [
             'pc' => '',
             'h5' => '',
         ],
+
+        // 多语言
+        'lang' => \App\Constant\FrontendConstant::LANG_ZH,
     ],
 
     // 其它配置

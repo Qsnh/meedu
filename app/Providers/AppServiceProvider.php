@@ -31,14 +31,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->make(Setting::class)->sync();
         // 多模板注册
         $this->registerViewNamespace();
-
-        // 日志链路配置
-        $requestId = Str::random(12);
-        $logger = $this->app->make('log');
-        $logger->pushProcessor(function ($record) use ($requestId) {
-            $record['extra']['request_id'] = $requestId;
-            return $record;
-        });
+        // 日志链路
+        $this->logInit();
     }
 
     /**
@@ -54,9 +48,17 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(OrderServiceRegisterProvider::class);
     }
 
-    /**
-     * 注册视图.
-     */
+    protected function logInit()
+    {
+        // 日志链路配置
+        $requestId = Str::random(12);
+        $logger = $this->app->make('log');
+        $logger->pushProcessor(function ($record) use ($requestId) {
+            $record['extra']['request_id'] = $requestId;
+            return $record;
+        });
+    }
+
     protected function registerViewNamespace()
     {
         $this->loadViewsFrom(config('meedu.system.theme.path'), config('meedu.system.theme.use'));

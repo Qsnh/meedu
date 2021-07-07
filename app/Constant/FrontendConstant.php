@@ -66,4 +66,7 @@ class FrontendConstant
         'member.mobile.bind.submit',
         'logout',
     ];
+
+    public const LANG_ZH = 'zh';
+    public const LANG_EN = 'en';
 }

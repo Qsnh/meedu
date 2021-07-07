@@ -8,7 +8,9 @@
 
 namespace App\Meedu;
 
+use Carbon\Carbon;
 use App\Meedu\Sms\SmsInterface;
+use Illuminate\Support\Facades\Lang;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -59,6 +61,12 @@ class Setting
         // 短信服务注册
         $smsService = ucfirst(config('meedu.system.sms'));
         app()->instance(SmsInterface::class, app()->make('App\\Meedu\\Sms\\' . $smsService));
+
+        // 语言配置
+        $lang = config('meedu.system.lang');
+        Lang::setLocale($lang);
+        // 时间多语言
+        Carbon::setLocale($lang);
     }
 
     /**

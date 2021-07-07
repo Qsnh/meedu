@@ -16,6 +16,24 @@ class AppConfigSeeder extends Seeder
             // 系统配置
             [
                 'group' => '系统',
+                'name' => '语言',
+                'field_type' => 'select',
+                'sort' => 0,
+                'key' => 'meedu.system.lang',
+                'value' => 'zh',
+                'option_value' => json_encode([
+                    [
+                        'title' => '中文',
+                        'key' => \App\Constant\FrontendConstant::LANG_ZH,
+                    ],
+                    [
+                        'title' => 'English',
+                        'key' => \App\Constant\FrontendConstant::LANG_EN,
+                    ],
+                ]),
+            ],
+            [
+                'group' => '系统',
                 'name' => '网站名',
                 'field_type' => 'text',
                 'sort' => 0,
