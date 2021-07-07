@@ -26,8 +26,8 @@ $(function () {
         const SMS_CYCLE_TIME = 120;
         var SMS_CURRENT_TIME = 0;
 
-        var imageCaptcha = $('input[name="captcha"]').val();
-        var mobile = $('input[name="mobile"]').val();
+        var imageCaptcha = $(this).parent().parent().siblings().find('input[name="captcha"]').val();
+        var mobile = $(this).parent().parent().siblings().find('input[name="mobile"]').val();
         if (imageCaptcha === '' || mobile === '') {
             window.flashError(messageRequired);
             return;
@@ -430,6 +430,42 @@ $(function () {
 
                 setTimeout(function () {
                     window.location.reload();
+                }, 1000);
+            } else {
+                flashError(res.message);
+            }
+        }, 'json');
+    }).on('click', '.btn-login-sms', function () {
+        var message = {
+            success: $(this).attr('data-message-success'),
+            mobileRequired: $(this).attr('data-message-mobile-required'),
+            codeRequired: $(this).attr('data-message-code-required'),
+        };
+
+        var mobile = $('.login-use-sms input[name="mobile"]').val().trim();
+        var code = $('.login-use-sms input[name="sms_captcha"]').val().trim();
+        var codeKey = $('.login-use-sms input[name="sms_captcha_key"]').val();
+
+        if (mobile.length === 0) {
+            flashError(message.mobileRequired);
+            return;
+        }
+        if (code.length === 0) {
+            flashError(message.codeRequired);
+            return;
+        }
+
+        $.post($(this).attr('data-url'), {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            mobile: mobile,
+            sms_captcha: code,
+            sms_captcha_key: codeKey
+        }, function (res) {
+            if (res.code === 0) {
+                flashSuccess(message.success);
+
+                setTimeout(function () {
+                    window.location = res.data.redirect_url;
                 }, 1000);
             } else {
                 flashError(res.message);
