@@ -242,6 +242,13 @@ class AjaxController extends BaseController
         return $this->success();
     }
 
+    public function changeMobile(MobileBindRequest $request)
+    {
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->changeMobile($this->id(), $mobile);
+        return $this->success();
+    }
+
     public function changePassword(MemberPasswordResetRequest $request)
     {
         ['old_password' => $oldPassword, 'new_password' => $newPassword] = $request->filldata();

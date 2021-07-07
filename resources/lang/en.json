@@ -300,5 +300,7 @@
   "安全退出": "Logout",
   "VIP会员": "VIP",
   "请同意用户协议，用户隐私协议": "Please agree to the user agreement, user privacy agreement",
-  "请输入手机号和验证码": "Please input mobile phone number and verification code"
+  "请输入手机号和验证码": "Please input mobile phone number and verification code",
+  "更换手机号": "Change mobile phone number",
+  "当前手机号 :mobile": "Current mobile phone number :mobile"
 }

@@ -76,80 +76,82 @@
         <div class="bg-white px-5 rounded shadow">
             <div class="text-gray-800 text-base font-medium pt-5 mb-5">{{__('实名资料')}}</div>
             <div class="pb-5">
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('真实姓名')}}</div>
-                    <div>
-                        <input type="text" name="real_name" value="{{$profile['real_name'] ?? ''}}"
-                               placeholder="{{__('真实姓名')}}"
-                               autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
-                               required>
-                    </div>
-                </div>
-
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('身份证号码')}}</div>
-                    <div>
-                        <input type="text" name="id_number" value="{{$profile['id_number'] ?? ''}}"
-                               placeholder="{{__('身份证号码')}}"
-                               autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
-                               required>
-                    </div>
-                </div>
-
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('年龄')}}</div>
-                    <div>
-                        <input type="number" name="age" value="{{$profile['age'] ?? ''}}"
-                               placeholder="{{__('年龄')}}"
-                               autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
-                               required>
-                    </div>
-                </div>
-
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('性别')}}</div>
-                    <div>
-                        <select name="gender"
-                                class="block py-2 text-base border-gray-300 bg-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
-                            <option value="0" {{(int)($profile['gender'] ?? 0) === 0 ? 'selected' : ''}}>{{__('不公开')}}</option>
-                            <option value="1" {{(int)($profile['gender'] ?? 0) === 1 ? 'selected' : ''}}>{{__('男')}}</option>
-                            <option value="2" {{(int)($profile['gender'] ?? 0) === 2 ? 'selected' : ''}}>{{__('女')}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('生日')}}</div>
-                    <div>
-                        @if($profile['birthday'] ?? '')
-                            <input type="text" name="birthday"
-                                   value="{{\Carbon\Carbon::parse($profile['birthday'])->format('Y-m-d')}}"
+                <div class="flex items-center mb-5">
+                    <div class="w-28">
+                        <div class="text-gray-500 text-sm mb-2">{{__('真实姓名')}}</div>
+                        <div>
+                            <input type="text" name="real_name" value="{{$profile['real_name'] ?? ''}}"
+                                   placeholder="{{__('真实姓名')}}"
                                    autocomplete="off"
-                                   class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                    required>
-                        @else
-                            <input type="text" name="birthday"
-                                   placeholder="{{__('请选择出生年月日')}}"
+                        </div>
+                    </div>
+                    <div class="w-20 ml-5">
+                        <div class="text-gray-500 text-sm mb-2">{{__('年龄')}}</div>
+                        <div>
+                            <input type="number" name="age" value="{{$profile['age'] ?? ''}}"
+                                   placeholder="{{__('年龄')}}"
                                    autocomplete="off"
-                                   class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
                                    required>
-                        @endif
+                        </div>
+                    </div>
+                    <div class="w-24 ml-5">
+                        <div class="text-gray-500 text-sm mb-2">{{__('性别')}}</div>
+                        <div>
+                            <select name="gender"
+                                    class="block py-2 text-base border-gray-300 bg-gray-100 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
+                                <option value="0" {{(int)($profile['gender'] ?? 0) === 0 ? 'selected' : ''}}>{{__('不公开')}}</option>
+                                <option value="1" {{(int)($profile['gender'] ?? 0) === 1 ? 'selected' : ''}}>{{__('男')}}</option>
+                                <option value="2" {{(int)($profile['gender'] ?? 0) === 2 ? 'selected' : ''}}>{{__('女')}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex-1 ml-5">
+                        <div class="text-gray-500 text-sm mb-2">{{__('身份证号码')}}</div>
+                        <div>
+                            <input type="text" name="id_number" value="{{$profile['id_number'] ?? ''}}"
+                                   placeholder="{{__('身份证号码')}}"
+                                   autocomplete="off"
+                                   class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   required>
+                        </div>
                     </div>
                 </div>
 
-                <div class="w-full mb-5">
-                    <div class="text-gray-500 text-sm mb-2">{{__('职业')}}</div>
-                    <div>
-                        <input type="text" name="profession" value="{{$profile['profession'] ?? ''}}"
-                               placeholder="{{__('职业')}}"
-                               autocomplete="off"
-                               class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
-                               required>
+                <div class="flex items-center mb-5">
+                    <div class="w-48">
+                        <div class="text-gray-500 text-sm mb-2">{{__('生日')}}</div>
+                        <div>
+                            @if($profile['birthday'] ?? '')
+                                <input type="text" name="birthday"
+                                       value="{{\Carbon\Carbon::parse($profile['birthday'])->format('Y-m-d')}}"
+                                       autocomplete="off"
+                                       class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                       required>
+                            @else
+                                <input type="text" name="birthday"
+                                       placeholder="{{__('请选择出生年月日')}}"
+                                       autocomplete="off"
+                                       class="date w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                       required>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex-1 ml-5">
+                        <div class="text-gray-500 text-sm mb-2">{{__('职业')}}</div>
+                        <div>
+                            <input type="text" name="profession" value="{{$profile['profession'] ?? ''}}"
+                                   placeholder="{{__('职业')}}"
+                                   autocomplete="off"
+                                   class="w-full border-gray-200 rounded bg-gray-100 px-3 py-2 focus:ring-1 focus:ring-blue-600 focus:bg-white"
+                                   required>
+                        </div>
                     </div>
                 </div>
+
 
                 <div class="w-full mb-5">
                     <div class="text-gray-500 text-sm mb-2">{{__('住址')}}</div>
@@ -319,6 +321,53 @@
             </div>
         </div>
     </div>
+
+    @if(app()->make(\App\Businesses\BusinessState::class)->isNeedBindMobile($user))
+        <div class="mt-5">
+            <div class="bg-white px-5 rounded shadow">
+                <div class="text-gray-800 text-base font-medium pt-5 mb-5">{{__('绑定手机号')}}</div>
+                <div class="pb-5">
+                    <div class="w-96">
+                        @include('frontend.components.mobile', ['smsCaptchaKey' => 'mobile_bind'])
+                        <div>
+                            <button type="submit"
+                                    data-url="{{route('ajax.mobile.bind')}}"
+                                    ata-message-success="{{__('成功')}}"
+                                    data-message-required="{{__('请输入手机号')}}"
+                                    data-message-code-required="{{__('请输入短信验证码')}}"
+                                    class="btn-mobile-bind w-full rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
+                                {{__('绑定手机号')}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="mt-5">
+            <div class="bg-white px-5 rounded shadow">
+                <div class="text-gray-800 text-base font-medium pt-5 mb-5">{{__('更换手机号')}}</div>
+                <div class="pb-5">
+                    <div class="w-96">
+                        <div class="text-gray-600 mb-5">
+                            {{__('当前手机号 :mobile', ['mobile' => $user['mobile']])}}
+                        </div>
+                        @include('frontend.components.mobile', ['smsCaptchaKey' => 'mobile_bind'])
+                        <div>
+                            <button type="submit"
+                                    data-url="{{route('ajax.mobile.change')}}"
+                                    ata-message-success="{{__('成功')}}"
+                                    data-message-required="{{__('请输入手机号')}}"
+                                    data-message-code-required="{{__('请输入短信验证码')}}"
+                                    class="btn-mobile-bind w-full rounded py-3 bg-blue-600 text-white text-center text-base hover:bg-blue-500">
+                                {{__('更换手机号')}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
 @endsection
 

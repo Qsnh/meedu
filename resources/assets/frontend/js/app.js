@@ -399,5 +399,41 @@ $(function () {
                 flashError(res.message);
             }
         }, 'json');
+    }).on('click', '.btn-mobile-bind', function () {
+        var message = {
+            success: $(this).attr('data-message-success'),
+            required: $(this).attr('data-message-required'),
+            codeRequired: $(this).attr('data-message-code-required'),
+        };
+
+        var mobile = $('input[name="mobile"]').val().trim();
+        var code = $('input[name="sms_captcha"]').val().trim();
+        var codeKey = $('input[name="sms_captcha_key"]').val();
+
+        if (mobile.length === 0) {
+            flashError(message.required);
+            return;
+        }
+        if (code.length === 0) {
+            flashError(message.codeRequired);
+            return;
+        }
+
+        $.post($(this).attr('data-url'), {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            mobile: mobile,
+            sms_captcha: code,
+            sms_captcha_key: codeKey
+        }, function (res) {
+            if (res.code === 0) {
+                flashSuccess(message.success);
+
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                flashError(res.message);
+            }
+        }, 'json');
     })
 });
