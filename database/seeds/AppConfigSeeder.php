@@ -3,7 +3,7 @@
 /*
  * This file is part of the Qsnh/meedu.
  *
- * (c) XiaoTeng <616896861@qq.com>
+ * (c) 杭州白书科技有限公司
  */
 
 use Illuminate\Database\Seeder;
@@ -14,6 +14,24 @@ class AppConfigSeeder extends Seeder
     {
         $config = [
             // 系统配置
+            [
+                'group' => '系统',
+                'name' => '语言',
+                'field_type' => 'select',
+                'sort' => 0,
+                'key' => 'meedu.system.lang',
+                'value' => 'zh',
+                'option_value' => json_encode([
+                    [
+                        'title' => '中文',
+                        'key' => \App\Constant\FrontendConstant::LANG_ZH,
+                    ],
+                    [
+                        'title' => 'English',
+                        'key' => \App\Constant\FrontendConstant::LANG_EN,
+                    ],
+                ]),
+            ],
             [
                 'group' => '系统',
                 'name' => '网站名',

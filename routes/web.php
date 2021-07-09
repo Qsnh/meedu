@@ -3,7 +3,7 @@
 /*
  * This file is part of the Qsnh/meedu.
  *
- * (c) XiaoTeng <616896861@qq.com>
+ * (c) 杭州白书科技有限公司
  */
 
 Route::get('/', 'IndexController@index')->name('index');
@@ -147,6 +147,8 @@ Route::group([
         Route::post('/profile', 'AjaxController@profileUpdate')->name('ajax.member.profile.update');
         // 手机号绑定
         Route::post('/mobile_bind', 'AjaxController@mobileBind')->name('ajax.mobile.bind')->middleware(['sms.check']);
+        // 手机号换绑
+        Route::post('/mobile/change', 'AjaxController@changeMobile')->name('ajax.mobile.change')->middleware(['sms.check']);
         // 视频播放地址
         Route::post('/video/urls', 'AjaxController@getPlayUrls')->name('ajax.video.playUrls');
     });

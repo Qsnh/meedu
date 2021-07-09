@@ -3,7 +3,7 @@
 /*
  * This file is part of the Qsnh/meedu.
  *
- * (c) XiaoTeng <616896861@qq.com>
+ * (c) 杭州白书科技有限公司
  */
 
 namespace App\Constant;
@@ -66,4 +66,7 @@ class FrontendConstant
         'member.mobile.bind.submit',
         'logout',
     ];
+
+    public const LANG_ZH = 'zh';
+    public const LANG_EN = 'en';
 }

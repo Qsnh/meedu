@@ -3,7 +3,7 @@
 /*
  * This file is part of the Qsnh/meedu.
  *
- * (c) XiaoTeng <616896861@qq.com>
+ * (c) 杭州白书科技有限公司
  */
 
 namespace App\Http\Controllers\Frontend;
@@ -239,6 +239,13 @@ class AjaxController extends BaseController
     {
         ['mobile' => $mobile] = $request->filldata();
         $this->userService->bindMobile($mobile, $this->id());
+        return $this->success();
+    }
+
+    public function changeMobile(MobileBindRequest $request)
+    {
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->changeMobile($this->id(), $mobile);
         return $this->success();
     }
 

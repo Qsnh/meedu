@@ -3,7 +3,7 @@
 /*
  * This file is part of the Qsnh/meedu.
  *
- * (c) XiaoTeng <616896861@qq.com>
+ * (c) 杭州白书科技有限公司
  */
 
 return [
@@ -231,6 +231,9 @@ return [
             'pc' => '',
             'h5' => '',
         ],
+
+        // 多语言
+        'lang' => \App\Constant\FrontendConstant::LANG_ZH,
     ],
 
     // 其它配置
