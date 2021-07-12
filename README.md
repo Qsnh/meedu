@@ -1,5 +1,3 @@
-## [MeEdu(杭州白书科技有限公司)](https://www.qcc.com/firm/a19b4d324cca2c006b1997f1ea057424.html) 正在寻求天使轮股权融资。计划融资200万人民币，出让20%的股权。有兴趣可微信联系
-
 <p align="center"><img src="public/images/meedu.png"/></p>
 <p align="center">MeEdu - 知识付费解决方案。</p>
 <p align="center">
