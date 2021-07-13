@@ -303,5 +303,7 @@
   "请输入手机号和验证码": "Please input mobile phone number and verification code",
   "更换手机号": "Change mobile phone number",
   "当前手机号 :mobile": "Current mobile phone number :mobile",
-  "手机短信登录": "SMS login"
+  "手机短信登录": "SMS login",
+  "编辑器": "Editor",
+  "直接上传": "DirectUpload"
 }
