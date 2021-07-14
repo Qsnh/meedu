@@ -38,16 +38,21 @@ class MemberController extends BaseController
 {
     public function index(Request $request)
     {
+        // 过滤条件
         $keywords = $request->input('keywords', '');
         $roleId = $request->input('role_id');
         $tagId = $request->input('tag_id');
+        $createdAt = $request->input('created_at');
+
+        // 排序字段
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
-        $members = User::with(['role', 'tags'])
+        $members = User::query()
+            ->with(['role:id,name', 'tags:id,name'])
             ->when($keywords, function ($query) use ($keywords) {
-                return $query->where('nick_name', 'like', "%{$keywords}%")
-                    ->orWhere('mobile', 'like', "%{$keywords}%")
+                $query->where('nick_name', $keywords)
+                    ->orWhere('mobile', $keywords)
                     ->orWhere('id', $keywords);
             })
             ->when($roleId, function ($query) use ($roleId) {
@@ -56,6 +61,9 @@ class MemberController extends BaseController
             ->when($tagId, function ($query) use ($tagId) {
                 $userIds = UserTagRelation::query()->where('tag_id', $tagId)->select(['user_id'])->get()->pluck('user_id');
                 $query->whereIn('id', $userIds);
+            })
+            ->when($createdAt, function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', $createdAt);
             })
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
@@ -81,7 +89,7 @@ class MemberController extends BaseController
 
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::query()->select(['id', 'name'])->orderByDesc('id')->get();
         return $this->successData(compact('roles'));
     }
 
