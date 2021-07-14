@@ -218,7 +218,7 @@ class MemberController extends BaseController
     public function userRoles(Request $request, $id)
     {
         $data = UserJoinRoleRecord::query()
-            ->with(['role'])
+            ->with(['role:id,name'])
             ->where('user_id', $id)
             ->orderByDesc('created_at')
             ->paginate($request->input('size', 20));
@@ -380,7 +380,7 @@ class MemberController extends BaseController
     {
         $records = UserVideoWatchRecord::query()
             ->select([
-                'id', 'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at',
+                'id', 'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at', 'created_at',
             ])
             ->where('user_id', $id)
             ->orderByDesc('id')
