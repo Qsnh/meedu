@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Events\PaymentSuccessEvent;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
+use App\Services\Order\Models\OrderGoods;
 
 class OrderController extends BaseController
 {
@@ -20,11 +21,33 @@ class OrderController extends BaseController
         $status = $request->input('status', null);
         $userId = $request->input('user_id');
         $orderId = $request->input('order_id');
+        $createdAt = $request->input('created_at');
+        $goodsId = $request->input('goods_id');
+        $goodsName = trim($request->input('goods_name', ''));
 
-        $orders = Order::query()
-            ->with(['goods', 'paidRecords'])
-            ->when($status, function ($query) use ($status) {
-                $query->where('status', $status);
+        // 排序字段
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
+
+        $orderIds = [];
+        if ($goodsId) {
+            $orderIds = OrderGoods::query()->where('goods_id', $goodsId)->select(['oid'])->get()->pluck('oid')->toArray();
+        }
+        if ($goodsName) {
+            $orderIds = array_merge(
+                $orderIds,
+                OrderGoods::query()->where('goods_name', $goodsName)->select(['oid'])->get()->pluck('oid')->toArray()
+            );
+        }
+        $orderIds && $orderIds = array_flip(array_flip($orderIds));
+
+        $query = Order::query()
+            ->with([
+                'goods:oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge',
+                'paidRecords',
+            ])
+            ->when($orderIds, function ($query) use ($orderIds) {
+                $query->whereIn('id', $orderIds);
             })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
@@ -32,7 +55,15 @@ class OrderController extends BaseController
             ->when($orderId, function ($query) use ($orderId) {
                 $query->where('order_id', $orderId);
             })
-            ->orderByDesc('id')
+            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', $createdAt);
+            });
+
+        $orders = (clone $query)
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
         // 读取当前读取出来订单的用户
@@ -43,7 +74,15 @@ class OrderController extends BaseController
             ->get()
             ->keyBy('id');
 
-        return $this->successData(compact('orders', 'users'));
+        // 各状态订单数量统计
+        $countMap = [
+            Order::STATUS_UNPAY => (clone $query)->where('status', Order::STATUS_UNPAY)->count(),
+            Order::STATUS_CANCELED => (clone $query)->where('status', Order::STATUS_CANCELED)->count(),
+            Order::STATUS_PAID => (clone $query)->where('status', Order::STATUS_PAID)->count(),
+            Order::STATUS_PAYING => (clone $query)->where('status', Order::STATUS_PAYING)->count(),
+        ];
+
+        return $this->successData(compact('orders', 'users', 'countMap'));
     }
 
     public function detail($id)
