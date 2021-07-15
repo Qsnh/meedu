@@ -1087,10 +1087,48 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'mpWechat/menu',
             ],
+
+            // 用户标签
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签列表',
+                'slug' => 'member.tag',
+                'method' => 'GET',
+                'url' => 'member/tag/index',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签添加',
+                'slug' => 'member.tag.store',
+                'method' => 'POST',
+                'url' => 'member/tag/create',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签查看',
+                'slug' => 'member.tag.edit',
+                'method' => 'GET',
+                'url' => 'member/tag/\d+',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签编辑',
+                'slug' => 'member.tag.update',
+                'method' => 'PUT',
+                'url' => 'member/tag/\d+',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签删除',
+                'slug' => 'member.tag.destroy',
+                'method' => 'DELETE',
+                'url' => 'member/tag/\d+',
+            ],
         ];
 
         foreach ($permissions as $permission) {
-            $exists = \App\Models\AdministratorPermission::where('slug', $permission['slug'])
+            $exists = \App\Models\AdministratorPermission::query()
+                ->where('slug', $permission['slug'])
                 ->where('method', $permission['method'])
                 ->exists();
             if ($exists) {

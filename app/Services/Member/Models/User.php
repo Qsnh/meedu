@@ -106,4 +106,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(UserProfile::class, 'user_id');
     }
+
+    public function remark()
+    {
+        return $this->hasOne(UserRemark::class, 'user_id');
+    }
 }

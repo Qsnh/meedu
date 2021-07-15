@@ -305,5 +305,7 @@
   "当前手机号 :mobile": "Current mobile phone number :mobile",
   "手机短信登录": "SMS login",
   "编辑器": "Editor",
-  "直接上传": "DirectUpload"
+  "直接上传": "DirectUpload",
+  "用户标签已存在": "User tag already exists",
+  "当前标签已关联用户，无法删除": "The current tag is associated with a user and cannot be deleted"
 }

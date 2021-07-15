@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,12 +89,16 @@ class MemberController extends BaseController
     public function create()
     {
         $roles = Role::query()->select(['id', 'name'])->orderByDesc('id')->get();
-        return $this->successData(compact('roles'));
+        $tags = UserTag::query()->select(['id', 'name'])->orderByDesc('id')->get();
+        return $this->successData(compact('roles', 'tags'));
     }
 
     public function edit($id)
     {
-        $member = User::findOrFail($id);
+        $member = User::query()
+            ->with(['tags:id,name', 'remark:user_id,remark'])
+            ->where('id', $id)
+            ->firstOrFail();
 
         return $this->successData($member);
     }
@@ -158,13 +161,22 @@ class MemberController extends BaseController
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $data = $request->all();
-        $data = Arr::only($data, [
+        $user = User::query()->where('id', $id)->firstOrFail();
+        $data = $request->only([
             'avatar', 'nick_name', 'mobile', 'password',
             'is_lock', 'is_active', 'role_id', 'role_expired_at',
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
+
+        // 手机号校验
+        if (User::query()->where('mobile', $data['mobile'])->where('id', '<>', $user['id'])->exists()) {
+            return $this->error(__('手机号已存在'));
+        }
+
+        // 昵称校验
+        if (User::query()->where('nick_name', $data['nick_name'])->where('id', '<>', $user['id'])->exists()) {
+            return $this->error(__('昵称已经存在'));
+        }
 
         // 字段默认值
         $data['role_id'] = (int)($data['role_id'] ?? 0);
@@ -173,7 +185,7 @@ class MemberController extends BaseController
         $data['role_expired_at'] = $data['role_expired_at'] ?: null;
         // 如果删除了时间，那么将roleId重置为0
         $data['role_expired_at'] || $data['role_id'] = 0;
-        // 如果roleId为0的话，那么role_expired_at也重置为0
+        // 如果roleId为0的话，那么role_expired_at也重置为null
         $data['role_id'] || $data['role_expired_at'] = null;
 
         // 修改密码
@@ -186,7 +198,10 @@ class MemberController extends BaseController
 
     public function detail($id)
     {
-        $user = User::query()->with(['role', 'invitor', 'profile'])->where('id', $id)->firstOrFail();
+        $user = User::query()
+            ->with(['role:id,name', 'invitor:id,nick_name,mobile,avatar', 'profile', 'tags:id,name', 'remark:user_id,remark'])
+            ->where('id', $id)
+            ->firstOrFail();
 
         return $this->successData([
             'data' => $user,
@@ -311,26 +326,12 @@ class MemberController extends BaseController
         return $this->success();
     }
 
-    // 用户标签更新
     public function tagUpdate(Request $request, $userId)
     {
-        $tags = $request->input('tags');
-
-        $tagIdMap = UserTag::query()->whereIn('name', $tags)->select(['name', 'id'])->get()->keyBy('name')->toArray();
-        $tagIds = [];
-
-        foreach ($tags as $item) {
-            $id = $tagIdMap[$item]['id'] ?? 0;
-            if (!$id) {
-                // 标签不存在
-                $tmpTag = UserTag::create(['name' => $item]);
-                $id = $tmpTag['id'];
-            }
-
-            $tagIds[] = $id;
-        }
+        $tagIds = explode(',', $request->input('tag_ids', ''));
 
         $user = User::query()->where('id', $userId)->firstOrFail();
+
         $user->tags()->sync($tagIds);
 
         return $this->success();

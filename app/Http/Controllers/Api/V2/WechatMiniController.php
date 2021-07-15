@@ -38,8 +38,7 @@ class WechatMiniController extends BaseController
     public function __construct(
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService
-    )
-    {
+    ) {
         $this->configService = $configService;
         $this->cacheService = $cacheService;
 

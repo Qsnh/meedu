@@ -184,7 +184,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
 
-        // 标签
+        // 更新用户标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
         // 备注
         Route::get('/{id}/remark', 'MemberController@remark');
@@ -209,6 +209,16 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/credit1/change', 'MemberController@credit1Change');
         // 发送站内消息
         Route::post('/{id}/message', 'MemberController@sendMessage');
+
+        // 用户标签管理
+        Route::group(['prefix' => 'tag'], function () {
+            Route::get('/index', 'MemberTagController@index');
+            Route::get('/create', 'MemberTagController@create');
+            Route::post('/create', 'MemberTagController@store');
+            Route::get('/{id}', 'MemberTagController@edit');
+            Route::put('/{id}', 'MemberTagController@update');
+            Route::delete('/{id}', 'MemberTagController@destroy');
+        });
     });
 
     // 网站配置
