@@ -1124,6 +1124,43 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'member/tag/\d+',
             ],
+
+            // 装修
+            [
+                'group_name' => '装修',
+                'display_name' => '装修列表',
+                'slug' => 'viewBlock',
+                'method' => 'GET',
+                'url' => 'viewBlock/index',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修添加',
+                'slug' => 'viewBlock.store',
+                'method' => 'POST',
+                'url' => 'viewBlock/create',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修查看',
+                'slug' => 'viewBlock.edit',
+                'method' => 'GET',
+                'url' => 'viewBlock/\d+',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修编辑',
+                'slug' => 'viewBlock.update',
+                'method' => 'PUT',
+                'url' => 'viewBlock/\d+',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修删除',
+                'slug' => 'viewBlock.destroy',
+                'method' => 'DELETE',
+                'url' => 'viewBlock/\d+',
+            ],
         ];
 
         foreach ($permissions as $permission) {

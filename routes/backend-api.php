@@ -317,4 +317,14 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
             Route::delete('/', 'MpWechatController@menuEmpty');
         });
     });
+
+    // 装修
+    Route::group(['prefix' => 'viewBlock'], function () {
+        Route::get('/index', 'ViewBlockController@index');
+        Route::get('/create', 'ViewBlockController@create');
+        Route::post('/create', 'ViewBlockController@store');
+        Route::get('/{id}', 'ViewBlockController@edit');
+        Route::put('/{id}', 'ViewBlockController@update');
+        Route::delete('/{id}', 'ViewBlockController@destroy');
+    });
 });
