@@ -13,6 +13,7 @@ class Constant
 
     // blocks
     public const H5_BLOCK_SIGN_VOD_V1 = 'h5-vod-v1';
+    public const PC_BLOCK_SIGN_VOD_V1 = 'pc-vod-v1';
 
     public const H5_BLOCK_SIGN_LIVE_V1 = 'h5-live-v1';
 

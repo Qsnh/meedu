@@ -21,7 +21,7 @@ class ViewBlockDataRenderVodHook implements HookRuntimeInterface
         $block = $params->getValue('block');
         $params->setResponse($block);
 
-        if ($block['sign'] !== Constant::H5_BLOCK_SIGN_VOD_V1) {
+        if (!in_array($block['sign'], [Constant::H5_BLOCK_SIGN_VOD_V1, Constant::PC_BLOCK_SIGN_VOD_V1])) {
             return $closure($params);
         }
 
