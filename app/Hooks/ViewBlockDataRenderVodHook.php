@@ -19,11 +19,12 @@ class ViewBlockDataRenderVodHook implements HookRuntimeInterface
     public function handle(HookParams $params, \Closure $closure)
     {
         $block = $params->getValue('block');
-        $params->setResponse($block);
 
         if (!in_array($block['sign'], [Constant::H5_BLOCK_SIGN_VOD_V1, Constant::PC_BLOCK_SIGN_VOD_V1])) {
             return $closure($params);
         }
+
+        $params->setResponse($block);
 
         $courseIds = collect($block['config_render']['items'])->pluck('id')->map(function ($val) {
             return (int)$val;
