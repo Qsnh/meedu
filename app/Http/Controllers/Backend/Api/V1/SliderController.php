@@ -8,14 +8,22 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Http\Request;
 use App\Services\Other\Models\Slider;
 use App\Http\Requests\Backend\SliderRequest;
 
 class SliderController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $links = Slider::orderBy('sort')->get();
+        $platform = $request->input('platform');
+
+        $links = Slider::query()
+            ->when($platform, function ($query) use ($platform) {
+                $query->where('platform', $platform);
+            })
+            ->orderBy('sort')
+            ->get();
 
         return $this->successData($links);
     }
