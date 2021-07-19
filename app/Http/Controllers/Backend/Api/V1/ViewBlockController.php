@@ -33,6 +33,13 @@ class ViewBlockController extends BaseController
             ->toArray();
 
         foreach ($blocks as $index => $blockItem) {
+            if (in_array($blockItem['sign'], [
+                Constant::H5_BLOCK_SIGN_SLIDER,
+                Constant::H5_BLOCK_SIGN_GRID_NAV,
+            ])) {
+                continue;
+            }
+
             $blocks[$index] = HookRun::run(PositionConstant::VIEW_BLOCK_DATA_RENDER, new HookParams(['block' => $blockItem]));
         }
 
