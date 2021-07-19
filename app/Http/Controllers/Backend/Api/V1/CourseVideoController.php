@@ -25,11 +25,23 @@ class CourseVideoController extends BaseController
     public function index(Request $request)
     {
         $courseId = $request->input('cid');
+        $keywords = $request->input('keywords');
+
+        // 排序字段
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
 
         $videos = Video::query()
-            ->with(['chapter:id,title'])
-            ->where('course_id', $courseId)
-            ->orderBy('published_at')
+            ->with([
+                'chapter:id,title', 'course:id,title,thumb,charge',
+            ])
+            ->when($courseId, function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
+            ->when($keywords, function ($query) use ($keywords) {
+                $query->where('title', 'like', '%' . $keywords . '%');
+            })
+            ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
         return $this->successData(compact('videos'));
@@ -37,7 +49,10 @@ class CourseVideoController extends BaseController
 
     public function create()
     {
-        $courses = Course::select(['id', 'title'])->orderByDesc('published_at')->get();
+        $courses = Course::query()
+            ->select(['id', 'title'])
+            ->orderByDesc('id')
+            ->get();
 
         return $this->successData(compact('courses'));
     }
