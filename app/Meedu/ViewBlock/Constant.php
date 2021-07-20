@@ -20,6 +20,8 @@ class Constant
     public const H5_BLOCK_BLANK = 'blank';
     // 图片魔方
     public const H5_BLOCK_IMAGE_GROUP = 'image-group';
+    // 微信公众号
+    public const H5_BLOCK_MP_WECHAT = 'mp-wechat';
 
     public const H5_BLOCK_SIGN_LIVE_V1 = 'h5-live-v1';
 
@@ -58,5 +60,6 @@ class Constant
         self::PC_BLOCK_SIGN_CODE,
         self::H5_BLOCK_IMAGE_GROUP,
         self::H5_BLOCK_BLANK,
+        self::H5_BLOCK_MP_WECHAT,
     ];
 }
