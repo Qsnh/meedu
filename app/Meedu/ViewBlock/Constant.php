@@ -49,7 +49,7 @@ class Constant
 
     public const DATA_RENDER_BLOCK_WHITELIST = [
         self::H5_BLOCK_SIGN_GRID_NAV,
-        self::H5_BLOCK_SIGN_GRID_NAV,
+        self::H5_BLOCK_SIGN_SLIDER,
         self::PC_BLOCK_SIGN_CODE,
     ];
 }
