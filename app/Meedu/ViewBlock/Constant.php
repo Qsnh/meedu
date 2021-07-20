@@ -14,7 +14,12 @@ class Constant
     // blocks
     public const H5_BLOCK_SIGN_VOD_V1 = 'h5-vod-v1';
     public const PC_BLOCK_SIGN_VOD_V1 = 'pc-vod-v1';
+    // 代码块
     public const PC_BLOCK_SIGN_CODE = 'code';
+    // 辅助空白
+    public const H5_BLOCK_BLANK = 'blank';
+    // 图片魔方
+    public const H5_BLOCK_IMAGE_GROUP = 'image-group';
 
     public const H5_BLOCK_SIGN_LIVE_V1 = 'h5-live-v1';
 
@@ -51,5 +56,7 @@ class Constant
         self::H5_BLOCK_SIGN_GRID_NAV,
         self::H5_BLOCK_SIGN_SLIDER,
         self::PC_BLOCK_SIGN_CODE,
+        self::H5_BLOCK_IMAGE_GROUP,
+        self::H5_BLOCK_BLANK,
     ];
 }
