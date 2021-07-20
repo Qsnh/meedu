@@ -14,6 +14,7 @@ class Constant
     // blocks
     public const H5_BLOCK_SIGN_VOD_V1 = 'h5-vod-v1';
     public const PC_BLOCK_SIGN_VOD_V1 = 'pc-vod-v1';
+    public const PC_BLOCK_SIGN_CODE = 'code';
 
     public const H5_BLOCK_SIGN_LIVE_V1 = 'h5-live-v1';
 
@@ -44,5 +45,11 @@ class Constant
             self::H5_BLOCK_SIGN_MS_V1,
             self::H5_BLOCK_SIGN_TG_V1,
         ],
+    ];
+
+    public const DATA_RENDER_BLOCK_WHITELIST = [
+        self::H5_BLOCK_SIGN_GRID_NAV,
+        self::H5_BLOCK_SIGN_GRID_NAV,
+        self::PC_BLOCK_SIGN_CODE,
     ];
 }

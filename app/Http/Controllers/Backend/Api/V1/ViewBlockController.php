@@ -8,12 +8,10 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
-use App\Meedu\Hooks\HookParams;
+use App\Meedu\ViewBlock\Render;
 use App\Meedu\ViewBlock\Constant;
 use App\Services\Other\Models\ViewBlock;
-use App\Meedu\Hooks\Constant\PositionConstant;
 
 class ViewBlockController extends BaseController
 {
@@ -32,16 +30,7 @@ class ViewBlockController extends BaseController
             ->get()
             ->toArray();
 
-        foreach ($blocks as $index => $blockItem) {
-            if (in_array($blockItem['sign'], [
-                Constant::H5_BLOCK_SIGN_SLIDER,
-                Constant::H5_BLOCK_SIGN_GRID_NAV,
-            ])) {
-                continue;
-            }
-
-            $blocks[$index] = HookRun::run(PositionConstant::VIEW_BLOCK_DATA_RENDER, new HookParams(['block' => $blockItem]));
-        }
+        $blocks = Render::dataRender($blocks);
 
         return $this->successData($blocks);
     }
