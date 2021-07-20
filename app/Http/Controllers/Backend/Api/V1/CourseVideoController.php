@@ -50,7 +50,7 @@ class CourseVideoController extends BaseController
     public function create()
     {
         $courses = Course::query()
-            ->select(['id', 'title'])
+            ->select(['id', 'title', 'thumb', 'charge'])
             ->orderByDesc('id')
             ->get();
 
@@ -61,37 +61,40 @@ class CourseVideoController extends BaseController
     {
         $video->fill($request->filldata())->save();
 
-        $this->hook($video->course_id);
-
         return $this->success();
     }
 
     public function edit($id)
     {
-        $video = Video::findOrFail($id);
+        $video = Video::query()->where('id', $id)->firstOrFail();
 
-        $courses = Course::all();
+        $courses = Course::query()
+            ->select(['id', 'title', 'thumb', 'charge'])
+            ->orderByDesc('id')
+            ->get();
 
         return $this->successData(compact('video', 'courses'));
     }
 
     public function update(CourseVideoRequest $request, $id)
     {
-        $video = Video::findOrFail($id);
-        $video->fill($request->filldata())->save();
+        $video = Video::query()->where('id', $id)->firstOrFail();
 
-        $this->hook($video->course_id);
+        $video->fill($request->filldata())->save();
 
         return $this->success();
     }
 
     public function destroy($id)
     {
-        $video = Video::findOrFail($id);
-        $courseId = $video->course_id;
-        $video->delete();
+        $video = Video::query()->where('id', $id)->firstOrFail();
 
-        $this->hook($courseId);
+        DB::transaction(function () use ($video) {
+            // 清空用户的观看记录
+            UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
+
+            $video->delete();
+        });
 
         return $this->success();
     }
@@ -106,12 +109,22 @@ class CourseVideoController extends BaseController
     public function multiDestroy(Request $request)
     {
         $ids = $request->input('ids');
-        $videos = Video::query()->whereIn('id', $ids)->get();
-        foreach ($videos as $video) {
-            $courseId = $video['course_id'];
-            $video->delete();
-            $this->hook($courseId);
-        }
+
+        DB::transaction(function () use ($ids) {
+            $videos = Video::query()
+                ->select([
+                    'id'
+                ])
+                ->whereIn('id', $ids)
+                ->get();
+
+            foreach ($videos as $video) {
+                // 清空用户观看记录
+                UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
+
+                $video->delete();
+            }
+        });
 
         return $this->success();
     }
@@ -148,20 +161,32 @@ class CourseVideoController extends BaseController
     public function subscribeCreate(Request $request, $videoId)
     {
         $userId = $request->input('user_id');
-        if (UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->exists()) {
-            return $this->error(__('订阅关系已存在'));
+        if (!$userId) {
+            return $this->error(__('参数错误'));
         }
 
-        if (!User::query()->where('id', $userId)->exists()) {
-            return $this->error(__('用户不存在'));
+        if (!is_array($userId)) {
+            $userId = [$userId];
         }
 
-        UserVideo::create([
-            'user_id' => $userId,
-            'video_id' => $videoId,
-            'charge' => 0,
-            'created_at' => Carbon::now(),
-        ]);
+        $existsIds = UserVideo::query()
+            ->whereIn('user_id', $userId)
+            ->where('video_id', $videoId)
+            ->select(['user_id'])
+            ->get()
+            ->pluck('user_id')
+            ->toArray();
+
+        $userId = array_diff($userId, $existsIds);
+
+        foreach ($userId as $id) {
+            UserVideo::create([
+                'user_id' => $id,
+                'video_id' => $videoId,
+                'charge' => 0,
+                'created_at' => Carbon::now(),
+            ]);
+        }
 
         return $this->success();
     }

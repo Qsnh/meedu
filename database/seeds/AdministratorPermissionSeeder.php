@@ -493,6 +493,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '课程',
+                'display_name' => '课程观看记录删除',
+                'slug' => 'course.watchRecords.delete',
+                'method' => 'POST',
+                'url' => 'course/\d+/watch/records/delete',
+            ],
+            [
+                'group_name' => '课程',
                 'display_name' => '课程订阅',
                 'slug' => 'course.subscribes',
                 'method' => 'GET',

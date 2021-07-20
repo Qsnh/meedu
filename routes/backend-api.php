@@ -140,7 +140,10 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');
         Route::delete('/{id}', 'CourseController@destroy');
+
         Route::get('/{id}/watch/records', 'CourseController@watchRecords');
+        Route::post('/{id}/watch/records/delete', 'CourseController@delWatchRecord');
+
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
