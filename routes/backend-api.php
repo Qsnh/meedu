@@ -13,6 +13,11 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::post('/media/image', 'MediaImageController@upload');
 });
 
+Route::group(['middleware' => ['auth:administrator']], function () {
+    Route::get('/media/videos/index', 'MediaVideoController@index');
+    Route::post('/media/videos/create', 'MediaVideoController@store');
+});
+
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
     Route::get('/user', 'LoginController@user');
     Route::get('/menus', 'LoginController@menus');
