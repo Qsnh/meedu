@@ -174,7 +174,7 @@ class CourseController extends BaseController
                 $query->where('user_id', $userId);
             })
             ->when($subscribeStartAt && $subscribeEndAt, function ($query) use ($subscribeStartAt, $subscribeEndAt) {
-                $query->whereBetween('created_at', [$subscribeStartAt, $subscribeEndAt]);
+                $query->whereBetween('created_at', [Carbon::parse($subscribeStartAt), Carbon::parse($subscribeEndAt)]);
             })
             ->where('course_id', $courseId)
             ->orderByDesc('created_at')

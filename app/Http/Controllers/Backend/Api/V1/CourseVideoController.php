@@ -220,7 +220,7 @@ class CourseVideoController extends BaseController
                 $query->where('course_id', $courseId);
             })
             ->when($watchedStartAt && $watchedEndAt, function ($query) use ($watchedStartAt, $watchedEndAt) {
-                $query->whereBetween('watched_at', [$watchedStartAt, $watchedEndAt]);
+                $query->whereBetween('watched_at', [Carbon::parse($watchedStartAt), Carbon::parse($watchedEndAt)]);
             })
             ->orderByRaw('course_id,video_id,user_id desc')
             ->paginate($size, ['*'], 'page', $page);

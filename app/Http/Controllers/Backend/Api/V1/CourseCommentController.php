@@ -8,9 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\Member\Models\User;
-use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseComment;
 
 class CourseCommentController extends BaseController
@@ -19,13 +19,18 @@ class CourseCommentController extends BaseController
     {
         $courseId = $request->input('course_id');
         $userId = $request->input('user_id');
+        $createdAt = $request->input('created_at');
 
-        $comments = CourseComment::with(['course'])
+        $comments = CourseComment::query()
+            ->with(['course:id,title,charge,thumb'])
             ->when($courseId, function ($query) use ($courseId) {
                 $query->where('course_id', $courseId);
             })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
+            })
+            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', [Carbon::parse($createdAt[0]), Carbon::parse($createdAt[1])]);
             })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
@@ -36,11 +41,8 @@ class CourseCommentController extends BaseController
             ->get()
             ->keyBy('id');
 
-        $courses = Course::query()->select(['id', 'title'])->get();
-
         return $this->successData([
             'data' => $comments,
-            'courses' => $courses,
             'users' => $users,
         ]);
     }

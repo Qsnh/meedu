@@ -8,10 +8,10 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
-use App\Services\Course\Models\Course;
 use App\Services\Course\Models\VideoComment;
 
 class VideoCommentController extends BaseController
@@ -21,8 +21,10 @@ class VideoCommentController extends BaseController
         $courseId = $request->input('course_id');
         $videoId = $request->input('video_id');
         $userId = $request->input('user_id');
+        $createdAt = $request->input('created_at');
 
-        $comments = VideoComment::with(['video.course'])
+        $comments = VideoComment::query()
+            ->with(['video:id,course_id,title,charge,duration', 'video.course:id,title,thumb,charge'])
             ->when($courseId, function ($query) use ($courseId) {
                 $videoIds = Video::query()->select(['id'])->where('course_id', $courseId)->get()->pluck('id');
                 $query->whereIn('video_id', $videoIds);
@@ -33,6 +35,9 @@ class VideoCommentController extends BaseController
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
+            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', [Carbon::parse($createdAt[0]), Carbon::parse($createdAt[1])]);
+            })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
@@ -42,13 +47,8 @@ class VideoCommentController extends BaseController
             ->get()
             ->keyBy('id');
 
-        $courses = Course::query()->select(['id', 'title'])->get();
-        $videos = Video::query()->select(['id', 'title', 'course_id'])->get()->groupBy('course_id');
-
         return $this->successData([
             'data' => $comments,
-            'courses' => $courses,
-            'videos' => $videos,
             'users' => $users,
         ]);
     }
