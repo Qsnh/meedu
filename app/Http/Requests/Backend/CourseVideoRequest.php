@@ -8,6 +8,7 @@
 
 namespace App\Http\Requests\Backend;
 
+use Carbon\Carbon;
 use Overtrue\Pinyin\Pinyin;
 use App\Services\Course\Models\Video;
 
@@ -65,7 +66,7 @@ class CourseVideoRequest extends BaseRequest
             'render_desc' => $this->input('render_desc') ?? '',
             'seo_keywords' => (string)$this->input('seo_keywords', ''),
             'seo_description' => (string)$this->input('seo_description', ''),
-            'published_at' => $this->input('published_at'),
+            'published_at' => Carbon::parse($this->input('published_at'))->toDateTimeLocalString(),
             'is_show' => (int)$this->input('is_show'),
             'charge' => (int)$this->input('charge', 0),
             'chapter_id' => (int)$this->input('chapter_id', 0),
