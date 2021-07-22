@@ -46,8 +46,8 @@ class OrderController extends BaseController
                 'goods:oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge',
                 'paidRecords',
             ])
-            ->when($orderIds, function ($query) use ($orderIds) {
-                $query->whereIn('id', $orderIds);
+            ->when($goodsId || $goodsName, function ($query) use ($orderIds) {
+                $query->whereIn('id', $orderIds ?: [0]);
             })
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
