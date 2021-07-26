@@ -21,7 +21,12 @@ class Render
                 continue;
             }
 
-            $blocks[$index] = HookRun::run(PositionConstant::VIEW_BLOCK_DATA_RENDER, new HookParams(['block' => $blockItem]));
+            $tmpData = HookRun::run(PositionConstant::VIEW_BLOCK_DATA_RENDER, new HookParams(['block' => $blockItem]));
+
+            if ($tmpData) {
+                // 如果渲染返回了数据则覆盖已有的数据
+                $blocks[$index] = $tmpData;
+            }
         }
 
         return $blocks;
@@ -32,7 +37,9 @@ class Render
     {
         $html = '';
         foreach ($blocks as $blockItem) {
-            $html .= HookRun::run(PositionConstant::VIEW_BLOCK_HTML_RENDER, new HookParams(['block' => $blockItem]));
+            $tmp = HookRun::run(PositionConstant::VIEW_BLOCK_HTML_RENDER, new HookParams(['block' => $blockItem]));
+
+            $tmp && $html .= $tmp;
         }
 
         return $html;
