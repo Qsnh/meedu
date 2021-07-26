@@ -10,9 +10,12 @@ namespace App\Meedu\ViewBlock;
 
 class Constant
 {
+    public const PLATFORM_PC = 'pc';
+    public const PLATFORM_H5 = 'h5';
 
     // blocks
     public const H5_BLOCK_SIGN_VOD_V1 = 'h5-vod-v1';
+    // PC点播
     public const PC_BLOCK_SIGN_VOD_V1 = 'pc-vod-v1';
     // 代码块
     public const PC_BLOCK_SIGN_CODE = 'code';
@@ -41,6 +44,8 @@ class Constant
 
     // pages
     public const H5_PAGE_INDEX_V1 = 'h5-page-index-v1';
+
+    public const PC_PAGE_INDEX = 'pc-page-index';
 
     public const PAGE_BLOCKS = [
         self::H5_PAGE_INDEX_V1 => [

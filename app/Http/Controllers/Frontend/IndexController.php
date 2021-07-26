@@ -102,17 +102,9 @@ class IndexController extends FrontendController
         // 课程分类
         $categories = $this->courseCategoryService->all();
 
-        // 首页banner
-        $banners = $this->indexBannerService->all();
-        foreach ($banners as $key => $banner) {
-            $courseIds = explode(',', $banner['course_ids']);
-            $banners[$key]['courses'] = [];
-            $courseIds && $banners[$key]['courses'] = $this->courseService->getList($courseIds);
-        }
-
         return v(
             'frontend.index.index',
-            compact('title', 'keywords', 'description', 'links', 'sliders', 'courses', 'categories', 'banners')
+            compact('title', 'keywords', 'description', 'links', 'sliders', 'courses', 'categories')
         );
     }
 

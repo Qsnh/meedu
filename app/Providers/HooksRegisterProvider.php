@@ -13,20 +13,29 @@ use App\Hooks\MpWechatSubscribeHook;
 use App\Hooks\MpWechatMessageReplyHook;
 use Illuminate\Support\ServiceProvider;
 use App\Hooks\ViewBlockDataRenderVodHook;
+use App\Hooks\ViewBlockPcIndexPageVodRender;
 use App\Meedu\Hooks\Constant\PositionConstant;
 
 class HooksRegisterProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        HookContainer::getInstance()->register(PositionConstant::MP_WECHAT_RECEIVER_MESSAGE, [
+    protected $hooks = [
+        PositionConstant::MP_WECHAT_RECEIVER_MESSAGE => [
             MpWechatSubscribeHook::class,
             MpWechatMessageReplyHook::class,
-        ]);
-
-        HookContainer::getInstance()->register(PositionConstant::VIEW_BLOCK_DATA_RENDER, [
+        ],
+        PositionConstant::VIEW_BLOCK_DATA_RENDER => [
             ViewBlockDataRenderVodHook::class,
-        ]);
+        ],
+        PositionConstant::VIEW_BLOCK_HTML_RENDER => [
+            ViewBlockPcIndexPageVodRender::class
+        ],
+    ];
+
+    public function boot()
+    {
+        foreach ($this->hooks as $position => $hooks) {
+            HookContainer::getInstance()->register($position, $hooks);
+        }
     }
 
     public function register()
