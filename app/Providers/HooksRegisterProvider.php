@@ -12,8 +12,9 @@ use App\Meedu\Hooks\HookContainer;
 use App\Hooks\MpWechatSubscribeHook;
 use App\Hooks\MpWechatMessageReplyHook;
 use Illuminate\Support\ServiceProvider;
-use App\Hooks\ViewBlockDataRenderVodHook;
-use App\Hooks\ViewBlockPcIndexPageVodRender;
+use App\Hooks\ViewBlock\HTML\CodeHTMLHook;
+use App\Hooks\ViewBlock\Data\VodV1DataHook;
+use App\Hooks\ViewBlock\HTML\VodV1HTMLHook;
 use App\Meedu\Hooks\Constant\PositionConstant;
 
 class HooksRegisterProvider extends ServiceProvider
@@ -24,10 +25,11 @@ class HooksRegisterProvider extends ServiceProvider
             MpWechatMessageReplyHook::class,
         ],
         PositionConstant::VIEW_BLOCK_DATA_RENDER => [
-            ViewBlockDataRenderVodHook::class,
+            VodV1DataHook::class,
         ],
         PositionConstant::VIEW_BLOCK_HTML_RENDER => [
-            ViewBlockPcIndexPageVodRender::class
+            VodV1HTMLHook::class,
+            CodeHTMLHook::class,
         ],
     ];
 
