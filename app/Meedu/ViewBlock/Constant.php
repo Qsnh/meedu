@@ -43,7 +43,7 @@ class Constant
     public const H5_BLOCK_SIGN_GRID_NAV = 'grid-nav';
 
     // pages
-    public const H5_PAGE_INDEX_V1 = 'h5-page-index-v1';
+    public const H5_PAGE_INDEX_V1 = 'h5-page-index';
 
     public const PC_PAGE_INDEX = 'pc-page-index';
 

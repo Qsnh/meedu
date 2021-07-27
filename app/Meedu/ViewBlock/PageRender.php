@@ -18,6 +18,11 @@ class PageRender
         return self::render(Constant::PLATFORM_PC, Constant::PC_PAGE_INDEX);
     }
 
+    public static function h5IndexPage()
+    {
+        return self::render(Constant::PLATFORM_H5, Constant::H5_PAGE_INDEX_V1);
+    }
+
     public static function render(string $platform, string $page): string
     {
         /**

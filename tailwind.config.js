@@ -4,6 +4,7 @@ module.exports = {
     purge: {
         content: [
             './resources/views/frontend/**/*.blade.php',
+            './resources/views/frontend/**/*.tpl',
             './resources/assets/frontend/**/*.js',
         ]
     },

@@ -1,4 +1,4 @@
-@extends('layouts.h5')
+@extends('layouts.h5-pure')
 
 @section('css')
     <link crossorigin="anonymous" integrity="sha384-K6LrEaceM4QP87RzJ7R4CDXcFN4cFW/A5Q7/fEp/92c2WV+woVw9S9zKDO23sNS+"
@@ -7,6 +7,7 @@
         body {
             background-color: white;
         }
+
         .swiper-pagination {
             bottom: 0 !important;
         }
@@ -15,29 +16,7 @@
 
 @section('content')
 
-    <div class="swiper-box">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                @foreach($sliders as $slider)
-                    <a class="swiper-slide" href="{{$slider['url']}}">
-                        <img src="{{$slider['thumb']}}" width="100%" height="115">
-                    </a>
-                @endforeach
-            </div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-
-    @foreach($banners as $banner)
-        <div class="index-banner-box">
-            <div class="banner-title">{{$banner['name']}}</div>
-            <div class="courses">
-                @foreach($banner['courses'] as $index => $course)
-                    @include('h5.components.course', ['course' => $course])
-                @endforeach
-            </div>
-        </div>
-    @endforeach
+    {!! \App\Meedu\ViewBlock\PageRender::h5IndexPage() !!}
 
     @include('h5.components.tabbar', ['active' => 'index'])
 
