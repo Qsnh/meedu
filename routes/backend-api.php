@@ -11,11 +11,11 @@ Route::post('/login', 'LoginController@login');
 Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/media/images', 'MediaImageController@index');
     Route::post('/media/image', 'MediaImageController@upload');
-});
 
-Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/media/videos/index', 'MediaVideoController@index');
     Route::post('/media/videos/create', 'MediaVideoController@store');
+
+    Route::get('/addons', 'AddonsController@index');
 });
 
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
@@ -269,7 +269,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
     // 插件
     Route::group(['prefix' => 'addons'], function () {
-        Route::get('/', 'AddonsController@index');
         Route::get('/repository', 'AddonsController@repository');
         Route::get('/repository/user', 'AddonsController@user');
         Route::get('/repository/buy', 'AddonsController@buyAddons');
