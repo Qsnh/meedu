@@ -165,8 +165,6 @@ class CourseService implements CourseServiceInterface
             ->with(['category:id,name'])
             ->withCount(['videos'])
             ->whereIn('id', $ids)
-            ->show()
-            ->published()
             ->orderByDesc('published_at')
             ->get()
             ->toArray();
