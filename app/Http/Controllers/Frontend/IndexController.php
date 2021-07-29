@@ -15,13 +15,11 @@ use App\Services\Other\Services\LinkService;
 use App\Services\Other\Services\AdFromService;
 use App\Services\Other\Services\SliderService;
 use App\Services\Course\Services\CourseService;
-use App\Services\Other\Services\IndexBannerService;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Other\Interfaces\IndexBannerServiceInterface;
 use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 class IndexController extends FrontendController
@@ -47,11 +45,6 @@ class IndexController extends FrontendController
     protected $courseCategoryService;
 
     /**
-     * @var IndexBannerService
-     */
-    protected $indexBannerService;
-
-    /**
      * @var AdFromService
      */
     protected $adFromService;
@@ -61,7 +54,6 @@ class IndexController extends FrontendController
         SliderServiceInterface $sliderService,
         CourseServiceInterface $courseService,
         CourseCategoryServiceInterface $courseCategoryService,
-        IndexBannerServiceInterface $indexBannerService,
         AdFromServiceInterface $adFromService
     ) {
         parent::__construct();
@@ -70,7 +62,6 @@ class IndexController extends FrontendController
         $this->sliderService = $sliderService;
         $this->courseService = $courseService;
         $this->courseCategoryService = $courseCategoryService;
-        $this->indexBannerService = $indexBannerService;
         $this->adFromService = $adFromService;
     }
 

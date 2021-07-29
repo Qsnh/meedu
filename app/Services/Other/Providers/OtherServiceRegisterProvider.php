@@ -20,14 +20,12 @@ use App\Services\Other\Proxies\SliderServiceProxy;
 use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Other\Interfaces\LinkServiceInterface;
-use App\Services\Other\Proxies\IndexBannerServiceProxy;
 use App\Services\Other\Proxies\AnnouncementServiceProxy;
 use App\Services\Other\Interfaces\AdFromServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Other\Interfaces\UploadServiceInterface;
 use App\Services\Other\Interfaces\MpWechatServiceInterface;
 use App\Services\Other\Interfaces\ViewBlockServiceInterface;
-use App\Services\Other\Interfaces\IndexBannerServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider
@@ -40,7 +38,6 @@ class OtherServiceRegisterProvider extends ServiceProvider
         $this->app->instance(LinkServiceInterface::class, $this->app->make(LinkServiceProxy::class));
         $this->app->instance(SmsServiceInterface::class, $this->app->make(SmsServiceProxy::class));
         $this->app->instance(UploadServiceInterface::class, $this->app->make(UploadService::class));
-        $this->app->instance(IndexBannerServiceInterface::class, $this->app->make(IndexBannerServiceProxy::class));
         $this->app->instance(SliderServiceInterface::class, $this->app->make(SliderServiceProxy::class));
         $this->app->instance(MpWechatServiceInterface::class, $this->app->make(MpWechatService::class));
         $this->app->instance(ViewBlockServiceInterface::class, $this->app->make(ViewBlockService::class));
