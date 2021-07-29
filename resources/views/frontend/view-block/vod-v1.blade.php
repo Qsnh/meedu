@@ -1,4 +1,4 @@
-<div class="w-full px-3 pt-20 pb-6 lg:max-w-6xl lg:mx-auto">
+<div class="w-full px-3 pb-6 lg:max-w-6xl lg:mx-auto">
     <div class="mb-20">
         <div class="text-3xl text-gray-900 pb-12 flex justify-center">
             <span class="ml-3 font-bold">{{$block['config_render']['title']}}</span>

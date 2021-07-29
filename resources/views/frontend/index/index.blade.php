@@ -28,6 +28,8 @@
         </div>
     @endif
 
+    <div class="w-full pt-20"></div>
+
     {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_INDEX_SECTION_1) !!}
 
     {!! \App\Meedu\ViewBlock\PageRender::pcIndexPage() !!}
