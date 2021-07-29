@@ -437,8 +437,10 @@ if (!function_exists('get_play_url')) {
     {
         $playUrl = [];
         if ($video['aliyun_video_id']) {
+            // 阿里云
             $playUrl = aliyun_play_url($video, $isTry);
         } elseif ($video['tencent_video_id']) {
+            // 腾讯云
             $playUrl = get_tencent_play_url($video['tencent_video_id']);
             // 是否开启了播放key
             if ($key = config('meedu.system.player.tencent_play_key')) {
@@ -448,6 +450,11 @@ if (!function_exists('get_play_url')) {
                     return $item;
                 }, $playUrl);
             }
+            // 如果条数大于1的话，则删除最后一条
+            // 腾讯云将返回未转码的视频作为最后一条数据
+            if (count($playUrl) > 1) {
+                unset($playUrl[count($playUrl) - 1]);
+            }
         } else {
             $playUrl[] = [
                 'url' => $video['url'],
@@ -455,12 +462,6 @@ if (!function_exists('get_play_url')) {
                 'name' => '',
                 'duration' => 0,
             ];
-        }
-
-        if (count($playUrl) > 1) {
-            // 可播放数量大于1，说明配置了转码，那么需要删除第一条数据
-            // 因为该条数据是原始的视频内容，不安全，未加密等等
-            unset($playUrl[0]);
         }
 
         sort($playUrl);
