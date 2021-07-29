@@ -271,6 +271,6 @@ class CourseController extends FrontendController
 
         $this->courseService->courseAttachDownloadTimesInc($courseAttach['id']);
 
-        return response()->download(storage_path('app/attach/' . $courseAttach['path']));
+        return response()->download(storage_path('app/attach/' . $courseAttach['path']), $courseAttach['name'] . '.' . $courseAttach['extension']);
     }
 }
