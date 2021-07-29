@@ -32,6 +32,12 @@ class CourseVideoController extends BaseController
         $order = $request->input('order', 'desc');
 
         $videos = Video::query()
+            ->select([
+                'id', 'user_id', 'course_id', 'title', 'slug', 'url', 'view_num', 'short_description',
+                'seo_keywords', 'seo_description', 'published_at', 'is_show', 'charge', 'aliyun_video_id',
+                'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell', 'player_pc', 'player_h5',
+                'comment_status', 'free_seconds', 'ban_drag', 'created_at', 'updated_at',
+            ])
             ->with([
                 'chapter:id,title', 'course:id,title,thumb,charge',
             ])
@@ -260,18 +266,19 @@ class CourseVideoController extends BaseController
             return $this->error(__('数据为空'));
         }
 
-        $courseNameArr = array_column($data, 0);
-        $courses = Course::query()->whereIn('title', $courseNameArr)->select(['id', 'title'])->get()->pluck('id', 'title');
+        $courseNameColumn = array_column($data, 0);
+        $courseNameColumn = array_map('trim', $courseNameColumn);
+        $courses = Course::query()->whereIn('title', $courseNameColumn)->select(['id', 'title'])->get()->pluck('id', 'title');
 
         $rows = [];
         $now = Carbon::now();
         $py = new Pinyin();
+
         foreach ($data as $index => $item) {
+            // 行数[用户报错提示]
             $line = $index + 2;
-            $courseName = $item[0] ?? '';
-            if (!$courseName) {
-                return $this->error(sprintf(__('第%d行课程名为空'), $line));
-            }
+
+            $courseName = trim($item[0] ?? '');
             $courseId = $courses[$courseName] ?? 0;
             if (!$courseId) {
                 return $this->error(sprintf(__('第%d行课程不存在'), $line));
@@ -287,7 +294,7 @@ class CourseVideoController extends BaseController
                 $chapterId = $chapter['id'];
             }
 
-            $videoName = $item[2] ?? '';
+            $videoName = trim($item[2] ?? '');
             if (!$videoName) {
                 return $this->error(sprintf(__('第%d视频名为空'), $line));
             }
