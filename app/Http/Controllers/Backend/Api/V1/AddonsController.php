@@ -77,6 +77,8 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.password')
         );
 
+        $addonsData = [];
+
         try {
             $addons = $mc->addons($request->input('page'), $request->input('size'));
             $addonsData = $addons['data'];

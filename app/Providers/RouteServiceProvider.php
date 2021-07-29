@@ -28,6 +28,9 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        // 路由中出现{id}的必须为整数
+        Route::pattern('id', '\d+');
     }
 
     /**
