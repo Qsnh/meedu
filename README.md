@@ -8,10 +8,6 @@
 </a>
 </p>
 
-## 联系我们
-
-<img src="https://meedu.vip/images/index/footer/contact2.png?v=20210612" width="120" height="120" />
-
 ## 常用链接
 
 - [MeEdu 官网](https://meedu.vip)
