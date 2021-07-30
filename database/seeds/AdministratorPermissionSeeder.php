@@ -493,6 +493,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '课程',
+                'display_name' => '课程观看记录删除',
+                'slug' => 'course.watchRecords.delete',
+                'method' => 'POST',
+                'url' => 'course/\d+/watch/records/delete',
+            ],
+            [
+                'group_name' => '课程',
                 'display_name' => '课程订阅',
                 'slug' => 'course.subscribes',
                 'method' => 'GET',
@@ -1087,10 +1094,85 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'mpWechat/menu',
             ],
+
+            // 用户标签
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签列表',
+                'slug' => 'member.tag',
+                'method' => 'GET',
+                'url' => 'member/tag/index',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签添加',
+                'slug' => 'member.tag.store',
+                'method' => 'POST',
+                'url' => 'member/tag/create',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签查看',
+                'slug' => 'member.tag.edit',
+                'method' => 'GET',
+                'url' => 'member/tag/\d+',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签编辑',
+                'slug' => 'member.tag.update',
+                'method' => 'PUT',
+                'url' => 'member/tag/\d+',
+            ],
+            [
+                'group_name' => '用户标签',
+                'display_name' => '用户标签删除',
+                'slug' => 'member.tag.destroy',
+                'method' => 'DELETE',
+                'url' => 'member/tag/\d+',
+            ],
+
+            // 装修
+            [
+                'group_name' => '装修',
+                'display_name' => '装修列表',
+                'slug' => 'viewBlock',
+                'method' => 'GET',
+                'url' => 'viewBlock/index',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修添加',
+                'slug' => 'viewBlock.store',
+                'method' => 'POST',
+                'url' => 'viewBlock/create',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修查看',
+                'slug' => 'viewBlock.edit',
+                'method' => 'GET',
+                'url' => 'viewBlock/\d+',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修编辑',
+                'slug' => 'viewBlock.update',
+                'method' => 'PUT',
+                'url' => 'viewBlock/\d+',
+            ],
+            [
+                'group_name' => '装修',
+                'display_name' => '装修删除',
+                'slug' => 'viewBlock.destroy',
+                'method' => 'DELETE',
+                'url' => 'viewBlock/\d+',
+            ],
         ];
 
         foreach ($permissions as $permission) {
-            $exists = \App\Models\AdministratorPermission::where('slug', $permission['slug'])
+            $exists = \App\Models\AdministratorPermission::query()
+                ->where('slug', $permission['slug'])
                 ->where('method', $permission['method'])
                 ->exists();
             if ($exists) {

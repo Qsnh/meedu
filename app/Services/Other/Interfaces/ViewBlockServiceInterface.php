@@ -8,6 +8,6 @@
 
 namespace App\Services\Other\Interfaces;
 
-interface IndexBannerServiceInterface
+interface ViewBlockServiceInterface
 {
 }

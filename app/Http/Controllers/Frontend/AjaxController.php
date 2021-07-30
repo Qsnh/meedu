@@ -347,7 +347,9 @@ class AjaxController extends BaseController
         $video = $this->videoService->find($videoId);
         $course = $this->courseService->find($video['course_id']);
 
-        if ($businessState->canSeeVideo($this->user(), $course, $video) === false) {
+        $isCanSee = $businessState->canSeeVideo($this->user(), $course, $video);
+
+        if (!$isTry && $isCanSee === false) {
             return $this->error(__('当前视频无法观看'));
         }
 

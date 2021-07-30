@@ -23,7 +23,7 @@ class Ip
         $configService = app()->make(ConfigServiceInterface::class);
         $key = $configService->getAmapkey();
         if (!$key) {
-            // 未配置高德key
+            Log::info(__METHOD__ . '|未配置高德地图配置');
             return '';
         }
 
@@ -51,7 +51,7 @@ class Ip
 
             return $country . $city;
         } catch (\Exception $e) {
-            exception_record($e);
+            Log::error(__METHOD__ . '|' . $e->getMessage());
             return '';
         }
     }

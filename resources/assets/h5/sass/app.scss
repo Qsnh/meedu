@@ -116,13 +116,66 @@ body {
   width: 100%;
   height: auto;
   float: left;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
   background-color: #ffffff;
 
   img {
     border-radius: 4px;
+  }
+}
+
+.index-grid-nav-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 15px;
+
+  .grid-nav-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 15px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .nav-item {
+      display: block;
+      text-align: center;
+
+      .icon {
+        margin-bottom: 8px;
+      }
+
+      .name {
+        font-size: 12px;
+        font-weight: 400;
+        color: #333333;
+        line-height: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.index-image-group-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  display: flex;
+
+  .image-group-item {
+    flex: 1;
   }
 }
 

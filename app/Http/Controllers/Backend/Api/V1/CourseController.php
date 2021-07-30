@@ -27,13 +27,19 @@ class CourseController extends BaseController
         $id = $request->input('id');
         $keywords = $request->input('keywords', '');
         $cid = $request->input('cid');
-        $userId = $request->input('user_id');
 
         // 排序
         $sort = $request->input('sort', 'created_at');
         $order = $request->input('order', 'desc');
 
         $courses = Course::query()
+            ->select([
+                'id', 'user_id', 'title', 'slug', 'thumb', 'charge', 'short_description',
+                'published_at', 'is_show', 'category_id', 'is_rec', 'user_count', 'is_free',
+                'comment_status', 'created_at', 'updated_at',
+            ])
+            ->with(['category:id,name'])
+            ->withCount(['videos', 'chapters', 'comments'])
             ->when($id, function ($query) use ($id) {
                 $query->where('id', $id);
             })
@@ -43,13 +49,8 @@ class CourseController extends BaseController
             ->when($cid, function ($query) use ($cid) {
                 return $query->whereCategoryId($cid);
             })
-            ->when($userId, function ($query) use ($userId) {
-                $courseIds = UserCourse::query()->where('user_id', $userId)->select(['course_id'])->get()->pluck('course_id')->toArray();
-                $courseIds || $courseIds = [0];
-                $query->whereIn('id', $courseIds);
-            })
             ->orderBy($sort, $order)
-            ->paginate($request->input('size', 12));
+            ->paginate($request->input('size', 10));
 
         $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get();
 
@@ -71,7 +72,7 @@ class CourseController extends BaseController
 
     public function edit($id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::query()->where('id', $id)->firstOrFail();
 
         return $this->successData($course);
     }
@@ -79,24 +80,18 @@ class CourseController extends BaseController
     public function update(CourseRequest $request, $id)
     {
         $data = $request->filldata();
-        /**
-         * @var Course
-         */
-        $course = Course::findOrFail($id);
-        $originIsShow = $course->is_show;
-        $course->fill($data)->save();
 
-        if ($originIsShow !== $data['is_show']) {
-            // 修改下面的视频显示状态
-            Video::where('course_id', $course->id)->update(['is_show' => $data['is_show']]);
-        }
+        $course = Course::query()->where('id', $id)->firstOrFail();
+
+        $course->fill($data)->save();
 
         return $this->success();
     }
 
     public function destroy($id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::query()->where('id', $id)->firstOrFail();
+
         if ($course->videos()->exists()) {
             return $this->error(__('当前课程下存在视频无法删除'));
         }
@@ -110,8 +105,15 @@ class CourseController extends BaseController
     public function watchRecords(Request $request, $courseId)
     {
         $userId = (int)$request->input('user_id');
+        $isWatched = (int)$request->input('is_watched');
+
+        // 看完时间范围筛选
         $watchStartAt = $request->input('watched_start_at');
         $watchEndAt = $request->input('watched_end_at');
+
+        // 排序字段
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'desc');
 
         $data = CourseUserRecord::query()
             ->where('course_id', $courseId)
@@ -119,9 +121,12 @@ class CourseController extends BaseController
                 $query->where('user_id', $userId);
             })
             ->when($watchStartAt && $watchEndAt, function ($query) use ($watchStartAt, $watchEndAt) {
-                $query->whereBetween('watched_at', [$watchStartAt, $watchEndAt]);
+                $query->whereBetween('watched_at', [Carbon::parse($watchStartAt), Carbon::parse($watchEndAt)]);
             })
-            ->orderByDesc('id')
+            ->when($isWatched !== -1, function ($query) use ($isWatched) {
+                $query->where('is_watched', (int)$isWatched === 1 ? 1 : 0);
+            })
+            ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
         // 用户
@@ -145,6 +150,18 @@ class CourseController extends BaseController
         ]);
     }
 
+    public function delWatchRecord(Request $request, $courseId)
+    {
+        $ids = $request->input('record_ids', []) ?: [0];
+
+        CourseUserRecord::query()
+            ->whereIn('id', $ids)
+            ->where('course_id', $courseId)
+            ->delete();
+
+        return $this->success();
+    }
+
     // 订阅记录
     public function subscribes(Request $request, $courseId)
     {
@@ -157,7 +174,7 @@ class CourseController extends BaseController
                 $query->where('user_id', $userId);
             })
             ->when($subscribeStartAt && $subscribeEndAt, function ($query) use ($subscribeStartAt, $subscribeEndAt) {
-                $query->whereBetween('created_at', [$subscribeStartAt, $subscribeEndAt]);
+                $query->whereBetween('created_at', [Carbon::parse($subscribeStartAt), Carbon::parse($subscribeEndAt)]);
             })
             ->where('course_id', $courseId)
             ->orderByDesc('created_at')
@@ -178,20 +195,39 @@ class CourseController extends BaseController
     public function createSubscribe(Request $request, $courseId)
     {
         $userId = $request->input('user_id');
-        $exists = UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->exists();
-        if ($exists) {
-            return $this->error(__('订阅关系已存在'));
-        }
-        if (!User::query()->where('id', $userId)->exists()) {
-            return $this->error(__('用户不存在'));
+        if (!$userId) {
+            return $this->error(__('参数错误'));
         }
 
-        UserCourse::create([
-            'course_id' => $courseId,
-            'user_id' => $userId,
-            'charge' => 0,
-            'created_at' => Carbon::now(),
-        ]);
+        if (!is_array($userId)) {
+            $userId = [$userId];
+        }
+
+        $existsIds = UserCourse::query()
+            ->whereIn('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->select(['user_id'])
+            ->get()
+            ->pluck('user_id')
+            ->toArray();
+
+        $userId = array_diff($userId, $existsIds);
+
+        foreach ($userId as $id) {
+            UserCourse::create([
+                'course_id' => $courseId,
+                'user_id' => $id,
+                'charge' => 0,
+                'created_at' => Carbon::now(),
+            ]);
+        }
+
+        // 课程订阅数量更新
+        Course::query()
+            ->where('id', $courseId)
+            ->update([
+                'user_count' => UserCourse::query()->where('course_id', $courseId)->count(),
+            ]);
 
         return $this->success();
     }
@@ -199,7 +235,14 @@ class CourseController extends BaseController
     public function deleteSubscribe(Request $request, $courseId)
     {
         $userId = $request->input('user_id');
+
         UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->delete();
+
+        // 课程订阅数量更新
+        Course::query()
+            ->where('id', $courseId)
+            ->decrement('user_count');
+
         return $this->success();
     }
 

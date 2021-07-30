@@ -8,16 +8,20 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Http\Request;
+use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseCategory;
 use App\Http\Requests\Backend\CourseCategoryRequest;
 
 class CourseCategoryController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $navs = CourseCategory::orderByDesc('id')->paginate(12);
+        $data = CourseCategory::query()
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
 
-        return $this->successData($navs);
+        return $this->successData($data);
     }
 
     public function store(CourseCategoryRequest $request)
@@ -29,21 +33,26 @@ class CourseCategoryController extends BaseController
 
     public function edit($id)
     {
-        $info = CourseCategory::findOrFail($id);
+        $category = CourseCategory::query()->where('id', $id)->firstOrFail();
 
-        return $this->successData($info);
+        return $this->successData($category);
     }
 
     public function update(CourseCategoryRequest $request, $id)
     {
-        $role = CourseCategory::findOrFail($id);
-        $role->fill($request->filldata())->save();
+        $category = CourseCategory::query()->where('id', $id)->firstOrFail();
+
+        $category->fill($request->filldata())->save();
 
         return $this->success();
     }
 
     public function destroy($id)
     {
+        if (Course::query()->where('category_id', $id)->exists()) {
+            return $this->error(__('当前分类下存在课程，无法删除'));
+        }
+
         CourseCategory::destroy($id);
 
         return $this->success();

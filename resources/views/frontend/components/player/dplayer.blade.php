@@ -53,5 +53,35 @@
                 });
             }
         }, 'json');
+
+        function randomString(e) {
+            e = e || 32;
+            var t = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678",
+                a = t.length,
+                n = "";
+            for (i = 0; i < e; i++) {
+                n += t.charAt(Math.floor(Math.random() * a));
+            }
+            return n
+        }
+
+        function randomNum(min, max) {
+            return (min + Math.round((max - min) * Math.random()));
+        }
+
+        // 跑马灯
+        @if((int)$gConfig['system']['player']['enabled_bullet_secret'] === 1)
+        setInterval(function () {
+            var domId = randomString(12);
+            var top = randomNum(0, $('.dplayer-video-wrap').height());
+            var left = randomNum(0, $('.dplayer-video-wrap').width() - 100);
+            $('.dplayer-video-wrap').append(`
+            <div class="${domId}" style="position:absolute;top:${top}px !important;left:${left}px !important;color:red;width: auto;font-size: 10px">{{$user['mobile']}}</div>
+            `);
+            setTimeout(function () {
+                $('.' + domId).remove();
+            }, 4500);
+        }, 5000);
+        @endif
     });
 </script>

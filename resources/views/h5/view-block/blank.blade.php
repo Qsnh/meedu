@@ -1,0 +1,1 @@
+<div style="width: 100%;height: {{$block['config_render']['height']??10}}px;float:left;background-color: {{$block['config_render']['bgcolor']}};"></div>

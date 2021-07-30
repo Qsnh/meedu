@@ -79,6 +79,9 @@ class WechatMiniController extends BaseController
     public function login(Request $request)
     {
         $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
         $info = $this->app->auth->session($code);
         if (!isset($info['openid'])) {
             return $this->error(__('错误'));

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Services\Order\Models\PromoCode;
 use App\Http\Requests\Backend\PromoCodeRequest;
 use App\Http\Requests\Backend\PromoCodeGeneratorRequest;
@@ -20,6 +21,10 @@ class PromoCodeController extends BaseController
     {
         $key = $request->input('key');
         $userId = $request->input('user_id');
+        $expiredAt = $request->input('expired_at');
+        $createdAt = $request->input('created_at');
+
+        // 排序
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
@@ -30,6 +35,12 @@ class PromoCodeController extends BaseController
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
+            ->when($expiredAt, function ($query) use ($expiredAt) {
+                $query->whereBetween('expired_at', [Carbon::parse($expiredAt[0]), Carbon::parse($expiredAt[1])]);
+            })
+            ->when($createdAt, function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', [Carbon::parse($createdAt[0]), Carbon::parse($createdAt[1])]);
+            })
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
@@ -38,7 +49,13 @@ class PromoCodeController extends BaseController
 
     public function store(PromoCodeRequest $request)
     {
-        PromoCode::create($request->filldata());
+        $data = $request->filldata();
+
+        if (strtolower(substr($data['code'], 0, 1)) === 'u') {
+            return $this->error(__('优惠码格式错误'));
+        }
+
+        PromoCode::create($data);
 
         return $this->success();
     }
@@ -61,7 +78,8 @@ class PromoCodeController extends BaseController
     public function destroy(Request $request)
     {
         $ids = $request->input('ids', []);
-        $ids && PromoCode::destroy($ids);
+
+        $ids && PromoCode::query()->whereIn('id', $ids)->delete();
 
         return $this->success();
     }
@@ -130,8 +148,10 @@ class PromoCodeController extends BaseController
         $money = $request->input('money');
         $expiredAt = Carbon::parse($request->input('expired_at'))->format('Y-m-d H:i:s');
 
-        $start = (int)PromoCode::query()->withTrashed()->where('code', 'like', $prefix . '%')->count() + 1;
+        $start = PromoCode::withTrashed()->where('code', 'like', $prefix . '%')->count() + 1;
+
         $insertData = [];
+        $now = Carbon::now()->toDateTimeLocalString();
         while ($num > 0) {
             $insertData[] = [
                 'code' => $prefix . ($start + $num),
@@ -139,16 +159,25 @@ class PromoCodeController extends BaseController
                 'invite_user_reward' => 0,
                 'invited_user_reward' => $money,
                 'use_times' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
             ];
             $num--;
         }
+        $insertData = array_reverse($insertData);
 
-        $existsData = PromoCode::query()->whereIn('code', array_column($insertData, 'code'))->select(['code'])->get()->pluck('code')->toArray();
-        if ($existsData) {
+        $exists = PromoCode::query()
+            ->whereIn('code', array_column($insertData, 'code'))
+            ->exists();
+        if ($exists) {
             return $this->error(__('该优惠码前缀无法生成优惠码'));
         }
 
-        PromoCode::insert($insertData);
+        DB::transaction(function () use ($insertData) {
+            foreach (array_chunk($insertData, 200) as $chunk) {
+                PromoCode::insert($chunk);
+            }
+        });
 
         return $this->success();
     }

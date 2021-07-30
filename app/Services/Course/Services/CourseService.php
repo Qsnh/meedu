@@ -165,8 +165,6 @@ class CourseService implements CourseServiceInterface
             ->with(['category:id,name'])
             ->withCount(['videos'])
             ->whereIn('id', $ids)
-            ->show()
-            ->published()
             ->orderByDesc('published_at')
             ->get()
             ->toArray();
@@ -305,5 +303,21 @@ class CourseService implements CourseServiceInterface
     public function userCountInc(int $id, int $num): void
     {
         Course::query()->where('id', $id)->increment('user_count', $num);
+    }
+
+    /**
+     * @param array $ids
+     * @param array $fields
+     * @param array $with
+     * @return array
+     */
+    public function getByIds(array $ids, array $fields, array $with = []): array
+    {
+        return Course::query()
+            ->with($with)
+            ->select($fields)
+            ->whereIn('id', $ids)
+            ->get()
+            ->toArray();
     }
 }

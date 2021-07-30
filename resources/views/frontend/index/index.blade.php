@@ -28,24 +28,11 @@
         </div>
     @endif
 
+    <div class="w-full pt-20"></div>
+
     {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_INDEX_SECTION_1) !!}
 
-    <!-- 首页推荐 -->
-    <div class="w-full px-3 pt-20 pb-6 lg:max-w-6xl lg:mx-auto">
-        @foreach($banners as $i => $banner)
-            <div class="mb-20">
-                <div class="text-3xl text-gray-900 pb-12 flex justify-center">
-                    <i class="iconfont icon-book text-gray-900" style="font-size: 42px;"></i>
-                    <span class="ml-3 font-bold">{{$banner['name']}}</span>
-                </div>
-                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                    @foreach($banner['courses'] as $index => $course)
-                        @include('frontend.components.course-item', ['course' => $course])
-                    @endforeach
-                </div>
-            </div>
-        @endforeach
-    </div>
+    {!! \App\Meedu\ViewBlock\PageRender::pcIndexPage() !!}
 
     {!! view_hook(\App\Meedu\Hooks\Constant\PositionConstant::VIEW_INDEX_SECTION_2) !!}
 

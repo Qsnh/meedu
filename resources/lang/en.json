@@ -303,5 +303,11 @@
   "请输入手机号和验证码": "Please input mobile phone number and verification code",
   "更换手机号": "Change mobile phone number",
   "当前手机号 :mobile": "Current mobile phone number :mobile",
-  "手机短信登录": "SMS login"
+  "手机短信登录": "SMS login",
+  "编辑器": "Editor",
+  "直接上传": "DirectUpload",
+  "用户标签已存在": "User tag already exists",
+  "当前标签已关联用户，无法删除": "The current tag is associated with a user and cannot be deleted",
+  "当前分类下存在课程，无法删除": "There are courses under the current category, which cannot be deleted",
+  "优惠码格式错误": "Wrong format of discount code"
 }

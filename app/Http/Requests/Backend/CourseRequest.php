@@ -69,6 +69,7 @@ class CourseRequest extends BaseRequest
             'published_at' => $this->input('published_at'),
             'is_show' => (int)$this->input('is_show', Course::SHOW_NO),
             'is_rec' => (int)$this->input('is_rec', Course::REC_NO),
+            'is_free' => (int)$this->input('is_free'),
             'comment_status' => (int)$this->input('comment_status', Course::COMMENT_STATUS_CLOSE),
         ];
 

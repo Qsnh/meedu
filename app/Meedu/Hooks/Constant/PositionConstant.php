@@ -20,4 +20,8 @@ class PositionConstant
     // 首页视图钩子
     public const VIEW_INDEX_SECTION_1 = 'view_index_section_1';
     public const VIEW_INDEX_SECTION_2 = 'view_index_section_2';
+
+    // ViewBlock钩子
+    public const VIEW_BLOCK_DATA_RENDER = 'view_block_data_render';
+    public const VIEW_BLOCK_HTML_RENDER = 'view_block_html_render';
 }

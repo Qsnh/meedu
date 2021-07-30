@@ -97,16 +97,8 @@
 
         <!-- 导航栏 -->
         <div class="py-4">
-            <a href="{{route('index')}}"
-               class="inline-block text-base {{request()->routeIs(['index', 'announcement.show']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 pr-5">
-                {{__('首页')}}
-            </a>
-            <a href="{{route('courses')}}"
-               class="inline-block text-base {{request()->routeIs(['courses', 'course.show', 'videos', 'video.show', 'search']) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600 px-5">
-                {{__('点播课程')}}
-            </a>
             @foreach($gNavs as $item)
-                <div class="inline-block relative px-5 nav-menu">
+                <div class="inline-block relative {{$loop->first ? 'pr-5' : 'px-5'}} nav-menu">
                     <a href="{{$item['url']}}"
                        {!! $item['blank'] ? 'target="_blank"' : '' !!}
                        class="relative text-base {{request()->routeIs(explode(',', $item['active_routes'])) ? 'text-blue-600 font-bold' : 'text-gray-600'}} hover:text-blue-600">

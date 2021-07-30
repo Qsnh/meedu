@@ -8,6 +8,16 @@
 
 Route::post('/login', 'LoginController@login');
 
+Route::group(['middleware' => ['auth:administrator']], function () {
+    Route::get('/media/images', 'MediaImageController@index');
+    Route::post('/media/image', 'MediaImageController@upload');
+
+    Route::get('/media/videos/index', 'MediaVideoController@index');
+    Route::post('/media/videos/create', 'MediaVideoController@store');
+
+    Route::get('/addons', 'AddonsController@index');
+});
+
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
     Route::get('/user', 'LoginController@user');
     Route::get('/menus', 'LoginController@menus');
@@ -135,7 +145,10 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');
         Route::delete('/{id}', 'CourseController@destroy');
+
         Route::get('/{id}/watch/records', 'CourseController@watchRecords');
+        Route::post('/{id}/watch/records/delete', 'CourseController@delWatchRecord');
+
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
@@ -179,7 +192,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
 
-        // 标签
+        // 更新用户标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
         // 备注
         Route::get('/{id}/remark', 'MemberController@remark');
@@ -204,6 +217,16 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/credit1/change', 'MemberController@credit1Change');
         // 发送站内消息
         Route::post('/{id}/message', 'MemberController@sendMessage');
+
+        // 用户标签管理
+        Route::group(['prefix' => 'tag'], function () {
+            Route::get('/index', 'MemberTagController@index');
+            Route::get('/create', 'MemberTagController@create');
+            Route::post('/create', 'MemberTagController@store');
+            Route::get('/{id}', 'MemberTagController@edit');
+            Route::put('/{id}', 'MemberTagController@update');
+            Route::delete('/{id}', 'MemberTagController@destroy');
+        });
     });
 
     // 网站配置
@@ -246,7 +269,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
     // 插件
     Route::group(['prefix' => 'addons'], function () {
-        Route::get('/', 'AddonsController@index');
         Route::get('/repository', 'AddonsController@repository');
         Route::get('/repository/user', 'AddonsController@user');
         Route::get('/repository/buy', 'AddonsController@buyAddons');
@@ -301,5 +323,15 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
             Route::put('/', 'MpWechatController@menuUpdate');
             Route::delete('/', 'MpWechatController@menuEmpty');
         });
+    });
+
+    // 装修
+    Route::group(['prefix' => 'viewBlock'], function () {
+        Route::get('/index', 'ViewBlockController@index');
+        Route::get('/create', 'ViewBlockController@create');
+        Route::post('/create', 'ViewBlockController@store');
+        Route::get('/{id}', 'ViewBlockController@edit');
+        Route::put('/{id}', 'ViewBlockController@update');
+        Route::delete('/{id}', 'ViewBlockController@destroy');
     });
 });

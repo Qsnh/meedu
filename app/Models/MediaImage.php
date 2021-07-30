@@ -6,15 +6,15 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Services\Other\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class IndexBanner extends Model
+class MediaImage extends Model
 {
-    protected $table = 'index_banners';
+    protected $table = 'media_images';
 
     protected $fillable = [
-        'name', 'sort', 'course_ids',
+        'from', 'url', 'path', 'disk', 'name',
     ];
 }

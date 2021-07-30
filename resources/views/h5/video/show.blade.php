@@ -185,9 +185,7 @@
 @section('js')
     <script crossorigin="anonymous" integrity="sha384-NowxCVrymxfs88Gx+ygXX3HCvpP7JE1nsDUuIshgWg2gO2eFCaePIdAuOfnG6ZjM"
             src="https://lib.baomitu.com/hls.js/8.0.0-beta.3/hls.min.js"></script>
-    <script crossorigin="anonymous"
-            integrity="sha512-1t2U1/0xGhBZAriD+/9llOhjPs5nFBDZ7KbnHB4SGwAUPrzyS+02Kus1cz0exk5eMyXxwfHxj/1JLuie/p6xXA=="
-            src="https://lib.baomitu.com/dplayer/1.26.0/DPlayer.min.js"></script>
+    <script src="{{asset('/js/dplayer/DPlayer.min.js')}}"></script>
     <script>
         // 微信分享
         window.wechatShareInfo = {

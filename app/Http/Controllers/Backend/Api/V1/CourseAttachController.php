@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Services\Course\Models\Course;
+use Illuminate\Support\Facades\Storage;
 use App\Services\Course\Models\CourseAttach;
 use App\Http\Requests\Backend\CourseAttachRequest;
 
@@ -36,7 +37,13 @@ class CourseAttachController extends BaseController
     public function destroy($id)
     {
         $attach = CourseAttach::query()->where('id', $id)->firstOrFail();
+
+        // 删除附件
+        Storage::disk(config('meedu.upload.attach.course.disk'))->delete($attach['path']);
+
+        // 删除数据库记录
         $attach->delete();
+
         return $this->success();
     }
 }
