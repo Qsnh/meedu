@@ -12,10 +12,11 @@
 
 - [MeEdu 官网](https://meedu.vip)
 - [MeEdu 付费解决方案](https://meedu.vip/price.html)
-- [MeEdu 演示站](https://meedu.vip/cases.html)
-- [MeEdu 开源版本功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
+- [MeEdu 付费版本演示站](https://meedu.vip/cases.html)
+- [MeEdu 功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
 - [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
 - [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
+- [MeEdu 后台前端项目](https://github.com/Meedu/backend-v2)
 
 ## MeEdu 安装
 
@@ -23,11 +24,3 @@
 - [x] [宝塔一键安装（技术能力较弱）](https://www.yuque.com/meedu/fvvkbf/qvb006)
 - [x] [手动安装教程（技术能力较强）](https://www.yuque.com/meedu/fvvkbf/hhl2wk)
 - [x] [MeEdu 宝塔手动安装最新版(手把手教学)](https://www.yuque.com/meedu/fvvkbf/gkape0)
-
-## 鸣谢
-
-| 昵称 | 地址 |
-| --- | --- |
-| `Baiyuetribe` | [https://github.com/Baiyuetribe](https://github.com/Baiyuetribe) |
-| `逸企邦` | [https://easeco.cn](https://easeco.cn) |
-| `Aunger` | [https://www.aunwen.com](https://www.aunwen.com) |
