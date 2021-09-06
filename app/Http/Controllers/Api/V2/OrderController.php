@@ -74,9 +74,10 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/course 创建录播课程订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {Number} course_id 录播课程ID
-     * @apiParam {String} promo_code 优惠码/邀请码
+     * @apiParam {String} [promo_code] 优惠码/邀请码
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -118,9 +119,10 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/role 创建VIP订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {Number} role_id VIPid
-     * @apiParam {String} promo_code 优惠码/邀请码
+     * @apiParam {String} [promo_code] 优惠码/邀请码
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -156,9 +158,10 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/video 创建视频订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {Number} video_id videoID
-     * @apiParam {String} promo_code 优惠码/邀请码
+     * @apiParam {String} [promo_code] 优惠码/邀请码
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data

@@ -70,7 +70,7 @@ class CaptchaController extends BaseController
      * @apiParam {String} mobile 手机号
      * @apiParam {String} image_captcha 图形验证码
      * @apiParam {String} image_key 图形验证码随机值
-     * @apiParam {String} scene 场景[login:登录,register:注册,password_reset:密码重置]
+     * @apiParam {String=login,register,password_reset} scene 场景[login:登录,register:注册,password_reset:密码重置]
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据

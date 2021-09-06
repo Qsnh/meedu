@@ -60,7 +60,8 @@ class LoginController extends BaseController
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService,
         SocialiteServiceInterface $socialiteService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->configService = $configService;
         $this->cacheService = $cacheService;
@@ -287,7 +288,7 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录
+     * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录[重定向]
      * @apiGroup Auth
      * @apiVersion v2.0.0
      * @apiDescription 登录成功之后会在success_redirect中携带token返回
@@ -344,7 +345,7 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/login/socialite/{app} 微信公众号授权登录
+     * @api {get} /api/v2/login/socialite/{app} 社交APP登录[重定向]
      * @apiGroup Auth
      * @apiVersion v2.0.0
      * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回

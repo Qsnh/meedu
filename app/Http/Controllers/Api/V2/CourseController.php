@@ -66,7 +66,8 @@ class CourseController extends BaseController
         VideoServiceInterface $videoService,
         OrderServiceInterface $orderService,
         BusinessState $businessState
-    ) {
+    )
+    {
         $this->courseService = $courseService;
         $this->configService = $configService;
         $this->courseCommentService = $courseCommentService;
@@ -84,7 +85,7 @@ class CourseController extends BaseController
      * @apiParam {Number} page 页码
      * @apiParam {Number} page_size 每页条数
      * @apiParam {Number} category_id 分类ID
-     * @apiParam {String} scene 场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]
+     * @apiParam {String=留空,recom,sub,free} [scene] 场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据
@@ -235,8 +236,8 @@ class CourseController extends BaseController
      * @apiGroup 录播课
      * @apiVersion v2.0.0
      *
-     * @apiParam {Number} page 页码
-     * @apiParam {Number} page_size 每页条数
+     * @apiParam {Number} [page] 页码
+     * @apiParam {Number} [page_size] 每页条数
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -270,6 +271,7 @@ class CourseController extends BaseController
      * @api {get} /api/v2/course/{course_id}/like 收藏课程
      * @apiGroup 录播课
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} content 评论内容
      *
@@ -288,7 +290,7 @@ class CourseController extends BaseController
      * @apiGroup 录播课
      * @apiVersion v2.0.0
      *
-     * @apiParam {String} content 评论内容
+     * @apiParam {String} token 登录token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据

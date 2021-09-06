@@ -39,6 +39,7 @@ class PaymentController extends BaseController
      * @api {post} /api/v2/order/payment/wechat/mini 微信小程序支付
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} openid openid
      * @apiParam {String} order_id 订单编号
@@ -88,6 +89,7 @@ class PaymentController extends BaseController
      * @api {get} /api/v2/order/payments 支付网关列表
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} scene 支付场景[h5,wechat]
      *
@@ -114,6 +116,7 @@ class PaymentController extends BaseController
      * @api {get} /api/v2/order/pay/redirect 跳转到第三方支付
      * @apiGroup 订单
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} payment_scene 支付场景[h5,wechat]
      * @apiParam {String} payment 支付网关

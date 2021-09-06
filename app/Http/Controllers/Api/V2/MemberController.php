@@ -90,7 +90,8 @@ class MemberController extends BaseController
         PromoCodeServiceInterface $promoCodeService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -107,6 +108,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/detail 用户详情
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -140,6 +142,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/password 修改密码
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -165,6 +168,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/mobile 更换(绑定)手机号
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -184,6 +188,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/nickname 修改昵称
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} nick_name 新昵称
      *
@@ -201,6 +206,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/avatar 修改头像
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {File} file 头像文件
      *
@@ -219,9 +225,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/roles VIP订购记录
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data
@@ -251,9 +258,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/messages 站内消息
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data
@@ -288,9 +296,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses 已购录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -337,9 +346,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses/like 已收藏录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -386,9 +396,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses/history 已学习录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -435,9 +446,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/videos 已购视频
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -482,9 +494,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/orders 订单列表
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -527,9 +540,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/inviteBalanceRecords 邀请余额明细
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -558,6 +572,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/promoCode 邀请码
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -579,6 +594,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/promoCode 生成邀请码
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -596,6 +612,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} 消息标记已读
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -610,6 +627,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/unreadNotificationCount 未读消息数量
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Number} data 未读消息数量
@@ -624,6 +642,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/notificationMarkAllAsRead 消息全部标记已读
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -638,9 +657,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/inviteUsers 已邀请用户
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -677,9 +697,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/withdrawRecords 邀请余额提现记录
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -716,11 +737,12 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/withdraw 邀请余额提现
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} channel 打款渠道
      * @apiParam {String} channel_name 打款渠道-姓名
      * @apiParam {String} channel_account 打款渠道-账户
-     * @apiParam {String} channel_address 打款渠道-地址
+     * @apiParam {String} [channel_address] 打款渠道-地址
      * @apiParam {Number} total 提现金额
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -749,9 +771,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/credit1Records 积分明细
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -786,9 +809,10 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/profile 我的资料
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} page_size size
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] size
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -816,19 +840,20 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/profile 资料编辑
      * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {String} real_name 真实姓名
-     * @apiParam {String} gender 性别[1:男,2:女,0:未公开]
-     * @apiParam {String} age 年龄
-     * @apiParam {String} birthday 生日
-     * @apiParam {String} profession 职业
-     * @apiParam {String} address 住址
-     * @apiParam {String} graduated_school 毕业院校
-     * @apiParam {String} diploma 毕业证照片
-     * @apiParam {String} id_number 身份证号
-     * @apiParam {String} id_frontend_thumb 身份证人像面
-     * @apiParam {String} id_backend_thumb 身份证国徽面
-     * @apiParam {String} id_hand_thumb 手持身份证照片
+     * @apiParam {String} [real_name] 真实姓名
+     * @apiParam {String} [gender] 性别[1:男,2:女,0:未公开]
+     * @apiParam {String} [age] 年龄
+     * @apiParam {String} [birthday] 生日
+     * @apiParam {String} [profession] 职业
+     * @apiParam {String} [address] 住址
+     * @apiParam {String} [graduated_school] 毕业院校
+     * @apiParam {String} [diploma] 毕业证照片
+     * @apiParam {String} [id_number] 身份证号
+     * @apiParam {String} [id_frontend_thumb] 身份证人像面
+     * @apiParam {String} [id_backend_thumb] 身份证国徽面
+     * @apiParam {String} [id_hand_thumb] 手持身份证照片
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
