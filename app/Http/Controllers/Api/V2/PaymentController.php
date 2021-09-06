@@ -36,34 +36,21 @@ class PaymentController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/order/payment/wechat/mini",
-     *     summary="小程序支付",
-     *     tags={"支付"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="openid",description="openid",type="string"),
-     *         @OA\Property(property="order_id",description="订单编号",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="appId",type="string",description="appId"),
-     *                 @OA\Property(property="nonceStr",type="string",description="nonceStr"),
-     *                 @OA\Property(property="package",type="string",description="package"),
-     *                 @OA\Property(property="paySign",type="string",description="paySign"),
-     *                 @OA\Property(property="signType",type="string",description="signType"),
-     *                 @OA\Property(property="timeStamp",type="string",description="timeStamp"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/order/payment/wechat/mini 微信小程序支付
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
      *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws SystemException
-     * @throws \App\Exceptions\ServiceException
+     * @apiParam {String} openid openid
+     * @apiParam {String} order_id 订单编号
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.appId appId
+     * @apiSuccess {String} data.nonceStr nonceStr
+     * @apiSuccess {String} data.package package
+     * @apiSuccess {String} data.paySign paySign
+     * @apiSuccess {String} data.signType signType
+     * @apiSuccess {String} data.timeStamp timeStamp
      */
     public function wechatMiniPay(Request $request)
     {
@@ -98,25 +85,16 @@ class PaymentController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/order/payments",
-     *     summary="支付网关",
-     *     tags={"支付"},
-     *     @OA\Parameter(in="query",name="scene",description="支付场景，h5,wechat",required=true,@OA\Schema(type="string")),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="sign",type="string",description="sign"),
-     *                 @OA\Property(property="name",type="string",description="支付网关名"),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/order/payments 支付网关列表
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} scene 支付场景[h5,wechat]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.sign 网关值
+     * @apiSuccess {String} data.name 网关名
      */
     public function payments(Request $request)
     {
@@ -133,24 +111,16 @@ class PaymentController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/order/pay/redirect",
-     *     summary="支付(跳转)",
-     *     tags={"支付"},
-     *     @OA\Parameter(in="query",name="payment_scene",description="支付场景，如：h5,wechat",required=true,@OA\Schema(type="string")),
-     *     @OA\Parameter(in="query",name="payment",description="支付网关",required=true,@OA\Schema(type="string")),
-     *     @OA\Parameter(in="query",name="order_id",description="订单号",required=true,@OA\Schema(type="string")),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="data"),
-     *         )
-     *     )
-     * )
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/order/pay/redirect 跳转到第三方支付
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} payment_scene 支付场景[h5,wechat]
+     * @apiParam {String} payment 支付网关
+     * @apiParam {String} order_id 订单号
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function payRedirect(Request $request)
     {

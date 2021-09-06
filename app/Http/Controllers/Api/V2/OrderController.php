@@ -15,7 +15,6 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
-use App\Http\Requests\ApiV2\PasswordLoginRequest;
 use App\Services\Order\Services\PromoCodeService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -72,27 +71,30 @@ class OrderController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/order/course",
-     *     summary="创建课程订单",
-     *     tags={"订单"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="course_id",description="课程id",type="integer"),
-     *         @OA\Property(property="promo_code",description="优惠码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Order"),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/order/course 创建录播课程订单
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
      *
-     * @param PasswordLoginRequest $request
+     * @apiParam {Number} course_id 录播课程ID
+     * @apiParam {String} promo_code 优惠码/邀请码
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Number} data.id 订单ID
+     * @apiSuccess {Number} data.user_id 用户ID
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.order_id 订单编号
+     * @apiSuccess {String} data.payment_method 支付渠道
+     * @apiSuccess {String} data.payment_text 支付方法
+     * @apiSuccess {String} data.status_text 状态
+     * @apiSuccess {Number} data.continue_pay 继续支付[已废弃]
+     * @apiSuccess {Object} data.goods
+     * @apiSuccess {Number} data.goods.id 记录ID
+     * @apiSuccess {String} data.goods.goods_text 商品名
+     * @apiSuccess {String} data.goods.goods_type 商品类型
+     * @apiSuccess {Number} data.goods.num 数量
+     * @apiSuccess {Number} data.goods.charge 价格
+     * @apiSuccess {String} data.created_at 时间
      */
     public function createCourseOrder(Request $request)
     {
@@ -113,27 +115,30 @@ class OrderController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/order/role",
-     *     summary="创建套餐订单",
-     *     tags={"订单"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="role_id",description="套餐id",type="integer"),
-     *         @OA\Property(property="promo_code",description="优惠码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Order"),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/order/role 创建VIP订单
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
      *
-     * @param PasswordLoginRequest $request
+     * @apiParam {Number} role_id VIPid
+     * @apiParam {String} promo_code 优惠码/邀请码
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Number} data.id 订单ID
+     * @apiSuccess {Number} data.user_id 用户ID
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.order_id 订单编号
+     * @apiSuccess {String} data.payment_method 支付渠道
+     * @apiSuccess {String} data.payment_text 支付方法
+     * @apiSuccess {String} data.status_text 状态
+     * @apiSuccess {Number} data.continue_pay 继续支付[已废弃]
+     * @apiSuccess {Object} data.goods
+     * @apiSuccess {Number} data.goods.id 记录ID
+     * @apiSuccess {String} data.goods.goods_text 商品名
+     * @apiSuccess {String} data.goods.goods_type 商品类型
+     * @apiSuccess {Number} data.goods.num 数量
+     * @apiSuccess {Number} data.goods.charge 价格
+     * @apiSuccess {String} data.created_at 时间
      */
     public function createRoleOrder(Request $request)
     {
@@ -148,27 +153,30 @@ class OrderController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/order/video",
-     *     summary="创建视频订单",
-     *     tags={"订单"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="video_id",description="视频id",type="integer"),
-     *         @OA\Property(property="promo_code",description="优惠码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Order"),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/order/video 创建视频订单
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
      *
-     * @param PasswordLoginRequest $request
+     * @apiParam {Number} video_id videoID
+     * @apiParam {String} promo_code 优惠码/邀请码
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Number} data.id 订单ID
+     * @apiSuccess {Number} data.user_id 用户ID
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.order_id 订单编号
+     * @apiSuccess {String} data.payment_method 支付渠道
+     * @apiSuccess {String} data.payment_text 支付方法
+     * @apiSuccess {String} data.status_text 状态
+     * @apiSuccess {Number} data.continue_pay 继续支付[已废弃]
+     * @apiSuccess {Object} data.goods
+     * @apiSuccess {Number} data.goods.id 记录ID
+     * @apiSuccess {String} data.goods.goods_text 商品名
+     * @apiSuccess {String} data.goods.goods_type 商品类型
+     * @apiSuccess {Number} data.goods.num 数量
+     * @apiSuccess {Number} data.goods.charge 价格
+     * @apiSuccess {String} data.created_at 时间
      */
     public function createVideoOrder(Request $request)
     {

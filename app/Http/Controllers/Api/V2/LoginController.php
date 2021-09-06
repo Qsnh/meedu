@@ -13,7 +13,6 @@ use App\Meedu\Wechat;
 use App\Meedu\WechatMini;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
-use App\Exceptions\ApiV2Exception;
 use App\Exceptions\ServiceException;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\CacheService;
@@ -27,19 +26,6 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
-/**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="SocailiteApp",
- *         type="object",
- *         title="社交登录APP",
- *         @OA\Property(property="app",type="string",description="app"),
- *         @OA\Property(property="name",type="string",description="名称"),
- *         @OA\Property(property="url",type="string",description="地址"),
- *         @OA\Property(property="logo",type="string",description="logo"),
- *     ),
- * )
- */
 class LoginController extends BaseController
 {
     /**
@@ -82,29 +68,16 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/password",
-     *     summary="密码登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="password",description="密码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/password 密码登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
      *
-     * @param PasswordLoginRequest $request
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} password 密码
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function passwordLogin(PasswordLoginRequest $request)
     {
@@ -127,29 +100,16 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/mobile",
-     *     summary="手机短信登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/mobile 短信登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
      *
-     * @param MobileLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws ApiV2Exception
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function mobileLogin(MobileLoginRequest $request)
     {
@@ -173,26 +133,17 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/wechatMiniMobile",
-     *     summary="微信小程序手机号登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="openid",description="openid",type="string"),
-     *         @OA\Property(property="iv",description="iv",type="string"),
-     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/wechatMiniMobile 微信小程序手机号登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} openid openid
+     * @apiParam {String} iv iv
+     * @apiParam {String} encryptedData encryptedData
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function wechatMiniMobile(Request $request, AuthBus $authBus)
     {
@@ -249,28 +200,19 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/wechatMini",
-     *     summary="微信小程序静默授权登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="openid",description="openid",type="string"),
-     *         @OA\Property(property="iv",description="iv",type="string"),
-     *         @OA\Property(property="rawData",description="rawData",type="string"),
-     *         @OA\Property(property="signature",description="signature",type="string"),
-     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/wechatMini 微信小程序静默授权登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} openid openid
+     * @apiParam {String} iv iv
+     * @apiParam {String} encryptedData encryptedData
+     * @apiParam {String} rawData rawData
+     * @apiParam {String} signature signature
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function wechatMini(Request $request, AuthBus $authBus)
     {
@@ -344,7 +286,18 @@ class LoginController extends BaseController
         return $authBus->tokenLogin($user['id'], get_platform());
     }
 
-    // 微信公众号授权登录
+    /**
+     * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     * @apiDescription 登录成功之后会在success_redirect中携带token返回
+     *
+     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlencode)
+     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlencode)
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function wechatLogin(Request $request)
     {
         $successRedirect = $request->input('success_redirect');
@@ -390,7 +343,18 @@ class LoginController extends BaseController
         }
     }
 
-    // 社交登录
+    /**
+     * @api {get} /api/v2/login/socialite/{app} 微信公众号授权登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回
+     *
+     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlencode)
+     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlencode)
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function socialiteLogin(Request $request, ConfigServiceInterface $configService, $app)
     {
         /**

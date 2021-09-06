@@ -59,11 +59,6 @@ Route::get('/sliders', 'SliderController@all');
 // 首页推荐
 Route::get('/index/banners', 'IndexBannerController@all');
 
-Route::group(['prefix' => '/wechat/mini'], function () {
-    // 微信小程序静默登录[用于已创建账号的用户]
-    Route::post('/login', 'WechatMiniController@login');
-});
-
 // 优惠码检测
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
 

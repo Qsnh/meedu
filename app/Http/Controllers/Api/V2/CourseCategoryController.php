@@ -12,10 +12,6 @@ use App\Constant\ApiV2Constant;
 use App\Services\Course\Services\CourseCategoryService;
 use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
-/**
- * Class CourseCategoryController
- * @package App\Http\Controllers\Api\V2
- */
 class CourseCategoryController extends BaseController
 {
     /**
@@ -29,20 +25,15 @@ class CourseCategoryController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/course_categories",
-     *     summary="课程分类",
-     *     tags={"课程"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/CourseCategory")),
-     *         )
-     *     )
-     * )
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/course_categories 录播课程分类
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object[]} data 数据
+     * @apiSuccess {Number} data.id 分类ID
+     * @apiSuccess {String} data.name 分类名
+     * @apiSuccess {Number} data.parent_id 分类父ID
      */
     public function all()
     {

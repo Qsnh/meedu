@@ -13,6 +13,7 @@
         "ext-json": "*",
         "ext-zip": "*",
         "alibabacloud/client": "^1.5",
+        "doctrine/dbal": "^3.1",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
@@ -25,8 +26,8 @@
         "mews/purifier": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nelexa/zip": "^3.3",
-        "overtrue/wechat": "~4.0",
         "overtrue/pinyin": "~3.0",
+        "overtrue/wechat": "~4.0",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^4.0",
@@ -37,9 +38,6 @@
         "zgldh/qiniu-laravel-storage": "^0.10.3"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.6",
-        "darkaonline/l5-swagger": "^6.0",
-        "doctrine/dbal": "^2.9",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "laravel/browser-kit-testing": "5.1.3",
@@ -82,7 +80,6 @@
             "@php artisan package:discover"
         ],
         "test": "./vendor/bin/phpunit",
-        "cf": "php-cs-fixer fix",
         "clean": [
             "@php artisan route:clear",
             "@php artisan config:clear",
@@ -99,8 +96,7 @@
             "supervisorctl reread",
             "supervisorctl update",
             "supervisorctl start meedu:*"
-        ],
-        "apidoc": "@php artisan l5-swagger:generate"
+        ]
     },
     "config": {
         "preferred-install": "dist",

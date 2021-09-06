@@ -16,10 +16,6 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
-/**
- * Class RoleController
- * @package App\Http\Controllers\Api\V2
- */
 class RoleController extends BaseController
 {
 
@@ -47,20 +43,17 @@ class RoleController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/roles",
-     *     summary="套餐列表",
-     *     tags={"会员"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/Role")),
-     *         )
-     *     )
-     * )
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/roles VIP会员列表
+     * @apiGroup VIP
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object[]} data 数据
+     * @apiSuccess {Number} data.id VIPid
+     * @apiSuccess {String} data.name VIP名
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {Number} data.expire_days 有效天数
+     * @apiSuccess {String[]} data.desc_rows 描述
      */
     public function roles()
     {
@@ -70,21 +63,17 @@ class RoleController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/role/{id}",
-     *     @OA\Parameter(in="path",name="id",description="视频id",required=true,@OA\Schema(type="integer")),
-     *     summary="套餐详情",
-     *     tags={"会员"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Role"),
-     *         )
-     *     )
-     * )
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/role/{id} VIP会员详情
+     * @apiGroup VIP
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.id VIPid
+     * @apiSuccess {String} data.name VIP名
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {Number} data.expire_days 有效天数
+     * @apiSuccess {String[]} data.desc_rows 描述
      */
     public function detail($id)
     {

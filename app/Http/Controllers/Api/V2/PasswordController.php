@@ -14,6 +14,19 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class PasswordController extends BaseController
 {
+
+    /**
+     * @api {post} /api/v2/password/reset 重置密码
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     * @apiParam {String} password 密码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function reset(PasswordChangeRequest $request, UserServiceInterface $userService)
     {
         $this->mobileCodeCheck();

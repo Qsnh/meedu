@@ -16,22 +16,19 @@ use App\Services\Other\Interfaces\SliderServiceInterface;
 
 class SliderController extends BaseController
 {
-
     /**
-     * @OA\Get(
-     *     path="/sliders",
-     *     summary="幻灯片",
-     *     tags={"其它"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="array",description="",@OA\Items(ref="#/components/schemas/Slider")),
-     *         )
-     *     )
-     * )
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/sliders 幻灯片
+     * @apiGroup 其它
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} platform 平台[PC,H5,APP,MINI]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.thumb 图片URL
+     * @apiSuccess {String} data.url 链接
+     * @apiSuccess {String} data.platform 平台
+     * @apiSuccess {Number} data.sort 升序
      */
     public function all(SliderServiceInterface $sliderService, Request $request)
     {

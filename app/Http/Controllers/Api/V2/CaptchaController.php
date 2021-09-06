@@ -19,10 +19,6 @@ use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-/**
- * Class CaptchaController
- * @package App\Http\Controllers\Api\V2
- */
 class CaptchaController extends BaseController
 {
 
@@ -50,23 +46,14 @@ class CaptchaController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/captcha/image",
-     *     summary="图形验证码",
-     *     tags={"其它"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="key",type="string",description="key"),
-     *                 @OA\Property(property="img",type="string",description="图片内容"),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/captcha/image 图形验证码
+     * @apiGroup 其它
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.key 随机键值
+     * @apiSuccess {String} data.img 图片base64码
      */
     public function imageCaptcha(Captcha $captcha)
     {
@@ -76,29 +63,17 @@ class CaptchaController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/captcha/sms",
-     *     summary="发送手机验证码",
-     *     tags={"其它"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="image_captcha",description="图形验证码",type="string"),
-     *         @OA\Property(property="image_key",description="图形验证码key",type="string"),
-     *         @OA\Property(property="scene",description="scene[login:登录,register:注册,password_reset:密码重置]",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/captcha/sms 发送短信
+     * @apiGroup 其它
+     * @apiVersion v2.0.0
      *
-     * @param SmsRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\ApiV2Exception
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} image_captcha 图形验证码
+     * @apiParam {String} image_key 图形验证码随机值
+     * @apiParam {String} scene 场景[login:登录,register:注册,password_reset:密码重置]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function sentSms(SmsRequest $request)
     {

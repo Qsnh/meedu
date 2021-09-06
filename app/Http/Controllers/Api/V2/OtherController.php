@@ -11,32 +11,6 @@ namespace App\Http\Controllers\Api\V2;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-/**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="Config",
- *         type="object",
- *         title="系统配置",
- *         @OA\Property(property="webname",type="string",description="网站名"),
- *         @OA\Property(property="icp",type="string",description="备案信息"),
- *         @OA\Property(property="user_protocol",type="string",description="用户协议url"),
- *         @OA\Property(property="user_private_protocol",type="string",description="隐私政策协议url"),
- *         @OA\Property(property="aboutus",type="integer",description="关于我们url"),
- *         @OA\Property(property="logo",type="object",description="logo",@OA\Property(
- *             @OA\Property(property="logo",type="string",description="默认logo"),
- *             @OA\Property(property="white_logo",type="string",description="白色logo"),
- *         )),
- *         @OA\Property(property="player",type="object",description="播放器",@OA\Property(
- *             @OA\Property(property="cover",type="string",description="封面"),
- *             @OA\Property(property="enabled_bullet_secret",type="integer",description="是否开启跑马灯"),
- *             @OA\Property(property="enabled_aliyun_private",type="integer",description="阿里云私密播放"),
- *         )),
- *         @OA\Property(property="member",type="object",description="会员配置",@OA\Property(
- *             @OA\Property(property="enabled_mobile_bind_alert",type="integer",description="强制绑定手机号，1是"),
- *         )),
- *     ),
- * )
- */
 class OtherController extends BaseController
 {
 
@@ -51,19 +25,23 @@ class OtherController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/other/config",
-     *     summary="系统配置",
-     *     tags={"其它"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Config"),
-     *         )
-     *     )
-     * )
+     * @api {get} /api/v2/other/config 系统配置
+     * @apiGroup 其它
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.webname 网站名
+     * @apiSuccess {String} data.icp ICP备案号
+     * @apiSuccess {String} data.user_protocol 用户协议URL
+     * @apiSuccess {String} data.user_private_protocol 用户隐私协议URL
+     * @apiSuccess {String} data.aboutus 关于我们
+     * @apiSuccess {String} data.logo LOGO的URL
+     * @apiSuccess {Object} data.player 播放器
+     * @apiSuccess {String} data.player.cover 播放器封面
+     * @apiSuccess {Number} data.player.enabled_bullet_secret 开启跑马灯[1:是,0否]
+     * @apiSuccess {Object} data.member
+     * @apiSuccess {Number} data.member.enabled_mobile_bind_alert 强制绑定手机号[1:是,0否]
      */
     public function config()
     {
@@ -78,7 +56,6 @@ class OtherController extends BaseController
             'player' => [
                 'cover' => $this->configService->getPlayerCover(),
                 'enabled_bullet_secret' => $plyaerConfig['enabled_bullet_secret'] ?? 0,
-                'enabled_aliyun_private' => $plyaerConfig['enabled_aliyun_private'] ?? 0,
             ],
             'member' => [
                 'enabled_mobile_bind_alert' => $this->configService->getEnabledMobileBindAlert(),
