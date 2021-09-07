@@ -90,8 +90,7 @@ class MemberController extends BaseController
         PromoCodeServiceInterface $promoCodeService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;

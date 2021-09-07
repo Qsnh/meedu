@@ -29,8 +29,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         // 自定义配置同步
         $this->app->make(Setting::class)->sync();
-        // 多模板注册
-        $this->registerViewNamespace();
         // 日志链路
         $this->logInit();
     }
@@ -57,10 +55,5 @@ class AppServiceProvider extends ServiceProvider
             $record['extra']['request_id'] = $requestId;
             return $record;
         });
-    }
-
-    protected function registerViewNamespace()
-    {
-        $this->loadViewsFrom(config('meedu.system.theme.path'), config('meedu.system.theme.use'));
     }
 }

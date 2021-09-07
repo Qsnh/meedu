@@ -154,19 +154,19 @@ return [
     // SEO
     'seo' => [
         'index' => [
-            'title' => 'MeEdu',
+            'title' => '首页',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
         'course_list' => [
             'title' => '所有课程',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
         'role_list' => [
             'title' => 'VIP',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
     ],
 
@@ -209,12 +209,6 @@ return [
 
         // 统计代码
         'js' => '',
-
-        // 主题
-        'theme' => [
-            'use' => 'default',
-            'path' => base_path(env('TEMPLATE_PATH') ?: 'resources/views'),
-        ],
 
         // 默认短信服务商
         'sms' => 'aliyun',

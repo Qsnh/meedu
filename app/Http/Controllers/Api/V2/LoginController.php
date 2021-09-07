@@ -60,8 +60,7 @@ class LoginController extends BaseController
         ConfigServiceInterface $configService,
         CacheServiceInterface $cacheService,
         SocialiteServiceInterface $socialiteService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->configService = $configService;
         $this->cacheService = $cacheService;
