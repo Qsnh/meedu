@@ -73,7 +73,7 @@ class PromoCodeController extends BaseController
         $canUse = 0;
         $data = [];
         if ($code) {
-            $canUse = (int)$this->businessState->promoCodeCanUse($code);
+            $canUse = (int)$this->businessState->promoCodeCanUse($this->id(), $code);
             $data = arr1_clear($code, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
         }
         return $this->data([

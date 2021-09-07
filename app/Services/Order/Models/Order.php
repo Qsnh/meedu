@@ -10,9 +10,12 @@ namespace App\Services\Order\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Base\Services\ConfigService;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
+    use HasFactory;
+
     public const STATUS_UNPAY = 1;
     public const STATUS_PAYING = 5;
     public const STATUS_PAID = 9;

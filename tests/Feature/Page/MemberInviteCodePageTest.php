@@ -18,7 +18,7 @@ class MemberInviteCodePageTest extends TestCase
 {
     public function test_member_promo_code()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('member.promo_code'))
             ->assertResponseStatus(200);
@@ -26,7 +26,7 @@ class MemberInviteCodePageTest extends TestCase
 
     public function test_member_promo_code_with_disabled_free_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         config(['meedu.member.invite.free_user_enabled' => false]);
 
@@ -38,7 +38,7 @@ class MemberInviteCodePageTest extends TestCase
 
     public function test_member_promo_code_with_enabled_free_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         config(['meedu.member.invite.free_user_enabled' => true]);
 
@@ -56,8 +56,8 @@ class MemberInviteCodePageTest extends TestCase
 
     public function test_member_promo_code_with_disabled_free_user_and_vip()
     {
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create();
+        $user = User::factory()->create();
+        $role = Role::factory()->create();
 
         $user['role_id'] = $role['id'];
         $user['role_expired_at'] = Carbon::now()->addDays(1);
@@ -79,8 +79,8 @@ class MemberInviteCodePageTest extends TestCase
 
     public function test_member_promo_with_invite_user()
     {
-        $user = factory(User::class)->create();
-        factory(User::class, 12)->create(['invite_user_id' => $user->id]);
+        $user = User::factory()->create();
+        User::factory()->count(12)->create(['invite_user_id' => $user->id]);
 
         config(['meedu.member.invite.free_user_enabled' => true]);
 

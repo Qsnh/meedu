@@ -21,7 +21,7 @@ class CourseTest extends Base
 {
     public function test_courses()
     {
-        $courses = factory(Course::class, 10)->create([
+        $courses = Course::factory()->count(10)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -32,12 +32,12 @@ class CourseTest extends Base
 
     public function test_courses_with_category()
     {
-        $category = factory(CourseCategory::class)->create();
-        factory(Course::class, 10)->create([
+        $category = CourseCategory::factory()->create();
+        Course::factory()->count(10)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
-        factory(Course::class, 3)->create([
+        Course::factory()->count(3)->create([
             'category_id' => $category->id,
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
@@ -49,7 +49,7 @@ class CourseTest extends Base
 
     public function test_courses_paginate_size()
     {
-        $courses = factory(Course::class, 10)->create([
+        $courses = Course::factory()->count(10)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -60,7 +60,7 @@ class CourseTest extends Base
 
     public function test_courses_paginate_page()
     {
-        $courses = factory(Course::class, 10)->create([
+        $courses = Course::factory()->count(10)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -72,7 +72,7 @@ class CourseTest extends Base
 
     public function test_course_detail()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $response = $this->getJson('/api/v2/course/' . $course->id);
@@ -81,9 +81,9 @@ class CourseTest extends Base
 
     public function test_course_detail_paid()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
         ]);
 
@@ -102,7 +102,7 @@ class CourseTest extends Base
 
     public function test_course_id_with_no_published()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->addDays(1),
         ]);
         $response = $this->getJson('/api/v2/course/' . $course->id);
@@ -111,8 +111,8 @@ class CourseTest extends Base
 
     public function test_course_comment_ban()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_CLOSE,
         ]);
@@ -124,9 +124,9 @@ class CourseTest extends Base
 
     public function test_course_comment_un_vip()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
@@ -138,13 +138,13 @@ class CourseTest extends Base
 
     public function test_course_comment_vip()
     {
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create();
+        $user = User::factory()->create();
+        $role = Role::factory()->create();
         $user->role_id = $role->id;
         $user->role_expired_at = Carbon::now()->addDays(1);
         $user->save();
 
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
@@ -156,8 +156,8 @@ class CourseTest extends Base
 
     public function test_course_comment_paid()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
@@ -175,8 +175,8 @@ class CourseTest extends Base
 
     public function test_course_comment()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ALL,
         ]);
@@ -191,10 +191,10 @@ class CourseTest extends Base
 
     public function test_course_comments()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
         ]);
-        factory(CourseComment::class, 10)->create(['course_id' => $course->id]);
+        CourseComment::factory()->count(10)->create(['course_id' => $course->id]);
 
         $response = $this->getJson('api/v2/course/' . $course->id . '/comments');
         $r = $this->assertResponseSuccess($response);
@@ -203,8 +203,8 @@ class CourseTest extends Base
 
     public function test_course_like()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $response = $this->user($user)->getJson('api/v2/course/' . $course->id . '/like');

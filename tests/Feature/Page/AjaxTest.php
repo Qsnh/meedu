@@ -36,7 +36,7 @@ class AjaxTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = factory(User::class)->create([
+        $this->user = User::factory()->create([
             'credit1' => 0,
         ]);
     }
@@ -49,7 +49,7 @@ class AjaxTest extends TestCase
 
     public function test_course_comment_with_empty_content()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => 1,
         ]);
@@ -61,7 +61,7 @@ class AjaxTest extends TestCase
 
     public function test_course_comment_with_min_length()
     {
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
         $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '12345',
         ])->seeStatusCode(302);
@@ -70,7 +70,7 @@ class AjaxTest extends TestCase
 
     public function test_course_comment()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ALL,
@@ -82,14 +82,14 @@ class AjaxTest extends TestCase
 
     public function test_course_comment_close()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_CLOSE,
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
 
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
@@ -97,25 +97,25 @@ class AjaxTest extends TestCase
 
     public function test_course_comment_only_vip()
     {
-        $role = factory(Role::class)->create();
+        $role = Role::factory()->create();
         $this->user->role_id = $role->id;
         $this->user->role_expired_at = Carbon::now()->addDays(1);
         $this->user->save();
 
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     public function test_course_comment_only_paid_course()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
@@ -128,13 +128,13 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     public function test_video_comment()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -145,59 +145,59 @@ class AjaxTest extends TestCase
 
     public function test_video_comment_close()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Video::COMMENT_STATUS_CLOSE,
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_close_and_vip()
     {
-        $role = factory(Role::class)->create();
+        $role = Role::factory()->create();
         $this->user->role_id = $role->id;
         $this->user->role_expired_at = Carbon::now()->addDays(1);
         $this->user->save();
 
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Video::COMMENT_STATUS_CLOSE,
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_only_paid()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
 
     public function test_video_comment_only_paid_for_vip()
     {
-        $role = factory(Role::class)->create();
+        $role = Role::factory()->create();
         $this->user->role_id = $role->id;
         $this->user->role_expired_at = Carbon::now()->addDays(1);
         $this->user->save();
 
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
@@ -205,13 +205,13 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     public function test_video_comment_only_paid_for_free()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
@@ -219,13 +219,13 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     public function test_video_comment_only_paid_for_buy()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
@@ -236,13 +236,13 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     public function test_video_comment_only_paid_for_buy_course()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
@@ -253,14 +253,14 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->response->decodeResponseJson();
+        ])->response->json();
         $this->assertEquals(0, $response['code']);
     }
 
     // 不存在的优惠码
     public function test_promoCodeCheck_with_not_exists_promo_code()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
             'use_times' => 1,
@@ -276,7 +276,7 @@ class AjaxTest extends TestCase
     // 过期的优惠码无法使用
     public function test_promoCodeCheck_with_expired_promo_code()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
             'use_times' => 1,
@@ -293,7 +293,7 @@ class AjaxTest extends TestCase
     // 优惠码使用次数用完了
     public function test_promoCodeCheck_with_use_times_out()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
             'use_times' => 1,
@@ -309,7 +309,7 @@ class AjaxTest extends TestCase
     // 自己的优惠码无法使用
     public function test_promoCodeCheck_with_self_code()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'user_id' => $this->user->id,
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
@@ -326,7 +326,7 @@ class AjaxTest extends TestCase
     // 已使用过该优惠码
     public function test_promoCodeCheck_with_used_code()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'user_id' => 0,
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
@@ -350,7 +350,7 @@ class AjaxTest extends TestCase
 
     public function test_promoCodeCheck()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'user_id' => 0,
             'invite_user_reward' => 10,
             'invited_user_reward' => 10,
@@ -435,7 +435,7 @@ class AjaxTest extends TestCase
 
     public function test_nicknameChange_repeat()
     {
-        factory(User::class)->create(['nick_name' => 'meedu123']);
+        User::factory()->create(['nick_name' => 'meedu123']);
 
         $this->actingAs($this->user)->post('/member/ajax/nickname/change', [
             'nick_name' => 'meedu123',
@@ -477,7 +477,7 @@ class AjaxTest extends TestCase
 
     public function test_courseLike()
     {
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
         $this->actingAs($this->user)->post('/member/ajax/course/like/' . $course->id)->seeStatusCode(200);
 
         $this->assertTrue(UserLikeCourse::whereUserId($this->user->id)->whereCourseId($course->id)->exists());
@@ -665,7 +665,7 @@ class AjaxTest extends TestCase
         $this->user->mobile = '3434';
         $this->user->save();
 
-        factory(User::class)->create(['mobile' => '13666667777']);
+        User::factory()->create(['mobile' => '13666667777']);
 
         session(['sms_mock' => 'mock']);
         $this->actingAs($this->user)->post('/member/ajax/mobile_bind', [
@@ -682,15 +682,15 @@ class AjaxTest extends TestCase
         config(['meedu.member.credit1.watched_video' => 2]);
         config(['meedu.member.credit1.watched_course' => 3]);
 
-        $course = factory(Course::class)->create();
-        $video = factory(Video::class)->create([
+        $course = Course::factory()->create();
+        $video = Video::factory()->create([
             'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'duration' => 100,
             'charge' => 0,
         ]);
-        $video1 = factory(Video::class)->create([
+        $video1 = Video::factory()->create([
             'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
@@ -775,8 +775,8 @@ class AjaxTest extends TestCase
 
     public function test_user_video_watch_record_after_user_watch_stat()
     {
-        $course = factory(Course::class)->create();
-        $video = factory(Video::class)->create([
+        $course = Course::factory()->create();
+        $video = Video::factory()->create([
             'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),

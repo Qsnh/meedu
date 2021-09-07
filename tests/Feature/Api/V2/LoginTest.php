@@ -18,7 +18,7 @@ class LoginTest extends Base
 {
     public function test_with_correct_password()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13890900909',
             'is_lock' => User::LOCK_NO,
         ]);
@@ -31,7 +31,7 @@ class LoginTest extends Base
 
     public function test_with_locked()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13890900909',
             'password' => Hash::make('123123'),
             'is_lock' => User::LOCK_YES,
@@ -45,7 +45,7 @@ class LoginTest extends Base
 
     public function test_with_error_password()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13890900909',
             'is_lock' => User::LOCK_NO,
         ]);
@@ -59,7 +59,7 @@ class LoginTest extends Base
     public function test_mobile_login()
     {
         $mobile = '13890900909';
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => $mobile,
             'is_lock' => User::LOCK_NO,
         ]);

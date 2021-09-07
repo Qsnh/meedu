@@ -41,5 +41,6 @@ class InstallLockCommand extends Command
         if (!file_exists(storage_path('install.lock'))) {
             file_put_contents(storage_path('install.lock'), time());
         }
+        return 0;
     }
 }

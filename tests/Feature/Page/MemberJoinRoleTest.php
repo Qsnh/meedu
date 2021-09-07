@@ -18,7 +18,7 @@ class MemberJoinRoleTest extends TestCase
 {
     public function test_member_join_role()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('member.join_role_records'))
             ->assertResponseStatus(200);
@@ -26,8 +26,8 @@ class MemberJoinRoleTest extends TestCase
 
     public function test_member_join_role_see_some_records()
     {
-        $role = factory(Role::class)->create();
-        $user = factory(User::class)->create();
+        $role = Role::factory()->create();
+        $user = User::factory()->create();
         $record = UserJoinRoleRecord::create([
             'user_id' => $user->id,
             'role_id' => $role->id,

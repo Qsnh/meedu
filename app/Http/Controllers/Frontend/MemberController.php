@@ -302,11 +302,11 @@ class MemberController extends FrontendController
         $pageSize = 10;
 
         // 当前用户邀请码
-        $userPromoCode = $promoCodeService->userPromoCode();
+        $userPromoCode = $promoCodeService->userPromoCode($this->id());
         if (!$userPromoCode && $this->businessState->canGenerateInviteCode($this->user())) {
             // 如果可以生成邀请码的话则直接创建邀请码
             $promoCodeService->userCreate($this->user());
-            $userPromoCode = $promoCodeService->userPromoCode();
+            $userPromoCode = $promoCodeService->userPromoCode($this->id());
         }
 
         // 邀请人数

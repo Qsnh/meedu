@@ -15,7 +15,7 @@ class MemberNotificationTest extends TestCase
 {
     public function test_member_notification()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('member.messages'))
             ->assertResponseStatus(200);

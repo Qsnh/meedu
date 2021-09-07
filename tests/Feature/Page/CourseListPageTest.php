@@ -25,7 +25,7 @@ class CourseListPageTest extends TestCase
     // 显示且已发布的课程可以在课程列表页面看到
     public function test_visit_course_list_show()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
         ]);
@@ -37,7 +37,7 @@ class CourseListPageTest extends TestCase
     // 不显示的课程无法再课程列表页面看到
     public function test_visit_course_list_hide()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_NO,
             'published_at' => Carbon::now()->subDay(1),
         ]);
@@ -49,7 +49,7 @@ class CourseListPageTest extends TestCase
     // 未发布的课程无法再课程列表界面看到
     public function test_visit_course_list_no_published()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);
@@ -64,7 +64,7 @@ class CourseListPageTest extends TestCase
         // 配置每页显示3个
         config(['meedu.other.course_list_page_size' => 3]);
         // 创建10个
-        factory(Course::class, 10)->create([
+        Course::factory()->count(10)->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -76,21 +76,21 @@ class CourseListPageTest extends TestCase
     {
         // 配置每页显示3个
         config(['meedu.other.course_list_page_size' => 3]);
-        $category = factory(CourseCategory::class)->create([
+        $category = CourseCategory::factory()->create([
             'is_show' => CourseCategory::IS_SHOW_YES,
             'name' => '分类一',
         ]);
-        $category1 = factory(CourseCategory::class)->create([
+        $category1 = CourseCategory::factory()->create([
             'is_show' => CourseCategory::IS_SHOW_YES,
             'name' => '分类二',
         ]);
-        $c1 = factory(Course::class)->create([
+        $c1 = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'category_id' => $category->id,
             'title' => '哈哈'
         ]);
-        $c2 = factory(Course::class)->create([
+        $c2 = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'category_id' => $category1->id,

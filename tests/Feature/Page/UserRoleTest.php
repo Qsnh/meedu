@@ -21,7 +21,7 @@ class UserRoleTest extends TestCase
 
     public function test_create_user_role()
     {
-        $role = factory(Role::class)->create();
+        $role = Role::factory()->create();
         $response = $this->get(route('role.index'));
         $response->assertResponseStatus(200);
         $response->see($role->name)

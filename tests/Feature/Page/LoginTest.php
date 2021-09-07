@@ -27,7 +27,7 @@ class LoginTest extends TestCase
     public function test_mock_user_login_success()
     {
         $password = 123456;
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password),
             'is_lock' => User::LOCK_NO,
         ]);
@@ -41,7 +41,7 @@ class LoginTest extends TestCase
     // 错误的密码登录重定向到login界面
     public function test_mock_user_login_fail()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'is_lock' => User::LOCK_YES,
         ]);
         $this->visit(route('login'))
@@ -53,7 +53,7 @@ class LoginTest extends TestCase
 
     public function test_mock_user_with_locked()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'is_lock' => User::LOCK_YES,
         ]);
         $this->visit(route('login'))

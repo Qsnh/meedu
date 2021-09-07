@@ -583,7 +583,7 @@ class MemberController extends BaseController
      */
     public function promoCode()
     {
-        $promoCode = $this->promoCodeService->getCurrentUser();
+        $promoCode = $this->promoCodeService->getUserPromoCode($this->id());
         $promoCode = arr1_clear($promoCode, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
         $promoCode['per_order_draw'] = $this->configService->getMemberInviteConfig()['per_order_draw'];
         return $this->data($promoCode);

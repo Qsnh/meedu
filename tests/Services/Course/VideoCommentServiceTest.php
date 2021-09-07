@@ -41,9 +41,9 @@ class VideoCommentServiceTest extends TestCase
 
     public function test_create()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
-        $video = factory(Video::class)->create();
+        $video = Video::factory()->create();
 
         $comment = $this->service->create($video->id, '我是评价的内容');
 
@@ -53,8 +53,8 @@ class VideoCommentServiceTest extends TestCase
 
     public function test_courseComments()
     {
-        $video = factory(Video::class)->create();
-        $comments = factory(VideoComment::class, 10)->create([
+        $video = Video::factory()->create();
+        $comments = VideoComment::factory()->count(10)->create([
             'video_id' => $video,
             'user_id' => 1,
         ]);
@@ -71,7 +71,7 @@ class VideoCommentServiceTest extends TestCase
 
     public function test_find()
     {
-        $comment = factory(VideoComment::class)->create();
+        $comment = VideoComment::factory()->create();
         $c = $this->service->find($comment->id);
         $this->assertEquals($comment->original_content, $c['original_content']);
     }

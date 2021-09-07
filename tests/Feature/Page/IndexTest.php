@@ -23,11 +23,11 @@ class IndexTest extends TestCase
     public function test_see_friendlink()
     {
         Link::create([
-            'name' => '小滕博客',
-            'url' => 'https://58hualong.cn',
+            'name' => 'meedu官网',
+            'url' => 'https://meedu.vip',
         ]);
 
-        $this->visit('/')->see('小滕博客')
-            ->see('//58hualong.cn');
+        $this->visit('/')->see('meedu官网')
+            ->see('//meedu.vip');
     }
 }

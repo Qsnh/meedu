@@ -12,11 +12,6 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
     protected $listen = [
         'App\Events\PaymentSuccessEvent' => [
             '\App\Listeners\PaymentSuccessEvent\OrderPaidDeliverListener',
@@ -56,12 +51,4 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\AppConfigSavedEvent' => [],
     ];
-
-    /**
-     * Register any events for your application.
-     */
-    public function boot()
-    {
-        parent::boot();
-    }
 }

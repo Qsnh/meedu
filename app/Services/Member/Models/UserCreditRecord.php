@@ -10,10 +10,11 @@ namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserCreditRecord extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     public const FIELD_CREDIT1 = 'credit1';
     public const FIELD_CREDIT2 = 'credit2';

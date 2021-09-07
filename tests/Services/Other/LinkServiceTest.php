@@ -26,7 +26,7 @@ class LinkServiceTest extends TestCase
     {
         config(['meedu.system.cache.status' => 1]);
 
-        $link = factory(Link::class)->create([
+        $link = Link::factory()->create([
             'sort' => 1,
         ]);
 
@@ -37,7 +37,7 @@ class LinkServiceTest extends TestCase
         $this->assertEquals($link->name, $links[0]['name']);
         $this->assertEquals($link->url, $links[0]['url']);
 
-        $link1 = factory(Link::class)->create([
+        $link1 = Link::factory()->create([
             'sort' => 2,
         ]);
         $links = $this->service->all();
@@ -50,7 +50,7 @@ class LinkServiceTest extends TestCase
     {
         config(['meedu.system.cache.status' => 0]);
 
-        $link = factory(Link::class)->create([
+        $link = Link::factory()->create([
             'sort' => 1,
         ]);
 
@@ -61,7 +61,7 @@ class LinkServiceTest extends TestCase
         $this->assertEquals($link->name, $links[0]['name']);
         $this->assertEquals($link->url, $links[0]['url']);
 
-        $link1 = factory(Link::class)->create([
+        $link1 = Link::factory()->create([
             'sort' => 2,
         ]);
         $links = $this->service->all();

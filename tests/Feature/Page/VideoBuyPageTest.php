@@ -18,8 +18,8 @@ class VideoBuyPageTest extends TestCase
 {
     public function test_member_orders_page()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'is_ban_sell' => 0,
@@ -31,8 +31,8 @@ class VideoBuyPageTest extends TestCase
 
     public function test_member_orders_page_cannot_sold()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'is_ban_sell' => 1,
@@ -47,8 +47,8 @@ class VideoBuyPageTest extends TestCase
     {
         $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
 
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);
@@ -61,8 +61,8 @@ class VideoBuyPageTest extends TestCase
     {
         $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
 
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_NO,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -73,8 +73,8 @@ class VideoBuyPageTest extends TestCase
 
     public function test_member_orders_page_with_repeat_buy()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);

@@ -9,9 +9,12 @@
 namespace App\Services\Other\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Nav extends Model
 {
+    use HasFactory;
+
     protected $table = 'navs';
 
     protected $fillable = [

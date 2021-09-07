@@ -25,7 +25,7 @@ class FindPasswordTest extends TestCase
 
     public function test_submit()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '12398762345',
             'password' => Hash::make('meedu123'),
         ]);

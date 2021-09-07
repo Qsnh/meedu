@@ -11,7 +11,6 @@ namespace App\Businesses;
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
@@ -123,7 +122,7 @@ class BusinessState
             // 开启了非会员无法生成优惠码
             return false;
         }
-        $userPromoCode = $promoCodeService->userPromoCode();
+        $userPromoCode = $promoCodeService->userPromoCode($user['id']);
         if ($userPromoCode) {
             // 已经生成
             return false;
@@ -132,14 +131,15 @@ class BusinessState
     }
 
     /**
+     * @param int $loginUserId
      * @param array $promoCode
      * @return bool
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function promoCodeCanUse(array $promoCode): bool
+    public function promoCodeCanUse(int $loginUserId, array $promoCode): bool
     {
         // 自己不能使用自己的优惠码
-        if ($promoCode['user_id'] === Auth::id()) {
+        if ($promoCode['user_id'] === $loginUserId) {
             return false;
         }
         if ($promoCode['use_times'] > 0 && $promoCode['use_times'] - $promoCode['used_times'] <= 0) {
@@ -151,7 +151,7 @@ class BusinessState
          */
         $promoCodeService = app()->make(PromoCodeServiceInterface::class);
         // 同一邀请码一个用户只能用一次
-        $useRecords = $promoCodeService->getCurrentUserOrderPaidRecords($promoCode['id']);
+        $useRecords = $promoCodeService->getCurrentUserOrderPaidRecords($loginUserId, $promoCode['id']);
         if ($useRecords) {
             return false;
         }
@@ -163,7 +163,7 @@ class BusinessState
          * @var $userService UserService
          */
         $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find(Auth::id());
+        $user = $userService->find($loginUserId);
         if ((int)$user['is_used_promo_code'] === 1) {
             // 用户邀请优惠码只能使用一次
             return false;

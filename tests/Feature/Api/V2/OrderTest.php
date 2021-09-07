@@ -22,8 +22,8 @@ class OrderTest extends Base
 {
     public function test_createCourseOrder()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -37,8 +37,8 @@ class OrderTest extends Base
 
     public function test_createCourseOrder_with_0_charge()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -52,8 +52,8 @@ class OrderTest extends Base
 
     public function test_createCourseOrder_with_purchased()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -71,14 +71,14 @@ class OrderTest extends Base
 
     public function test_createCourseOrder_with_promo_code()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
         ]);
 
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 10,
             'code' => 'code1234',
             'expired_at' => Carbon::now()->addDays(1),
@@ -96,14 +96,14 @@ class OrderTest extends Base
 
     public function test_createCourseOrder_with_promo_code_paid()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
         ]);
 
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 100,
             'code' => 'code1234',
             'expired_at' => Carbon::now()->addDays(1),
@@ -120,14 +120,14 @@ class OrderTest extends Base
 
     public function test_createCourseOrder_with_promo_code_paid_second()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
         ]);
 
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 200,
             'code' => 'code1234',
             'expired_at' => Carbon::now()->addDays(1),
@@ -144,8 +144,8 @@ class OrderTest extends Base
 
     public function test_createRoleOrder()
     {
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create([
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
             'charge' => 100,
             'is_show' => Course::SHOW_YES,
         ]);
@@ -158,13 +158,13 @@ class OrderTest extends Base
 
     public function test_createRoleOrder_with_promo_code()
     {
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create([
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
             'charge' => 100,
             'is_show' => Course::SHOW_YES,
         ]);
 
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 10,
             'code' => 'code1234',
             'expired_at' => Carbon::now()->addDays(1),
@@ -182,8 +182,8 @@ class OrderTest extends Base
 
     public function test_createVideoOrder()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -197,8 +197,8 @@ class OrderTest extends Base
 
     public function test_createVideoOrder_with_0_charge()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -212,8 +212,8 @@ class OrderTest extends Base
 
     public function test_createVideoOrder_with_purchased()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
@@ -231,13 +231,13 @@ class OrderTest extends Base
 
     public function test_createVideoOrder_with_promo_code()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create([
+        $user = User::factory()->create();
+        $video = Video::factory()->create([
             'charge' => 100,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Course::SHOW_YES,
         ]);
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 10,
             'code' => 'code1234',
             'expired_at' => Carbon::now()->addDays(1),

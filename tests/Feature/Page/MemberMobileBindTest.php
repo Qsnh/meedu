@@ -15,13 +15,13 @@ class MemberMobileBindTest extends TestCase
 {
     public function test_page()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)->visit(route('member.mobile.bind'))->seeStatusCode(200);
     }
 
     public function test_bind()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '233334444',
         ]);
         $this->session(['sms_mobile_bind' => '123123']);
@@ -38,7 +38,7 @@ class MemberMobileBindTest extends TestCase
 
     public function test_bind_with_cant()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '12333334444',
         ]);
         $this->session(['sms_mobile_bind' => '123123']);
@@ -52,10 +52,10 @@ class MemberMobileBindTest extends TestCase
 
     public function test_bind_with_exists_mobile()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '12333334444',
         ]);
-        factory(User::class)->create([
+        User::factory()->create([
             'mobile' => '13900001111',
         ]);
         $this->session(['sms_mobile_bind' => '123123']);

@@ -15,7 +15,7 @@ class MemberOrdersTest extends TestCase
 {
     public function test_member_orders_page()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('member.orders'));
     }

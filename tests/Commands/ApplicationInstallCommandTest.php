@@ -20,7 +20,7 @@ class ApplicationInstallCommandTest extends OriginalTestCase
     public function test_install_administrator()
     {
         $this->artisan('install', ['action' => 'administrator'])
-            ->expectsOutput('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据。');
+            ->expectsOutput('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据');
     }
 
     public function test_install_administrator_with_role()
@@ -38,7 +38,7 @@ class ApplicationInstallCommandTest extends OriginalTestCase
             ->expectsQuestion('请输入邮箱(默认：meedu@meedu.meedu):', $email)
             ->expectsQuestion('请输入密码(默认：meedu123):', $password)
             ->expectsQuestion('请再输入一次(默认：meedu123):', $password)
-            ->expectsOutput('管理员初始化成功.')
+            ->expectsOutput('管理员初始化成功')
             ->assertExitCode(0);
 
         // 断言管理员创建成功
@@ -89,7 +89,7 @@ class ApplicationInstallCommandTest extends OriginalTestCase
             ->expectsQuestion('请输入邮箱(默认：meedu@meedu.meedu):', $email)
             ->expectsQuestion('请输入密码(默认：meedu123):', $password)
             ->expectsQuestion('请再输入一次(默认：meedu123):', Str::random())
-            ->expectsOutput('两次输入密码不一致.');
+            ->expectsOutput('两次输入密码不一致');
     }
 
     public function test_install_dev()

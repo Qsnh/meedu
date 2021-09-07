@@ -41,9 +41,9 @@ class CourseCommentServiceTest extends TestCase
 
     public function test_create()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
 
         $comment = $this->service->create($course->id, '我是评价的内容');
 
@@ -53,8 +53,8 @@ class CourseCommentServiceTest extends TestCase
 
     public function test_courseComments()
     {
-        $course = factory(Course::class)->create();
-        $comments = factory(CourseComment::class, 10)->create([
+        $course = Course::factory()->create();
+        $comments = CourseComment::factory()->count(10)->create([
             'course_id' => $course,
             'user_id' => 1,
         ]);
@@ -72,7 +72,7 @@ class CourseCommentServiceTest extends TestCase
 
     public function test_find()
     {
-        $comment = factory(CourseComment::class)->create();
+        $comment = CourseComment::factory()->create();
         $c = $this->service->find($comment->id);
         $this->assertEquals($comment->original_content, $c['original_content']);
     }

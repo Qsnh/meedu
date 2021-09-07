@@ -10,7 +10,6 @@ namespace Tests\Services\Order;
 
 use Tests\TestCase;
 use App\Services\Member\Models\User;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Order\Services\PromoCodeService;
@@ -23,7 +22,7 @@ class PromoCodeServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -32,37 +31,35 @@ class PromoCodeServiceTest extends TestCase
 
     public function test_userCreate()
     {
-        $user = factory(User::class)->create();
-        Auth::login($user);
+        $user = User::factory()->create();
         $this->service->userCreate($user->toArray());
 
-        $this->assertNotEmpty(PromoCode::whereUserId($user->id)->first());
+        $this->assertNotEmpty(PromoCode::query()->where('user_id', $user->id)->first());
     }
 
     public function test_userPromoCode()
     {
-        $user = factory(User::class)->create();
-        Auth::login($user);
+        $user = User::factory()->create();
         $this->service->userCreate($user->toArray());
 
-        $this->assertNotEmpty($this->service->userPromoCode());
+        $this->assertNotEmpty($this->service->userPromoCode($user['id']));
     }
 
     public function test_findCode()
     {
-        $promoCode = factory(PromoCode::class)->create();
+        $promoCode = PromoCode::factory()->create();
         $this->assertNotEmpty($this->service->findCode($promoCode['code']));
     }
 
     public function test_getList()
     {
-        $promoCode = factory(PromoCode::class)->create();
+        $promoCode = PromoCode::factory()->create();
         $this->assertNotEmpty($this->service->getList([$promoCode['id']]));
     }
 
     public function test_decrementUsedTimes()
     {
-        $promoCode = factory(PromoCode::class)->create([
+        $promoCode = PromoCode::factory()->create([
             'used_times' => 2,
         ]);
         $this->service->decrementUsedTimes([$promoCode['id']]);
@@ -72,15 +69,15 @@ class PromoCodeServiceTest extends TestCase
 
     public function test_getOrderPaidRecords()
     {
-        factory(OrderPaidRecord::class, 3)->create([
+        OrderPaidRecord::factory()->count(3)->create([
             'order_id' => 1,
             'paid_type' => OrderPaidRecord::PAID_TYPE_PROMO_CODE,
         ]);
-        factory(OrderPaidRecord::class, 2)->create([
+        OrderPaidRecord::factory()->count(2)->create([
             'order_id' => 1,
             'paid_type' => OrderPaidRecord::PAID_TYPE_DEFAULT,
         ]);
-        factory(OrderPaidRecord::class, 3)->create([
+        OrderPaidRecord::factory()->count(3)->create([
             'order_id' => 1,
             'paid_type' => OrderPaidRecord::PAID_TYPE_INVITE_BALANCE,
         ]);
@@ -92,20 +89,19 @@ class PromoCodeServiceTest extends TestCase
 
     public function test_getCurrentUserOrderPaidRecords()
     {
-        $user = factory(User::class)->create();
-        Auth::login($user);
-        $promoCode = factory(PromoCode::class)->create([
+        $user = User::factory()->create();
+        $promoCode = PromoCode::factory()->create([
             'used_times' => 2,
         ]);
 
-        factory(OrderPaidRecord::class)->create([
+        OrderPaidRecord::factory()->create([
             'user_id' => $user->id,
             'order_id' => 1,
             'paid_type' => OrderPaidRecord::PAID_TYPE_PROMO_CODE,
             'paid_type_id' => $promoCode['id'],
         ]);
 
-        $list = $this->service->getCurrentUserOrderPaidRecords($promoCode['id']);
+        $list = $this->service->getCurrentUserOrderPaidRecords($user['id'], $promoCode['id']);
         $this->assertNotEmpty($list);
     }
 }

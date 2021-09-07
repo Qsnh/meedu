@@ -8,8 +8,12 @@
 
 namespace App\Services\Course\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class CourseChapter extends Base
 {
+    use HasFactory;
+
     protected $table = 'course_chapter';
 
     protected $fillable = [

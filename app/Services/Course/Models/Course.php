@@ -9,10 +9,11 @@
 namespace App\Services\Course\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Base
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     public const SHOW_YES = 1;
     public const SHOW_NO = -1;

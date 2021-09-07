@@ -10,10 +10,11 @@ namespace App\Services\Order\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrderPaidRecord extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     const PAID_TYPE_DEFAULT = 0;
     const PAID_TYPE_PROMO_CODE = 1;

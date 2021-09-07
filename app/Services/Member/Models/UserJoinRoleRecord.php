@@ -9,9 +9,12 @@
 namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserJoinRoleRecord extends Model
 {
+    use HasFactory;
+
     protected $table = 'user_join_role_records';
 
     protected $fillable = [

@@ -16,8 +16,8 @@ class RoleBuyTest extends TestCase
 {
     public function test_member_orders_page()
     {
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create([
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
             'is_show' => Role::IS_SHOW_YES,
         ]);
         $this->actingAs($user)
@@ -29,8 +29,8 @@ class RoleBuyTest extends TestCase
     {
         $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
 
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create([
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
             'is_show' => Role::IS_SHOW_NO,
         ]);
         $this->actingAs($user)
@@ -42,8 +42,8 @@ class RoleBuyTest extends TestCase
     {
         config(['meedu.payment.handPay.enabled' => 1]);
 
-        $user = factory(User::class)->create();
-        $role = factory(Role::class)->create([
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
             'is_show' => Role::IS_SHOW_YES,
             'charge' => 100,
         ]);

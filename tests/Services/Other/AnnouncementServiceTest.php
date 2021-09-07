@@ -32,7 +32,7 @@ class AnnouncementServiceTest extends TestCase
     {
         config(['meedu.system.cache.status' => 1]);
 
-        $announce = factory(Announcement::class)->create([
+        $announce = Announcement::factory()->create([
             'admin_id' => 0,
         ]);
 
@@ -41,7 +41,7 @@ class AnnouncementServiceTest extends TestCase
         $this->assertEquals($announce['admin_id'], $latest['admin_id']);
         $this->assertEquals($announce['announcement'], $latest['announcement']);
 
-        $newAnnouncement = factory(Announcement::class)->create([
+        $newAnnouncement = Announcement::factory()->create([
             'admin_id' => 1,
         ]);
         $latest = $this->service->latest();
@@ -54,7 +54,7 @@ class AnnouncementServiceTest extends TestCase
     {
         config(['meedu.system.cache.status' => 0]);
 
-        $announce = factory(Announcement::class)->create([
+        $announce = Announcement::factory()->create([
             'admin_id' => 0,
             'created_at' => Carbon::now()->subDays(1),
         ]);
@@ -64,7 +64,7 @@ class AnnouncementServiceTest extends TestCase
         $this->assertEquals($announce['admin_id'], $latest['admin_id']);
         $this->assertEquals($announce['announcement'], $latest['announcement']);
 
-        $newAnnouncement = factory(Announcement::class)->create([
+        $newAnnouncement = Announcement::factory()->create([
             'admin_id' => 1,
         ]);
         $latest = $this->service->latest();

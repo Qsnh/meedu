@@ -8,8 +8,12 @@
 
 namespace App\Services\Course\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Video extends Base
 {
+    use HasFactory;
+
     public const IS_SHOW_YES = 1;
     public const IS_SHOW_NO = -1;
 

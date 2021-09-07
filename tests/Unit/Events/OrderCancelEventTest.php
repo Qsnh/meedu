@@ -19,12 +19,12 @@ class OrderCancelEventTest extends TestCase
 {
     public function test_PromoCodeResumeListener()
     {
-        $user = factory(User::class)->create();
-        $promoCode = factory(PromoCode::class)->create([
+        $user = User::factory()->create();
+        $promoCode = PromoCode::factory()->create([
             'used_times' => 1,
         ]);
         $orderService = $this->app->make(OrderService::class);
-        $role = factory(Role::class)->create(['charge' => 100]);
+        $role = Role::factory()->create(['charge' => 100]);
         $order = $orderService->createRoleOrder($user->id, $role->toArray(), $promoCode->id);
 
         event(new OrderCancelEvent($order['id']));

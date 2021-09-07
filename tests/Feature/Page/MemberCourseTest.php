@@ -18,18 +18,18 @@ class MemberCourseTest extends TestCase
 {
     public function test_member_course()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actingAs($user)
             ->visit(route('member.courses'));
     }
 
     public function test_member_course_see_some_records()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $charge = random_int(1, 100);
         DB::table('user_course')->insert([
             'course_id' => $course->id,

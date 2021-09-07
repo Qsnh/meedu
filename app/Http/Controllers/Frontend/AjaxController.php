@@ -154,7 +154,7 @@ class AjaxController extends BaseController
         if ($code['expired_at'] && Carbon::now()->gt($code['expired_at'])) {
             return $this->error(__('该码已过期'));
         }
-        if (!$this->businessState->promoCodeCanUse($code)) {
+        if (!$this->businessState->promoCodeCanUse($this->id(), $code)) {
             return $this->error(__('该码无法使用'));
         }
         return $this->data([

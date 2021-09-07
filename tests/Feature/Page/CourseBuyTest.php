@@ -18,8 +18,8 @@ class CourseBuyTest extends TestCase
 {
     public function test_member_orders_page()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -32,8 +32,8 @@ class CourseBuyTest extends TestCase
     {
         $this->expectException(\Laravel\BrowserKitTesting\HttpException::class);
 
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);
@@ -44,8 +44,8 @@ class CourseBuyTest extends TestCase
 
     public function test_member_orders_page_with_repeat_buy()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create([
+        $user = User::factory()->create();
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);

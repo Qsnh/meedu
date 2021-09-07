@@ -21,7 +21,7 @@ class CourseDetailTest extends TestCase
     // 断言这个课程是可以访问的
     public function test_visit_course_detail_page()
     {
-        $courseShow = factory(Course::class)->create([
+        $courseShow = Course::factory()->create([
             'title' => '我是课程名',
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
@@ -35,7 +35,7 @@ class CourseDetailTest extends TestCase
     // 这种情况下课程是无法访问的
     public function test_course_no_published_show()
     {
-        $courseNoPublished = factory(Course::class)->create([
+        $courseNoPublished = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);
@@ -47,11 +47,11 @@ class CourseDetailTest extends TestCase
     // 断言是可以看到该课程下的视频的
     public function test_see_course_videos_no_chapter()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subMinutes(1),
         ]);
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
@@ -65,14 +65,14 @@ class CourseDetailTest extends TestCase
     // 访问课程界面可以看到该章节和视频
     public function test_see_course_videos_with_chapter()
     {
-        $course = factory(Course::class)->create([
+        $course = Course::factory()->create([
             'is_show' => Course::SHOW_YES,
             'published_at' => Carbon::now()->subMinutes(1),
         ]);
-        $chapter = factory(CourseChapter::class)->create([
+        $chapter = CourseChapter::factory()->create([
             'course_id' => $course->id,
         ]);
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDay(1),
@@ -87,7 +87,7 @@ class CourseDetailTest extends TestCase
     // 这种情况下是无法再改课程界面看到不显示的视频的
     public function test_dont_see_no_show_course_videos()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_NO,
             'published_at' => Carbon::now()->subDay(1),
         ]);
@@ -99,7 +99,7 @@ class CourseDetailTest extends TestCase
     // 这种情况下是无法在该课程详情页看到未发布的视频的
     public function test_dont_see_no_published_course_videos()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);

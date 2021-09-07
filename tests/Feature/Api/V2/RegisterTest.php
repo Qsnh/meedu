@@ -51,7 +51,7 @@ class RegisterTest extends Base
         $password = Str::random(12);
         $mobileCode = Str::random(6);
 
-        factory(User::class)->create(['mobile' => $mobile]);
+        User::factory()->create(['mobile' => $mobile]);
 
         /**
          * @var $cacheService CacheService

@@ -9,9 +9,12 @@
 namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Role extends Model
 {
+    use HasFactory;
+
     const IS_SHOW_YES = 1;
     const IS_SHOW_NO = 0;
 

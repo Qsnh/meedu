@@ -30,8 +30,8 @@ class AnnouncementTest extends Base
     public function setUp():void
     {
         parent::setUp();
-        $this->admin = factory(Administrator::class)->create();
-        $this->role = factory(AdministratorRole::class)->create();
+        $this->admin = Administrator::factory()->create();
+        $this->role = AdministratorRole::factory()->create();
         DB::table('administrator_role_relation')->insert([
             'administrator_id' => $this->admin->id,
             'role_id' => $this->role->id,
@@ -58,14 +58,14 @@ class AnnouncementTest extends Base
 
     public function test_edit()
     {
-        $item = factory(self::MODEL)->create();
+        $item = Announcement::factory()->create();
         $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id);
         $this->assertResponseSuccess($response);
     }
 
     public function test_update()
     {
-        $item = factory(self::MODEL)->create();
+        $item = Announcement::factory()->create();
         $response = $this->user($this->admin)->put(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id, self::FILL_DATA);
         $this->assertResponseSuccess($response);
 
@@ -77,7 +77,7 @@ class AnnouncementTest extends Base
 
     public function test_destroy()
     {
-        $item = factory(self::MODEL)->create();
+        $item = Announcement::factory()->create();
         $response = $this->user($this->admin)->delete(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/' . $item->id);
         $this->assertResponseSuccess($response);
         $model = self::MODEL;

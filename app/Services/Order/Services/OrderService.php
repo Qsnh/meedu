@@ -45,7 +45,7 @@ class OrderService implements OrderServiceInterface
             // 优惠码抵扣
             $promoCodeDiscount = 0;
             $promoCode = PromoCode::find($promoCodeId);
-            if ($promoCode && $this->businessState->promoCodeCanUse($promoCode->toArray())) {
+            if ($promoCode && $this->businessState->promoCodeCanUse($userId, $promoCode->toArray())) {
                 $promoCodeDiscount = $promoCode['invited_user_reward'];
                 // 记录使用次数
                 $promoCode->increment('used_times', 1);

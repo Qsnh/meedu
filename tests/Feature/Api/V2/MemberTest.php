@@ -34,7 +34,7 @@ class MemberTest extends Base
     public function setUp(): void
     {
         parent::setUp();
-        $this->member = factory(User::class)->create();
+        $this->member = User::factory()->create();
     }
 
     public function test_detail()
@@ -75,7 +75,7 @@ class MemberTest extends Base
 
     public function test_change_mobile_exists()
     {
-        factory(User::class)->create(['mobile' => '12345679876']);
+        User::factory()->create(['mobile' => '12345679876']);
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
 
@@ -129,7 +129,7 @@ class MemberTest extends Base
 
     public function test_roles()
     {
-        factory(UserJoinRoleRecord::class, 5)->create(['user_id' => $this->member->id]);
+        UserJoinRoleRecord::factory()->count(5)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/roles');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(5, $response['data']['total']);
@@ -143,7 +143,9 @@ class MemberTest extends Base
 
     public function test_courses()
     {
-        factory(UserCourse::class, 4)->create(['user_id' => $this->member->id]);
+        UserCourse::factory()->count(4)->create([
+            'user_id' => $this->member->id,
+        ]);
         $response = $this->user($this->member)->getJson('api/v2/member/courses');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(4, $response['data']['total']);
@@ -151,7 +153,7 @@ class MemberTest extends Base
 
     public function test_courses_like()
     {
-        factory(UserLikeCourse::class, 6)->create(['user_id' => $this->member->id]);
+        UserLikeCourse::factory()->count(6)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/courses/like');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(6, $response['data']['total']);
@@ -159,16 +161,15 @@ class MemberTest extends Base
 
     public function test_courses_history()
     {
-        factory(CourseUserRecord::class, 5)->create(['user_id' => $this->member->id]);
+        CourseUserRecord::factory()->count(5)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/courses/history');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(5, $response['data']['total']);
     }
 
-
     public function test_videos()
     {
-        factory(UserVideo::class, 6)->create(['user_id' => $this->member->id]);
+        UserVideo::factory()->count(6)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/videos');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(6, $response['data']['total']);
@@ -176,7 +177,7 @@ class MemberTest extends Base
 
     public function test_orders()
     {
-        factory(Order::class, 10)->create(['user_id' => $this->member->id]);
+        Order::factory()->count(10)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/orders');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $response['data']['total']);
@@ -184,7 +185,7 @@ class MemberTest extends Base
 
     public function test_inviteBalanceRecords()
     {
-        factory(UserInviteBalanceRecord::class, 6)->create(['user_id' => $this->member->id]);
+        UserInviteBalanceRecord::factory()->count(6)->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/inviteBalanceRecords');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(6, $response['data']['total']);
@@ -192,7 +193,7 @@ class MemberTest extends Base
 
     public function test_promoCode()
     {
-        $promoCode = factory(PromoCode::class)->create(['user_id' => $this->member->id]);
+        $promoCode = PromoCode::factory()->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals($promoCode->id, $response['data']['id']);
@@ -233,7 +234,7 @@ class MemberTest extends Base
 
     public function test_inviteUsers()
     {
-        factory(User::class, 10)->create(['invite_user_id' => $this->member->id]);
+        User::factory()->count(10)->create(['invite_user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/inviteUsers?page=1&page_size=8');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $response['data']['total']);

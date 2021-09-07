@@ -98,7 +98,7 @@ class GlobalShareMiddleware
         View::share('bindMobileState', $bindMobileState);
 
         // 未读消息数量
-        $unreadMessageCount = Auth::check() ? $notificationService->getUnreadCount() : 0;
+        $unreadMessageCount = Auth::check() ? $notificationService->getUnreadCount(Auth::id()) : 0;
         View::share('gUnreadMessageCount', $unreadMessageCount);
 
         // nav
