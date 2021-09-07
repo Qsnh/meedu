@@ -37,9 +37,6 @@ class AddonsProviderMapGenrator extends Command
         parent::__construct();
     }
 
-    /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
     public function handle()
     {
         $except = $this->argument('except');

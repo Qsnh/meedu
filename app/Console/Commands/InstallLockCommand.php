@@ -36,11 +36,6 @@ class InstallLockCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         if (!file_exists(storage_path('install.lock'))) {

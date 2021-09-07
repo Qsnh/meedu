@@ -89,7 +89,8 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
+
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
@@ -108,7 +109,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 
@@ -127,7 +128,7 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/course/' . $course->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 
@@ -151,7 +152,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
@@ -170,7 +171,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
@@ -184,7 +185,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(1, $response['code']);
         $this->assertEquals(__('无权限'), $response['message']);
     }
@@ -204,7 +205,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 
@@ -218,7 +219,7 @@ class AjaxTest extends TestCase
         ]);
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 
@@ -235,7 +236,7 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 
@@ -252,7 +253,7 @@ class AjaxTest extends TestCase
 
         $response = $this->actingAs($this->user)->post('/member/ajax/video/' . $video->id . '/comment', [
             'content' => '哈哈哈哈，我要评论下',
-        ])->decodeResponseJson();
+        ])->response->decodeResponseJson();
         $this->assertEquals(0, $response['code']);
     }
 

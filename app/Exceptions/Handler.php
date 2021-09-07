@@ -8,7 +8,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Support\Str;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
@@ -41,22 +40,7 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * @param Exception $exception
-     * @return mixed|void
-     * @throws Exception
-     */
-    public function report(Exception $exception)
-    {
-        parent::report($exception);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param Exception $exception
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
-     */
-    public function render($request, Exception $exception)
+    public function render($request, \Throwable $exception)
     {
         if (!($exception instanceof ServiceException) && $request->wantsJson()) {
             // 后台的异常错误
