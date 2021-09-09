@@ -50,8 +50,6 @@ class Course extends Base
     }
 
     /**
-     * 该课程下面的视频.
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function videos()

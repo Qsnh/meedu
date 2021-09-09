@@ -12,8 +12,10 @@ use Carbon\Carbon;
 use Overtrue\Pinyin\Pinyin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\VodVideoCreatedEvent;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
+use App\Events\VodVideoDestroyedEvent;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Course\Models\CourseChapter;
@@ -67,6 +69,8 @@ class CourseVideoController extends BaseController
     {
         $video->fill($request->filldata())->save();
 
+        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+
         return $this->success();
     }
 
@@ -88,6 +92,8 @@ class CourseVideoController extends BaseController
 
         $video->fill($request->filldata())->save();
 
+        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+
         return $this->success();
     }
 
@@ -99,7 +105,11 @@ class CourseVideoController extends BaseController
             // 清空用户的观看记录
             UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
 
+            $videoId = $video['id'];
+
             $video->delete();
+
+            event(new VodVideoDestroyedEvent($videoId));
         });
 
         return $this->success();
@@ -125,10 +135,14 @@ class CourseVideoController extends BaseController
                 ->get();
 
             foreach ($videos as $video) {
+                $videoId = $video['id'];
+
                 // 清空用户观看记录
-                UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
+                UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();
 
                 $video->delete();
+
+                event(new VodVideoDestroyedEvent($videoId));
             }
         });
 

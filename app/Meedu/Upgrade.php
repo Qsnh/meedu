@@ -9,7 +9,10 @@
 namespace App\Meedu;
 
 use App\Models\AdministratorMenu;
+use App\Services\Course\Models\Video;
 use App\Services\Base\Model\AppConfig;
+use App\Services\Course\Models\Course;
+use App\Services\Other\Models\SearchRecord;
 
 class Upgrade
 {
@@ -18,6 +21,8 @@ class Upgrade
         $this->fromV374to4();
 
         $this->toV42();
+
+        $this->toV45();
     }
 
     public function fromV374to4()
@@ -89,5 +94,50 @@ class Upgrade
                 'meedu.system.player.enabled_aliyun_private',
             ])
             ->delete();
+    }
+
+    public function toV45()
+    {
+        $courses = Course::query()
+            ->select([
+                'id', 'title', 'charge', 'thumb', 'short_description', 'original_desc',
+            ])
+            ->get();
+        foreach ($courses as $course) {
+            $exists = SearchRecord::query()->where('resource_id', $course['id'])->where('resource_type', 'vod')->exists();
+            if ($exists) {
+                continue;
+            }
+
+            SearchRecord::create([
+                'resource_type' => 'vod',
+                'resource_id' => $course['id'],
+                'title' => $course['title'],
+                'charge' => $course['charge'],
+                'thumb' => $course['thumb'],
+                'short_desc' => $course['short_description'],
+                'desc' => $course['original_desc'],
+            ]);
+        }
+
+        $videos = Video::query()
+            ->select(['id', 'title', 'charge'])
+            ->get();
+        foreach ($videos as $video) {
+            $exists = SearchRecord::query()->where('resource_id', $video['id'])->where('resource_type', 'video')->exists();
+            if ($exists) {
+                continue;
+            }
+
+            SearchRecord::create([
+                'resource_type' => 'video',
+                'resource_id' => $video['id'],
+                'title' => $video['title'],
+                'charge' => $video['charge'],
+                'thumb' => '',
+                'short_desc' => '',
+                'desc' => '',
+            ]);
+        }
     }
 }

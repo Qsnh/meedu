@@ -50,5 +50,25 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedCredit1RewardListener',
         ],
         'App\Events\AppConfigSavedEvent' => [],
+        // 录播课程的增改删
+        'App\Events\VodCourseCreatedEvent' => [
+            'App\Listeners\VodCourseCreatedEvent\SearchRecordNotify',
+        ],
+        'App\Events\VodCourseUpdatedEvent' => [
+            'App\Listeners\VodCourseUpdatedEvent\SearchRecordNotify',
+        ],
+        'App\Events\VodCourseDestroyedEvent' => [
+            'App\Listeners\VodCourseDestroyedEvent\SearchRecordNotify',
+        ],
+        // 录播视频的增改删
+        'App\Events\VodVideoCreatedEvent' => [
+            'App\Listeners\VodVideoCreatedEvent\SearchRecordNotify',
+        ],
+        'App\Events\VodVideoUpdatedEvent' => [
+            'App\Listeners\VodVideoUpdatedEvent\SearchRecordNotify',
+        ],
+        'App\Events\VodVideoDestroyedEvent' => [
+            'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
+        ],
     ];
 }

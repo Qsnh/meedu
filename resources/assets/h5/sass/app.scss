@@ -563,6 +563,47 @@ body {
   line-height: 16px;
 }
 
+.search-item {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.search-item:last-child {
+  margin-bottom: 0;
+}
+
+.search-item > .search-item-title {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 15px;
+  word-break: break-all;
+  line-height: 20px;
+}
+
+.search-item > .search-item-title > b {
+  font-weight: normal;
+  color: red;
+}
+
+.search-item > .search-item-short-desc {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 13px;
+  padding-top: 5px;
+  color: #666;
+  word-break: break-all;
+  line-height: 15px;
+}
+
+.search-item > .search-item-short-desc > b {
+  font-weight: normal;
+  color: red;
+}
+
 .course-info-box {
   width: 100%;
   height: auto;

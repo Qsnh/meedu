@@ -1102,6 +1102,25 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+
+            // 全文搜索配置
+            [
+                'group' => '全文搜索',
+                'name' => 'MeiLiSearch Host',
+                'field_type' => 'text',
+                'sort' => 1,
+                'key' => 'scout.meilisearch.host',
+                'value' => '',
+            ],
+            [
+                'group' => '全文搜索',
+                'name' => 'MeiLiSearch Key',
+                'field_type' => 'text',
+                'sort' => 5,
+                'key' => 'scout.meilisearch.key',
+                'value' => '',
+                'is_private' => true,
+            ],
         ];
 
         $localConfig = [];

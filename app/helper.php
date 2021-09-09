@@ -623,3 +623,31 @@ if (!function_exists('view_hook')) {
         return \App\Meedu\Hooks\HookRun::run($position, new \App\Meedu\Hooks\HookParams([]));
     }
 }
+
+if (!function_exists('search_item_url')) {
+    function search_item_url($type, $id)
+    {
+        switch ($type) {
+            case 'vod':
+                return route('course.show', [$id, $id]);
+            case 'video':
+                /**
+                 * @var \App\Services\Course\Services\VideoService $videoService
+                 */
+                $videoService = app()->make(\App\Services\Course\Interfaces\VideoServiceInterface::class);
+                $video = $videoService->findOrNull($id);
+                if ($video) {
+                    return route('video.show', [$video['course_id'], $id, $id]);
+                }
+                return '#';
+            case 'live':
+                return route('zhibo.course.show', [$id]);
+            case 'book':
+                return route('book.show', [$id]);
+            case 'qa':
+                return route('wenda.question.show', [$id]);
+        }
+
+        return '#';
+    }
+}

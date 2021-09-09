@@ -17,6 +17,7 @@ use App\Services\Other\Proxies\LinkServiceProxy;
 use App\Services\Other\Services\MpWechatService;
 use App\Services\Other\Services\ViewBlockService;
 use App\Services\Other\Proxies\SliderServiceProxy;
+use App\Services\Other\Proxies\SearchRecordService;
 use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Other\Interfaces\LinkServiceInterface;
@@ -27,6 +28,7 @@ use App\Services\Other\Interfaces\UploadServiceInterface;
 use App\Services\Other\Interfaces\MpWechatServiceInterface;
 use App\Services\Other\Interfaces\ViewBlockServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
+use App\Services\Other\Interfaces\SearchRecordServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider
 {
@@ -41,5 +43,6 @@ class OtherServiceRegisterProvider extends ServiceProvider
         $this->app->instance(SliderServiceInterface::class, $this->app->make(SliderServiceProxy::class));
         $this->app->instance(MpWechatServiceInterface::class, $this->app->make(MpWechatService::class));
         $this->app->instance(ViewBlockServiceInterface::class, $this->app->make(ViewBlockService::class));
+        $this->app->instance(SearchRecordServiceInterface::class, $this->app->make(SearchRecordService::class));
     }
 }
