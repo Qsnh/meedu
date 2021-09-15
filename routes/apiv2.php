@@ -56,8 +56,12 @@ Route::get('/role/{id}', 'RoleController@detail');
 // 幻灯片
 Route::get('/sliders', 'SliderController@all');
 
-// 首页推荐
-Route::get('/index/banners', 'IndexBannerController@all');
+// 友情链接
+Route::get('/links', 'LinkController@all');
+
+// 公告
+Route::get('/announcement/latest', 'AnnouncementController@latest');
+Route::get('/announcement/list', 'AnnouncementController@list');
 
 // 优惠码检测
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
