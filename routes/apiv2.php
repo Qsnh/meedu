@@ -59,6 +59,9 @@ Route::get('/sliders', 'SliderController@all');
 // 友情链接
 Route::get('/links', 'LinkController@all');
 
+// 首页导航
+Route::get('/navs', 'NavController@all');
+
 // 公告
 Route::get('/announcement/latest', 'AnnouncementController@latest');
 Route::get('/announcement/{id}', 'AnnouncementController@detail');
