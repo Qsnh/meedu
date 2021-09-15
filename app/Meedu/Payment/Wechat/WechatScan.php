@@ -68,6 +68,7 @@ class WechatScan implements Payment
             $config['notify_url'] = route('payment.callback', ['wechat']);
 
             // 创建微信支付订单
+            // $createResult['code_url'] = 微信支付二维码的文本值
             $createResult = Pay::wechat($config)->{$order['payment_method']}($payOrderData);
 
             // 缓存保存
@@ -78,15 +79,17 @@ class WechatScan implements Payment
             );
 
             // 构建Response
-
-            // 支付成功的返回界面
-            $redirectUrl = request()->input('s_url');
-            $redirectUrl || $redirectUrl = request()->input('redirect');
-
-            $payUrl = url_append_query(route('order.pay.wechat', [$order['order_id']]), [
-                'redirect_url' => $redirectUrl,
-            ]);
-            $response = redirect($payUrl);
+            if (request()->wantsJson()) {
+                $response = $createResult;
+            } else {
+                // 支付成功的返回界面
+                $redirectUrl = request()->input('s_url');
+                $redirectUrl || $redirectUrl = request()->input('redirect');
+                $payUrl = url_append_query(route('order.pay.wechat', [$order['order_id']]), [
+                    'redirect_url' => $redirectUrl,
+                ]);
+                $response = redirect($payUrl);
+            }
 
             return new PaymentStatus(true, $response);
         } catch (Exception $exception) {

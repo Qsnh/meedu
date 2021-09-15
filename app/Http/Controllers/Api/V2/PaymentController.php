@@ -10,10 +10,14 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
+use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
 use App\Services\Base\Services\CacheService;
+use App\Meedu\Payment\Contract\PaymentStatus;
+use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class PaymentController extends BaseController
@@ -59,7 +63,7 @@ class PaymentController extends BaseController
         $orderId = $request->input('order_id', '');
         $order = $this->orderService->findUser($orderId);
 
-        $payments = get_payments('wechat_mini');
+        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_WECHAT_MINI);
         if (!$payments) {
             return $this->error(__('错误'));
         }
@@ -75,7 +79,7 @@ class PaymentController extends BaseController
         // 创建远程订单
         $paymentHandler = app()->make($payments['wechat']['handler']);
         $createResult = $paymentHandler->create($order, ['openid' => $openid]);
-        if ($createResult->status == false) {
+        if ($createResult->status === false) {
             throw new SystemException(__('系统错误'));
         }
 
@@ -158,5 +162,75 @@ class PaymentController extends BaseController
         }
 
         return $createResult->data;
+    }
+
+    /**
+     * @api {get} /api/v2/order/pay/handPay 手动打款支付
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.text 手动打款支付信息
+     */
+    public function handPay()
+    {
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+
+        $text = $configService->getHandPayIntroducation();
+
+        return $this->data(['text' => $text]);
+    }
+
+    /**
+     * @api {post} /api/v2/order/pay/wechatScan 微信扫码支付[PC]
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiParam {String} order_id 订单编号
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code_url 微信支付二维码的文本值，用该值生成二维码
+     */
+    public function wechatScan(Request $request)
+    {
+        $orderId = $request->input('order_id', '');
+        $order = $this->orderService->findUser($orderId);
+
+        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
+        if (!$payments) {
+            return $this->error(__('错误'));
+        }
+
+        // 更新订单的支付方式
+        $updateData = [
+            'payment' => FrontendConstant::PAYMENT_SCENE_PC,
+            'payment_method' => 'scan',
+        ];
+        $this->orderService->change2Paying($order['id'], $updateData);
+        $order = array_merge($order, $updateData);
+
+        // 创建远程订单
+        $paymentHandler = app()->make($payments['wechat']['handler']);
+
+        /**
+         * @var PaymentStatus $createResult
+         */
+        $createResult = $paymentHandler->create($order);
+        if ($createResult->status === false) {
+            throw new SystemException(__('系统错误'));
+        }
+
+        $data = $createResult->data;
+
+        return $this->data([
+            'code_url' => $data['code_url'],
+        ]);
     }
 }

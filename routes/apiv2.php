@@ -61,7 +61,7 @@ Route::get('/links', 'LinkController@all');
 
 // 公告
 Route::get('/announcement/latest', 'AnnouncementController@latest');
-Route::get('/announcement/{id}', 'AnnouncementController@latest');
+Route::get('/announcement/{id}', 'AnnouncementController@detail');
 Route::get('/announcements', 'AnnouncementController@list');
 
 // 优惠码检测
@@ -79,12 +79,23 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     Route::post('/order/course', 'OrderController@createCourseOrder');
     Route::post('/order/role', 'OrderController@createRoleOrder');
     Route::post('/order/video', 'OrderController@createVideoOrder');
+    // 订单状态查询
+    Route::get('/order/status', 'OrderController@queryStatus');
 
+    // 微信小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+    // 跳转到第三方平台支付[如：支付宝web支付]
     Route::get('/order/pay/redirect', 'PaymentController@payRedirect');
+    // 手动打款支付
+    Route::get('/order/pay/handPay', 'PaymentController@handPay');
+    // 微信扫码支付
+    Route::post('/order/pay/wechatScan', 'PaymentController@wechatScan');
+    // 获取可用支付网关
     Route::get('/order/payments', 'PaymentController@payments');
 
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
+
+    Route::post('/upload/image', 'UploadController@image');
 
     Route::group(['prefix' => 'member'], function () {
         Route::get('detail', 'MemberController@detail');
@@ -112,7 +123,4 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('profile', 'MemberController@profile');
         Route::post('profile', 'MemberController@profileUpdate');
     });
-
-    // 上传图片
-    Route::post('/upload/image', 'UploadController@image');
 });

@@ -201,4 +201,26 @@ class OrderController extends BaseController
         $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
         return $this->data($order);
     }
+
+    /**
+     * @api {get} /api/v2/order/status 订单状态查询
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiParam {String} order_id 订单编号
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Number} data.status 订单状态[1:未支付,5:支付中,9:已支付,7:已取消]
+     */
+    public function queryStatus(Request $request)
+    {
+        $orderId = $request->input('order_id', '');
+        $order = $this->orderService->findUser($orderId);
+
+        return $this->data([
+            'status' => $order['status'],
+        ]);
+    }
 }
