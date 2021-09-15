@@ -85,6 +85,21 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.system.icp', '');
     }
 
+    public function getIcpLink()
+    {
+        return config('meedu.system.icp_link');
+    }
+
+    public function getIcp2()
+    {
+        return config('meedu.system.icp2', '');
+    }
+
+    public function getIcp2Link()
+    {
+        return config('meedu.system.icp2_link', '');
+    }
+
     /**
      * 播放器封面
      *
@@ -533,5 +548,23 @@ class ConfigService implements ConfigServiceInterface
     public function getMpWechatScanLoginAlert()
     {
         return config('meedu.mp_wechat.scan_login_alert');
+    }
+
+    /**
+     * @return int
+     */
+    public function getSocialiteQQLoginEnabled()
+    {
+        return (int)config('meedu.member.socialite.qq.enabled');
+    }
+
+    public function getSocialiteWechatScanLoginEnabled()
+    {
+        return (int)config('meedu.mp_wechat.enabled_scan_login');
+    }
+
+    public function getSocialiteWechatLoginEnabled()
+    {
+        return (int)config('meedu.mp_wechat.enabled_oauth_login');
     }
 }
