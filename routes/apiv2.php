@@ -61,7 +61,8 @@ Route::get('/links', 'LinkController@all');
 
 // 公告
 Route::get('/announcement/latest', 'AnnouncementController@latest');
-Route::get('/announcement/list', 'AnnouncementController@list');
+Route::get('/announcement/{id}', 'AnnouncementController@latest');
+Route::get('/announcements', 'AnnouncementController@list');
 
 // 优惠码检测
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
