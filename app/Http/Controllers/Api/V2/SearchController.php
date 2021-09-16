@@ -22,6 +22,9 @@ class SearchController extends BaseController
      * @apiVersion v2.0.0
      *
      * @apiParam {String} keywords 搜索关键字
+     * @apiParam {String} type 课程类型
+     * @apiParam {Number} size 每页数量
+     * @apiParam {Number} page 页码
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -37,6 +40,9 @@ class SearchController extends BaseController
      */
     public function index(Request $request)
     {
+        $type = $request->input('type');
+        $size = abs((int)$request->input('size', 10));
+
         /**
          * @var CourseService $courseService
          */
@@ -50,7 +56,7 @@ class SearchController extends BaseController
          */
         $searchService = app()->make(SearchRecordServiceInterface::class);
 
-        $data = $searchService->search($keywords, 10);
+        $data = $searchService->search($keywords, $size, $type);
 
         return $this->data([
             'data' => $data->items(),

@@ -30,7 +30,7 @@ class CreateSearchRecordsTable extends Migration
             $table->mediumText('desc')->nullable(true)->default(null)->comment('详细介绍');
             $table->timestamps();
 
-            $table->index(['resource_id']);
+            $table->index(['resource_id', 'resource_type'], 'rr_it');
         });
     }
 
