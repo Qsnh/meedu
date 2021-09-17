@@ -128,5 +128,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('credit1Records', 'MemberController@credit1Records');
         Route::get('profile', 'MemberController@profile');
         Route::post('profile', 'MemberController@profileUpdate');
+        Route::post('verify', 'MemberController@verify');
     });
 });

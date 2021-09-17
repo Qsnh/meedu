@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Carbon\Carbon;
+use App\Meedu\Verify;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
@@ -138,7 +139,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/password 修改密码
+     * @api {post} /api/v2/member/detail/password 修改密码
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -164,27 +165,38 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/mobile 更换(绑定)手机号
+     * @api {post} /api/v2/member/detail/mobile 更换(绑定)手机号
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
+     * @apiParam {String} sign 校验字符串
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function mobileChange(MobileChangeRequest $request)
+    public function mobileChange(MobileChangeRequest $request, Verify $verify)
     {
+        $sign = $request->input('sign');
+        if (!$sign) {
+            return $this->error(__('参数错误'));
+        }
+        if ($verify->check($sign) === false) {
+            return $this->error(__('参数错误'));
+        }
+
         $this->mobileCodeCheck();
+
         ['mobile' => $mobile] = $request->filldata();
         $this->userService->changeMobile($this->id(), $mobile);
+        
         return $this->success();
     }
 
     /**
-     * @api {post} /api/v2/member/nickname 修改昵称
+     * @api {post} /api/v2/member/detail/nickname 修改昵称
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -202,7 +214,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/avatar 修改头像
+     * @api {post} /api/v2/member/detail/avatar 修改头像
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -862,5 +874,21 @@ class MemberController extends BaseController
         $data = $request->all();
         $this->userService->saveProfile($this->id(), $data);
         return $this->success();
+    }
+
+    /**
+     * @api {post} /api/v2/member/verify 校验
+     * @apiGroup 用户
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {String} data.sign 校验字符串
+     */
+    public function verify(Verify $verify)
+    {
+        $this->mobileCodeCheck();
+        return $this->data(['sign' => $verify->gen()]);
     }
 }

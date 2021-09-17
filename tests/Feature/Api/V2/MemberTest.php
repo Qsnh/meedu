@@ -8,6 +8,7 @@
 
 namespace Tests\Feature\Api\V2;
 
+use App\Meedu\Verify;
 use App\Constant\CacheConstant;
 use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
@@ -64,9 +65,13 @@ class MemberTest extends Base
     {
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '17898765423'), 'code', 1);
+
+        $sign = $this->app->make(Verify::class)->gen();
+
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
             'mobile' => '17898765423',
+            'sign' => $sign,
         ]);
         $this->assertResponseSuccess($response);
         $this->member->refresh();
@@ -79,9 +84,12 @@ class MemberTest extends Base
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
 
+        $sign = $this->app->make(Verify::class)->gen();
+
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
             'mobile' => '12345679876',
+            'sign' => $sign,
         ]);
         $this->assertResponseError($response, __('手机号已存在'));
     }
