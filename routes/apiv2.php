@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('profile', 'MemberController@profile');
         Route::post('profile', 'MemberController@profileUpdate');
         Route::post('verify', 'MemberController@verify');
-        Route::post('wechatScan/bind', 'MemberController@wechatScanBind');
+        Route::get('wechatScan/bind', 'MemberController@wechatScanBind');
         Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
     });
 });

@@ -93,8 +93,7 @@ class MemberController extends BaseController
         PromoCodeServiceInterface $promoCodeService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -176,7 +175,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/mobile 绑定手机号
+     * @api {post} /api/v2/member/detail/mobile 手机号绑定
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -202,7 +201,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {put} /api/v2/member/mobile 更换手机号
+     * @api {put} /api/v2/member/mobile 手机号更换
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -947,8 +946,11 @@ class MemberController extends BaseController
      */
     public function wechatScanBind(WechatBindBus $bus)
     {
-        ['code' => $code, 'image' => $image] = $bus->code($this->id());
-        return $this->data(compact('code', 'image'));
+        $data = $bus->qrcode($this->id());
+        return $this->data([
+            'code' => $data['code'],
+            'image' => $data['image'],
+        ]);
     }
 
     /**
