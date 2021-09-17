@@ -175,7 +175,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/mobile 更换(绑定)手机号
+     * @api {post} /api/v2/member/detail/mobile 绑定手机号
      * @apiGroup 用户
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
@@ -186,8 +186,40 @@ class MemberController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function mobileChange(MobileChangeRequest $request)
+    public function mobileBind(MobileChangeRequest $request, BusinessState $businessState)
     {
+        $this->mobileCodeCheck();
+
+        if (!$businessState->isNeedBindMobile($this->user())) {
+            return $this->error(__('已绑定'));
+        }
+
+        ['mobile' => $mobile] = $request->filldata();
+        $this->userService->changeMobile($this->id(), $mobile);
+
+        return $this->success();
+    }
+
+    /**
+     * @api {put} /api/v2/member/mobile 更换手机号
+     * @apiGroup 用户
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     * @apiParam {String} sign 校验字符串
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function mobileChange(MobileChangeRequest $request, Verify $verify)
+    {
+        $sign = $request->input('verify');
+        if (!$sign || $verify->check($sign) === false) {
+            return $this->error(__('参数错误'));
+        }
+
         $this->mobileCodeCheck();
 
         ['mobile' => $mobile] = $request->filldata();

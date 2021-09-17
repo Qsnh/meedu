@@ -108,7 +108,8 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::post('detail/password', 'MemberController@passwordChange');
         Route::post('detail/avatar', 'MemberController@avatarChange');
         Route::post('detail/nickname', 'MemberController@nicknameChange');
-        Route::post('detail/mobile', 'MemberController@mobileChange');
+        Route::post('detail/mobile', 'MemberController@mobileBind');
+        Route::put('mobile', 'MemberController@mobileChange');
         Route::get('courses', 'MemberController@courses');
         Route::get('courses/like', 'MemberController@likeCourses');
         Route::get('courses/history', 'MemberController@learnHistory');
@@ -130,6 +131,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::post('profile', 'MemberController@profileUpdate');
         Route::post('verify', 'MemberController@verify');
         Route::post('wechatScan/bind', 'MemberController@wechatScanBind');
-        Route::delete('socialite/{app}', 'MemberController@wechatScanBind');
+        Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
     });
 });
