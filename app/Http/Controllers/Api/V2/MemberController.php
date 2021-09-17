@@ -187,16 +187,8 @@ class MemberController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function mobileChange(MobileChangeRequest $request, Verify $verify)
+    public function mobileChange(MobileChangeRequest $request)
     {
-        $sign = $request->input('sign');
-        if (!$sign) {
-            return $this->error(__('参数错误'));
-        }
-        if ($verify->check($sign) === false) {
-            return $this->error(__('参数错误'));
-        }
-
         $this->mobileCodeCheck();
 
         ['mobile' => $mobile] = $request->filldata();
@@ -906,7 +898,7 @@ class MemberController extends BaseController
         if ($request->input('mobile') !== $user['mobile']) {
             return $this->error(__('参数错误'));
         }
-        
+
         return $this->data(['sign' => $verify->gen()]);
     }
 
