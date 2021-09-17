@@ -892,13 +892,21 @@ class MemberController extends BaseController
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
      *
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
      * @apiSuccess {String} data.sign 校验字符串
      */
-    public function verify(Verify $verify)
+    public function verify(Request $request, Verify $verify)
     {
         $this->mobileCodeCheck();
+        $user = $this->user();
+        if ($request->input('mobile') !== $user['mobile']) {
+            return $this->error(__('参数错误'));
+        }
+        
         return $this->data(['sign' => $verify->gen()]);
     }
 
