@@ -21,6 +21,9 @@ Route::post('/login/mobile', 'LoginController@mobileLogin');
 Route::post('/login/wechatMini', 'LoginController@wechatMini');
 // 微信小程序手机号登录
 Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile');
+// 微信公众号扫码登录
+Route::get('/login/wechatScan', 'LoginController@wechatScan');
+Route::get('/login/wechatScan/query', 'LoginController@wechatScanQuery');
 // 微信公众号授权登录
 Route::get('/login/wechat/oauth', 'LoginController@wechatLogin');
 Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback')->name('api.v2.login.wechat.callback');
