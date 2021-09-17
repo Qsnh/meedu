@@ -41,6 +41,7 @@ class SearchController extends BaseController
     public function index(Request $request)
     {
         $type = $request->input('type');
+        $page = abs((int)$request->input('page'));
         $size = abs((int)$request->input('size', 10));
 
         /**
@@ -56,11 +57,8 @@ class SearchController extends BaseController
          */
         $searchService = app()->make(SearchRecordServiceInterface::class);
 
-        $data = $searchService->search($keywords, $size, $type);
+        $data = $searchService->search($keywords, $page, $size, $type);
 
-        return $this->data([
-            'data' => $data->items(),
-            'total' => $data->total(),
-        ]);
+        return $this->data($data);
     }
 }
