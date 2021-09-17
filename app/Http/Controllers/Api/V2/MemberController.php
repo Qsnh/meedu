@@ -182,7 +182,6 @@ class MemberController extends BaseController
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
-     * @apiParam {String} sign 校验字符串
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -904,8 +903,9 @@ class MemberController extends BaseController
 
     /**
      * @api {get} /api/v2/member/wechatScan/bind 微信扫码绑定[二维码]
-     * @apiGroup Auth
+     * @apiGroup 用户
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -916,5 +916,27 @@ class MemberController extends BaseController
     {
         ['code' => $code, 'image' => $image] = $bus->code($this->id());
         return $this->data(compact('code', 'image'));
+    }
+
+    /**
+     * @api {delete} /api/v2/member/socialite/{app} 社交登录解绑
+     * @apiGroup 用户
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     * @apiDescription app={qq:QQ登录,wechat:微信}
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code 随机值
+     * @apiSuccess {String} data.image 图片内容
+     */
+    public function socialiteCancelBind(Request $request)
+    {
+        $app = $request->input('app');
+        if (!$app || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ, FrontendConstant::WECHAT_LOGIN_SIGN])) {
+            return $this->error(__('参数错误'));
+        }
+        $this->socialiteService->cancelBind($app, $this->id());
+        return $this->success();
     }
 }
