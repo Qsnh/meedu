@@ -93,7 +93,8 @@ class MemberController extends BaseController
         PromoCodeServiceInterface $promoCodeService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -962,9 +963,8 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.code 随机值
      * @apiSuccess {String} data.image 图片内容
      */
-    public function socialiteCancelBind(Request $request)
+    public function socialiteCancelBind($app)
     {
-        $app = $request->input('app');
         if (!$app || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ, FrontendConstant::WECHAT_LOGIN_SIGN])) {
             return $this->error(__('参数错误'));
         }
