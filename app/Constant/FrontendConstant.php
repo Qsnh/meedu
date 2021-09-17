@@ -69,4 +69,6 @@ class FrontendConstant
 
     public const LANG_ZH = 'zh';
     public const LANG_EN = 'en';
+
+    public const SOCIALITE_APP_QQ = 'qq';
 }

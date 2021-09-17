@@ -10,9 +10,11 @@ namespace App\Http\Controllers\Api\V2;
 
 use Carbon\Carbon;
 use App\Meedu\Verify;
+use App\Bus\WechatBindBus;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
@@ -129,11 +131,19 @@ class MemberController extends BaseController
      * @apiSuccess {Object} data.role VIP会员[可选]
      * @apiSuccess {Number} data.role.id ID
      * @apiSuccess {String} data.role.name VIP名
+     * @apiSuccess {Number} data.is_bind_qq 是否绑定QQ[1:是,0:否]
+     * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
      */
     public function detail()
     {
         $user = $this->userService->find(Auth::guard($this->guard)->id(), ['role']);
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
+
+        $socialites = $this->socialiteService->userSocialites($this->id());
+        $socialites = array_column($socialites, null, 'app');
+
+        $user['is_bind_qq'] = isset($socialites[FrontendConstant::SOCIALITE_APP_QQ]) ? 1 : 0;
+        $user['is_bind_wechat'] = isset($socialites[FrontendConstant::WECHAT_LOGIN_SIGN]) ? 1 : 0;
 
         return $this->data($user);
     }
@@ -191,7 +201,7 @@ class MemberController extends BaseController
 
         ['mobile' => $mobile] = $request->filldata();
         $this->userService->changeMobile($this->id(), $mobile);
-        
+
         return $this->success();
     }
 
@@ -890,5 +900,21 @@ class MemberController extends BaseController
     {
         $this->mobileCodeCheck();
         return $this->data(['sign' => $verify->gen()]);
+    }
+
+    /**
+     * @api {get} /api/v2/member/wechatScan/bind 微信扫码绑定[二维码]
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code 随机值
+     * @apiSuccess {String} data.image 图片内容
+     */
+    public function wechatScanBind(WechatBindBus $bus)
+    {
+        ['code' => $code, 'image' => $image] = $bus->code($this->id());
+        return $this->data(compact('code', 'image'));
     }
 }

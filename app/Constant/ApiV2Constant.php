@@ -25,7 +25,8 @@ class ApiV2Constant
 
     public const MODEL_MEMBER_FIELD = [
         'id', 'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
-        'invite_balance', 'role', 'is_password_set', 'is_set_nickname', 'credit1', 'credit2', 'credit3',
+        'invite_balance', 'is_password_set', 'is_set_nickname', 'is_used_promo_code',
+        'created_at', 'credit1', 'credit2', 'credit3', 'role',
     ];
 
     public const MODEL_ROLE_FIELD = [
