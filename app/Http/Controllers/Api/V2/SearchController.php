@@ -9,9 +9,9 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
+use App\Constant\ApiV2Constant;
 use App\Services\Course\Services\CourseService;
-use App\Services\Other\Proxies\SearchRecordService;
-use App\Services\Other\Interfaces\SearchRecordServiceInterface;
+use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class SearchController extends BaseController
 {
@@ -21,26 +21,30 @@ class SearchController extends BaseController
      * @apiGroup 搜索
      * @apiVersion v2.0.0
      *
-     * @apiParam {String=vod=录播课,video=录播视频,live=直播课,book=电子书,topic=图文,paper=试卷,practice=练习} keywords 搜索关键字
-     * @apiParam {String} type 课程类型
+     * @apiParam {String} keywords 搜索关键字
      * @apiParam {Number} size 每页数量
      * @apiParam {Number} page 页码
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 资源ID
-     * @apiSuccess {Number} data.data.resource_id 资源ID
-     * @apiSuccess {String} data.data.resource_type 资源类型
-     * @apiSuccess {String} data.data.title 标题
-     * @apiSuccess {String} data.data.short_desc 简短介绍
-     * @apiSuccess {String} data.data.desc 详细介绍
-     * @apiSuccess {String} data.data.thumb 封面
-     * @apiSuccess {Number} data.data.charge 价格
+     * @apiSuccess {Number} data.id 课程ID
+     * @apiSuccess {String} data.title 课程名
+     * @apiSuccess {String} data.thumb 封面
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.short_description 简短介绍
+     * @apiSuccess {String} data.render_desc 详细介绍
+     * @apiSuccess {String} data.seo_keywords SEO关键字
+     * @apiSuccess {String} data.seo_description SEO描述
+     * @apiSuccess {String} data.published_at 上架时间
+     * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
+     * @apiSuccess {Number} data.user_count 订阅人数
+     * @apiSuccess {Number} data.videos_count 视频数
+     * @apiSuccess {Object} data.category 分类
+     * @apiSuccess {Number} data.category.id 分类ID
+     * @apiSuccess {String} data.category.name 分类名
      */
     public function index(Request $request)
     {
-        $type = $request->input('type');
         $page = abs((int)$request->input('page'));
         $size = abs((int)$request->input('size', 10));
 
@@ -53,11 +57,11 @@ class SearchController extends BaseController
         }
 
         /**
-         * @var SearchRecordService $searchService
+         * @var CourseService $courseService
          */
-        $searchService = app()->make(SearchRecordServiceInterface::class);
-
-        $data = $searchService->search($keywords, $page, $size, $type);
+        $courseService = app()->make(CourseServiceInterface::class);
+        $data = $courseService->titleSearch($keywords, 10);
+        $data = arr2_clear($data, ApiV2Constant::MODEL_COURSE_FIELD);
 
         return $this->data($data);
     }

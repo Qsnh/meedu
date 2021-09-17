@@ -43,10 +43,14 @@ class SearchRecordService implements SearchRecordServiceInterface
         }
     }
 
-    public function search(string $keywords, int $page = 1, int $size = 10, string $type = '')
+    public function search(string $keywords, int $page = 1, int $size = 10, $type = '')
     {
         if (!$type) {
-            return SearchRecord::search($keywords)->paginate($size);
+            $data = SearchRecord::search($keywords)->paginate($size);
+            return [
+                'data' => $data->items(),
+                'total' => $data->total(),
+            ];
         }
 
         $results = SearchRecord::search($keywords)->get();
