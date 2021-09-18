@@ -215,7 +215,7 @@ class MemberController extends BaseController
      */
     public function mobileChange(MobileChangeRequest $request, Verify $verify)
     {
-        $sign = $request->input('verify');
+        $sign = $request->input('sign');
         if (!$sign || $verify->check($sign) === false) {
             return $this->error(__('参数错误'));
         }
