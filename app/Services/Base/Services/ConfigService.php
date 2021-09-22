@@ -567,4 +567,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return (int)config('meedu.mp_wechat.enabled_oauth_login');
     }
+
+    public function getUrl(): string
+    {
+        return config('app.url');
+    }
 }

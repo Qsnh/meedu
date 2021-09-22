@@ -58,6 +58,8 @@ class OtherController extends BaseController
         $data = [
             // 网站名
             'webname' => $this->configService->getName(),
+            // 网站地址
+            'url' => trim($this->configService->getUrl(), '/'),
             // ICP备案
             'icp' => $this->configService->getIcp(),
             'icp_link' => $this->configService->getIcpLink(),
