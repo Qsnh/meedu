@@ -32,6 +32,7 @@ class OtherController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.webname 网站名
+     * @apiSuccess {String} data.url 网站地址
      * @apiSuccess {String} data.icp ICP备案号
      * @apiSuccess {String} data.user_protocol 用户协议URL
      * @apiSuccess {String} data.user_private_protocol 用户隐私协议URL

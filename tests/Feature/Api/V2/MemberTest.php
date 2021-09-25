@@ -61,12 +61,16 @@ class MemberTest extends Base
         $this->assertTrue(Hash::check('123123', $this->member->password));
     }
 
-    public function test_change_mobile()
+    public function test_mobile_bind()
     {
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '17898765423'), 'code', 1);
 
         $sign = $this->app->make(Verify::class)->gen();
+
+        // 必须是未绑定的手机号才能绑定
+        $this->member->mobile = '27898765423';
+        $this->member->save();
 
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
@@ -78,13 +82,37 @@ class MemberTest extends Base
         $this->assertEquals('17898765423', $this->member->mobile);
     }
 
-    public function test_change_mobile_exists()
+    public function test_mobile_bind_has_binded()
     {
         User::factory()->create(['mobile' => '12345679876']);
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
 
         $sign = $this->app->make(Verify::class)->gen();
+
+        // 必须是未绑定的手机号才能绑定
+        $this->member->mobile = '17898765128';
+        $this->member->save();
+
+        $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
+            'mobile_code' => 'code',
+            'mobile' => '12345679876',
+            'sign' => $sign,
+        ]);
+        $this->assertResponseError($response, __('已绑定'));
+    }
+
+    public function test_mobile_bind_mobile_exists()
+    {
+        User::factory()->create(['mobile' => '12345679876']);
+        $cacheService = $this->app->make(CacheServiceInterface::class);
+        $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
+
+        $sign = $this->app->make(Verify::class)->gen();
+
+        // 必须是未绑定的手机号才能绑定
+        $this->member->mobile = '27898765423';
+        $this->member->save();
 
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',

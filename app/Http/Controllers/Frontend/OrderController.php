@@ -110,7 +110,7 @@ class OrderController extends FrontendController
 
         $qrcodeUrl = $wechatData['code_url'];
 
-        $title = __('微信扫码支付');
+        $title = __('微信支付');
 
         return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal', 'title'));
     }
@@ -121,49 +121,43 @@ class OrderController extends FrontendController
         // 跳转地址
         $sUrl = $request->input('s_url');
         $fUrl = $request->input('f_url');
-
         $data = $request->input('data');
-        if (!$data) {
-            throw new ServiceException(__('参数错误'));
+
+        $openid = session('wechat_jsapi_openid');
+        if (!$openid) {
+            // 微信授权登录回调后
+            if ($request->has('oauth')) {
+                $user = Wechat::getInstance()->oauth->user();
+                $openid = $user->getId();
+                // 存储到session中
+                session(['wechat_jsapi_openid' => $openid]);
+            }
+
+            // 微信授权登录获取openid
+            $redirect = url_append_query(
+                route('order.pay.wechat.jsapi'),
+                [
+                    'oauth' => 1,
+                    'data' => $data,
+                    's_url' => urlencode($sUrl),
+                    'f_url' => urlencode($fUrl),
+                ]
+            );
+            return Wechat::getInstance()->oauth->redirect($redirect);
         }
+
         try {
             // 解密数据
             $decryptData = decrypt($data);
             // 获取orderId
             $orderId = $decryptData['order_id'];
         } catch (\Exception $e) {
-            throw new ServiceException(__('参数错误'));
-        }
-
-        $openid = null;
-
-        // 微信授权登录回调后
-        if ($request->has('oauth')) {
-            $user = Wechat::getInstance()->oauth->user();
-            $openid = $user->getId();
-            // 存储到session中
-            session(['wechat_jsapi_openid' => $openid]);
-        }
-
-        $openid || $openid = session('wechat_jsapi_openid');
-        if (!$openid) {
-            // 微信授权登录获取openid
-            $redirect = url_append_query(
-                route('order.pay.wechat.jsapi', $orderId),
-                [
-                    'oauth' => 1,
-                    'data' => $data,
-                    's_url' => $sUrl,
-                    'f_url' => $fUrl,
-                ]
-            );
-            return Wechat::getInstance()->oauth->redirect($redirect);
+            abort(500, __('参数错误'));
         }
 
         // 订单
         $order = $this->orderService->findOrFail($orderId);
 
-        // 创建微信支付订单
         /**
          * @var WechatJSAPI $jsapi
          */
@@ -173,7 +167,7 @@ class OrderController extends FrontendController
         $data = $jsapi->createDirect($order, $openid);
 
         // 页面标题
-        $title = __('微信JSAPI支付');
+        $title = __('微信支付');
 
         return v('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data'));
     }
