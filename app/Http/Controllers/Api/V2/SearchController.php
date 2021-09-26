@@ -45,12 +45,6 @@ class SearchController extends BaseController
      */
     public function index(Request $request)
     {
-        $page = abs((int)$request->input('page'));
-        $size = abs((int)$request->input('size', 10));
-
-        /**
-         * @var CourseService $courseService
-         */
         $keywords = $request->input('keywords', '');
         if (!$keywords) {
             return $this->error(__('请输入关键字'));
@@ -60,9 +54,12 @@ class SearchController extends BaseController
          * @var CourseService $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
-        $data = $courseService->titleSearch($keywords, 10);
-        $data = arr2_clear($data, ApiV2Constant::MODEL_COURSE_FIELD);
 
-        return $this->data($data);
+        $courses = $courseService->titleSearch($keywords, 10);
+        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
+        return $this->data([
+            'data' => $courses,
+            'keywords' => $keywords,
+        ]);
     }
 }
