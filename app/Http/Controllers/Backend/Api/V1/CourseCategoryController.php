@@ -18,7 +18,7 @@ class CourseCategoryController extends BaseController
     public function index(Request $request)
     {
         $data = CourseCategory::query()
-            ->orderByDesc('id')
+            ->orderBy('sort')
             ->paginate($request->input('size', 10));
 
         return $this->successData($data);

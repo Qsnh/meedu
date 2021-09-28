@@ -98,6 +98,7 @@ class CourseController extends BaseController
      * @apiSuccess {String} data.seo_description SEO描述
      * @apiSuccess {String} data.published_at 上架时间
      * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
+     * @apiSuccess {Number} data.is_free 免费课程[1:是,0否]
      * @apiSuccess {Number} data.user_count 订阅人数
      * @apiSuccess {Number} data.videos_count 视频数
      * @apiSuccess {Object} data.category 分类
@@ -114,7 +115,17 @@ class CourseController extends BaseController
             'total' => $total,
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
-        $list = arr2_clear($list, ApiV2Constant::MODEL_COURSE_FIELD);
+
+        $whitelistFields = array_flip(ApiV2Constant::MODEL_COURSE_FIELD);
+        unset($whitelistFields['render_desc']);
+        $whitelistFields = array_flip($whitelistFields);
+
+        $list = arr2_clear($list, $whitelistFields);
+
+        foreach ($list as $index => $item) {
+            $list[$index]['category'] = arr1_clear($item['category'] ?? [], ApiV2Constant::MODEL_COURSE_CATEGORY_FIELD);
+        }
+
         $courses = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($courses->toArray());

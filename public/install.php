@@ -121,6 +121,16 @@ $requires = [
         'status' => !isset($disabledFunctions['putenv']),
         'intro' => '该函数不能被禁用',
     ],
+    [
+        'item' => 'pcntl_signal()',
+        'status' => !isset($disabledFunctions['pcntl_signal']),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'pcntl_alarm()',
+        'status' => !isset($disabledFunctions['pcntl_alarm']),
+        'intro' => '该函数不能被禁用',
+    ],
 ];
 
 $ok = true;
