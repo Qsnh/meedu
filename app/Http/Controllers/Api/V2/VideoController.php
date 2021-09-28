@@ -68,7 +68,8 @@ class VideoController extends BaseController
         CourseServiceInterface $courseService,
         BusinessState $businessState,
         OrderServiceInterface $orderService
-    ) {
+    )
+    {
         $this->videoService = $videoService;
         $this->configService = $configService;
         $this->videoCommentService = $videoCommentService;
@@ -125,14 +126,14 @@ class VideoController extends BaseController
      * @apiSuccess {Number} data.video.id 视频ID
      * @apiSuccess {String} data.video.title 视频名
      * @apiSuccess {Number} data.video.charge 视频价格
-     * @apiSuccess {Number} data.video.view_num 观看数[已废弃]
+     * @apiSuccess {Number} data.video.view_num 观看次数
      * @apiSuccess {String} data.video.short_description 简短介绍
-     * @apiSuccess {String} data.video.render_desc 详细介绍[已废弃]
      * @apiSuccess {String} data.video.published_at 上架时间
      * @apiSuccess {Number} data.video.duration 时长[单位：秒]
      * @apiSuccess {String} data.video.seo_keywords SEO关键字
      * @apiSuccess {String} data.video.seo_description SEO描述
      * @apiSuccess {Number} data.video.is_ban_sell 禁止出售[1:是,0否]
+     * @apiSuccess {Number} data.video.ban_drag 禁止拖拽播放[1:是,0否]
      * @apiSuccess {Number} data.video.chapter_id 章节ID
      * @apiSuccess {Object[]} data.videos
      * @apiSuccess {Number} data.videos.id 视频ID
@@ -146,6 +147,7 @@ class VideoController extends BaseController
      * @apiSuccess {String} data.videos.seo_keywords SEO关键字
      * @apiSuccess {String} data.videos.seo_description SEO描述
      * @apiSuccess {Number} data.videos.is_ban_sell 禁止出售[1:是,0否]
+     * @apiSuccess {Number} data.videos.ban_drag 禁止拖拽播放[1:是,0否]
      * @apiSuccess {Number} data.videos.chapter_id 章节ID
      * @apiSuccess {Object} data.course 课程
      * @apiSuccess {Number} data.course.id 课程ID
@@ -312,7 +314,7 @@ class VideoController extends BaseController
 
         return $this->data(compact('urls'));
     }
-    
+
     /**
      * @api {post} /api/v2/video/{id}/record 视频观看时长记录
      * @apiGroup 录播课

@@ -23,8 +23,9 @@ class ApiV2Constant
     ];
 
     public const MODEL_VIDEO_FIELD = [
-        'id', 'course_id', 'title', 'slug', 'view_num', 'short_description', 'render_desc', 'seo_keywords',
-        'seo_description', 'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell', 'free_seconds',
+        'id', 'course_id', 'title', 'slug', 'view_num', 'seo_keywords', 'seo_description',
+        'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell', 'free_seconds',
+        'comment_status', 'ban_drag',
     ];
 
     public const MODEL_MEMBER_FIELD = [
