@@ -68,8 +68,7 @@ class VideoController extends BaseController
         CourseServiceInterface $courseService,
         BusinessState $businessState,
         OrderServiceInterface $orderService
-    )
-    {
+    ) {
         $this->videoService = $videoService;
         $this->configService = $configService;
         $this->videoCommentService = $videoCommentService;
