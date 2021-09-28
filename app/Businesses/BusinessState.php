@@ -42,6 +42,15 @@ class BusinessState
          * @var UserService $userService
          */
         $userService = app()->make(UserServiceInterface::class);
+        /**
+         * @var CourseService $courseService
+         */
+        $courseService = app()->make(CourseServiceInterface::class);
+        $course = $courseService->find($course['id']);
+        // 如果课程免费就可以观看
+        if ((int)$course['is_free'] === Course::IS_FREE_YES) {
+            return true;
+        }
         // 如果video的价格为0那么可以直接观看
         if ($video['charge'] === 0) {
             return true;
