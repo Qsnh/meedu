@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
@@ -68,14 +67,7 @@ class MemberController extends BaseController
      * @var SocialiteService
      */
     protected $socialiteService;
-    /**
-     * @var UserInviteBalanceService
-     */
-    protected $userInviteBalanceService;
-    /**
-     * @var PromoCodeService
-     */
-    protected $promoCodeService;
+
     protected $businessState;
     /**
      * @var ConfigService
@@ -89,19 +81,16 @@ class MemberController extends BaseController
         RoleServiceInterface $roleService,
         OrderServiceInterface $orderService,
         SocialiteServiceInterface $socialiteService,
-        UserInviteBalanceServiceInterface $userInviteBalanceService,
-        PromoCodeServiceInterface $promoCodeService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
         $this->roleService = $roleService;
         $this->orderService = $orderService;
         $this->socialiteService = $socialiteService;
-        $this->userInviteBalanceService = $userInviteBalanceService;
-        $this->promoCodeService = $promoCodeService;
         $this->businessState = $businessState;
         $this->configService = $configService;
     }
@@ -135,12 +124,15 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
      */
-    public function detail(BusinessState $businessState)
+    public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
+        /**
+         * @var SocialiteService $socialiteService
+         */
         $user = $this->userService->find($this->id(), ['role']);
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
-        $socialites = $this->socialiteService->userSocialites($this->id());
+        $socialites = $socialiteService->userSocialites($this->id());
         $socialites = array_column($socialites, null, 'app');
 
         $user['is_bind_qq'] = isset($socialites[FrontendConstant::SOCIALITE_APP_QQ]) ? 1 : 0;
@@ -425,7 +417,7 @@ class MemberController extends BaseController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->userLikeCoursesPaginate(Auth::id(), $page, $pageSize);
+        ] = $this->userService->userLikeCoursesPaginate($this->id(), $page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
@@ -475,7 +467,7 @@ class MemberController extends BaseController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->courseService->userLearningCoursesPaginate(Auth::id(), $page, $pageSize);
+        ] = $this->courseService->userLearningCoursesPaginate($this->id(), $page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
@@ -601,14 +593,18 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.data.total 变动金额
      * @apiSuccess {String} data.data.desc 变动描述
      */
-    public function inviteBalanceRecords(Request $request)
+    public function inviteBalanceRecords(Request $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
     {
+        /**
+         * @var UserInviteBalanceService $userInviteBalanceService
+         */
+
         $page = $request->input('page', 1);
         $pageSize = $request->input('page_size', 5);
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userInviteBalanceService->simplePaginate($page, $pageSize);
+        ] = $userInviteBalanceService->simplePaginate($page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($records);
@@ -628,30 +624,23 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.code 邀请码
      * @apiSuccess {String} data.expired_at 过期时间
      */
-    public function promoCode()
+    public function promoCode(PromoCodeServiceInterface $promoCodeService)
     {
-        $promoCode = $this->promoCodeService->getUserPromoCode($this->id());
+        /**
+         * @var PromoCodeService $promoCodeService
+         */
+
+        $promoCode = $promoCodeService->getUserPromoCode($this->id());
+        if (!$promoCode && $this->businessState->canGenerateInviteCode($this->user())) {
+            // 如果可以生成邀请码的话则直接创建邀请码
+            $promoCodeService->userCreate($this->user());
+            $promoCode = $promoCodeService->userPromoCode($this->id());
+        }
+
         $promoCode = arr1_clear($promoCode, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
         $promoCode['per_order_draw'] = $this->configService->getMemberInviteConfig()['per_order_draw'];
-        return $this->data($promoCode);
-    }
 
-    /**
-     * @api {post} /api/v2/member/promoCode 生成邀请码
-     * @apiGroup 用户
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     */
-    public function generatePromoCode()
-    {
-        if (!$this->businessState->canGenerateInviteCode($this->user())) {
-            return $this->error(__('当前用户无权限使用邀请码'));
-        }
-        $this->promoCodeService->userCreate($this->user());
-        return $this->success();
+        return $this->data($promoCode);
     }
 
     /**
@@ -665,7 +654,7 @@ class MemberController extends BaseController
      */
     public function notificationMarkAsRead($notificationId)
     {
-        $this->userService->notificationMarkAsRead(Auth::id(), $notificationId);
+        $this->userService->notificationMarkAsRead($this->id(), $notificationId);
         return $this->success();
     }
 
@@ -695,7 +684,7 @@ class MemberController extends BaseController
      */
     public function notificationMarkAllAsRead()
     {
-        $this->userService->notificationMarkAllAsRead(Auth::id());
+        $this->userService->notificationMarkAllAsRead($this->id());
         return $this->success();
     }
 
@@ -763,15 +752,19 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.data.remark 打款渠道-备注
      * @apiSuccess {String} data.data.created_at 打款渠道-时间
      */
-    public function withdrawRecords(Request $request)
+    public function withdrawRecords(Request $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
     {
+        /**
+         * @var UserInviteBalanceService $userInviteBalanceService
+         */
+
         $page = $request->input('page', 1);
         $pageSize = $request->input('page_size', 10);
 
         [
             'list' => $list,
             'total' => $total,
-        ] = $this->userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
+        ] = $userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
 
         return $this->data([
             'total' => $total,
@@ -806,10 +799,13 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.data.remark 打款渠道-备注
      * @apiSuccess {String} data.data.created_at 打款渠道-时间
      */
-    public function createWithdraw(InviteBalanceWithdrawRequest $request)
+    public function createWithdraw(InviteBalanceWithdrawRequest $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
     {
+        /**
+         * @var UserInviteBalanceService $userInviteBalanceService
+         */
         $data = $request->filldata();
-        $this->userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
+        $userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
     }
 
@@ -967,12 +963,16 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.code 随机值
      * @apiSuccess {String} data.image 图片内容
      */
-    public function socialiteCancelBind($app)
+    public function socialiteCancelBind(SocialiteServiceInterface $socialiteService, $app)
     {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+
         if (!$app || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ, FrontendConstant::WECHAT_LOGIN_SIGN])) {
             return $this->error(__('参数错误'));
         }
-        $this->socialiteService->cancelBind($app, $this->id());
+        $socialiteService->cancelBind($app, $this->id());
         return $this->success();
     }
 }

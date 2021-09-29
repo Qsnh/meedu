@@ -104,33 +104,58 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     Route::post('/upload/image', 'UploadController@image');
 
     Route::group(['prefix' => 'member'], function () {
+        // 用户详情
         Route::get('detail', 'MemberController@detail');
+        // 密码修改
         Route::post('detail/password', 'MemberController@passwordChange');
+        // 头像修改
         Route::post('detail/avatar', 'MemberController@avatarChange');
+        // 昵称修改
         Route::post('detail/nickname', 'MemberController@nicknameChange');
+        // 手机号绑定[未绑定情况下]
         Route::post('detail/mobile', 'MemberController@mobileBind');
+        // 更换手机号
         Route::put('mobile', 'MemberController@mobileChange');
+        // 我的录播课
         Route::get('courses', 'MemberController@courses');
+        // 录播课程收藏
         Route::get('courses/like', 'MemberController@likeCourses');
+        // 录播课程学习历史
         Route::get('courses/history', 'MemberController@learnHistory');
+        // 我的录播视频
         Route::get('videos', 'MemberController@videos');
+        // 我的订单
         Route::get('orders', 'MemberController@orders');
+        // 我的VIP记录
         Route::get('roles', 'MemberController@roles');
+        // 我的消息
         Route::get('messages', 'MemberController@messages');
+        // 邀请余额明细
         Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
+        // 我的邀请注册用户
         Route::get('inviteUsers', 'MemberController@inviteUsers');
+        // 邀请余额提现记录
         Route::get('withdrawRecords', 'MemberController@withdrawRecords');
+        // 邀请余额提现
         Route::post('withdraw', 'MemberController@createWithdraw');
+        // 我的邀请码
         Route::get('promoCode', 'MemberController@promoCode');
-        Route::post('promoCode', 'MemberController@generatePromoCode');
+        // 消息已读
         Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
+        // 消息全部已读
         Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
+        // 未读消息数量
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
+        // 积分明细
         Route::get('credit1Records', 'MemberController@credit1Records');
+        // 我的资料
         Route::get('profile', 'MemberController@profile');
         Route::post('profile', 'MemberController@profileUpdate');
+        // 安全校验[手机号]
         Route::post('verify', 'MemberController@verify');
+        // 微信扫码登录绑定
         Route::get('wechatScan/bind', 'MemberController@wechatScanBind');
+        // 社交账号取消绑定
         Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
     });
 });

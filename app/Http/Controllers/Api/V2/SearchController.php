@@ -17,7 +17,7 @@ class SearchController extends BaseController
 {
 
     /**
-     * @api {get} /api/v2/search 全站搜索
+     * @api {get} /api/v2/search 录播课程搜索
      * @apiGroup 搜索
      * @apiVersion v2.0.0
      *

@@ -10,6 +10,8 @@ namespace Tests\Feature\Api\V2;
 
 use App\Meedu\Verify;
 use App\Constant\CacheConstant;
+use App\Services\Member\Models\Role;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
@@ -232,15 +234,59 @@ class MemberTest extends Base
         $promoCode = PromoCode::factory()->create(['user_id' => $this->member->id]);
         $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
         $response = $this->assertResponseSuccess($response);
-        $this->assertEquals($promoCode->id, $response['data']['id']);
+        $this->assertEquals($promoCode['id'], $response['data']['id']);
     }
 
-    public function test_promoCode_post()
+    public function test_promoCode_auto_geneate_free_user()
     {
-        config(['meedu.member.invite.free_user_enabled' => 1]);
-        $response = $this->user($this->member)->postJson('api/v2/member/promoCode');
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+        $this->assertNull($promoCode);
+
+        // 开启免费用户也可以生成邀请码
+        config(['meedu.member.invite.free_user_enabled' => true]);
+
+        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
         $response = $this->assertResponseSuccess($response);
-        $this->assertNotEmpty(PromoCode::whereUserId($this->member->id)->first());
+
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+
+        $this->assertEquals($promoCode['id'], $response['data']['id']);
+    }
+
+    public function test_promoCode_auto_geneate_free_user_not()
+    {
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+        $this->assertNull($promoCode);
+
+        // 开启免费用户也可以生成邀请码
+        config(['meedu.member.invite.free_user_enabled' => false]);
+
+        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
+        $response = $this->assertResponseSuccess($response);
+
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+        $this->assertNull($promoCode);
+    }
+
+    public function test_promoCode_auto_geneate_vip_user()
+    {
+        // 绑定VIP
+        $role = Role::factory()->create();
+        $this->member->role_id = $role['id'];
+        $this->member->role_expired_at = Carbon::now()->addDays(1);
+        $this->member->save();
+
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+        $this->assertNull($promoCode);
+
+        // VIP用户可直接申请邀请码
+
+        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
+        $response = $this->assertResponseSuccess($response);
+
+        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
+
+        $this->assertEquals($promoCode['id'], $response['data']['id']);
     }
 
     public function test_messages_markAsRead()
