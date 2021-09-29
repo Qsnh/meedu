@@ -133,10 +133,11 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.role.name VIP名
      * @apiSuccess {Number} data.is_bind_qq 是否绑定QQ[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
+     * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
      */
-    public function detail()
+    public function detail(BusinessState $businessState)
     {
-        $user = $this->userService->find(Auth::guard($this->guard)->id(), ['role']);
+        $user = $this->userService->find($this->id(), ['role']);
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         $socialites = $this->socialiteService->userSocialites($this->id());
@@ -144,6 +145,7 @@ class MemberController extends BaseController
 
         $user['is_bind_qq'] = isset($socialites[FrontendConstant::SOCIALITE_APP_QQ]) ? 1 : 0;
         $user['is_bind_wechat'] = isset($socialites[FrontendConstant::WECHAT_LOGIN_SIGN]) ? 1 : 0;
+        $user['is_bind_mobile'] = $businessState->isNeedBindMobile($user) ? 0 : 1;
 
         return $this->data($user);
     }
