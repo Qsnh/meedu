@@ -28,6 +28,8 @@ return [
         'backend/api/*',
         // 插件
         'addons/*',
+        // 插件后台aip
+        '/backend/addons/*',
     ],
 
     'allowed_methods' => ['*'],
