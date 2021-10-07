@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Meedu\Wechat;
 use Illuminate\Http\Request;
-use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
 use App\Exceptions\SystemException;
 use App\Exceptions\ServiceException;
@@ -93,27 +92,6 @@ class OrderController extends FrontendController
         return v('frontend.order.success', compact('order'));
     }
 
-    // 微信扫码支付界面
-    public function wechatScan($orderId)
-    {
-        $order = $this->orderService->findUser($orderId);
-
-        // 需支付金额
-        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
-
-        $wechatData = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']));
-        if (!$wechatData) {
-            $this->orderService->cancel($order['id']);
-
-            throw new ServiceException(__('错误'));
-        }
-
-        $qrcodeUrl = $wechatData['code_url'];
-
-        $title = __('微信支付');
-
-        return v('frontend.order.wechat', compact('qrcodeUrl', 'order', 'needPaidTotal', 'title'));
-    }
 
     // 微信jsapi支付
     public function wechatJSAPI(Request $request)

@@ -188,62 +188,12 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * 课程列表默认显示条数
-     * @return int
-     */
-    public function getCourseListPageSize(): int
-    {
-        return (int)config('meedu.other.course_list_page_size', 6);
-    }
-
-    /**
-     * 课程列表页面SEO
-     * @return array
-     */
-    public function getSeoCourseListPage(): array
-    {
-        return config('meedu.seo.course_list');
-    }
-
-    /**
-     * 视频列表页面显示条数
-     * @return int
-     */
-    public function getVideoListPageSize(): int
-    {
-        return (int)config('meedu.other.video_list_page_size', 10);
-    }
-
-    /**
-     * 获取默认的编辑器
-     * @return string
-     */
-    public function getEditor(): string
-    {
-        return config('meedu.system.editor', 'html');
-    }
-
-    /**
      * 短信配置
      * @return array
      */
     public function getSms(): array
     {
         return config('sms');
-    }
-
-    /**
-     * 会员界面SEO
-     * @return array
-     */
-    public function getSeoRoleListPage(): array
-    {
-        return config('meedu.seo.role_list');
-    }
-
-    public function getSeoIndexPage(): array
-    {
-        return config('meedu.seo.index');
     }
 
     /**

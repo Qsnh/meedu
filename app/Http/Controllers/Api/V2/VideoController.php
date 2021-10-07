@@ -103,7 +103,7 @@ class VideoController extends BaseController
     public function paginate(Request $request)
     {
         $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', $this->configService->getVideoListPageSize());
+        $pageSize = $request->input('page_size', 10);
         [
             'list' => $list,
             'total' => $total

@@ -206,9 +206,6 @@ return [
             ]
         ],
 
-        // 统计代码
-        'js' => '',
-
         // 默认短信服务商
         'sms' => 'aliyun',
 
@@ -219,22 +216,8 @@ return [
             ]
         ],
 
-        // 全局css
-        'css' => [
-            'pc' => '',
-            'h5' => '',
-        ],
-
         // 多语言
         'lang' => \App\Constant\FrontendConstant::LANG_ZH,
-    ],
-
-    // 其它配置
-    'other' => [
-        // 课程列表页展示条数
-        'course_list_page_size' => 16,
-        // 视频列表页展示条数
-        'video_list_page_size' => 16,
     ],
 
     // MeEduCloud

@@ -110,7 +110,7 @@ class CourseController extends BaseController
         $categoryId = intval($request->input('category_id'));
         $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', $this->configService->getCourseListPageSize());
+        $pageSize = $request->input('page_size', 16);
         [
             'total' => $total,
             'list' => $list
