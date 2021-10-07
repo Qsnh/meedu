@@ -81,6 +81,11 @@ Route::group(['prefix' => 'other'], function () {
 // ViewBlock装修模块
 Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
 
+// 微信公众号授权绑定回调
+Route::get('wechatBind/callback', 'MemberController@wechatBindCallback')->name('api.v2.wechatBind.callback');
+// 社交账号绑定回调
+Route::get('socialite/{app}/callback', 'MemberController@socialiteBind')->name('api.v2.socialite.bind.callback');
+
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
     // 创建录播课程订单
     Route::post('/order/course', 'OrderController@createCourseOrder');
@@ -162,6 +167,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
         // 社交账号绑定
         Route::get('socialite/{app}', 'MemberController@socialiteBind');
-        Route::get('socialite/{app}/callback', 'MemberController@socialiteBind')->name('api.v2.socialite.bind.callback');
+        // 微信公众号授权绑定
+        Route::get('wechatBind', 'MemberController@wechatBind');
     });
 });
