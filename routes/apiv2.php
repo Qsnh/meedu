@@ -82,8 +82,11 @@ Route::group(['prefix' => 'other'], function () {
 Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
 
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
+    // 创建录播课程订单
     Route::post('/order/course', 'OrderController@createCourseOrder');
+    // 创建VIP订单
     Route::post('/order/role', 'OrderController@createRoleOrder');
+    // 创建视频订单
     Route::post('/order/video', 'OrderController@createVideoOrder');
     // 订单状态查询
     Route::get('/order/status', 'OrderController@queryStatus');

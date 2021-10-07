@@ -309,5 +309,6 @@
   "当前分类下存在课程，无法删除": "There are courses under the current category, which cannot be deleted",
   "优惠码格式错误": "Wrong format of discount code",
   "search.vod": "Vod",
-  "search.video": "Video"
+  "search.video": "Video",
+  "订单状态错误": "Order status error"
 }

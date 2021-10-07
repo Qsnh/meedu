@@ -128,7 +128,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'wechat_mini' => 'miniapp',
         ],
         'wechat-jsapi' => [
             'enabled' => 1,

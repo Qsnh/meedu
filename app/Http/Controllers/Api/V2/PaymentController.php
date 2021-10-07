@@ -9,9 +9,10 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
-use App\Constant\CacheConstant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
+use App\Meedu\Payment\Wechat\WechatMini;
+use App\Meedu\Payment\Wechat\WechatScan;
 use App\Services\Base\Services\CacheService;
 use App\Meedu\Payment\Contract\PaymentStatus;
 use App\Services\Base\Services\ConfigService;
@@ -59,32 +60,36 @@ class PaymentController extends BaseController
      */
     public function wechatMiniPay(Request $request)
     {
-        $openid = $request->input('openid', '');
-        $orderId = $request->input('order_id', '');
-        $order = $this->orderService->findUser($orderId);
-
-        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_WECHAT_MINI);
-        if (!$payments) {
-            return $this->error(__('错误'));
+        $openid = $request->input('openid');
+        $orderId = $request->input('order_id');
+        if (!$openid || !$orderId) {
+            return $this->error(__('参数错误'));
         }
 
-        // 更新订单的支付方式
+        $order = $this->orderService->findUser($orderId);
+        if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
+            return $this->error(__('订单状态错误'));
+        }
+
         $updateData = [
-            'payment' => 'wechat',
-            'payment_method' => 'miniapp',
+            'payment' => FrontendConstant::PAYMENT_SCENE_WECHAT,
+            'payment_method' => FrontendConstant::PAYMENT_SCENE_WECHAT_MINI,
         ];
         $this->orderService->change2Paying($order['id'], $updateData);
         $order = array_merge($order, $updateData);
 
         // 创建远程订单
-        $paymentHandler = app()->make($payments['wechat']['handler']);
+        $paymentHandler = app()->make(WechatMini::class);
+
+        /**
+         * @var PaymentStatus $createResult
+         */
         $createResult = $paymentHandler->create($order, ['openid' => $openid]);
         if ($createResult->status === false) {
             throw new SystemException(__('系统错误'));
         }
 
-        // 支付订单数据
-        $data = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_PAY_SCAN_RETURN_DATA['name'], $order['order_id']), []);
+        $data = $createResult->data;
 
         return $this->data($data);
     }
@@ -104,7 +109,11 @@ class PaymentController extends BaseController
      */
     public function payments(Request $request)
     {
-        $scene = $request->input('scene', '');
+        $scene = $request->input('scene');
+        if (!$scene) {
+            return $this->error(__('参数错误'));
+        }
+
         $payments = get_payments($scene)->map(function ($val) {
             return [
                 'sign' => $val['sign'],
@@ -122,34 +131,39 @@ class PaymentController extends BaseController
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+token
      *
-     * @apiParam {String} payment_scene 支付场景[h5,wechat]
-     * @apiParam {String} payment 支付网关
-     * @apiParam {String} order_id 订单号
+     * @apiParam {String=h5:手机浏览器,wechat:微信浏览器} payment_scene 支付场景
+     * @apiParam {String=alipay:支付宝支付,wechat-jsapi:微信jsapi支付,handPay:手动打款} payment 支付方式
+     * @apiParam {String} order_id 订单编号
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
     public function payRedirect(Request $request)
     {
-        $payment = $request->input('payment', '');
-        $payemntScene = $request->input('payment_scene', '');
+        $payment = $request->input('payment');
+        $paymentScene = $request->input('payment_scene');
+        $orderId = $request->input('order_id');
 
-        $orderId = $request->input('order_id', '');
-        $order = $this->orderService->findUser($orderId);
+        if (!$payment || !$paymentScene || !$orderId) {
+            return $this->error(__('参数错误'));
+        }
 
-        $payments = get_payments($payemntScene);
+        $payments = get_payments($paymentScene);
         if (!$payments) {
             return $this->error(__('错误'));
         }
         if (!isset($payments[$payment])) {
             return $this->error(__('错误'));
         }
-        $paymentMethod = $payments[$payment][$payemntScene];
 
-        // 更新订单的支付方式
+        $order = $this->orderService->findUser($orderId);
+        if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
+            return $this->error(__('订单状态错误'));
+        }
+
         $updateData = [
             'payment' => $payment,
-            'payment_method' => $paymentMethod,
+            'payment_method' => $payments[$payment][$paymentScene],
         ];
         $this->orderService->change2Paying($order['id'], $updateData);
         $order = array_merge($order, $updateData);
@@ -157,7 +171,7 @@ class PaymentController extends BaseController
         // 创建远程订单
         $paymentHandler = app()->make($payments[$payment]['handler']);
         $createResult = $paymentHandler->create($order);
-        if ($createResult->status == false) {
+        if ($createResult->status === false) {
             throw new SystemException(__('系统错误'));
         }
 
@@ -200,24 +214,25 @@ class PaymentController extends BaseController
      */
     public function wechatScan(Request $request)
     {
-        $orderId = $request->input('order_id', '');
-        $order = $this->orderService->findUser($orderId);
-
-        $payments = get_payments(FrontendConstant::PAYMENT_SCENE_PC);
-        if (!$payments) {
-            return $this->error(__('错误'));
+        $orderId = $request->input('order_id');
+        if (!$orderId) {
+            return $this->error(__('参数错误'));
         }
 
-        // 更新订单的支付方式
+        $order = $this->orderService->findUser($orderId);
+        if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
+            return $this->error(__('订单状态错误'));
+        }
+
         $updateData = [
-            'payment' => FrontendConstant::PAYMENT_SCENE_PC,
-            'payment_method' => 'scan',
+            'payment' => FrontendConstant::PAYMENT_SCENE_WECHAT,
+            'payment_method' => FrontendConstant::PAYMENT_SCENE_WECHAT_SCAN,
         ];
         $this->orderService->change2Paying($order['id'], $updateData);
         $order = array_merge($order, $updateData);
 
         // 创建远程订单
-        $paymentHandler = app()->make($payments['wechat']['handler']);
+        $paymentHandler = app()->make(WechatScan::class);
 
         /**
          * @var PaymentStatus $createResult

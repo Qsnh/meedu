@@ -83,8 +83,7 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;

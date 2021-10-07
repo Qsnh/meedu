@@ -8,11 +8,11 @@
 
 namespace Tests\Feature\Api\V2;
 
+use Carbon\Carbon;
 use App\Meedu\Verify;
 use App\Constant\CacheConstant;
-use App\Services\Member\Models\Role;
-use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
+use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;

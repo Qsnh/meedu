@@ -268,7 +268,7 @@ if (!function_exists('get_payment_scene')) {
     function get_payment_scene()
     {
         if (is_wechat()) {
-            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT;
         }
         $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
         return $scene;
