@@ -352,8 +352,8 @@ class LoginController extends BaseController
      * @apiVersion v2.0.0
      * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回
      *
-     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlencode)
-     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlencode)
+     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlEncode)
+     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlEncode)
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -391,11 +391,13 @@ class LoginController extends BaseController
     // 社交登录回调
     public function socialiteLoginCallback(Request $request, $app)
     {
-        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
-
         $successRedirectUrl = urldecode($request->input('s_url'));
         $failedRedirectUrl = urldecode($request->input('f_url'));
 
+        // 再次构建社交登录的回调URL
+        // 部分社交应用会重复检查回调的URL，不一致将会导致授权失败
+        // 再获取用户信息的时候依旧需要指定一致的URL
+        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
         $user = Socialite::driver($app)->redirectUrl($redirectUrl)->stateless()->user();
 
         $appId = $user->getId();

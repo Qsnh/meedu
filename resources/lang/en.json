@@ -310,5 +310,6 @@
   "优惠码格式错误": "Wrong format of discount code",
   "search.vod": "Vod",
   "search.video": "Video",
-  "订单状态错误": "Order status error"
+  "订单状态错误": "Order status error",
+  "已超时，请重新绑定": "Timed out, please rebind"
 }

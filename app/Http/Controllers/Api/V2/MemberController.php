@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
+use App\Exceptions\ServiceException;
+use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
@@ -973,5 +975,88 @@ class MemberController extends BaseController
         }
         $socialiteService->cancelBind($app, $this->id());
         return $this->success();
+    }
+
+    public function socialiteBindCallback(
+        SocialiteServiceInterface $socialiteService,
+        BusinessState $businessState,
+        Request $request,
+        $app
+    ) {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+
+        $data = $request->input('data');
+        $redirectUrl = urldecode($request->input('redirect_url'));
+
+        if (!$app || !$data || !$redirectUrl || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ])) {
+            return $this->error(__('参数错误'));
+        }
+
+        $socialiteUser = Socialite::driver($app)->redirectUrl($request->fullUrl())->stateless()->user();
+        $appId = $socialiteUser->getId();
+
+        try {
+            $data = decrypt($data);
+            if ($data['expired_at'] < time()) {
+                return redirect(url_append_query($redirectUrl, ['error' => __('已超时，请重新绑定')]));
+            }
+            $needBindUserId = (int)$data['user_id'];
+
+            $businessState->socialiteBindCheck($needBindUserId, $app, $appId);
+
+            $socialiteService->bindApp($needBindUserId, $app, $appId, (array)$socialiteUser);
+
+            return redirect($redirectUrl);
+        } catch (ServiceException $e) {
+            return redirect(url_append_query($redirectUrl, ['error' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            abort(500);
+        }
+    }
+
+    /**
+     * @api {get} /api/v2/member/socialite/{app} 社交账号绑定[302重定向]
+     * @apiGroup 用户
+     * @apiVersion v2.0.0
+     * @apiDescription app={qq:QQ登录}
+     *
+     * @apiParam {String} redirect_url 绑定成功之后的跳转地址，需要urlEncode
+     */
+    public function socialiteBind(SocialiteServiceInterface $socialiteService, Request $request, $app)
+    {
+        /**
+         * @var SocialiteService $socialiteService
+         */
+
+        $redirectUrl = urldecode($request->input('redirect_url'));
+
+        if (!$app || !$redirectUrl || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ])) {
+            return $this->error(__('参数错误'));
+        }
+
+        // 检查是否已经绑定渠道账号
+        $bindApps = $socialiteService->userSocialites($this->id());
+        $bindApps = array_column($bindApps, null, 'app');
+        if (isset($bindApps[$app])) {
+            return redirect(url_append_query($redirectUrl, ['error' => __('您已经绑定了该渠道的账号')]));
+        }
+
+        $callbackUrl = route('api.v2.socialite.bind.callback', [$app]);
+        $redirectUrl = url_append_query($callbackUrl, [
+            'data' => encrypt([
+                // 有效期一个小时
+                'expired_at' => time() + 3600,
+                // 绑定的用户id
+                'user_id' => $this->id(),
+            ]),
+            'redirect_url' => urlencode($redirectUrl),
+        ]);
+
+        return Socialite::driver($app)
+            ->redirectUrl($redirectUrl)
+            ->stateless()
+            ->redirect();
     }
 }

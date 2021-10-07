@@ -160,5 +160,8 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('wechatScan/bind', 'MemberController@wechatScanBind');
         // 社交账号取消绑定
         Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
+        // 社交账号绑定
+        Route::get('socialite/{app}', 'MemberController@socialiteBind');
+        Route::get('socialite/{app}/callback', 'MemberController@socialiteBind')->name('api.v2.socialite.bind.callback');
     });
 });
