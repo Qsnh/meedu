@@ -282,9 +282,11 @@ class OrderService implements OrderServiceInterface
         $query = Order::query()->whereUserId(Auth::id());
         $total = $query->count();
         $list = $query
-            ->with(['goods'])
+            ->with(['goods:id,oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge,num,charge'])
             ->latest()
-            ->forPage($page, $pageSize)->get()->toArray();
+            ->forPage($page, $pageSize)
+            ->get()
+            ->toArray();
 
         return compact('total', 'list');
     }

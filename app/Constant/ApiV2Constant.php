@@ -60,7 +60,8 @@ class ApiV2Constant
     ];
 
     public const MODEL_ORDER_GOODS_FIELD = [
-        'num', 'goods_text', 'charge', 'goods_type',
+        'num', 'goods_text', 'charge', 'goods_type', 'goods_name', 'goods_thumb', 'goods_id', 'goods_charge',
+        'goods_ori_charge',
     ];
 
     public const MODEL_PROMO_CODE_FIELD = [

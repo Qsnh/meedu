@@ -562,9 +562,13 @@ class MemberController extends BaseController
      * @apiSuccess {Object[]} data.data.goods 商品
      * @apiSuccess {Number} data.data.goods.id 商品ID
      * @apiSuccess {Number} data.data.goods.num 商品数量
-     * @apiSuccess {String} data.data.goods.goods_text 商品名
-     * @apiSuccess {Number} data.data.goods.charge 商品价格
+     * @apiSuccess {String} data.data.goods.goods_text 商品类型名
+     * @apiSuccess {Number} data.data.goods.goods_charge 商品价格
      * @apiSuccess {String} data.data.goods.goods_type 商品类型
+     * @apiSuccess {String} data.data.goods.goods_name 商品名
+     * @apiSuccess {String} data.data.goods.goods_thumb 商品封面
+     * @apiSuccess {String} data.data.goods.charge 总价
+     * @apiSuccess {String} data.data.goods.goods_ori_charge 商品原价
      */
     public function orders(Request $request)
     {
@@ -575,6 +579,7 @@ class MemberController extends BaseController
             'list' => $list,
         ] = $this->orderService->userOrdersPaginate($page, $pageSize);
         $list = arr2_clear($list, ApiV2Constant::MODEL_ORDER_FIELD);
+
         foreach ($list as $key => $val) {
             $list[$key]['goods'] = arr2_clear($val['goods'], ApiV2Constant::MODEL_ORDER_GOODS_FIELD);
         }
