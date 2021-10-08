@@ -9,7 +9,6 @@
 namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
@@ -703,14 +702,22 @@ class UserService implements UserServiceInterface
      */
     public function saveProfile(int $userId, array $profileData): void
     {
-        $profileData = Arr::only($profileData, UserProfile::EDIT_COLUMNS);
-        isset($profileData['age']) && $profileData['age'] = (int)$profileData['age'];
+        $updateData = [];
+        foreach (UserProfile::EDIT_COLUMNS as $column) {
+            if (!isset($profileData[$column])) {
+                continue;
+            }
+            if ($profileData[$column] !== null) {
+                $updateData[$column] = $profileData[$column];
+            }
+        }
+
         $profile = UserProfile::query()->where('user_id', $userId)->first();
         if ($profile) {
-            $profile->fill($profileData)->save();
+            $profile->fill($updateData)->save();
         } else {
-            $profileData['user_id'] = $userId;
-            UserProfile::create($profileData);
+            $updateData['user_id'] = $userId;
+            UserProfile::create($updateData);
         }
     }
 

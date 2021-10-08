@@ -84,7 +84,7 @@ Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
 // 微信公众号授权绑定回调
 Route::get('wechatBind/callback', 'MemberController@wechatBindCallback')->name('api.v2.wechatBind.callback');
 // 社交账号绑定回调
-Route::get('socialite/{app}/callback', 'MemberController@socialiteBind')->name('api.v2.socialite.bind.callback');
+Route::get('socialite/{app}/bind/callback', 'MemberController@socialiteBind')->name('api.v2.socialite.bind.callback');
 
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
     // 创建录播课程订单
