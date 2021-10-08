@@ -125,6 +125,7 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.is_bind_qq 是否绑定QQ[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
+     * @apiSuccess {Number} data.invite_people_count 邀请人数
      */
     public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
@@ -137,9 +138,15 @@ class MemberController extends BaseController
         $socialites = $socialiteService->userSocialites($this->id());
         $socialites = array_column($socialites, null, 'app');
 
+        // 是否绑定QQ
         $user['is_bind_qq'] = isset($socialites[FrontendConstant::SOCIALITE_APP_QQ]) ? 1 : 0;
+        // 是否绑定微信
         $user['is_bind_wechat'] = isset($socialites[FrontendConstant::WECHAT_LOGIN_SIGN]) ? 1 : 0;
+        // 是否绑定手机号
         $user['is_bind_mobile'] = $businessState->isNeedBindMobile($user) ? 0 : 1;
+
+        // 邀请人数
+        $user['invite_people_count'] = $this->userService->inviteCount($this->id());
 
         return $this->data($user);
     }
