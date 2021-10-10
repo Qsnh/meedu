@@ -51,6 +51,9 @@ class UpgradeToV45
                 'meedu.other.video_list_page_size',
 
                 'meedu.system.editor',
+
+                // 腾讯云超级播放器配置
+                'meedu.system.player.tencent_pcfg',
             ])
             ->delete();
     }
