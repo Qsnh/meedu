@@ -33,8 +33,8 @@ $addonsPath = realpath(__DIR__ . '/../addons');
 $requires = [
     [
         'item' => PHP_VERSION,
-        'status' => PHP_VERSION_ID > 70103,
-        'intro' => 'PHP版本>=7.1.3',
+        'status' => version_compare('v7.3.0', PHP_VERSION, '<='),
+        'intro' => 'PHP版本>=7.3.0',
     ],
     [
         'item' => 'ext-Fileinfo',
