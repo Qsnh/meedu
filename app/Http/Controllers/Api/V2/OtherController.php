@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Meedu\Addons;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -51,10 +52,13 @@ class OtherController extends BaseController
      * @apiSuccess {Number} data.credit1_reward.watched_video 看完视频
      * @apiSuccess {Number} data.credit1_reward.paid_order 支付订单[按订单金额比率奖励积分]
      * @apiSuccess {Number} data.credit1_reward.invite 邀请用户注册
+     * @apiSuccess {String[]} data.enabled_addons 已启用插件
      */
-    public function config()
+    public function config(Addons $addons)
     {
-        $plyaerConfig = $this->configService->getPlayer();
+        $playerConfig = $this->configService->getPlayer();
+
+        $enabledAddons = $addons->enabledAddons();
 
         $data = [
             // 网站名
@@ -73,12 +77,14 @@ class OtherController extends BaseController
             'user_private_protocol' => route('user.private_protocol'),
             // 关于我们URL
             'aboutus' => route('aboutus'),
+            // 网站logo
             'logo' => $this->configService->getLogo(),
+            // 播放器配置
             'player' => [
                 // 播放器封面
                 'cover' => $this->configService->getPlayerCover(),
                 // 跑马灯
-                'enabled_bullet_secret' => $plyaerConfig['enabled_bullet_secret'] ?? 0,
+                'enabled_bullet_secret' => $playerConfig['enabled_bullet_secret'] ?? 0,
             ],
             'member' => [
                 // 强制绑定手机号
@@ -103,6 +109,8 @@ class OtherController extends BaseController
                 // 邀请用户注册
                 'invite' => $this->configService->getInviteSceneCredit1(),
             ],
+            // 已用插件
+            'enabled_addons' => $enabledAddons,
         ];
         return $this->data($data);
     }
