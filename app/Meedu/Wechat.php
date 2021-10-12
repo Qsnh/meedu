@@ -50,7 +50,7 @@ class Wechat
                 ],
                 'oauth' => [
                     'scopes' => ['snsapi_userinfo'],
-                    'callback' => route('login.wechat.oauth.callback'),
+                    'callback' => '',
                 ],
             ];
             self::$instance = Factory::officialAccount($config);
