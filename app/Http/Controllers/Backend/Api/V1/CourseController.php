@@ -39,7 +39,7 @@ class CourseController extends BaseController
             ->select([
                 'id', 'user_id', 'title', 'slug', 'thumb', 'charge', 'short_description',
                 'published_at', 'is_show', 'category_id', 'is_rec', 'user_count', 'is_free',
-                'comment_status', 'created_at', 'updated_at',
+                'created_at', 'updated_at',
             ])
             ->with(['category:id,name'])
             ->withCount(['videos', 'chapters', 'comments'])

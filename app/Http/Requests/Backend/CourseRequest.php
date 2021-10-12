@@ -70,7 +70,6 @@ class CourseRequest extends BaseRequest
             'is_show' => (int)$this->input('is_show', Course::SHOW_NO),
             'is_rec' => (int)$this->input('is_rec', Course::REC_NO),
             'is_free' => (int)$this->input('is_free'),
-            'comment_status' => (int)$this->input('comment_status', Course::COMMENT_STATUS_CLOSE),
         ];
 
         if ($this->isMethod('post') && !$data['slug']) {

@@ -109,26 +109,12 @@ class CourseTest extends Base
         $this->assertResponseError($response, __('错误'));
     }
 
-    public function test_course_comment_ban()
-    {
-        $user = User::factory()->create();
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Course::COMMENT_STATUS_CLOSE,
-        ]);
-        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseError($response, __('课程无法评论'));
-    }
-
     public function test_course_comment_un_vip()
     {
         $user = User::factory()->create();
 
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
@@ -146,7 +132,6 @@ class CourseTest extends Base
 
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
@@ -159,7 +144,6 @@ class CourseTest extends Base
         $user = User::factory()->create();
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Course::COMMENT_STATUS_ONLY_PAID,
         ]);
 
         UserCourse::create([
@@ -171,22 +155,6 @@ class CourseTest extends Base
             'content' => 'hello meedu',
         ]);
         $this->assertResponseSuccess($response);
-    }
-
-    public function test_course_comment()
-    {
-        $user = User::factory()->create();
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Course::COMMENT_STATUS_ALL,
-        ]);
-        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($response);
-        $comment = CourseComment::whereUserId($user->id)->whereCourseId($course->id)->first();
-        $this->assertNotEmpty($comment);
-        $this->assertEquals('hello meedu', $comment->original_content);
     }
 
     public function test_course_comments()

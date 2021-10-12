@@ -16,7 +16,6 @@ class ApiV2Constant
     public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_rec', 'is_show', 'user_count', 'category_id', 'is_free',
-        'comment_status',
 
         // 额外字段
         'videos_count', 'category',
@@ -25,7 +24,7 @@ class ApiV2Constant
     public const MODEL_VIDEO_FIELD = [
         'id', 'course_id', 'title', 'slug', 'view_num', 'seo_keywords', 'seo_description',
         'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell', 'free_seconds',
-        'comment_status', 'ban_drag',
+        'ban_drag',
     ];
 
     public const MODEL_MEMBER_FIELD = [

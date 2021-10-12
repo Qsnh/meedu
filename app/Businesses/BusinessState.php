@@ -38,10 +38,10 @@ class BusinessState
      */
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
-        /**
-         * @var UserService $userService
-         */
-        $userService = app()->make(UserServiceInterface::class);
+        // 如果video的价格为0那么可以直接观看
+        if ($video['charge'] === 0) {
+            return true;
+        }
         /**
          * @var CourseService $courseService
          */
@@ -51,10 +51,10 @@ class BusinessState
         if ((int)$course['is_free'] === Course::IS_FREE_YES) {
             return true;
         }
-        // 如果video的价格为0那么可以直接观看
-        if ($video['charge'] === 0) {
-            return true;
-        }
+        /**
+         * @var UserService $userService
+         */
+        $userService = app()->make(UserServiceInterface::class);
         // 如果用户买了课程可以直接观看
         if ($userService->hasCourse($user['id'], $course['id'])) {
             return true;
@@ -248,25 +248,10 @@ class BusinessState
      */
     public function courseCanComment(array $user, array $course): bool
     {
-        $commentStatus = $course['comment_status'] ?? Course::COMMENT_STATUS_CLOSE;
-        if ($commentStatus === Course::COMMENT_STATUS_CLOSE) {
-            return false;
-        }
-        if ($commentStatus === Course::COMMENT_STATUS_ALL) {
-            return true;
-        }
         if (!$user) {
             return false;
         }
-        /**
-         * @var $userService UserService
-         */
-        $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find($user['id'], ['role']);
-        if ($this->isRole($user)) {
-            return true;
-        }
-        if ($userService->hasCourse($user['id'], $course['id'])) {
+        if ($this->isBuyCourse($user['id'], $course['id'])) {
             return true;
         }
         return false;
@@ -274,23 +259,8 @@ class BusinessState
 
     public function videoCanComment(array $user, array $video): bool
     {
-        $commentStatus = $video['comment_status'] ?? Video::COMMENT_STATUS_CLOSE;
-        if ($commentStatus === Video::COMMENT_STATUS_CLOSE) {
-            return false;
-        }
-        if ($commentStatus === Video::COMMENT_STATUS_ALL) {
-            return true;
-        }
         if (!$user) {
             return false;
-        }
-        /**
-         * @var UserService $userService
-         */
-        $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find($user['id'], ['role']);
-        if ($this->isRole($user)) {
-            return true;
         }
         /**
          * @var CourseService $courseService

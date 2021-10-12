@@ -159,25 +159,6 @@ class VideoTest extends Base
         $this->assertResponseError($r, __('错误'));
     }
 
-    public function test_video_comment()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ALL,
-        ]);
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $r = $this->assertResponseSuccess($r);
-
-        $comment = VideoComment::whereUserId($user->id)->whereVideoId($video->id)->first();
-        $this->assertNotEmpty($comment);
-        $this->assertEquals('hello meedu', $comment->original_content);
-    }
-
     public function test_video_comment_close()
     {
         $user = User::factory()->create();
@@ -185,7 +166,6 @@ class VideoTest extends Base
         $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_CLOSE,
         ]);
         $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -200,7 +180,6 @@ class VideoTest extends Base
         $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -220,7 +199,6 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -236,7 +214,6 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
 
         UserVideo::create([
@@ -258,7 +235,6 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
 
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
@@ -275,7 +251,6 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
-            'comment_status' => Video::COMMENT_STATUS_ONLY_PAID,
         ]);
 
         UserCourse::create(['course_id' => $video->course_id, 'user_id' => $user->id]);

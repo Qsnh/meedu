@@ -37,8 +37,8 @@ class CourseVideoController extends BaseController
             ->select([
                 'id', 'user_id', 'course_id', 'title', 'slug', 'url', 'view_num', 'short_description',
                 'seo_keywords', 'seo_description', 'published_at', 'is_show', 'charge', 'aliyun_video_id',
-                'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell', 'player_pc', 'player_h5',
-                'comment_status', 'free_seconds', 'ban_drag', 'created_at', 'updated_at',
+                'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell',
+                'free_seconds', 'ban_drag', 'created_at', 'updated_at',
             ])
             ->with([
                 'chapter:id,title', 'course:id,title,thumb,charge',
