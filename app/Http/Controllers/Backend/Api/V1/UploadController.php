@@ -19,9 +19,4 @@ class UploadController extends BaseController
 
         return ['location' => $data['url'], 'path' => $data['path']];
     }
-
-    public function imageUpload()
-    {
-        return $this->error('function offline');
-    }
 }

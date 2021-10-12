@@ -11,6 +11,7 @@ namespace App\Meedu\UpgradeLog;
 use App\Services\Course\Models\Video;
 use App\Services\Base\Model\AppConfig;
 use App\Services\Course\Models\Course;
+use App\Models\AdministratorPermission;
 use App\Services\Other\Models\SearchRecord;
 
 class UpgradeToV45
@@ -20,6 +21,21 @@ class UpgradeToV45
         self::courseAndVideoMigrateMeiliSearch();
         self::removeConfig();
         self::configRename();
+        self::removePermission();
+    }
+
+    public static function removePermission()
+    {
+        AdministratorPermission::query()
+            ->whereIn('slug', [
+                'indexBanner',
+                'indexBanner.create',
+                'indexBanner.store',
+                'indexBanner.edit',
+                'indexBanner.update',
+                'indexBanner.destroy',
+            ])
+            ->delete();
     }
 
     public static function removeConfig()

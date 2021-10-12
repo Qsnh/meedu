@@ -905,50 +905,6 @@ class AdministratorPermissionSeeder extends Seeder
                 'url' => 'courseCategory/\d+',
             ],
 
-            // 首页推荐
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐列表',
-                'slug' => 'indexBanner',
-                'method' => 'GET',
-                'url' => 'indexBanner',
-            ],
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐添加参数',
-                'slug' => 'indexBanner.create',
-                'method' => 'GET',
-                'url' => 'indexBanner/create',
-            ],
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐添加',
-                'slug' => 'indexBanner.store',
-                'method' => 'POST',
-                'url' => 'indexBanner',
-            ],
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐查看',
-                'slug' => 'indexBanner.edit',
-                'method' => 'GET',
-                'url' => 'indexBanner/\d+',
-            ],
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐编辑',
-                'slug' => 'indexBanner.update',
-                'method' => 'PUT',
-                'url' => 'indexBanner/\d+',
-            ],
-            [
-                'group_name' => '首页推荐',
-                'display_name' => '首页推荐删除',
-                'slug' => 'indexBanner.destroy',
-                'method' => 'DELETE',
-                'url' => 'indexBanner/\d+',
-            ],
-
             // 统计
             [
                 'group_name' => '统计',
