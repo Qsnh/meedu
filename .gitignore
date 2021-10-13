@@ -23,3 +23,4 @@ package-lock.json
 .phpunit.result.cache
 public/mix-manifest.json
 apidoc/
+tests/report/

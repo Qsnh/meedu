@@ -522,4 +522,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('app.url');
     }
+
+    public function getTencentVodTranscodeFormat(): string
+    {
+        return config('tencent.vod.transcode_format', '');
+    }
 }
