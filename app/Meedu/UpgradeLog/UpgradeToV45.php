@@ -22,6 +22,7 @@ class UpgradeToV45
         self::removeConfig();
         self::configRename();
         self::removePermission();
+        self::updateImageDiskOptions();
     }
 
     public static function removePermission()
@@ -122,5 +123,31 @@ class UpgradeToV45
                 'desc' => '',
             ]);
         }
+    }
+
+    public static function updateImageDiskOptions()
+    {
+        AppConfig::query()
+            ->where('key', 'meedu.upload.image.disk')
+            ->update([
+                'option_value' => json_encode([
+                    [
+                        'title' => '本地',
+                        'key' => 'public',
+                    ],
+                    [
+                        'title' => '阿里云OSS',
+                        'key' => 'oss',
+                    ],
+                    [
+                        'title' => '腾讯云COS',
+                        'key' => 'cos',
+                    ],
+                    [
+                        'title' => '七牛云',
+                        'key' => 'qiniu',
+                    ],
+                ]),
+            ]);
     }
 }

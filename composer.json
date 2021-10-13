@@ -35,7 +35,8 @@
         "tymon/jwt-auth": "^1.0",
         "yansongda/laravel-pay": "^2.0",
         "zgldh/qiniu-laravel-storage": "^0.10.3",
-        "fruitcake/laravel-cors": "^2.0"
+        "fruitcake/laravel-cors": "^2.0",
+        "overtrue/laravel-filesystem-cos": "1.0.2"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
