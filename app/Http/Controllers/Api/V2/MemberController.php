@@ -86,7 +86,8 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState $businessState,
         ConfigServiceInterface $configService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -727,7 +728,7 @@ class MemberController extends BaseController
             $mobile = '******' . mb_substr($item['mobile'], 6);
             return [
                 'mobile' => $mobile,
-                'created_at' => Carbon::parse($item['created_at'])->format('Y - m - d'),
+                'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
             ];
         }, $list);
 
@@ -990,7 +991,8 @@ class MemberController extends BaseController
         BusinessState $businessState,
         Request $request,
         $app
-    ) {
+    )
+    {
         /**
          * @var SocialiteService $socialiteService
          */
