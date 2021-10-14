@@ -328,11 +328,6 @@ class MemberController extends BaseController
         ] = $this->userService->messagePaginate($page, $pageSize);
         $list = arr2_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
 
-        $list = array_map(function ($item) {
-            $item['created_at'] = Carbon::parse($item['created_at'])->format('Y-m-d H:i');
-            return $item;
-        }, $list);
-
         return $this->data([
             'data' => $list,
             'total' => $total,
