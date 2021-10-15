@@ -24,6 +24,7 @@ class UpgradeToV45
         self::removePermission();
         self::updateImageDiskOptions();
         self::updateSmsOptions();
+        self::ampaConfigFixed();
     }
 
     public static function removePermission()
@@ -172,5 +173,24 @@ class UpgradeToV45
                     ],
                 ]),
             ]);
+    }
+
+    public static function ampaConfigFixed()
+    {
+        AppConfig::query()->where('key', 'meedu.services.imap.key')->delete();
+
+        $data = [
+            'group' => '高德地图',
+            'name' => '应用Key',
+            'field_type' => 'text',
+            'sort' => 1,
+            'key' => 'meedu.services.amap.key',
+            'value' => '',
+            'is_private' => 1,
+        ];
+
+        if (!AppConfig::query()->where('key', $data['key'])->exists()) {
+            AppConfig::create($data);
+        }
     }
 }

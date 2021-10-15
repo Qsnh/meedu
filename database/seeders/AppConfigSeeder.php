@@ -1110,7 +1110,7 @@ class AppConfigSeeder extends Seeder
                 'name' => '应用Key',
                 'field_type' => 'text',
                 'sort' => 1,
-                'key' => 'meedu.services.imap.key',
+                'key' => 'meedu.services.amap.key',
                 'value' => '',
                 'is_private' => 1,
             ],
