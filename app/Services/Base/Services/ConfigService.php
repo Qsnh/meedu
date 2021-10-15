@@ -527,4 +527,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('tencent.vod.transcode_format', '');
     }
+
+    public function getTencentSms(): array
+    {
+        return config('sms.gateways.tencent');
+    }
 }

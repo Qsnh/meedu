@@ -23,6 +23,7 @@ class UpgradeToV45
         self::configRename();
         self::removePermission();
         self::updateImageDiskOptions();
+        self::updateSmsOptions();
     }
 
     public static function removePermission()
@@ -146,6 +147,28 @@ class UpgradeToV45
                     [
                         'title' => '七牛云',
                         'key' => 'qiniu',
+                    ],
+                ]),
+            ]);
+    }
+
+    public static function updateSmsOptions()
+    {
+        AppConfig::query()
+            ->where('key', 'meedu.system.sms')
+            ->update([
+                'option_value' => json_encode([
+                    [
+                        'title' => '阿里云',
+                        'key' => 'aliyun',
+                    ],
+                    [
+                        'title' => '腾讯云',
+                        'key' => 'tencent',
+                    ],
+                    [
+                        'title' => '云片',
+                        'key' => 'yunpian',
                     ],
                 ]),
             ]);
