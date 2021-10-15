@@ -13,6 +13,7 @@ use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Constant\BackendApiConstant;
 use Illuminate\Auth\AuthenticationException;
+use App\Exceptions\Backend\ValidateException;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -28,6 +29,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         ApiV2Exception::class,
         ServiceException::class,
+        ValidateException::class,
     ];
 
     /**
