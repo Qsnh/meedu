@@ -213,6 +213,14 @@ class CourseService implements CourseServiceInterface
         ]);
     }
 
+    public function isExistsCourseUserRecord(int $userId, int $courseId): bool
+    {
+        return CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->exists();
+    }
+
     /**
      * 设置用户某个课程的观看进度
      *
