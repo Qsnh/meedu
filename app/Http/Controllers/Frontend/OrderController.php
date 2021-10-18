@@ -10,13 +10,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Meedu\Wechat;
 use Illuminate\Http\Request;
-use App\Businesses\BusinessState;
-use App\Exceptions\SystemException;
-use App\Exceptions\ServiceException;
 use App\Meedu\Payment\Wechat\WechatJSAPI;
-use App\Services\Base\Services\CacheService;
 use App\Services\Order\Services\OrderService;
-use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends FrontendController
@@ -26,74 +21,13 @@ class OrderController extends FrontendController
      */
     protected $orderService;
 
-    /**
-     * @var BusinessState
-     */
-    protected $businessState;
-
-    /**
-     * @var CacheService
-     */
-    protected $cacheService;
-
-    public function __construct(
-        OrderServiceInterface $orderService,
-        BusinessState $businessState,
-        CacheServiceInterface $cacheService
-    ) {
+    public function __construct(OrderServiceInterface $orderService)
+    {
         parent::__construct();
 
         $this->orderService = $orderService;
-        $this->businessState = $businessState;
-        $this->cacheService = $cacheService;
     }
 
-    // 发起支付
-    public function pay(Request $request)
-    {
-        $orderId = $request->input('order_id');
-        $order = $this->orderService->findUserNoPaid($orderId);
-
-        $scene = $request->input('scene');
-        $payment = $request->input('payment');
-        if (!$payment) {
-            throw new ServiceException(__('支付网关不存在'));
-        }
-        $payments = get_payments($scene);
-        $paymentMethod = $payments[$payment][$scene] ?? '';
-        if (!$paymentMethod) {
-            throw new SystemException(__('支付网关不存在'));
-        }
-
-        // 更新订单的支付方式
-        $updateData = [
-            'payment' => $payment,
-            'payment_method' => $paymentMethod,
-        ];
-        $this->orderService->change2Paying($order['id'], $updateData);
-        $order = array_merge($order, $updateData);
-
-        // 创建远程订单
-        $paymentHandler = app()->make($payments[$payment]['handler']);
-        $createResult = $paymentHandler->create($order);
-        if ($createResult->status === false) {
-            throw new SystemException(__('系统错误'));
-        }
-
-        return $createResult->data;
-    }
-
-    // 支付成功界面
-    public function paySuccess(Request $request)
-    {
-        $orderId = $request->input('out_trade_no', '');
-        $order = $this->orderService->findUser($orderId);
-
-        return v('frontend.order.success', compact('order'));
-    }
-
-
-    // 微信jsapi支付
     public function wechatJSAPI(Request $request)
     {
         // 跳转地址
@@ -148,34 +82,5 @@ class OrderController extends FrontendController
         $title = __('微信支付');
 
         return v('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data'));
-    }
-
-    // 手动支付界面
-    public function handPay(Request $request)
-    {
-        $data = $request->input('data');
-        if (!$data) {
-            throw new ServiceException(__('参数错误'));
-        }
-        try {
-            // 解密数据
-            $decryptData = decrypt($data);
-            // 获取orderId
-            $orderId = $decryptData['order_id'];
-        } catch (\Exception $e) {
-            throw new ServiceException(__('参数错误'));
-        }
-
-        // 订单
-        $order = $this->orderService->findOrFail($orderId);
-        // 需支付金额
-        $needPaidTotal = $this->businessState->calculateOrderNeedPaidSum($order);
-
-        // 手动支付内容
-        $intro = $this->configService->getHandPayIntroducation();
-
-        $title = __('手动打款支付');
-
-        return v('frontend.order.hand_pay', compact('order', 'intro', 'needPaidTotal', 'title'));
     }
 }

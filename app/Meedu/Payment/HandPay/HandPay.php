@@ -15,9 +15,7 @@ class HandPay implements Payment
 {
     public function create(array $order, array $extra = []): PaymentStatus
     {
-        $data = ['order_id' => $order['order_id']];
-        $response = redirect(url_append_query(route('order.pay.handPay'), ['data' => encrypt($data)]));
-        return new PaymentStatus(true, $response);
+        return new PaymentStatus(true, '');
     }
 
     public function query(array $order): PaymentStatus
@@ -31,7 +29,6 @@ class HandPay implements Payment
 
     public static function payUrl(array $order): string
     {
-        $data = ['order_id' => $order['order_id']];
-        return url_append_query(route('order.pay.handPay'), ['data' => encrypt($data)]);
+        return '';
     }
 }

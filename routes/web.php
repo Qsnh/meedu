@@ -14,13 +14,3 @@ Route::get('/aboutus', 'IndexController@aboutus')->name('aboutus');
 Route::post('/payment/callback/{payment}', 'PaymentController@callback')->name('payment.callback');
 // 微信JSAPI支付
 Route::get('/member/order/pay/wechat/jsapi/page', 'OrderController@wechatJSAPI')->name('order.pay.wechat.jsapi');
-// 手动打款支付
-Route::get('/member/order/pay/handPay', 'OrderController@handPay')->name('order.pay.handPay');
-
-Route::group([
-    'prefix' => '/member',
-    'middleware' => ['auth'],
-], function () {
-    // 支付成功界面
-    Route::get('/order/pay/success', 'OrderController@paySuccess')->name('order.pay.success');
-});
