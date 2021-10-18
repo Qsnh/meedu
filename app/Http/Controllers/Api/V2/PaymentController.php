@@ -134,6 +134,7 @@ class PaymentController extends BaseController
      * @apiParam {String=h5:手机浏览器,wechat:微信浏览器} payment_scene 支付场景
      * @apiParam {String=alipay:支付宝支付,wechat-jsapi:微信jsapi支付,handPay:手动打款} payment 支付方式
      * @apiParam {String} order_id 订单编号
+     * @apiParam {String} redirect 支付完成回跳地址
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
