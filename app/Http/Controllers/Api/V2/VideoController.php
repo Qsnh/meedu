@@ -313,16 +313,15 @@ class VideoController extends BaseController
      */
     public function playInfo(Request $request, $id)
     {
-        $isTry = $request->has('is_try');
+        $isTry = (int)$request->has('is_try');
 
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
-        if (!$this->businessState->canSeeVideo($this->user(), $course, $video)) {
+        if ($isTry !== 1 && !$this->businessState->canSeeVideo($this->user(), $course, $video)) {
             return $this->error(__('请购买后观看'));
         }
 
         $urls = get_play_url($video, $isTry);
-
         if (!$urls) {
             return $this->error(__('错误'));
         }
