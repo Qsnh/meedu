@@ -339,12 +339,15 @@ class UserService implements UserServiceInterface
         return compact('list', 'total');
     }
 
-    /**
-     * @return array
-     */
-    public function getUserBuyAllVideosId(): array
+    public function getUserBuyVideosIn(int $userId, array $videoIds): array
     {
-        return UserVideo::query()->select(['video_id'])->whereUserId(Auth::id())->orderByDesc('created_at')->get()->toArray();
+        return UserVideo::query()
+            ->select(['video_id'])
+            ->where('user_id', $userId)
+            ->whereIn('video_id', $videoIds)
+            ->get()
+            ->pluck('video_id')
+            ->toArray();
     }
 
     /**

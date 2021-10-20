@@ -175,6 +175,7 @@ class VideoController extends BaseController
      * @apiSuccess {Number} data.videoWatchedProgress.video_id 视频ID
      * @apiSuccess {Number} data.videoWatchedProgress.watch_seconds 已观看秒数
      * @apiSuccess {String} data.videoWatchedProgress.watched_at 看完时间
+     * @apiSuccess {Number[]} data.buy_videos 已购视频ID
      */
     public function detail($id)
     {
@@ -199,6 +200,9 @@ class VideoController extends BaseController
         // 课程视频观看进度
         $videoWatchedProgress = [];
 
+        // 已购视频
+        $buyVideos = [];
+
         if ($this->check()) {
             $isWatch = $this->businessState->canSeeVideo($this->user(), $course, $video);
             // 记录观看人数
@@ -207,6 +211,17 @@ class VideoController extends BaseController
             // 当前用户视频观看进度记录
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+
+            // 已购视频
+            $videoIds = [];
+            foreach ($videos as $childrenItem) {
+                foreach ($childrenItem as $videoItem) {
+                    $videoIds[] = $videoItem['id'];
+                }
+            }
+            if ($videoIds) {
+                $buyVideos = $this->userService->getUserBuyVideosIn($this->id(), $videoIds);
+            }
         }
 
         $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
@@ -219,6 +234,7 @@ class VideoController extends BaseController
             'course' => $course,
             'is_watch' => $isWatch,
             'video_watched_progress' => $videoWatchedProgress,
+            'buy_videos' => $buyVideos,
         ]);
     }
 

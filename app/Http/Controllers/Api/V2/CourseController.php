@@ -184,6 +184,7 @@ class CourseController extends BaseController
      * @apiSuccess {Number} data.attach.size 附件大小[单位：字节]
      * @apiSuccess {String} data.attach.name 附件名
      * @apiSuccess {String} data.attach.extension 附件扩展名
+     * @apiSuccess {Number[]} data.buyVideos 已购视频ID
      */
     public function detail($id)
     {
@@ -209,15 +210,37 @@ class CourseController extends BaseController
         $attach = $this->courseService->getCourseAttach($course['id']);
         $attach = arr2_clear($attach, ApiV2Constant::MODEL_COURSE_ATTACH_FIELD);
 
+        // 用户已购视频
+        $buyVideos = [];
+
         if ($this->check()) {
             $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
 
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+
+            $videoIds = [];
+            foreach ($videos as $childrenItem) {
+                foreach ($childrenItem as $videoItem) {
+                    $videoIds[] = $videoItem['id'];
+                }
+            }
+            if ($videoIds) {
+                $buyVideos = $this->userService->getUserBuyVideosIn($this->id(), $videoIds);
+            }
         }
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress', 'attach'));
+        return $this->data(compact(
+            'course',
+            'chapters',
+            'videos',
+            'isBuy',
+            'isCollect',
+            'videoWatchedProgress',
+            'attach',
+            'buyVideos',
+        ));
     }
 
     /**
