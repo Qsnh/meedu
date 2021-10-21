@@ -11,7 +11,6 @@ namespace App\Businesses;
 use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
-use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;

@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
-use Overtrue\Pinyin\Pinyin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Events\VodVideoCreatedEvent;
@@ -286,7 +285,6 @@ class CourseVideoController extends BaseController
 
         $rows = [];
         $now = Carbon::now();
-        $py = new Pinyin();
 
         foreach ($data as $index => $item) {
             // 行数[用户报错提示]
@@ -334,7 +332,7 @@ class CourseVideoController extends BaseController
                 'course_id' => $courseId,
                 'chapter_id' => $chapterId,
                 'title' => $videoName,
-                'slug' => implode('-', $py->convert($videoName)),
+                'slug' => '',
                 'url' => $url,
                 'short_description' => '',
                 'seo_keywords' => $seoKeywords,

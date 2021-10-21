@@ -8,9 +8,6 @@
 
 namespace App\Http\Requests\Backend;
 
-use Overtrue\Pinyin\Pinyin;
-use App\Services\Course\Models\Course;
-
 class CourseRequest extends BaseRequest
 {
     /**
@@ -54,11 +51,11 @@ class CourseRequest extends BaseRequest
 
     public function filldata()
     {
-        $data = [
+        return [
             'user_id' => $this->input('user_id', 0),
             'category_id' => $this->input('category_id'),
             'title' => $this->input('title'),
-            'slug' => $this->input('slug'),
+            'slug' => '',
             'thumb' => $this->input('thumb'),
             'charge' => $this->input('charge', 0),
             'short_description' => $this->input('short_description'),
@@ -67,16 +64,10 @@ class CourseRequest extends BaseRequest
             'seo_keywords' => (string)$this->input('seo_keywords', ''),
             'seo_description' => (string)$this->input('seo_description', ''),
             'published_at' => $this->input('published_at'),
-            'is_show' => (int)$this->input('is_show', Course::SHOW_NO),
-            'is_rec' => (int)$this->input('is_rec', Course::REC_NO),
+            'is_show' => (int)$this->input('is_show', 0),
+            'is_rec' => (int)$this->input('is_rec', 0),
             'is_free' => (int)$this->input('is_free'),
+            'user_count' => (int)$this->input('user_count'),
         ];
-
-        if ($this->isMethod('post') && !$data['slug']) {
-            $slug = implode('-', (new Pinyin())->convert($this->input('title')));
-            $data['slug'] = $slug;
-        }
-
-        return $data;
     }
 }

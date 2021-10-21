@@ -9,7 +9,6 @@
 namespace App\Http\Requests\Backend;
 
 use Carbon\Carbon;
-use Overtrue\Pinyin\Pinyin;
 
 class CourseVideoRequest extends BaseRequest
 {
@@ -51,11 +50,11 @@ class CourseVideoRequest extends BaseRequest
 
     public function filldata()
     {
-        $data = [
+        return [
             'user_id' => $this->input('user_id', 0),
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
-            'slug' => $this->input('slug'),
+            'slug' => '',
             'url' => $this->input('url', '') ?? '',
             'aliyun_video_id' => $this->input('aliyun_video_id', '') ?? '',
             'tencent_video_id' => $this->input('tencent_video_id', '') ?? '',
@@ -74,11 +73,5 @@ class CourseVideoRequest extends BaseRequest
             'free_seconds' => (int)$this->input('free_seconds'),
             'ban_drag' => (int)$this->input('ban_drag', 0),
         ];
-
-        if ($this->isMethod('post') && !$data['slug']) {
-            $data['slug'] = implode('-', (new Pinyin())->convert($data['title']));
-        }
-
-        return $data;
     }
 }
