@@ -24,3 +24,4 @@ package-lock.json
 public/mix-manifest.json
 apidoc/
 tests/report/
+.env.testing
