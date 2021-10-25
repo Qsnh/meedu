@@ -9,7 +9,6 @@
 namespace App\Http;
 
 use App\Http\Middleware\GlobalShareMiddleware;
-use App\Http\Middleware\CheckSmsCodeMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\Backend\BackendPermissionCheckMiddleware;
 
@@ -88,8 +87,6 @@ class Kernel extends HttpKernel
 
         // global变量共享
         'global.share' => GlobalShareMiddleware::class,
-        // 短信验证
-        'sms.check' => CheckSmsCodeMiddleware::class,
         // 后台权限
         'backend.permission' => BackendPermissionCheckMiddleware::class,
         // api接口的状态登录检测
