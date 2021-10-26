@@ -17,6 +17,9 @@ Route::post('/password/reset', 'PasswordController@reset');
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
+// 微信小程序session
+Route::post('/wechat/mini/login', 'LoginController@wechatMiniSession'); // 该路径将在后面的某个版本中删除，请使用下面的新路径/login/wechatMini/session
+Route::post('/login/wechatMini/session', 'LoginController@wechatMiniSession');
 // 微信小程序静默登录
 Route::post('/login/wechatMini', 'LoginController@wechatMini');
 // 微信小程序手机号登录

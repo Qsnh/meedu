@@ -22,6 +22,7 @@ use App\Services\Member\Models\UserTag;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserRemark;
+use App\Services\Member\Models\UserProfile;
 use App\Http\Requests\Backend\MemberRequest;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserTagRelation;
@@ -168,11 +169,29 @@ class MemberController extends BaseController
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
 
+        $profileData = $request->only([
+            'real_name', 'gender', 'age', 'birthday', 'profession', 'address', 'graduated_school', 'diploma',
+            'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
+        ]);
+        if ($profileData) {
+            $profileData['real_name'] = $profileData['real_name'] ?? '';
+            $profileData['gender'] = $profileData['gender'] ?? '';
+            $profileData['age'] = $profileData['age'] ?? 0;
+            $profileData['birthday'] = $profileData['birthday'] ?? '';
+            $profileData['profession'] = $profileData['profession'] ?? '';
+            $profileData['address'] = $profileData['address'] ?? '';
+            $profileData['graduated_school'] = $profileData['graduated_school'] ?? '';
+            $profileData['diploma'] = $profileData['diploma'] ?? '';
+            $profileData['id_number'] = $profileData['id_number'] ?? '';
+            $profileData['id_frontend_thumb'] = $profileData['id_frontend_thumb'] ?? '';
+            $profileData['id_backend_thumb'] = $profileData['id_backend_thumb'] ?? '';
+            $profileData['id_hand_thumb'] = $profileData['id_hand_thumb'] ?? '';
+        }
+
         // 手机号校验
         if (User::query()->where('mobile', $data['mobile'])->where('id', '<>', $user['id'])->exists()) {
             return $this->error(__('手机号已存在'));
         }
-
         // 昵称校验
         if (User::query()->where('nick_name', $data['nick_name'])->where('id', '<>', $user['id'])->exists()) {
             return $this->error(__('昵称已经存在'));
@@ -187,11 +206,20 @@ class MemberController extends BaseController
         $data['role_expired_at'] || $data['role_id'] = 0;
         // 如果roleId为0的话，那么role_expired_at也重置为null
         $data['role_id'] || $data['role_expired_at'] = null;
-
         // 修改密码
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
 
         $user->fill($data)->save();
+
+        // UserProfile
+        if ($profileData) {
+            $userProfile = UserProfile::query()->where('user_id', $id)->first();
+            if ($userProfile) {
+                $userProfile->save($profileData);
+            } else {
+                UserProfile::create(array_merge($profileData, ['user_id' => $id]));
+            }
+        }
 
         return $this->success();
     }
@@ -199,7 +227,12 @@ class MemberController extends BaseController
     public function detail($id)
     {
         $user = User::query()
-            ->with(['role:id,name', 'invitor:id,nick_name,mobile,avatar', 'profile', 'tags:id,name', 'remark:user_id,remark'])
+            ->with([
+                'role:id,name',
+                'invitor:id,nick_name,mobile,avatar',
+                'profile', 'tags:id,name',
+                'remark:user_id,remark',
+            ])
             ->where('id', $id)
             ->firstOrFail();
 

@@ -484,4 +484,39 @@ class LoginController extends BaseController
             'token' => $token,
         ]);
     }
+
+    /**
+     * @api {post} /api/v2/login/wechatMini/session 微信小程序session记录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} code 随机值
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.openid 当前微信小程序用户openid
+     */
+    public function wechatMiniSession(Request $request)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+        $info = WechatMini::getInstance()->auth->session($code);
+        if (!isset($info['openid'])) {
+            return $this->error(__('错误'));
+        }
+        $openid = $info['openid'];
+
+        // session_key存入缓存
+        $this->cacheService->put(
+            get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid),
+            $info['session_key'],
+            CacheConstant::WECHAT_MINI_SESSION_KEY['expire']
+        );
+
+        return $this->data([
+            'openid' => $openid,
+        ]);
+    }
 }
