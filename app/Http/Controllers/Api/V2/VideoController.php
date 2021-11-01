@@ -317,11 +317,14 @@ class VideoController extends BaseController
 
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
-        if ($isTry !== 1 && !$this->businessState->canSeeVideo($this->user(), $course, $video)) {
+
+        $canSee = $this->businessState->canSeeVideo($this->user(), $course, $video);
+
+        if ($canSee === false && $isTry !== 1) {
             return $this->error(__('请购买后观看'));
         }
 
-        $urls = get_play_url($video, $isTry);
+        $urls = get_play_url($video, $canSee ? false : $isTry);
         if (!$urls) {
             return $this->error(__('错误'));
         }
