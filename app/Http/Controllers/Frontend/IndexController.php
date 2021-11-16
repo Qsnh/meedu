@@ -13,18 +13,18 @@ class IndexController extends FrontendController
     public function userProtocol()
     {
         $protocol = $this->configService->getMemberProtocol();
-        return v('frontend.index.user_protocol', compact('protocol'));
+        return view('index.user_protocol', compact('protocol'));
     }
 
     public function userPrivateProtocol()
     {
         $protocol = $this->configService->getMemberPrivateProtocol();
-        return v('frontend.index.user_private_protocol', compact('protocol'));
+        return view('index.user_private_protocol', compact('protocol'));
     }
 
     public function aboutus()
     {
         $aboutus = $this->configService->getAboutus();
-        return v('frontend.index.aboutus', compact('aboutus'));
+        return view('index.aboutus', compact('aboutus'));
     }
 }
