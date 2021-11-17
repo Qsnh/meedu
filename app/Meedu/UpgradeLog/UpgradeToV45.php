@@ -73,6 +73,9 @@ class UpgradeToV45
 
                 // 腾讯云超级播放器配置
                 'meedu.system.player.tencent_pcfg',
+
+                // 语言配置
+                'meedu.system.lang',
             ])
             ->delete();
     }
