@@ -291,6 +291,10 @@ class CourseVideoController extends BaseController
             $line = $index + 2;
 
             $courseName = trim($item[0] ?? '');
+            if ($courseName === '') {
+                continue;
+            }
+
             $courseId = $courses[$courseName] ?? 0;
             if (!$courseId) {
                 return $this->error(sprintf(__('第%d行课程不存在'), $line));
