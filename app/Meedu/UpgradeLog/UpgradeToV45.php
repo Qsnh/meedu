@@ -18,7 +18,6 @@ class UpgradeToV45
 {
     public static function handle()
     {
-        self::courseAndVideoMigrateMeiliSearch();
         self::removeConfig();
         self::configRename();
         self::removePermission();
