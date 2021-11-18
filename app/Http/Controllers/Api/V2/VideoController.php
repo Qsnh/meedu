@@ -318,13 +318,21 @@ class VideoController extends BaseController
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
 
+        // 如果视频未配置试看秒数那么是无法试看的
+        $video['free_seconds'] <= 0 && $isTry = false;
+
+        // 当前用户是否可以观看视频
         $canSee = $this->businessState->canSeeVideo($this->user(), $course, $video);
 
-        if ($canSee === false && $isTry !== 1) {
+        // 如果用户可以观看视频就无需试看
+        $canSee && $isTry = false;
+
+        // 无法观看且也没有配置试看 => 将无法观看
+        if ($canSee === false && !$isTry) {
             return $this->error(__('请购买后观看'));
         }
 
-        $urls = get_play_url($video, $canSee ? false : $isTry);
+        $urls = get_play_url($video, $isTry);
         if (!$urls) {
             return $this->error(__('错误'));
         }
