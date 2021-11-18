@@ -14,10 +14,9 @@
 - [MeEdu 功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
 - [MeEdu 安装及使用手册](https://www.yuque.com/meedu/fvvkbf)
 - [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
-- [MeEdu 后台前端项目](https://github.com/Meedu/backend-v2)
 
 ### 其它项目
 
-- [PC站程序](https://github.com/Meedu/pc-v1)
-- [H5站程序](https://github.com/Meedu/h5-v1)
+- [PC界面程序](https://github.com/Meedu/pc-v1)
+- [H5界面程序](https://github.com/Meedu/h5-v1)
 - [后台管理程序](https://github.com/Meedu/backend-v2)
