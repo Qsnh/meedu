@@ -2,10 +2,9 @@
   <img src="https://codecov.io/gh/Qsnh/meedu/branch/master/graph/badge.svg" />
 </a>
 
-<p align="center"><img src="public/images/meedu.png"/></p>
-<p align="center">MeEdu - 线上培训/知识付费解决方案</p>
+# MeEdu - 企业线上培训、知识付费解决方案
 
-[系统使用条款（使用前必看）](https://www.yuque.com/meedu/fvvkbf/amfw7z)  
+[**系统使用条款（请务必观看）**](https://www.yuque.com/meedu/fvvkbf/amfw7z)    
 
 ### 常用链接
 
