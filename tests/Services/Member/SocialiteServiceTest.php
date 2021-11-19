@@ -33,15 +33,15 @@ class SocialiteServiceTest extends TestCase
 
     public function test_getBindUserId()
     {
-        $user = factory(User::class)->create();
-        $socialite = factory(Socialite::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $socialite = Socialite::factory()->create(['user_id' => $user->id]);
         $userId = $this->service->getBindUserId($socialite->app, $socialite->app_user_id);
         $this->assertEquals($user->id, $userId);
     }
 
     public function test_bindApp()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $app = 'app1';
         $appUserId = Str::random();
         $this->service->bindApp($user->id, $app, $appUserId, []);
@@ -53,7 +53,7 @@ class SocialiteServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $app = 'app1';
         $appUserId = Str::random();
         $this->service->bindApp($user->id, $app, $appUserId, []);
@@ -71,15 +71,15 @@ class SocialiteServiceTest extends TestCase
 
     public function test_userSocialites()
     {
-        $user = factory(User::class)->create();
-        factory(Socialite::class, 4)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        Socialite::factory()->count(4)->create(['user_id' => $user->id]);
         $list = $this->service->userSocialites($user->id);
         $this->assertEquals(4, count($list));
     }
 
     public function test_cancelBind()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
         $app = 'app1';
         $appUserId = Str::random();

@@ -19,31 +19,31 @@ class UserInviteBalanceWithdrawHandledEventTest extends TestCase
 {
     public function test_run()
     {
-        $user = factory(User::class)->create();
-        $order = factory(UserInviteBalanceWithdrawOrder::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $order = UserInviteBalanceWithdrawOrder::factory()->create(['user_id' => $user->id]);
         event(new UserInviteBalanceWithdrawHandledEvent([$order->id], $order->status));
 
         Auth::login($user);
-        $count = $this->app->make(NotificationServiceInterface::class)->getUnreadCount();
+        $count = $this->app->make(NotificationServiceInterface::class)->getUnreadCount($user['id']);
         $this->assertEquals(1, $count);
     }
 
     public function test_refund()
     {
-        $user = factory(User::class)->create(['invite_balance' => 10]);
-        $user1 = factory(User::class)->create(['invite_balance' => 12]);
-        $user2 = factory(User::class)->create(['invite_balance' => 12]);
-        $order = factory(UserInviteBalanceWithdrawOrder::class)->create([
+        $user = User::factory()->create(['invite_balance' => 10]);
+        $user1 = User::factory()->create(['invite_balance' => 12]);
+        $user2 = User::factory()->create(['invite_balance' => 12]);
+        $order = UserInviteBalanceWithdrawOrder::factory()->create([
             'user_id' => $user->id,
             'total' => 1,
             'status' => UserInviteBalanceWithdrawOrder::STATUS_FAILURE
         ]);
-        $order1 = factory(UserInviteBalanceWithdrawOrder::class)->create([
+        $order1 = UserInviteBalanceWithdrawOrder::factory()->create([
             'user_id' => $user1->id,
             'total' => 2,
             'status' => UserInviteBalanceWithdrawOrder::STATUS_FAILURE
         ]);
-        $order2 = factory(UserInviteBalanceWithdrawOrder::class)->create([
+        $order2 = UserInviteBalanceWithdrawOrder::factory()->create([
             'user_id' => $user1->id,
             'total' => 2,
             'status' => UserInviteBalanceWithdrawOrder::STATUS_SUCCESS

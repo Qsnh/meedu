@@ -8,7 +8,6 @@
 
 namespace App\Services\Order\Services;
 
-use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Models\OrderPaidRecord;
@@ -44,11 +43,12 @@ class PromoCodeService implements PromoCodeServiceInterface
     }
 
     /**
+     * @param int $userId
      * @return array
      */
-    public function userPromoCode(): array
+    public function userPromoCode(int $userId): array
     {
-        $code = PromoCode::whereUserId(Auth::id())->first();
+        $code = PromoCode::query()->where('user_id', $userId)->first();
         return $code ? $code->toArray() : [];
     }
 
@@ -58,17 +58,19 @@ class PromoCodeService implements PromoCodeServiceInterface
      */
     public function findCode(string $code): array
     {
-        $code = PromoCode::where('code', $code)->first();
+        $code = PromoCode::query()->where('code', $code)->first();
         return $code ? $code->toArray() : [];
     }
 
     /**
+     * @param int $userId
      * @param int $id
      * @return array
      */
-    public function getCurrentUserOrderPaidRecords(int $id): array
+    public function getCurrentUserOrderPaidRecords(int $userId, int $id): array
     {
-        return OrderPaidRecord::whereUserId(Auth::id())
+        return OrderPaidRecord::query()
+            ->where('user_id', $userId)
             ->where('paid_type', OrderPaidRecord::PAID_TYPE_PROMO_CODE)
             ->where('paid_type_id', $id)
             ->get()->toArray();
@@ -80,7 +82,8 @@ class PromoCodeService implements PromoCodeServiceInterface
      */
     public function getOrderPaidRecords(int $orderId): array
     {
-        return OrderPaidRecord::whereOrderId($orderId)
+        return OrderPaidRecord::query()
+            ->where('order_Id', $orderId)
             ->where('paid_type', OrderPaidRecord::PAID_TYPE_PROMO_CODE)
             ->get()->toArray();
     }
@@ -91,7 +94,7 @@ class PromoCodeService implements PromoCodeServiceInterface
      */
     public function getList(array $ids): array
     {
-        return PromoCode::whereIn('id', $ids)->get()->toArray();
+        return PromoCode::query()->whereIn('id', $ids)->get()->toArray();
     }
 
     /**
@@ -100,16 +103,17 @@ class PromoCodeService implements PromoCodeServiceInterface
     public function decrementUsedTimes(array $ids): void
     {
         foreach ($ids as $id) {
-            PromoCode::find($id)->decrement('used_times', 1);
+            PromoCode::query()->where('id', $id)->decrement('used_times', 1);
         }
     }
 
     /**
+     * @param int $userId
      * @return array
      */
-    public function getCurrentUser(): array
+    public function getUserPromoCode(int $userId): array
     {
-        $code = PromoCode::whereUserId(Auth::id())->first();
+        $code = PromoCode::query()->where('user_id', $userId)->first();
         return $code ? $code->toArray() : [];
     }
 }

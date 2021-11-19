@@ -8,35 +8,10 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Meedu\Addons;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
-/**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="Config",
- *         type="object",
- *         title="系统配置",
- *         @OA\Property(property="webname",type="string",description="网站名"),
- *         @OA\Property(property="icp",type="string",description="备案信息"),
- *         @OA\Property(property="user_protocol",type="string",description="用户协议url"),
- *         @OA\Property(property="user_private_protocol",type="string",description="隐私政策协议url"),
- *         @OA\Property(property="aboutus",type="integer",description="关于我们url"),
- *         @OA\Property(property="logo",type="object",description="logo",@OA\Property(
- *             @OA\Property(property="logo",type="string",description="默认logo"),
- *             @OA\Property(property="white_logo",type="string",description="白色logo"),
- *         )),
- *         @OA\Property(property="player",type="object",description="播放器",@OA\Property(
- *             @OA\Property(property="cover",type="string",description="封面"),
- *             @OA\Property(property="enabled_bullet_secret",type="integer",description="是否开启跑马灯"),
- *             @OA\Property(property="enabled_aliyun_private",type="integer",description="阿里云私密播放"),
- *         )),
- *         @OA\Property(property="member",type="object",description="会员配置",@OA\Property(
- *             @OA\Property(property="enabled_mobile_bind_alert",type="integer",description="强制绑定手机号，1是"),
- *         )),
- *     ),
- * )
- */
 class OtherController extends BaseController
 {
 
@@ -51,38 +26,91 @@ class OtherController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/other/config",
-     *     summary="系统配置",
-     *     tags={"其它"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/Config"),
-     *         )
-     *     )
-     * )
+     * @api {get} /api/v2/other/config 系统配置
+     * @apiGroup 其它
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.webname 网站名
+     * @apiSuccess {String} data.url 网站地址
+     * @apiSuccess {String} data.icp ICP备案号
+     * @apiSuccess {String} data.user_protocol 用户协议URL
+     * @apiSuccess {String} data.user_private_protocol 用户隐私协议URL
+     * @apiSuccess {String} data.aboutus 关于我们
+     * @apiSuccess {String} data.logo LOGO的URL
+     * @apiSuccess {Object} data.player 播放器
+     * @apiSuccess {String} data.player.cover 播放器封面
+     * @apiSuccess {Number} data.player.enabled_bullet_secret 开启跑马灯[1:是,0否]
+     * @apiSuccess {Object} data.member
+     * @apiSuccess {Number} data.member.enabled_mobile_bind_alert 强制绑定手机号[1:是,0否]
+     * @apiSuccess {Number} data.socialites.qq QQ登录[1:是,0否]
+     * @apiSuccess {Number} data.socialites.wechat_scan 微信扫码登录[1:是,0否]
+     * @apiSuccess {Number} data.socialites.wechat_oauth 微信授权登录[1:是,0否]
+     * @apiSuccess {Number} data.credit1_reward.register 注册送积分
+     * @apiSuccess {Number} data.credit1_reward.watched_vod_course 看完录播课送积分
+     * @apiSuccess {Number} data.credit1_reward.watched_video 看完视频
+     * @apiSuccess {Number} data.credit1_reward.paid_order 支付订单[按订单金额比率奖励积分]
+     * @apiSuccess {Number} data.credit1_reward.invite 邀请用户注册
+     * @apiSuccess {String[]} data.enabled_addons 已启用插件
      */
-    public function config()
+    public function config(Addons $addons)
     {
-        $plyaerConfig = $this->configService->getPlayer();
+        $playerConfig = $this->configService->getPlayer();
+
+        $enabledAddons = $addons->enabledAddons();
+
         $data = [
+            // 网站名
             'webname' => $this->configService->getName(),
+            // 网站地址
+            'url' => trim($this->configService->getUrl(), '/'),
+            // ICP备案
             'icp' => $this->configService->getIcp(),
+            'icp_link' => $this->configService->getIcpLink(),
+            // 公安网备案
+            'icp2' => $this->configService->getIcp2(),
+            'icp2_link' => $this->configService->getIcp2Link(),
+            // 用户协议URL
             'user_protocol' => route('user.protocol'),
+            // 用户隐私协议URL
             'user_private_protocol' => route('user.private_protocol'),
+            // 关于我们URL
             'aboutus' => route('aboutus'),
+            // 网站logo
             'logo' => $this->configService->getLogo(),
+            // 播放器配置
             'player' => [
+                // 播放器封面
                 'cover' => $this->configService->getPlayerCover(),
-                'enabled_bullet_secret' => $plyaerConfig['enabled_bullet_secret'] ?? 0,
-                'enabled_aliyun_private' => $plyaerConfig['enabled_aliyun_private'] ?? 0,
+                // 跑马灯
+                'enabled_bullet_secret' => $playerConfig['enabled_bullet_secret'] ?? 0,
             ],
             'member' => [
+                // 强制绑定手机号
                 'enabled_mobile_bind_alert' => $this->configService->getEnabledMobileBindAlert(),
-            ]
+            ],
+            // 社交登录
+            'socialites' => [
+                'qq' => (int)$this->configService->getSocialiteQQLoginEnabled(),
+                'wechat_scan' => (int)$this->configService->getSocialiteWechatScanLoginEnabled(),
+                'wechat_oauth' => (int)$this->configService->getSocialiteWechatLoginEnabled(),
+            ],
+            // 积分奖励
+            'credit1_reward' => [
+                // 注册
+                'register' => $this->configService->getRegisterSceneCredit1(),
+                // 看完录播课
+                'watched_vod_course' => $this->configService->getWatchedCourseSceneCredit1(),
+                // 看完视频
+                'watched_video' => $this->configService->getWatchedVideoSceneCredit1(),
+                // 已支付订单[抽成]
+                'paid_order' => $this->configService->getPaidOrderSceneCredit1(),
+                // 邀请用户注册
+                'invite' => $this->configService->getInviteSceneCredit1(),
+            ],
+            // 已用插件
+            'enabled_addons' => $enabledAddons,
         ];
         return $this->data($data);
     }

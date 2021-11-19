@@ -29,22 +29,19 @@ class PromoCodeController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/promoCode/{code}",
-     *     @OA\Parameter(in="path",name="code",description="code",required=true,@OA\Schema(type="string")),
-     *     summary="优惠码详情",
-     *     tags={"订单"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",ref="#/components/schemas/PromoCode"),
-     *         )
-     *     )
-     * )
-     * @param $code
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/promoCode/{code} 优惠码详情
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} code 优惠码/邀请码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.id
+     * @apiSuccess {String} data.code 优惠码/邀请码
+     * @apiSuccess {String} data.expired_at 过期时间
+     * @apiSuccess {Number} data.invited_user_reward 被邀请用户奖励
+     * @apiSuccess {Number} data.invite_user_reward 邀请用户奖励
      */
     public function detail($code)
     {
@@ -54,23 +51,21 @@ class PromoCodeController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/promoCode/{code}/check",
-     *     @OA\Parameter(in="path",name="code",description="code",required=true,@OA\Schema(type="string")),
-     *     summary="优惠码检测",
-     *     tags={"订单"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
+     * @api {get} /api/v2/promoCode/{code}/check 优惠码检测
+     * @apiGroup 订单
+     * @apiVersion v2.0.0
      *
-     * @param $code
-     * @return \Illuminate\Http\JsonResponse
+     * @apiParam {String} code 优惠码/邀请码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.can_use 是否可以使用[1:可以,0否]
+     * @apiSuccess {Object} data.promo_code
+     * @apiSuccess {Number} data.promo_code.id
+     * @apiSuccess {String} data.promo_code.code 优惠码/邀请码
+     * @apiSuccess {String} data.promo_code.expired_at 过期时间
+     * @apiSuccess {Number} data.promo_code.invited_user_reward 被邀请用户奖励
+     * @apiSuccess {Number} data.promo_code.invite_user_reward 邀请用户奖励
      */
     public function checkCode($code)
     {
@@ -78,7 +73,7 @@ class PromoCodeController extends BaseController
         $canUse = 0;
         $data = [];
         if ($code) {
-            $canUse = (int)$this->businessState->promoCodeCanUse($code);
+            $canUse = (int)$this->businessState->promoCodeCanUse($this->id(), $code);
             $data = arr1_clear($code, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
         }
         return $this->data([

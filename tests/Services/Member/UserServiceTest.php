@@ -50,7 +50,7 @@ class UserServiceTest extends TestCase
 
     public function test_findMobile_with_mobile()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
         ]);
         $u = $this->service->findMobile($user->mobile);
@@ -62,7 +62,7 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -71,7 +71,7 @@ class UserServiceTest extends TestCase
 
     public function test_resetPassword_with_correct_old_password()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -83,7 +83,7 @@ class UserServiceTest extends TestCase
 
     public function test_findPassword()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -109,7 +109,7 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -120,11 +120,11 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        factory(User::class)->create([
+        User::factory()->create([
             'mobile' => '13909098080',
             'password' => Hash::make('123456'),
         ]);
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '23090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -134,7 +134,7 @@ class UserServiceTest extends TestCase
 
     public function test_bindMobile_with_need()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '23090909090',
             'password' => Hash::make('123456'),
         ]);
@@ -152,12 +152,12 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'mobile' => '13090909090',
             'password' => Hash::make('123456'),
         ]);
 
-        $user2 = factory(User::class)->create([
+        $user2 = User::factory()->create([
             'mobile' => '13090909091',
             'password' => Hash::make('123456'),
         ]);
@@ -167,7 +167,7 @@ class UserServiceTest extends TestCase
 
     public function test_updateAvatar()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $avatar = $this->faker->imageUrl();
         $this->service->updateAvatar($user->id, $avatar);
         $user->refresh();
@@ -176,7 +176,7 @@ class UserServiceTest extends TestCase
 
     public function test_getList()
     {
-        $users = factory(User::class, 5)->create();
+        $users = User::factory()->count(5)->create();
         $list = $this->service->getList([$users[0]->id, $users[1]->id]);
         $list = array_column($list, null, 'id');
         $this->assertNotEmpty($list);
@@ -185,7 +185,7 @@ class UserServiceTest extends TestCase
 
     public function test_with()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $u = $this->service->find($user->id, ['role']);
         $this->assertTrue(true);
     }
@@ -193,7 +193,7 @@ class UserServiceTest extends TestCase
     public function test_messagePaginate()
     {
         $notificationService = $this->app->make(NotificationService::class);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
         $notificationService->notifyRegisterMessage($user->id);
 
@@ -204,10 +204,10 @@ class UserServiceTest extends TestCase
 
     public function test_getUserBuyCourses()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
 
-        factory(UserCourse::class, 6)->create(['user_id' => $user->id]);
+        UserCourse::factory()->count(6)->create(['user_id' => $user->id]);
         $list = $this->service->getUserBuyCourses(1, 2);
         $this->assertEquals(6, $list['total']);
         $this->assertEquals(2, count($list['list']));
@@ -215,10 +215,10 @@ class UserServiceTest extends TestCase
 
     public function test_getUserBuyVideos()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
 
-        factory(UserVideo::class, 5)->create(['user_id' => $user->id]);
+        UserVideo::factory()->count(5)->create(['user_id' => $user->id]);
         $list = $this->service->getUserBuyVideos(2, 2);
         $this->assertEquals(5, $list['total']);
         $this->assertEquals(2, count($list['list']));
@@ -226,12 +226,12 @@ class UserServiceTest extends TestCase
 
     public function test_changeRole()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'role_id' => 0,
         ]);
         Auth::login($user);
 
-        $role = factory(Role::class)->create();
+        $role = Role::factory()->create();
 
         $expiredAt = Carbon::now()->addDays($role->expire_days);
         $this->service->changeRole($user->id, $role->id, $expiredAt->toDateTimeString());
@@ -243,14 +243,14 @@ class UserServiceTest extends TestCase
 
     public function test_hasCourse()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'role_id' => 0,
         ]);
-        $course = factory(Course::class)->create();
+        $course = Course::factory()->create();
 
         $this->assertFalse($this->service->hasCourse($user->id, $course->id));
 
-        factory(UserCourse::class)->create([
+        UserCourse::factory()->create([
             'user_id' => $user->id,
             'course_id' => $course->id,
         ]);
@@ -260,14 +260,14 @@ class UserServiceTest extends TestCase
 
     public function test_hasVideo()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'role_id' => 0,
         ]);
-        $video = factory(Video::class)->create();
+        $video = Video::factory()->create();
 
         $this->assertFalse($this->service->hasVideo($user->id, $video->id));
 
-        factory(UserVideo::class)->create([
+        UserVideo::factory()->create([
             'user_id' => $user->id,
             'video_id' => $video->id,
         ]);
@@ -277,7 +277,7 @@ class UserServiceTest extends TestCase
 
     public function test_findNickname()
     {
-        factory(User::class)->create([
+        User::factory()->create([
             'nick_name' => 'meedu',
         ]);
         $this->assertNotEmpty($this->service->findNickname('meedu'));
@@ -285,9 +285,9 @@ class UserServiceTest extends TestCase
 
     public function test_inviteUsers()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         Auth::login($user);
-        factory(User::class, 9)->create([
+        User::factory()->count(9)->create([
             'invite_user_id' => $user->id,
         ]);
         $r = $this->service->inviteUsers(1, 5);
@@ -296,9 +296,9 @@ class UserServiceTest extends TestCase
 
     public function test_updateInviteUserId()
     {
-        $user = factory(User::class)->create();
-        $user1 = factory(User::class)->create();
-        $promoCode = factory(PromoCode::class)->create([
+        $user = User::factory()->create();
+        $user1 = User::factory()->create();
+        $promoCode = PromoCode::factory()->create([
             'user_id' => $user->id,
             'invite_user_reward' => 60,
             'invited_user_reward' => 12,
@@ -314,30 +314,30 @@ class UserServiceTest extends TestCase
     public function test_getCurrentUserCourseCount()
     {
         config(['meedu.system.cache.status' => 1]);
-        $user = factory(User::class)->create();
-        factory(UserCourse::class, 10)->create(['user_id' => $user]);
+        $user = User::factory()->create();
+        UserCourse::factory()->count(10)->create(['user_id' => $user]);
 
         $this->assertEquals(10, $this->service->getUserCourseCount($user['id']));
 
-        factory(UserCourse::class, 3)->create(['user_id' => $user]);
+        UserCourse::factory()->count(3)->create(['user_id' => $user]);
         $this->assertEquals(10, $this->service->getUserCourseCount($user['id']));
     }
 
     public function test_getCurrentUserVideoCount()
     {
         config(['meedu.system.cache.status' => 1]);
-        $user = factory(User::class)->create();
-        factory(UserVideo::class, 11)->create(['user_id' => $user]);
+        $user = User::factory()->create();
+        UserVideo::factory()->count(11)->create(['user_id' => $user]);
 
         $this->assertEquals(11, $this->service->getUserVideoCount($user['id']));
 
-        factory(UserVideo::class, 5)->create(['user_id' => $user]);
+        UserVideo::factory()->count(5)->create(['user_id' => $user]);
         $this->assertEquals(11, $this->service->getUserVideoCount($user['id']));
     }
 
     public function test_inviteBalanceInc()
     {
-        $user = factory(User::class)->create(['invite_balance' => 0]);
+        $user = User::factory()->create(['invite_balance' => 0]);
         $this->service->inviteBalanceInc($user['id'], 10);
         $user->refresh();
         $this->assertEquals(10, $user->invite_balance);
@@ -349,7 +349,7 @@ class UserServiceTest extends TestCase
 
     public function test_setUsedPromoCode()
     {
-        $user = factory(User::class)->create(['is_used_promo_code' => 0]);
+        $user = User::factory()->create(['is_used_promo_code' => 0]);
         $this->service->setUsedPromoCode($user->id);
         $user->refresh();
         $this->assertEquals(1, $user->is_used_promo_code);
@@ -357,7 +357,7 @@ class UserServiceTest extends TestCase
 
     public function test_changeMobile()
     {
-        $user = factory(User::class)->create(['mobile' => '199000012341']);
+        $user = User::factory()->create(['mobile' => '199000012341']);
         $this->service->changeMobile($user->id, '188999900011');
         $user->refresh();
         $this->assertEquals('188999900011', $user->mobile);
@@ -367,8 +367,8 @@ class UserServiceTest extends TestCase
     {
         $this->expectException(ServiceException::class);
 
-        $user = factory(User::class)->create(['mobile' => '199000012341']);
-        $user = factory(User::class)->create(['mobile' => '13788889999']);
+        $user = User::factory()->create(['mobile' => '199000012341']);
+        $user = User::factory()->create(['mobile' => '13788889999']);
         $this->service->changeMobile($user->id, '13788889999');
     }
 

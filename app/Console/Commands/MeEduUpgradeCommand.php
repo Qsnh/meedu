@@ -72,5 +72,7 @@ class MeEduUpgradeCommand extends Command
         // 清空视图缓存
         $this->info('清除视图缓存...');
         Artisan::call('view:clear');
+
+        return 0;
     }
 }

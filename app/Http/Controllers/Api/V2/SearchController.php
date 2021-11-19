@@ -17,34 +17,44 @@ class SearchController extends BaseController
 {
 
     /**
-     * @OA\Get(
-     *     path="/search",
-     *     summary="搜索",
-     *     tags={"搜索"},
-     *     @OA\Parameter(in="query",name="keywords",description="关键字",required=false,@OA\Schema(type="string")),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="data",type="array",description="数据列表",@OA\Items(ref="#/components/schemas/Course")),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/search 录播课程搜索
+     * @apiGroup 搜索
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} keywords 搜索关键字
+     * @apiParam {Number} size 每页数量
+     * @apiParam {Number} page 页码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Number} data.id 课程ID
+     * @apiSuccess {String} data.title 课程名
+     * @apiSuccess {String} data.thumb 封面
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.short_description 简短介绍
+     * @apiSuccess {String} data.render_desc 详细介绍
+     * @apiSuccess {String} data.seo_keywords SEO关键字
+     * @apiSuccess {String} data.seo_description SEO描述
+     * @apiSuccess {String} data.published_at 上架时间
+     * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
+     * @apiSuccess {Number} data.user_count 订阅人数
+     * @apiSuccess {Number} data.videos_count 视频数
+     * @apiSuccess {Object} data.category 分类
+     * @apiSuccess {Number} data.category.id 分类ID
+     * @apiSuccess {String} data.category.name 分类名
      */
-    public function index(CourseServiceInterface $courseService, Request $request)
+    public function index(Request $request)
     {
-        /**
-         * @var CourseService $courseService
-         */
         $keywords = $request->input('keywords', '');
         if (!$keywords) {
             return $this->error(__('请输入关键字'));
         }
+
+        /**
+         * @var CourseService $courseService
+         */
+        $courseService = app()->make(CourseServiceInterface::class);
+
         $courses = $courseService->titleSearch($keywords, 10);
         $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
         return $this->data([

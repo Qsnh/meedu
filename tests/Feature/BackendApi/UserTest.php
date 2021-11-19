@@ -20,8 +20,8 @@ class UserTest extends Base
     public function setUp():void
     {
         parent::setUp();
-        $this->admin = factory(Administrator::class)->create();
-        $this->role = factory(AdministratorRole::class)->create();
+        $this->admin = Administrator::factory()->create();
+        $this->role = AdministratorRole::factory()->create();
         DB::table('administrator_role_relation')->insert([
             'administrator_id' => $this->admin->id,
             'role_id' => $this->role->id,

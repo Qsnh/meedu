@@ -11,6 +11,7 @@ return [
         'app_id' => '',
         'secret_id' => '',
         'secret_key' => '',
+        'transcode_format' => env('TENCENT_VOD_TRANSCODE_FORMAT', 'm3u8'),
     ],
     'wechat' => [
         'mini' => [

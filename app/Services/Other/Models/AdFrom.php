@@ -9,9 +9,12 @@
 namespace App\Services\Other\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AdFrom extends Model
 {
+    use HasFactory;
+
     protected $table = 'ad_from';
 
     protected $fillable = [

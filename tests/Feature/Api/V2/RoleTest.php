@@ -14,7 +14,7 @@ class RoleTest extends Base
 {
     public function test_roles()
     {
-        factory(Role::class, 4)->create();
+        Role::factory()->count(4)->create();
         $r = $this->getJson('api/v2/roles');
         $r = $this->assertResponseSuccess($r);
         $this->assertEquals(4, count($r['data']));

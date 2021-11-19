@@ -37,7 +37,7 @@ class VodV1HTMLHook implements HookRuntimeInterface
                 $courseIds,
                 [
                     'id', 'title', 'thumb', 'charge', 'user_count', 'short_description',
-                    'published_at', 'category_id', 'is_rec', 'is_free', 'comment_status',
+                    'published_at', 'category_id', 'is_rec', 'is_free',
                     'slug',
                 ],
                 [

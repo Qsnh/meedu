@@ -89,8 +89,6 @@
   "我的资料": "Profile",
   "微信账号绑定": "Wechat account binding",
   "支付网关不存在": "Payment gateway does not exist",
-  "微信扫码支付": "Wechat scanning payment",
-  "微信JSAPI支付": "Wechat jsapi payment",
   "手动打款支付": "Manual payment",
   "注册": "Register",
   "购买VIP会员%s": "Buy VIP member %s",
@@ -289,7 +287,7 @@
   "微信支付": "Wechat payment",
   "请使用微信扫描上方二维码支付": "Please use wechat to scan the QR code above for payment",
   "购买": "Purchase",
-  "搜索结果只展示最近20条数据": "The search results show only the last 20 pieces of data",
+  "搜索结果": "The search results",
   "下一集": "Next set",
   "课程已全部看完": "The course has been completed",
   "观看完整视频请订阅": "Please subscribe to the full video",
@@ -309,5 +307,9 @@
   "用户标签已存在": "User tag already exists",
   "当前标签已关联用户，无法删除": "The current tag is associated with a user and cannot be deleted",
   "当前分类下存在课程，无法删除": "There are courses under the current category, which cannot be deleted",
-  "优惠码格式错误": "Wrong format of discount code"
+  "优惠码格式错误": "Wrong format of discount code",
+  "search.vod": "Vod",
+  "search.video": "Video",
+  "订单状态错误": "Order status error",
+  "已超时，请重新绑定": "Timed out, please rebind"
 }

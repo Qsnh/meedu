@@ -21,12 +21,34 @@ class AnnouncementService implements AnnouncementServiceInterface
     }
 
     /**
+     * @param $page
+     * @param $size
+     * @return array
+     */
+    public function paginate($page, $size): array
+    {
+        $data = Announcement::query()
+            ->orderByDesc('id')
+            ->paginate(
+                $size,
+                ['id', 'announcement', 'created_at', 'view_times', 'title'],
+                null,
+                $page
+            );
+
+        return [
+            'data' => $data->items(),
+            'total' => $data->total(),
+        ];
+    }
+
+    /**
      * @param int $id
      * @return array
      */
     public function findOrFail(int $id): array
     {
-        $a = Announcement::findOrFail($id);
+        $a = Announcement::query()->where('id', $id)->firstOrFail();
         return $a->toArray();
     }
 
@@ -35,6 +57,6 @@ class AnnouncementService implements AnnouncementServiceInterface
      */
     public function viewTimesInc(int $id): void
     {
-        Announcement::whereId($id)->increment('view_times');
+        Announcement::query()->where('id', $id)->increment('view_times');
     }
 }

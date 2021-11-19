@@ -11,9 +11,11 @@ namespace App\Http\Controllers\Api\V2;
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
 use App\Meedu\WechatMini;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
-use App\Exceptions\ApiV2Exception;
+use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\CacheService;
@@ -27,19 +29,6 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
-/**
- * @OpenApi\Annotations\Schemas(
- *     @OA\Schema(
- *         schema="SocailiteApp",
- *         type="object",
- *         title="社交登录APP",
- *         @OA\Property(property="app",type="string",description="app"),
- *         @OA\Property(property="name",type="string",description="名称"),
- *         @OA\Property(property="url",type="string",description="地址"),
- *         @OA\Property(property="logo",type="string",description="logo"),
- *     ),
- * )
- */
 class LoginController extends BaseController
 {
     /**
@@ -82,29 +71,16 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/password",
-     *     summary="密码登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="password",description="密码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/password 密码登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
      *
-     * @param PasswordLoginRequest $request
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} password 密码
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function passwordLogin(PasswordLoginRequest $request)
     {
@@ -127,29 +103,16 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/mobile",
-     *     summary="手机短信登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="mobile_code",description="手机验证码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/mobile 短信登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
      *
-     * @param MobileLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws ApiV2Exception
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function mobileLogin(MobileLoginRequest $request)
     {
@@ -173,26 +136,17 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/wechatMiniMobile",
-     *     summary="微信小程序手机号登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="openid",description="openid",type="string"),
-     *         @OA\Property(property="iv",description="iv",type="string"),
-     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/wechatMiniMobile 微信小程序手机号登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} openid openid
+     * @apiParam {String} iv iv
+     * @apiParam {String} encryptedData encryptedData
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function wechatMiniMobile(Request $request, AuthBus $authBus)
     {
@@ -249,28 +203,19 @@ class LoginController extends BaseController
     }
 
     /**
-     * @OA\Post(
-     *     path="/login/wechatMini",
-     *     summary="微信小程序静默授权登录",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="openid",description="openid",type="string"),
-     *         @OA\Property(property="iv",description="iv",type="string"),
-     *         @OA\Property(property="rawData",description="rawData",type="string"),
-     *         @OA\Property(property="signature",description="signature",type="string"),
-     *         @OA\Property(property="encryptedData",description="encryptedData",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="token",type="string",description="token"),
-     *             ),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/login/wechatMini 微信小程序静默授权登录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} openid openid
+     * @apiParam {String} iv iv
+     * @apiParam {String} encryptedData encryptedData
+     * @apiParam {String} rawData rawData
+     * @apiParam {String} signature signature
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token token
      */
     public function wechatMini(Request $request, AuthBus $authBus)
     {
@@ -344,7 +289,18 @@ class LoginController extends BaseController
         return $authBus->tokenLogin($user['id'], get_platform());
     }
 
-    // 微信公众号授权登录
+    /**
+     * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录[重定向]
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     * @apiDescription 登录成功之后会在success_redirect中携带token返回
+     *
+     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlencode)
+     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlencode)
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function wechatLogin(Request $request)
     {
         $successRedirect = $request->input('success_redirect');
@@ -390,7 +346,18 @@ class LoginController extends BaseController
         }
     }
 
-    // 社交登录
+    /**
+     * @api {get} /api/v2/login/socialite/{app} 社交APP登录[重定向]
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回
+     *
+     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlEncode)
+     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlEncode)
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function socialiteLogin(Request $request, ConfigServiceInterface $configService, $app)
     {
         /**
@@ -424,11 +391,13 @@ class LoginController extends BaseController
     // 社交登录回调
     public function socialiteLoginCallback(Request $request, $app)
     {
-        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
-
         $successRedirectUrl = urldecode($request->input('s_url'));
         $failedRedirectUrl = urldecode($request->input('f_url'));
 
+        // 再次构建社交登录的回调URL
+        // 部分社交应用会重复检查回调的URL，不一致将会导致授权失败
+        // 再获取用户信息的时候依旧需要指定一致的URL
+        $redirectUrl = route('api.v2.login.socialite.callback', [$app]);
         $user = Socialite::driver($app)->redirectUrl($redirectUrl)->stateless()->user();
 
         $appId = $user->getId();
@@ -449,5 +418,105 @@ class LoginController extends BaseController
         } catch (ServiceException $e) {
             return redirect(url_append_query($failedRedirectUrl, ['msg' => $e->getMessage()]));
         }
+    }
+
+    /**
+     * @api {get} /api/v2/login/wechatScan 微信扫码登录[二维码]
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code 随机值
+     * @apiSuccess {String} data.image 图片内容
+     */
+    public function wechatScan(BusinessState $businessState)
+    {
+        if (!$businessState->enabledMpScanLogin()) {
+            throw new ServiceException(__('未开启微信公众号扫码登录'));
+        }
+
+        // 生成登录二维码
+        $code = Str::random(10);
+        $image = wechat_qrcode_image($code);
+
+        return $this->data([
+            'code' => $code,
+            'image' => $image,
+        ]);
+    }
+
+    /**
+     * @api {get} /api/v2/login/wechatScan/query 微信扫码登录[结果查询]
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} code 随机值
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.status 结果[1:登录成功,0:失败]
+     * @apiSuccess {String} data.token token[登录成功返回]
+     */
+    public function wechatScanQuery(Request $request, AuthBus $authBus)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+
+        $cacheKey = get_cache_key(CacheConstant::WECHAT_SCAN_LOGIN['name'], $code);
+        $userId = (int)$this->cacheService->pull($cacheKey);
+
+        if (!$userId) {
+            return $this->data(['status' => 0]);
+        }
+
+        $user = $this->userService->find($userId);
+        if ((int)$user['is_lock'] === 1) {
+            return $this->error(__('账号已被锁定'));
+        }
+
+        $token = $authBus->tokenLogin($userId, FrontendConstant::LOGIN_PLATFORM_PC);
+
+        return $this->data([
+            'status' => 1,
+            'token' => $token,
+        ]);
+    }
+
+    /**
+     * @api {post} /api/v2/login/wechatMini/session 微信小程序session记录
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} code 随机值
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.openid 当前微信小程序用户openid
+     */
+    public function wechatMiniSession(Request $request)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+        $info = WechatMini::getInstance()->auth->session($code);
+        if (!isset($info['openid'])) {
+            return $this->error(__('错误'));
+        }
+        $openid = $info['openid'];
+
+        // session_key存入缓存
+        $this->cacheService->put(
+            get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid),
+            $info['session_key'],
+            CacheConstant::WECHAT_MINI_SESSION_KEY['expire']
+        );
+
+        return $this->data([
+            'openid' => $openid,
+        ]);
     }
 }

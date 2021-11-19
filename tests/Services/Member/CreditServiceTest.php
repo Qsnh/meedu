@@ -30,7 +30,7 @@ class CreditServiceTest extends TestCase
 
     public function test_createCredit1Record()
     {
-        $user = factory(User::class)->create(['credit1' => 1]);
+        $user = User::factory()->create(['credit1' => 1]);
         $this->service->createCredit1Record($user->id, 100, 'meedu123');
 
         $record = UserCreditRecord::query()->where('user_id', $user->id)->where('field', 'credit1')->first();
@@ -44,7 +44,7 @@ class CreditServiceTest extends TestCase
 
     public function test_getCredit1RecordsPaginate()
     {
-        $user = factory(User::class)->create(['credit1' => 1]);
+        $user = User::factory()->create(['credit1' => 1]);
         UserCreditRecord::create([
             'user_id' => $user->id,
             'field' => 'credit1',
@@ -69,7 +69,7 @@ class CreditServiceTest extends TestCase
 
     public function test_getCredit1RecordsCount()
     {
-        $user = factory(User::class)->create(['credit1' => 1]);
+        $user = User::factory()->create(['credit1' => 1]);
         UserCreditRecord::create([
             'user_id' => $user->id,
             'field' => 'credit1',

@@ -38,11 +38,12 @@ class CourseService implements CourseServiceInterface
      */
     public function titleSearch(string $keyword, int $limit): array
     {
-        return Course::show()
-            ->published()
+        return Course::query()
+            ->where('is_show', 1)
+            ->where('published_at', '<=', Carbon::now())
             ->with(['category'])
             ->withCount(['videos' => function ($query) {
-                $query->show()->published();
+                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
             }])
             ->where('title', 'like', '%' . $keyword . '%')
             ->orderByDesc('published_at')
@@ -60,11 +61,11 @@ class CourseService implements CourseServiceInterface
     public function simplePage(int $page, int $pageSize, int $categoryId = 0, string $scene = ''): array
     {
         $query = Course::query()
-            ->with(['category'])
-            ->show()
-            ->published()
+            ->with(['category:id,name'])
+            ->where('is_show', 1)
+            ->where('published_at', '<=', Carbon::now())
             ->withCount(['videos' => function ($query) {
-                $query->show()->published();
+                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
             }])
             ->when($categoryId, function ($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
@@ -72,13 +73,15 @@ class CourseService implements CourseServiceInterface
             ->when($scene === 'free', function ($query) {
                 $query->where('is_free', 1);
             });
-        if (!$scene) {
-            $query->orderByDesc('published_at');
-        } elseif ($scene === 'sub') {
+
+        if ($scene === 'sub') {
             $query->orderByDesc('user_count');
         } elseif ($scene === 'recom') {
             $query->where('is_rec', 1)->orderByDesc('id');
+        } else {
+            $query->orderByDesc('published_at');
         }
+
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
         $list = $this->addLatestVideos($list);
@@ -93,7 +96,7 @@ class CourseService implements CourseServiceInterface
      */
     public function find(int $id): array
     {
-        $course = Course::query()->published()->findOrFail($id);
+        $course = Course::query()->where('published_at', '<=', Carbon::now())->findOrFail($id);
 
         return $course->toArray();
     }
@@ -121,11 +124,11 @@ class CourseService implements CourseServiceInterface
     {
         $courses = Course::query()
             ->withCount(['videos' => function ($query) {
-                $query->show()->published();
+                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
             }])
             ->with(['category:id,name'])
-            ->show()
-            ->published()
+            ->where('is_show', 1)
+            ->where('published_at', '<=', Carbon::now())
             ->orderByDesc('published_at')
             ->limit($limit)
             ->get()
@@ -141,12 +144,12 @@ class CourseService implements CourseServiceInterface
     {
         $courses = Course::query()
             ->withCount(['videos' => function ($query) {
-                $query->show()->published();
+                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
             }])
             ->with(['category:id,name'])
-            ->show()
-            ->published()
-            ->recommend()
+            ->where('is_show', 1)
+            ->where('published_at', '<=', Carbon::now())
+            ->where('is_rec', 1)
             ->orderByDesc('published_at')
             ->limit($limit)
             ->get()
@@ -208,6 +211,14 @@ class CourseService implements CourseServiceInterface
             'user_id' => $userId,
             'course_id' => $courseId,
         ]);
+    }
+
+    public function isExistsCourseUserRecord(int $userId, int $courseId): bool
+    {
+        return CourseUserRecord::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->exists();
     }
 
     /**

@@ -8,112 +8,23 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Meedu\Cache\Inc\Inc;
-use App\Constant\FrontendConstant;
-use App\Meedu\Cache\Inc\AdFromIncItem;
-use App\Services\Other\Services\LinkService;
-use App\Services\Other\Services\AdFromService;
-use App\Services\Other\Services\SliderService;
-use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\CourseCategoryService;
-use App\Services\Other\Interfaces\LinkServiceInterface;
-use App\Services\Other\Interfaces\AdFromServiceInterface;
-use App\Services\Other\Interfaces\SliderServiceInterface;
-use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
-
 class IndexController extends FrontendController
 {
-    /**
-     * @var LinkService
-     */
-    protected $linkService;
-
-    /**
-     * @var SliderService
-     */
-    protected $sliderService;
-
-    /**
-     * @var CourseService
-     */
-    protected $courseService;
-
-    /**
-     * @var CourseCategoryService
-     */
-    protected $courseCategoryService;
-
-    /**
-     * @var AdFromService
-     */
-    protected $adFromService;
-
-    public function __construct(
-        LinkServiceInterface $linkService,
-        SliderServiceInterface $sliderService,
-        CourseServiceInterface $courseService,
-        CourseCategoryServiceInterface $courseCategoryService,
-        AdFromServiceInterface $adFromService
-    ) {
-        parent::__construct();
-
-        $this->linkService = $linkService;
-        $this->sliderService = $sliderService;
-        $this->courseService = $courseService;
-        $this->courseCategoryService = $courseCategoryService;
-        $this->adFromService = $adFromService;
-    }
-
-    public function index()
-    {
-        $links = $this->linkService->all();
-
-        [
-            'title' => $title,
-            'keywords' => $keywords,
-            'description' => $description
-        ] = $this->configService->getSeoIndexPage();
-
-        if ($fromKey = request()->input('from_key')) {
-            $adFrom = $this->adFromService->findFromKey($fromKey);
-            $adFrom && Inc::record(new AdFromIncItem($adFrom));
-        }
-
-        // 幻灯片
-        $sliders = $this->sliderService->all(is_h5() ? FrontendConstant::SLIDER_PLATFORM_H5 : FrontendConstant::SLIDER_PLATFORM_PC);
-
-        // 课程
-        [
-            'total' => $total,
-            'list' => $list
-        ] = $this->courseService->simplePage(1, 16, 0);
-        $courses = $this->paginator($list, $total, 1, 16, route('courses'));
-
-        // 课程分类
-        $categories = $this->courseCategoryService->all();
-
-        return v(
-            'frontend.index.index',
-            compact('title', 'keywords', 'description', 'links', 'sliders', 'courses', 'categories')
-        );
-    }
-
     public function userProtocol()
     {
         $protocol = $this->configService->getMemberProtocol();
-        return v('frontend.index.user_protocol', compact('protocol'));
+        return view('index.user_protocol', compact('protocol'));
     }
 
     public function userPrivateProtocol()
     {
         $protocol = $this->configService->getMemberPrivateProtocol();
-        return v('frontend.index.user_private_protocol', compact('protocol'));
+        return view('index.user_private_protocol', compact('protocol'));
     }
 
     public function aboutus()
     {
         $aboutus = $this->configService->getAboutus();
-        return v('frontend.index.aboutus', compact('aboutus'));
+        return view('index.aboutus', compact('aboutus'));
     }
 }

@@ -60,5 +60,7 @@ class OrderTimeoutHandlerCommand extends Command
             $this->line($order['order_id']);
             $this->orderService->cancel($order['id']);
         }
+
+        return 0;
     }
 }

@@ -9,9 +9,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AdministratorRole extends Model
 {
+    use HasFactory;
+
     protected $table = 'administrator_roles';
 
     protected $fillable = [

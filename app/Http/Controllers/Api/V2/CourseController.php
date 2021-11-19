@@ -25,10 +25,6 @@ use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
-/**
- * Class CourseController
- * @package App\Http\Controllers\Api\V2
- */
 class CourseController extends BaseController
 {
 
@@ -81,68 +77,114 @@ class CourseController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/courses",
-     *     summary="课程列表",
-     *     tags={"课程"},
-     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
-     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
-     *     @OA\Parameter(in="query",name="category_id",description="分类id",required=false,@OA\Schema(type="integer")),
-     *     @OA\Parameter(in="query",name="scene",description="场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]",required=false,@OA\Schema(type="string")),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="total",type="integer",description="总数"),
-     *                 @OA\Property(property="data",type="array",description="数据列表",@OA\Items(ref="#/components/schemas/Course")),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/courses 录播课程列表
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {Number} page 页码
+     * @apiParam {Number} page_size 每页条数
+     * @apiParam {Number} category_id 分类ID
+     * @apiParam {String=留空,recom,sub,free} [scene] 场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object[]} data 数据
+     * @apiSuccess {Number} data.id 课程ID
+     * @apiSuccess {String} data.title 课程名
+     * @apiSuccess {String} data.thumb 封面
+     * @apiSuccess {Number} data.charge 价格
+     * @apiSuccess {String} data.short_description 简短介绍
+     * @apiSuccess {String} data.render_desc 详细介绍
+     * @apiSuccess {String} data.seo_keywords SEO关键字
+     * @apiSuccess {String} data.seo_description SEO描述
+     * @apiSuccess {String} data.published_at 上架时间
+     * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
+     * @apiSuccess {Number} data.is_free 免费课程[1:是,0否]
+     * @apiSuccess {Number} data.user_count 订阅人数
+     * @apiSuccess {Number} data.videos_count 视频数
+     * @apiSuccess {Object} data.category 分类
+     * @apiSuccess {Number} data.category.id 分类ID
+     * @apiSuccess {String} data.category.name 分类名
      */
     public function paginate(Request $request)
     {
         $categoryId = intval($request->input('category_id'));
         $scene = $request->input('scene', '');
         $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', $this->configService->getCourseListPageSize());
+        $pageSize = $request->input('page_size', 16);
         [
             'total' => $total,
             'list' => $list
         ] = $this->courseService->simplePage($page, $pageSize, $categoryId, $scene);
-        $list = arr2_clear($list, ApiV2Constant::MODEL_COURSE_FIELD);
+
+        $whitelistFields = array_flip(ApiV2Constant::MODEL_COURSE_FIELD);
+        unset($whitelistFields['render_desc']);
+        $whitelistFields = array_flip($whitelistFields);
+
+        $list = arr2_clear($list, $whitelistFields);
+
+        foreach ($list as $index => $item) {
+            $list[$index]['category'] = arr1_clear($item['category'] ?? [], ApiV2Constant::MODEL_COURSE_CATEGORY_FIELD);
+        }
+
         $courses = $this->paginator($list, $total, $page, $pageSize);
 
         return $this->data($courses->toArray());
     }
 
     /**
-     * @OA\Get(
-     *     path="/course/{id}",
-     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
-     *     summary="课程信息",
-     *     tags={"课程"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="course",type="object",description="课程详情",ref="#/components/schemas/Course"),
-     *                 @OA\Property(property="chapters",type="array",description="课程章节",@OA\Items(ref="#/components/schemas/CourseChapter")),
-     *                 @OA\Property(property="videos",type="array",description="视频",@OA\Items(ref="#/components/schemas/Video")),
-     *                 @OA\Property(property="isBuy",type="bool",description="是否购买"),
-     *                 @OA\Property(property="isCollect",type="bool",description="是否收藏"),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/course/{id} 录播课程详情
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object[]} data 数据
+     * @apiSuccess {Object} data.course 课程
+     * @apiSuccess {Number} data.course.id 课程ID
+     * @apiSuccess {String} data.course.title 课程名
+     * @apiSuccess {String} data.course.thumb 封面
+     * @apiSuccess {Number} data.course.charge 价格
+     * @apiSuccess {String} data.course.short_description 简短介绍
+     * @apiSuccess {String} data.course.render_desc 详细介绍
+     * @apiSuccess {String} data.course.seo_keywords SEO关键字
+     * @apiSuccess {String} data.course.seo_description SEO描述
+     * @apiSuccess {String} data.course.published_at 上架时间
+     * @apiSuccess {Number} data.course.is_rec 推荐[1:是,0否][已弃用]
+     * @apiSuccess {Number} data.course.user_count 订阅人数
+     * @apiSuccess {Number} data.course.videos_count 视频数
+     * @apiSuccess {Object} data.course.category 分类
+     * @apiSuccess {Number} data.course.category.id 分类ID
+     * @apiSuccess {String} data.course.category.name 分类名
+     * @apiSuccess {Object[]} data.chapters 章节
+     * @apiSuccess {Number} data.chapters.id 章节ID
+     * @apiSuccess {String} data.chapters.name 章节名
+     * @apiSuccess {Object[]} data.videos 视频
+     * @apiSuccess {Number} data.videos.id 视频ID
+     * @apiSuccess {String} data.videos.title 视频名
+     * @apiSuccess {Number} data.videos.charge 视频价格
+     * @apiSuccess {Number} data.videos.view_num 观看数[已废弃]
+     * @apiSuccess {String} data.videos.short_description 简短介绍
+     * @apiSuccess {String} data.videos.render_desc 详细介绍[已废弃]
+     * @apiSuccess {String} data.videos.published_at 上架时间
+     * @apiSuccess {Number} data.videos.duration 时长[单位：秒]
+     * @apiSuccess {String} data.videos.seo_keywords SEO关键字
+     * @apiSuccess {String} data.videos.seo_description SEO描述
+     * @apiSuccess {Number} data.videos.is_ban_sell 禁止出售[1:是,0否]
+     * @apiSuccess {Number} data.videos.chapter_id 章节ID
+     * @apiSuccess {Number} data.isBuy 购买[1:是,0否]
+     * @apiSuccess {Number} data.isCollect 收藏[1:是,0否]
+     * @apiSuccess {Object} data.videoWatchedProgress 视频进度
+     * @apiSuccess {Number} data.videoWatchedProgress.id 记录ID
+     * @apiSuccess {Number} data.videoWatchedProgress.user_id 用户ID
+     * @apiSuccess {Number} data.videoWatchedProgress.course_id 课程ID
+     * @apiSuccess {Number} data.videoWatchedProgress.video_id 视频ID
+     * @apiSuccess {Number} data.videoWatchedProgress.watch_seconds 已观看秒数
+     * @apiSuccess {String} data.videoWatchedProgress.watched_at 看完时间
+     * @apiSuccess {Object[]} data.attach 附件
+     * @apiSuccess {Number} data.attach.id 附件ID
+     * @apiSuccess {Number} data.attach.size 附件大小[单位：字节]
+     * @apiSuccess {String} data.attach.name 附件名
+     * @apiSuccess {String} data.attach.extension 附件扩展名
+     * @apiSuccess {Number[]} data.buyVideos 已购视频ID
      */
     public function detail($id)
     {
@@ -168,38 +210,48 @@ class CourseController extends BaseController
         $attach = $this->courseService->getCourseAttach($course['id']);
         $attach = arr2_clear($attach, ApiV2Constant::MODEL_COURSE_ATTACH_FIELD);
 
+        // 用户已购视频
+        $buyVideos = [];
+
         if ($this->check()) {
             $isBuy = $this->businessState->isBuyCourse($this->id(), $course['id']);
             $isCollect = $this->userService->likeCourseStatus($this->id(), $course['id']);
 
             $userVideoWatchRecords = $this->userService->getUserVideoWatchRecords($this->id(), $course['id']);
             $videoWatchedProgress = array_column($userVideoWatchRecords, null, 'video_id');
+
+            $videoIds = [];
+            foreach ($videos as $childrenItem) {
+                foreach ($childrenItem as $videoItem) {
+                    $videoIds[] = $videoItem['id'];
+                }
+            }
+            if ($videoIds) {
+                $buyVideos = $this->userService->getUserBuyVideosIn($this->id(), $videoIds);
+            }
         }
 
-        return $this->data(compact('course', 'chapters', 'videos', 'isBuy', 'isCollect', 'videoWatchedProgress', 'attach'));
+        return $this->data(compact(
+            'course',
+            'chapters',
+            'videos',
+            'isBuy',
+            'isCollect',
+            'videoWatchedProgress',
+            'attach',
+            'buyVideos',
+        ));
     }
 
     /**
-     * @OA\Post(
-     *     path="/course/{id}/comment",
-     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
-     *     summary="课程评论",
-     *     tags={"课程"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="content",description="评论内容",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
-     * @param CommentRequest $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /api/v2/course/{course_id}/comment 录播课程评论
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} content 评论内容
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function createComment(CommentRequest $request, $id)
     {
@@ -213,27 +265,26 @@ class CourseController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/course/{id}/comments",
-     *     @OA\Parameter(in="query",name="page",description="页码",required=false,@OA\Schema(type="integer")),
-     *     @OA\Parameter(in="query",name="page_size",description="每页数量",required=false,@OA\Schema(type="integer")),
-     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
-     *     summary="课程评论列表",
-     *     tags={"课程"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description="",
-     *                 @OA\Property(property="comments",type="array",description="评论",@OA\Items(ref="#/components/schemas/CourseComment")),
-     *                 @OA\Property(property="users",type="array",description="评论用户",@OA\Items(ref="#/components/schemas/User")),
-     *             ),
-     *         )
-     *     )
-     * )
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/course/{course_id}/comments 录播课程评论列表
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {Number} [page] 页码
+     * @apiParam {Number} [page_size] 每页条数
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Object[]} data.comments 评论
+     * @apiSuccess {Number} data.comments.id 评论ID
+     * @apiSuccess {Number} data.comments.id 评论ID
+     * @apiSuccess {Number} data.comments.user_id 用户ID
+     * @apiSuccess {String} data.comments.render_content 评论内容
+     * @apiSuccess {String} data.comments.created_at 时间
+     * @apiSuccess {Object[]} data.users 用户
+     * @apiSuccess {Number} data.users.id 用户ID
+     * @apiSuccess {String} data.users.nick_name 用户昵称
+     * @apiSuccess {String} data.users.avatar 用户头像
+     * @apiSuccess {String} data.users.mobile 用户手机号
      */
     public function comments($id)
     {
@@ -250,22 +301,15 @@ class CourseController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/course/{id}/like",
-     *     @OA\Parameter(in="path",name="id",description="课程id",required=true,@OA\Schema(type="integer")),
-     *     summary="喜欢课程",
-     *     tags={"课程"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /api/v2/course/{course_id}/like 收藏课程
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+token
+     *
+     * @apiParam {String} content 评论内容
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function like($id)
     {
@@ -275,21 +319,14 @@ class CourseController extends BaseController
     }
 
     /**
-     * @OA\Get(
-     *     path="/course/attach/{id}/download",
-     *     @OA\Parameter(in="path",name="id",description="课程附件id",required=true,@OA\Schema(type="integer")),
-     *     summary="课程附件下载",
-     *     tags={"课程"},
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
-     * @param $id
+     * @api {get} /api/v2/course/attach/{attach_id}/download 附件下载
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} token 登录token
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function attachDownload($id)
     {

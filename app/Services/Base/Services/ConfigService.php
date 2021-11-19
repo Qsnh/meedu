@@ -85,6 +85,21 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.system.icp', '');
     }
 
+    public function getIcpLink()
+    {
+        return config('meedu.system.icp_link');
+    }
+
+    public function getIcp2()
+    {
+        return config('meedu.system.icp2', '');
+    }
+
+    public function getIcp2Link()
+    {
+        return config('meedu.system.icp2_link', '');
+    }
+
     /**
      * 播放器封面
      *
@@ -173,62 +188,12 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * 课程列表默认显示条数
-     * @return int
-     */
-    public function getCourseListPageSize(): int
-    {
-        return (int)config('meedu.other.course_list_page_size', 6);
-    }
-
-    /**
-     * 课程列表页面SEO
-     * @return array
-     */
-    public function getSeoCourseListPage(): array
-    {
-        return config('meedu.seo.course_list');
-    }
-
-    /**
-     * 视频列表页面显示条数
-     * @return int
-     */
-    public function getVideoListPageSize(): int
-    {
-        return (int)config('meedu.other.video_list_page_size', 10);
-    }
-
-    /**
-     * 获取默认的编辑器
-     * @return string
-     */
-    public function getEditor(): string
-    {
-        return config('meedu.system.editor', 'html');
-    }
-
-    /**
      * 短信配置
      * @return array
      */
     public function getSms(): array
     {
         return config('sms');
-    }
-
-    /**
-     * 会员界面SEO
-     * @return array
-     */
-    public function getSeoRoleListPage(): array
-    {
-        return config('meedu.seo.role_list');
-    }
-
-    public function getSeoIndexPage(): array
-    {
-        return config('meedu.seo.index');
     }
 
     /**
@@ -533,5 +498,38 @@ class ConfigService implements ConfigServiceInterface
     public function getMpWechatScanLoginAlert()
     {
         return config('meedu.mp_wechat.scan_login_alert');
+    }
+
+    /**
+     * @return int
+     */
+    public function getSocialiteQQLoginEnabled()
+    {
+        return (int)config('meedu.member.socialite.qq.enabled');
+    }
+
+    public function getSocialiteWechatScanLoginEnabled()
+    {
+        return (int)config('meedu.mp_wechat.enabled_scan_login');
+    }
+
+    public function getSocialiteWechatLoginEnabled()
+    {
+        return (int)config('meedu.mp_wechat.enabled_oauth_login');
+    }
+
+    public function getUrl(): string
+    {
+        return config('app.url');
+    }
+
+    public function getTencentVodTranscodeFormat(): string
+    {
+        return config('tencent.vod.transcode_format', '');
+    }
+
+    public function getTencentSms(): array
+    {
+        return config('sms.gateways.tencent');
     }
 }

@@ -73,8 +73,8 @@ class WechatJSAPI implements Payment
             route('order.pay.wechat.jsapi'),
             [
                 'data' => encrypt($data),
-                's_url' => $sUrl,
-                'f_url' => $fUrl,
+                's_url' => urlencode($sUrl),
+                'f_url' => urlencode($fUrl),
             ]
         );
 

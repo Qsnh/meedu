@@ -9,9 +9,11 @@
 namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserCourse extends Model
 {
+    use HasFactory;
     protected $table = 'user_course';
 
     protected $fillable = [

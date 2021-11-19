@@ -33,8 +33,8 @@ $addonsPath = realpath(__DIR__ . '/../addons');
 $requires = [
     [
         'item' => PHP_VERSION,
-        'status' => PHP_VERSION_ID > 70103,
-        'intro' => 'PHP版本>=7.1.3',
+        'status' => version_compare('v7.3.0', PHP_VERSION, '<='),
+        'intro' => 'PHP版本>=7.3.0',
     ],
     [
         'item' => 'ext-Fileinfo',
@@ -119,6 +119,16 @@ $requires = [
     [
         'item' => 'putenv()',
         'status' => !isset($disabledFunctions['putenv']),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'pcntl_signal()',
+        'status' => !isset($disabledFunctions['pcntl_signal']),
+        'intro' => '该函数不能被禁用',
+    ],
+    [
+        'item' => 'pcntl_alarm()',
+        'status' => !isset($disabledFunctions['pcntl_alarm']),
         'intro' => '该函数不能被禁用',
     ],
 ];

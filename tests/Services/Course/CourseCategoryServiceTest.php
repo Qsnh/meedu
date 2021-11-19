@@ -28,7 +28,7 @@ class CourseCategoryServiceTest extends TestCase
 
     public function test_all()
     {
-        factory(CourseCategory::class, 10)->create();
+        CourseCategory::factory()->count(10)->create();
         $res = $this->service->all();
         $this->assertEquals(10, count($res));
     }

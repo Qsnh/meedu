@@ -104,15 +104,16 @@ class PromoCodeListener implements ShouldQueue
         }
 
         $orderUser = $this->userService->find($order['user_id']);
-        if ($orderUser['invite_user_id'] === 0) {
+        if ($code['user_id'] && $orderUser['invite_user_id'] === 0) {
             // 当前用户使用了优惠码，且没有上级
-            // 那么将该优惠码的注册设置为当前用户的上级
+            // 那么将该优惠码的所属用户设置为当前用户的上级
             $this->userService->updateInviteUserId($orderUser['id'], $code['user_id'], $code['invite_user_reward']);
 
-            // 邀请积分奖励
             if ($credit1 = $this->configService->getInviteSceneCredit1()) {
                 $message = sprintf(__('邀请用户注册送%d积分'), $credit1);
+                // 积分奖励
                 $this->creditService->createCredit1Record($code['user_id'], $credit1, $message);
+                // 积分到账通知
                 $this->notificationService->notifyCredit1Message($code['user_id'], $credit1, $message);
             }
         }

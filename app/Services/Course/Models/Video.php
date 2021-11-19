@@ -8,17 +8,16 @@
 
 namespace App\Services\Course\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Video extends Base
 {
+    use HasFactory;
+
     public const IS_SHOW_YES = 1;
     public const IS_SHOW_NO = -1;
 
     public const IS_BAN_SELL_YES = 1;
-    public const IS_BAN_SELL_NO = 0;
-
-    public const COMMENT_STATUS_CLOSE = 0;
-    public const COMMENT_STATUS_ALL = 1;
-    public const COMMENT_STATUS_ONLY_PAID = 2;
 
     protected $table = 'videos';
 
@@ -28,8 +27,7 @@ class Video extends Base
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
         'chapter_id', 'duration', 'tencent_video_id',
-        'is_ban_sell', 'player_pc', 'player_h5', 'comment_status',
-        'free_seconds', 'ban_drag',
+        'is_ban_sell', 'free_seconds', 'ban_drag',
     ];
 
     /**

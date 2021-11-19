@@ -20,13 +20,13 @@ class PaymentSuccessEventTest extends TestCase
     {
         config(['meedu.member.invite.per_order_draw' => 0.02]);
 
-        $user = factory(User::class)->create();
-        $user1 = factory(User::class)->create([
+        $user = User::factory()->create();
+        $user1 = User::factory()->create([
             'invite_user_id' => $user->id,
             'invite_user_expired_at' => Carbon::now()->addDays(1),
         ]);
 
-        $order = factory(Order::class)->create(['user_id' => $user1->id, 'charge' => 100]);
+        $order = Order::factory()->create(['user_id' => $user1->id, 'charge' => 100]);
 
         event(new PaymentSuccessEvent($order->toArray()));
 

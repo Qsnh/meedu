@@ -17,10 +17,16 @@ Route::post('/password/reset', 'PasswordController@reset');
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
+// 微信小程序session
+Route::post('/wechat/mini/login', 'LoginController@wechatMiniSession'); // 该路径将在后面的某个版本中删除，请使用下面的新路径/login/wechatMini/session
+Route::post('/login/wechatMini/session', 'LoginController@wechatMiniSession');
 // 微信小程序静默登录
 Route::post('/login/wechatMini', 'LoginController@wechatMini');
 // 微信小程序手机号登录
 Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile');
+// 微信公众号扫码登录
+Route::get('/login/wechatScan', 'LoginController@wechatScan');
+Route::get('/login/wechatScan/query', 'LoginController@wechatScanQuery');
 // 微信公众号授权登录
 Route::get('/login/wechat/oauth', 'LoginController@wechatLogin');
 Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback')->name('api.v2.login.wechat.callback');
@@ -56,13 +62,16 @@ Route::get('/role/{id}', 'RoleController@detail');
 // 幻灯片
 Route::get('/sliders', 'SliderController@all');
 
-// 首页推荐
-Route::get('/index/banners', 'IndexBannerController@all');
+// 友情链接
+Route::get('/links', 'LinkController@all');
 
-Route::group(['prefix' => '/wechat/mini'], function () {
-    // 微信小程序静默登录[用于已创建账号的用户]
-    Route::post('/login', 'WechatMiniController@login');
-});
+// 首页导航
+Route::get('/navs', 'NavController@all');
+
+// 公告
+Route::get('/announcement/latest', 'AnnouncementController@latest');
+Route::get('/announcement/{id}', 'AnnouncementController@detail');
+Route::get('/announcements', 'AnnouncementController@list');
 
 // 优惠码检测
 Route::get('/promoCode/{code}', 'PromoCodeController@detail');
@@ -75,44 +84,93 @@ Route::group(['prefix' => 'other'], function () {
 // ViewBlock装修模块
 Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
 
-Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
-    Route::post('/order/course', 'OrderController@createCourseOrder');
-    Route::post('/order/role', 'OrderController@createRoleOrder');
-    Route::post('/order/video', 'OrderController@createVideoOrder');
+// 微信公众号授权绑定回调
+Route::get('wechatBind/callback', 'MemberController@wechatBindCallback')->name('api.v2.wechatBind.callback');
+// 社交账号绑定回调
+Route::get('socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('api.v2.socialite.bind.callback');
 
+Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
+    // 创建录播课程订单
+    Route::post('/order/course', 'OrderController@createCourseOrder');
+    // 创建VIP订单
+    Route::post('/order/role', 'OrderController@createRoleOrder');
+    // 创建视频订单
+    Route::post('/order/video', 'OrderController@createVideoOrder');
+    // 订单状态查询
+    Route::get('/order/status', 'OrderController@queryStatus');
+
+    // 微信小程序支付
     Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
+    // 跳转到第三方平台支付[如：支付宝web支付]
     Route::get('/order/pay/redirect', 'PaymentController@payRedirect');
+    // 手动打款支付
+    Route::get('/order/pay/handPay', 'PaymentController@handPay');
+    // 微信扫码支付
+    Route::post('/order/pay/wechatScan', 'PaymentController@wechatScan');
+    // 获取可用支付网关
     Route::get('/order/payments', 'PaymentController@payments');
 
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 
+    Route::post('/upload/image', 'UploadController@image');
+
     Route::group(['prefix' => 'member'], function () {
+        // 用户详情
         Route::get('detail', 'MemberController@detail');
+        // 密码修改
         Route::post('detail/password', 'MemberController@passwordChange');
+        // 头像修改
         Route::post('detail/avatar', 'MemberController@avatarChange');
+        // 昵称修改
         Route::post('detail/nickname', 'MemberController@nicknameChange');
-        Route::post('detail/mobile', 'MemberController@mobileChange');
+        // 手机号绑定[未绑定情况下]
+        Route::post('detail/mobile', 'MemberController@mobileBind');
+        // 更换手机号
+        Route::put('mobile', 'MemberController@mobileChange');
+        // 我的录播课
         Route::get('courses', 'MemberController@courses');
+        // 录播课程收藏
         Route::get('courses/like', 'MemberController@likeCourses');
+        // 录播课程学习历史
         Route::get('courses/history', 'MemberController@learnHistory');
+        // 我的录播视频
         Route::get('videos', 'MemberController@videos');
+        // 我的订单
         Route::get('orders', 'MemberController@orders');
+        // 我的VIP记录
         Route::get('roles', 'MemberController@roles');
+        // 我的消息
         Route::get('messages', 'MemberController@messages');
+        // 邀请余额明细
         Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
+        // 我的邀请注册用户
         Route::get('inviteUsers', 'MemberController@inviteUsers');
+        // 邀请余额提现记录
         Route::get('withdrawRecords', 'MemberController@withdrawRecords');
+        // 邀请余额提现
         Route::post('withdraw', 'MemberController@createWithdraw');
+        // 我的邀请码
         Route::get('promoCode', 'MemberController@promoCode');
-        Route::post('promoCode', 'MemberController@generatePromoCode');
+        // 消息已读
         Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
+        // 消息全部已读
         Route::get('notificationMarkAllAsRead', 'MemberController@notificationMarkAllAsRead');
+        // 未读消息数量
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
+        // 积分明细
         Route::get('credit1Records', 'MemberController@credit1Records');
+        // 我的资料
         Route::get('profile', 'MemberController@profile');
         Route::post('profile', 'MemberController@profileUpdate');
+        // 安全校验[手机号]
+        Route::post('verify', 'MemberController@verify');
+        // 微信扫码登录绑定
+        Route::get('wechatScan/bind', 'MemberController@wechatScanBind');
+        // 社交账号取消绑定
+        Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
+        // 社交账号绑定
+        Route::get('socialite/{app}', 'MemberController@socialiteBind');
+        // 微信公众号授权绑定
+        Route::get('wechatBind', 'MemberController@wechatBind');
     });
-
-    // 上传图片
-    Route::post('/upload/image', 'UploadController@image');
 });

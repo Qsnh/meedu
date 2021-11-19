@@ -40,6 +40,9 @@ class UserCourseWatchedListener implements ShouldQueue
      */
     public function handle(UserCourseWatchedEvent $event)
     {
+        if ($this->courseService->isExistsCourseUserRecord($event->userId, $event->courseId) === false) {
+            $this->courseService->createCourseUserRecord($event->userId, $event->courseId);
+        }
         $this->courseService->setUserWatchedCourse($event->userId, $event->courseId);
     }
 }

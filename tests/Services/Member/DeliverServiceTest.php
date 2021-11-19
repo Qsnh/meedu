@@ -35,8 +35,8 @@ class DeliverServiceTest extends TestCase
 
     public function test_deliverCourse()
     {
-        $user = factory(User::class)->create();
-        $course = factory(Course::class)->create();
+        $user = User::factory()->create();
+        $course = Course::factory()->create();
         $charge = random_int(0, 10);
         $this->service->deliverCourse($user->id, $course->id, $charge);
         $userCourse = UserCourse::whereUserId($user->id)->whereCourseId($course->id)->get();
@@ -45,8 +45,8 @@ class DeliverServiceTest extends TestCase
 
     public function test_deliverVideo()
     {
-        $user = factory(User::class)->create();
-        $video = factory(Video::class)->create();
+        $user = User::factory()->create();
+        $video = Video::factory()->create();
         $charge = random_int(0, 10);
         $this->service->deliverVideo($user->id, $video->id, $charge);
         $userVideo = UserVideo::whereUserId($user->id)->whereVideoId($video->id)->get();
@@ -55,10 +55,10 @@ class DeliverServiceTest extends TestCase
 
     public function test_deliverRole()
     {
-        $role = factory(Role::class)->create([
+        $role = Role::factory()->create([
             'expire_days' => random_int(1, 100),
         ]);
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'role_id' => 0,
         ]);
         $charge = random_int(0, 100);
@@ -70,11 +70,11 @@ class DeliverServiceTest extends TestCase
 
     public function test_deliverRole_with_continue()
     {
-        $role = factory(Role::class)->create([
+        $role = Role::factory()->create([
             'expire_days' => random_int(1, 100),
         ]);
         $at = Carbon::now()->addMonths(1);
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'role_id' => $role->id,
             'role_expired_at' => $at,
         ]);

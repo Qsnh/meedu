@@ -35,7 +35,7 @@ class NavServiceTest extends TestCase
 
         $platform = 'pc';
 
-        $nav = factory(Nav::class)->create(['sort' => 1, 'platform' => $platform]);
+        $nav = Nav::factory()->create(['sort' => 1, 'platform' => $platform]);
 
         $all = $this->service->all($platform);
 
@@ -45,7 +45,7 @@ class NavServiceTest extends TestCase
         $this->assertEquals($nav->url, $all[0]['url']);
 
         // 再创建一个
-        $nav1 = factory(Nav::class)->create(['sort' => 2, 'platform' => $platform]);
+        $nav1 = Nav::factory()->create(['sort' => 2, 'platform' => $platform]);
         $all = $this->service->all($platform);
 
         $this->assertEquals(1, count($all));
@@ -59,7 +59,7 @@ class NavServiceTest extends TestCase
 
         $platform = 'pc';
 
-        $nav = factory(Nav::class)->create(['sort' => 1, 'platform' => $platform]);
+        $nav = Nav::factory()->create(['sort' => 1, 'platform' => $platform]);
 
         $all = $this->service->all($platform);
 
@@ -69,7 +69,7 @@ class NavServiceTest extends TestCase
         $this->assertEquals($nav->url, $all[0]['url']);
 
         // 再创建一个
-        $nav2 = factory(Nav::class)->create(['sort' => 2, 'platform' => $platform]);
+        $nav2 = Nav::factory()->create(['sort' => 2, 'platform' => $platform]);
 
         $all = $this->service->all($platform);
 
@@ -82,10 +82,10 @@ class NavServiceTest extends TestCase
     public function test_platform()
     {
         $platform = FrontendConstant::NAV_PLATFORM_PC;
-        factory(Nav::class, 3)->create([
+        Nav::factory()->count(3)->create([
             'platform' => $platform,
         ]);
-        factory(Nav::class, 2)->create([
+        Nav::factory()->count(2)->create([
             'platform' => FrontendConstant::NAV_PLATFORM_H5,
         ]);
 

@@ -16,24 +16,16 @@ class RegisterController extends BaseController
 {
 
     /**
-     * @OA\Post(
-     *     path="/register/sms",
-     *     summary="短信注册",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(description="",@OA\JsonContent(
-     *         @OA\Property(property="mobile",description="手机号",type="string"),
-     *         @OA\Property(property="mobile_code",description="短信验证码",type="string"),
-     *         @OA\Property(property="password",description="密码",type="string"),
-     *     )),
-     *     @OA\Response(
-     *         description="",response=200,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="code",type="integer",description="状态码"),
-     *             @OA\Property(property="message",type="string",description="消息"),
-     *             @OA\Property(property="data",type="object",description=""),
-     *         )
-     *     )
-     * )
+     * @api {post} /api/v2/register/sms 短信注册
+     * @apiGroup Auth
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     * @apiParam {String} password 密码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
      */
     public function smsHandler(RegisterSmsRequest $request, UserServiceInterface $userService)
     {

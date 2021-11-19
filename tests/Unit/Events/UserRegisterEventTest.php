@@ -20,7 +20,7 @@ class UserRegisterEventTest extends TestCase
         config(['meedu.member.register.vip.role_id' => 1]);
         config(['meedu.member.register.vip.days' => 2]);
 
-        $user = factory(User::class)->create(['role_id' => 0]);
+        $user = User::factory()->create(['role_id' => 0]);
         event(new UserRegisterEvent($user->id));
 
         $user->refresh();
@@ -35,7 +35,7 @@ class UserRegisterEventTest extends TestCase
         config(['meedu.member.register.vip.role_id' => 1]);
         config(['meedu.member.register.vip.days' => 2]);
 
-        $user = factory(User::class)->create(['role_id' => 0]);
+        $user = User::factory()->create(['role_id' => 0]);
         event(new UserRegisterEvent($user->id));
 
         $user->refresh();

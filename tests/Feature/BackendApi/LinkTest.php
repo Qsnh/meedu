@@ -21,8 +21,8 @@ class LinkTest extends Base
     public function setUp():void
     {
         parent::setUp();
-        $this->admin = factory(Administrator::class)->create();
-        $this->role = factory(AdministratorRole::class)->create();
+        $this->admin = Administrator::factory()->create();
+        $this->role = AdministratorRole::factory()->create();
         DB::table('administrator_role_relation')->insert([
             'administrator_id' => $this->admin->id,
             'role_id' => $this->role->id,
@@ -53,7 +53,7 @@ class LinkTest extends Base
 
     public function test_edit()
     {
-        $link = factory(Link::class)->create();
+        $link = Link::factory()->create();
         $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/link/' . $link->id);
         $data = $this->assertResponseSuccess($response);
         $this->assertEquals($link->name, $data['data']['name']);
@@ -61,7 +61,7 @@ class LinkTest extends Base
 
     public function test_update()
     {
-        $link = factory(Link::class)->create([
+        $link = Link::factory()->create([
             'name' => 1,
             'url' => 2,
             'sort' => 3
@@ -81,7 +81,7 @@ class LinkTest extends Base
 
     public function test_destroy()
     {
-        $link = factory(Link::class)->create();
+        $link = Link::factory()->create();
         $response = $this->user($this->admin)->delete(self::API_V1_PREFIX . '/link/' . $link->id);
         $data = $this->assertResponseSuccess($response);
         $this->assertEmpty(Link::find($link->id));

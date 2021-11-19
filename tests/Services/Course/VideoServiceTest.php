@@ -34,8 +34,8 @@ class VideoServiceTest extends TestCase
     public function test_courseVideos_with_no_chapters()
     {
         $videoTotal = random_int(5, 10);
-        $course = factory(Course::class)->create();
-        factory(Video::class, $videoTotal)->create([
+        $course = Course::factory()->create();
+        Video::factory()->count($videoTotal)->create([
             'course_id' => $course->id,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Video::IS_SHOW_YES,
@@ -50,8 +50,8 @@ class VideoServiceTest extends TestCase
     public function test_courseVideos_with_no_chapters_with_cache()
     {
         config(['meedu.system.cache.status' => 1]);
-        $course = factory(Course::class)->create();
-        factory(Video::class, 10)->create([
+        $course = Course::factory()->create();
+        Video::factory()->count(10)->create([
             'course_id' => $course->id,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Video::IS_SHOW_YES,
@@ -61,7 +61,7 @@ class VideoServiceTest extends TestCase
         $list = $this->service->courseVideos($course['id']);
         $this->assertEquals(10, count($list[0]));
 
-        factory(Video::class, 2)->create([
+        Video::factory()->count(2)->create([
             'course_id' => $course->id,
             'published_at' => Carbon::now()->subDays(1),
             'is_show' => Video::IS_SHOW_YES,
@@ -74,11 +74,11 @@ class VideoServiceTest extends TestCase
     public function test_courseVideos_with_chapters()
     {
         $total = [];
-        $course = factory(Course::class)->create();
-        $chapters = factory(CourseChapter::class, random_int(1, 5))->create();
+        $course = Course::factory()->create();
+        $chapters = CourseChapter::factory()->count(random_int(1, 5))->create();
         foreach ($chapters as $chapter) {
             $count = random_int(1, 5);
-            factory(Video::class, $count)->create([
+            Video::factory()->count($count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),
                 'is_show' => Video::IS_SHOW_YES,
@@ -99,11 +99,11 @@ class VideoServiceTest extends TestCase
         config(['meedu.system.cache.status' => 1]);
         config(['meedu.system.cache.expire' => 10]);
         $total = [];
-        $course = factory(Course::class)->create();
-        $chapters = factory(CourseChapter::class, random_int(1, 5))->create();
+        $course = Course::factory()->create();
+        $chapters = CourseChapter::factory()->count(random_int(1, 5))->create();
         foreach ($chapters as $chapter) {
             $count = random_int(1, 5);
-            factory(Video::class, $count)->create([
+            Video::factory()->count($count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),
                 'is_show' => Video::IS_SHOW_YES,
@@ -119,7 +119,7 @@ class VideoServiceTest extends TestCase
 
         foreach ($chapters as $chapter) {
             $count = random_int(1, 5);
-            factory(Video::class, $count)->create([
+            Video::factory()->count($count)->create([
                 'course_id' => $course->id,
                 'published_at' => Carbon::now()->subDays(1),
                 'is_show' => Video::IS_SHOW_YES,
@@ -134,7 +134,7 @@ class VideoServiceTest extends TestCase
 
     public function test_simplePage()
     {
-        $videos = factory(Video::class, 10)->create([
+        $videos = Video::factory()->count(10)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -145,7 +145,7 @@ class VideoServiceTest extends TestCase
 
     public function test_find()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -158,7 +158,7 @@ class VideoServiceTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->addDays(1),
         ]);
@@ -169,7 +169,7 @@ class VideoServiceTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
 
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_NO,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -178,7 +178,7 @@ class VideoServiceTest extends TestCase
 
     public function test_getLatestVideos()
     {
-        factory(Video::class, 5)->create([
+        Video::factory()->count(5)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -189,14 +189,14 @@ class VideoServiceTest extends TestCase
     public function test_getLatestVideos_with_cache()
     {
         config(['meedu.system.cache.status' => 1]);
-        factory(Video::class, 5)->create([
+        Video::factory()->count(5)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $videos = $this->service->getLatestVideos(10);
         $this->assertNotEmpty(5, count($videos));
 
-        factory(Video::class, 2)->create([
+        Video::factory()->count(2)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -206,7 +206,7 @@ class VideoServiceTest extends TestCase
 
     public function test_getList()
     {
-        $videos = factory(Video::class, 5)->create([
+        $videos = Video::factory()->count(5)->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
         ]);
@@ -221,7 +221,7 @@ class VideoServiceTest extends TestCase
 
     public function test_viewNumIncrement()
     {
-        $video = factory(Video::class)->create([
+        $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'view_num' => 0,

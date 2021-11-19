@@ -9,8 +9,6 @@
 namespace App\Http\Requests\Backend;
 
 use Carbon\Carbon;
-use Overtrue\Pinyin\Pinyin;
-use App\Services\Course\Models\Video;
 
 class CourseVideoRequest extends BaseRequest
 {
@@ -52,11 +50,11 @@ class CourseVideoRequest extends BaseRequest
 
     public function filldata()
     {
-        $data = [
+        return [
             'user_id' => $this->input('user_id', 0),
             'course_id' => $this->input('course_id'),
             'title' => $this->input('title'),
-            'slug' => $this->input('slug'),
+            'slug' => '',
             'url' => $this->input('url', '') ?? '',
             'aliyun_video_id' => $this->input('aliyun_video_id', '') ?? '',
             'tencent_video_id' => $this->input('tencent_video_id', '') ?? '',
@@ -72,17 +70,8 @@ class CourseVideoRequest extends BaseRequest
             'chapter_id' => (int)$this->input('chapter_id', 0),
             'duration' => (int)$this->input('duration'),
             'is_ban_sell' => (int)$this->input('is_ban_sell', 0),
-            'comment_status' => (int)$this->input('comment_status', Video::COMMENT_STATUS_CLOSE),
-            'player_pc' => $this->input('player_pc', ''),
-            'player_h5' => $this->input('player_h5', ''),
             'free_seconds' => (int)$this->input('free_seconds'),
             'ban_drag' => (int)$this->input('ban_drag', 0),
         ];
-
-        if ($this->isMethod('post') && !$data['slug']) {
-            $data['slug'] = implode('-', (new Pinyin())->convert($data['title']));
-        }
-
-        return $data;
     }
 }

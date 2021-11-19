@@ -29,5 +29,21 @@ return [
                 'login' => '',
             ],
         ],
+        'tencent' => [
+            'region' => '',
+            // 短信SDKAppId
+            'sdk_app_id' => '',
+            'secret_id' => '',
+            'secret_key' => '',
+            // 短信签名
+            'sign_name' => '',
+            // 短信模板
+            'template' => [
+                'password_reset' => '',
+                'register' => '',
+                'mobile_bind' => '',
+                'login' => '',
+            ],
+        ],
     ],
 ];

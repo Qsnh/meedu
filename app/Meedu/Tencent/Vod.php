@@ -8,6 +8,9 @@
 
 namespace App\Meedu\Tencent;
 
+use App\Services\Base\Services\ConfigService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
+
 class Vod
 {
     protected $secretId;
@@ -15,8 +18,14 @@ class Vod
 
     public function __construct()
     {
-        $this->secretId = config('tencent.vod.secret_id');
-        $this->secretKey = config('tencent.vod.secret_key');
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        $config = $configService->getTencentVodConfig();
+
+        $this->secretId = $config['secret_id'];
+        $this->secretKey = $config['secret_key'];
     }
 
     /**

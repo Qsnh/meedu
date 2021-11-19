@@ -194,8 +194,6 @@ if (!function_exists('v')) {
      */
     function v($viewName, $params = [])
     {
-        $namespace = config('meedu.system.theme.use', 'default');
-        $viewName = preg_match('/::/', $viewName) ? $viewName : $namespace . '::' . $viewName;
         is_h5() && $viewName = str_replace('frontend', 'h5', $viewName);
 
         return view($viewName, $params);
@@ -270,7 +268,7 @@ if (!function_exists('get_payment_scene')) {
     function get_payment_scene()
     {
         if (is_wechat()) {
-            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT_OPEN;
+            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT;
         }
         $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
         return $scene;
@@ -395,11 +393,18 @@ if (!function_exists('get_tencent_play_url')) {
                 $urls = [];
                 foreach ($response->MediaInfoSet[0]->TranscodeInfo->TranscodeSet as $item) {
                     $url = $item->Url;
-                    $format = pathinfo($url, PATHINFO_EXTENSION);
+                    $format = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+                    if (
+                        $configService->getTencentVodTranscodeFormat() &&
+                        $format !== $configService->getTencentVodTranscodeFormat()
+                    ) {
+                        // 限定转码格式，只能使用一种
+                        continue;
+                    }
                     $urls[] = [
                         'url' => $url,
                         'format' => $format,
-                        'Duration' => (int)$item->Duration,
+                        'duration' => (int)$item->Duration,
                         'name' => $item->Height,
                     ];
                 }
@@ -409,12 +414,13 @@ if (!function_exists('get_tencent_play_url')) {
              * @var $mediaBasicInfo \TencentCloud\Vod\V20180717\Models\MediaBasicInfo
              */
             $mediaBasicInfo = $response->MediaInfoSet[0]->BasicInfo;
+            $metaData = $response->MediaInfoSet[0]->MetaData;
             return [
                 [
                     'format' => $mediaBasicInfo->Type,
                     'url' => $mediaBasicInfo->MediaUrl,
-                    'duration' => 0,
-                    'name' => '',
+                    'duration' => (int)$metaData->Duration,
+                    'name' => $metaData->Height,
                 ]
             ];
         } catch (Exception $exception) {
@@ -449,11 +455,6 @@ if (!function_exists('get_play_url')) {
                     $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
                     return $item;
                 }, $playUrl);
-            }
-            // 如果条数大于1的话，则删除最后一条
-            // 腾讯云将返回未转码的视频作为最后一条数据
-            if (count($playUrl) > 1) {
-                unset($playUrl[count($playUrl) - 1]);
             }
         } else {
             $playUrl[] = [

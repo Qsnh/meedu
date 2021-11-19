@@ -9,10 +9,11 @@
 namespace App\Services\Course\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VideoComment extends Base
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
 
     protected $table = 'video_comments';
 

@@ -10,10 +10,11 @@ namespace App\Services\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserInviteBalanceRecord extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     const TYPE_DEFAULT = 0;
     const TYPE_ORDER_DRAW = 1;

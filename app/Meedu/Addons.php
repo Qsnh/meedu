@@ -195,4 +195,15 @@ class Addons
             }
         }
     }
+
+    public function enabledAddons()
+    {
+        $maps = $this->getProvidersMap();
+        $data = [];
+        foreach ($maps as $item) {
+            $tmp = explode('\\', $item);
+            $data[] = $tmp[2];
+        }
+        return $data;
+    }
 }

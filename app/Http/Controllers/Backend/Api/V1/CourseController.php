@@ -11,8 +11,11 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\Member\Models\User;
+use App\Events\VodCourseCreatedEvent;
+use App\Events\VodCourseUpdatedEvent;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
+use App\Events\VodCourseDestroyedEvent;
 use App\Services\Member\Models\UserCourse;
 use App\Http\Requests\Backend\CourseRequest;
 use App\Services\Course\Models\CourseChapter;
@@ -36,7 +39,7 @@ class CourseController extends BaseController
             ->select([
                 'id', 'user_id', 'title', 'slug', 'thumb', 'charge', 'short_description',
                 'published_at', 'is_show', 'category_id', 'is_rec', 'user_count', 'is_free',
-                'comment_status', 'created_at', 'updated_at',
+                'created_at', 'updated_at',
             ])
             ->with(['category:id,name'])
             ->withCount(['videos', 'chapters', 'comments'])
@@ -67,6 +70,15 @@ class CourseController extends BaseController
     {
         $course->fill($request->filldata())->save();
 
+        event(new VodCourseCreatedEvent(
+            $course['id'],
+            $course['title'],
+            $course['charge'],
+            $course['thumb'],
+            $course['short_description'],
+            $course['original_desc']
+        ));
+
         return $this->success();
     }
 
@@ -85,6 +97,15 @@ class CourseController extends BaseController
 
         $course->fill($data)->save();
 
+        event(new VodCourseUpdatedEvent(
+            $course['id'],
+            $course['title'],
+            $course['charge'],
+            $course['thumb'],
+            $course['short_description'],
+            $course['original_desc']
+        ));
+
         return $this->success();
     }
 
@@ -97,6 +118,8 @@ class CourseController extends BaseController
         }
 
         $course->delete();
+
+        event(new VodCourseDestroyedEvent($id));
 
         return $this->success();
     }

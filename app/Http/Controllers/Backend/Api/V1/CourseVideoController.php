@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
-use Overtrue\Pinyin\Pinyin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\VodVideoCreatedEvent;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
+use App\Events\VodVideoDestroyedEvent;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Course\Models\CourseChapter;
@@ -35,8 +36,8 @@ class CourseVideoController extends BaseController
             ->select([
                 'id', 'user_id', 'course_id', 'title', 'slug', 'url', 'view_num', 'short_description',
                 'seo_keywords', 'seo_description', 'published_at', 'is_show', 'charge', 'aliyun_video_id',
-                'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell', 'player_pc', 'player_h5',
-                'comment_status', 'free_seconds', 'ban_drag', 'created_at', 'updated_at',
+                'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell',
+                'free_seconds', 'ban_drag', 'created_at', 'updated_at',
             ])
             ->with([
                 'chapter:id,title', 'course:id,title,thumb,charge',
@@ -67,6 +68,8 @@ class CourseVideoController extends BaseController
     {
         $video->fill($request->filldata())->save();
 
+        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+
         return $this->success();
     }
 
@@ -88,6 +91,8 @@ class CourseVideoController extends BaseController
 
         $video->fill($request->filldata())->save();
 
+        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+
         return $this->success();
     }
 
@@ -99,7 +104,11 @@ class CourseVideoController extends BaseController
             // 清空用户的观看记录
             UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
 
+            $videoId = $video['id'];
+
             $video->delete();
+
+            event(new VodVideoDestroyedEvent($videoId));
         });
 
         return $this->success();
@@ -125,10 +134,14 @@ class CourseVideoController extends BaseController
                 ->get();
 
             foreach ($videos as $video) {
+                $videoId = $video['id'];
+
                 // 清空用户观看记录
-                UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
+                UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();
 
                 $video->delete();
+
+                event(new VodVideoDestroyedEvent($videoId));
             }
         });
 
@@ -272,13 +285,16 @@ class CourseVideoController extends BaseController
 
         $rows = [];
         $now = Carbon::now();
-        $py = new Pinyin();
 
         foreach ($data as $index => $item) {
             // 行数[用户报错提示]
             $line = $index + 2;
 
             $courseName = trim($item[0] ?? '');
+            if ($courseName === '') {
+                continue;
+            }
+
             $courseId = $courses[$courseName] ?? 0;
             if (!$courseId) {
                 return $this->error(sprintf(__('第%d行课程不存在'), $line));
@@ -320,7 +336,7 @@ class CourseVideoController extends BaseController
                 'course_id' => $courseId,
                 'chapter_id' => $chapterId,
                 'title' => $videoName,
-                'slug' => implode('-', $py->convert($videoName)),
+                'slug' => '',
                 'url' => $url,
                 'short_description' => '',
                 'seo_keywords' => $seoKeywords,

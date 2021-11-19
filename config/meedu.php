@@ -128,7 +128,6 @@ return [
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
-            'wechat_mini' => 'miniapp',
         ],
         'wechat-jsapi' => [
             'enabled' => 1,
@@ -154,19 +153,19 @@ return [
     // SEO
     'seo' => [
         'index' => [
-            'title' => 'MeEdu',
+            'title' => '首页',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
         'course_list' => [
             'title' => '所有课程',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
         'role_list' => [
             'title' => 'VIP',
             'keywords' => '',
-            'description' => 'MeEdu是一套开源的，免费的在线视频点播系统。',
+            'description' => '',
         ],
     ],
 
@@ -207,15 +206,6 @@ return [
             ]
         ],
 
-        // 统计代码
-        'js' => '',
-
-        // 主题
-        'theme' => [
-            'use' => 'default',
-            'path' => base_path(env('TEMPLATE_PATH') ?: 'resources/views'),
-        ],
-
         // 默认短信服务商
         'sms' => 'aliyun',
 
@@ -226,22 +216,8 @@ return [
             ]
         ],
 
-        // 全局css
-        'css' => [
-            'pc' => '',
-            'h5' => '',
-        ],
-
         // 多语言
         'lang' => \App\Constant\FrontendConstant::LANG_ZH,
-    ],
-
-    // 其它配置
-    'other' => [
-        // 课程列表页展示条数
-        'course_list_page_size' => 16,
-        // 视频列表页展示条数
-        'video_list_page_size' => 16,
     ],
 
     // MeEduCloud

@@ -22,7 +22,7 @@ class PasswordTest extends Base
         $mobile = '18287829922';
         $oldPassword = '123123';
         $newPassword = '456456';
-        $user = factory(User::class)->create(['mobile' => $mobile, 'password' => Hash::make($oldPassword)]);
+        $user = User::factory()->create(['mobile' => $mobile, 'password' => Hash::make($oldPassword)]);
 
         $mobileCode = Str::random(6);
 
@@ -49,7 +49,7 @@ class PasswordTest extends Base
         $mobile = '18287829922';
         $oldPassword = '123123';
         $newPassword = '456456';
-        $user = factory(User::class)->create(['mobile' => $mobile, 'password' => Hash::make($oldPassword)]);
+        $user = User::factory()->create(['mobile' => $mobile, 'password' => Hash::make($oldPassword)]);
 
         $mobileCode = Str::random(6);
 

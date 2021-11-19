@@ -29,7 +29,7 @@ class SliderServiceTest extends TestCase
 
     public function test_all()
     {
-        factory(Slider::class, 3)->create();
+        Slider::factory()->count(3)->create();
 
         $data = $this->service->all();
 
@@ -38,11 +38,11 @@ class SliderServiceTest extends TestCase
 
     public function test_all_with_platform()
     {
-        factory(Slider::class, 3)->create([
+        Slider::factory()->count(3)->create([
             'platform' => 'PC',
         ]);
 
-        factory(Slider::class, 3)->create([
+        Slider::factory()->count(3)->create([
             'platform' => 'H5',
         ]);
 
@@ -53,7 +53,7 @@ class SliderServiceTest extends TestCase
 
     public function test_all_with_cache()
     {
-        factory(Slider::class, 3)->create();
+        Slider::factory()->count(3)->create();
 
         // 开启缓存
         config(['meedu.system.cache.status' => 1]);
@@ -63,7 +63,7 @@ class SliderServiceTest extends TestCase
         $this->assertCount(3, $data);
 
         // 再生成2个
-        factory(Slider::class, 2)->create();
+        Slider::factory()->count(2)->create();
 
         $data = $this->service->all();
         // 依旧为3个
@@ -74,10 +74,10 @@ class SliderServiceTest extends TestCase
 
     public function test_all_with_cache_with_platform()
     {
-        factory(Slider::class, 3)->create([
+        Slider::factory()->count(3)->create([
             'platform' => 'PC',
         ]);
-        factory(Slider::class, 2)->create([
+        Slider::factory()->count(2)->create([
             'platform' => 'H5',
         ]);
 
@@ -89,10 +89,10 @@ class SliderServiceTest extends TestCase
         $this->assertCount(3, $data);
 
         // 再生成2个
-        factory(Slider::class, 2)->create([
+        Slider::factory()->count(2)->create([
             'platform' => 'PC',
         ]);
-        factory(Slider::class, 2)->create([
+        Slider::factory()->count(2)->create([
             'platform' => 'H5',
         ]);
 
