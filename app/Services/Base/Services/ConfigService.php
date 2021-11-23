@@ -532,4 +532,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('sms.gateways.tencent');
     }
+
+    public function getPcUrl(): string
+    {
+        return config('meedu.system.pc_url');
+    }
+
+    public function getH5Url(): string
+    {
+        return config('meedu.system.h5_url');
+    }
 }

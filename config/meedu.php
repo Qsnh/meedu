@@ -182,6 +182,12 @@ return [
         // 播放器封面
         'player_thumb' => '/images/player-thumb.png',
 
+        // PC网站地址
+        'pc_url' => '',
+
+        // H5网站地址
+        'h5_url' => '',
+
         // 播放器
         'player' => [
             // 跑马灯
