@@ -42,6 +42,25 @@ class AppConfigSeeder extends Seeder
                 'default_value' => '',
                 'key' => 'app.url',
                 'value' => '',
+                'help' => '请填写API服务访问地址',
+            ],
+            [
+                'group' => '系统',
+                'name' => 'PC网站地址',
+                'field_type' => 'text',
+                'sort' => 1,
+                'default_value' => '',
+                'key' => 'meedu.system.pc_url',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => 'H5网站地址',
+                'field_type' => 'text',
+                'sort' => 1,
+                'default_value' => '',
+                'key' => 'meedu.system.h5_url',
+                'value' => '',
             ],
             [
                 'group' => '系统',
@@ -750,6 +769,15 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.tencent_play_key',
                 'value' => '',
                 'is_private' => 1,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云播放格式',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'tencent.vod.transcode_format',
+                'value' => '',
+                'help' => '默认支持所有格式，如果配置mp4则只支持mp4，多个请用英文逗号连接',
             ],
 
             // 会员配置

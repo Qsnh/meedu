@@ -523,13 +523,24 @@ class ConfigService implements ConfigServiceInterface
         return config('app.url');
     }
 
-    public function getTencentVodTranscodeFormat(): string
+    public function getTencentVodTranscodeFormat(): array
     {
-        return config('tencent.vod.transcode_format', '');
+        $format = strtolower(config('tencent.vod.transcode_format', ''));
+        return $format ? explode(',', $format) : [];
     }
 
     public function getTencentSms(): array
     {
         return config('sms.gateways.tencent');
+    }
+
+    public function getPcUrl(): string
+    {
+        return config('meedu.system.pc_url');
+    }
+
+    public function getH5Url(): string
+    {
+        return config('meedu.system.h5_url');
     }
 }

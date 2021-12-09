@@ -34,6 +34,8 @@ class OtherController extends BaseController
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.webname 网站名
      * @apiSuccess {String} data.url 网站地址
+     * @apiSuccess {String} data.pc_url PC网站地址
+     * @apiSuccess {String} data.h5_url H5网站地址
      * @apiSuccess {String} data.icp ICP备案号
      * @apiSuccess {String} data.user_protocol 用户协议URL
      * @apiSuccess {String} data.user_private_protocol 用户隐私协议URL
@@ -65,6 +67,8 @@ class OtherController extends BaseController
             'webname' => $this->configService->getName(),
             // 网站地址
             'url' => trim($this->configService->getUrl(), '/'),
+            'pc_url' => trim($this->configService->getPcUrl(), '/'),
+            'h5_url' => trim($this->configService->getH5Url(), '/'),
             // ICP备案
             'icp' => $this->configService->getIcp(),
             'icp_link' => $this->configService->getIcpLink(),
