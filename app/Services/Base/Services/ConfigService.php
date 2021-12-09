@@ -523,9 +523,10 @@ class ConfigService implements ConfigServiceInterface
         return config('app.url');
     }
 
-    public function getTencentVodTranscodeFormat(): string
+    public function getTencentVodTranscodeFormat(): array
     {
-        return config('tencent.vod.transcode_format', '');
+        $format = strtolower(config('tencent.vod.transcode_format', ''));
+        return $format ? explode(',', $format) : [];
     }
 
     public function getTencentSms(): array

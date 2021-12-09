@@ -391,13 +391,11 @@ if (!function_exists('get_tencent_play_url')) {
             if ($response->MediaInfoSet[0]->TranscodeInfo) {
                 // 配置了转码信息
                 $urls = [];
+                $supportFormat = $configService->getTencentVodTranscodeFormat();
                 foreach ($response->MediaInfoSet[0]->TranscodeInfo->TranscodeSet as $item) {
                     $url = $item->Url;
                     $format = strtolower(pathinfo($url, PATHINFO_EXTENSION));
-                    if (
-                        $configService->getTencentVodTranscodeFormat() &&
-                        $format !== $configService->getTencentVodTranscodeFormat()
-                    ) {
+                    if ($supportFormat && !in_array($format, $supportFormat)) {
                         // 限定转码格式，只能使用一种
                         continue;
                     }
