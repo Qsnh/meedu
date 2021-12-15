@@ -61,7 +61,7 @@ class WechatMini implements Payment
                 'total_fee' => $needPayTotal,
                 'body' => $order['order_id'],
                 // openid必须存在
-                'openid' => $extra['open_id'],
+                'openid' => $extra['openid'],
             ];
 
             // 微信支付配置
