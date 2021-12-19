@@ -8,15 +8,30 @@
 
 namespace App\Meedu\Search;
 
+use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Proxies\SearchRecordService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Other\Interfaces\SearchRecordServiceInterface;
 
 class VideoSearchNotify implements SearchNotifyContract
 {
     public const RESOURCE_TYPE = 'video';
 
+    public function closed()
+    {
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        return $configService->enabledFullSearch() === false;
+    }
+
     public function create(int $resourceId, array $data)
     {
+        if ($this->closed()) {
+            return;
+        }
+
         /**
          * @var SearchRecordService $searchRecordService
          */
@@ -32,6 +47,10 @@ class VideoSearchNotify implements SearchNotifyContract
 
     public function update(int $resourceId, array $data)
     {
+        if ($this->closed()) {
+            return;
+        }
+
         /**
          * @var SearchRecordService $searchRecordService
          */
@@ -47,6 +66,10 @@ class VideoSearchNotify implements SearchNotifyContract
 
     public function delete(int $resourceId)
     {
+        if ($this->closed()) {
+            return;
+        }
+
         /**
          * @var SearchRecordService $searchRecordService
          */
@@ -56,6 +79,10 @@ class VideoSearchNotify implements SearchNotifyContract
 
     public function deleteBatch(array $ids)
     {
+        if ($this->closed()) {
+            return;
+        }
+
         /**
          * @var SearchRecordService $searchRecordService
          */
