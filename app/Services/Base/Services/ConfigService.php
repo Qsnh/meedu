@@ -543,4 +543,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.system.h5_url');
     }
+
+    public function enabledFullSearch(): bool
+    {
+        return (bool)config('scout.meilisearch.host');
+    }
 }

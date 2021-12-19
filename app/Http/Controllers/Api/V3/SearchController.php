@@ -9,9 +9,11 @@
 namespace App\Http\Controllers\Api\V3;
 
 use Illuminate\Http\Request;
+use App\Services\Base\Services\ConfigService;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Services\Course\Services\CourseService;
 use App\Services\Other\Proxies\SearchRecordService;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Other\Interfaces\SearchRecordServiceInterface;
 
 class SearchController extends BaseController
@@ -51,6 +53,14 @@ class SearchController extends BaseController
         $keywords = $request->input('keywords', '');
         if (!$keywords) {
             return $this->error(__('请输入关键字'));
+        }
+
+        /**
+         * @var ConfigService $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+        if (!$configService->enabledFullSearch()) {
+            return $this->error(__('搜索服务未配置'));
         }
 
         /**
