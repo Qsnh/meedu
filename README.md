@@ -1,22 +1,57 @@
-<a href="https://codecov.io/gh/Qsnh/meedu">
-  <img src="https://codecov.io/gh/Qsnh/meedu/branch/master/graph/badge.svg" />
-</a>
+## MeEdu线上教培系统
 
-# MeEdu - 企业线上培训、知识付费解决方案
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/1.jpg)
 
-[**系统使用条款（请务必观看）**](https://www.yuque.com/meedu/fvvkbf/amfw7z)    
+### 项目介绍
+MeEdu教培系统是一款开源的线上教培系统。支持线上点播，线上直播，考试练习，图文，电子书多种知识类型。支持秒杀，团购，三级分销等营销方式。MeEdu点播系统覆盖PC网校，H5，微信小程序且支持开发独立APP。MeEdu支持源码交付，支持二次开发。
+
+### 演示网站
+* MeEdu系统演示网址：[https://meedu.vip/cases.html](https://meedu.vip/cases.html)
+
 
 ### 常用链接
 
-- [MeEdu 官网](https://meedu.vip)
-- [MeEdu 付费解决方案](https://meedu.vip/price.html)
-- [MeEdu 付费版本演示站](https://meedu.vip/cases.html)
-- [MeEdu 功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
-- [MeEdu 安装及使用手册](https://www.yuque.com/meedu/fvvkbf)
-- [MeEdu API文档](https://meedu-v2-xiaoteng.doc.coding.io/)
+* MeEdu官网：[https://meedu.vip/](https://meedu.vip/)
+* MeEdu使用须知：[https://www.yuque.com/meedu/fvvkbf/amfw7z](https://www.yuque.com/meedu/fvvkbf/amfw7z)
+* MeEdu功能概览：[https://www.yuque.com/meedu/fvvkbf/gpx5ed](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
+* MeEdu使用手册：[https://www.yuque.com/meedu/fvvkbf](https://www.yuque.com/meedu/fvvkbf)
+* MeEdu演示文稿下载：[https://www.yuque.com/meedu/fvvkbf/fhaxpe](https://www.yuque.com/meedu/fvvkbf/fhaxpe)
 
-### 其它项目
 
-- [PC界面程序](https://github.com/Meedu/pc-v1)
-- [H5界面程序](https://github.com/Meedu/h5-v1)
-- [后台管理程序](https://github.com/Meedu/backend-v2)
+### 系统截图
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/2.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/3.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/4.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/5.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/6.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/7.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/8.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/9.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/10.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/11.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/12.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/13.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/14.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/15.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/16.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/17.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/18.jpeg)
+
+![](https://meedu-cloud.oss-cn-hangzhou.aliyuncs.com/github/19.jpeg)
