@@ -191,6 +191,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'MemberController@edit');
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
+        Route::put('/field/multi', 'MemberController@updateFieldMulti');
 
         // 更新用户标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');

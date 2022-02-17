@@ -653,6 +653,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '用户字段批量编辑',
+                'slug' => 'member.update.field.multi',
+                'method' => 'PUT',
+                'url' => 'member/field/multi',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户详情',
                 'slug' => 'member.detail',
                 'method' => 'GET',

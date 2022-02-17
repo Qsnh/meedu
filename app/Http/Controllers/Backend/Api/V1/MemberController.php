@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -509,6 +510,49 @@ class MemberController extends BaseController
                 User::insert($data);
             }
         });
+
+        return $this->success();
+    }
+
+    public function updateFieldMulti(Request $request)
+    {
+        $userIds = $request->input('user_ids');
+        if (!$userIds || !is_array($userIds)) {
+            return $this->error('请选择需要修改的用户');
+        }
+
+        // 要更改的字段
+        $field = $request->input('field');
+        // 欲更改为的字段值
+        $value = $request->input('value');
+        // 如果更改为roleId的话则需要传递该参数
+        $roleExpiredAt = $request->input('role_expired_at');
+
+        // 必须是白名单内的字段才可以更改
+        $fieldsWhitelist = ['is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname'];
+        if (!$field || !in_array($field, $fieldsWhitelist)) {
+            return $this->error('待修改字段不合法');
+        }
+
+        // 如果选择了有效的roleId的话，那么role_expired_at则必须是有效的时间
+        if ($field === 'role_id' && (int)$value && !$roleExpiredAt) {
+            return $this->error('请选择VIP过期时间');
+        }
+
+        // 整数值字段
+        $intFields = ['is_lock', 'is_active', 'is_password_set', 'is_set_nickname', 'role_id'];
+        if (in_array($field, $intFields)) {
+            $value = (int)$value;
+        }
+
+        $updateData[$field] = $value;
+        if ($field === 'role_id') {
+            $updateData['role_expired_at'] = Carbon::parse($roleExpiredAt)->toDateTimeLocalString();
+        }
+
+        User::query()
+            ->whereIn('id', $userIds)
+            ->update($updateData);
 
         return $this->success();
     }
