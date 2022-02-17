@@ -441,6 +441,9 @@ class MemberController extends BaseController
         }
 
         $mobiles = array_column($users, 0);
+        if (count(array_flip(array_flip($mobiles))) !== count($mobiles)) {
+            return $this->error('手机号重复');
+        }
 
         // 手机号存在检测
         $mobileChunk = array_chunk($mobiles, 500);
