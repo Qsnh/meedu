@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -397,6 +396,29 @@ class MemberController extends BaseController
         return $this->success();
     }
 
+    public function sendMessageMulti(Request $request)
+    {
+        $message = $request->input('message');
+        $userIds = $request->input('user_ids');
+
+        if (!is_array($userIds) || !$userIds) {
+            return $this->error('请选择需要发送消息的用户');
+        }
+        if (!$message) {
+            return $this->error('请输入需要发送的消息');
+        }
+        if (count($userIds) > 100) {
+            return $this->error('单次发送消息不能超过100人');
+        }
+
+        $users = User::query()->whereIn('id', $userIds)->get();
+        foreach ($users as $user) {
+            $user->notify(new SimpleMessageNotification($message));
+        }
+
+        return $this->success();
+    }
+
     public function sendMessage(Request $request, $userId)
     {
         $user = User::query()->where('id', $userId)->firstOrFail();
@@ -466,7 +488,6 @@ class MemberController extends BaseController
                         'is_active' => config('meedu.member.is_active_default'),
                         'is_lock' => config('meedu.member.is_lock_default'),
                         'password' => Hash::make($item[1]),
-                        'created_at' => Carbon::now(),
                     ];
                 }
                 if (!$data) {

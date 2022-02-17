@@ -765,6 +765,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '给用户发站内消息(批量)',
+                'slug' => 'member.message.send.multi',
+                'method' => 'POST',
+                'url' => 'member/message/multi',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户视频观看记录',
                 'slug' => 'member.video.watch.records',
                 'method' => 'GET',

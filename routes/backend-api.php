@@ -217,6 +217,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/credit1/change', 'MemberController@credit1Change');
         // 发送站内消息
         Route::post('/{id}/message', 'MemberController@sendMessage');
+        Route::post('/message/multi', 'MemberController@sendMessageMulti');
 
         // 用户标签管理
         Route::group(['prefix' => 'tag'], function () {
