@@ -456,12 +456,13 @@ class MemberController extends BaseController
 
     public function import(Request $request)
     {
-        // ([0] => mobile, [1] => password)
+        // ([0] => mobile, [1] => password, [2] => role_id, [3] => role_expired_at, [4] => is_lock)
         $users = $request->input('users');
         if (!$users || !is_array($users)) {
             return $this->error(__('请导入数据'));
         }
 
+        // 手机号重复检测
         $mobiles = array_column($users, 0);
         if (count(array_flip(array_flip($mobiles))) !== count($mobiles)) {
             return $this->error('手机号重复');
@@ -481,13 +482,24 @@ class MemberController extends BaseController
             foreach (array_chunk($users, 500) as $usersItem) {
                 $data = [];
                 foreach ($usersItem as $item) {
+                    $tmpMobile = $item[0];
+                    $tmpPassword = $item[1];
+                    $tmpRoleId = (int)($item[2] ?? 0);
+                    $tmpRoleExpiredAt = $item[3] ?? '';
+                    $tmpIsLock = (int)($item[4] ?? 0);
+
                     $data[] = [
-                        'mobile' => $item[0],
+                        'mobile' => $tmpMobile,
                         'avatar' => url(config('meedu.member.default_avatar')),
-                        'nick_name' => mb_substr($item[0], 0, 8) . '_' . Str::random(5),
-                        'is_active' => config('meedu.member.is_active_default'),
-                        'is_lock' => config('meedu.member.is_lock_default'),
-                        'password' => Hash::make($item[1]),
+                        'nick_name' => mb_substr($tmpMobile, 0, 8) . '_' . Str::random(5),
+                        'is_active' => (int)config('meedu.member.is_active_default'),
+                        'is_lock' => $tmpIsLock,
+                        'password' => Hash::make($tmpPassword),
+                        'is_password_set' => 0,
+                        'is_set_nickname' => 0,
+                        'is_used_promo_code' => 0,
+                        'role_id' => $tmpRoleId,
+                        'role_expired_at' => $tmpRoleExpiredAt,
                     ];
                 }
                 if (!$data) {
