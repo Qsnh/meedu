@@ -13,6 +13,7 @@ use App\Meedu\Cache\Inc\Inc;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Base\Services\ConfigService;
@@ -24,6 +25,7 @@ use App\Services\Course\Services\VideoCommentService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
@@ -362,5 +364,45 @@ class VideoController extends BaseController
         $videoBus->userVideoWatchDurationRecord($this->id(), (int)$id, $duration);
 
         return $this->success();
+    }
+
+    /**
+     * @api {get} /api/v2/video/open/play 公共视频播放
+     * @apiGroup 录播课
+     * @apiVersion v2.0.0
+     *
+     * @apiParam {String} file_id 视频文件ID
+     * @apiParam {String} service 视频文件存储服务
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.url 播放URL
+     * @apiSuccess {String} data.format 视频格式
+     * @apiSuccess {Number} data.duration 时长,单位:秒
+     * @apiSuccess {String} data.name 清晰度
+     */
+    public function openPlay(Request $request)
+    {
+        $fileId = $request->input('file_id');
+        $service = $request->input('service');
+
+        if (!$fileId || !$service) {
+            return $this->error(__('参数错误'));
+        }
+
+        $mediaVideo = $this->videoService->findOpenVideo($fileId, $service);
+        throw_if(!$mediaVideo, ModelNotFoundException::class);
+
+        $urls = get_play_url([
+            'aliyun_video_id' => $mediaVideo['storage_driver'] === FrontendConstant::VOD_SERVICE_ALIYUN ? $mediaVideo['storage_file_id'] : '',
+            'tencent_video_id' => $mediaVideo['storage_driver'] === FrontendConstant::VOD_SERVICE_TENCENT ? $mediaVideo['storage_file_id'] : '',
+            'url' => '',
+        ], false);
+
+        if (!$urls) {
+            return $this->error(__('错误'));
+        }
+
+        return $this->data(compact('urls'));
     }
 }

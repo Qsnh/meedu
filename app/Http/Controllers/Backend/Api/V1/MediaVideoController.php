@@ -8,14 +8,17 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Models\MediaVideo;
 use Illuminate\Http\Request;
+use App\Events\VideoUploadedEvent;
+use App\Services\Course\Models\MediaVideo;
 
 class MediaVideoController extends BaseController
 {
     public function index(Request $request)
     {
         $keywords = $request->input('keywords');
+        $isOpen = (int)$request->input('is_open');
+
         $videos = MediaVideo::query()
             ->select([
                 'id', 'title', 'thumb', 'duration', 'size', 'storage_driver', 'storage_file_id',
@@ -23,6 +26,9 @@ class MediaVideoController extends BaseController
             ])
             ->when($keywords, function ($query) use ($keywords) {
                 $query->where('title', 'like', '%' . $keywords . '%');
+            })
+            ->when(in_array($isOpen, [0, 1]), function ($query) use ($isOpen) {
+                $query->where('is_open', $isOpen);
             })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
@@ -38,16 +44,20 @@ class MediaVideoController extends BaseController
         $size = (int)$request->input('size');
         $storageDriver = $request->input('storage_driver');
         $storageFileId = $request->input('storage_file_id');
+        $isOpen = (int)$request->input('is_open');
 
-        $video = MediaVideo::create([
+        $mediaVideo = MediaVideo::create([
             'title' => $title,
             'thumb' => $thumb,
             'duration' => $duration,
             'size' => $size,
             'storage_driver' => $storageDriver,
             'storage_file_id' => $storageFileId,
+            'is_open' => $isOpen,
         ]);
 
-        return $this->successData($video);
+        event(new VideoUploadedEvent($storageFileId, $storageDriver, 'media_video', $mediaVideo['id']));
+
+        return $this->successData($mediaVideo);
     }
 }

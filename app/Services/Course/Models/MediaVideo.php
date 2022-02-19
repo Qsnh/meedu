@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Models;
+namespace App\Services\Course\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,8 +15,10 @@ class MediaVideo extends Model
     protected $table = 'media_videos';
 
     protected $fillable = [
-        'title', 'thumb', 'duration', 'size', 'storage_driver', 'storage_file_id',
+        'title', 'thumb', 'duration', 'size',
+        'storage_driver', 'storage_file_id',
         'transcode_status', 'ref_count',
+        'is_open',
     ];
 
     protected $appends = [

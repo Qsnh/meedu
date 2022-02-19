@@ -51,6 +51,7 @@ Route::get('/course_categories', 'CourseCategoryController@all');
 Route::get('/videos', 'VideoController@paginate');
 Route::get('/video/{id}', 'VideoController@detail');
 Route::get('/video/{id}/playinfo', 'VideoController@playInfo')->middleware(['auth:apiv2']);
+Route::get('/video/open/play', 'VideoController@openPlay');
 Route::get('/video/{id}/comments', 'VideoController@comments');
 Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(['auth:apiv2']);
 Route::post('/video/{id}/record', 'VideoController@recordVideo')->middleware(['auth:apiv2']);

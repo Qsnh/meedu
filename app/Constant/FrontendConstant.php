@@ -77,4 +77,8 @@ class FrontendConstant
     public const LANG_EN = 'en';
 
     public const SOCIALITE_APP_QQ = 'qq';
+
+    // 点播服务
+    public const VOD_SERVICE_TENCENT = 'tencent';
+    public const VOD_SERVICE_ALIYUN = 'aliyun';
 }
