@@ -8,6 +8,7 @@
 
 namespace App\Console;
 
+use App\Meedu\Schedule\ScheduleContainer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -55,6 +56,9 @@ class Kernel extends ConsoleKernel
             ->onOneServer()
             ->hourly()
             ->appendOutputTo(storage_path('logs/user_role_expired'));
+
+        // 预留定时任务钩子
+        ScheduleContainer::instance()->exec($schedule);
     }
 
     /**
