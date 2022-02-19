@@ -893,6 +893,13 @@ class AdministratorPermissionSeeder extends Seeder
             [
                 'group_name' => '课程',
                 'display_name' => '课程分类添加',
+                'slug' => 'courseCategory.create',
+                'method' => 'GET',
+                'url' => 'courseCategory/create',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程分类添加',
                 'slug' => 'courseCategory.store',
                 'method' => 'POST',
                 'url' => 'courseCategory',

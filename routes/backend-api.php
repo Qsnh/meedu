@@ -261,6 +261,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     // 课程分类
     Route::group(['prefix' => 'courseCategory'], function () {
         Route::get('/', 'CourseCategoryController@index');
+        Route::get('/create', 'CourseCategoryController@create');
         Route::post('/', 'CourseCategoryController@store');
         Route::get('/{id}', 'CourseCategoryController@edit');
         Route::put('/{id}', 'CourseCategoryController@update');

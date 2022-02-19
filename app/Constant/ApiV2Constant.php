@@ -42,7 +42,7 @@ class ApiV2Constant
     ];
 
     public const MODEL_COURSE_CATEGORY_FIELD = [
-        'id', 'name', 'parent_id',
+        'id', 'name', 'parent_id', 'children',
     ];
 
     public const MODEL_COURSE_COMMENT_FIELD = [

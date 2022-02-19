@@ -17,12 +17,8 @@ class CourseCategory extends Model
 
     protected $table = 'course_categories';
 
-    const IS_SHOW_YES = 1;
-    const IS_SHOW_NO = 0;
-
     protected $fillable = [
-        'sort', 'name', 'parent_id', 'parent_chain',
-        'is_show',
+        'sort', 'name', 'parent_id', 'parent_chain', 'is_show',
     ];
 
     /**
@@ -31,7 +27,7 @@ class CourseCategory extends Model
      */
     public function scopeShow($query)
     {
-        return $query->whereIsShow(self::IS_SHOW_YES);
+        return $query->where('is_show', 1);
     }
 
     /**
@@ -41,5 +37,10 @@ class CourseCategory extends Model
     public function scopeSort($query)
     {
         return $query->orderBy('sort');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(__CLASS__, 'parent_id');
     }
 }
