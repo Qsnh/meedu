@@ -55,13 +55,16 @@ class BaseController
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     protected function id()
     {
         return Auth::guard($this->guard)->id();
     }
 
+    /**
+     * @return array
+     */
     protected function user()
     {
         if (!$this->user) {
@@ -96,6 +99,11 @@ class BaseController
         $mobileCode = request()->input('mobile_code');
         if (!$mobileCode) {
             throw new ApiV2Exception(__('短信验证码错误'));
+        }
+
+        // dev环境可直接输入测试的验证码112233
+        if (is_dev() && $mobileCode === '112233') {
+            return;
         }
 
         /**
