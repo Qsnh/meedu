@@ -66,7 +66,7 @@ class PaymentController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }
@@ -157,7 +157,7 @@ class PaymentController extends BaseController
             return $this->error(__('错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }
@@ -220,7 +220,7 @@ class PaymentController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PromoCode extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'promo_codes';
 

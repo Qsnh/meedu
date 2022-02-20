@@ -567,12 +567,13 @@ class MemberController extends BaseController
      */
     public function orders(Request $request)
     {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
+        $page = (int)$request->input('page', 1);
+        $pageSize = (int)$request->input('page_size', 10);
+
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->orderService->userOrdersPaginate($page, $pageSize);
+        ] = $this->orderService->userOrdersPaginate($this->id(), $page, $pageSize);
         $list = arr2_clear($list, ApiV2Constant::MODEL_ORDER_FIELD);
 
         foreach ($list as $key => $val) {

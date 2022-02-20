@@ -14,7 +14,6 @@ use App\Exceptions\ServiceException;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Order\Models\PromoCode;
@@ -105,41 +104,6 @@ class OrderServiceTest extends TestCase
         $this->assertNotEmpty($order);
     }
 
-
-    public function test_findNoPaid()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $order = Order::factory()->create([
-            'status' => Order::STATUS_UNPAY,
-        ]);
-        $order1 = Order::factory()->create([
-            'status' => Order::STATUS_CANCELED,
-        ]);
-
-        $this->assertNotEmpty($this->service->findNoPaid($order->order_id));
-        $this->service->findNoPaid($order1->order_id);
-    }
-
-    public function test_findUserNoPaid()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $user = User::factory()->create();
-        Auth::login($user);
-
-        $order = Order::factory()->create([
-            'status' => Order::STATUS_UNPAY,
-            'user_id' => $user->id,
-        ]);
-        $order1 = Order::factory()->create([
-            'status' => Order::STATUS_UNPAY,
-        ]);
-
-        $this->assertNotEmpty($this->service->findUserNoPaid($order->order_id));
-        $this->service->findUserNoPaid($order1->order_id);
-    }
-
     public function test_find()
     {
         $order = Order::factory()->create([
@@ -154,7 +118,6 @@ class OrderServiceTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         $user = User::factory()->create();
-        Auth::login($user);
 
         $order = Order::factory()->create([
             'status' => Order::STATUS_UNPAY,
@@ -164,8 +127,8 @@ class OrderServiceTest extends TestCase
             'status' => Order::STATUS_UNPAY,
         ]);
 
-        $this->assertNotEmpty($this->service->findUser($order->order_id));
-        $this->service->findUser($order1->order_id);
+        $this->assertNotEmpty($this->service->findUser($user['id'], $order->order_id));
+        $this->service->findUser($user['id'], $order1->order_id);
     }
 
     public function test_findId()
@@ -176,25 +139,6 @@ class OrderServiceTest extends TestCase
 
         $o = $this->service->findId($order->id);
         $this->assertNotEmpty($order->order_id, $o['order_id']);
-    }
-
-    public function test_findUserId()
-    {
-        $this->expectException(ModelNotFoundException::class);
-
-        $user = User::factory()->create();
-        $order = Order::factory()->create([
-            'status' => Order::STATUS_UNPAY,
-            'user_id' => $user->id,
-        ]);
-        $order1 = Order::factory()->create([
-            'status' => Order::STATUS_UNPAY,
-        ]);
-
-        $o = $this->service->findId($order->id);
-        $this->assertNotEmpty($order->order_id, $o['order_id']);
-
-        $this->service->findUserId($order1->id);
     }
 
     public function test_change2Paying()
@@ -244,13 +188,12 @@ class OrderServiceTest extends TestCase
     public function test_userOrdersPaginate()
     {
         $user = User::factory()->create();
-        Auth::login($user);
 
-        $orders = Order::factory()->count(10)->create([
-            'user_id' => $user->id,
+        Order::factory()->count(10)->create([
+            'user_id' => $user['id'],
         ]);
 
-        $list = $this->service->userOrdersPaginate(2, 4);
+        $list = $this->service->userOrdersPaginate($user['id'], 2, 4);
 
         $this->assertEquals(10, $list['total']);
         $this->assertEquals(4, count($list['list']));

@@ -217,7 +217,7 @@ class OrderController extends BaseController
     public function queryStatus(Request $request)
     {
         $orderId = $request->input('order_id', '');
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
 
         return $this->data([
             'status' => $order['status'],
