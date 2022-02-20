@@ -18,12 +18,20 @@ class OrderController extends BaseController
 {
     public function index(Request $request)
     {
+        // 订单状态
         $status = $request->input('status', null);
+        // 订单创建用户
         $userId = $request->input('user_id');
+        // 订单编号
         $orderId = $request->input('order_id');
+        // 订单创建时间
         $createdAt = $request->input('created_at');
+        // 商品id
         $goodsId = $request->input('goods_id');
+        // 商品名
         $goodsName = trim($request->input('goods_name', ''));
+        // 订单支付方式
+        $payment = $request->input('payment');
 
         // 排序字段
         $sort = $request->input('sort', 'id');
@@ -57,6 +65,9 @@ class OrderController extends BaseController
             })
             ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
                 $query->whereBetween('created_at', $createdAt);
+            })
+            ->when($payment, function ($query) use ($payment) {
+                $query->where('payment', $payment);
             });
 
         $orders = (clone $query)

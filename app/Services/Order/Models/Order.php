@@ -88,26 +88,6 @@ class Order extends Model
     }
 
     /**
-     * 获取今日已支付订单数量.
-     *
-     * @return mixed
-     */
-    public static function todayPaidNum()
-    {
-        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->count();
-    }
-
-    /**
-     * 获取今日已支付总金额.
-     *
-     * @return mixed
-     */
-    public static function todayPaidSum()
-    {
-        return self::where('created_at', '>=', date('Y-m-d'))->status(self::STATUS_PAID)->sum('charge');
-    }
-
-    /**
      * @return string
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
