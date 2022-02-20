@@ -6,46 +6,6 @@
  * (c) 杭州白书科技有限公司
  */
 
-if (!function_exists('flash')) {
-    function flash($message, $level = 'warning')
-    {
-        $message = new \Illuminate\Support\MessageBag([$level => $message]);
-        request()->session()->flash($level, $message);
-    }
-}
-
-if (!function_exists('get_first_flash')) {
-    /**
-     * 获取第一条FLASH信息.
-     *
-     * @param $level
-     *
-     * @return mixed|string
-     */
-    function get_first_flash($level)
-    {
-        if ($level === 'error' && session('errors') && session('errors')->any()) {
-            return session('errors')->all()[0];
-        }
-        if (!session()->has($level)) {
-            return '';
-        }
-
-        return session($level)->first();
-    }
-}
-if (!function_exists('menu_active')) {
-    /**
-     * @param $routeName
-     *
-     * @return bool
-     */
-    function menu_active($routeName)
-    {
-        return request()->routeIs($routeName) ? 'active' : '';
-    }
-}
-
 if (!function_exists('exception_record')) {
     /**
      * 记录异常.
@@ -180,23 +140,6 @@ if (!function_exists('aliyun_sdk_client')) {
             ->connectTimeout(3)
             ->timeout(30)
             ->asDefaultClient();
-    }
-}
-
-if (!function_exists('v')) {
-    /**
-     * 重写视图.
-     *
-     * @param $viewName
-     * @param array $params
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    function v($viewName, $params = [])
-    {
-        is_h5() && $viewName = str_replace('frontend', 'h5', $viewName);
-
-        return view($viewName, $params);
     }
 }
 
@@ -556,7 +499,7 @@ if (!function_exists('query_builder')) {
 }
 
 if (!function_exists('save_image')) {
-    function save_image($file): array
+    function save_image($file, $pathPrefix = ''): array
     {
         /**
          * @var \Illuminate\Http\UploadedFile $file
@@ -567,7 +510,7 @@ if (!function_exists('save_image')) {
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $disk = $configService->getImageStorageDisk();
-        $path = $file->store($configService->getImageStoragePath(), compact('disk'));
+        $path = $file->store($configService->getImageStoragePath() . ($pathPrefix ? '/' . $pathPrefix : ''), compact('disk'));
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
         $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
         $data = compact('path', 'url', 'disk', 'name');
@@ -615,12 +558,5 @@ if (!function_exists('wechat_qrcode_image')) {
         $result = \App\Meedu\Wechat::getInstance()->qrcode->temporary($code, 3600);
         $url = $result['url'] ?? '';
         return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($url));
-    }
-}
-
-if (!function_exists('view_hook')) {
-    function view_hook(string $position)
-    {
-        return \App\Meedu\Hooks\HookRun::run($position, new \App\Meedu\Hooks\HookParams([]));
     }
 }
