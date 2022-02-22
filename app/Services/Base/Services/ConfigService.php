@@ -107,7 +107,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getPlayerCover(): string
     {
-        return config('meedu.system.player_thumb', '');
+        return config('meedu.system.player_thumb') ?? '';
     }
 
     /**
@@ -148,7 +148,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getMemberPrivateProtocol(): string
     {
-        return config('meedu.member.private_protocol', '');
+        return config('meedu.member.private_protocol') ?? '';
     }
 
     /**
@@ -157,7 +157,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getAboutus(): string
     {
-        return config('meedu.aboutus', '');
+        return config('meedu.aboutus') ?? '';
     }
 
     /**
@@ -166,7 +166,7 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getMemberDefaultAvatar(): string
     {
-        return config('meedu.member.default_avatar');
+        return config('meedu.member.default_avatar') ?? '';
     }
 
     /**
