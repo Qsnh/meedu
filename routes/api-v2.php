@@ -33,6 +33,8 @@ Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback'
 // 社交登录
 Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin');
 Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v2.login.socialite.callback');
+// 安全退出
+Route::post('/logout', 'LoginController@logout')->middleware(['auth:apiv2']);
 
 // 课程搜索
 Route::get('/search', 'SearchController@index');

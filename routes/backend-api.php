@@ -16,6 +16,9 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::post('/media/videos/create', 'MediaVideoController@store');
 
     Route::get('/addons', 'AddonsController@index');
+
+    // 安全退出
+    Route::post('/logout', 'LoginController@logout');
 });
 
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {

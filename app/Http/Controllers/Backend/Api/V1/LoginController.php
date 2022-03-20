@@ -124,4 +124,10 @@ class LoginController extends BaseController
             'menus' => $data,
         ]);
     }
+
+    public function logout()
+    {
+        Auth::guard(self::GUARD)->logout();
+        return $this->success();
+    }
 }

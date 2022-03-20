@@ -17,6 +17,7 @@ use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Services\ConfigService;
@@ -518,5 +519,11 @@ class LoginController extends BaseController
         return $this->data([
             'openid' => $openid,
         ]);
+    }
+
+    public function logout()
+    {
+        Auth::guard(FrontendConstant::API_GUARD)->logout();
+        return $this->success();
     }
 }
