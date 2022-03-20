@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Mews\Captcha\Captcha;
 use App\Constant\CacheConstant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
@@ -27,22 +26,6 @@ class BaseController
     protected $guard = FrontendConstant::API_GUARD;
 
     protected $user;
-
-    /**
-     * 图形验证码校验
-     * @throws ApiV2Exception
-     */
-    protected function checkImageCaptcha()
-    {
-        $imageKey = request()->input('image_key');
-        if (!$imageKey) {
-            throw new ApiV2Exception(__('图形验证码错误'));
-        }
-        $imageCaptcha = request()->input('image_captcha', '');
-        if (!app()->make(Captcha::class)->check_api($imageCaptcha, $imageKey)) {
-            throw new ApiV2Exception(__('图形验证码错误'));
-        }
-    }
 
     /**
      * 检测是否登录

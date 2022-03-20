@@ -560,3 +560,17 @@ if (!function_exists('wechat_qrcode_image')) {
         return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($url));
     }
 }
+
+if (!function_exists('captcha_image_check')) {
+    function captcha_image_check()
+    {
+        $imageKey = request()->input('image_key');
+        if (!$imageKey) {
+            return false;
+        }
+        $imageCaptcha = request()->input('image_captcha', '');
+        if (!app()->make(\Mews\Captcha\Captcha::class)->check_api($imageCaptcha, $imageKey)) {
+            return false;
+        }
+    }
+}

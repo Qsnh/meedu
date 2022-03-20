@@ -77,7 +77,10 @@ class CaptchaController extends BaseController
      */
     public function sentSms(SmsRequest $request)
     {
-        $this->checkImageCaptcha();
+        if (captcha_image_check() === false) {
+            return $this->error(__('图形验证码错误'));
+        }
+
         ['mobile' => $mobile, 'scene' => $scene] = $request->filldata();
         $code = str_pad(random_int(0, 999999), 6, 0, STR_PAD_LEFT);
 
