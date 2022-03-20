@@ -9,9 +9,9 @@
 namespace Tests\Feature\BackendApi;
 
 use Mockery;
+use Mews\Captcha\Captcha;
 use App\Models\Administrator;
 use Illuminate\Support\Facades\Hash;
-use Mews\Captcha\Captcha;
 
 class LoginTest extends Base
 {

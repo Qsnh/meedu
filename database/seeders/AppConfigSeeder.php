@@ -996,6 +996,39 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.enabled_bullet_secret',
                 'value' => 0,
             ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-内容',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'meedu.system.player.bullet_secret.text',
+                'value' => '',
+                'help' => '已支持变量：${mobile}=手机号，${nickname}=用户昵称，${id}=用户ID。不填写则默认为用户手机号。',
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字大小',
+                'field_type' => 'number',
+                'sort' => 20,
+                'key' => 'meedu.system.player.bullet_secret.size',
+                'value' => 14,
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字颜色',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'meedu.system.player.bullet_secret.color',
+                'value' => '',
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字透明度',
+                'field_type' => 'text',
+                'sort' => 40,
+                'key' => 'meedu.system.player.bullet_secret.opacity',
+                'value' => 1,
+            ],
 
             // 微信公众号
             [
