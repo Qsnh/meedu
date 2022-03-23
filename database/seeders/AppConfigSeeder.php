@@ -773,15 +773,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
-            [
-                'group' => '视频',
-                'name' => '腾讯云播放格式',
-                'field_type' => 'text',
-                'sort' => 10,
-                'key' => 'tencent.vod.transcode_format',
-                'value' => '',
-                'help' => '默认支持所有格式，如果配置mp4则只支持mp4，多个请用英文逗号连接',
-            ],
 
             // 会员配置
             [
@@ -1028,6 +1019,15 @@ class AppConfigSeeder extends Seeder
                 'sort' => 40,
                 'key' => 'meedu.system.player.bullet_secret.opacity',
                 'value' => 1,
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '播放视频格式白名单',
+                'field_type' => 'text',
+                'sort' => 100,
+                'key' => 'meedu.system.player.video_format_whitelist',
+                'value' => '',
+                'help' => '设置视频格式后缀，多个请用英文逗号连接',
             ],
 
             // 微信公众号

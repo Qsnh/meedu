@@ -11,7 +11,6 @@ return [
         'app_id' => '',
         'secret_id' => '',
         'secret_key' => '',
-        'transcode_format' => '',
     ],
     'wechat' => [
         'mini' => [

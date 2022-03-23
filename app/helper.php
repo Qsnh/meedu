@@ -84,10 +84,22 @@ if (!function_exists('aliyun_play_url')) {
     function aliyun_play_url(array $video, $isTry = false)
     {
         /**
+         * @var \App\Services\Base\Services\CacheService $cacheService
+         */
+        $cacheService = app()->make(\App\Services\Base\Interfaces\CacheServiceInterface::class);
+        $cacheKey = get_cache_key(\App\Constant\CacheConstant::ALIYUN_PLAY_URL['name'], $video['aliyun_video_id']);
+        $playUrl = $cacheService->get($cacheKey);
+        if ($playUrl) {
+            return unserialize($playUrl);
+        }
+
+        /**
          * @var \App\Services\Base\Services\ConfigService $configService
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $config = $configService->getAliyunVodConfig();
+
+        $videoFormatWhitelist = $configService->getPlayVideoFormatWhitelist();
 
         try {
             aliyun_sdk_client();
@@ -96,15 +108,18 @@ if (!function_exists('aliyun_play_url')) {
             ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
 
             $query = ['VideoId' => $video['aliyun_video_id']];
+
+            // 播放参数配置[试看]
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
+            // 视频播放格式白名单
+            $videoFormatWhitelist && $query['Formats'] = implode(',', $videoFormatWhitelist);
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
                 ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetPlayInfo')
-                ->options([
-                    'query' => $query,
-                ])
+                ->options(['query' => $query])
                 ->request();
 
             $playInfo = $result['PlayInfoList']['PlayInfo'];
@@ -116,6 +131,11 @@ if (!function_exists('aliyun_play_url')) {
                     'duration' => $item['Duration'],
                     'name' => $item['Height'],
                 ];
+            }
+
+            if ($rows) {
+                // 写入缓存
+                $cacheService->put($cacheKey, serialize($rows), \App\Constant\CacheConstant::ALIYUN_PLAY_URL['expire']);
             }
 
             return $rows;
@@ -315,12 +335,13 @@ if (!function_exists('arr2_clear')) {
 if (!function_exists('get_tencent_play_url')) {
     function get_tencent_play_url(string $vid): array
     {
+        /**
+         * @var $configService \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $config = $configService->getTencentVodConfig();
+
         try {
-            /**
-             * @var $configService \App\Services\Base\Services\ConfigService
-             */
-            $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
-            $config = $configService->getTencentVodConfig();
             $credential = new \TencentCloud\Common\Credential($config['secret_id'], $config['secret_key']);
             $client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
@@ -334,12 +355,12 @@ if (!function_exists('get_tencent_play_url')) {
             if ($response->MediaInfoSet[0]->TranscodeInfo) {
                 // 配置了转码信息
                 $urls = [];
-                $supportFormat = $configService->getTencentVodTranscodeFormat();
+                $supportFormat = $configService->getPlayVideoFormatWhitelist();
                 foreach ($response->MediaInfoSet[0]->TranscodeInfo->TranscodeSet as $item) {
                     $url = $item->Url;
                     $format = strtolower(pathinfo($url, PATHINFO_EXTENSION));
                     if ($supportFormat && !in_array($format, $supportFormat)) {
-                        // 限定转码格式，只能使用一种
+                        // 视频播放格式白名单校验
                         continue;
                     }
                     $urls[] = [
@@ -389,14 +410,12 @@ if (!function_exists('get_play_url')) {
         } elseif ($video['tencent_video_id']) {
             // 腾讯云
             $playUrl = get_tencent_play_url($video['tencent_video_id']);
-            // 是否开启了播放key
-            if ($key = config('meedu.system.player.tencent_play_key')) {
-                $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
-                $playUrl = array_map(function ($item) use ($tencentKey, $isTry, $video) {
-                    $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
-                    return $item;
-                }, $playUrl);
-            }
+            // 开启播放key
+            $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
+            $playUrl = array_map(function ($item) use ($tencentKey, $isTry, $video) {
+                $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
+                return $item;
+            }, $playUrl);
         } else {
             $playUrl[] = [
                 'url' => $video['url'],
@@ -405,8 +424,6 @@ if (!function_exists('get_play_url')) {
                 'duration' => 0,
             ];
         }
-
-        sort($playUrl);
 
         return collect($playUrl);
     }

@@ -523,29 +523,59 @@ class ConfigService implements ConfigServiceInterface
         return config('app.url');
     }
 
+    // deprecated
     public function getTencentVodTranscodeFormat(): array
     {
         $format = strtolower(config('tencent.vod.transcode_format', ''));
         return $format ? explode(',', $format) : [];
     }
 
+    /**
+     * @return array
+     */
     public function getTencentSms(): array
     {
         return config('sms.gateways.tencent');
     }
 
+    /**
+     * @return string
+     */
     public function getPcUrl(): string
     {
         return config('meedu.system.pc_url');
     }
 
+    /**
+     * @return string
+     */
     public function getH5Url(): string
     {
         return config('meedu.system.h5_url');
     }
 
+    /**
+     * @return bool
+     */
     public function enabledFullSearch(): bool
     {
         return (bool)config('scout.meilisearch.host');
+    }
+
+    /**
+     * @return string
+     */
+    public function getTencentVodPlayKey(): string
+    {
+        return config('meedu.system.player.tencent_play_key', '') ?? '';
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlayVideoFormatWhitelist(): array
+    {
+        $whitelist = config('meedu.system.player.video_format_whitelist') ?? '';
+        return explode(',', $whitelist);
     }
 }

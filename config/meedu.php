@@ -200,8 +200,8 @@ return [
             ],
             // 腾讯云播放key
             'tencent_play_key' => '',
-            // 腾讯云超级播放器配置
-            'tencent_pcfg' => 'default',
+            // 播放格式
+            'video_format_whitelist' => '',
         ],
 
         // 缓存开关
