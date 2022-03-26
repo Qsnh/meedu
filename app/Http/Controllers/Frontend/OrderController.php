@@ -31,8 +31,6 @@ class OrderController extends FrontendController
     public function wechatJSAPI(Request $request)
     {
         // 跳转地址
-        $sUrl = $request->input('s_url');
-        $fUrl = $request->input('f_url');
         $data = $request->input('data');
 
         $openid = session('wechat_jsapi_openid');
@@ -51,8 +49,6 @@ class OrderController extends FrontendController
                 [
                     'oauth' => 1,
                     'data' => $data,
-                    's_url' => urlencode($sUrl),
-                    'f_url' => urlencode($fUrl),
                 ]
             );
             return Wechat::getInstance()->oauth->redirect($redirect);
@@ -63,24 +59,30 @@ class OrderController extends FrontendController
             $decryptData = decrypt($data);
             // 获取orderId
             $orderId = $decryptData['order_id'];
+            $sUrl = $decryptData['s_url'];
+            $fUrl = $decryptData['f_url'];
+
+            if ($decryptData['expired_at'] < time()) {
+                abort(500, __('参数错误'));
+            }
+
+            // 订单
+            $order = $this->orderService->findOrFail($orderId);
+
+            /**
+             * @var WechatJSAPI $jsapi
+             */
+            $jsapi = app()->make(WechatJSAPI::class);
+
+            // 创建微信支付订单
+            $data = $jsapi->createDirect($order, $openid);
+
+            // 页面标题
+            $title = __('微信支付');
+
+            return view('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data', 'sUrl', 'fUrl'));
         } catch (\Exception $e) {
             abort(500, __('参数错误'));
         }
-
-        // 订单
-        $order = $this->orderService->findOrFail($orderId);
-
-        /**
-         * @var WechatJSAPI $jsapi
-         */
-        $jsapi = app()->make(WechatJSAPI::class);
-
-        // 创建微信支付订单
-        $data = $jsapi->createDirect($order, $openid);
-
-        // 页面标题
-        $title = __('微信支付');
-
-        return view('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data'));
     }
 }

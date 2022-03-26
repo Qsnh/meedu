@@ -67,15 +67,16 @@ class WechatJSAPI implements Payment
         $fUrl || $fUrl = url('/');
 
         // 构建Response
-        $data = ['order_id' => $order['order_id']];
+        $data = [
+            'order_id' => $order['order_id'],
+            's_url' => $sUrl,
+            'f_url' => $fUrl,
+            'expired_at' => time() + 3600,
+        ];
 
         $payUrl = url_append_query(
             route('order.pay.wechat.jsapi'),
-            [
-                'data' => encrypt($data),
-                's_url' => urlencode($sUrl),
-                'f_url' => urlencode($fUrl),
-            ]
+            ['data' => encrypt($data)]
         );
 
         $response = redirect($payUrl);
