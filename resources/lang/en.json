@@ -312,5 +312,6 @@
   "search.video": "Video",
   "订单状态错误": "Order status error",
   "已超时，请重新绑定": "Timed out, please rebind",
-  "搜索服务未配置": "search service not enabled"
+  "搜索服务未配置": "search service not enabled",
+  "API服务运行正常": "API service is running"
 }
