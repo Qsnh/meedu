@@ -578,4 +578,12 @@ class ConfigService implements ConfigServiceInterface
         $whitelist = config('meedu.system.player.video_format_whitelist') ?? '';
         return explode(',', $whitelist);
     }
+
+    /**
+     * @return bool
+     */
+    public function enabledRedisCache(): bool
+    {
+        return config('cache.default') === 'redis';
+    }
 }

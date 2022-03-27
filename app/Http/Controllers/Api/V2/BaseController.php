@@ -8,15 +8,12 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Constant\CacheConstant;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ApiV2Exception;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\CacheService;
 use App\Services\Member\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
-use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
 class BaseController
@@ -80,24 +77,9 @@ class BaseController
     {
         $mobile = request()->input('mobile');
         $mobileCode = request()->input('mobile_code');
-        if (!$mobileCode) {
+
+        if (mobile_code_check($mobile, $mobileCode) === false) {
             throw new ApiV2Exception(__('短信验证码错误'));
         }
-
-        // dev环境可直接输入测试的验证码112233
-        if (is_dev() && $mobileCode === '112233') {
-            return;
-        }
-
-        /**
-         * @var $cacheService CacheService
-         */
-        $cacheService = app()->make(CacheServiceInterface::class);
-        $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
-        $code = $cacheService->get($key);
-        if (!$code || $code !== $mobileCode) {
-            throw new ApiV2Exception(__('短信验证码错误'));
-        }
-        $cacheService->forget($key);
     }
 }

@@ -592,3 +592,55 @@ if (!function_exists('captcha_image_check')) {
         return true;
     }
 }
+
+if (!function_exists('mobile_code_check')) {
+    function mobile_code_check($mobile, $mobileCode)
+    {
+        if (!$mobile || !$mobileCode) {
+            return false;
+        }
+
+        // 测试环境固定验证码
+        if (is_dev() && $mobileCode === '112233') {
+            return true;
+        }
+
+        /**
+         * @var $cacheService \App\Services\Base\Services\CacheService
+         */
+        $cacheService = app()->make(\App\Services\Base\Interfaces\CacheServiceInterface::class);
+
+        $mobileCodeKey = get_cache_key(\App\Constant\CacheConstant::MOBILE_CODE['name'], $mobile);
+        $mobileCodeSafeKey = get_cache_key(\App\Constant\CacheConstant::MOBILE_CODE_SAFE['name'], $mobile);
+
+        // 校验次数写入缓存
+        // 在[校验成功]或者[触发安全机制]之后会被删除
+        if ($cacheService->has($mobileCodeSafeKey)) {
+            $cacheService->inc($mobileCodeSafeKey, 1);
+        } else {
+            // 第一次写入，未防止并发校验写入结果
+            // 如果因为并发导致的非第一次写入的话，那么本次写入失败
+            // 验证码校验无法继续
+            if (!$cacheService->add($mobileCodeSafeKey, 1, \App\Constant\CacheConstant::MOBILE_CODE_SAFE['expire'])) {
+                return false;
+            }
+        }
+
+        $code = $cacheService->get($mobileCodeKey);
+        if ($code && $code === $mobileCode) {
+            $cacheService->forget($mobileCodeKey);
+            $cacheService->forget($mobileCodeSafeKey);
+            return true;
+        }
+
+        $verifyCount = (int)$cacheService->get($mobileCodeSafeKey);
+        if ($verifyCount > 10) {
+            // 如果短信验证码校验超过10次都是失败的话，那么直接忘掉该手机的短信验证码
+            // 间接要求用户重新发送短信验证码
+            $cacheService->forget($mobileCodeKey);
+            $cacheService->forget($mobileCodeSafeKey);
+        }
+
+        return false;
+    }
+}

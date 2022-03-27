@@ -35,6 +35,13 @@ class CacheConstant
         'expire' => 300,
     ];
 
+    // 短信验证码安全机制
+    // 当短信验证码校验超过一定次数就销毁已存在的短信验证码
+    public const MOBILE_CODE_SAFE = [
+        'name' => self::PREFIX_C . 'mcs:%s',
+        'expire' => 600,
+    ];
+
     // 用户微信小程序登录sessionKey缓存
     public const WECHAT_MINI_SESSION_KEY = [
         'name' => self::PREFIX_C . 'wmsk:%s',

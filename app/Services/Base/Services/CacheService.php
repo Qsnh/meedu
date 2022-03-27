@@ -52,4 +52,9 @@ class CacheService implements CacheServiceInterface
     {
         return Cache::forever($name, $val);
     }
+
+    public function add(string $key, $value, $expire)
+    {
+        return Cache::add($key, $value, $expire);
+    }
 }
