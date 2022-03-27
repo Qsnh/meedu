@@ -32,12 +32,11 @@ class AdministratorRequest extends BaseRequest
     {
         $rules = [
             'name' => 'bail|required',
-            'email' => ['bail', 'email'],
+            'email' => 'required|email',
         ];
 
         if ($this->isMethod('post')) {
-            $rules['email'] = array_merge($rules['email'], ['required', 'unique:administrators']);
-            $rules['password'] = 'bail|required|min:6|max:16|confirmed';
+            $rules['password'] = 'bail|required|min:6|max:16';
         }
 
         return $rules;
@@ -49,28 +48,22 @@ class AdministratorRequest extends BaseRequest
             'name.required' => __('请输入管理员昵称'),
             'email.required' => __('请输入邮箱'),
             'email.email' => __('请输入合法邮箱'),
-            'email.unique' => __('邮箱已经存在'),
             'password.required' => __('请输入密码'),
             'password.min' => __('密码长度不能少于:size个字符', ['size' => 6]),
             'password.max' => __('密码长度不能多于:size个字符', ['size' => 16]),
-            'password.confirmed' => __('两次输入密码不一致'),
         ];
     }
 
-    /**
-     * @return array
-     */
     public function filldata()
     {
         $data = [
             'name' => $this->input('name'),
+            'email' => $this->input('email'),
             'is_ban_login' => (int)$this->input('is_ban_login'),
         ];
 
-        // 编辑
-        $this->input('password') && $data['password'] = Hash::make($this->input('password'));
-        if ($this->isMethod('post')) {
-            $data['email'] = $this->input('email');
+        if ($password = $this->input('password')) {
+            $data['password'] = Hash::make($password);
         }
 
         return $data;

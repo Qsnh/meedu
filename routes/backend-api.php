@@ -8,6 +8,8 @@
 
 Route::post('/login', 'LoginController@login');
 
+Route::get('/captcha/image', 'CaptchaController@image');
+
 Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/media/images', 'MediaImageController@index');
     Route::post('/media/image', 'MediaImageController@upload');

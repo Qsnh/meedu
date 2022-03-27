@@ -39,7 +39,12 @@ class AdministratorController extends BaseController
         AdministratorRequest $request,
         Administrator $administrator
     ) {
-        $administrator->fill($request->filldata())->save();
+        $data = $request->filldata();
+        if (Administrator::query()->where('email', $data['email'])->exists()) {
+            return $this->error(__('邮箱已经存在'));
+        }
+
+        $administrator->fill($data)->save();
 
         $administrator->roles()->sync($request->input('role_id', []));
 
@@ -57,7 +62,15 @@ class AdministratorController extends BaseController
     {
         $administrator = Administrator::query()->where('id', $id)->firstOrFail();
 
-        $administrator->fill($request->filldata())->save();
+        $data = $request->filldata();
+        if (
+            $data['email'] !== $administrator['email'] &&
+            Administrator::query()->where('email', $data['email'])->where('id', '<>', $administrator['id'])->exists()
+        ) {
+            return $this->error(__('邮箱已经存在'));
+        }
+
+        $administrator->fill($data)->save();
 
         $administrator->roles()->sync($request->input('role_id', []));
 

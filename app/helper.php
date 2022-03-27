@@ -589,5 +589,6 @@ if (!function_exists('captcha_image_check')) {
         if (!app()->make(\Mews\Captcha\Captcha::class)->check_api($imageCaptcha, $imageKey)) {
             return false;
         }
+        return true;
     }
 }
