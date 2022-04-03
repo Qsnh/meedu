@@ -9,7 +9,6 @@
 namespace App\Listeners\OrderRefundProcessed;
 
 use App\Events\OrderRefundProcessed;
-use App\Exceptions\ServiceException;
 use App\Services\Order\Services\OrderService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
@@ -34,6 +33,6 @@ class OrderRefundStatusChange
      */
     public function handle(OrderRefundProcessed $event)
     {
-        throw_if($this->orderService->changeOrderRefundStatus($event->orderRefund['id'], $event->status), new ServiceException(__('退款订单状态更新失败')));
+        $this->orderService->changeOrderRefundStatus($event->orderRefund['id'], $event->status);
     }
 }

@@ -342,14 +342,27 @@ class OrderService implements OrderServiceInterface
             ->toArray();
     }
 
-    public function changeOrderRefundStatus(int $id, int $status): int
+    public function changeOrderRefundStatus(int $id, int $status): void
     {
         $updateData = ['status' => $status];
         if ($status === OrderRefund::STATUS_SUCCESS) {
             $updateData['success_at'] = Carbon::now()->toDateTimeLocalString();
         }
+        OrderRefund::query()->where('id', $id)->update($updateData);
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function takeProcessingRefundOrders(int $limit): array
+    {
         return OrderRefund::query()
-            ->where('id', $id)
-            ->update($updateData);
+            ->with(['order:id,order_id'])
+            ->where('status', OrderRefund::STATUS_DEFAULT)
+            ->orderBy('id')
+            ->take($limit)
+            ->get()
+            ->toArray();
     }
 }

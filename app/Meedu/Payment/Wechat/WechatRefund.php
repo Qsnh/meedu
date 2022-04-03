@@ -49,8 +49,7 @@ class WechatRefund
     {
         $config = $this->configService->getWechatPay();
         // 退款异步通知
-//        $config['notify_url'] = route('wechat.pay.refund.notify');
-        $config['notify_url'] = 'https://test8.meedu.xyz/addons/NotifyTest/record';
+        $config['notify_url'] = route('wechat.pay.refund.notify');
 
         $cert = $config['cert_client'];
         $key = $config['cert_key'];
@@ -77,5 +76,15 @@ class WechatRefund
     {
         $wechat = Pay::wechat($this->config());
         return $next($wechat);
+    }
+
+    public function queryStatus(string $refundNo)
+    {
+        $wechat = Pay::wechat($this->config());
+        // 不抛出异常即请求成功
+        $result = $wechat->find(['out_refund_no' => $refundNo], 'refund');
+        // 因为上面查询的时候我传入的是out_refund_no，因此返回的结果只会有一条
+        // 也就是可以直接读取 `refund_status_0`
+        return $result['refund_status_0'];
     }
 }

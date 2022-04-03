@@ -23,4 +23,9 @@ class OrderRefund extends Model
         'order_id', 'user_id', 'payment', 'total_amount',
         'refund_no', 'amount', 'reason', 'is_local', 'status', 'success_at',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 }

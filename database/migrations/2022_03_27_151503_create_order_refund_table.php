@@ -39,6 +39,7 @@ class CreateOrderRefundTable extends Migration
             $table->timestamps();
 
             $table->index(['order_id'], 'order_id');
+            $table->index(['status'], 'status');
         });
     }
 
