@@ -313,5 +313,10 @@
   "订单状态错误": "Order status error",
   "已超时，请重新绑定": "Timed out, please rebind",
   "搜索服务未配置": "search service not enabled",
-  "API服务运行正常": "API service is running"
+  "API服务运行正常": "API service is running",
+  "当前订单不支持退款": "The order not support apply refund",
+  "超过订单实际支付额度": "超过订单实际支付额度",
+  "已有退款订单正在处理，请在:date之后再提交退款": "已有退款订单正在处理，请在:date之后再提交退款",
+  "状态异常": "状态异常",
+  "退款订单状态更新失败": "退款订单状态更新失败"
 }

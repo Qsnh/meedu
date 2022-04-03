@@ -62,7 +62,12 @@ class CourseController extends BaseController
 
     public function create()
     {
-        $categories = CourseCategory::query()->select(['id', 'name', 'sort'])->orderBy('sort')->get();
+        $categories = CourseCategory::query()
+            ->select(['id', 'name', 'sort'])
+            ->with(['children:id,parent_id,sort,name'])
+            ->where('parent_id', 0)
+            ->orderBy('sort')
+            ->get();
         return $this->successData(compact('categories'));
     }
 

@@ -678,6 +678,24 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+            [
+                'group' => '支付',
+                'name' => '微信支付API证书-cert',
+                'field_type' => 'text',
+                'sort' => 20,
+                'key' => 'pay.wechat.cert_client',
+                'value' => '',
+                'is_private' => 1,
+            ],
+            [
+                'group' => '支付',
+                'name' => '微信支付API证书-key',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'pay.wechat.cert_key',
+                'value' => '',
+                'is_private' => 1,
+            ],
 
             // 手动打款
             [

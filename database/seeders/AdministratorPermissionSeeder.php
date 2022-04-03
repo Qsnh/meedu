@@ -830,6 +830,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'order/\d+/finish',
             ],
+            [
+                'group_name' => '订单',
+                'display_name' => '订单退款',
+                'slug' => 'order.refund',
+                'method' => 'POST',
+                'url' => 'order/\d+/refund',
+            ],
 
             // 优惠码
             [

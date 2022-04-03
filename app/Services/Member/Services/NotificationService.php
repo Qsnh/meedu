@@ -95,4 +95,14 @@ class NotificationService implements NotificationServiceInterface
     {
         User::find($userId)->unreadNotifications->markAsRead();
     }
+
+    /**
+     * @param int $id
+     * @param string $message
+     */
+    public function notify(int $id, string $message): void
+    {
+        $user = User::query()->where('id', $id)->firstOrFail();
+        $user->notify(new SimpleMessageNotification($message));
+    }
 }

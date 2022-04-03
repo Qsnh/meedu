@@ -478,16 +478,25 @@ class MemberController extends BaseController
             }
         }
 
+        // todo vip校验
+        // todo vip和过期时间的综合校验
+
         DB::transaction(function () use ($users) {
             // 批量添加
+            $now = Carbon::now()->toDateTimeLocalString();
             foreach (array_chunk($users, 500) as $usersItem) {
                 $data = [];
                 foreach ($usersItem as $item) {
                     $tmpMobile = $item[0];
+                    // 密码
                     $tmpPassword = $item[1];
+                    // VIP-ID
                     $tmpRoleId = (int)($item[2] ?? 0);
+                    // VIP过期时间
                     $tmpRoleExpiredAt = $item[3] ?? '';
-                    $tmpIsLock = (int)($item[4] ?? 0);
+                    $tmpRoleExpiredAt = $tmpRoleExpiredAt ? Carbon::parse($tmpRoleExpiredAt)->toDateTimeLocalString() : null;
+                    // 是否锁定[1:是,0否]
+                    $tmpIsLock = (int)($item[4] ?? 0) ? 1 : 0;
 
                     $data[] = [
                         'mobile' => $tmpMobile,
@@ -501,6 +510,8 @@ class MemberController extends BaseController
                         'is_used_promo_code' => 0,
                         'role_id' => $tmpRoleId,
                         'role_expired_at' => $tmpRoleExpiredAt,
+                        'created_at' => $now,
+                        'updated_at' => $now,
                     ];
                 }
                 if (!$data) {

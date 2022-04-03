@@ -247,6 +247,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/', 'OrderController@index');
         Route::get('/{id}', 'OrderController@detail');
         Route::get('/{id}/finish', 'OrderController@finishOrder');
+        Route::post('/{id}/refund', 'OrderController@submitRefund');
     });
 
     // 图片上传
