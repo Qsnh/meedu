@@ -53,15 +53,12 @@ class SearchRecordService implements SearchRecordServiceInterface
             ];
         }
 
-        $results = SearchRecord::search($keywords)->get();
+        // 最多一百条数据
+        $results = SearchRecord::search($keywords)->take(100)->get();
 
-        if ($type) {
-            $data = $results->filter(function ($item) use ($type) {
-                return $item['resource_type'] === $type;
-            })->toArray();
-        } else {
-            $data = $results->toArray();
-        }
+        $data = $results->filter(function ($item) use ($type) {
+            return $item['resource_type'] === $type;
+        })->toArray();
 
         $total = count($data);
         $chunks = array_chunk($data, $size);
