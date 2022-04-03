@@ -38,6 +38,8 @@ class OrderController extends BaseController
         $goodsName = trim($request->input('goods_name', ''));
         // 订单支付方式
         $payment = $request->input('payment');
+        // 是否有退款
+        $isRefund = (int)$request->input('is_refund');
 
         // 排序字段
         $sort = $request->input('sort', 'id');
@@ -59,6 +61,7 @@ class OrderController extends BaseController
             ->with([
                 'goods:oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge',
                 'paidRecords',
+                'refund'
             ])
             ->when($goodsId || $goodsName, function ($query) use ($orderIds) {
                 $query->whereIn('id', $orderIds ?: [0]);
@@ -68,6 +71,9 @@ class OrderController extends BaseController
             })
             ->when($orderId, function ($query) use ($orderId) {
                 $query->where('order_id', $orderId);
+            })
+            ->when($isRefund !== -1, function ($query) use ($isRefund) {
+                $query->where('is_refund', $isRefund);
             })
             ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
                 $query->whereBetween('created_at', $createdAt);
@@ -105,11 +111,14 @@ class OrderController extends BaseController
     public function detail($id)
     {
         $order = Order::query()
-            ->with(['goods', 'paidRecords'])
+            ->with(['goods', 'paidRecords', 'refund'])
             ->where('id', $id)
             ->firstOrFail();
 
-        $user = User::query()->select(['id', 'nick_name', 'avatar', 'mobile'])->where('id', $order['user_id'])->first();
+        $user = User::query()
+            ->select(['id', 'nick_name', 'avatar', 'mobile'])
+            ->where('id', $order['user_id'])
+            ->first();
 
         return $this->successData([
             'order' => $order,
@@ -145,7 +154,7 @@ class OrderController extends BaseController
             $order['is_refund'] &&
             // 订单有最近退款时间
             $order['last_refund_at'] &&
-            // 订单最近退款时间距离当前时间未超过30分钟
+            // 订单最近退款时间距离当前时间必须超过30分钟
             Carbon::parse($order['last_refund_at'])->addMinutes(30)->gt(Carbon::now())
         ) {
             return $this->error(
@@ -222,5 +231,51 @@ class OrderController extends BaseController
         });
 
         return $this->successData();
+    }
+
+    public function refundOrders(Request $request)
+    {
+        // 退款渠道
+        $payment = $request->input('payment');
+        // 状态
+        $status = (int)$request->input('status');
+        // 创建时间
+        $createdAt = $request->input('created_at');
+
+        $orders = OrderRefund::query()
+            ->with(['order:id,order_id'])
+            ->when($payment, function ($query) use ($payment) {
+                $query->where('payment', $payment);
+            })
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', $createdAt);
+            })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        $items = $orders->items();
+
+        $userIds = array_column($items, 'user_id');
+        if ($userIds) {
+            $users = User::query()
+                ->select(['id', 'mobile', 'nick_name', 'avatar'])
+                ->whereIn('id', $userIds)
+                ->get()
+                ->keyBy('id')
+                ->toArray();
+            foreach ($items as $key => $item) {
+                $items[$key]['user'] = $users[$item['user_id']] ?? [];
+            }
+        }
+
+        return $this->successData([
+            'data' => [
+                'data' => $items,
+                'total' => $orders->total(),
+            ],
+        ]);
     }
 }

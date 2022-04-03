@@ -832,10 +832,17 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '订单',
-                'display_name' => '订单退款',
+                'display_name' => '申请退款',
                 'slug' => 'order.refund',
                 'method' => 'POST',
                 'url' => 'order/\d+/refund',
+            ],
+            [
+                'group_name' => '订单',
+                'display_name' => '退款订单列表',
+                'slug' => 'order.refund.list',
+                'method' => 'GET',
+                'url' => 'order/refund/list',
             ],
 
             // 优惠码
