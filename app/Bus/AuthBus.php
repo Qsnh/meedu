@@ -19,36 +19,19 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class AuthBus
 {
-    public function webLogin(int $userId, int $remember, string $platform): void
-    {
-        Auth::loginUsingId($userId, $remember);
-
-        $this->login($userId, $platform, Carbon::now()->toDateTimeString());
-    }
-
     public function tokenLogin(int $userId, string $platform)
     {
         $loginAt = Carbon::now();
 
         $token = Auth::guard('apiv2')
-            ->claims(['last_login_at' => $loginAt->timestamp])
+            ->claims([
+                FrontendConstant::USER_LOGIN_AT_COOKIE_NAME => $loginAt->timestamp,
+            ])
             ->tokenById($userId);
 
-        $this->login($userId, $platform, $loginAt->toDateTimeString());
+        event(new UserLoginEvent($userId, $platform, $loginAt->toDateTimeLocalString()));
 
         return $token;
-    }
-
-    protected function login(int $userId, string $platform, string $loginAt)
-    {
-        event(new UserLoginEvent($userId, $platform, $loginAt));
-    }
-
-    public function redirectTo()
-    {
-        $redirectTo = session(FrontendConstant::LOGIN_CALLBACK_URL_KEY);
-        $redirectTo = $redirectTo ?: route('index');
-        return $redirectTo;
     }
 
     public function wechatLogin(string $openId, string $unionId, $data): int

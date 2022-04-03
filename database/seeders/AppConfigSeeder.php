@@ -133,16 +133,12 @@ class AppConfigSeeder extends Seeder
                         'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
                     ],
                     [
-                        'title' => '单平台限制',
-                        'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM,
-                    ],
-                    [
-                        'title' => '全平台限制',
+                        'title' => '仅允许一台设备在线',
                         'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_ALL,
                     ],
                 ]),
                 'value' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
-                'help' => '单平台限制=每一个平台仅允许一台设备登录.全平台限制=所有平台仅允许一台设备登录',
+                'help' => '',
             ],
 
             // QQ登录
