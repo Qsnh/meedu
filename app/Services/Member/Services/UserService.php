@@ -741,6 +741,13 @@ class UserService implements UserServiceInterface
             ->sum('seconds');
     }
 
+    /**
+     * @param int $userId
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return int
+     */
     public function getUserWatchStatForDay(int $userId, int $year, int $month, int $day): int
     {
         return (int)UserWatchStat::query()
@@ -751,8 +758,21 @@ class UserService implements UserServiceInterface
             ->sum('seconds');
     }
 
+    /**
+     * @param int $userId
+     * @return int
+     */
     public function inviteCount(int $userId): int
     {
         return (int)User::query()->where('invite_user_id', $userId)->count();
+    }
+
+    /**
+     * @param int $videoId
+     * @return int
+     */
+    public function clearVideoWatchRecords(int $videoId): int
+    {
+        UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();
     }
 }

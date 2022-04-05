@@ -77,6 +77,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\VodVideoDestroyedEvent' => [
             'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
+            'App\Listeners\VodVideoDestroyedEvent\UserWatchedRecordClear',
         ],
         // 新视频上传event
         'App\Events\VideoUploadedEvent' => [],
