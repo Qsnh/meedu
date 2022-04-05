@@ -313,5 +313,8 @@
   "订单状态错误": "Order status error",
   "已超时，请重新绑定": "Timed out, please rebind",
   "搜索服务未配置": "search service not enabled",
-  "API服务运行正常": "API service is running"
+  "API服务运行正常": "API service is running",
+  "一次最多导入1000条数据": "一次最多导入1000条数据",
+  "手机号重复": "手机号重复",
+  "手机号[:mobile]的VIP配置有误": "手机号[:mobile]的VIP配置有误"
 }

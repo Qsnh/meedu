@@ -457,10 +457,13 @@ class MemberController extends BaseController
 
     public function import(Request $request)
     {
-        // ([0] => mobile, [1] => password, [2] => role_id, [3] => role_expired_at, [4] => is_lock)
+        // ([0] => mobile, [1] => password, [2] => role_id, [3] => role_expired_at, [4] => is_lock, [5] => tag)
         $users = $request->input('users');
         if (!$users || !is_array($users)) {
             return $this->error(__('请导入数据'));
+        }
+        if (count($users) > 1000) {
+            return $this->error(__('一次最多导入1000条数据'));
         }
 
         // 手机号重复检测
@@ -469,24 +472,92 @@ class MemberController extends BaseController
             return $this->error('手机号重复');
         }
 
-        // 手机号存在检测
-        $mobileChunk = array_chunk($mobiles, 500);
-        foreach ($mobileChunk as $item) {
-            $exists = User::query()->whereIn('mobile', $item)->select(['mobile'])->get();
-            if ($exists->isNotEmpty()) {
-                return $this->error(sprintf(__('账号%s已存在'), implode(',', $exists->pluck('mobile')->toArray())));
+        // VIP规范检测
+        $nowTime = time();
+        foreach ($users as $userItem) {
+            $roleId = (int)($userItem[2] ?? 0);
+            $roleExpiredAt = $userItem[3] ?? null;
+            if (
+                // case1: 配置VIP-ID但是未配置VIP的过期时间
+                ($roleId && !$roleExpiredAt) ||
+                // case2: 配置了VIP过期时间但是未配置VIP-ID
+                (!$roleId && $roleExpiredAt) ||
+                // case3: VIP-ID和VIP过期时间都配置了，但是过期时间小于当前时间
+                ($roleId && $roleExpiredAt && strtotime($roleExpiredAt) < $nowTime)
+            ) {
+                return $this->error(__('手机号[:mobile]的VIP配置有误', ['mobile' => $userItem[0] ?? '']));
             }
         }
 
+        // 手机号存在检测
+        foreach (array_chunk($mobiles, 500) as $item) {
+            $exists = User::query()->whereIn('mobile', $item)->select(['mobile'])->get();
+            if ($exists->isNotEmpty()) {
+                return $this->error(sprintf(__('手机号%s已存在'), implode(',', $exists->pluck('mobile')->toArray())));
+            }
+        }
+
+        // 标签处理
+        $tags = [];
+        foreach ($users as $userItem) {
+            $tmpTagName = $userItem[5] ?? null;
+            if (!$tmpTagName) {
+                continue;
+            }
+            $tags = array_merge($tags, explode(',', $tmpTagName));
+        }
+        // 去重
+        $tags = array_flip(array_flip($tags));
+        // 读取已经存在的tag
+        $existsTags = UserTag::query()->whereIn('name', $tags)->select(['id', 'name'])->get();
+        // 筛选出未创建的tag
+        $notExistsTags = array_diff($tags, $existsTags->pluck('name')->toArray());
+        if ($notExistsTags) {
+            // 批量插入
+            $insertList = [];
+            $now = Carbon::now()->toDateTimeLocalString();
+            foreach ($notExistsTags as $tagName) {
+                $insertList[] = ['name' => $tagName, 'created_at' => $now, 'updated_at' => $now];
+            }
+            UserTag::insert($insertList);
+            // 读取新创建的tag
+            $newTags = UserTag::query()->whereIn('name', $notExistsTags)->select(['id', 'name'])->get();
+            $existsTags = $existsTags->merge($newTags);
+        }
+        $existsTags = $existsTags->keyBy('name')->toArray();
+        foreach ($users as $key => $userItem) {
+            $tmpTag = $userItem[5] ?? null;
+            if (!$tmpTag) {
+                $users[$key]['tag_ids'] = [];
+                continue;
+            }
+            $tmpTags = explode(',', $tmpTag);
+            $syncTagIds = [];
+            foreach ($tmpTags as $tagName) {
+                $syncTagIds[] = $existsTags[$tagName]['id'];
+            }
+            $users[$key]['tag_ids'] = $syncTagIds;
+        }
+
         DB::transaction(function () use ($users) {
-            // 批量添加
+            $now = Carbon::now()->toDateTimeLocalString();
             foreach (array_chunk($users, 500) as $usersItem) {
                 $data = [];
+                if (!$usersItem) {
+                    break;
+                }
+
+                // 批量插入用户
                 foreach ($usersItem as $item) {
                     $tmpMobile = $item[0];
                     $tmpPassword = $item[1];
+                    // VIP处理l
                     $tmpRoleId = (int)($item[2] ?? 0);
-                    $tmpRoleExpiredAt = $item[3] ?? '';
+                    $tmpRoleExpiredAt = null;
+                    if ($item[3]) {
+                        $tmpRoleExpiredAt = Carbon::parse($item[3])->toDateTimeLocalString();
+                    }
+                    // 是否锁定
                     $tmpIsLock = (int)($item[4] ?? 0);
 
                     $data[] = [
@@ -501,13 +572,28 @@ class MemberController extends BaseController
                         'is_used_promo_code' => 0,
                         'role_id' => $tmpRoleId,
                         'role_expired_at' => $tmpRoleExpiredAt,
+                        'created_at' => $now,
+                        'updated_at' => $now,
                     ];
                 }
-                if (!$data) {
-                    continue;
-                }
-
                 User::insert($data);
+
+                // 标签关联数据缓存
+                $tagInsertList = [];
+                $mobile2idMap = User::query()->whereIn('mobile', array_column($data, 'mobile'))->select(['id', 'mobile'])->get()->keyBy('mobile');
+                foreach ($usersItem as $item) {
+                    if (!$item['tag_ids']) {
+                        continue;
+                    }
+                    $userId = $mobile2idMap[$item[0]]['id'];
+                    foreach ($item['tag_ids'] as $tagId) {
+                        $tagInsertList[] = [
+                            'user_id' => $userId,
+                            'tag_id' => $tagId,
+                        ];
+                    }
+                }
+                $tagInsertList && DB::table('user_tag')->insert($tagInsertList);
             }
         });
 
