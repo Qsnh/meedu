@@ -34,7 +34,7 @@ class RefundBus
         } elseif (in_array($order['payment'], self::WECHAT_PAYMENT_WHITELIST)) {
             $this->wechatHandle($order, $refundNo, $total, $amount, $reason);
         } else {
-            throw new ServiceException(__('当前订单不支持退款'));
+            throw new ServiceException(__('当前订单支付渠道不支持退款'));
         }
     }
 

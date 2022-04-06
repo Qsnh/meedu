@@ -154,8 +154,11 @@ class OrderController extends BaseController
             $order['is_refund'] &&
             // 订单有最近退款时间
             $order['last_refund_at'] &&
-            // 订单最近退款时间距离当前时间必须超过30分钟
-            Carbon::parse($order['last_refund_at'])->addMinutes(30)->gt(Carbon::now())
+            // 待处理订单最近退款时间距离当前时间必须超过30分钟
+            (
+                OrderRefund::query()->where('order_id', $order['id'])->where('status', OrderRefund::STATUS_DEFAULT)->exists() &&
+                Carbon::parse($order['last_refund_at'])->addMinutes(30)->gt(Carbon::now())
+            )
         ) {
             return $this->error(
                 __(
