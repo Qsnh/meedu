@@ -1147,6 +1147,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'DELETE',
                 'url' => 'viewBlock/\d+',
             ],
+
+            // 上传视频管理
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '已上传视频列表',
+                'slug' => 'media.video.list',
+                'method' => 'GET',
+                'url' => 'media/videos/index',
+            ],
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '上传视频',
+                'slug' => 'media.video.store',
+                'method' => 'POST',
+                'url' => 'media/videos/create',
+            ],
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '批量删除视频',
+                'slug' => 'media.video.delete.multi',
+                'method' => 'POST',
+                'url' => 'media/videos/delete/multi',
+            ],
         ];
 
         foreach ($permissions as $permission) {
