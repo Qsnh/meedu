@@ -7,3 +7,5 @@
  */
 
 Route::any('/wechat/serve', 'Api\\Wechat\\MpWechatController@serve');
+
+Route::any('/wechat/refund/notify', 'Api\\Wechat\\RefundController@notify')->name('wechat.pay.refund.notify');

@@ -550,6 +550,7 @@ class MemberController extends BaseController
                 // 批量插入用户
                 foreach ($usersItem as $item) {
                     $tmpMobile = $item[0];
+                    // 密码
                     $tmpPassword = $item[1];
                     // VIP处理l
                     $tmpRoleId = (int)($item[2] ?? 0);

@@ -1,25 +1,30 @@
-## MeEdu线上教培系统
+## MeEdu 开源版本
+
+本仓库为 MeEdu 开源版本，只支持**录播课**的课程形式，更多功能请参考下文的付费方案介绍。
+
+* [MeEdu官网](https://meedu.vip)
+* [MeEdu开源版本使用须知](https://www.yuque.com/meedu/fvvkbf/amfw7z)
+* [MeEdu功能概览](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
+* [MeEdu使用手册](https://www.yuque.com/meedu/fvvkbf)
+
+### 依赖项目
+
++ [MeEdu 后台管理端界面程序](https://github.com/meedu/backend-v2)
++ [MeEdu PC端界面程序](https://github.com/meedu/pc-v1)
++ [MeEdu H5端界面程序](https://github.com/meedu/h5-v1)
+
+## MeEdu 教培系统付费方案介绍
 
 ![](https://meedu.cloud.oss.meedu.vip/github/1.jpg)
 
 ### 项目介绍
-MeEdu教培系统是一款开源的线上教培系统。支持线上点播，线上直播，考试练习，图文，电子书多种知识类型。支持秒杀，团购，三级分销等营销方式。MeEdu点播系统覆盖PC网校，H5，微信小程序且支持开发独立APP。MeEdu支持源码交付，支持二次开发。
 
-### 演示网站
-* MeEdu系统演示网址：[https://meedu.vip/cases.html](https://meedu.vip/cases.html)
-
-
-### 常用链接
-
-* MeEdu官网：[https://meedu.vip/](https://meedu.vip/)
-* MeEdu使用须知：[https://www.yuque.com/meedu/fvvkbf/amfw7z](https://www.yuque.com/meedu/fvvkbf/amfw7z)
-* MeEdu功能概览：[https://www.yuque.com/meedu/fvvkbf/gpx5ed](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
-* MeEdu使用手册：[https://www.yuque.com/meedu/fvvkbf](https://www.yuque.com/meedu/fvvkbf)
-* MeEdu演示文稿下载：[https://www.yuque.com/meedu/fvvkbf/fhaxpe](https://www.yuque.com/meedu/fvvkbf/fhaxpe)
-
-
-### 系统截图
-
+MeEdu 教培系统付费方案支持录播，直播，考试练习，图文，电子书多种课程类型。支持秒杀，团购，三级分销等营销方式。端口覆盖PC网校、H5网校（微信公众号）、微信小程序、安卓APP、苹果APP。MeEdu 付费方案支持源码交付以便于客户二次开发。
+  
+* [MeEdu付费方案系统演示](https://meedu.vip/cases.html)  
+* [MeEdu付费方案演示文稿PPT下载](https://www.yuque.com/meedu/fvvkbf/fhaxpe)
+  
+  
 ![](https://meedu.cloud.oss.meedu.vip/github/2.jpeg)
 
 ![](https://meedu.cloud.oss.meedu.vip/github/3.jpeg)

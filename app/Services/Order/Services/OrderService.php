@@ -8,6 +8,7 @@
 
 namespace App\Services\Order\Services;
 
+use Carbon\Carbon;
 use App\Events\OrderCancelEvent;
 use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,7 @@ use App\Exceptions\ServiceException;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Models\OrderRefund;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -326,5 +328,41 @@ class OrderService implements OrderServiceInterface
             ->where('order_id', $orderId)
             ->where('paid_type', OrderPaidRecord::PAID_TYPE_DEFAULT)
             ->sum('paid_total');
+    }
+
+    /**
+     * @param string $refundNo
+     * @return array
+     */
+    public function findOrderRefund(string $refundNo): array
+    {
+        return OrderRefund::query()
+            ->where('refund_no', $refundNo)
+            ->firstOrFail()
+            ->toArray();
+    }
+
+    public function changeOrderRefundStatus(int $id, int $status): void
+    {
+        $updateData = ['status' => $status];
+        if ($status === OrderRefund::STATUS_SUCCESS) {
+            $updateData['success_at'] = Carbon::now()->toDateTimeLocalString();
+        }
+        OrderRefund::query()->where('id', $id)->update($updateData);
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function takeProcessingRefundOrders(int $limit): array
+    {
+        return OrderRefund::query()
+            ->with(['order:id,order_id'])
+            ->where('status', OrderRefund::STATUS_DEFAULT)
+            ->orderBy('id')
+            ->take($limit)
+            ->get()
+            ->toArray();
     }
 }

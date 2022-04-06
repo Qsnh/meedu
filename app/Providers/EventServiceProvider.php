@@ -83,5 +83,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\VideoUploadedEvent' => [],
         // 视频转码完成event
         'App\Events\VideoTranscodeCompleteEvent' => [],
+        // 退款已申请
+        'App\Events\OrderRefundCreated' => [],
+        // 退款已处理[不一定成功]
+        'App\Events\OrderRefundProcessed' => [
+            'App\Listeners\OrderRefundProcessed\OrderRefundStatusChange',
+            'App\Listeners\OrderRefundProcessed\UserNotify',
+        ],
     ];
 }
