@@ -14,9 +14,6 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/media/images', 'MediaImageController@index');
     Route::post('/media/image', 'MediaImageController@upload');
 
-    Route::get('/media/videos/index', 'MediaVideoController@index');
-    Route::post('/media/videos/create', 'MediaVideoController@store');
-
     Route::get('/addons', 'AddonsController@index');
 
     // 安全退出
@@ -30,6 +27,12 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/check', 'DashboardController@check');
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
+
+    Route::group(['prefix' => 'media/videos'], function () {
+        Route::get('/index', 'MediaVideoController@index');
+        Route::post('/create', 'MediaVideoController@store');
+        Route::post('/delete/multi', 'MediaVideoController@deleteVideos');
+    });
 
     Route::group(['prefix' => 'video/token'], function () {
         Route::post('/tencent', 'VideoUploadController@tencentToken');

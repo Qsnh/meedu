@@ -614,9 +614,14 @@ class MemberController extends BaseController
         $value = $request->input('value');
         // 如果更改为roleId的话则需要传递该参数
         $roleExpiredAt = $request->input('role_expired_at');
+        // 如果修改的是标签的话则需要传递该参数
+        $tagIds = $request->input('tag_ids');
 
         // 必须是白名单内的字段才可以更改
-        $fieldsWhitelist = ['is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname'];
+        $fieldsWhitelist = [
+            'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname',
+            'tag',
+        ];
         if (!$field || !in_array($field, $fieldsWhitelist)) {
             return $this->error('待修改字段不合法');
         }
@@ -626,20 +631,26 @@ class MemberController extends BaseController
             return $this->error('请选择VIP过期时间');
         }
 
-        // 整数值字段
-        $intFields = ['is_lock', 'is_active', 'is_password_set', 'is_set_nickname', 'role_id'];
-        if (in_array($field, $intFields)) {
-            $value = (int)$value;
-        }
+        if ($field === 'tag') {
+            $tagIds = $tagIds && is_array($tagIds) ? $tagIds : [];
+            $users = User::query()->whereIn('id', $userIds)->get();
+            foreach ($users as $userItem) {
+                $userItem->tags()->sync($tagIds);
+            }
+        } else {
+            // 整数值字段，对即将修改的值进行取整处理
+            $intFields = ['is_lock', 'is_active', 'is_password_set', 'is_set_nickname', 'role_id'];
+            if (in_array($field, $intFields)) {
+                $value = (int)$value;
+            }
+            $updateData[$field] = $value;
 
-        $updateData[$field] = $value;
-        if ($field === 'role_id') {
-            $updateData['role_expired_at'] = Carbon::parse($roleExpiredAt)->toDateTimeLocalString();
-        }
+            if ($field === 'role_id') {
+                $updateData['role_expired_at'] = Carbon::parse($roleExpiredAt)->toDateTimeLocalString();
+            }
 
-        User::query()
-            ->whereIn('id', $userIds)
-            ->update($updateData);
+            User::query()->whereIn('id', $userIds)->update($updateData);
+        }
 
         return $this->success();
     }
