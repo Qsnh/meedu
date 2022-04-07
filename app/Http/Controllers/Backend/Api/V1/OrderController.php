@@ -25,7 +25,7 @@ class OrderController extends BaseController
     public function index(Request $request)
     {
         // 订单状态
-        $status = $request->input('status', null);
+        $status = (int)$request->input('status');
         // 订单创建用户
         $userId = $request->input('user_id');
         // 订单编号
@@ -36,10 +36,10 @@ class OrderController extends BaseController
         $goodsId = $request->input('goods_id');
         // 商品名
         $goodsName = trim($request->input('goods_name', ''));
-        // 订单支付方式
-        $payment = $request->input('payment');
         // 是否有退款
         $isRefund = (int)$request->input('is_refund');
+        // 订单支付渠道[wechat:微信支付,alipay:支付宝支付]
+        $payment = $request->input('payment');
 
         // 排序字段
         $sort = $request->input('sort', 'id');
@@ -63,6 +63,13 @@ class OrderController extends BaseController
                 'paidRecords',
                 'refund'
             ])
+            ->when($payment, function ($query) use ($payment) {
+                $payments = [$payment];
+                if ($payment === 'wechat') {
+                    $payments = array_merge($payments, ['wechat-jsapi', 'wechat_h5', 'wechatApp']);
+                }
+                $query->whereIn('payment', $payments);
+            })
             ->when($goodsId || $goodsName, function ($query) use ($orderIds) {
                 $query->whereIn('id', $orderIds ?: [0]);
             })
@@ -77,9 +84,6 @@ class OrderController extends BaseController
             })
             ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
                 $query->whereBetween('created_at', $createdAt);
-            })
-            ->when($payment, function ($query) use ($payment) {
-                $query->where('payment', $payment);
             });
 
         $orders = (clone $query)
@@ -238,20 +242,46 @@ class OrderController extends BaseController
 
     public function refundOrders(Request $request)
     {
-        // 退款渠道
+        // 订单支付渠道[wechat:微信支付,alipay:支付宝支付]
         $payment = $request->input('payment');
         // 状态
         $status = (int)$request->input('status');
         // 创建时间
         $createdAt = $request->input('created_at');
+        // 是否本地订单[1:本地(仅记录),0:原渠道退回,-1:全部]
+        $isLocal = (int)$request->input('is_local');
+        // 用户手机号
+        $mobile = $request->input('mobile');
+        // 退款单号
+        $refundNo = $request->input('refund_no');
+        // 订单编号
+        $orderNo = $request->input('order_no');
 
         $orders = OrderRefund::query()
             ->with(['order:id,order_id'])
             ->when($payment, function ($query) use ($payment) {
-                $query->where('payment', $payment);
+                $payments = [$payment];
+                if ($payment === 'wechat') {
+                    $payments = array_merge($payments, ['wechat-jsapi', 'wechat_h5', 'wechatApp']);
+                }
+                $query->whereIn('payment', $payments);
             })
             ->when($status, function ($query) use ($status) {
                 $query->where('status', $status);
+            })
+            ->when($refundNo, function ($query) use ($refundNo) {
+                $query->where('refund_no', $refundNo);
+            })
+            ->when($orderNo, function ($query) use ($orderNo) {
+                $orderId = (int)Order::query()->where('order_id', $orderNo)->value('id');
+                $query->where('order_id', $orderId);
+            })
+            ->when($mobile, function ($query) use ($mobile) {
+                $userId = (int)User::query()->where('mobile', $mobile)->value('id');
+                $query->where('user_id', $userId);
+            })
+            ->when($isLocal !== -1, function ($query) use ($isLocal) {
+                $query->where('is_local', $isLocal);
             })
             ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
                 $query->whereBetween('created_at', $createdAt);
