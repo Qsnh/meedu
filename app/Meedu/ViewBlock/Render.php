@@ -31,17 +31,4 @@ class Render
 
         return $blocks;
     }
-
-    // 视图渲染
-    public static function viewRender(array $blocks): string
-    {
-        $html = '';
-        foreach ($blocks as $blockItem) {
-            $tmp = HookRun::run(PositionConstant::VIEW_BLOCK_HTML_RENDER, new HookParams(['block' => $blockItem]));
-
-            $tmp && $html .= $tmp;
-        }
-
-        return $html;
-    }
 }
