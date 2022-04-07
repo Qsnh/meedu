@@ -25,7 +25,7 @@ class RefundController
              * @var Wechat $wechat
              */
 
-            $result = $wechat->verify()->toArray();
+            $result = $wechat->verify(null, true)->toArray();
 
             Log::info('微信退款回调数据', $result);
 
