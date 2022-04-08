@@ -473,19 +473,26 @@ class MemberController extends BaseController
         }
 
         // VIP规范检测
+        $roles = Role::query()->select(['id'])->get()->pluck('id')->toArray();
         $nowTime = time();
         foreach ($users as $userItem) {
             $roleId = (int)($userItem[2] ?? 0);
             $roleExpiredAt = $userItem[3] ?? null;
-            if (
-                // case1: 配置VIP-ID但是未配置VIP的过期时间
-                ($roleId && !$roleExpiredAt) ||
-                // case2: 配置了VIP过期时间但是未配置VIP-ID
-                (!$roleId && $roleExpiredAt) ||
-                // case3: VIP-ID和VIP过期时间都配置了，但是过期时间小于当前时间
-                ($roleId && $roleExpiredAt && strtotime($roleExpiredAt) < $nowTime)
-            ) {
-                return $this->error(__('手机号[:mobile]的VIP配置有误', ['mobile' => $userItem[0] ?? '']));
+            // case1: 配置VIP-ID但是未配置VIP的过期时间
+            if ($roleId && !$roleExpiredAt) {
+                return $this->error(__('手机号[:mobile]配置了VIP但未配置过期时间', ['mobile' => $userItem[0] ?? '']));
+            }
+            // case2: 配置了VIP过期时间但是未配置VIP-ID
+            if (!$roleId && $roleExpiredAt) {
+                return $this->error(__('手机号[:mobile]配置了VIP过期时间但未配置VIP', ['mobile' => $userItem[0] ?? '']));
+            }
+            // case3: VIP-ID和VIP过期时间都配置了，但是过期时间小于当前时间
+            if ($roleId && $roleExpiredAt && strtotime($roleExpiredAt) < $nowTime) {
+                return $this->error(__('手机号[:mobile]的VIP过期时间小于当前时间', ['mobile' => $userItem[0] ?? '']));
+            }
+            // case4: VIP不存在
+            if ($roleId && !in_array($roleId, $roles)) {
+                return $this->error(__('手机号[:mobile]配置的VIP不存在', ['mobile' => $userItem[0] ?? '']));
             }
         }
 
