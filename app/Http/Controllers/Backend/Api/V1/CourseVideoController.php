@@ -101,11 +101,8 @@ class CourseVideoController extends BaseController
         $video = Video::query()->where('id', $id)->firstOrFail();
 
         DB::transaction(function () use ($video) {
-            // 清空用户的观看记录
-            UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
-
             $videoId = $video['id'];
-
+            
             $video->delete();
 
             event(new VodVideoDestroyedEvent($videoId));

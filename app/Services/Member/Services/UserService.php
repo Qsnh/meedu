@@ -769,9 +769,8 @@ class UserService implements UserServiceInterface
 
     /**
      * @param int $videoId
-     * @return int
      */
-    public function clearVideoWatchRecords(int $videoId): int
+    public function clearVideoWatchRecords(int $videoId)
     {
         UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();
     }
