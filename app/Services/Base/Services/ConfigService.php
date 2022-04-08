@@ -576,7 +576,11 @@ class ConfigService implements ConfigServiceInterface
     public function getPlayVideoFormatWhitelist(): array
     {
         $whitelist = config('meedu.system.player.video_format_whitelist') ?? '';
-        return explode(',', $whitelist);
+        if (!$whitelist) {
+            return [];
+        }
+        return array_map('strtolower', explode(',', $whitelist));
+        ;
     }
 
     /**
