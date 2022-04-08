@@ -197,7 +197,7 @@ class OrderController extends BaseController
                 'user_id' => $order['user_id'],
                 'payment' => $order['payment'],
                 'total_amount' => $directPayAmount,
-                'refund_no' => 'REFUND' . date('YmdHis') . mt_rand(1000, 9999),
+                'refund_no' => 'REFUND' . date('YmdHis') . mt_rand(0, 9),
                 'amount' => $amount,
                 'reason' => $reason,
                 'is_local' => $isLocal,
