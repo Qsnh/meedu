@@ -54,7 +54,7 @@ class MemberRequest extends BaseRequest
     public function filldata()
     {
         $roleExpiredAt = $this->input('role_expired_at') ?: null;
-        $roleExpiredAt && $roleExpiredAt = Carbon::parse($roleExpiredAt);
+        $roleExpiredAt && $roleExpiredAt = Carbon::parse($roleExpiredAt)->toDateTimeLocalString();
 
         return [
             'avatar' => $this->post('avatar'),
