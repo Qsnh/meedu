@@ -66,7 +66,8 @@ class CourseController extends BaseController
         VideoServiceInterface $videoService,
         OrderServiceInterface $orderService,
         BusinessState $businessState
-    ) {
+    )
+    {
         $this->courseService = $courseService;
         $this->configService = $configService;
         $this->courseCommentService = $courseCommentService;
@@ -158,7 +159,7 @@ class CourseController extends BaseController
      * @apiSuccess {String} data.course.category.name 分类名
      * @apiSuccess {Object[]} data.chapters 章节
      * @apiSuccess {Number} data.chapters.id 章节ID
-     * @apiSuccess {String} data.chapters.name 章节名
+     * @apiSuccess {String} data.chapters.title 章节名
      * @apiSuccess {Object[]} data.videos 视频
      * @apiSuccess {Number} data.videos.id 视频ID
      * @apiSuccess {String} data.videos.title 视频名
