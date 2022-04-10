@@ -87,7 +87,12 @@ if (!function_exists('aliyun_play_url')) {
          * @var \App\Services\Base\Services\CacheService $cacheService
          */
         $cacheService = app()->make(\App\Services\Base\Interfaces\CacheServiceInterface::class);
-        $cacheKey = get_cache_key(\App\Constant\CacheConstant::ALIYUN_PLAY_URL['name'], $video['aliyun_video_id']);
+        $cacheKey = get_cache_key(
+            \App\Constant\CacheConstant::ALIYUN_PLAY_URL['name'],
+            $video['id'],
+            $isTry ? 1 : 0,
+            $video['aliyun_video_id']
+        );
         $playUrl = $cacheService->get($cacheKey);
         if ($playUrl) {
             return unserialize($playUrl);
