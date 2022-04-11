@@ -244,7 +244,7 @@ class VideoController extends BaseController
      * @api {post} /api/v2/video/{id}/comment 录播视频评论
      * @apiGroup 录播课
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
      *
@@ -302,7 +302,7 @@ class VideoController extends BaseController
      * @api {get} /api/v2/video/{id}/playinfo 录播视频播放地址
      * @apiGroup 录播课
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} is_try 是否试看[1:是,0否]
      *
@@ -346,7 +346,7 @@ class VideoController extends BaseController
      * @api {post} /api/v2/video/{id}/record 视频观看时长记录
      * @apiGroup 录播课
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} duration 已观看时长,单位：秒
      *

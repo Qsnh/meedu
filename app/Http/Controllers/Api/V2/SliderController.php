@@ -21,7 +21,7 @@ class SliderController extends BaseController
      * @apiGroup 其它
      * @apiVersion v2.0.0
      *
-     * @apiParam {String=PC,H5,APP,MINI} [platform=APP] 平台[PC,H5,APP,MINI]
+     * @apiParam {String="PC"} [platform] 平台
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据

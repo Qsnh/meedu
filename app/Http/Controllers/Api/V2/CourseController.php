@@ -81,10 +81,10 @@ class CourseController extends BaseController
      * @apiGroup 录播课
      * @apiVersion v2.0.0
      *
-     * @apiParam {Number} page 页码
-     * @apiParam {Number} page_size 每页条数
-     * @apiParam {Number} category_id 分类ID
-     * @apiParam {String=留空,recom,sub,free} [scene] 场景[空:全部课程,recom:推荐,sub:订阅最多,free:免费课程]
+     * @apiParam {Number} [page] page
+     * @apiParam {Number} [page_size] page_size
+     * @apiParam {Number} [category_id] 分类ID
+     * @apiParam {String=sub,free} [scene] 场景[sub:订阅最多,free:免费课程]
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据
@@ -246,9 +246,10 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/course/{course_id}/comment 录播课程评论
+     * @api {post} /api/v2/course/{course_id}/comment 录播课程评论[提交]
      * @apiGroup 录播课
      * @apiVersion v2.0.0
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
      *
@@ -292,7 +293,8 @@ class CourseController extends BaseController
     {
         $comments = $this->courseCommentService->courseComments($id);
         $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
-        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
+
+        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role:id,name']);
         $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_FIELD);
         $commentUsers = array_column($commentUsers, null, 'id');
 
@@ -306,7 +308,7 @@ class CourseController extends BaseController
      * @api {get} /api/v2/course/{course_id}/like 收藏课程
      * @apiGroup 录播课
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
      *
