@@ -528,6 +528,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'course/\d+/user/\d+/watch/records',
             ],
+            [
+                'group_name' => '课程',
+                'display_name' => '录播课-学员批量导入',
+                'slug' => 'course.subscribe.import',
+                'method' => 'POST',
+                'url' => 'course/\d+/subscribe/import',
+            ],
 
             // 视频
             [

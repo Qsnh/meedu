@@ -160,6 +160,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
+        Route::post('/{id}/subscribe/import', 'CourseController@importUsers');
         Route::get('/{id}/user/{userId}/watch/records', 'CourseController@videoWatchRecords');
     });
 
