@@ -14,6 +14,7 @@ class FrontendConstant
     const PAYMENT_SCENE_PC = 'pc';
     const PAYMENT_SCENE_H5 = 'h5';
     const PAYMENT_SCENE_WECHAT = 'wechat';
+    const PAYMENT_SCENE_HAND_PAY = 'handPay';
 
     // 支付渠道-方法
     const PAYMENT_SCENE_WECHAT_SCAN = 'scan';

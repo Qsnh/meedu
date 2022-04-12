@@ -7,3 +7,8 @@
  */
 
 Route::get('/search', 'SearchController@index');
+
+Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
+    // 手动打款
+    Route::post('/order/pay/handPay', 'PaymentController@handPay');
+});
