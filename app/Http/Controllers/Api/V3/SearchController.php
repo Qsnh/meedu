@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Api\V3;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\Base\Services\ConfigService;
 use App\Http\Controllers\Api\V2\BaseController;
@@ -74,24 +73,22 @@ class SearchController extends BaseController
         if ($data['data']) {
             foreach ($data['data'] as $key => $item) {
                 $p = '';
-                if (Str::contains($item['short_desc'], $keywords)) {
-                    $p = $item['short_desc'];
-                } elseif (Str::contains($item['desc'], $keywords)) {
-                    $desc = strip_tags($item['desc']);
-                    $index = mb_strpos($desc, $keywords);
-                    if ($index !== false) {
-                        // 关键字左边的字符串截取
-                        if ($index < 100) {
-                            $leftStr = mb_substr($desc, 0, $index);
-                        } else {
-                            $leftStr = mb_substr($desc, $index - 100, 100);
-                        }
-
-                        // 关键字右边的字符串截取
-                        $rightStr = mb_substr($desc, $index + mb_strlen($keywords), 100) . '...';
-
-                        $p = $leftStr . $keywords . $rightStr;
+                $shortDesc = $item['short_desc'];
+                $desc = strip_tags($item['desc']);
+                if (mb_stripos($shortDesc, $keywords) !== false) {
+                    $p = $shortDesc;
+                } elseif (($index = mb_stripos($desc, $keywords)) !== false) {
+                    // 关键字左边的字符串截取
+                    if ($index < 100) {
+                        $leftStr = mb_substr($desc, 0, $index);
+                    } else {
+                        $leftStr = mb_substr($desc, $index - 100, 100);
                     }
+
+                    // 关键字右边的字符串截取
+                    $rightStr = mb_substr($desc, $index + mb_strlen($keywords), 100) . '...';
+
+                    $p = $leftStr . $keywords . $rightStr;
                 }
                 $data['data'][$key]['p'] = $p;
             }
