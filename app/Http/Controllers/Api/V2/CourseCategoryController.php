@@ -34,6 +34,9 @@ class CourseCategoryController extends BaseController
      * @apiSuccess {Number} data.id 分类ID
      * @apiSuccess {String} data.name 分类名
      * @apiSuccess {Number} data.parent_id 分类父ID
+     * @apiSuccess {Object[]} data.children 子类
+     * @apiSuccess {Number} data.children.id 子分类ID
+     * @apiSuccess {String} data.children.name 子分类名
      */
     public function all()
     {

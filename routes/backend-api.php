@@ -8,14 +8,16 @@
 
 Route::post('/login', 'LoginController@login');
 
+Route::get('/captcha/image', 'CaptchaController@image');
+
 Route::group(['middleware' => ['auth:administrator']], function () {
     Route::get('/media/images', 'MediaImageController@index');
     Route::post('/media/image', 'MediaImageController@upload');
 
-    Route::get('/media/videos/index', 'MediaVideoController@index');
-    Route::post('/media/videos/create', 'MediaVideoController@store');
-
     Route::get('/addons', 'AddonsController@index');
+
+    // 安全退出
+    Route::post('/logout', 'LoginController@logout');
 });
 
 Route::group(['middleware' => ['auth:administrator', 'backend.permission']], function () {
@@ -25,6 +27,12 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/check', 'DashboardController@check');
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
+
+    Route::group(['prefix' => 'media/videos'], function () {
+        Route::get('/index', 'MediaVideoController@index');
+        Route::post('/create', 'MediaVideoController@store');
+        Route::post('/delete/multi', 'MediaVideoController@deleteVideos');
+    });
 
     Route::group(['prefix' => 'video/token'], function () {
         Route::post('/tencent', 'VideoUploadController@tencentToken');
@@ -152,6 +160,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/subscribes', 'CourseController@subscribes');
         Route::get('/{id}/subscribe/delete', 'CourseController@deleteSubscribe');
         Route::post('/{id}/subscribe/create', 'CourseController@createSubscribe');
+        Route::post('/{id}/subscribe/import', 'CourseController@importUsers');
         Route::get('/{id}/user/{userId}/watch/records', 'CourseController@videoWatchRecords');
     });
 
@@ -191,6 +200,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}', 'MemberController@edit');
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
+        Route::put('/field/multi', 'MemberController@updateFieldMulti');
 
         // 更新用户标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
@@ -217,6 +227,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::post('/credit1/change', 'MemberController@credit1Change');
         // 发送站内消息
         Route::post('/{id}/message', 'MemberController@sendMessage');
+        Route::post('/message/multi', 'MemberController@sendMessageMulti');
 
         // 用户标签管理
         Route::group(['prefix' => 'tag'], function () {
@@ -240,6 +251,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/', 'OrderController@index');
         Route::get('/{id}', 'OrderController@detail');
         Route::get('/{id}/finish', 'OrderController@finishOrder');
+        Route::post('/{id}/refund', 'OrderController@submitRefund');
+        Route::get('/refund/list', 'OrderController@refundOrders');
+        Route::delete('/refund/{id}', 'OrderController@deleteRefundOrder');
     });
 
     // 图片上传
@@ -259,6 +273,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     // 课程分类
     Route::group(['prefix' => 'courseCategory'], function () {
         Route::get('/', 'CourseCategoryController@index');
+        Route::get('/create', 'CourseCategoryController@create');
         Route::post('/', 'CourseCategoryController@store');
         Route::get('/{id}', 'CourseCategoryController@edit');
         Route::put('/{id}', 'CourseCategoryController@update');

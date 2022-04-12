@@ -25,26 +25,33 @@ class CacheConstant
     // 该数据会与之后轮训的数据进行比对
     public const USER_VIDEO_WATCH_DURATION = [
         'name' => self::PREFIX_C . 'uvwd:%d',
-        'expire' => 3600 * 24 * 3,
+        'expire' => 259200, //3天
     ];
 
     // 用户验证码缓存
     // 登录，注册，找回密码等短信验证码
     public const MOBILE_CODE = [
         'name' => self::PREFIX_C . 'm:%s',
-        'expire' => 60 * 5,
+        'expire' => 300,
+    ];
+
+    // 短信验证码安全机制
+    // 当短信验证码校验超过一定次数就销毁已存在的短信验证码
+    public const MOBILE_CODE_SAFE = [
+        'name' => self::PREFIX_C . 'mcs:%s',
+        'expire' => 600,
     ];
 
     // 用户微信小程序登录sessionKey缓存
     public const WECHAT_MINI_SESSION_KEY = [
         'name' => self::PREFIX_C . 'wmsk:%s',
-        'expire' => 3600 * 12,
+        'expire' => 43200, //12个小时
     ];
 
     // 微信扫码支付请求返回数据缓存
     public const WECHAT_PAY_SCAN_RETURN_DATA = [
         'name' => self::PREFIX_C . 'wpsrd:%s',
-        'expire' => 3600 * 12,
+        'expire' => 43200, //12个小时
     ];
 
     // adFrom访问统计
@@ -140,6 +147,12 @@ class CacheConstant
     // 微信公众号扫码登录
     public const WECHAT_SCAN_LOGIN = [
         'name' => self::PREFIX_C . 'wechat:s:l:%s',
-        'expire' => 60 * 30,
+        'expire' => 3600, //1小时
+    ];
+
+    // 阿里云视频播放地址缓存
+    public const ALIYUN_PLAY_URL = [
+        'name' => self::PREFIX_C . 'aliyun:play:i:%d:t:%d:f:%s',
+        'expire' => 1800, //30分钟
     ];
 }

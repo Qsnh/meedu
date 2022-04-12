@@ -8,6 +8,8 @@
 
 namespace App\Http\Requests\Backend;
 
+use Carbon\Carbon;
+
 class CourseRequest extends BaseRequest
 {
     /**
@@ -63,7 +65,7 @@ class CourseRequest extends BaseRequest
             'render_desc' => $this->input('render_desc'),
             'seo_keywords' => (string)$this->input('seo_keywords', ''),
             'seo_description' => (string)$this->input('seo_description', ''),
-            'published_at' => $this->input('published_at'),
+            'published_at' => Carbon::parse($this->input('published_at'))->toDateTimeLocalString(),
             'is_show' => (int)$this->input('is_show', 0),
             'is_rec' => (int)$this->input('is_rec', 0),
             'is_free' => (int)$this->input('is_free'),

@@ -33,6 +33,8 @@ Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback'
 // 社交登录
 Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin');
 Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v2.login.socialite.callback');
+// 安全退出
+Route::post('/logout', 'LoginController@logout')->middleware(['auth:apiv2']);
 
 // 课程搜索
 Route::get('/search', 'SearchController@index');
@@ -51,6 +53,7 @@ Route::get('/course_categories', 'CourseCategoryController@all');
 Route::get('/videos', 'VideoController@paginate');
 Route::get('/video/{id}', 'VideoController@detail');
 Route::get('/video/{id}/playinfo', 'VideoController@playInfo')->middleware(['auth:apiv2']);
+Route::get('/video/open/play', 'VideoController@openPlay');
 Route::get('/video/{id}/comments', 'VideoController@comments');
 Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(['auth:apiv2']);
 Route::post('/video/{id}/record', 'VideoController@recordVideo')->middleware(['auth:apiv2']);

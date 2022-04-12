@@ -80,7 +80,7 @@ class OrderController extends FrontendController
             // 页面标题
             $title = __('微信支付');
 
-            return v('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data', 'sUrl', 'fUrl'));
+            return view('h5.order.wechat-jsapi-pay', compact('order', 'title', 'data', 'sUrl', 'fUrl'));
         } catch (\Exception $e) {
             abort(500, __('参数错误'));
         }

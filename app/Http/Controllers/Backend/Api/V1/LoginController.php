@@ -21,6 +21,10 @@ class LoginController extends BaseController
 
     public function login(LoginRequest $request)
     {
+        if (captcha_image_check() === false) {
+            return $this->error(__('图形验证码错误'));
+        }
+
         ['username' => $username, 'password' => $password] = $request->filldata();
 
         $admin = Administrator::query()->where('email', $username)->first();
@@ -123,5 +127,11 @@ class LoginController extends BaseController
         return $this->successData([
             'menus' => $data,
         ]);
+    }
+
+    public function logout()
+    {
+        Auth::guard(self::GUARD)->logout();
+        return $this->success();
     }
 }

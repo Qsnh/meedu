@@ -59,7 +59,8 @@ class LoginTest extends Base
     public function test_mobile_login()
     {
         $mobile = '13890900909';
-        $user = User::factory()->create([
+
+        User::factory()->create([
             'mobile' => $mobile,
             'is_lock' => User::LOCK_NO,
         ]);
@@ -72,7 +73,7 @@ class LoginTest extends Base
         $cacheService->put($key, '123456', 100);
 
         $response = $this->postJson('/api/v2/login/mobile', [
-            'mobile' => $user->mobile,
+            'mobile' => $mobile,
             'mobile_code' => '123456',
         ]);
         $this->assertResponseSuccess($response);

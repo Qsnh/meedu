@@ -16,7 +16,7 @@ class UploadController extends BaseController
      * @api {post} /api/v2/upload/image 上传图片
      * @apiGroup 其它
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {File} file 图片文件
      *

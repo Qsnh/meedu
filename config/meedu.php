@@ -192,10 +192,16 @@ return [
         'player' => [
             // 跑马灯
             'enabled_bullet_secret' => 0,
+            'bullet_secret' => [
+                'text' => '', //默认为当前用户手机号
+                'size' => 0, //默认14px
+                'color' => '', //默认red
+                'opacity' => 1, //默认1
+            ],
             // 腾讯云播放key
             'tencent_play_key' => '',
-            // 腾讯云超级播放器配置
-            'tencent_pcfg' => 'default',
+            // 播放格式
+            'video_format_whitelist' => '',
         ],
 
         // 缓存开关

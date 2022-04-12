@@ -25,7 +25,7 @@ class SearchController extends BaseController
      * @apiVersion v3.0.0
      *
      * @apiParam {String} keywords 搜索关键字
-     * @apiParam {String=vod:录播课,video:录播视频,live:直播课,book:电子书,topic:图文,paper:试卷,practice:练习} type 课程类型
+     * @apiParam {String=vod:录播课,video:录播视频,live:直播课,book:电子书,topic:图文,paper:试卷,practice:练习,mock_paper:模拟卷} type 课程类型
      * @apiParam {Number} size 每页数量
      * @apiParam {Number} page 页码
      *
@@ -69,6 +69,30 @@ class SearchController extends BaseController
         $searchService = app()->make(SearchRecordServiceInterface::class);
 
         $data = $searchService->search($keywords, $page, $size, $type);
+
+        if ($data['data']) {
+            foreach ($data['data'] as $key => $item) {
+                $p = '';
+                $shortDesc = $item['short_desc'];
+                $desc = strip_tags($item['desc']);
+                if (mb_stripos($shortDesc, $keywords) !== false) {
+                    $p = $shortDesc;
+                } elseif (($index = mb_stripos($desc, $keywords)) !== false) {
+                    // 关键字左边的字符串截取
+                    if ($index < 100) {
+                        $leftStr = mb_substr($desc, 0, $index);
+                    } else {
+                        $leftStr = mb_substr($desc, $index - 100, 100);
+                    }
+
+                    // 关键字右边的字符串截取
+                    $rightStr = mb_substr($desc, $index + mb_strlen($keywords), 100) . '...';
+
+                    $p = $leftStr . $keywords . $rightStr;
+                }
+                $data['data'][$key]['p'] = $p;
+            }
+        }
 
         return $this->data($data);
     }

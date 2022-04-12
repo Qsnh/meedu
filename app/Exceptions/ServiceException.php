@@ -20,8 +20,6 @@ class ServiceException extends \Exception
         if (request()->wantsJson()) {
             return $this->error($message);
         }
-        flash($message);
-
         return back();
     }
 }

@@ -528,6 +528,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'GET',
                 'url' => 'course/\d+/user/\d+/watch/records',
             ],
+            [
+                'group_name' => '课程',
+                'display_name' => '录播课-学员批量导入',
+                'slug' => 'course.subscribe.import',
+                'method' => 'POST',
+                'url' => 'course/\d+/subscribe/import',
+            ],
 
             // 视频
             [
@@ -653,6 +660,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '用户字段批量编辑',
+                'slug' => 'member.update.field.multi',
+                'method' => 'PUT',
+                'url' => 'member/field/multi',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户详情',
                 'slug' => 'member.detail',
                 'method' => 'GET',
@@ -765,6 +779,13 @@ class AdministratorPermissionSeeder extends Seeder
             ],
             [
                 'group_name' => '用户',
+                'display_name' => '给用户发站内消息(批量)',
+                'slug' => 'member.message.send.multi',
+                'method' => 'POST',
+                'url' => 'member/message/multi',
+            ],
+            [
+                'group_name' => '用户',
                 'display_name' => '用户视频观看记录',
                 'slug' => 'member.video.watch.records',
                 'method' => 'GET',
@@ -815,6 +836,27 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'order.finish',
                 'method' => 'GET',
                 'url' => 'order/\d+/finish',
+            ],
+            [
+                'group_name' => '订单',
+                'display_name' => '退款-申请退款',
+                'slug' => 'order.refund',
+                'method' => 'POST',
+                'url' => 'order/\d+/refund',
+            ],
+            [
+                'group_name' => '订单',
+                'display_name' => '退款-订单列表',
+                'slug' => 'order.refund.list',
+                'method' => 'GET',
+                'url' => 'order/refund/list',
+            ],
+            [
+                'group_name' => '订单',
+                'display_name' => '退款-删除记录',
+                'slug' => 'order.refund.delete',
+                'method' => 'DELETE',
+                'url' => 'order/refund/\d+',
             ],
 
             // 优惠码
@@ -875,6 +917,13 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'courseCategory',
                 'method' => 'GET',
                 'url' => 'courseCategory',
+            ],
+            [
+                'group_name' => '课程',
+                'display_name' => '课程分类添加',
+                'slug' => 'courseCategory.create',
+                'method' => 'GET',
+                'url' => 'courseCategory/create',
             ],
             [
                 'group_name' => '课程',
@@ -1125,6 +1174,29 @@ class AdministratorPermissionSeeder extends Seeder
                 'slug' => 'viewBlock.destroy',
                 'method' => 'DELETE',
                 'url' => 'viewBlock/\d+',
+            ],
+
+            // 上传视频管理
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '已上传视频列表',
+                'slug' => 'media.video.list',
+                'method' => 'GET',
+                'url' => 'media/videos/index',
+            ],
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '上传视频',
+                'slug' => 'media.video.store',
+                'method' => 'POST',
+                'url' => 'media/videos/create',
+            ],
+            [
+                'group_name' => '视频素材库',
+                'display_name' => '批量删除视频',
+                'slug' => 'media.video.delete.multi',
+                'method' => 'POST',
+                'url' => 'media/videos/delete/multi',
             ],
         ];
 

@@ -20,7 +20,7 @@ class CourseCategoryServiceTest extends TestCase
      */
     protected $service;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(CourseCategoryServiceInterface::class);
@@ -28,8 +28,10 @@ class CourseCategoryServiceTest extends TestCase
 
     public function test_all()
     {
-        CourseCategory::factory()->count(10)->create();
+        CourseCategory::factory()->count(9)->create();
+        CourseCategory::factory()->count(9)->create(['parent_id' => 1]);
+
         $res = $this->service->all();
-        $this->assertEquals(10, count($res));
+        $this->assertEquals(9, count($res));
     }
 }

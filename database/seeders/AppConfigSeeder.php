@@ -133,16 +133,12 @@ class AppConfigSeeder extends Seeder
                         'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
                     ],
                     [
-                        'title' => '单平台限制',
-                        'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM,
-                    ],
-                    [
-                        'title' => '全平台限制',
+                        'title' => '仅允许一台设备在线',
                         'key' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_ALL,
                     ],
                 ]),
                 'value' => \App\Constant\FrontendConstant::LOGIN_LIMIT_RULE_DEFAULT,
-                'help' => '单平台限制=每一个平台仅允许一台设备登录.全平台限制=所有平台仅允许一台设备登录',
+                'help' => '',
             ],
 
             // QQ登录
@@ -678,6 +674,24 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
                 'is_private' => 1,
             ],
+            [
+                'group' => '支付',
+                'name' => '微信支付API证书-cert',
+                'field_type' => 'text',
+                'sort' => 20,
+                'key' => 'pay.wechat.cert_client',
+                'value' => '',
+                'is_private' => 1,
+            ],
+            [
+                'group' => '支付',
+                'name' => '微信支付API证书-key',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'pay.wechat.cert_key',
+                'value' => '',
+                'is_private' => 1,
+            ],
 
             // 手动打款
             [
@@ -772,15 +786,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.tencent_play_key',
                 'value' => '',
                 'is_private' => 1,
-            ],
-            [
-                'group' => '视频',
-                'name' => '腾讯云播放格式',
-                'field_type' => 'text',
-                'sort' => 10,
-                'key' => 'tencent.vod.transcode_format',
-                'value' => '',
-                'help' => '默认支持所有格式，如果配置mp4则只支持mp4，多个请用英文逗号连接',
             ],
 
             // 会员配置
@@ -995,6 +1000,48 @@ class AppConfigSeeder extends Seeder
                 'default_value' => 0,
                 'key' => 'meedu.system.player.enabled_bullet_secret',
                 'value' => 0,
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-内容',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'meedu.system.player.bullet_secret.text',
+                'value' => '',
+                'help' => '已支持变量：${mobile}=手机号，${nickname}=用户昵称，${id}=用户ID。不填写则默认为用户手机号。',
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字大小',
+                'field_type' => 'number',
+                'sort' => 20,
+                'key' => 'meedu.system.player.bullet_secret.size',
+                'value' => 14,
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字颜色',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'meedu.system.player.bullet_secret.color',
+                'value' => '',
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '跑马灯-文字透明度',
+                'field_type' => 'text',
+                'sort' => 40,
+                'key' => 'meedu.system.player.bullet_secret.opacity',
+                'value' => 1,
+            ],
+            [
+                'group' => '播放器配置',
+                'name' => '播放视频格式白名单',
+                'field_type' => 'text',
+                'sort' => 100,
+                'key' => 'meedu.system.player.video_format_whitelist',
+                'value' => '',
+                'help' => '设置视频格式后缀，多个请用英文逗号连接',
             ],
 
             // 微信公众号

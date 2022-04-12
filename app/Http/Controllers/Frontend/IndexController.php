@@ -10,6 +10,11 @@ namespace App\Http\Controllers\Frontend;
 
 class IndexController extends FrontendController
 {
+    public function index()
+    {
+        return __('API服务正在运行');
+    }
+
     public function userProtocol()
     {
         $protocol = $this->configService->getMemberProtocol();

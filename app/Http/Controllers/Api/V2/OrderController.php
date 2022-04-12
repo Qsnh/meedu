@@ -74,7 +74,7 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/course 创建录播课程订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} course_id 录播课程ID
      * @apiParam {String} [promo_code] 优惠码/邀请码
@@ -119,7 +119,7 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/role 创建VIP订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} role_id VIPid
      * @apiParam {String} [promo_code] 优惠码/邀请码
@@ -158,7 +158,7 @@ class OrderController extends BaseController
      * @api {post} /api/v2/order/video 创建视频订单
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} video_id videoID
      * @apiParam {String} [promo_code] 优惠码/邀请码
@@ -206,7 +206,7 @@ class OrderController extends BaseController
      * @api {get} /api/v2/order/status 订单状态查询
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} order_id 订单编号
      *
@@ -217,7 +217,7 @@ class OrderController extends BaseController
     public function queryStatus(Request $request)
     {
         $orderId = $request->input('order_id', '');
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
 
         return $this->data([
             'status' => $order['status'],

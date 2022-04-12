@@ -13,6 +13,7 @@ use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseAttach;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Course\Models\CourseChapter;
+use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
@@ -68,7 +69,16 @@ class CourseService implements CourseServiceInterface
                 $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
             }])
             ->when($categoryId, function ($query) use ($categoryId) {
-                $query->where('category_id', $categoryId);
+                $ids = [$categoryId];
+                $childrenIds = CourseCategory::query()
+                    ->where('parent_id', $categoryId)
+                    ->select(['id'])
+                    ->get()
+                    ->pluck('id')
+                    ->toArray();
+
+                $ids = array_merge($ids, $childrenIds);
+                $query->whereIn('category_id', $ids);
             })
             ->when($scene === 'free', function ($query) {
                 $query->where('is_free', 1);

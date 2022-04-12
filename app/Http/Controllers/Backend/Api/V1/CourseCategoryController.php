@@ -18,10 +18,22 @@ class CourseCategoryController extends BaseController
     public function index(Request $request)
     {
         $data = CourseCategory::query()
+            ->with(['children'])
+            ->where('parent_id', 0)
             ->orderBy('sort')
             ->paginate($request->input('size', 10));
 
         return $this->successData($data);
+    }
+
+    public function create()
+    {
+        $categories = CourseCategory::query()
+            ->where('parent_id', 0)
+            ->orderBy('sort')
+            ->get();
+
+        return $this->successData(compact('categories'));
     }
 
     public function store(CourseCategoryRequest $request)
@@ -49,6 +61,10 @@ class CourseCategoryController extends BaseController
 
     public function destroy($id)
     {
+        if (CourseCategory::query()->where('parent_id', $id)->exists()) {
+            return $this->error('该分类下存在子分类，无法删除');
+        }
+
         if (Course::query()->where('category_id', $id)->exists()) {
             return $this->error(__('当前分类下存在课程，无法删除'));
         }

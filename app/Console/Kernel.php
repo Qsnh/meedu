@@ -8,6 +8,7 @@
 
 namespace App\Console;
 
+use App\Meedu\Schedule\ScheduleContainer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -48,13 +49,22 @@ class Kernel extends ConsoleKernel
         $schedule->command('order:pay:timeout')
             ->onOneServer()
             ->everyThirtyMinutes()
-            ->appendOutputTo(storage_path('logs/order_pay_timeout'));
+            ->appendOutputTo(storage_path('logs/order_pay_timeout.log'));
 
         // 会员过期处理
         $schedule->command('member:role:expired')
             ->onOneServer()
             ->hourly()
-            ->appendOutputTo(storage_path('logs/user_role_expired'));
+            ->appendOutputTo(storage_path('logs/user_role_expired.log'));
+
+        // 订单退款查询处理
+        $schedule->command('meedu:refund:query')
+            ->onOneServer()
+            ->everyFiveMinutes()
+            ->appendOutputTo(storage_path('logs/order_refund.log'));
+
+        // 预留定时任务钩子
+        ScheduleContainer::instance()->exec($schedule);
     }
 
     /**

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\User;
 use App\Events\VodCourseCreatedEvent;
 use App\Events\VodCourseUpdatedEvent;
@@ -25,6 +26,12 @@ use App\Services\Member\Models\UserVideoWatchRecord;
 
 class CourseController extends BaseController
 {
+    public function all()
+    {
+        $courses = Course::query()->select(['id', 'title'])->get();
+        return $this->successData(['data' => $courses]);
+    }
+
     public function index(Request $request)
     {
         $id = $request->input('id');
@@ -62,7 +69,12 @@ class CourseController extends BaseController
 
     public function create()
     {
-        $categories = CourseCategory::query()->select(['id', 'name', 'sort'])->orderBy('sort')->get();
+        $categories = CourseCategory::query()
+            ->select(['id', 'name', 'sort'])
+            ->with(['children:id,parent_id,sort,name'])
+            ->where('parent_id', 0)
+            ->orderBy('sort')
+            ->get();
         return $this->successData(compact('categories'));
     }
 
@@ -269,12 +281,6 @@ class CourseController extends BaseController
         return $this->success();
     }
 
-    public function all()
-    {
-        $courses = Course::query()->select(['id', 'title'])->get();
-        return $this->successData(['data' => $courses]);
-    }
-
     public function videoWatchRecords($courseId, $userId)
     {
         $course = Course::query()->where('id', $courseId)->firstOrFail();
@@ -330,5 +336,82 @@ class CourseController extends BaseController
         return $this->successData([
             'data' => $data,
         ]);
+    }
+
+    public function importUsers(Request $request, $id)
+    {
+        $mobileList = $request->input('mobiles');
+        if (!$mobileList || !is_array($mobileList)) {
+            return $this->error(__('参数错误'));
+        }
+
+        // 剔除空行
+        $mobiles = [];
+        foreach ($mobileList as $mobile) {
+            $mobile && $mobiles[] = $mobile;
+        }
+
+        if (count($mobiles) > 1000) {
+            return $this->error(__('一次最多导入:count名学员', ['count' => 1000]));
+        }
+
+        // 重复手机号检测
+        $uniqueMobiles = array_flip(array_flip($mobiles));
+        if (count($mobiles) !== count($uniqueMobiles)) {
+            return $this->error(__('手机号重复'));
+        }
+
+        $registerMobiles = [];
+        $mobile2id = [];
+
+        // 校验手机号是否为本站注册学员
+        foreach (array_chunk($mobiles, 100) as $mobilesChunk) {
+            $tmp = User::query()->whereIn('mobile', $mobilesChunk)->select(['id', 'mobile'])->get();
+            $registerMobiles = array_merge($registerMobiles, $tmp->pluck('mobile')->toArray());
+            $mobile2id = array_merge($mobile2id, $tmp->toArray());
+        }
+        $mobile2id = array_column($mobile2id, 'id', 'mobile');
+        $diff = array_diff($mobiles, $registerMobiles);
+        if ($diff) {
+            return $this->error(__('手机号[:mobiles]非本站注册学员', ['mobiles' => implode(',', $diff)]));
+        }
+
+        $userId2mobile = array_flip($mobile2id);
+        $userIds = array_values($mobile2id);
+
+        // 校验是否有重复导入的学员手机号
+        foreach (array_chunk($userIds, 200) as $userIdsChunk) {
+            $existsUserIds = UserCourse::query()
+                ->whereIn('user_id', $userIdsChunk)
+                ->where('course_id', $id)
+                ->select(['user_id'])
+                ->get()
+                ->pluck('user_id')
+                ->toArray();
+            if ($existsUserIds) {
+                $tmpMobiles = array_map(function ($userId) use ($userId2mobile) {
+                    return $userId2mobile[$userId];
+                }, $existsUserIds);
+                return $this->error(__('手机号[:mobiles]已关联课程，请勿重复导入', ['mobiles' => implode(',', $tmpMobiles)]));
+            }
+        }
+
+        DB::transaction(function () use ($id, $userIds) {
+            $now = date('Y-m-d H:i:s');
+            foreach (array_chunk($userIds, 150) as $userIdsChunk) {
+                $insertData = [];
+                foreach ($userIdsChunk as $userId) {
+                    $insertData[] = [
+                        'course_id' => $id,
+                        'user_id' => $userId,
+                        'created_at' => $now,
+                        'charge' => 0,
+                    ];
+                }
+                $insertData && UserCourse::insert($insertData);
+            }
+        });
+
+        return $this->success();
     }
 }

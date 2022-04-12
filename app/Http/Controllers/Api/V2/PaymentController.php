@@ -44,7 +44,7 @@ class PaymentController extends BaseController
      * @api {post} /api/v2/order/payment/wechat/mini 微信小程序支付
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} openid openid
      * @apiParam {String} order_id 订单编号
@@ -66,7 +66,7 @@ class PaymentController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }
@@ -98,7 +98,7 @@ class PaymentController extends BaseController
      * @api {get} /api/v2/order/payments 支付网关列表
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} scene 支付场景[h5,wechat]
      *
@@ -129,7 +129,7 @@ class PaymentController extends BaseController
      * @api {get} /api/v2/order/pay/redirect 跳转到第三方支付
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String=h5:手机浏览器,wechat:微信浏览器} payment_scene 支付场景
      * @apiParam {String=alipay:支付宝支付,wechat-jsapi:微信jsapi支付,handPay:手动打款} payment 支付方式
@@ -157,7 +157,7 @@ class PaymentController extends BaseController
             return $this->error(__('错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }
@@ -183,7 +183,7 @@ class PaymentController extends BaseController
      * @api {get} /api/v2/order/pay/handPay 手动打款支付
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -205,7 +205,7 @@ class PaymentController extends BaseController
      * @api {post} /api/v2/order/pay/wechatScan 微信扫码支付[PC]
      * @apiGroup 订单
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} order_id 订单编号
      *
@@ -220,7 +220,7 @@ class PaymentController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        $order = $this->orderService->findUser($orderId);
+        $order = $this->orderService->findUser($this->id(), $orderId);
         if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
             return $this->error(__('订单状态错误'));
         }

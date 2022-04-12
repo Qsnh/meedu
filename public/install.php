@@ -6,13 +6,25 @@ function alert($message)
     exit($message);
 }
 
+function is_https()
+{
+    if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+        return true;
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        return true;
+    } elseif (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+        return true;
+    }
+    return false;
+}
+
 if (file_exists('../storage/install.lock')) {
     alert('请勿重复安装');
 }
 $uri = $_SERVER['REQUEST_URI'];
-if (stripos($uri, '/public/ius') !== false) {
+if (mb_substr($uri, 0, 7) === '/public') {
     // 网站根目录配置错啦
-    alert('网站运行根目录配置错误');
+    alert('网站运行根目录配置错误。请将网站运行目录配置到meedu程序根目录下的public目录。');
 }
 
 $step = (int)($_GET['step'] ?? 0);
@@ -217,7 +229,15 @@ if ($step === 0) {
         }
 
         if ($dbConnected) {
-            // 数据库连接成功，写入.env文件
+            // 数据库连接成功
+            // 将配置写入.env文件
+
+            // 如果未配置协议的话则自动配置协议
+            if (mb_substr($url, 0, 4) !== 'http') {
+                $url = (is_https() ? 'https://' : 'http://') . $url;
+            }
+
+            // 待替换的配置项
             $replaceArr = [
                 '{URL}' => $url,
                 '{MYSQL_HOST}' => $dbHost,
@@ -365,7 +385,6 @@ if ($step === 0) {
                 <div class="pb-5">
                     <h3 style="color: green" class="my-5">安装成功</h3>
                     <a href="/" class="btn btn-success">网站首页</a>
-                    <a href="/admin" class="btn btn-info">后台地址</a>
                 </div>
             </div>
         </div>

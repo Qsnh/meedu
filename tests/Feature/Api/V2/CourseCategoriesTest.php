@@ -14,9 +14,7 @@ class CourseCategoriesTest extends Base
 {
     public function test_courses()
     {
-        CourseCategory::factory()->count(10)->create([
-            'is_show' => CourseCategory::IS_SHOW_YES,
-        ]);
+        CourseCategory::factory()->count(10)->create(['is_show' => 1]);
         $response = $this->get('/api/v2/course_categories');
         $r = $this->assertResponseSuccess($response);
         $this->assertEquals(10, count($r['data']));

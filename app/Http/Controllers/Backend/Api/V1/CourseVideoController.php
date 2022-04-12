@@ -101,11 +101,8 @@ class CourseVideoController extends BaseController
         $video = Video::query()->where('id', $id)->firstOrFail();
 
         DB::transaction(function () use ($video) {
-            // 清空用户的观看记录
-            UserVideoWatchRecord::query()->where('video_id', $video['id'])->delete();
-
             $videoId = $video['id'];
-
+            
             $video->delete();
 
             event(new VodVideoDestroyedEvent($videoId));
@@ -114,30 +111,15 @@ class CourseVideoController extends BaseController
         return $this->success();
     }
 
-    protected function hook($courseId)
-    {
-        $count = Video::query()->where('course_id', $courseId)->where('charge', '>', 0)->count();
-        $isFree = $count === 0;
-        Course::query()->where('id', $courseId)->update(['is_free' => $isFree]);
-    }
-
     public function multiDestroy(Request $request)
     {
         $ids = $request->input('ids');
 
         DB::transaction(function () use ($ids) {
-            $videos = Video::query()
-                ->select([
-                    'id'
-                ])
-                ->whereIn('id', $ids)
-                ->get();
+            $videos = Video::query()->select(['id'])->whereIn('id', $ids)->get();
 
             foreach ($videos as $video) {
                 $videoId = $video['id'];
-
-                // 清空用户观看记录
-                UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();
 
                 $video->delete();
 

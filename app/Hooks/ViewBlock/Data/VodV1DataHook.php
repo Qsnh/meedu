@@ -39,19 +39,21 @@ class VodV1DataHook implements HookRuntimeInterface
                 $courseIds,
                 [
                     'id', 'title', 'thumb', 'charge', 'user_count', 'short_description',
-                    'published_at', 'category_id', 'is_rec', 'is_free',
+                    'published_at', 'category_id', 'is_rec', 'is_free', 'created_at',
                 ],
-                [
-                    'category:id,name'
-                ]
+                ['category:id,name']
             );
             $courses = array_column($courses, null, 'id');
 
+            $items = [];
             foreach ($block['config_render']['items'] as $index => $courseItem) {
-                if (isset($courses[$courseItem['id']])) {
-                    $block['config_render']['items'][$index] = $courses[$courseItem['id']];
+                $id = $courseItem['id'] ?? 0;
+                if (!$id || !isset($courses[$id])) {
+                    continue;
                 }
+                $items[] = $courses[$id];
             }
+            $block['config_render']['items'] = $items;
 
             $params->setResponse($block);
         }

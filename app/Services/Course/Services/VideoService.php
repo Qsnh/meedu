@@ -10,6 +10,7 @@ namespace App\Services\Course\Services;
 
 use Carbon\Carbon;
 use App\Services\Course\Models\Video;
+use App\Services\Course\Models\MediaVideo;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoService implements VideoServiceInterface
@@ -141,5 +142,21 @@ class VideoService implements VideoServiceInterface
     public function viewNumIncrement(int $videoId, int $num): void
     {
         Video::query()->where('id', $videoId)->increment('view_num', $num);
+    }
+
+    /**
+     * @param string $fileId
+     * @param string $service
+     * @return array
+     */
+    public function findOpenVideo(string $fileId, string $service): array
+    {
+        $mediaVideo = MediaVideo::query()
+            ->where('storage_file_id', $fileId)
+            ->where('storage_driver', $service)
+            ->where('is_open', 1)
+            ->first();
+
+        return $mediaVideo ? $mediaVideo->toArray() : [];
     }
 }

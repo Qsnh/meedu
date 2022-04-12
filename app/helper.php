@@ -6,46 +6,6 @@
  * (c) 杭州白书科技有限公司
  */
 
-if (!function_exists('flash')) {
-    function flash($message, $level = 'warning')
-    {
-        $message = new \Illuminate\Support\MessageBag([$level => $message]);
-        request()->session()->flash($level, $message);
-    }
-}
-
-if (!function_exists('get_first_flash')) {
-    /**
-     * 获取第一条FLASH信息.
-     *
-     * @param $level
-     *
-     * @return mixed|string
-     */
-    function get_first_flash($level)
-    {
-        if ($level === 'error' && session('errors') && session('errors')->any()) {
-            return session('errors')->all()[0];
-        }
-        if (!session()->has($level)) {
-            return '';
-        }
-
-        return session($level)->first();
-    }
-}
-if (!function_exists('menu_active')) {
-    /**
-     * @param $routeName
-     *
-     * @return bool
-     */
-    function menu_active($routeName)
-    {
-        return request()->routeIs($routeName) ? 'active' : '';
-    }
-}
-
 if (!function_exists('exception_record')) {
     /**
      * 记录异常.
@@ -124,10 +84,31 @@ if (!function_exists('aliyun_play_url')) {
     function aliyun_play_url(array $video, $isTry = false)
     {
         /**
+         * @var \App\Services\Base\Services\CacheService $cacheService
+         */
+        $cacheService = app()->make(\App\Services\Base\Interfaces\CacheServiceInterface::class);
+        $cacheKey = '';
+        if (isset($video['id']) && $video['id']) {
+            $cacheKey = get_cache_key(
+                \App\Constant\CacheConstant::ALIYUN_PLAY_URL['name'],
+                $video['id'],
+                $isTry ? 1 : 0,
+                $video['aliyun_video_id']
+            );
+            $playUrl = $cacheService->get($cacheKey);
+            if ($playUrl) {
+                return unserialize($playUrl);
+            }
+        }
+
+
+        /**
          * @var \App\Services\Base\Services\ConfigService $configService
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $config = $configService->getAliyunVodConfig();
+
+        $videoFormatWhitelist = $configService->getPlayVideoFormatWhitelist();
 
         try {
             aliyun_sdk_client();
@@ -136,15 +117,18 @@ if (!function_exists('aliyun_play_url')) {
             ($isTry && $video['free_seconds'] > 0) && $playConfig['PreviewTime'] = $video['free_seconds'];
 
             $query = ['VideoId' => $video['aliyun_video_id']];
+
+            // 播放参数配置[试看]
             $playConfig && $query['PlayConfig'] = json_encode($playConfig);
+            // 视频播放格式白名单
+            $videoFormatWhitelist && $query['Formats'] = implode(',', $videoFormatWhitelist);
+
             $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
                 ->product('Vod')
                 ->host($config['host'])
                 ->version('2017-03-21')
                 ->action('GetPlayInfo')
-                ->options([
-                    'query' => $query,
-                ])
+                ->options(['query' => $query])
                 ->request();
 
             $playInfo = $result['PlayInfoList']['PlayInfo'];
@@ -156,6 +140,11 @@ if (!function_exists('aliyun_play_url')) {
                     'duration' => $item['Duration'],
                     'name' => $item['Height'],
                 ];
+            }
+
+            if ($cacheKey && $rows) {
+                // 写入缓存
+                $cacheService->put($cacheKey, serialize($rows), \App\Constant\CacheConstant::ALIYUN_PLAY_URL['expire']);
             }
 
             return $rows;
@@ -180,23 +169,6 @@ if (!function_exists('aliyun_sdk_client')) {
             ->connectTimeout(3)
             ->timeout(30)
             ->asDefaultClient();
-    }
-}
-
-if (!function_exists('v')) {
-    /**
-     * 重写视图.
-     *
-     * @param $viewName
-     * @param array $params
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    function v($viewName, $params = [])
-    {
-        is_h5() && $viewName = str_replace('frontend', 'h5', $viewName);
-
-        return view($viewName, $params);
     }
 }
 
@@ -372,12 +344,13 @@ if (!function_exists('arr2_clear')) {
 if (!function_exists('get_tencent_play_url')) {
     function get_tencent_play_url(string $vid): array
     {
+        /**
+         * @var $configService \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $config = $configService->getTencentVodConfig();
+
         try {
-            /**
-             * @var $configService \App\Services\Base\Services\ConfigService
-             */
-            $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
-            $config = $configService->getTencentVodConfig();
             $credential = new \TencentCloud\Common\Credential($config['secret_id'], $config['secret_key']);
             $client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
             $req = new \TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest();
@@ -391,12 +364,12 @@ if (!function_exists('get_tencent_play_url')) {
             if ($response->MediaInfoSet[0]->TranscodeInfo) {
                 // 配置了转码信息
                 $urls = [];
-                $supportFormat = $configService->getTencentVodTranscodeFormat();
+                $supportFormat = $configService->getPlayVideoFormatWhitelist();
                 foreach ($response->MediaInfoSet[0]->TranscodeInfo->TranscodeSet as $item) {
                     $url = $item->Url;
                     $format = strtolower(pathinfo($url, PATHINFO_EXTENSION));
                     if ($supportFormat && !in_array($format, $supportFormat)) {
-                        // 限定转码格式，只能使用一种
+                        // 视频播放格式白名单校验
                         continue;
                     }
                     $urls[] = [
@@ -446,14 +419,12 @@ if (!function_exists('get_play_url')) {
         } elseif ($video['tencent_video_id']) {
             // 腾讯云
             $playUrl = get_tencent_play_url($video['tencent_video_id']);
-            // 是否开启了播放key
-            if ($key = config('meedu.system.player.tencent_play_key')) {
-                $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
-                $playUrl = array_map(function ($item) use ($tencentKey, $isTry, $video) {
-                    $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
-                    return $item;
-                }, $playUrl);
-            }
+            // 开启播放key
+            $tencentKey = app()->make(\App\Meedu\Player\TencentKey::class);
+            $playUrl = array_map(function ($item) use ($tencentKey, $isTry, $video) {
+                $item['url'] = $tencentKey->url($item['url'], $isTry, $video);
+                return $item;
+            }, $playUrl);
         } else {
             $playUrl[] = [
                 'url' => $video['url'],
@@ -462,8 +433,6 @@ if (!function_exists('get_play_url')) {
                 'duration' => 0,
             ];
         }
-
-        sort($playUrl);
 
         return collect($playUrl);
     }
@@ -556,7 +525,7 @@ if (!function_exists('query_builder')) {
 }
 
 if (!function_exists('save_image')) {
-    function save_image($file): array
+    function save_image($file, $pathPrefix = ''): array
     {
         /**
          * @var \Illuminate\Http\UploadedFile $file
@@ -567,7 +536,7 @@ if (!function_exists('save_image')) {
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
         $disk = $configService->getImageStorageDisk();
-        $path = $file->store($configService->getImageStoragePath(), compact('disk'));
+        $path = $file->store($configService->getImageStoragePath() . ($pathPrefix ? '/' . $pathPrefix : ''), compact('disk'));
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
         $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
         $data = compact('path', 'url', 'disk', 'name');
@@ -618,9 +587,69 @@ if (!function_exists('wechat_qrcode_image')) {
     }
 }
 
-if (!function_exists('view_hook')) {
-    function view_hook(string $position)
+if (!function_exists('captcha_image_check')) {
+    function captcha_image_check()
     {
-        return \App\Meedu\Hooks\HookRun::run($position, new \App\Meedu\Hooks\HookParams([]));
+        $imageKey = request()->input('image_key');
+        if (!$imageKey) {
+            return false;
+        }
+        $imageCaptcha = request()->input('image_captcha', '');
+        if (!app()->make(\Mews\Captcha\Captcha::class)->check_api($imageCaptcha, $imageKey)) {
+            return false;
+        }
+        return true;
+    }
+}
+
+if (!function_exists('mobile_code_check')) {
+    function mobile_code_check($mobile, $mobileCode)
+    {
+        if (!$mobile || !$mobileCode) {
+            return false;
+        }
+
+        // 测试环境固定验证码
+        if (is_dev() && $mobileCode === '112233') {
+            return true;
+        }
+
+        /**
+         * @var $cacheService \App\Services\Base\Services\CacheService
+         */
+        $cacheService = app()->make(\App\Services\Base\Interfaces\CacheServiceInterface::class);
+
+        $mobileCodeKey = get_cache_key(\App\Constant\CacheConstant::MOBILE_CODE['name'], $mobile);
+        $mobileCodeSafeKey = get_cache_key(\App\Constant\CacheConstant::MOBILE_CODE_SAFE['name'], $mobile);
+
+        // 校验次数写入缓存
+        // 在[校验成功]或者[触发安全机制]之后会被删除
+        if ($cacheService->has($mobileCodeSafeKey)) {
+            $cacheService->inc($mobileCodeSafeKey, 1);
+        } else {
+            // 第一次写入，未防止并发校验写入结果
+            // 如果因为并发导致的非第一次写入的话，那么本次写入失败
+            // 验证码校验无法继续
+            if (!$cacheService->add($mobileCodeSafeKey, 1, \App\Constant\CacheConstant::MOBILE_CODE_SAFE['expire'])) {
+                return false;
+            }
+        }
+
+        $code = $cacheService->get($mobileCodeKey);
+        if ($code && $code === $mobileCode) {
+            $cacheService->forget($mobileCodeKey);
+            $cacheService->forget($mobileCodeSafeKey);
+            return true;
+        }
+
+        $verifyCount = (int)$cacheService->get($mobileCodeSafeKey);
+        if ($verifyCount > 10) {
+            // 如果短信验证码校验超过10次都是失败的话，那么直接忘掉该手机的短信验证码
+            // 间接要求用户重新发送短信验证码
+            $cacheService->forget($mobileCodeKey);
+            $cacheService->forget($mobileCodeSafeKey);
+        }
+
+        return false;
     }
 }

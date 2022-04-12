@@ -8,15 +8,16 @@
 
 namespace App\Services\Order\Services;
 
+use Carbon\Carbon;
 use App\Events\OrderCancelEvent;
 use App\Businesses\BusinessState;
 use Illuminate\Support\Facades\DB;
 use App\Events\PaymentSuccessEvent;
 use App\Exceptions\ServiceException;
 use App\Services\Order\Models\Order;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Models\OrderGoods;
+use App\Services\Order\Models\OrderRefund;
 use App\Services\Order\Models\OrderPaidRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -44,7 +45,7 @@ class OrderService implements OrderServiceInterface
         return DB::transaction(function () use ($userId, $total, $goodsItems, $promoCodeId) {
             // 优惠码抵扣
             $promoCodeDiscount = 0;
-            $promoCode = PromoCode::find($promoCodeId);
+            $promoCode = PromoCode::query()->where('id', $promoCodeId)->first();
             if ($promoCode && $this->businessState->promoCodeCanUse($userId, $promoCode->toArray())) {
                 $promoCodeDiscount = $promoCode['invited_user_reward'];
                 // 记录使用次数
@@ -53,7 +54,9 @@ class OrderService implements OrderServiceInterface
 
             // 订单状态
             $orderStatus = Order::STATUS_UNPAY;
-            $total - $promoCodeDiscount <= 0 && $orderStatus = Order::STATUS_PAID;
+            if ($total - $promoCodeDiscount <= 0) {
+                $orderStatus = Order::STATUS_PAID;
+            }
 
             $order = Order::create([
                 'user_id' => $userId,
@@ -82,14 +85,16 @@ class OrderService implements OrderServiceInterface
             }
             OrderGoods::insert($orderGoodsItems);
 
-            // 订单支付记录
-            $promoCodeDiscount && OrderPaidRecord::create([
-                'user_id' => $userId,
-                'order_id' => $order['id'],
-                'paid_total' => $promoCodeDiscount,
-                'paid_type' => OrderPaidRecord::PAID_TYPE_PROMO_CODE,
-                'paid_type_id' => $promoCode['id']
-            ]);
+            // 优惠码抵扣记录
+            if ($promoCodeDiscount > 0) {
+                OrderPaidRecord::create([
+                    'user_id' => $userId,
+                    'order_id' => $order['id'],
+                    'paid_total' => $promoCodeDiscount,
+                    'paid_type' => OrderPaidRecord::PAID_TYPE_PROMO_CODE,
+                    'paid_type_id' => $promoCode['id']
+                ]);
+            }
 
             // 订单支付事件
             if ($order['status'] === Order::STATUS_PAID) {
@@ -176,67 +181,23 @@ class OrderService implements OrderServiceInterface
         return $userId . $time . $rand;
     }
 
-    /**
-     * @param string $orderId
-     *
-     * @return array
-     */
-    public function findNoPaid(string $orderId): array
-    {
-        return Order::whereStatus(Order::STATUS_UNPAY)->whereOrderId($orderId)->firstOrFail()->toArray();
-    }
-
-    /**
-     * @param string $orderId
-     *
-     * @return array
-     */
-    public function findUserNoPaid(string $orderId): array
-    {
-        return Order::whereUserId(Auth::id())
-            ->whereStatus(Order::STATUS_UNPAY)
-            ->whereOrderId($orderId)
-            ->firstOrFail()->toArray();
-    }
-
-    /**
-     * @param string $orderId
-     *
-     * @return array
-     */
     public function findOrFail(string $orderId): array
     {
-        return Order::whereOrderId($orderId)->firstOrFail()->toArray();
+        return Order::query()->where('order_id', $orderId)->firstOrFail()->toArray();
     }
 
-    /**
-     * @param string $orderId
-     *
-     * @return array
-     */
-    public function findUser(string $orderId): array
+    public function findUser(int $userId, string $orderId): array
     {
-        return Order::whereUserId(Auth::id())->whereOrderId($orderId)->firstOrFail()->toArray();
+        return Order::query()
+            ->where('user_id', $userId)
+            ->where('order_id', $orderId)
+            ->firstOrFail()
+            ->toArray();
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     public function findId(int $id): array
     {
-        return Order::whereId($id)->firstOrFail()->toArray();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
-    public function findUserId(int $id): array
-    {
-        return Order::whereId($id)->whereUserId(Auth::id())->firstOrFail()->toArray();
+        return Order::query()->where('id', $id)->firstOrFail()->toArray();
     }
 
     /**
@@ -271,15 +232,9 @@ class OrderService implements OrderServiceInterface
         event(new OrderCancelEvent($order['id']));
     }
 
-    /**
-     * @param int $page
-     * @param int $pageSize
-     *
-     * @return array
-     */
-    public function userOrdersPaginate(int $page, int $pageSize): array
+    public function userOrdersPaginate(int $userId, int $page, int $pageSize): array
     {
-        $query = Order::query()->whereUserId(Auth::id());
+        $query = Order::query()->where('user_id', $userId);
         $total = $query->count();
         $list = $query
             ->with(['goods:id,oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge,num,charge'])
@@ -292,35 +247,39 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * @param int $id
+     * 订单改为已完成
      *
-     * @throws ServiceException
+     * @param int $id
      */
     public function changePaid(int $id): void
     {
-        Order::findOrFail($id)->update(['status' => Order::STATUS_PAID]);
+        Order::query()->where('id', $id)->firstOrFail()->update(['status' => Order::STATUS_PAID]);
     }
 
     /**
-     * @param int $id
+     * 获取订单的商品
      *
+     * @param int $id
      * @return array
      */
     public function getOrderProducts(int $id): array
     {
-        return OrderGoods::where('oid', $id)->get()->toArray();
+        return OrderGoods::query()->where('oid', $id)->get()->toArray();
     }
 
     /**
-     * @param string $date
+     * 获取超时订单
      *
+     * @param string $date
      * @return array
      */
     public function getTimeoutOrders(string $date): array
     {
-        return Order::whereIn('status', [Order::STATUS_UNPAY, Order::STATUS_PAYING])
+        return Order::query()
+            ->whereIn('status', [Order::STATUS_UNPAY, Order::STATUS_PAYING])
             ->where('created_at', '<=', $date)
-            ->get()->toArray();
+            ->get()
+            ->toArray();
     }
 
     /**
@@ -348,14 +307,18 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
+     * 删除订单支付记录
+     *
      * @param int $id
      */
     public function destroyOrderPaidRecords(int $id): void
     {
-        OrderPaidRecord::whereOrderId($id)->delete();
+        OrderPaidRecord::query()->where('order_id', $id)->delete();
     }
 
     /**
+     * 计算订单直接支付的金额
+     *
      * @param int $orderId
      * @return int
      */
@@ -365,5 +328,41 @@ class OrderService implements OrderServiceInterface
             ->where('order_id', $orderId)
             ->where('paid_type', OrderPaidRecord::PAID_TYPE_DEFAULT)
             ->sum('paid_total');
+    }
+
+    /**
+     * @param string $refundNo
+     * @return array
+     */
+    public function findOrderRefund(string $refundNo): array
+    {
+        return OrderRefund::query()
+            ->where('refund_no', $refundNo)
+            ->firstOrFail()
+            ->toArray();
+    }
+
+    public function changeOrderRefundStatus(int $id, int $status): void
+    {
+        $updateData = ['status' => $status];
+        if ($status === OrderRefund::STATUS_SUCCESS) {
+            $updateData['success_at'] = Carbon::now()->toDateTimeLocalString();
+        }
+        OrderRefund::query()->where('id', $id)->update($updateData);
+    }
+
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function takeProcessingRefundOrders(int $limit): array
+    {
+        return OrderRefund::query()
+            ->with(['order:id,order_id'])
+            ->where('status', OrderRefund::STATUS_DEFAULT)
+            ->orderBy('id')
+            ->take($limit)
+            ->get()
+            ->toArray();
     }
 }

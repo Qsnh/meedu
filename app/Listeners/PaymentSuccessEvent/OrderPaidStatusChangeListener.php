@@ -30,17 +30,16 @@ class OrderPaidStatusChangeListener implements ShouldQueue
         $this->businessState = $businessState;
     }
 
-    /**
-     * @param $event
-     * @throws \App\Exceptions\ServiceException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function handle($event)
     {
-        // 修改订单状态
+        // 修改订单状态为已完成
         $this->orderService->changePaid($event->order['id']);
-        // 记录PaidRecords
+
+        // 如果订单还有未支付的金额的话
+        // 那么将这部分未支付金额直接改为以直接支付的方式支付
         $paidTotal = $this->businessState->calculateOrderNeedPaidSum($event->order);
-        $this->orderService->createOrderPaidRecordDefault($event->order['id'], $event->order['user_id'], $paidTotal);
+        if ($paidTotal > 0) {
+            $this->orderService->createOrderPaidRecordDefault($event->order['id'], $event->order['user_id'], $paidTotal);
+        }
     }
 }

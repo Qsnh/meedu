@@ -50,17 +50,17 @@ class LoginStatusCheckMiddleware
         $user = Auth::guard($guard)->user();
 
         $rule = $this->configService->getLoginLimitRule();
-        if ($rule === FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM || $rule === FrontendConstant::LOGIN_LIMIT_RULE_ALL) {
+        if ($rule === FrontendConstant::LOGIN_LIMIT_RULE_ALL) {
             $lastLoginAt = Auth::guard($guard)->payload()[FrontendConstant::USER_LOGIN_AT_COOKIE_NAME] ?? '';
             if (!$lastLoginAt) {
+                // 当前token中没有最后登录时间 -> 主动退出登录
                 Auth::guard($guard)->logout();
                 return $this->error(__('请重新登录'), 401);
             }
 
-            $platform = $rule === FrontendConstant::LOGIN_LIMIT_RULE_PLATFORM ? get_platform() : '';
-            $userLastLoginRecord = $this->userService->findUserLastLoginRecord($user['id'], $platform);
+            $userLastLoginRecord = $this->userService->findUserLastLoginRecord($user['id'], '');
             if (!$userLastLoginRecord) {
-                // 登录记录不存在
+                // 当前用户没有登录记录 -> 主动退出
                 Auth::guard($guard)->logout();
                 return $this->error(__('请重新登录'), 401);
             }

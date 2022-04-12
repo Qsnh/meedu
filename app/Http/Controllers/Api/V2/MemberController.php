@@ -101,7 +101,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/detail 用户详情
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -155,7 +155,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/detail/password 修改密码
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -181,7 +181,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/detail/mobile 手机号绑定
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -207,7 +207,7 @@ class MemberController extends BaseController
      * @api {put} /api/v2/member/mobile 手机号更换
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -235,7 +235,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/detail/nickname 修改昵称
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} nick_name 新昵称
      *
@@ -253,7 +253,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/detail/avatar 修改头像
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {File} file 头像文件
      *
@@ -272,7 +272,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/roles VIP订购记录
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -305,7 +305,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/messages 站内消息
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -338,7 +338,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses 已购录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -388,7 +388,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses/like 已收藏录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -438,7 +438,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/courses/history 已学习录播课程
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -488,7 +488,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/videos 已购视频
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -536,7 +536,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/orders 订单列表
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -567,12 +567,13 @@ class MemberController extends BaseController
      */
     public function orders(Request $request)
     {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
+        $page = (int)$request->input('page', 1);
+        $pageSize = (int)$request->input('page_size', 10);
+
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->orderService->userOrdersPaginate($page, $pageSize);
+        ] = $this->orderService->userOrdersPaginate($this->id(), $page, $pageSize);
         $list = arr2_clear($list, ApiV2Constant::MODEL_ORDER_FIELD);
 
         foreach ($list as $key => $val) {
@@ -587,7 +588,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/inviteBalanceRecords 邀请余额明细
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -623,7 +624,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/promoCode 邀请码
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -656,7 +657,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} 消息标记已读
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -671,7 +672,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/unreadNotificationCount 未读消息数量
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Number} data 未读消息数量
@@ -686,7 +687,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/notificationMarkAllAsRead 消息全部标记已读
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -701,7 +702,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/inviteUsers 已邀请用户
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -741,7 +742,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/withdrawRecords 邀请余额提现记录
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -785,7 +786,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/withdraw 邀请余额提现
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} channel 打款渠道
      * @apiParam {String} channel_name 打款渠道-姓名
@@ -822,7 +823,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/credit1Records 积分明细
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -860,7 +861,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/profile 我的资料
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -891,7 +892,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/profile 资料编辑
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} [real_name] 真实姓名
      * @apiParam {String} [gender] 性别[1:男,2:女,0:未公开]
@@ -920,7 +921,7 @@ class MemberController extends BaseController
      * @api {post} /api/v2/member/verify 校验
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -944,7 +945,7 @@ class MemberController extends BaseController
      * @api {get} /api/v2/member/wechatScan/bind 微信扫码绑定[二维码]
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -964,7 +965,7 @@ class MemberController extends BaseController
      * @api {delete} /api/v2/member/socialite/{app} 社交登录解绑
      * @apiGroup 用户
      * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+token
+     * @apiHeader Authorization Bearer+空格+token
      * @apiDescription app={qq:QQ登录,wechat:微信}
      *
      * @apiSuccess {Number} code 0成功,非0失败
