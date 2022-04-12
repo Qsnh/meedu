@@ -311,4 +311,22 @@ class OrderController extends BaseController
             ],
         ]);
     }
+
+    public function deleteRefundOrder($id)
+    {
+        $refundOrder = OrderRefund::query()->where('id', $id)->firstOrFail();
+        $orderAllRefundOrdersCount = (int)OrderRefund::query()->where('order_id', $refundOrder['order_id'])->count();
+        DB::transaction(function () use ($refundOrder, $orderAllRefundOrdersCount) {
+            // 删除退款订单
+            $refundOrder->delete();
+
+            // 如果是唯一的退款订单则修改原订单的退款状态
+            if ($orderAllRefundOrdersCount === 1) {
+                Order::query()
+                    ->where('id', $refundOrder['order_id'])
+                    ->update(['is_refund' => 0]);
+            }
+        });
+        return $this->success();
+    }
 }
