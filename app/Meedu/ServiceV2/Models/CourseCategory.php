@@ -6,20 +6,18 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Services\Member\Models;
+namespace App\Meedu\ServiceV2\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UserCourse extends Model
+class CourseCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_course';
+    protected $table = 'course_categories';
 
     protected $fillable = [
-        'course_id', 'user_id', 'charge', 'created_at',
+        'sort', 'name', 'parent_id', 'parent_chain', 'is_show',
     ];
-
-    public $timestamps = false;
 }
