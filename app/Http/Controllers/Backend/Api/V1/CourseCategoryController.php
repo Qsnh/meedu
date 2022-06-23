@@ -18,12 +18,30 @@ class CourseCategoryController extends BaseController
     public function index(Request $request)
     {
         $data = CourseCategory::query()
-            ->with(['children'])
+            ->select(['id', 'sort', 'name', 'parent_id'])
             ->where('parent_id', 0)
             ->orderBy('sort')
             ->paginate($request->input('size', 10));
 
-        return $this->successData($data);
+        $total = $data->total();
+        $data = $data->items();
+
+        $children = CourseCategory::query()
+            ->select(['id', 'sort', 'name', 'parent_id'])
+            ->whereIn('parent_id', array_column($data, 'id'))
+            ->orderBy('sort')
+            ->get()
+            ->groupBy('parent_id')
+            ->toArray();
+
+        foreach ($data as $key => $item) {
+            $data[$key]['children'] = $children[$item['id']] ?? [];
+        }
+
+        return $this->successData([
+            'data' => $data,
+            'total' => $total,
+        ]);
     }
 
     public function create()

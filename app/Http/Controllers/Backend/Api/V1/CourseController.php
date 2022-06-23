@@ -23,9 +23,12 @@ use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
+use App\Http\Controllers\Backend\Api\V1\Traits\CourseCategoryTrait;
 
 class CourseController extends BaseController
 {
+    use CourseCategoryTrait;
+
     public function all()
     {
         $courses = Course::query()->select(['id', 'title'])->get();
@@ -69,12 +72,8 @@ class CourseController extends BaseController
 
     public function create()
     {
-        $categories = CourseCategory::query()
-            ->select(['id', 'name', 'sort'])
-            ->with(['children:id,parent_id,sort,name'])
-            ->where('parent_id', 0)
-            ->orderBy('sort')
-            ->get();
+        $categories = $this->getCourseCategoriesAndChildren();
+
         return $this->successData(compact('categories'));
     }
 
