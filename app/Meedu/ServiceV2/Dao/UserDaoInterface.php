@@ -12,7 +12,7 @@ interface UserDaoInterface
 {
     public function getUserCoursePaginate(int $userId, int $page, int $size): array;
 
-    public function getUserCourses(int $userId): array;
+    public function getUserCourses(int $userId, array $courseIds): array;
 
     public function getUserCourseWatchRecordsChunk(int $userId, array $courseIds): array;
 

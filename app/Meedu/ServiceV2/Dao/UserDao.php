@@ -29,12 +29,14 @@ class UserDao implements UserDaoInterface
         return compact('total', 'data');
     }
 
-    public function getUserCourses(int $userId): array
+    public function getUserCourses(int $userId, array $courseIds): array
     {
         return UserCourse::query()
-            ->select(['id', 'course_id', 'user_id', 'charge', 'created_at'])
+            ->select(['course_id', 'user_id', 'charge', 'created_at'])
             ->where('user_id', $userId)
-            ->orderByDesc('id')
+            ->when($courseIds, function ($query) use ($courseIds) {
+                $query->whereIn('course_id', $courseIds);
+            })
             ->get()
             ->toArray();
     }

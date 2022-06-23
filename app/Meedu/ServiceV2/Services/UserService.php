@@ -29,16 +29,12 @@ class UserService implements UserServiceInterface
 
             // 关联观看记录[记录中含有:观看进度,开始时间,看完时间]
             $watchRecords = $this->userDao->getUserCourseWatchRecordsChunk($userId, $courseIds);
-            if ($watchRecords) {
-                $watchRecords = array_column($watchRecords, null, 'course_id');
-                foreach ($data as $key => $item) {
-                    $data[$key]['watch_record'] = $watchRecords[$item['course_id']] ?? [];
-                }
-            }
+            $watchRecords && $watchRecords = array_column($watchRecords, null, 'course_id');
 
             // 关联已看课时
             $learnedCount = $this->userDao->getPerUserLearnedCourseVideoCount($userId, $courseIds);
             $learnedCount && $learnedCount = array_column($learnedCount, null, 'course_id');
+
             foreach ($data as $key => $item) {
                 $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
                 if ($tmpLearnedCount) {
@@ -48,6 +44,8 @@ class UserService implements UserServiceInterface
                     $data[$key]['learned_count'] = 0;
                     $data[$key]['last_watched_at'] = null;
                 }
+
+                $data[$key]['watch_record'] = $watchRecords[$item['course_id']] ?? [];
             }
         }
 
@@ -65,6 +63,11 @@ class UserService implements UserServiceInterface
             // 关联已看课时
             $learnedCount = $this->userDao->getPerUserLearnedCourseVideoCount($userId, $courseIds);
             $learnedCount && $learnedCount = array_column($learnedCount, null, 'course_id');
+
+            // 是否订阅
+            $userCourse = $this->userDao->getUserCourses($userId, $courseIds);
+            $userCourse && $userCourse = array_column($userCourse, null, 'course_id');
+
             foreach ($data as $key => $item) {
                 $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
                 if ($tmpLearnedCount) {
@@ -74,6 +77,8 @@ class UserService implements UserServiceInterface
                     $data[$key]['learned_count'] = 0;
                     $data[$key]['last_watched_at'] = null;
                 }
+
+                $data[$key]['is_subscribe'] = isset($userCourse[$item['course_id']]) ? 1 : 0;
             }
         }
 

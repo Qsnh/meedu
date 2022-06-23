@@ -91,6 +91,7 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.data.progress 进度[0-100]
      * @apiSuccess {String} data.data.created_at 观看开始时间
      * @apiSuccess {String} data.data.updated_at 最近观看时间
+     * @apiSuccess {Number} data.data.is_subscribe 是否订阅课程[1:是,0:否]
      * @apiSuccess {Object} data.data.course 课程
      * @apiSuccess {String} data.data.course.title 课程名
      * @apiSuccess {String} data.data.course.thumb 课程封面
