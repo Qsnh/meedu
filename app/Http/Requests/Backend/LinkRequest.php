@@ -29,7 +29,6 @@ class LinkRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'url' => 'required',
         ];
     }
 
@@ -37,7 +36,6 @@ class LinkRequest extends BaseRequest
     {
         return [
             'name.required' => __('请输入友情链接名'),
-            'url.required' => __('请输入友情链接地址'),
         ];
     }
 
@@ -46,7 +44,7 @@ class LinkRequest extends BaseRequest
         return [
             'sort' => (int)$this->input('sort', 0),
             'name' => $this->input('name'),
-            'url' => $this->input('url'),
+            'url' => $this->input('url') ?? '',
         ];
     }
 }

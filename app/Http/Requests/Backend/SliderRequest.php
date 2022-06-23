@@ -24,7 +24,6 @@ class SliderRequest extends BaseRequest
     {
         return [
             'thumb' => 'required',
-            'url' => 'required',
             'platform' => 'required',
         ];
     }
@@ -33,7 +32,6 @@ class SliderRequest extends BaseRequest
     {
         return [
             'thumb.required' => __('请上传图片'),
-            'url.required' => __('请输入链接地址'),
             'platform.required' => __('请选择平台'),
         ];
     }
@@ -43,7 +41,7 @@ class SliderRequest extends BaseRequest
         return [
             'sort' => (int)$this->input('sort'),
             'thumb' => $this->input('thumb'),
-            'url' => $this->input('url'),
+            'url' => $this->input('url') ?? '',
             'platform' => $this->input('platform'),
         ];
     }
