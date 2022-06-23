@@ -38,17 +38,15 @@ class UserService implements UserServiceInterface
 
             // 关联已看课时
             $learnedCount = $this->userDao->getPerUserLearnedCourseVideoCount($userId, $courseIds);
-            if ($learnedCount) {
-                $learnedCount = array_column($learnedCount, null, 'course_id');
-                foreach ($data as $key => $item) {
-                    $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
-                    if ($tmpLearnedCount) {
-                        $data[$key]['learned_count'] = $tmpLearnedCount['learned_count'];
-                        $data[$key]['last_watched_at'] = $tmpLearnedCount['updated_at'];
-                    } else {
-                        $data[$key]['learned_count'] = 0;
-                        $data[$key]['last_watched_at'] = null;
-                    }
+            $learnedCount && $learnedCount = array_column($learnedCount, null, 'course_id');
+            foreach ($data as $key => $item) {
+                $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
+                if ($tmpLearnedCount) {
+                    $data[$key]['learned_count'] = $tmpLearnedCount['learned_count'];
+                    $data[$key]['last_watched_at'] = $tmpLearnedCount['updated_at'];
+                } else {
+                    $data[$key]['learned_count'] = 0;
+                    $data[$key]['last_watched_at'] = null;
                 }
             }
         }
@@ -66,17 +64,15 @@ class UserService implements UserServiceInterface
 
             // 关联已看课时
             $learnedCount = $this->userDao->getPerUserLearnedCourseVideoCount($userId, $courseIds);
-            if ($learnedCount) {
-                $learnedCount = array_column($learnedCount, null, 'course_id');
-                foreach ($data as $key => $item) {
-                    $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
-                    if ($tmpLearnedCount) {
-                        $data[$key]['learned_count'] = $tmpLearnedCount['learned_count'];
-                        $data[$key]['last_watched_at'] = $tmpLearnedCount['updated_at'];
-                    } else {
-                        $data[$key]['learned_count'] = 0;
-                        $data[$key]['last_watched_at'] = null;
-                    }
+            $learnedCount && $learnedCount = array_column($learnedCount, null, 'course_id');
+            foreach ($data as $key => $item) {
+                $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
+                if ($tmpLearnedCount) {
+                    $data[$key]['learned_count'] = $tmpLearnedCount['learned_count'];
+                    $data[$key]['last_watched_at'] = $tmpLearnedCount['updated_at'];
+                } else {
+                    $data[$key]['learned_count'] = 0;
+                    $data[$key]['last_watched_at'] = null;
                 }
             }
         }
