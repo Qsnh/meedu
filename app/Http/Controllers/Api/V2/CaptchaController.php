@@ -48,6 +48,7 @@ class CaptchaController extends BaseController
     /**
      * @api {get} /api/v2/captcha/image 图形验证码
      * @apiGroup 其它
+     * @apiName CaptchaImage
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -65,6 +66,7 @@ class CaptchaController extends BaseController
     /**
      * @api {post} /api/v2/captcha/sms 发送短信
      * @apiGroup 其它
+     * @apiName CaptchaSMS
      * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号

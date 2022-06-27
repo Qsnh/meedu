@@ -20,7 +20,7 @@ class MemberController extends BaseController
      * @api {get} /api/v3/member/courses 已购录播课
      * @apiGroup 用户-V3
      * @apiName MemberCoursesV3
-     * @apiVersion v1.0.0
+     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page
@@ -107,7 +107,7 @@ class MemberController extends BaseController
      * @api {get} /api/v3/member/courses/learned 已学习录播课
      * @apiGroup 用户-V3
      * @apiName MemberCoursesLearnedV3
-     * @apiVersion v1.0.0
+     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page
@@ -191,7 +191,7 @@ class MemberController extends BaseController
      * @api {get} /api/v3/member/courses/like 收藏课程
      * @apiGroup 用户-V3
      * @apiName  MemberCoursesLike
-     * @apiVersion v1.0.0
+     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page

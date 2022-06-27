@@ -27,6 +27,7 @@ class CourseCategoryController extends BaseController
     /**
      * @api {get} /api/v2/course_categories 录播课程分类
      * @apiGroup 录播课
+     * @apiName CourseCategories
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败

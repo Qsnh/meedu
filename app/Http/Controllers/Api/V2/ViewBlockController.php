@@ -19,6 +19,7 @@ class ViewBlockController extends BaseController
     /**
      * @api {get} /api/v2/viewBlock/page/blocks 页面装修模块
      * @apiGroup 装修界面
+     * @apiName ViewPageBlocks
      * @apiVersion v2.0.0
      *
      * @apiParam {String} platform 平台[APP,H5,PC,MINI]

@@ -78,14 +78,14 @@ class MemberController extends BaseController
     protected $configService;
 
     public function __construct(
-        UserServiceInterface $userService,
-        CourseServiceInterface $courseService,
-        VideoServiceInterface $videoService,
-        RoleServiceInterface $roleService,
-        OrderServiceInterface $orderService,
+        UserServiceInterface      $userService,
+        CourseServiceInterface    $courseService,
+        VideoServiceInterface     $videoService,
+        RoleServiceInterface      $roleService,
+        OrderServiceInterface     $orderService,
         SocialiteServiceInterface $socialiteService,
-        BusinessState $businessState,
-        ConfigServiceInterface $configService
+        BusinessState             $businessState,
+        ConfigServiceInterface    $configService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
@@ -100,6 +100,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/detail 用户详情
      * @apiGroup 用户
+     * @apiName MemberDetail
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -154,6 +155,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/detail/password 修改密码
      * @apiGroup 用户
+     * @apiName MemberPasswordChange
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -180,6 +182,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/detail/mobile 手机号绑定
      * @apiGroup 用户
+     * @apiName MemberMobileBind
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -206,6 +209,7 @@ class MemberController extends BaseController
     /**
      * @api {put} /api/v2/member/mobile 手机号更换
      * @apiGroup 用户
+     * @apiName MemberMobileChange
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -234,6 +238,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/detail/nickname 修改昵称
      * @apiGroup 用户
+     * @apiName MemberNicknameChange
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -252,6 +257,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/detail/avatar 修改头像
      * @apiGroup 用户
+     * @apiName MemberAvatarChange
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -271,6 +277,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/roles VIP订购记录
      * @apiGroup 用户
+     * @apiName MemberRoles
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -304,6 +311,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/messages 站内消息
      * @apiGroup 用户
+     * @apiName MemberMessages
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -337,6 +345,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/courses 已购录播课程
      * @apiGroup 用户
+     * @apiName MemberCoursesV2
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -387,6 +396,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/courses/like 已收藏录播课程
      * @apiGroup 用户
+     * @apiName MemberCoursesLikeV2
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -437,6 +447,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/courses/history 已学习录播课程
      * @apiGroup 用户
+     * @apiName MemberCoursesHistory
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -487,6 +498,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/videos 已购视频
      * @apiGroup 用户
+     * @apiName MemberVideos
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -535,6 +547,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/orders 订单列表
      * @apiGroup 用户
+     * @apiName MemberOrders
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -587,6 +600,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/inviteBalanceRecords 邀请余额明细
      * @apiGroup 用户
+     * @apiName MemberInviteBalanceRecords
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -623,6 +637,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/promoCode 邀请码
      * @apiGroup 用户
+     * @apiName MemberPromoCode
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -656,6 +671,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} 消息标记已读
      * @apiGroup 用户
+     * @apiName MemberMessageMarkReadAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -671,6 +687,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/unreadNotificationCount 未读消息数量
      * @apiGroup 用户
+     * @apiName MemberUnreadMessageCount
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -686,6 +703,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/notificationMarkAllAsRead 消息全部标记已读
      * @apiGroup 用户
+     * @apiName MemberMarkAllMessages
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -701,6 +719,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/inviteUsers 已邀请用户
      * @apiGroup 用户
+     * @apiName MemberInviteUsers
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -741,6 +760,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/withdrawRecords 邀请余额提现记录
      * @apiGroup 用户
+     * @apiName MemberWithdrawRecords
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -785,6 +805,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/withdraw 邀请余额提现
      * @apiGroup 用户
+     * @apiName MemberWithdrawAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -822,6 +843,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/credit1Records 积分明细
      * @apiGroup 用户
+     * @apiName MemberCredit1Records
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -860,6 +882,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/profile 我的资料
      * @apiGroup 用户
+     * @apiName MemberProfile
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -891,6 +914,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/profile 资料编辑
      * @apiGroup 用户
+     * @apiName MemberProfileUpdate
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -920,6 +944,7 @@ class MemberController extends BaseController
     /**
      * @api {post} /api/v2/member/verify 校验
      * @apiGroup 用户
+     * @apiName MemberVerify
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -944,6 +969,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/wechatScan/bind 微信扫码绑定[二维码]
      * @apiGroup 用户
+     * @apiName MemberWechatBind
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -964,6 +990,7 @@ class MemberController extends BaseController
     /**
      * @api {delete} /api/v2/member/socialite/{app} 社交登录解绑
      * @apiGroup 用户
+     * @apiName MemberSocialiteUnbind
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription app={qq:QQ登录,wechat:微信}
@@ -988,8 +1015,8 @@ class MemberController extends BaseController
 
     public function socialiteBindCallback(
         SocialiteServiceInterface $socialiteService,
-        BusinessState $businessState,
-        Request $request,
+        BusinessState             $businessState,
+        Request                   $request,
         $app
     ) {
         /**
@@ -1028,6 +1055,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/socialite/{app} 社交账号绑定[302重定向]
      * @apiGroup 用户
+     * @apiName MemberSocialiteBind
      * @apiVersion v2.0.0
      * @apiDescription app={qq:QQ登录}
      *
@@ -1073,6 +1101,7 @@ class MemberController extends BaseController
     /**
      * @api {get} /api/v2/member/wechatBind 微信公众号授权绑定[302重定向]
      * @apiGroup 用户
+     * @apiName MemberWechatBind
      * @apiVersion v2.0.0
      *
      * @apiParam {String} token 登录token

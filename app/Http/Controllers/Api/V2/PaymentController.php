@@ -43,6 +43,7 @@ class PaymentController extends BaseController
     /**
      * @api {post} /api/v2/order/payment/wechat/mini 微信小程序支付
      * @apiGroup 订单
+     * @apiName PaymentWechatMini
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -97,6 +98,7 @@ class PaymentController extends BaseController
     /**
      * @api {get} /api/v2/order/payments 支付网关列表
      * @apiGroup 订单
+     * @apiName Payments
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -128,6 +130,7 @@ class PaymentController extends BaseController
     /**
      * @api {get} /api/v2/order/pay/redirect 跳转到第三方支付
      * @apiGroup 订单
+     * @apiName PayRedirect
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -182,6 +185,7 @@ class PaymentController extends BaseController
     /**
      * @api {get} /api/v2/order/pay/handPay 手动打款支付
      * @apiGroup 订单
+     * @apiName PaymentHandPayV2
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -204,6 +208,7 @@ class PaymentController extends BaseController
     /**
      * @api {post} /api/v2/order/pay/wechatScan 微信扫码支付[PC]
      * @apiGroup 订单
+     * @apiName PaymentWechatScan
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *

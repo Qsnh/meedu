@@ -17,6 +17,7 @@ class LinkController extends BaseController
     /**
      * @api {get} /api/v2/links 友情链接
      * @apiGroup 其它
+     * @apiName OtherLinks
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败

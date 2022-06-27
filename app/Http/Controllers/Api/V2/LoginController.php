@@ -60,9 +60,9 @@ class LoginController extends BaseController
      * @param SocialiteServiceInterface $socialiteService
      */
     public function __construct(
-        UserServiceInterface $userService,
-        ConfigServiceInterface $configService,
-        CacheServiceInterface $cacheService,
+        UserServiceInterface      $userService,
+        ConfigServiceInterface    $configService,
+        CacheServiceInterface     $cacheService,
         SocialiteServiceInterface $socialiteService
     ) {
         $this->userService = $userService;
@@ -74,6 +74,7 @@ class LoginController extends BaseController
     /**
      * @api {post} /api/v2/login/password 密码登录
      * @apiGroup Auth
+     * @apiName LoginPassword
      * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
@@ -106,6 +107,7 @@ class LoginController extends BaseController
     /**
      * @api {post} /api/v2/login/mobile 短信登录
      * @apiGroup Auth
+     * @apiName LoginMobile
      * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
@@ -139,6 +141,7 @@ class LoginController extends BaseController
     /**
      * @api {post} /api/v2/login/wechatMiniMobile 微信小程序手机号登录
      * @apiGroup Auth
+     * @apiName WechatMiniLogin
      * @apiVersion v2.0.0
      *
      * @apiParam {String} openid openid
@@ -206,6 +209,7 @@ class LoginController extends BaseController
     /**
      * @api {post} /api/v2/login/wechatMini 微信小程序静默授权登录
      * @apiGroup Auth
+     * @apiName WechatMini
      * @apiVersion v2.0.0
      *
      * @apiParam {String} openid openid
@@ -293,6 +297,7 @@ class LoginController extends BaseController
     /**
      * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录[重定向]
      * @apiGroup Auth
+     * @apiName WechatOauth
      * @apiVersion v2.0.0
      * @apiDescription 登录成功之后会在success_redirect中携带token返回
      *
@@ -350,6 +355,7 @@ class LoginController extends BaseController
     /**
      * @api {get} /api/v2/login/socialite/{app} 社交APP登录[重定向]
      * @apiGroup Auth
+     * @apiName LoginSocialites
      * @apiVersion v2.0.0
      * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回
      *
@@ -424,6 +430,7 @@ class LoginController extends BaseController
     /**
      * @api {get} /api/v2/login/wechatScan 微信扫码登录[二维码]
      * @apiGroup Auth
+     * @apiName LoginWechatScan
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -450,6 +457,7 @@ class LoginController extends BaseController
     /**
      * @api {get} /api/v2/login/wechatScan/query 微信扫码登录[结果查询]
      * @apiGroup Auth
+     * @apiName LoginWechatScanQuery
      * @apiVersion v2.0.0
      *
      * @apiParam {String} code 随机值
@@ -489,6 +497,7 @@ class LoginController extends BaseController
     /**
      * @api {post} /api/v2/login/wechatMini/session 微信小程序session记录
      * @apiGroup Auth
+     * @apiName WechatMiniSession
      * @apiVersion v2.0.0
      *
      * @apiParam {String} code 随机值
@@ -521,6 +530,14 @@ class LoginController extends BaseController
         ]);
     }
 
+    /**
+     * @api {post} /api/v2/logout 安全退出
+     * @apiGroup Auth
+     * @apiName LoginLogout
+     * @apiVersion v2.0.0
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     */
     public function logout()
     {
         Auth::guard(FrontendConstant::API_GUARD)->logout();

@@ -19,6 +19,7 @@ class SliderController extends BaseController
     /**
      * @api {get} /api/v2/sliders 幻灯片
      * @apiGroup 其它
+     * @apiName OtherSliders
      * @apiVersion v2.0.0
      *
      * @apiParam {String="PC"} [platform] 平台
