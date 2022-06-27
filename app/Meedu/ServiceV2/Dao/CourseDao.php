@@ -9,6 +9,7 @@
 namespace App\Meedu\ServiceV2\Dao;
 
 use App\Meedu\ServiceV2\Models\Course;
+use App\Meedu\ServiceV2\Models\CourseVideo;
 use App\Meedu\ServiceV2\Models\CourseCategory;
 
 class CourseDao implements CourseDaoInterface
@@ -32,6 +33,28 @@ class CourseDao implements CourseDaoInterface
                     $childrenIds && $ids = array_merge($ids, $childrenIds);
                     $query->whereIn('category_id', $ids);
                 }
+                if (isset($params['lte_published_at'])) {
+                    $query->where('published_at', '<=', $params['lte_published_at']);
+                }
+                if (isset($params['is_show'])) {
+                    $query->where('is_show', $params['is_show']);
+                }
+                if (isset($params['charge'])) {
+                    $query->where('charge', $params['charge']);
+                }
+            })
+            ->get()
+            ->toArray();
+    }
+
+    public function videoChunk(array $ids, array $fields, array $params, array $with, array $withCount): array
+    {
+        return CourseVideo::query()
+            ->select($fields)
+            ->with($with)
+            ->withCount($withCount)
+            ->whereIn('id', $ids)
+            ->when($params, function ($query) use ($params) {
                 if (isset($params['lte_published_at'])) {
                     $query->where('published_at', '<=', $params['lte_published_at']);
                 }

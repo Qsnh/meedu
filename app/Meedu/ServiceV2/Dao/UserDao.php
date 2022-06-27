@@ -8,6 +8,7 @@
 
 namespace App\Meedu\ServiceV2\Dao;
 
+use App\Constant\TableConstant;
 use Illuminate\Support\Facades\DB;
 use App\Meedu\ServiceV2\Models\UserCourse;
 use App\Services\Member\Models\UserLikeCourse;
@@ -56,13 +57,34 @@ class UserDao implements UserDaoInterface
             ->toArray();
     }
 
+    public function getPerUserLearnedCourseLastVideo(int $userId, array $courseIds): array
+    {
+        $table = TableConstant::TABLE_USER_VIDEO_WATCH_RECORDS;
+        $courseIds = implode(',', $courseIds);
+        $sql = <<<SQL
+select 
+    `u1`.`id`,`u1`.`user_id`,`u1`.`course_id`,`u1`.`video_id`,`u1`.`watch_seconds`,`u1`.`watched_at`,`u1`.`created_at`,`u1`.`updated_at` 
+from {$table} as `u1`
+where
+    `u1`.`id` = (
+        select
+            `u2`.`id`
+        from {$table} as `u2` 
+        where
+            `u2`.`course_id` = `u1`.`course_id` and `u2`.`user_id` = ? and `u2`.`course_id` in ({$courseIds})
+        order by `u2`.`updated_at` desc limit 1
+    )
+SQL;
+        $result = DB::select($sql, [$userId]);
+        return array_map('get_object_vars', $result);
+    }
+
     public function getPerUserLearnedCourseVideoCount(int $userId, array $courseIds): array
     {
         return UserVideoWatchRecord::query()
             ->select([
                 'course_id',
-                DB::raw('max(updated_at) as `updated_at`'),
-                DB::raw('count(*) as `learned_count`'),//已学课时
+                DB::raw('count(*) as `learned_count`'),//已学课时数量
             ])
             ->where('user_id', $userId)
             ->when($courseIds, function ($query) use ($courseIds) {

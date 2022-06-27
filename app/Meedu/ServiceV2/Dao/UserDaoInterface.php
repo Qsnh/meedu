@@ -21,4 +21,6 @@ interface UserDaoInterface
     public function getUserLearnedCoursePaginate(int $userId, int $page, int $size): array;
 
     public function getUserLikeCoursePaginate(int $userId, int $page, int $size): array;
+
+    public function getPerUserLearnedCourseLastVideo(int $userId, array $courseIds): array;
 }

@@ -18,8 +18,9 @@ class MemberController extends BaseController
 
     /**
      * @api {get} /api/v3/member/courses 已购录播课
-     * @apiGroup 我的
-     * @apiVersion v3.0.0
+     * @apiGroup 用户-V3
+     * @apiName MemberCoursesV3
+     * @apiVersion v1.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page
@@ -27,13 +28,13 @@ class MemberController extends BaseController
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.total 总数
      * @apiSuccess {Object[]} data.data
      * @apiSuccess {Number} data.data.course_id 课程ID
      * @apiSuccess {Number} data.data.user_id 用户ID
      * @apiSuccess {Number} data.data.charge 购买价格
      * @apiSuccess {String} data.data.created_at 购买时间
      * @apiSuccess {Number} data.data.learned_count 已学习课时
-     * @apiSuccess {String} data.data.last_watched_at 最后一次观看时间
      * @apiSuccess {Object} data.data.watch_record 观看进度记录
      * @apiSuccess {Number} data.data.watch_record.id 记录ID
      * @apiSuccess {Number} data.data.watch_record.is_watched 是否看完[1:是,0:否]
@@ -46,7 +47,18 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.data.course.thumb 课程封面
      * @apiSuccess {Number} data.data.course.videos_count 总课时
      * @apiSuccess {Number} data.data.course.charge 价格
-     * @apiSuccess {Number} data.total 总数
+     * @apiSuccess {Object} data.data.last_view_video 最近观看的视频记录
+     * @apiSuccess {Number} data.data.last_view_video.id 记录id
+     * @apiSuccess {Number} data.data.last_view_video.video_id videoId
+     * @apiSuccess {Number} data.data.last_view_video.watch_seconds 已观看秒数
+     * @apiSuccess {String} data.data.last_view_video.created_at 观看开始时间
+     * @apiSuccess {String} data.data.last_view_video.updated_at 最近一次观看时间
+     * @apiSuccess {String} data.data.last_view_video.watched_at 看完时间
+     * @apiSuccess {Object} data.data.last_view_video.video
+     * @apiSuccess {Number} data.data.last_view_video.video.id videoId
+     * @apiSuccess {String} data.data.last_view_video.video.title 视频名
+     * @apiSuccess {Number} data.data.last_view_video.video.duration 视频时长[s]
+     * @apiSuccess {String} data.data.last_view_video.video.published_at 视频上架时间
      */
     public function courses(Request $request, UserServiceInterface $userService, CourseServiceInterface $courseService)
     {
@@ -57,10 +69,31 @@ class MemberController extends BaseController
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
+
+            // 关联的课程信息
             $courses = $courseService->chunk($courseIds, ['id', 'title', 'thumb', 'charge'], [], [], ['videos']);
             $courses = array_column($courses, null, 'id');
+
+            // 关联课程视频信息
+            $videoIds = [];
+            foreach ($data as $tmpItem) {
+                $videoIds[] = $tmpItem['last_view_video']['video_id'] ?? 0;
+            }
+            $videoIds = array_unique($videoIds);
+            $videos = [];
+            if ($videoIds) {
+                $videos = $courseService->videoChunk($videoIds, ['id', 'title', 'duration', 'published_at'], [], [], []);
+                $videos = array_column($videos, null, 'id');
+            }
+
             foreach ($data as $key => $item) {
                 $data[$key]['course'] = $courses[$item['course_id']] ?? [];
+                if ($item['last_view_video']) {
+                    $item['last_view_video'] = array_merge(
+                        $item['last_view_video'],
+                        ['video' => $videos[$item['last_view_video']['video_id']] ?? []],
+                    );
+                }
             }
         }
 
@@ -72,8 +105,9 @@ class MemberController extends BaseController
 
     /**
      * @api {get} /api/v3/member/courses/learned 已学习录播课
-     * @apiGroup 我的
-     * @apiVersion v3.0.0
+     * @apiGroup 用户-V3
+     * @apiName MemberCoursesLearnedV3
+     * @apiVersion v1.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page
@@ -81,9 +115,9 @@ class MemberController extends BaseController
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.total 总数
      * @apiSuccess {Object[]} data.data
      * @apiSuccess {Number} data.data.learned_count 已学习课时
-     * @apiSuccess {String} data.data.last_watched_at 最后一次观看时间
      * @apiSuccess {Object} data.data 观看进度记录
      * @apiSuccess {Number} data.data.id 记录ID
      * @apiSuccess {Number} data.data.is_watched 是否看完[1:是,0:否]
@@ -97,7 +131,18 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.data.course.thumb 课程封面
      * @apiSuccess {Number} data.data.course.videos_count 总课时
      * @apiSuccess {Number} data.data.course.charge 价格
-     * @apiSuccess {Number} data.total 总数
+     * @apiSuccess {Object} data.data.last_view_video 最近观看的视频记录
+     * @apiSuccess {Number} data.data.last_view_video.id 记录id
+     * @apiSuccess {Number} data.data.last_view_video.video_id videoId
+     * @apiSuccess {Number} data.data.last_view_video.watch_seconds 已观看秒数
+     * @apiSuccess {String} data.data.last_view_video.created_at 观看开始时间
+     * @apiSuccess {String} data.data.last_view_video.updated_at 最近一次观看时间
+     * @apiSuccess {String} data.data.last_view_video.watched_at 看完时间
+     * @apiSuccess {Object} data.data.last_view_video.video
+     * @apiSuccess {Number} data.data.last_view_video.video.id videoId
+     * @apiSuccess {String} data.data.last_view_video.video.title 视频名
+     * @apiSuccess {Number} data.data.last_view_video.video.duration 视频时长[s]
+     * @apiSuccess {String} data.data.last_view_video.video.published_at 视频上架时间
      */
     public function learnedCourses(Request $request, UserServiceInterface $userService, CourseServiceInterface $courseService)
     {
@@ -108,10 +153,31 @@ class MemberController extends BaseController
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
+
+            // 读取关联的课程信息
             $courses = $courseService->chunk($courseIds, ['id', 'title', 'thumb', 'charge'], [], [], ['videos']);
             $courses = array_column($courses, null, 'id');
+
+            // 关联课程视频信息
+            $videoIds = [];
+            foreach ($data as $tmpItem) {
+                $videoIds[] = $tmpItem['last_view_video']['video_id'] ?? 0;
+            }
+            $videoIds = array_unique($videoIds);
+            $videos = [];
+            if ($videoIds) {
+                $videos = $courseService->videoChunk($videoIds, ['id', 'title', 'duration', 'published_at'], [], [], []);
+                $videos = array_column($videos, null, 'id');
+            }
+
             foreach ($data as $key => $item) {
                 $data[$key]['course'] = $courses[$item['course_id']] ?? [];
+                if ($item['last_view_video']) {
+                    $item['last_view_video'] = array_merge(
+                        $item['last_view_video'],
+                        ['video' => $videos[$item['last_view_video']['video_id']] ?? []],
+                    );
+                }
             }
         }
 
@@ -123,8 +189,9 @@ class MemberController extends BaseController
 
     /**
      * @api {get} /api/v3/member/courses/like 收藏课程
-     * @apiGroup 我的
-     * @apiVersion v3.0.0
+     * @apiGroup 用户-V3
+     * @apiName  MemberCoursesLike
+     * @apiVersion v1.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} page page
@@ -132,12 +199,12 @@ class MemberController extends BaseController
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.total 总数
      * @apiSuccess {Object[]} data.data
      * @apiSuccess {Number} data.data.course_id 课程ID
      * @apiSuccess {Number} data.data.user_id 用户ID
      * @apiSuccess {String} data.data.created_at 收藏时间
      * @apiSuccess {Number} data.data.learned_count 已学习课时
-     * @apiSuccess {String} data.data.last_watched_at 最后一次观看时间
      * @apiSuccess {Object} data.data.watch_record 观看进度记录
      * @apiSuccess {Number} data.data.watch_record.id 记录ID
      * @apiSuccess {Number} data.data.watch_record.is_watched 是否看完[1:是,0:否]
@@ -150,7 +217,18 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.data.course.thumb 课程封面
      * @apiSuccess {Number} data.data.course.videos_count 总课时
      * @apiSuccess {Number} data.data.course.charge 价格
-     * @apiSuccess {Number} data.total 总数
+     * @apiSuccess {Object} data.data.last_view_video 最近观看的视频记录
+     * @apiSuccess {Number} data.data.last_view_video.id 记录id
+     * @apiSuccess {Number} data.data.last_view_video.video_id videoId
+     * @apiSuccess {Number} data.data.last_view_video.watch_seconds 已观看秒数
+     * @apiSuccess {String} data.data.last_view_video.created_at 观看开始时间
+     * @apiSuccess {String} data.data.last_view_video.updated_at 最近一次观看时间
+     * @apiSuccess {String} data.data.last_view_video.watched_at 看完时间
+     * @apiSuccess {Object} data.data.last_view_video.video
+     * @apiSuccess {Number} data.data.last_view_video.video.id videoId
+     * @apiSuccess {String} data.data.last_view_video.video.title 视频名
+     * @apiSuccess {Number} data.data.last_view_video.video.duration 视频时长[s]
+     * @apiSuccess {String} data.data.last_view_video.video.published_at 视频上架时间
      */
     public function likeCourses(Request $request, UserServiceInterface $userService, CourseServiceInterface $courseService)
     {
@@ -161,10 +239,30 @@ class MemberController extends BaseController
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
+
             $courses = $courseService->chunk($courseIds, ['id', 'title', 'thumb', 'charge'], [], [], ['videos']);
             $courses = array_column($courses, null, 'id');
+
+            // 关联课程视频信息
+            $videoIds = [];
+            foreach ($data as $tmpItem) {
+                $videoIds[] = $tmpItem['last_view_video']['video_id'] ?? 0;
+            }
+            $videoIds = array_unique($videoIds);
+            $videos = [];
+            if ($videoIds) {
+                $videos = $courseService->videoChunk($videoIds, ['id', 'title', 'duration', 'published_at'], [], [], []);
+                $videos = array_column($videos, null, 'id');
+            }
+
             foreach ($data as $key => $item) {
                 $data[$key]['course'] = $courses[$item['course_id']] ?? [];
+                if ($item['last_view_video']) {
+                    $item['last_view_video'] = array_merge(
+                        $item['last_view_video'],
+                        ['video' => $videos[$item['last_view_video']['video_id']] ?? []],
+                    );
+                }
             }
         }
 
