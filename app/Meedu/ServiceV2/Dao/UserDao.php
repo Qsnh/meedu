@@ -10,6 +10,7 @@ namespace App\Meedu\ServiceV2\Dao;
 
 use Illuminate\Support\Facades\DB;
 use App\Meedu\ServiceV2\Models\UserCourse;
+use App\Services\Member\Models\UserLikeCourse;
 use App\Meedu\ServiceV2\Models\CourseUserRecord;
 use App\Meedu\ServiceV2\Models\UserVideoWatchRecord;
 
@@ -81,6 +82,20 @@ class UserDao implements UserDaoInterface
             ])
             ->where('user_id', $userId)
             ->orderByDesc('updated_at')
+            ->paginate($size, ['*'], null, $page);
+
+        $total = $data->total();
+        $data = $data->items();
+
+        return compact('total', 'data');
+    }
+
+    public function getUserLikeCoursePaginate(int $userId, int $page, int $size): array
+    {
+        $data = UserLikeCourse::query()
+            ->select(['course_id', 'user_id', 'created_at'])
+            ->where('user_id', $userId)
+            ->orderByDesc('created_at')
             ->paginate($size, ['*'], null, $page);
 
         $total = $data->total();

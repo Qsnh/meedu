@@ -13,4 +13,6 @@ interface UserServiceInterface
     public function getUserCoursePaginateWithProgress(int $userId, int $page, int $size): array;
 
     public function getUserLearnedCoursePaginateWithProgress(int $userId, int $page, int $size): array;
+
+    public function getUserLikeCoursePaginateWithProgress(int $userId, int $page, int $size): array;
 }
