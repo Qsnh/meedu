@@ -90,6 +90,7 @@ SQL;
             ->when($courseIds, function ($query) use ($courseIds) {
                 $query->whereIn('course_id', $courseIds);
             })
+            ->whereNotNull('watched_at')
             ->groupBy('course_id')
             ->get()
             ->toArray();
