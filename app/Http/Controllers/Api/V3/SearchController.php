@@ -21,7 +21,8 @@ class SearchController extends BaseController
 
     /**
      * @api {get} /api/v3/search 全站搜索
-     * @apiGroup 搜索
+     * @apiGroup 搜索-V3
+     * @apiName SearchV3
      * @apiVersion v3.0.0
      *
      * @apiParam {String} keywords 搜索关键字

@@ -19,6 +19,7 @@ class NavController extends BaseController
     /**
      * @api {get} /api/v2/navs 首页导航
      * @apiGroup 其它
+     * @apiName OtherNavs
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败

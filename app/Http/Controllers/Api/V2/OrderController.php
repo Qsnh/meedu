@@ -55,12 +55,12 @@ class OrderController extends BaseController
     protected $userService;
 
     public function __construct(
-        CourseServiceInterface $courseService,
-        OrderServiceInterface $orderService,
-        RoleServiceInterface $roleService,
-        VideoServiceInterface $videoService,
+        CourseServiceInterface    $courseService,
+        OrderServiceInterface     $orderService,
+        RoleServiceInterface      $roleService,
+        VideoServiceInterface     $videoService,
         PromoCodeServiceInterface $promoCodeService,
-        UserService $userService
+        UserService               $userService
     ) {
         $this->courseService = $courseService;
         $this->orderService = $orderService;
@@ -73,6 +73,7 @@ class OrderController extends BaseController
     /**
      * @api {post} /api/v2/order/course 创建录播课程订单
      * @apiGroup 订单
+     * @apiName StoreOrderCourse
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -118,6 +119,7 @@ class OrderController extends BaseController
     /**
      * @api {post} /api/v2/order/role 创建VIP订单
      * @apiGroup 订单
+     * @apiName StoreOrderRole
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -157,6 +159,7 @@ class OrderController extends BaseController
     /**
      * @api {post} /api/v2/order/video 创建视频订单
      * @apiGroup 订单
+     * @apiName StoreOrderVideo
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -205,6 +208,7 @@ class OrderController extends BaseController
     /**
      * @api {get} /api/v2/order/status 订单状态查询
      * @apiGroup 订单
+     * @apiName OrderStatusQuery
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *

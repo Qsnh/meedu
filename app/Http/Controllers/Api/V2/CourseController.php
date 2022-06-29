@@ -79,6 +79,7 @@ class CourseController extends BaseController
     /**
      * @api {get} /api/v2/courses 录播课程列表
      * @apiGroup 录播课
+     * @apiName Courses
      * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] page
@@ -136,6 +137,7 @@ class CourseController extends BaseController
     /**
      * @api {get} /api/v2/course/{id} 录播课程详情
      * @apiGroup 录播课
+     * @apiName CourseDetail
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -248,6 +250,7 @@ class CourseController extends BaseController
     /**
      * @api {post} /api/v2/course/{course_id}/comment 录播课程评论[提交]
      * @apiGroup 录播课
+     * @apiName CourseCommentAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -270,6 +273,7 @@ class CourseController extends BaseController
     /**
      * @api {get} /api/v2/course/{course_id}/comments 录播课程评论列表
      * @apiGroup 录播课
+     * @apiName CourseComments
      * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] 页码
@@ -307,6 +311,7 @@ class CourseController extends BaseController
     /**
      * @api {get} /api/v2/course/{course_id}/like 收藏课程
      * @apiGroup 录播课
+     * @apiName CourseLikeAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -325,6 +330,7 @@ class CourseController extends BaseController
     /**
      * @api {get} /api/v2/course/attach/{attach_id}/download 附件下载
      * @apiGroup 录播课
+     * @apiName CourseAttachDownload
      * @apiVersion v2.0.0
      *
      * @apiParam {String} token 登录token

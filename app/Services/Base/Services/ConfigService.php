@@ -30,12 +30,9 @@ class ConfigService implements ConfigServiceInterface
         return (int)config('meedu.member.credit1.watched_course');
     }
 
-    /**
-     * @return int
-     */
-    public function getPaidOrderSceneCredit1(): int
+    public function getPaidOrderSceneCredit1()
     {
-        return (int)config('meedu.member.credit1.paid_order');
+        return config('meedu.member.credit1.paid_order');
     }
 
     /**

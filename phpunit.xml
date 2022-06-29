@@ -1,45 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php" colors="true" convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false"
+         stopOnFailure="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage>
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">./app/Models</directory>
+            <directory suffix=".php">./app/Services/*/Models</directory>
+            <directory suffix=".php">./app/Http/Controllers/Backend/Api/V1</directory>
+        </exclude>
+        <report>
+            <html outputDirectory="./tests/report" lowUpperBound="35" highLowerBound="70"/>
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="Commands">
             <directory suffix="Test.php">./tests/Commands</directory>
         </testsuite>
-
         <testsuite name="Services">
             <directory suffix="Test.php">./tests/Services</directory>
         </testsuite>
-
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
-
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-            <exclude>
-                <directory suffix=".php">./app/Models</directory>
-                <directory suffix=".php">./app/Services/*/Models</directory>
-                <directory suffix=".php">./app/Http/Controllers/Backend/Api/V1</directory>
-                <file>./app/User.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html" target="./tests/report" lowUpperBound="35"
-             highLowerBound="70"/>
-    </logging>
+    <logging/>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>

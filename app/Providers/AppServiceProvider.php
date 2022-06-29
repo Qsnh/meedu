@@ -10,6 +10,7 @@ namespace App\Providers;
 
 use App\Meedu\Setting;
 use Illuminate\Support\Str;
+use App\Meedu\ServiceV2\ServiceInit;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Base\Providers\BaseServiceRegisterProvider;
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // service-v2
+        (new ServiceInit())->run();
         // 数据库
         Schema::defaultStringLength(191);
         // 自定义配置同步

@@ -31,6 +31,7 @@ class PromoCodeController extends BaseController
     /**
      * @api {get} /api/v2/promoCode/{code} 优惠码详情
      * @apiGroup 订单
+     * @apiName PromoCodeDetail
      * @apiVersion v2.0.0
      *
      * @apiParam {String} code 优惠码/邀请码
@@ -53,6 +54,7 @@ class PromoCodeController extends BaseController
     /**
      * @api {get} /api/v2/promoCode/{code}/check 优惠码检测
      * @apiGroup 订单
+     * @apiName PromoCodeCheck
      * @apiVersion v2.0.0
      *
      * @apiParam {String} code 优惠码/邀请码

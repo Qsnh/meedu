@@ -14,7 +14,6 @@ use Illuminate\Database\Seeder;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Hash;
 use Database\Seeders\AppConfigSeeder;
-use Database\Seeders\AdministratorMenuSeeder;
 use Database\Seeders\AdministratorSuperSeeder;
 use Database\Seeders\AdministratorPermissionSeeder;
 
@@ -107,7 +106,6 @@ class ApplicationInstallCommand extends Command
         };
         $seeder->call(AdministratorSuperSeeder::class);
         $seeder->call(AdministratorPermissionSeeder::class);
-        $seeder->call(AdministratorMenuSeeder::class);
 
         $this->info('数据初始化成功');
 

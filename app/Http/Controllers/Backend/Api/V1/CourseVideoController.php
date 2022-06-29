@@ -102,7 +102,7 @@ class CourseVideoController extends BaseController
 
         DB::transaction(function () use ($video) {
             $videoId = $video['id'];
-            
+
             $video->delete();
 
             event(new VodVideoDestroyedEvent($videoId));
@@ -257,6 +257,7 @@ class CourseVideoController extends BaseController
     public function import(Request $request)
     {
         $data = $request->input('data');
+        $startLine = (int)$request->input('line', 2);
         if (!$data) {
             return $this->error(__('数据为空'));
         }
@@ -270,7 +271,7 @@ class CourseVideoController extends BaseController
 
         foreach ($data as $index => $item) {
             // 行数[用户报错提示]
-            $line = $index + 2;
+            $line = $startLine + $index;
 
             $courseName = trim($item[0] ?? '');
             if ($courseName === '') {

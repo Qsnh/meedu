@@ -63,13 +63,13 @@ class VideoController extends BaseController
     protected $orderService;
 
     public function __construct(
-        VideoServiceInterface $videoService,
-        ConfigServiceInterface $configService,
+        VideoServiceInterface        $videoService,
+        ConfigServiceInterface       $configService,
         VideoCommentServiceInterface $videoCommentService,
-        UserServiceInterface $userService,
-        CourseServiceInterface $courseService,
-        BusinessState $businessState,
-        OrderServiceInterface $orderService
+        UserServiceInterface         $userService,
+        CourseServiceInterface       $courseService,
+        BusinessState                $businessState,
+        OrderServiceInterface        $orderService
     ) {
         $this->videoService = $videoService;
         $this->configService = $configService;
@@ -83,6 +83,7 @@ class VideoController extends BaseController
     /**
      * @api {get} /api/v2/videos 录播视频列表
      * @apiGroup 录播课
+     * @apiName Videos
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -119,6 +120,7 @@ class VideoController extends BaseController
     /**
      * @api {get} /api/v2//video/{id} 录播视频详情
      * @apiGroup 录播课
+     * @apiName VideoDetail
      * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -243,6 +245,7 @@ class VideoController extends BaseController
     /**
      * @api {post} /api/v2/video/{id}/comment 录播视频评论
      * @apiGroup 录播课
+     * @apiName VideoCommentAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -265,6 +268,7 @@ class VideoController extends BaseController
     /**
      * @api {get} /api/v2/video/{video_id}/comments 录播视频评论列表
      * @apiGroup 录播课
+     * @apiName VideoComments
      * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] 页码
@@ -301,6 +305,7 @@ class VideoController extends BaseController
     /**
      * @api {get} /api/v2/video/{id}/playinfo 录播视频播放地址
      * @apiGroup 录播课
+     * @apiName VideoPlay
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -345,6 +350,7 @@ class VideoController extends BaseController
     /**
      * @api {post} /api/v2/video/{id}/record 视频观看时长记录
      * @apiGroup 录播课
+     * @apiName VideoRecordAction
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
@@ -369,6 +375,7 @@ class VideoController extends BaseController
     /**
      * @api {get} /api/v2/video/open/play 公共视频播放
      * @apiGroup 录播课
+     * @apiName VideoOpenPlay
      * @apiVersion v2.0.0
      *
      * @apiParam {String} file_id 视频文件ID

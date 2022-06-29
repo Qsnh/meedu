@@ -21,7 +21,8 @@ class PaymentController extends BaseController
 
     /**
      * @api {get} /api/v3/order/pay/handPay 手动打款支付
-     * @apiGroup 订单
+     * @apiGroup 订单-V3
+     * @apiName OrderHandPay
      * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
