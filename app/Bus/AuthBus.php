@@ -25,6 +25,7 @@ class AuthBus
 
         $token = Auth::guard('apiv2')
             ->claims([
+                // 分发的token携带最后一次登录时间
                 FrontendConstant::USER_LOGIN_AT_COOKIE_NAME => $loginAt->timestamp,
             ])
             ->tokenById($userId);

@@ -8,16 +8,13 @@
 
 namespace Tests\Feature\Api\V2;
 
-use Carbon\Carbon;
 use App\Meedu\Verify;
 use App\Constant\CacheConstant;
 use Illuminate\Http\UploadedFile;
-use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Order\Models\PromoCode;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserProfile;
@@ -26,8 +23,6 @@ use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Base\Interfaces\CacheServiceInterface;
-use App\Services\Member\Models\UserInviteBalanceRecord;
-use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberTest extends Base
@@ -221,74 +216,6 @@ class MemberTest extends Base
         $this->assertEquals(10, $response['data']['total']);
     }
 
-    public function test_inviteBalanceRecords()
-    {
-        UserInviteBalanceRecord::factory()->count(6)->create(['user_id' => $this->member->id]);
-        $response = $this->user($this->member)->getJson('api/v2/member/inviteBalanceRecords');
-        $response = $this->assertResponseSuccess($response);
-        $this->assertEquals(6, $response['data']['total']);
-    }
-
-    public function test_promoCode()
-    {
-        $promoCode = PromoCode::factory()->create(['user_id' => $this->member->id]);
-        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
-        $response = $this->assertResponseSuccess($response);
-        $this->assertEquals($promoCode['id'], $response['data']['id']);
-    }
-
-    public function test_promoCode_auto_geneate_free_user()
-    {
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-        $this->assertNull($promoCode);
-
-        // 开启免费用户也可以生成邀请码
-        config(['meedu.member.invite.free_user_enabled' => true]);
-
-        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
-        $response = $this->assertResponseSuccess($response);
-
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-
-        $this->assertEquals($promoCode['id'], $response['data']['id']);
-    }
-
-    public function test_promoCode_auto_geneate_free_user_not()
-    {
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-        $this->assertNull($promoCode);
-
-        // 开启免费用户也可以生成邀请码
-        config(['meedu.member.invite.free_user_enabled' => false]);
-
-        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
-        $response = $this->assertResponseSuccess($response);
-
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-        $this->assertNull($promoCode);
-    }
-
-    public function test_promoCode_auto_geneate_vip_user()
-    {
-        // 绑定VIP
-        $role = Role::factory()->create();
-        $this->member->role_id = $role['id'];
-        $this->member->role_expired_at = Carbon::now()->addDays(1);
-        $this->member->save();
-
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-        $this->assertNull($promoCode);
-
-        // VIP用户可直接申请邀请码
-
-        $response = $this->user($this->member)->getJson('api/v2/member/promoCode');
-        $response = $this->assertResponseSuccess($response);
-
-        $promoCode = PromoCode::query()->where('user_id', $this->member['id'])->first();
-
-        $this->assertEquals($promoCode['id'], $response['data']['id']);
-    }
-
     public function test_messages_markAsRead()
     {
         $this->member->notify(new SimpleMessageNotification('meedu消息测试'));
@@ -312,53 +239,6 @@ class MemberTest extends Base
         $this->assertResponseSuccess($response);
         $this->member->refresh();
         $this->assertEquals(0, $this->member->unreadNotifications->count());
-    }
-
-    public function test_inviteUsers()
-    {
-        User::factory()->count(10)->create(['invite_user_id' => $this->member->id]);
-        $response = $this->user($this->member)->getJson('api/v2/member/inviteUsers?page=1&page_size=8');
-        $response = $this->assertResponseSuccess($response);
-        $this->assertEquals(10, $response['data']['total']);
-        $this->assertEquals(8, count($response['data']['data']));
-    }
-
-    public function test_withdrawRecords()
-    {
-        UserInviteBalanceWithdrawOrder::create([
-            'user_id' => $this->member->id,
-            'total' => 100,
-            'channel' => '支付宝',
-            'channel_name' => 'meedu',
-            'channel_account' => 'meedu@meedu.vip',
-            'channel_address' => 'address',
-        ]);
-        $response = $this->user($this->member)->getJson('api/v2/member/withdrawRecords?page=1&page_size=8');
-        $response = $this->assertResponseSuccess($response);
-        $this->assertEquals(1, $response['data']['total']);
-        $this->assertEquals(1, count($response['data']['data']));
-    }
-
-    public function test_createWithdraw()
-    {
-        $this->member->invite_balance = 100;
-        $this->member->save();
-
-        $response = $this->user($this->member)->postJson('api/v2/member/withdraw', [
-            'channel' => '支付宝',
-            'channel_name' => 'meedu',
-            'channel_account' => 'meedu1',
-            'total' => 11,
-        ]);
-        $this->assertResponseSuccess($response);
-        $this->member->refresh();
-        $this->assertEquals(89, $this->member->invite_balance);
-
-        $record = UserInviteBalanceWithdrawOrder::query()->where('user_id', $this->member->id)->first();
-        $this->assertNotEmpty($record);
-        $this->assertEquals('支付宝', $record->channel);
-        $this->assertEquals('meedu', $record->channel_name);
-        $this->assertEquals('meedu1', $record->channel_account);
     }
 
     public function test_messages_unreadNotificationCount()

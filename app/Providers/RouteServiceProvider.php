@@ -52,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web', 'global.share'])
+        Route::middleware(['web'])
             ->namespace('App\Http\Controllers\Frontend')
             ->group(base_path('routes/web.php'));
     }

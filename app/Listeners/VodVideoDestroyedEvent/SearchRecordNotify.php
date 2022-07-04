@@ -10,9 +10,13 @@ namespace App\Listeners\VodVideoDestroyedEvent;
 
 use App\Events\VodVideoDestroyedEvent;
 use App\Meedu\Search\VideoSearchNotify;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SearchRecordNotify
+class SearchRecordNotify implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *

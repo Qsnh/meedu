@@ -26,15 +26,11 @@ class ApplicationInstallCommand extends Command
     public function handle()
     {
         $action = $this->argument('action');
-        if (!$action) {
-            $this->warn('缺少action参数');
-            return 0;
-        }
 
         $method = 'action' . implode('', array_map('ucfirst', explode('_', $action)));
         if (!method_exists($this, $method)) {
             $this->warn('action不存在');
-            return 0;
+            return Command::FAILURE;
         }
 
         return $this->{$method}();
@@ -46,7 +42,7 @@ class ApplicationInstallCommand extends Command
         if (!$super) {
             $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据');
 
-            return 0;
+            return Command::FAILURE;
         }
 
         // 是否静默安装
@@ -56,13 +52,13 @@ class ApplicationInstallCommand extends Command
             if (!$email) {
                 $this->warn('邮箱不能空');
 
-                return 0;
+                return Command::FAILURE;
             }
             $emailExists = Administrator::query()->where('email', $email)->exists();
             if ($emailExists) {
                 $this->warn('邮箱已经存在');
 
-                return 0;
+                return Command::FAILURE;
             }
 
             $password = '';
@@ -78,7 +74,7 @@ class ApplicationInstallCommand extends Command
             if ($passwordRepeat !== $password) {
                 $this->warn('两次输入密码不一致');
 
-                return 0;
+                return Command::FAILURE;
             }
         } else {
             $name = '超级管理员';
@@ -96,7 +92,7 @@ class ApplicationInstallCommand extends Command
 
         $this->info('管理员初始化成功');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     // 系统权限生成
@@ -109,7 +105,7 @@ class ApplicationInstallCommand extends Command
 
         $this->info('数据初始化成功');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     public function actionConfig()
@@ -120,6 +116,6 @@ class ApplicationInstallCommand extends Command
 
         $this->info('配置初始化完成');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

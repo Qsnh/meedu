@@ -172,81 +172,6 @@ if (!function_exists('aliyun_sdk_client')) {
     }
 }
 
-if (!function_exists('is_h5')) {
-    /**
-     * @return bool
-     */
-    function is_h5()
-    {
-        return (new Mobile_Detect())->isMobile();
-    }
-}
-
-if (!function_exists('is_wechat')) {
-    /**
-     * @return bool
-     */
-    function is_wechat()
-    {
-        if (strpos(request()->server('HTTP_USER_AGENT'), 'MicroMessenger')) {
-            return true;
-        }
-        return false;
-    }
-}
-
-if (!function_exists('duration_humans')) {
-    /**
-     * @param $duration
-     *
-     * @return string
-     */
-    function duration_humans($duration)
-    {
-        $minute = intdiv($duration, 60);
-        $second = $duration % 60;
-        if ($minute >= 60) {
-            $hours = intdiv($minute, 60);
-            $minute %= 60;
-
-            return sprintf('%02d:%02d:%02d', $hours, $minute, $second);
-        }
-
-        return $minute ? sprintf('%02d:%02d', $minute, $second) : sprintf('00:%02d', $second);
-    }
-}
-
-if (!function_exists('enabled_socialites')) {
-    /**
-     * 获取已启用的第三方登录.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    function enabled_socialites()
-    {
-        $socialites = config('meedu.member.socialite', []);
-        $enabled = collect($socialites)->filter(function ($item) {
-            return (int)$item['enabled'] === 1;
-        });
-
-        return $enabled;
-    }
-}
-
-if (!function_exists('get_payment_scene')) {
-    /**
-     * @return string
-     */
-    function get_payment_scene()
-    {
-        if (is_wechat()) {
-            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT;
-        }
-        $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
-        return $scene;
-    }
-}
-
 if (!function_exists('get_payments')) {
     /**
      * @param $scene
@@ -504,26 +429,6 @@ if (!function_exists('get_cache_key')) {
     }
 }
 
-if (!function_exists('query_builder')) {
-    /**
-     * @param array $fields
-     * @param array $rewrite
-     * @return string
-     */
-    function query_builder(array $fields, array $rewrite = []): string
-    {
-        $request = request();
-        $data = [
-            'page' => $request->input('page', 1),
-        ];
-        foreach ($fields as $item) {
-            $data[$item] = $request->input($item, '');
-        }
-        $rewrite && $data = array_merge($data, $rewrite);
-        return http_build_query($data);
-    }
-}
-
 if (!function_exists('save_image')) {
     function save_image($file, $pathPrefix = ''): array
     {
@@ -556,25 +461,6 @@ if (!function_exists('url_append_query')) {
         }
 
         return $url;
-    }
-}
-
-if (!function_exists('wechat_jssdk')) {
-    /**
-     * @param array $apiList
-     *
-     * @return array
-     *
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
-     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    function wechat_jssdk(array $apiList): array
-    {
-        $app = \App\Meedu\Wechat::getInstance();
-        return $app->jssdk->buildConfig($apiList, is_dev(), false, false);
     }
 }
 

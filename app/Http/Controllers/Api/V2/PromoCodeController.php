@@ -67,7 +67,6 @@ class PromoCodeController extends BaseController
      * @apiSuccess {String} data.promo_code.code 优惠码/邀请码
      * @apiSuccess {String} data.promo_code.expired_at 过期时间
      * @apiSuccess {Number} data.promo_code.invited_user_reward 被邀请用户奖励
-     * @apiSuccess {Number} data.promo_code.invite_user_reward 邀请用户奖励
      */
     public function checkCode($code)
     {

@@ -27,7 +27,6 @@ use App\Services\Member\Models\UserLoginRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class UserService implements UserServiceInterface
 {
@@ -397,27 +396,6 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int $id
-     * @param $userId
-     * @param int $reward
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function updateInviteUserId(int $id, $userId, $reward = 0): void
-    {
-        $inviteConfig = $this->configService->getMemberInviteConfig();
-        $expiredDays = $inviteConfig['effective_days'] ?? 0;
-        User::whereId($id)->update([
-            'invite_user_id' => $userId,
-            'invite_user_expired_at' => $expiredDays ? Carbon::now()->addDays($expiredDays) : null,
-        ]);
-        /**
-         * @var $userInviteBalanceService UserInviteBalanceService
-         */
-        $userInviteBalanceService = app()->make(UserInviteBalanceServiceInterface::class);
-        $userInviteBalanceService->createInvite($userId, $reward);
-    }
-
-    /**
      * @param int $userId
      * @return int
      */
@@ -578,14 +556,6 @@ class UserService implements UserServiceInterface
     {
         $record = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->orderByDesc('updated_at')->first();
         return $record ? $record->toArray() : [];
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setUsedPromoCode(int $id): void
-    {
-        User::query()->where('id', $id)->update(['is_used_promo_code' => 1]);
     }
 
     /**

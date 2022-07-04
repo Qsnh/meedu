@@ -9,35 +9,24 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 
 class UserCourseWatchedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $userId;
     public $courseId;
 
     /**
-     * Create a new event instance.
+     * @param $userId
+     * @param $courseId
      *
-     * @return void
+     * @codeCoverageIgnore
      */
     public function __construct($userId, $courseId)
     {
         $this->userId = $userId;
         $this->courseId = $courseId;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
     }
 }

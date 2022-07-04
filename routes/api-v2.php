@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     // 获取可用支付网关
     Route::get('/order/payments', 'PaymentController@payments');
 
+    // 检测是否可以使用promoCode
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 
     Route::post('/upload/image', 'UploadController@image');
@@ -152,8 +153,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('withdrawRecords', 'MemberController@withdrawRecords');
         // 邀请余额提现
         Route::post('withdraw', 'MemberController@createWithdraw');
-        // 我的邀请码
-        Route::get('promoCode', 'MemberController@promoCode');
         // 消息已读
         Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
         // 消息全部已读

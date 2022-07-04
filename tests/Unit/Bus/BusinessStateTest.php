@@ -6,12 +6,13 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace Tests\Unit;
+namespace Tests\Unit\Bus;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
+use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -42,6 +43,14 @@ class BusinessStateTest extends TestCase
 
         // 视频免费
         $this->assertFalse($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
+    }
+
+    public function test_canSeeVideo_with_free_course()
+    {
+        $course = Course::factory()->create(['is_free' => 1]);
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 1]);
+        $user = User::factory()->create();
+        $this->assertTrue($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
     }
 
     public function test_canSeeVideo_with_free_video()
@@ -125,26 +134,6 @@ class BusinessStateTest extends TestCase
         $this->assertTrue($this->businessStatus->isRole($user->toArray()));
     }
 
-    public function test_canGenerateInviteCode()
-    {
-        $user = User::factory()->create([
-            'role_id' => 0,
-        ]);
-
-        // 免费用户无法生成邀请码
-        config(['meedu.member.invite.free_user_enabled' => 0]);
-        $this->assertFalse($this->businessStatus->canGenerateInviteCode($user->toArray()));
-
-        // 免费用户可以生成邀请码
-        config(['meedu.member.invite.free_user_enabled' => 1]);
-        $this->assertTrue($this->businessStatus->canGenerateInviteCode($user->toArray()));
-
-        PromoCode::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $this->assertFalse($this->businessStatus->canGenerateInviteCode($user->toArray()));
-    }
-
     public function test_promoCodeCanUse_with_self()
     {
         $user = User::factory()->create();
@@ -178,29 +167,106 @@ class BusinessStateTest extends TestCase
         $this->assertFalse($this->businessStatus->promoCodeCanUse($user['id'], $promoCode->toArray()));
     }
 
-    public function test_promoCodeCanUse_with_invite_promo_code()
+    public function test_orderIsPaid()
     {
-        $user = User::factory()->create();
-        $promoCode = PromoCode::factory()->create([
-            'user_id' => $user->id + 1,
-            'code' => 'U' . Str::random(),
-        ]);
-        $this->assertTrue($this->businessStatus->promoCodeCanUse($user['id'], $promoCode->toArray()));
-
-        $user->is_used_promo_code = 1;
-        $user->save();
-        $this->assertFalse($this->businessStatus->promoCodeCanUse($user['id'], $promoCode->toArray()));
+        $this->assertTrue($this->businessStatus->orderIsPaid(['status' => FrontendConstant::ORDER_PAID]));
+        $this->assertFalse($this->businessStatus->orderIsPaid(['status' => FrontendConstant::ORDER_UN_PAY]));
     }
 
-    public function test_promoCodeCanUse_with_simple_promo_code()
+    public function test_isEnabledMpOAuthLogin()
     {
-        $user = User::factory()->create([
-            'is_used_promo_code' => 1,
-        ]);
-        $promoCode = PromoCode::factory()->create([
-            'user_id' => $user->id + 1,
-            'code' => 'S' . Str::random(),
-        ]);
-        $this->assertTrue($this->businessStatus->promoCodeCanUse($user['id'], $promoCode->toArray()));
+        //默认关闭
+        $this->assertFalse($this->businessStatus->isEnabledMpOAuthLogin());
+
+        config(['meedu.mp_wechat.enabled_oauth_login' => 1]);
+        $this->assertTrue($this->businessStatus->isEnabledMpOAuthLogin());
+    }
+
+    public function test_enabledMpScanLogin()
+    {
+        //默认关闭
+        $this->assertFalse($this->businessStatus->enabledMpScanLogin());
+
+        config(['meedu.mp_wechat.enabled_scan_login' => 1]);
+        $this->assertTrue($this->businessStatus->enabledMpScanLogin());
+    }
+
+    public function test_isBuyCourse_with_free_course()
+    {
+        $course = Course::factory()->create(['is_free' => 1]);
+        $user = User::factory()->create();
+        $this->assertTrue($this->businessStatus->isBuyCourse($user['id'], $course['id']));
+    }
+
+    public function test_courseCanComment_with_free_course()
+    {
+        $course = Course::factory()->create(['is_free' => 1]);
+        $user = User::factory()->create();
+        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
+    }
+
+    public function test_courseCanComment_with_charge_course()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $user = User::factory()->create();
+        $this->assertFalse($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
+    }
+
+    public function test_courseCanComment_with_charge_course_and_paid()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $user = User::factory()->create();
+        UserCourse::create(['user_id' => $user['id'], 'course_id' => $course['id']]);
+        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
+    }
+
+    public function test_courseCanComment_with_charge_course_and_role()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $role = Role::factory()->create();
+        $user = User::factory()->create(['role_id' => $role['id'], 'role_expired_at' => Carbon::now()->addDays(1)->toDateTimeLocalString()]);
+        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
+    }
+
+    public function test_videoCanComment_with_free_video()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $user = User::factory()->create();
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 0]);
+        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
+    }
+
+    public function test_videoCanComment_with_free_course()
+    {
+        $course = Course::factory()->create(['is_free' => 1]);
+        $user = User::factory()->create();
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100]);
+        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
+    }
+
+    public function test_videoCanComment_with_charge_course_and_paid()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $user = User::factory()->create();
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100]);
+        UserCourse::create(['user_id' => $user['id'], 'course_id' => $course['id']]);
+        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
+    }
+
+    public function test_videoCanComment_with_charge_course_and_with_role()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100]);
+        $role = Role::factory()->create();
+        $user = User::factory()->create(['role_id' => $role['id'], 'role_expired_at' => Carbon::now()->addDays(1)->toDateTimeLocalString()]);
+        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
+    }
+
+    public function test_videoCanComment_with_charge()
+    {
+        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
+        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100]);
+        $user = User::factory()->create();
+        $this->assertFalse($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
     }
 }

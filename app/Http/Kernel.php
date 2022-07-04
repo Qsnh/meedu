@@ -8,7 +8,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\GlobalShareMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\Backend\BackendPermissionCheckMiddleware;
 
@@ -63,7 +62,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:120,1',
+            'throttle:120,1',//120次/1分钟
             'bindings',
         ],
     ];
@@ -85,8 +84,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
 
-        // global变量共享
-        'global.share' => GlobalShareMiddleware::class,
         // 后台权限
         'backend.permission' => BackendPermissionCheckMiddleware::class,
         // api接口的状态登录检测

@@ -14,6 +14,11 @@ class ServiceException extends \Exception
 {
     use ResponseTrait;
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     *
+     * @codeCoverageIgnore
+     */
     public function render()
     {
         $message = $this->getMessage();

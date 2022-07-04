@@ -21,14 +21,11 @@ class EventServiceProvider extends ServiceProvider
             '\App\Listeners\PaymentSuccessEvent\OrderPaidDeliverListener',
             '\App\Listeners\PaymentSuccessEvent\OrderPaidNotificationListener',
             '\App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
-            '\App\Listeners\PaymentSuccessEvent\PromoCodeListener',
-            '\App\Listeners\PaymentSuccessEvent\InviteUserRewardListener',
             '\App\Listeners\PaymentSuccessEvent\Credit1RewardListener',
         ],
         // 订单取消event
         'App\Events\OrderCancelEvent' => [
             '\App\Listeners\OrderCancelEvent\PromoCodeResumeListener',
-            '\App\Listeners\OrderCancelEvent\InviteBalanceResumeListener',
         ],
         // 用户注册event
         'App\Events\UserRegisterEvent' => [
@@ -40,11 +37,6 @@ class EventServiceProvider extends ServiceProvider
         // 用户登录event
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
-        ],
-        // 用户邀请余额提现处理event
-        'App\Events\UserInviteBalanceWithdrawHandledEvent' => [
-            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\NotifyListener',
-            'App\Listeners\UserInviteBalanceWithdrawHandledEvent\RefundBalanceListener',
         ],
         // 用户看完视频event
         'App\Events\UserVideoWatchedEvent' => [

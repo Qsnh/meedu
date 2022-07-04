@@ -24,9 +24,6 @@ class FrontendConstant
     const ORDER_PAID = 9;
     const ORDER_UN_PAY = 1;
 
-    const INVITE_BALANCE_WITHDRAW_STATUS_SUCCESS = 1;
-    const INVITE_BALANCE_WITHDRAW_STATUS_FAILURE = 2;
-
     // api会员认证driver
     const API_GUARD = 'apiv2';
 

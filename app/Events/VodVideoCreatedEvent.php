@@ -9,18 +9,26 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 
 class VodVideoCreatedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $id;
 
     public $data = [];
 
+    /**
+     * @param $id
+     * @param $title
+     * @param $charge
+     * @param $thumb
+     * @param $shortDesc
+     * @param $desc
+     *
+     * @codeCoverageIgnore
+     */
     public function __construct($id, $title, $charge, $thumb, $shortDesc, $desc)
     {
         $this->id = $id;
@@ -31,15 +39,5 @@ class VodVideoCreatedEvent
             'short_desc' => $shortDesc,
             'desc' => $desc,
         ];
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
     }
 }

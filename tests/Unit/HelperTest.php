@@ -24,24 +24,14 @@ class HelperTest extends TestCase
         $this->assertFalse(false);
     }
 
-    public function test_is_wechat()
+    public function test_aliyun_sdk_client()
     {
-        $this->assertFalse(is_wechat());
-    }
-
-    public function test_is_h5()
-    {
-        $this->assertFalse(is_h5());
-    }
-
-    public function test_duration_humans()
-    {
-        $this->assertEquals('00:01', duration_humans(1));
-        $this->assertEquals('00:29', duration_humans(29));
-        $this->assertEquals('01:01', duration_humans(61));
-        $this->assertEquals('03:59', duration_humans(239));
-        $this->assertEquals('01:00:01', duration_humans(3601));
-        $this->assertEquals('01:01:01', duration_humans(3661));
+        config([
+            'meedu.upload.video.aliyun.access_key_id' => '123',
+            'meedu.upload.video.aliyun.access_key_secret' => '456',
+        ]);
+        aliyun_sdk_client();
+        $this->assertTrue(true);
     }
 
     public function test_array_compress()
@@ -130,5 +120,59 @@ class HelperTest extends TestCase
         $this->assertFalse(mobile_code_check($mobile, '289800'));
         $this->assertEmpty($cacheService->get($mobileCodeKey));
         $this->assertEquals(1, (int)$cacheService->get($mobileCodeSafeKey));
+    }
+
+    public function test_get_payments()
+    {
+        $this->assertTrue(get_payments('pc')->isEmpty());
+    }
+
+    public function test_get_array_ids()
+    {
+        $arr = [
+            [
+                'id' => 1,
+                'name' => 'meedu',
+            ],
+            [
+                'id' => 2,
+                'name' => 'meedu2',
+            ],
+        ];
+
+        $this->assertEquals([1, 2], get_array_ids($arr, 'id'));
+        $this->assertEquals(['meedu', 'meedu2'], get_array_ids($arr, 'name'));
+    }
+
+    public function test_get_platform()
+    {
+        $platform = get_platform();
+        $this->assertEquals(\App\Constant\FrontendConstant::LOGIN_PLATFORM_APP, $platform);
+    }
+
+    public function test_url_append_query()
+    {
+        $url = 'https://meedu.vip';
+        $url1 = 'https://meedu.vip?name=meedu';
+        $data = [
+            'params1' => 1,
+            'params2' => 2,
+        ];
+
+        $this->assertEquals('https://meedu.vip?params1=1&params2=2', url_append_query($url, $data));
+        $this->assertEquals('https://meedu.vip?name=meedu&params1=1&params2=2', url_append_query($url1, $data));
+    }
+
+    public function test_wechat_qrcode_image()
+    {
+        config([
+            'meedu.mp_wechat.app_id' => env('WECHAT_MP_APP_ID', ''),
+            'meedu.mp_wechat.app_secret' => env('WECHAT_MP_APP_SECRET', ''),
+            'meedu.mp_wechat.token' => env('WECHAT_MP_TOKEN', ''),
+        ]);
+
+        $code = 'hello,meedu';
+        wechat_qrcode_image($code);
+        $this->assertTrue(true);
     }
 }

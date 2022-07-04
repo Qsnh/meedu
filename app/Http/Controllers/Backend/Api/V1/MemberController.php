@@ -30,8 +30,6 @@ use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
-use App\Events\UserInviteBalanceWithdrawHandledEvent;
-use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberController extends BaseController
@@ -107,55 +105,6 @@ class MemberController extends BaseController
     public function store(MemberRequest $request)
     {
         User::create($request->filldata());
-
-        return $this->success();
-    }
-
-    // 用户提现订单
-    public function inviteBalanceWithdrawOrders(Request $request)
-    {
-        $userId = $request->input('user_id');
-        $status = (int)$request->input('status');
-        $name = $request->input('name');
-
-        $orders = UserInviteBalanceWithdrawOrder::query()
-            ->when($userId, function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
-            ->when($name, function ($query) use ($name) {
-                $query->where('channel_name', 'like', '%' . $name . '%');
-            })
-            ->when($status !== -1, function ($query) use ($status) {
-                $query->where('status', $status);
-            })
-            ->orderByDesc('id')
-            ->paginate($request->input('size', 10));
-
-        $users = User::query()
-            ->select(['id', 'nick_name', 'mobile', 'avatar'])
-            ->whereIn('id', array_column($orders->items(), 'user_id'))
-            ->get()
-            ->keyBy('id');
-
-        return $this->successData(compact('orders', 'users'));
-    }
-
-    // 用户提现订单处理
-    public function inviteBalanceWithdrawOrderHandle(Request $request)
-    {
-        $ids = $request->input('ids');
-        $status = $request->input('status');
-        $remark = $request->input('remark', '');
-
-        UserInviteBalanceWithdrawOrder::query()
-            ->whereIn('id', $ids)
-            ->update([
-                'status' => $status,
-                'remark' => $remark,
-            ]);
-
-        // 提现处理后事件
-        event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
 
         return $this->success();
     }
@@ -577,7 +526,6 @@ class MemberController extends BaseController
                         'password' => Hash::make($tmpPassword),
                         'is_password_set' => 0,
                         'is_set_nickname' => 0,
-                        'is_used_promo_code' => 0,
                         'role_id' => $tmpRoleId,
                         'role_expired_at' => $tmpRoleExpiredAt,
                         'created_at' => $now,

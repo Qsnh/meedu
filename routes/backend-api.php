@@ -220,9 +220,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
         Route::get('/{id}/detail/videoWatchRecords', 'MemberController@userVideoWatchRecords');
 
-        Route::get('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrders');
-        Route::post('/inviteBalance/withdrawOrders', 'MemberController@inviteBalanceWithdrawOrderHandle');
-
         // 积分变更
         Route::post('/credit1/change', 'MemberController@credit1Change');
         // 发送站内消息

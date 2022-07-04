@@ -835,54 +835,6 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
             ],
 
-            // 邀请
-            [
-                'group' => '邀请',
-                'name' => '免费会员是否可以生成邀请码',
-                'field_type' => 'switch',
-                'sort' => 0,
-                'default_value' => 0,
-                'key' => 'meedu.member.invite.free_user_enabled',
-                'value' => 0,
-            ],
-            [
-                'group' => '邀请',
-                'name' => '邀请人奖励(元)',
-                'field_type' => 'number',
-                'sort' => 1,
-                'default_value' => 0,
-                'key' => 'meedu.member.invite.invite_user_reward',
-                'value' => 0,
-            ],
-            [
-                'group' => '邀请',
-                'name' => '被邀请人奖励(元)',
-                'field_type' => 'number',
-                'sort' => 2,
-                'default_value' => 0,
-                'key' => 'meedu.member.invite.invited_user_reward',
-                'value' => 0,
-            ],
-            [
-                'group' => '邀请',
-                'name' => '邀请关系维系时间(天)',
-                'field_type' => 'number',
-                'sort' => 3,
-                'default_value' => 0,
-                'key' => 'meedu.member.invite.effective_days',
-                'value' => 0,
-            ],
-            [
-                'group' => '邀请',
-                'name' => '订单抽成',
-                'field_type' => 'text',
-                'sort' => 4,
-                'default_value' => 0,
-                'key' => 'meedu.member.invite.per_order_draw',
-                'value' => 0,
-                'help' => '1=100% 0.5=50%'
-            ],
-
             // 积分
             [
                 'group' => '积分',
