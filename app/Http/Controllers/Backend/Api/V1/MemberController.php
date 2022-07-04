@@ -249,11 +249,16 @@ class MemberController extends BaseController
 
     public function userOrders(Request $request, $id)
     {
+        $status = (int)$request->input('status');
+
         $data = Order::query()
             ->with(['goods', 'paidRecords'])
             ->where('user_id', $id)
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->orderByDesc('created_at')
-            ->paginate($request->input('size', 20));
+            ->paginate($request->input('size', 10));
 
         return $this->successData([
             'data' => $data,

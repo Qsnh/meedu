@@ -1198,6 +1198,28 @@ class AdministratorPermissionSeeder extends Seeder
                 'method' => 'POST',
                 'url' => 'media/videos/delete/multi',
             ],
+
+            [
+                'group_name' => '用户',
+                'display_name' => '用户购买的录播课',
+                'slug' => 'v2.member.courses',
+                'method' => 'GET',
+                'url' => 'member/courses',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户录播课的观看明细',
+                'slug' => 'v2.member.course.progress',
+                'method' => 'GET',
+                'url' => 'member/courseProgress',
+            ],
+            [
+                'group_name' => '用户',
+                'display_name' => '用户购买的课时',
+                'slug' => 'v2.member.videos',
+                'method' => 'GET',
+                'url' => 'member/videos',
+            ],
         ];
 
         foreach ($permissions as $permission) {

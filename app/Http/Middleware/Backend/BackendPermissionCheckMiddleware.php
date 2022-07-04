@@ -23,7 +23,7 @@ class BackendPermissionCheckMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $path = str_replace('backend/api/v1/', '', $request->path());
+        $path = str_replace(['backend/api/v1/', 'backend/api/v2/'], '', $request->path());
         // 白名单
         if (isset(BackendApiConstant::PERMISSION_WHITE_LIST[$path])) {
             return $next($request);
