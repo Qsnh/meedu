@@ -145,14 +145,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('roles', 'MemberController@roles');
         // 我的消息
         Route::get('messages', 'MemberController@messages');
-        // 邀请余额明细
-        Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
-        // 我的邀请注册用户
-        Route::get('inviteUsers', 'MemberController@inviteUsers');
-        // 邀请余额提现记录
-        Route::get('withdrawRecords', 'MemberController@withdrawRecords');
-        // 邀请余额提现
-        Route::post('withdraw', 'MemberController@createWithdraw');
         // 消息已读
         Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
         // 消息全部已读
