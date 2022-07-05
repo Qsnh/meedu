@@ -20,1225 +20,851 @@ class AdministratorPermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
-            // 视频上传
+            // 录播课
             [
-                'group_name' => '视频',
-                'display_name' => '腾讯云视频上传',
-                'slug' => 'video.token.tencent',
-                'method' => 'POST',
-                'url' => 'video/token/tencent',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '阿里云视频上传',
-                'slug' => 'video.token.aliyun.refresh',
-                'method' => 'POST',
-                'url' => 'video/token/aliyun/refresh',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '阿里云视频上传',
-                'slug' => 'video.token.aliyun.create',
-                'method' => 'POST',
-                'url' => 'video/token/aliyun/create',
+                'group_name' => '录播课',
+                'children' => [
+                    // 课程分类
+                    [
+                        'display_name' => '录播课-分类-列表',
+                        'slug' => 'courseCategory',
+                        'method' => 'GET',
+                        'url' => 'courseCategory',
+                    ],
+                    [
+                        'display_name' => '录播课-分类-添加',
+                        'slug' => 'courseCategory.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^courseCategory$|^courseCategory\/create$)',
+                    ],
+                    [
+                        'display_name' => '录播课-分类-编辑',
+                        'slug' => 'courseCategory.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'courseCategory/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-分类-删除',
+                        'slug' => 'courseCategory.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'courseCategory/\d+',
+                    ],
+
+                    // 课程
+                    [
+                        'display_name' => '录播课-列表',
+                        'slug' => 'course',
+                        'method' => 'GET',
+                        'url' => 'course',
+                    ],
+                    [
+                        'display_name' => '录播课-添加',
+                        'slug' => 'course.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^course\/create$|^course$)',
+                    ],
+                    [
+                        'display_name' => '录播课-编辑',
+                        'slug' => 'course.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'course/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-删除',
+                        'slug' => 'course.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'course/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-学员观看记录-列表',
+                        'slug' => 'course.watchRecords',
+                        'method' => 'GET',
+                        'url' => '(^course\/\d+\/watch\/records$|^course\/\d+\/user\/\d+\/watch\/records$)',
+                    ],
+                    [
+                        'display_name' => '录播课-学员观看记录-删除',
+                        'slug' => 'course.watchRecords.delete',
+                        'method' => 'POST',
+                        'url' => 'course/\d+/watch/records/delete',
+                    ],
+                    [
+                        'display_name' => '录播课-付费学员-列表',
+                        'slug' => 'course.subscribes',
+                        'method' => 'GET',
+                        'url' => 'course/\d+/subscribes',
+                    ],
+                    [
+                        'display_name' => '录播课-付费学员-新增',
+                        'slug' => 'course.subscribe.create',
+                        'method' => 'POST',
+                        'url' => '(^course\/\d+\/subscribe\/create|^course\/\d+\/subscribe\/import$)',
+                    ],
+                    [
+                        'display_name' => '录播课-付费学员-删除',
+                        'slug' => 'course.subscribe.delete',
+                        'method' => 'GET',
+                        'url' => 'course/\d+/subscribe/delete',
+                    ],
+
+                    // 课程章节
+                    [
+                        'display_name' => '录播课-章节-列表',
+                        'slug' => 'course_chapter',
+                        'method' => 'GET',
+                        'url' => 'course_chapter/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-章节-添加',
+                        'slug' => 'course_chapter.store',
+                        'method' => 'POST',
+                        'url' => 'course_chapter/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-章节-编辑',
+                        'slug' => 'course_chapter.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'course_chapter/\d+/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-章节-删除',
+                        'slug' => 'course_chapter.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'course_chapter/\d+/\d+',
+                    ],
+
+                    // 录播课评论
+                    [
+                        'display_name' => '录播课-评论-列表',
+                        'slug' => 'course_comment',
+                        'method' => 'GET',
+                        'url' => 'course_comment',
+                    ],
+                    [
+                        'display_name' => '录播课-评论-删除',
+                        'slug' => 'course_comment.destroy',
+                        'method' => 'POST',
+                        'url' => 'course_comment/delete',
+                    ],
+
+                    // 课时
+                    [
+                        'display_name' => '录播课-课时-列表',
+                        'slug' => 'video',
+                        'method' => 'GET',
+                        'url' => 'video',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-添加',
+                        'slug' => 'video.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^video$|^video\/create$|^video\/import$)',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-编辑',
+                        'slug' => 'video.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'video/\d+',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-删除',
+                        'slug' => 'video.destroy',
+                        'method' => 'DELETE|POST',
+                        'url' => '(^video\/\d+$|^video\/delete\/multi$)',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-付费学员-列表',
+                        'slug' => 'video.subscribes',
+                        'method' => 'GET',
+                        'url' => 'video/\d+/subscribes',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-付费学员-添加',
+                        'slug' => 'video.subscribe.create',
+                        'method' => 'POST',
+                        'url' => 'video/\d+/subscribe/create',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-付费学员-删除',
+                        'slug' => 'video.subscribe.delete',
+                        'method' => 'GET',
+                        'url' => 'video/\d+/subscribe/delete',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-观看记录-列表',
+                        'slug' => 'video.watch.records',
+                        'method' => 'GET',
+                        'url' => 'video/\d+/watch/records',
+                    ],
+
+                    // 课时评论
+                    [
+                        'display_name' => '录播课-课时-评论-列表',
+                        'slug' => 'video_comment',
+                        'method' => 'GET',
+                        'url' => 'video_comment',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-评论-删除',
+                        'slug' => 'video_comment.destroy',
+                        'method' => 'POST',
+                        'url' => 'video_comment/delete',
+                    ],
+
+                    // 课程附件
+                    [
+                        'display_name' => '录播课-附件-列表',
+                        'slug' => 'course_attach',
+                        'method' => 'GET',
+                        'url' => 'course_attach',
+                    ],
+                    [
+                        'display_name' => '录播课-附件-添加',
+                        'slug' => 'course_attach.store',
+                        'method' => 'POST',
+                        'url' => 'course_attach',
+                    ],
+                    [
+                        'display_name' => '录播课-附件-删除',
+                        'slug' => 'course_attach.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'course_attach/\d+',
+                    ],
+                ],
             ],
 
-            // 友情链接
-            [
-                'group_name' => '友情链接',
-                'display_name' => '友情链接列表',
-                'slug' => 'link',
-                'method' => 'GET',
-                'url' => 'link',
-            ],
-            [
-                'group_name' => '友情链接',
-                'display_name' => '友情链接添加',
-                'slug' => 'link.store',
-                'method' => 'POST',
-                'url' => 'link',
-            ],
-            [
-                'group_name' => '友情链接',
-                'display_name' => '友情链接查看',
-                'slug' => 'link.edit',
-                'method' => 'GET',
-                'url' => 'link/\d+',
-            ],
-            [
-                'group_name' => '友情链接',
-                'display_name' => '友情链接编辑',
-                'slug' => 'link.update',
-                'method' => 'PUT',
-                'url' => 'link/\d+',
-            ],
-            [
-                'group_name' => '友情链接',
-                'display_name' => '友情链接删除',
-                'slug' => 'link.destroy',
-                'method' => 'DELETE',
-                'url' => 'link/\d+',
-            ],
-
-            // 幻灯片
-            [
-                'group_name' => '幻灯片',
-                'display_name' => '幻灯片列表',
-                'slug' => 'slider',
-                'method' => 'GET',
-                'url' => 'slider',
-            ],
-            [
-                'group_name' => '幻灯片',
-                'display_name' => '幻灯片添加',
-                'slug' => 'slider.store',
-                'method' => 'POST',
-                'url' => 'slider',
-            ],
-            [
-                'group_name' => '幻灯片',
-                'display_name' => '幻灯片查看',
-                'slug' => 'slider.edit',
-                'method' => 'GET',
-                'url' => 'slider/\d+',
-            ],
-            [
-                'group_name' => '幻灯片',
-                'display_name' => '幻灯片编辑',
-                'slug' => 'slider.update',
-                'method' => 'PUT',
-                'url' => 'slider/\d+',
-            ],
-            [
-                'group_name' => '幻灯片',
-                'display_name' => '幻灯片删除',
-                'slug' => 'slider.destroy',
-                'method' => 'DELETE',
-                'url' => 'slider/\d+',
-            ],
-
-            // 广告推广
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广列表',
-                'slug' => 'ad_from',
-                'method' => 'GET',
-                'url' => 'ad_from',
-            ],
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广添加',
-                'slug' => 'ad_from.store',
-                'method' => 'POST',
-                'url' => 'ad_from',
-            ],
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广查看',
-                'slug' => 'ad_from.edit',
-                'method' => 'GET',
-                'url' => 'ad_from/\d+',
-            ],
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广统计',
-                'slug' => 'ad_from.number',
-                'method' => 'GET',
-                'url' => 'ad_from/\d+/number',
-            ],
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广编辑',
-                'slug' => 'ad_from.update',
-                'method' => 'PUT',
-                'url' => 'ad_from/\d+',
-            ],
-            [
-                'group_name' => '广告推广',
-                'display_name' => '广告推广删除',
-                'slug' => 'ad_from.destroy',
-                'method' => 'DELETE',
-                'url' => 'ad_from/\d+',
-            ],
-
-            // 公告
-            [
-                'group_name' => '公告',
-                'display_name' => '公告列表',
-                'slug' => 'announcement',
-                'method' => 'GET',
-                'url' => 'announcement',
-            ],
-            [
-                'group_name' => '公告',
-                'display_name' => '公告添加',
-                'slug' => 'announcement.store',
-                'method' => 'POST',
-                'url' => 'announcement',
-            ],
-            [
-                'group_name' => '公告',
-                'display_name' => '公告查看',
-                'slug' => 'announcement.edit',
-                'method' => 'GET',
-                'url' => 'announcement/\d+',
-            ],
-            [
-                'group_name' => '公告',
-                'display_name' => '公告编辑',
-                'slug' => 'announcement.update',
-                'method' => 'PUT',
-                'url' => 'announcement/\d+',
-            ],
-            [
-                'group_name' => '公告',
-                'display_name' => '公告删除',
-                'slug' => 'announcement.destroy',
-                'method' => 'DELETE',
-                'url' => 'announcement/\d+',
-            ],
-
-            // 首页导航
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航列表',
-                'slug' => 'nav',
-                'method' => 'GET',
-                'url' => 'nav',
-            ],
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航添加参数',
-                'slug' => 'nav.create',
-                'method' => 'GET',
-                'url' => 'nav/create',
-            ],
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航添加',
-                'slug' => 'nav.store',
-                'method' => 'POST',
-                'url' => 'nav',
-            ],
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航查看',
-                'slug' => 'nav.edit',
-                'method' => 'GET',
-                'url' => 'nav/\d+',
-            ],
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航编辑',
-                'slug' => 'nav.update',
-                'method' => 'PUT',
-                'url' => 'nav/\d+',
-            ],
-            [
-                'group_name' => '首页导航',
-                'display_name' => '首页导航删除',
-                'slug' => 'nav.destroy',
-                'method' => 'DELETE',
-                'url' => 'nav/\d+',
-            ],
-
-            // 课程评论
-            [
-                'group_name' => '评论',
-                'display_name' => '课程评论列表',
-                'slug' => 'course_comment',
-                'method' => 'GET',
-                'url' => 'course_comment',
-            ],
-            [
-                'group_name' => '评论',
-                'display_name' => '课程评论删除',
-                'slug' => 'course_comment.destroy',
-                'method' => 'POST',
-                'url' => 'course_comment/delete',
-            ],
-
-            // 视频评论
-            [
-                'group_name' => '评论',
-                'display_name' => '视频评论列表',
-                'slug' => 'video_comment',
-                'method' => 'GET',
-                'url' => 'video_comment',
-            ],
-            [
-                'group_name' => '评论',
-                'display_name' => '视频评论删除',
-                'slug' => 'video_comment.destroy',
-                'method' => 'POST',
-                'url' => 'video_comment/delete',
-            ],
-
-            // 会员
+            // VIP会员
             [
                 'group_name' => 'VIP会员',
-                'display_name' => '会员列表',
-                'slug' => 'role',
-                'method' => 'GET',
-                'url' => 'role',
-            ],
-            [
-                'group_name' => 'VIP会员',
-                'display_name' => '会员添加',
-                'slug' => 'role.store',
-                'method' => 'POST',
-                'url' => 'role',
-            ],
-            [
-                'group_name' => 'VIP会员',
-                'display_name' => '会员查看',
-                'slug' => 'role.edit',
-                'method' => 'GET',
-                'url' => 'role/\d+',
-            ],
-            [
-                'group_name' => 'VIP会员',
-                'display_name' => '会员编辑',
-                'slug' => 'role.update',
-                'method' => 'PUT',
-                'url' => 'role/\d+',
-            ],
-            [
-                'group_name' => 'VIP会员',
-                'display_name' => '会员删除',
-                'slug' => 'role.destroy',
-                'method' => 'DELETE',
-                'url' => 'role/\d+',
+                'children' => [
+                    [
+                        'display_name' => 'VIP会员-列表',
+                        'slug' => 'role',
+                        'method' => 'GET',
+                        'url' => 'role',
+                    ],
+                    [
+                        'display_name' => 'VIP会员-添加',
+                        'slug' => 'role.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^role$|^role\/create$)',
+                    ],
+                    [
+                        'display_name' => 'VIP会员-编辑',
+                        'slug' => 'role.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'role/\d+',
+                    ],
+                    [
+                        'display_name' => 'VIP会员-删除',
+                        'slug' => 'role.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'role/\d+',
+                    ],
+                ],
             ],
 
-            // 管理员
+            // 学员
             [
-                'group_name' => '管理员',
-                'display_name' => '管理员列表',
-                'slug' => 'administrator',
-                'method' => 'GET',
-                'url' => 'administrator',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员添加参数',
-                'slug' => 'administrator.create',
-                'method' => 'GET',
-                'url' => 'administrator/create',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员添加',
-                'slug' => 'administrator.store',
-                'method' => 'POST',
-                'url' => 'administrator',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员查看',
-                'slug' => 'administrator.edit',
-                'method' => 'GET',
-                'url' => 'administrator/\d+',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员编辑',
-                'slug' => 'administrator.update',
-                'method' => 'PUT',
-                'url' => 'administrator/\d+',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员删除',
-                'slug' => 'administrator.destroy',
-                'method' => 'DELETE',
-                'url' => 'administrator/\d+',
-            ],
-            [
-                'group_name' => '管理员',
-                'display_name' => '管理员修改密码',
-                'slug' => 'administrator.password',
-                'method' => 'PUT',
-                'url' => 'administrator/password',
+                'group_name' => '学员',
+                'children' => [
+                    [
+                        'display_name' => '学员-列表',
+                        'slug' => 'member',
+                        'method' => 'GET',
+                        'url' => 'member',
+                    ],
+                    [
+                        'display_name' => '学员-添加',
+                        'slug' => 'member.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^member$|^member\/create$|^member\/import$)',
+                    ],
+                    [
+                        'display_name' => '学员-编辑',
+                        'slug' => 'member.update',
+                        'method' => 'GET|PUT',
+                        'url' => '(^member\/\d+$|^member\/field\/multi$)',
+                    ],
+                    [
+                        'display_name' => '学员-详情',
+                        'slug' => 'member.detail',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail',
+                    ],
+                    [
+                        'display_name' => '学员-已购-录播课-列表',
+                        'slug' => 'member.detail.userCourses',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userCourses',
+                    ],
+                    [
+                        'display_name' => '学员-已购-课时-列表',
+                        'slug' => 'member.detail.userVideos',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userVideos',
+                    ],
+                    [
+                        'display_name' => '学员-已购-VIP会员-列表',
+                        'slug' => 'member.detail.userRoles',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userRoles',
+                    ],
+                    [
+                        'display_name' => '学员-收藏-录播课-列表',
+                        'slug' => 'member.detail.userCollect',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userCollect',
+                    ],
+                    [
+                        'display_name' => '学员-学习历史-录播课-列表',
+                        'slug' => 'member.detail.userHistory',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userHistory',
+                    ],
+                    [
+                        'display_name' => '学员-学习历史-课时-列表',
+                        'slug' => 'member.video.watch.records',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/videoWatchRecords',
+                    ],
+                    [
+                        'display_name' => '学员-订单-列表',
+                        'slug' => 'member.detail.userOrders',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/userOrders',
+                    ],
+                    [
+                        'display_name' => '学员-积分-明细列表',
+                        'slug' => 'member.detail.credit1Records',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/detail/credit1Records',
+                    ],
+                    [
+                        'display_name' => '学员-积分-变动',
+                        'slug' => 'member.credit1.change',
+                        'method' => 'POST',
+                        'url' => 'member/credit1/change',
+                    ],
+                    [
+                        'display_name' => '学员-备注',
+                        'slug' => 'member.remark',
+                        'method' => 'GET',
+                        'url' => 'member/\d+/remark',
+                    ],
+                    [
+                        'display_name' => '学员-备注-编辑',
+                        'slug' => 'member.remark.update',
+                        'method' => 'PUT',
+                        'url' => 'member/\d+/remark',
+                    ],
+                    [
+                        'display_name' => '学员-站内消息-发送',
+                        'slug' => 'member.message.send',
+                        'method' => 'POST',
+                        'url' => '(^member\/\d+\/message$|^member\/message\/multi$)',
+                    ],
+
+                    // 学员标签
+                    [
+                        'display_name' => '学员-标签-列表',
+                        'slug' => 'member.tag',
+                        'method' => 'GET',
+                        'url' => 'member/tag/index',
+                    ],
+                    [
+                        'display_name' => '学员-标签-添加',
+                        'slug' => 'member.tag.store',
+                        'method' => 'POST',
+                        'url' => 'member/tag/create',
+                    ],
+                    [
+                        'display_name' => '学员-标签-编辑',
+                        'slug' => 'member.tag.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'member/tag/\d+',
+                    ],
+                    [
+                        'display_name' => '学员-标签-删除',
+                        'slug' => 'member.tag.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'member/tag/\d+',
+                    ],
+                    [
+                        'display_name' => '学员-标签-绑定',
+                        'slug' => 'member.tags',
+                        'method' => 'PUT',
+                        'url' => 'member/\d+/tags',
+                    ],
+
+                    [
+                        'display_name' => '[V2]学员-已购-录播课-列表',
+                        'slug' => 'v2.member.courses',
+                        'method' => 'GET',
+                        'url' => 'member/courses',
+                    ],
+                    [
+                        'display_name' => '[V2]学员-已购-录播课-课时观看明细',
+                        'slug' => 'v2.member.course.progress',
+                        'method' => 'GET',
+                        'url' => 'member/courseProgress',
+                    ],
+                    [
+                        'display_name' => '[V2]学员-已购-课时-列表',
+                        'slug' => 'v2.member.videos',
+                        'method' => 'GET',
+                        'url' => 'member/videos',
+                    ],
+                ],
             ],
 
-            // 管理员角色
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色列表',
-                'slug' => 'administrator_role',
-                'method' => 'GET',
-                'url' => 'administrator_role',
-            ],
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色添加参数',
-                'slug' => 'administrator_role.create',
-                'method' => 'GET',
-                'url' => 'administrator_role/create',
-            ],
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色添加',
-                'slug' => 'administrator_role.store',
-                'method' => 'POST',
-                'url' => 'administrator_role',
-            ],
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色查看',
-                'slug' => 'administrator_role.edit',
-                'method' => 'GET',
-                'url' => 'administrator_role/\d+',
-            ],
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色编辑',
-                'slug' => 'administrator_role.update',
-                'method' => 'PUT',
-                'url' => 'administrator_role/\d+',
-            ],
-            [
-                'group_name' => '管理员角色',
-                'display_name' => '管理员角色删除',
-                'slug' => 'administrator_role.destroy',
-                'method' => 'DELETE',
-                'url' => 'administrator_role/\d+',
-            ],
-
-            // 课程章节
-            [
-                'group_name' => '课程',
-                'display_name' => '课程章节列表',
-                'slug' => 'course_chapter',
-                'method' => 'GET',
-                'url' => 'course_chapter/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程章节添加',
-                'slug' => 'course_chapter.store',
-                'method' => 'POST',
-                'url' => 'course_chapter/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程章节查看',
-                'slug' => 'course_chapter.edit',
-                'method' => 'GET',
-                'url' => 'course_chapter/\d+/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程章节编辑',
-                'slug' => 'course_chapter.update',
-                'method' => 'PUT',
-                'url' => 'course_chapter/\d+/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程章节删除',
-                'slug' => 'course_chapter.destroy',
-                'method' => 'DELETE',
-                'url' => 'course_chapter/\d+/\d+',
-            ],
-
-            // 课程
-            [
-                'group_name' => '课程',
-                'display_name' => '课程列表',
-                'slug' => 'course',
-                'method' => 'GET',
-                'url' => 'course',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程添加参数',
-                'slug' => 'course.create',
-                'method' => 'GET',
-                'url' => 'course/create',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程添加',
-                'slug' => 'course.store',
-                'method' => 'POST',
-                'url' => 'course',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程查看',
-                'slug' => 'course.edit',
-                'method' => 'GET',
-                'url' => 'course/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程编辑',
-                'slug' => 'course.update',
-                'method' => 'PUT',
-                'url' => 'course/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程删除',
-                'slug' => 'course.destroy',
-                'method' => 'DELETE',
-                'url' => 'course/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程观看记录',
-                'slug' => 'course.watchRecords',
-                'method' => 'GET',
-                'url' => 'course/\d+/watch/records',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程观看记录删除',
-                'slug' => 'course.watchRecords.delete',
-                'method' => 'POST',
-                'url' => 'course/\d+/watch/records/delete',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程订阅',
-                'slug' => 'course.subscribes',
-                'method' => 'GET',
-                'url' => 'course/\d+/subscribes',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程订阅删除',
-                'slug' => 'course.subscribe.delete',
-                'method' => 'GET',
-                'url' => 'course/\d+/subscribe/delete',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程订阅新增',
-                'slug' => 'course.subscribe.create',
-                'method' => 'POST',
-                'url' => 'course/\d+/subscribe/create',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程用户详细观看记录',
-                'slug' => 'course.user.watch.records',
-                'method' => 'GET',
-                'url' => 'course/\d+/user/\d+/watch/records',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '录播课-学员批量导入',
-                'slug' => 'course.subscribe.import',
-                'method' => 'POST',
-                'url' => 'course/\d+/subscribe/import',
-            ],
-
-            // 视频
-            [
-                'group_name' => '视频',
-                'display_name' => '视频列表',
-                'slug' => 'video',
-                'method' => 'GET',
-                'url' => 'video',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频添加参数',
-                'slug' => 'video.create',
-                'method' => 'GET',
-                'url' => 'video/create',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频添加',
-                'slug' => 'video.store',
-                'method' => 'POST',
-                'url' => 'video',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频查看',
-                'slug' => 'video.edit',
-                'method' => 'GET',
-                'url' => 'video/\d+',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频编辑',
-                'slug' => 'video.update',
-                'method' => 'PUT',
-                'url' => 'video/\d+',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频删除',
-                'slug' => 'video.destroy',
-                'method' => 'DELETE',
-                'url' => 'video/\d+',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频批量删除',
-                'slug' => 'video.destroy.multi',
-                'method' => 'POST',
-                'url' => 'video/delete/multi',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频订阅列表',
-                'slug' => 'video.subscribes',
-                'method' => 'GET',
-                'url' => 'video/\d+/subscribes',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频订阅添加',
-                'slug' => 'video.subscribe.create',
-                'method' => 'POST',
-                'url' => 'video/\d+/subscribe/create',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频订阅删除',
-                'slug' => 'video.subscribe.delete',
-                'method' => 'GET',
-                'url' => 'video/\d+/subscribe/delete',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频观看记录',
-                'slug' => 'video.watch.records',
-                'method' => 'GET',
-                'url' => 'video/\d+/watch/records',
-            ],
-            [
-                'group_name' => '视频',
-                'display_name' => '视频批量导入',
-                'slug' => 'video.import',
-                'method' => 'POST',
-                'url' => 'video/import',
-            ],
-
-            // 用户
-            [
-                'group_name' => '用户',
-                'display_name' => '用户列表',
-                'slug' => 'member',
-                'method' => 'GET',
-                'url' => 'member',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户添加参数',
-                'slug' => 'member.create',
-                'method' => 'GET',
-                'url' => 'member/create',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户添加',
-                'slug' => 'member.store',
-                'method' => 'POST',
-                'url' => 'member',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户查看',
-                'slug' => 'member.edit',
-                'method' => 'GET',
-                'url' => 'member/\d+',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户编辑',
-                'slug' => 'member.update',
-                'method' => 'PUT',
-                'url' => 'member/\d+',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户字段批量编辑',
-                'slug' => 'member.update.field.multi',
-                'method' => 'PUT',
-                'url' => 'member/field/multi',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户详情',
-                'slug' => 'member.detail',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户订阅课程',
-                'slug' => 'member.detail.userCourses',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userCourses',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户订阅视频',
-                'slug' => 'member.detail.userVideos',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userVideos',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户会员记录',
-                'slug' => 'member.detail.userRoles',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userRoles',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户课程收藏',
-                'slug' => 'member.detail.userCollect',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userCollect',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户观看历史',
-                'slug' => 'member.detail.userHistory',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userHistory',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户订单',
-                'slug' => 'member.detail.userOrders',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userOrders',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户邀请记录',
-                'slug' => 'member.detail.userInvite',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/userInvite',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户积分明细',
-                'slug' => 'member.detail.credit1Records',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/credit1Records',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户邀请余额提现记录列表',
-                'slug' => 'member.inviteBalance.withdrawOrders',
-                'method' => 'GET',
-                'url' => 'member/inviteBalance/withdrawOrders',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户邀请余额提现处理',
-                'slug' => 'member.inviteBalance.withdrawOrders',
-                'method' => 'POST',
-                'url' => 'member/inviteBalance/withdrawOrders',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '积分变动',
-                'slug' => 'member.credit1.change',
-                'method' => 'POST',
-                'url' => 'member/credit1/change',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户标签',
-                'slug' => 'member.tags',
-                'method' => 'PUT',
-                'url' => 'member/\d+/tags',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户备注',
-                'slug' => 'member.remark',
-                'method' => 'GET',
-                'url' => 'member/\d+/remark',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户备注更新',
-                'slug' => 'member.remark.update',
-                'method' => 'PUT',
-                'url' => 'member/\d+/remark',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '给用户发站内消息',
-                'slug' => 'member.message.send',
-                'method' => 'POST',
-                'url' => 'member/\d+/message',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '给用户发站内消息(批量)',
-                'slug' => 'member.message.send.multi',
-                'method' => 'POST',
-                'url' => 'member/message/multi',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户视频观看记录',
-                'slug' => 'member.video.watch.records',
-                'method' => 'GET',
-                'url' => 'member/\d+/detail/videoWatchRecords',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '批量导入',
-                'slug' => 'member.import',
-                'method' => 'POST',
-                'url' => 'member/import',
-            ],
-
-            // 系统配置
+            // 系统
             [
                 'group_name' => '系统',
-                'display_name' => '系统配置读取',
-                'slug' => 'setting',
-                'method' => 'GET',
-                'url' => 'setting',
-            ],
-            [
-                'group_name' => '系统',
-                'display_name' => '系统配置保存',
-                'slug' => 'setting.save',
-                'method' => 'POST',
-                'url' => 'setting',
+                'children' => [
+                    // 系统配置
+                    [
+                        'display_name' => '系统-配置-查看',
+                        'slug' => 'setting',
+                        'method' => 'GET',
+                        'url' => 'setting',
+                    ],
+                    [
+                        'display_name' => '系统-配置-编辑',
+                        'slug' => 'setting.save',
+                        'method' => 'POST',
+                        'url' => 'setting',
+                    ],
+
+                    // 管理员
+                    [
+                        'display_name' => '系统-管理员-列表',
+                        'slug' => 'administrator',
+                        'method' => 'GET',
+                        'url' => 'administrator',
+                    ],
+                    [
+                        'display_name' => '系统-管理员-添加',
+                        'slug' => 'administrator.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^administrator\/create$|^administrator$)',
+                    ],
+                    [
+                        'display_name' => '系统-管理员-编辑',
+                        'slug' => 'administrator.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'administrator/\d+',
+                    ],
+                    [
+                        'display_name' => '系统-管理员-删除',
+                        'slug' => 'administrator.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'administrator/\d+',
+                    ],
+
+                    // 管理员角色
+                    [
+                        'display_name' => '系统-管理员角色-列表',
+                        'slug' => 'administrator_role',
+                        'method' => 'GET',
+                        'url' => 'administrator_role',
+                    ],
+                    [
+                        'display_name' => '系统-管理员角色-添加',
+                        'slug' => 'administrator_role.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^administrator_role\/create$|^administrator_role$)',
+                    ],
+                    [
+                        'display_name' => '系统-管理员角色-编辑',
+                        'slug' => 'administrator_role.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'administrator_role/\d+',
+                    ],
+                    [
+                        'display_name' => '系统-管理员角色-删除',
+                        'slug' => 'administrator_role.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'administrator_role/\d+',
+                    ],
+                ],
             ],
 
             // 订单
             [
                 'group_name' => '订单',
-                'display_name' => '订单列表',
-                'slug' => 'order',
-                'method' => 'GET',
-                'url' => 'order',
-            ],
-            [
-                'group_name' => '订单',
-                'display_name' => '订单详情',
-                'slug' => 'order.detail',
-                'method' => 'GET',
-                'url' => 'order/\d+',
-            ],
-            [
-                'group_name' => '订单',
-                'display_name' => '订单完成',
-                'slug' => 'order.finish',
-                'method' => 'GET',
-                'url' => 'order/\d+/finish',
-            ],
-            [
-                'group_name' => '订单',
-                'display_name' => '退款-申请退款',
-                'slug' => 'order.refund',
-                'method' => 'POST',
-                'url' => 'order/\d+/refund',
-            ],
-            [
-                'group_name' => '订单',
-                'display_name' => '退款-订单列表',
-                'slug' => 'order.refund.list',
-                'method' => 'GET',
-                'url' => 'order/refund/list',
-            ],
-            [
-                'group_name' => '订单',
-                'display_name' => '退款-删除记录',
-                'slug' => 'order.refund.delete',
-                'method' => 'DELETE',
-                'url' => 'order/refund/\d+',
+                'children' => [
+                    [
+                        'display_name' => '订单-列表',
+                        'slug' => 'order',
+                        'method' => 'GET',
+                        'url' => 'order',
+                    ],
+                    [
+                        'display_name' => '订单-详情',
+                        'slug' => 'order.detail',
+                        'method' => 'GET',
+                        'url' => 'order/\d+',
+                    ],
+                    [
+                        'display_name' => '订单-置为完成',
+                        'slug' => 'order.finish',
+                        'method' => 'GET',
+                        'url' => 'order/\d+/finish',
+                    ],
+                    [
+                        'display_name' => '退款-订单-列表',
+                        'slug' => 'order.refund.list',
+                        'method' => 'GET',
+                        'url' => 'order/refund/list',
+                    ],
+                    [
+                        'display_name' => '订单-退款-添加',
+                        'slug' => 'order.refund',
+                        'method' => 'POST',
+                        'url' => 'order/\d+/refund',
+                    ],
+                    [
+                        'display_name' => '订单-退款-删除',
+                        'slug' => 'order.refund.delete',
+                        'method' => 'DELETE',
+                        'url' => 'order/refund/\d+',
+                    ],
+                ],
             ],
 
             // 优惠码
             [
                 'group_name' => '优惠码',
-                'display_name' => '优惠码列表',
-                'slug' => 'promoCode',
-                'method' => 'GET',
-                'url' => 'promoCode',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码添加',
-                'slug' => 'promoCode.store',
-                'method' => 'POST',
-                'url' => 'promoCode',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码查看',
-                'slug' => 'promoCode.edit',
-                'method' => 'GET',
-                'url' => 'promoCode/\d+',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码编辑',
-                'slug' => 'promoCode.update',
-                'method' => 'PUT',
-                'url' => 'promoCode/\d+',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码删除',
-                'slug' => 'promoCode.destroy.multi',
-                'method' => 'POST',
-                'url' => 'promoCode/delete/multi',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码导入',
-                'slug' => 'promoCode.import',
-                'method' => 'POST',
-                'url' => 'promoCode/import',
-            ],
-            [
-                'group_name' => '优惠码',
-                'display_name' => '优惠码批量生成',
-                'slug' => 'promoCode.generator',
-                'method' => 'POST',
-                'url' => 'promoCode/generator',
-            ],
-
-            // 课程分类
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类列表',
-                'slug' => 'courseCategory',
-                'method' => 'GET',
-                'url' => 'courseCategory',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类添加',
-                'slug' => 'courseCategory.create',
-                'method' => 'GET',
-                'url' => 'courseCategory/create',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类添加',
-                'slug' => 'courseCategory.store',
-                'method' => 'POST',
-                'url' => 'courseCategory',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类查看',
-                'slug' => 'courseCategory.edit',
-                'method' => 'GET',
-                'url' => 'courseCategory/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类编辑',
-                'slug' => 'courseCategory.update',
-                'method' => 'PUT',
-                'url' => 'courseCategory/\d+',
-            ],
-            [
-                'group_name' => '课程',
-                'display_name' => '课程分类删除',
-                'slug' => 'courseCategory.destroy',
-                'method' => 'DELETE',
-                'url' => 'courseCategory/\d+',
+                'children' => [
+                    [
+                        'display_name' => '优惠码-列表',
+                        'slug' => 'promoCode',
+                        'method' => 'GET',
+                        'url' => 'promoCode',
+                    ],
+                    [
+                        'display_name' => '优惠码-添加',
+                        'slug' => 'promoCode.store',
+                        'method' => 'POST',
+                        'url' => '(^promoCode$|^promoCode\/import$)',
+                    ],
+                    [
+                        'display_name' => '优惠码-编辑',
+                        'slug' => 'promoCode.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'promoCode/\d+',
+                    ],
+                    [
+                        'display_name' => '优惠码-删除',
+                        'slug' => 'promoCode.destroy.multi',
+                        'method' => 'POST',
+                        'url' => 'promoCode/delete/multi',
+                    ],
+                    [
+                        'display_name' => '优惠码-批量生成',
+                        'slug' => 'promoCode.generator',
+                        'method' => 'POST',
+                        'url' => 'promoCode/generator',
+                    ],
+                ],
             ],
 
             // 统计
             [
-                'group_name' => '统计',
-                'display_name' => '每日注册数量统计',
-                'slug' => 'statistic.userRegister',
-                'method' => 'GET',
-                'url' => 'statistic/userRegister',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '每日订单创建数量统计',
-                'slug' => 'statistic.orderCreated',
-                'method' => 'GET',
-                'url' => 'statistic/orderCreated',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '每日订单支付数量统计',
-                'slug' => 'statistic.orderPaidCount',
-                'method' => 'GET',
-                'url' => 'statistic/orderPaidCount',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '每日订单已支付总额统计',
-                'slug' => 'statistic.orderPaidSum',
-                'method' => 'GET',
-                'url' => 'statistic/orderPaidSum',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '课程每日销售数量统计',
-                'slug' => 'statistic.courseSell',
-                'method' => 'GET',
-                'url' => 'statistic/courseSell',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '会员每日销售数量统计',
-                'slug' => 'statistic.roleSell',
-                'method' => 'GET',
-                'url' => 'statistic/roleSell',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '每日视频观看时长统计',
-                'slug' => 'statistic.videoWatchDuration',
-                'method' => 'GET',
-                'url' => 'statistic/videoWatchDuration',
-            ],
-            [
-                'group_name' => '统计',
-                'display_name' => '每日课程观看时长统计',
-                'slug' => 'statistic.courseWatchDuration',
-                'method' => 'GET',
-                'url' => 'statistic/courseWatchDuration',
-            ],
-
-            // 课程附件
-            [
-                'group_name' => '课程附件',
-                'display_name' => '课程附件列表',
-                'slug' => 'course_attach',
-                'method' => 'GET',
-                'url' => 'course_attach',
-            ],
-            [
-                'group_name' => '课程附件',
-                'display_name' => '课程附件创建',
-                'slug' => 'course_attach.store',
-                'method' => 'POST',
-                'url' => 'course_attach',
-            ],
-            [
-                'group_name' => '课程附件',
-                'display_name' => '课程附件删除',
-                'slug' => 'course_attach.destroy',
-                'method' => 'DELETE',
-                'url' => 'course_attach/\d+',
+                'group_name' => '数据统计',
+                'children' => [
+                    [
+                        'display_name' => '数据统计-每日注册数量统计',
+                        'slug' => 'statistic.userRegister',
+                        'method' => 'GET',
+                        'url' => 'statistic/userRegister',
+                    ],
+                    [
+                        'display_name' => '数据统计-每日订单创建数量统计',
+                        'slug' => 'statistic.orderCreated',
+                        'method' => 'GET',
+                        'url' => 'statistic/orderCreated',
+                    ],
+                    [
+                        'display_name' => '数据统计-每日订单支付数量统计',
+                        'slug' => 'statistic.orderPaidCount',
+                        'method' => 'GET',
+                        'url' => 'statistic/orderPaidCount',
+                    ],
+                    [
+                        'display_name' => '数据统计-每日订单已支付总额统计',
+                        'slug' => 'statistic.orderPaidSum',
+                        'method' => 'GET',
+                        'url' => 'statistic/orderPaidSum',
+                    ],
+                    [
+                        'display_name' => '数据统计-课程每日销售数量统计',
+                        'slug' => 'statistic.courseSell',
+                        'method' => 'GET',
+                        'url' => 'statistic/courseSell',
+                    ],
+                    [
+                        'display_name' => '数据统计-会员每日销售数量统计',
+                        'slug' => 'statistic.roleSell',
+                        'method' => 'GET',
+                        'url' => 'statistic/roleSell',
+                    ],
+                    [
+                        'display_name' => '数据统计-每日视频观看时长统计',
+                        'slug' => 'statistic.videoWatchDuration',
+                        'method' => 'GET',
+                        'url' => 'statistic/videoWatchDuration',
+                    ],
+                    [
+                        'display_name' => '数据统计-每日课程观看时长统计',
+                        'slug' => 'statistic.courseWatchDuration',
+                        'method' => 'GET',
+                        'url' => 'statistic/courseWatchDuration',
+                    ],
+                ],
             ],
 
             // 微信公众号消息回复
             [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息回复列表',
-                'slug' => 'mpWechatMessageReply',
-                'method' => 'GET',
-                'url' => 'mpWechatMessageReply',
-            ],
-            [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息创建',
-                'slug' => 'mpWechatMessageReply.create',
-                'method' => 'GET',
-                'url' => 'mpWechatMessageReply/create',
-            ],
-            [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息回复添加',
-                'slug' => 'mpWechatMessageReply.store',
-                'method' => 'POST',
-                'url' => 'mpWechatMessageReply',
-            ],
-            [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息回复查看',
-                'slug' => 'mpWechatMessageReply.edit',
-                'method' => 'GET',
-                'url' => 'mpWechatMessageReply/\d+',
-            ],
-            [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息回复编辑',
-                'slug' => 'mpWechatMessageReply.update',
-                'method' => 'PUT',
-                'url' => 'mpWechatMessageReply/\d+',
-            ],
-            [
-                'group_name' => '微信公众号消息回复',
-                'display_name' => '微信公众号消息回复删除',
-                'slug' => 'mpWechatMessageReply.destroy',
-                'method' => 'DELETE',
-                'url' => 'mpWechatMessageReply/\d+',
-            ],
+                'group_name' => '微信公众号',
+                'children' => [
+                    [
+                        'display_name' => '微信公众号-消息回复规则-列表',
+                        'slug' => 'mpWechatMessageReply',
+                        'method' => 'GET',
+                        'url' => 'mpWechatMessageReply',
+                    ],
+                    [
+                        'display_name' => '微信公众号-消息回复规则-添加',
+                        'slug' => 'mpWechatMessageReply.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^mpWechatMessageReply$|^mpWechatMessageReply\/create$)',
+                    ],
+                    [
+                        'display_name' => '微信公众号-消息回复规则-编辑',
+                        'slug' => 'mpWechatMessageReply.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'mpWechatMessageReply/\d+',
+                    ],
+                    [
+                        'display_name' => '微信公众号-消息回复规则-删除',
+                        'slug' => 'mpWechatMessageReply.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'mpWechatMessageReply/\d+',
+                    ],
 
-            // 微信公众号操作
-            [
-                'group_name' => '微信公众号菜单',
-                'display_name' => '微信公众号菜单查询',
-                'slug' => 'mpWechat.menu',
-                'method' => 'GET',
-                'url' => 'mpWechat/menu',
-            ],
-            [
-                'group_name' => '微信公众号菜单',
-                'display_name' => '微信公众号菜单更新',
-                'slug' => 'mpWechat.menu.update',
-                'method' => 'PUT',
-                'url' => 'mpWechat/menu',
-            ],
-            [
-                'group_name' => '微信公众号菜单',
-                'display_name' => '微信公众号菜单清空',
-                'slug' => 'mpWechat.menu.empty',
-                'method' => 'DELETE',
-                'url' => 'mpWechat/menu',
-            ],
-
-            // 用户标签
-            [
-                'group_name' => '用户标签',
-                'display_name' => '用户标签列表',
-                'slug' => 'member.tag',
-                'method' => 'GET',
-                'url' => 'member/tag/index',
-            ],
-            [
-                'group_name' => '用户标签',
-                'display_name' => '用户标签添加',
-                'slug' => 'member.tag.store',
-                'method' => 'POST',
-                'url' => 'member/tag/create',
-            ],
-            [
-                'group_name' => '用户标签',
-                'display_name' => '用户标签查看',
-                'slug' => 'member.tag.edit',
-                'method' => 'GET',
-                'url' => 'member/tag/\d+',
-            ],
-            [
-                'group_name' => '用户标签',
-                'display_name' => '用户标签编辑',
-                'slug' => 'member.tag.update',
-                'method' => 'PUT',
-                'url' => 'member/tag/\d+',
-            ],
-            [
-                'group_name' => '用户标签',
-                'display_name' => '用户标签删除',
-                'slug' => 'member.tag.destroy',
-                'method' => 'DELETE',
-                'url' => 'member/tag/\d+',
+                    // 公众号菜单
+                    [
+                        'display_name' => '微信公众号-菜单-查询',
+                        'slug' => 'mpWechat.menu',
+                        'method' => 'GET',
+                        'url' => 'mpWechat/menu',
+                    ],
+                    [
+                        'display_name' => '微信公众号-菜单-更新',
+                        'slug' => 'mpWechat.menu.update',
+                        'method' => 'PUT',
+                        'url' => 'mpWechat/menu',
+                    ],
+                    [
+                        'display_name' => '微信公众号-菜单-清空',
+                        'slug' => 'mpWechat.menu.empty',
+                        'method' => 'DELETE',
+                        'url' => 'mpWechat/menu',
+                    ],
+                ],
             ],
 
             // 装修
             [
                 'group_name' => '装修',
-                'display_name' => '装修列表',
-                'slug' => 'viewBlock',
-                'method' => 'GET',
-                'url' => 'viewBlock/index',
-            ],
-            [
-                'group_name' => '装修',
-                'display_name' => '装修添加',
-                'slug' => 'viewBlock.store',
-                'method' => 'POST',
-                'url' => 'viewBlock/create',
-            ],
-            [
-                'group_name' => '装修',
-                'display_name' => '装修查看',
-                'slug' => 'viewBlock.edit',
-                'method' => 'GET',
-                'url' => 'viewBlock/\d+',
-            ],
-            [
-                'group_name' => '装修',
-                'display_name' => '装修编辑',
-                'slug' => 'viewBlock.update',
-                'method' => 'PUT',
-                'url' => 'viewBlock/\d+',
-            ],
-            [
-                'group_name' => '装修',
-                'display_name' => '装修删除',
-                'slug' => 'viewBlock.destroy',
-                'method' => 'DELETE',
-                'url' => 'viewBlock/\d+',
+                'children' => [
+                    [
+                        'display_name' => '装修-模块-列表',
+                        'slug' => 'viewBlock',
+                        'method' => 'GET',
+                        'url' => 'viewBlock/index',
+                    ],
+                    [
+                        'display_name' => '装修-模块-添加',
+                        'slug' => 'viewBlock.store',
+                        'method' => 'POST',
+                        'url' => 'viewBlock/create',
+                    ],
+                    [
+                        'display_name' => '装修-模块-编辑',
+                        'slug' => 'viewBlock.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'viewBlock/\d+',
+                    ],
+                    [
+                        'display_name' => '装修-模块-删除',
+                        'slug' => 'viewBlock.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'viewBlock/\d+',
+                    ],
+
+                    // 幻灯片
+                    [
+                        'display_name' => '装修-幻灯片-列表',
+                        'slug' => 'slider',
+                        'method' => 'GET',
+                        'url' => 'slider',
+                    ],
+                    [
+                        'display_name' => '装修-幻灯片-添加',
+                        'slug' => 'slider.store',
+                        'method' => 'POST',
+                        'url' => 'slider',
+                    ],
+                    [
+                        'display_name' => '装修-幻灯片-编辑',
+                        'slug' => 'slider.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'slider/\d+',
+                    ],
+                    [
+                        'display_name' => '装修-幻灯片-删除',
+                        'slug' => 'slider.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'slider/\d+',
+                    ],
+
+                    // 友情链接
+                    [
+                        'display_name' => '装修-友情链接-列表',
+                        'slug' => 'link',
+                        'method' => 'GET',
+                        'url' => 'link',
+                    ],
+                    [
+                        'display_name' => '装修-友情链接-添加',
+                        'slug' => 'link.store',
+                        'method' => 'POST',
+                        'url' => 'link',
+                    ],
+                    [
+                        'display_name' => '装修-友情链接-编辑',
+                        'slug' => 'link.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'link/\d+',
+                    ],
+                    [
+                        'display_name' => '装修-友情链接-删除',
+                        'slug' => 'link.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'link/\d+',
+                    ],
+
+                    // 公告
+                    [
+                        'display_name' => '装修-公告-列表',
+                        'slug' => 'announcement',
+                        'method' => 'GET',
+                        'url' => 'announcement',
+                    ],
+                    [
+                        'display_name' => '装修-公告-添加',
+                        'slug' => 'announcement.store',
+                        'method' => 'POST',
+                        'url' => 'announcement',
+                    ],
+                    [
+                        'display_name' => '装修-公告-编辑',
+                        'slug' => 'announcement.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'announcement/\d+',
+                    ],
+                    [
+                        'display_name' => '装修-公告-删除',
+                        'slug' => 'announcement.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'announcement/\d+',
+                    ],
+
+                    // PC首页导航
+                    [
+                        'display_name' => '装修-PC首页导航-列表',
+                        'slug' => 'nav',
+                        'method' => 'GET',
+                        'url' => 'nav',
+                    ],
+                    [
+                        'display_name' => '装修-PC首页导航-添加',
+                        'slug' => 'nav.store',
+                        'method' => 'GET|POST',
+                        'url' => '(^nav\/create$|^nav$)',
+                    ],
+                    [
+                        'display_name' => '装修-PC首页导航-编辑',
+                        'slug' => 'nav.update',
+                        'method' => 'GET|PUT',
+                        'url' => 'nav/\d+',
+                    ],
+                    [
+                        'display_name' => '装修-PC首页导航-删除',
+                        'slug' => 'nav.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'nav/\d+',
+                    ],
+                ],
             ],
 
             // 上传视频管理
             [
-                'group_name' => '视频素材库',
-                'display_name' => '已上传视频列表',
-                'slug' => 'media.video.list',
-                'method' => 'GET',
-                'url' => 'media/videos/index',
-            ],
-            [
-                'group_name' => '视频素材库',
-                'display_name' => '上传视频',
-                'slug' => 'media.video.store',
-                'method' => 'POST',
-                'url' => 'media/videos/create',
-            ],
-            [
-                'group_name' => '视频素材库',
-                'display_name' => '批量删除视频',
-                'slug' => 'media.video.delete.multi',
-                'method' => 'POST',
-                'url' => 'media/videos/delete/multi',
-            ],
-
-            [
-                'group_name' => '用户',
-                'display_name' => '用户购买的录播课',
-                'slug' => 'v2.member.courses',
-                'method' => 'GET',
-                'url' => 'member/courses',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户录播课的观看明细',
-                'slug' => 'v2.member.course.progress',
-                'method' => 'GET',
-                'url' => 'member/courseProgress',
-            ],
-            [
-                'group_name' => '用户',
-                'display_name' => '用户购买的课时',
-                'slug' => 'v2.member.videos',
-                'method' => 'GET',
-                'url' => 'member/videos',
+                'group_name' => '素材库',
+                'children' => [
+                    [
+                        'display_name' => '素材库-视频-列表',
+                        'slug' => 'media.video.list',
+                        'method' => 'GET',
+                        'url' => 'media/videos/index',
+                    ],
+                    [
+                        'display_name' => '素材库-视频-添加',
+                        'slug' => 'media.video.store',
+                        'method' => 'POST',
+                        'url' => 'media/videos/create',
+                    ],
+                    [
+                        'display_name' => '素材库-视频-删除',
+                        'slug' => 'media.video.delete.multi',
+                        'method' => 'POST',
+                        'url' => 'media/videos/delete/multi',
+                    ],
+                    [
+                        'display_name' => '素材库-视频-腾讯云视频上传',
+                        'slug' => 'video.upload.tencent.token',
+                        'method' => 'POST',
+                        'url' => 'video/token/tencent',
+                    ],
+                    [
+                        'display_name' => '素材库-视频-阿里云视频上传',
+                        'slug' => 'video.upload.aliyun.token',
+                        'method' => 'POST',
+                        'url' => '(^video\/token\/aliyun\/refresh$|^video\/token\/aliyun\/create$)',
+                    ],
+                ],
             ],
         ];
 
-        foreach ($permissions as $permission) {
-            $exists = \App\Models\AdministratorPermission::query()
-                ->where('slug', $permission['slug'])
-                ->where('method', $permission['method'])
-                ->exists();
-            if ($exists) {
-                continue;
+        foreach ($permissions as $groupItem) {
+            $groupName = $groupItem['group_name'];
+            foreach ($groupItem['children'] as $permissionItem) {
+                $permissionData = array_merge($permissionItem, [
+                    'group_name' => $groupName,
+                    'description' => '',
+                    'route' => '',
+                ]);
+
+                $permission = \App\Models\AdministratorPermission::query()->where('slug', $permissionData['slug'])->first();
+
+                if ($permission) {
+                    $permission->fill($permissionData)->save();
+                } else {
+                    \App\Models\AdministratorPermission::create($permissionData);
+                }
             }
-            \App\Models\AdministratorPermission::create([
-                'display_name' => $permission['display_name'],
-                'group_name' => $permission['group_name'],
-                'slug' => $permission['slug'],
-                'description' => $permission['description'] ?? '',
-                'method' => $permission['method'],
-                'url' => $permission['url'],
-                'route' => $permission['route'] ?? '',
-            ]);
         }
     }
 }

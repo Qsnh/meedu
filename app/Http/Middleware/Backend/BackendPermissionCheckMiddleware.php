@@ -9,34 +9,35 @@
 namespace App\Http\Middleware\Backend;
 
 use Closure;
+use Illuminate\Http\Request;
+use App\Bus\AdminPermissionBus;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
 
 class BackendPermissionCheckMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @return mixed
-     */
+    protected $bus;
+
+    public function __construct(AdminPermissionBus $bus)
+    {
+        $this->bus = $bus;
+    }
+
     public function handle($request, Closure $next)
     {
+        /**
+         * @var Request $request
+         */
+
         $path = str_replace(['backend/api/v1/', 'backend/api/v2/'], '', $request->path());
-        // 白名单
-        if (isset(BackendApiConstant::PERMISSION_WHITE_LIST[$path])) {
-            return $next($request);
-        }
 
-        // 超级管理员
         $admin = Auth::guard(BackendApiConstant::GUARD)->user();
-        if ((int)$admin['is_super'] === 1) {
-            return $next($request);
-        }
 
-        // 权限判断
-        if ($admin->hasPermission($path, $request->method())) {
+        if (
+            $this->bus->inWhitelist($path) ||
+            $this->bus->isSuperAdmin($admin['id']) ||
+            $this->bus->hasPermission($admin['id'], $path, $request->method())
+        ) {
             return $next($request);
         }
 
