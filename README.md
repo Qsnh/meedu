@@ -18,7 +18,7 @@ MeEdu 是一款基于 PHP + Laravel 开发的线上网校系统。支持线上�
 
 * [MeEdu 官网](https://meedu.vip)
 * [MeEdu 开源使用须知(协议)](https://www.yuque.com/meedu/fvvkbf/amfw7z)
-* [MeEdu 开源(免费)和付费方案功能对比](https://www.yuque.com/meedu/fvvkbf/amfw7z)
+* [MeEdu 开源(免费)和付费方案功能对比](https://www.yuque.com/meedu/fvvkbf/gpx5ed)
 * [MeEdu 使用手册(系统安装和配置等)](https://www.yuque.com/meedu/fvvkbf)
 
 ## 依赖项目
