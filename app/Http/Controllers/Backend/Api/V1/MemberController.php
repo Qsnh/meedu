@@ -315,7 +315,8 @@ class MemberController extends BaseController
 
     public function tagUpdate(Request $request, $userId)
     {
-        $tagIds = explode(',', $request->input('tag_ids', ''));
+        $tagIdsStr = $request->input('tag_ids', '');
+        $tagIds = $tagIdsStr ? explode(',', $tagIdsStr) : [];
 
         $user = User::query()->where('id', $userId)->firstOrFail();
 
