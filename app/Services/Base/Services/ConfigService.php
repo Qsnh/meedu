@@ -44,14 +44,6 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * @return int
-     */
-    public function getInviteSceneCredit1(): int
-    {
-        return (int)config('meedu.member.credit1.invite');
-    }
-
-    /**
      * 获取服务配置
      *
      * @param string $app

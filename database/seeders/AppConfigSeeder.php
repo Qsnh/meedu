@@ -847,15 +847,6 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '积分',
-                'name' => '邀请奖励',
-                'field_type' => 'number',
-                'sort' => 1,
-                'default_value' => 0,
-                'key' => 'meedu.member.credit1.invite',
-                'value' => 0,
-            ],
-            [
-                'group' => '积分',
                 'name' => '看完课程',
                 'field_type' => 'number',
                 'sort' => 2,

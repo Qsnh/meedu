@@ -28,6 +28,7 @@ class UpgradeTo48
                 'meedu.member.invite.invited_user_reward',
                 'meedu.member.invite.effective_days',
                 'meedu.member.invite.per_order_draw',
+                'meedu.member.credit1.invite',//邀请送积分
             ])
             ->delete();
     }
