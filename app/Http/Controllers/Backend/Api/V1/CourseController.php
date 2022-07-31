@@ -9,7 +9,9 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\User;
 use App\Events\VodCourseCreatedEvent;
@@ -29,9 +31,16 @@ class CourseController extends BaseController
 {
     use CourseCategoryTrait;
 
-    public function all()
+    public function all(Request $request)
     {
         $courses = Course::query()->select(['id', 'title'])->get();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            $request->path()
+        );
+
         return $this->successData(['data' => $courses]);
     }
 
@@ -67,6 +76,12 @@ class CourseController extends BaseController
 
         $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            compact('id', 'keywords', 'cid', 'sort', 'order')
+        );
+
         return $this->successData(compact('courses', 'categories'));
     }
 
@@ -79,7 +94,8 @@ class CourseController extends BaseController
 
     public function store(CourseRequest $request, Course $course)
     {
-        $course->fill($request->filldata())->save();
+        $data = $request->filldata();
+        $course->fill($data)->save();
 
         event(new VodCourseCreatedEvent(
             $course['id'],
@@ -90,12 +106,24 @@ class CourseController extends BaseController
             $course['original_desc']
         ));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
         return $this->success();
     }
 
     public function edit($id)
     {
         $course = Course::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData($course);
     }
@@ -105,6 +133,23 @@ class CourseController extends BaseController
         $data = $request->filldata();
 
         $course = Course::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_UPDATE,
+            Arr::only($data, [
+                'user_id', 'title', 'slug', 'thumb', 'charge',
+                'short_description', 'original_desc', 'render_desc', 'seo_keywords',
+                'seo_description', 'published_at', 'is_show', 'category_id',
+                'is_rec', 'user_count', 'is_free',
+            ]),
+            Arr::only($course->toArray(), [
+                'user_id', 'title', 'slug', 'thumb', 'charge',
+                'short_description', 'original_desc', 'render_desc', 'seo_keywords',
+                'seo_description', 'published_at', 'is_show', 'category_id',
+                'is_rec', 'user_count', 'is_free',
+            ])
+        );
 
         $course->fill($data)->save();
 
@@ -131,6 +176,12 @@ class CourseController extends BaseController
         $course->delete();
 
         event(new VodCourseDestroyedEvent($id));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
 
         return $this->success();
     }

@@ -13,6 +13,7 @@ use App\Meedu\Addons;
 use GuzzleHttp\Client;
 use App\Meedu\MeEduCloud;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 
 class AddonsController extends BaseController
 {
@@ -38,6 +39,12 @@ class AddonsController extends BaseController
             }
         }, $addons);
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_VIEW,
+            __('浏览了本地插件')
+        );
+
         return $this->successData(array_values($addons));
     }
 
@@ -58,6 +65,13 @@ class AddonsController extends BaseController
                 $lib->uninstall($sign);
                 $lib->disabled($sign);
             }
+
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ADDONS,
+                AdministratorLog::OPT_UPDATE,
+                $action === 'enabled' ? __('启用[:addons]插件', $sign) : __('停用[:addons]插件', $sign)
+            );
+
             return $this->success();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
@@ -75,6 +89,12 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.domain'),
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
+        );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            __('浏览了远程插件库')
         );
 
         $addonsData = [];
@@ -126,6 +146,12 @@ class AddonsController extends BaseController
         try {
             $mc->addonsBuy($addonsId);
 
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ADDONS,
+                AdministratorLog::OPT_UPDATE,
+                __('购买了[:addons]插件', $addonsId)
+            );
+
             return $this->success();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
@@ -147,6 +173,13 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
         );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            __('安装了[:addons]插件', $addonsSign)
+        );
+
         try {
             // 获取下载url
             $url = $mc->addonsDownloadUrl($addonsId, 0);
@@ -183,6 +216,13 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
         );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            __('升级了[:addons]插件', $addonsId)
+        );
+
         try {
             // 获取下载url
             $url = $mc->addonsDownloadUrl($addonsId, 0);
