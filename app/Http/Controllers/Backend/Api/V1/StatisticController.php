@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use App\Services\Member\Models\UserCourse;
@@ -24,6 +25,7 @@ class StatisticController extends BaseController
     {
         $startAt = Carbon::parse($request->input('start_at', Carbon::now()->subMonths(1)));
         $endAt = Carbon::parse($request->input('end_at', Carbon::now()->subDays(1)));
+
         $users = User::select(['created_at'])->whereBetween('created_at', [$startAt, $endAt])->get();
         $data = [];
         while ($startAt->lt($endAt)) {
@@ -34,6 +36,13 @@ class StatisticController extends BaseController
             $date = $user->created_at->format('Y-m-d');
             $data[$date]++;
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -44,6 +53,7 @@ class StatisticController extends BaseController
     {
         $startAt = Carbon::parse($request->input('start_at', Carbon::now()->subMonths(1)));
         $endAt = Carbon::parse($request->input('end_at', Carbon::now()->subDays(1)));
+
         $users = Order::select(['created_at'])->whereBetween('created_at', [$startAt, $endAt])->get();
         $data = [];
         while ($startAt->lt($endAt)) {
@@ -54,6 +64,13 @@ class StatisticController extends BaseController
             $date = $user->created_at->format('Y-m-d');
             $data[$date]++;
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -79,6 +96,13 @@ class StatisticController extends BaseController
             $date = $item->created_at->format('Y-m-d');
             $data[$date]++;
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -104,6 +128,13 @@ class StatisticController extends BaseController
             $date = $item->created_at->format('Y-m-d');
             $data[$date] += $item->charge;
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -132,6 +163,12 @@ class StatisticController extends BaseController
             $data[$date]++;
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt', 'courseId')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -159,6 +196,12 @@ class StatisticController extends BaseController
             $date = $item->created_at->format('Y-m-d');
             $data[$date]++;
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt', 'roleId')
+        );
 
         return $this->successData([
             'labels' => array_keys($data),
@@ -193,6 +236,12 @@ class StatisticController extends BaseController
             return $val / 60;
         }, $data);
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt', 'videoId')
+        );
+
         return $this->successData([
             'labels' => array_keys($data),
             'dataset' => array_values($data),
@@ -225,6 +274,12 @@ class StatisticController extends BaseController
         $data = array_map(function ($val) {
             return $val / 60;
         }, $data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATS,
+            AdministratorLog::OPT_VIEW,
+            compact('startAt', 'endAt', 'courseId')
+        );
 
         return $this->successData([
             'labels' => array_keys($data),

@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -18,6 +19,12 @@ class VideoUploadController extends BaseController
     public function tencentToken()
     {
         $signature = app()->make(\App\Meedu\Tencent\Vod::class)->getUploadSignature();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
 
         return $this->successData(compact('signature'));
     }
@@ -30,6 +37,12 @@ class VideoUploadController extends BaseController
 
         $title = $request->input('title');
         $filename = $request->input('filename');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            compact('title', 'filename')
+        );
 
         try {
             aliyun_sdk_client();
@@ -69,6 +82,12 @@ class VideoUploadController extends BaseController
          */
 
         $videoId = $request->input('video_id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            compact('videoId')
+        );
 
         try {
             aliyun_sdk_client();

@@ -38,7 +38,7 @@ class CourseController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData(['data' => $courses]);
@@ -228,6 +228,12 @@ class CourseController extends BaseController
             ->get()
             ->keyBy('user_id');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData([
             'data' => $data,
             'users' => $users,
@@ -243,6 +249,12 @@ class CourseController extends BaseController
             ->whereIn('id', $ids)
             ->where('course_id', $courseId)
             ->delete();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_DESTROY,
+            compact('ids')
+        );
 
         return $this->success();
     }
@@ -271,6 +283,12 @@ class CourseController extends BaseController
             ->get()
             ->keyBy('id');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId')
+        );
+
         return $this->successData([
             'data' => $data,
             'users' => $users,
@@ -287,6 +305,12 @@ class CourseController extends BaseController
         if (!is_array($userId)) {
             $userId = [$userId];
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_STORE,
+            compact('userId', 'courseId')
+        );
 
         $existsIds = UserCourse::query()
             ->whereIn('user_id', $userId)
@@ -310,9 +334,7 @@ class CourseController extends BaseController
         // 课程订阅数量更新
         Course::query()
             ->where('id', $courseId)
-            ->update([
-                'user_count' => UserCourse::query()->where('course_id', $courseId)->count(),
-            ]);
+            ->update(['user_count' => UserCourse::query()->where('course_id', $courseId)->count()]);
 
         return $this->success();
     }
@@ -320,6 +342,12 @@ class CourseController extends BaseController
     public function deleteSubscribe(Request $request, $courseId)
     {
         $userId = $request->input('user_id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_DESTROY,
+            compact('userId', 'courseId')
+        );
 
         UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->delete();
 
@@ -383,6 +411,12 @@ class CourseController extends BaseController
             }
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId', 'userId')
+        );
+
         return $this->successData([
             'data' => $data,
         ]);
@@ -410,6 +444,12 @@ class CourseController extends BaseController
         if (count($mobiles) !== count($uniqueMobiles)) {
             return $this->error(__('手机号重复'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_STORE,
+            compact('mobiles')
+        );
 
         $registerMobiles = [];
         $mobile2id = [];

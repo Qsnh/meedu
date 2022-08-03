@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V2;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Course\Models\Video;
 use App\Services\Member\Models\UserVideo;
 use App\Meedu\ServiceV2\Models\CourseUserRecord;
@@ -58,6 +59,12 @@ class MemberController extends BaseController
             }
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('page', 'pageSize', 'userId')
+        );
+
         return $this->successData([
             'data' => $data,
             'total' => $total,
@@ -103,6 +110,12 @@ class MemberController extends BaseController
                 $data[$key]['watch_record'] = $watchRecords[$item['video_id']] ?? [];
             }
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('page', 'pageSize', 'userId')
+        );
 
         return $this->successData([
             'data' => $data,
@@ -150,6 +163,12 @@ class MemberController extends BaseController
                 'updated_at' => null,
             ];
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('userId', 'courseId')
+        );
 
         return $this->successData([
             'videos' => $videos,

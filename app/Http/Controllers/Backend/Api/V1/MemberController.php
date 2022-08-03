@@ -9,8 +9,10 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
@@ -77,6 +79,12 @@ class MemberController extends BaseController
             ->get()
             ->keyBy('user_id');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            array_merge(compact('keywords', 'roleId', 'tagId', 'createdAt', 'sort', 'order'), ['path' => $request->path()])
+        );
+
         return $this->successData([
             'data' => $members,
             'roles' => $roles,
@@ -89,6 +97,7 @@ class MemberController extends BaseController
     {
         $roles = Role::query()->select(['id', 'name'])->orderByDesc('id')->get();
         $tags = UserTag::query()->select(['id', 'name'])->orderByDesc('id')->get();
+
         return $this->successData(compact('roles', 'tags'));
     }
 
@@ -99,12 +108,26 @@ class MemberController extends BaseController
             ->where('id', $id)
             ->firstOrFail();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData($member);
     }
 
     public function store(MemberRequest $request)
     {
-        User::create($request->filldata());
+        $data = $request->filldata();
+
+        $user = User::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            ['id' => $user['id'], 'nick_name' => $user['nick_name']]
+        );
 
         return $this->success();
     }
@@ -158,6 +181,19 @@ class MemberController extends BaseController
         // 修改密码
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
 
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            Arr::only($data, [
+                'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
+                'invite_user_id', 'invite_balance', 'invite_user_expired_at',
+            ]),
+            Arr::only($user->toArray(), [
+                'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
+                'invite_user_id', 'invite_balance', 'invite_user_expired_at',
+            ])
+        );
+
         $user->fill($data)->save();
 
         // UserProfile
@@ -185,6 +221,12 @@ class MemberController extends BaseController
             ->where('id', $id)
             ->firstOrFail();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $user,
         ]);
@@ -195,6 +237,13 @@ class MemberController extends BaseController
         $data = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -206,6 +255,13 @@ class MemberController extends BaseController
         $data = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $videoIds = get_array_ids($data->items(), 'video_id');
         $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'videos' => $videos,
@@ -220,6 +276,12 @@ class MemberController extends BaseController
             ->orderByDesc('created_at')
             ->paginate($request->input('size', 20));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
         ]);
@@ -230,6 +292,13 @@ class MemberController extends BaseController
         $data = UserLikeCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -241,6 +310,13 @@ class MemberController extends BaseController
         $data = CourseUserRecord::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -260,6 +336,12 @@ class MemberController extends BaseController
             ->orderByDesc('created_at')
             ->paginate($request->input('size', 10));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
         ]);
@@ -271,6 +353,12 @@ class MemberController extends BaseController
             ->select(['id', 'nick_name', 'avatar', 'mobile', 'created_at', 'invite_user_expired_at'])
             ->where('invite_user_id', $id)
             ->paginate($request->input('size', 20));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData([
             'data' => $data,
@@ -285,6 +373,13 @@ class MemberController extends BaseController
             ->where('field', 'credit1')
             ->orderByDesc('id')
             ->paginate($request->input('size', 20));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $records,
         ]);
@@ -296,18 +391,27 @@ class MemberController extends BaseController
         $userId = $request->input('user_id');
         $credit1 = $request->input('credit1');
         $remark = $request->input('remark', '');
+
         DB::transaction(function () use ($userId, $credit1, $remark) {
             $user = User::query()->where('id', $userId)->firstOrFail();
 
             $user->credit1 += $credit1;
             $user->save();
 
-            UserCreditRecord::create([
+            $userCreditRecordData = [
                 'user_id' => $userId,
                 'field' => 'credit1',
                 'sum' => $credit1,
                 'remark' => $remark,
-            ]);
+            ];
+
+            UserCreditRecord::create($userCreditRecordData);
+
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_MEMBER,
+                AdministratorLog::OPT_UPDATE,
+                $userCreditRecordData
+            );
         });
 
         return $this->success();
@@ -319,6 +423,14 @@ class MemberController extends BaseController
         $tagIds = $tagIdsStr ? explode(',', $tagIdsStr) : [];
 
         $user = User::query()->where('id', $userId)->firstOrFail();
+        $userTagIds = $user->tags()->select(['id'])->get()->pluck('id')->toArray();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_UPDATE,
+            ['tag_ids' => $tagIds],
+            ['tag_ids' => $userTagIds]
+        );
 
         $user->tags()->sync($tagIds);
 
@@ -330,6 +442,13 @@ class MemberController extends BaseController
     {
         $userRemark = UserRemark::query()->where('user_id', $id)->first();
         $remark = $userRemark ? $userRemark['remark'] : '';
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'remark' => $remark,
         ]);
@@ -340,7 +459,10 @@ class MemberController extends BaseController
     {
         $remark = $request->input('remark', '');
         $userRemark = UserRemark::query()->where('user_id', $id)->first();
+        $oldRemark = '';
+
         if ($userRemark) {
+            $oldRemark = $userRemark['remark'];
             $userRemark->update(['remark' => $remark]);
         } else {
             UserRemark::create([
@@ -348,6 +470,13 @@ class MemberController extends BaseController
                 'remark' => $remark,
             ]);
         }
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            ['remark' => $remark],
+            ['remark' => $oldRemark]
+        );
 
         return $this->success();
     }
@@ -367,6 +496,12 @@ class MemberController extends BaseController
             return $this->error('单次发送消息不能超过100人');
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            compact('userIds', 'message')
+        );
+
         $users = User::query()->whereIn('id', $userIds)->get();
         foreach ($users as $user) {
             $user->notify(new SimpleMessageNotification($message));
@@ -382,6 +517,12 @@ class MemberController extends BaseController
         if (!$message) {
             return $this->error(__('参数错误'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            compact('userId', 'message')
+        );
 
         $user->notify(new SimpleMessageNotification($message));
 
@@ -403,6 +544,12 @@ class MemberController extends BaseController
         if ($videoIds) {
             $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title'])->get()->keyBy('id');
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData([
             'data' => $records,
@@ -509,6 +656,12 @@ class MemberController extends BaseController
                     break;
                 }
 
+                AdministratorLog::storeLog(
+                    AdministratorLog::MODULE_MEMBER,
+                    AdministratorLog::OPT_IMPORT,
+                    ['mobiles' => array_column($usersItem, 0)]
+                );
+
                 // 批量插入用户
                 foreach ($usersItem as $item) {
                     $tmpMobile = $item[0];
@@ -580,8 +733,7 @@ class MemberController extends BaseController
 
         // 必须是白名单内的字段才可以更改
         $fieldsWhitelist = [
-            'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname',
-            'tag',
+            'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname', 'tag',
         ];
         if (!$field || !in_array($field, $fieldsWhitelist)) {
             return $this->error('待修改字段不合法');
@@ -591,6 +743,12 @@ class MemberController extends BaseController
         if ($field === 'role_id' && (int)$value && !$roleExpiredAt) {
             return $this->error('请选择VIP过期时间');
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            compact('field', 'value', 'roleExpiredAt', 'tagIds', 'userIds')
+        );
 
         if ($field === 'tag') {
             $tagIds = $tagIds && is_array($tagIds) ? $tagIds : [];

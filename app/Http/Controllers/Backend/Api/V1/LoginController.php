@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use App\Models\Administrator;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\LoginRequest;
@@ -47,6 +48,12 @@ class LoginController extends BaseController
         $admin->login_times++;
         $admin->save();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_LOGIN,
+            AdministratorLog::OPT_LOGIN,
+            compact('username')
+        );
+
         return $this->successData(compact('token'));
     }
 
@@ -62,7 +69,16 @@ class LoginController extends BaseController
 
     public function logout()
     {
+        $admin = Auth::guard(self::GUARD)->user();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_LOGIN,
+            AdministratorLog::OPT_LOGOUT,
+            ['email' => $admin['email'], 'id' => $admin['id']]
+        );
+
         Auth::guard(self::GUARD)->logout();
+
         return $this->success();
     }
 }

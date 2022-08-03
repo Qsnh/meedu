@@ -15,24 +15,48 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdministratorLog extends Model
 {
-    public const OPT_LOGIN = 'LOGIN';
     public const OPT_VIEW = 'VIEW';
     public const OPT_STORE = 'STORE';
+    public const OPT_IMPORT = 'IMPORT';
     public const OPT_UPDATE = 'UPDATE';
     public const OPT_DESTROY = 'DESTROY';
+    public const OPT_LOGIN = 'LOGIN';
+    public const OPT_LOGOUT = 'LOGOUT';
+    public const OPT_REFUND = 'REFUND';
 
     public const MODULE_VOD = 'vod';
+    public const MODULE_VOD_VIDEO = 'vod-video';
+    public const MODULE_VOD_VIDEO_COMMENT = 'vod-video-comment';
     public const MODULE_VOD_ATTACH = 'vod-attach';
     public const MODULE_VOD_CATEGORY = 'vod-category';
     public const MODULE_VOD_CHAPTER = 'vod-chapter';
     public const MODULE_VOD_COMMENT = 'vod-comment';
 
+    public const MODULE_ADMIN_DASHBOARD = 'admin-dashboard';
+    public const MODULE_ADMIN_LOGIN = 'admin-login';
+    public const MODULE_ADMIN_MEDIA_IMAGE = 'admin-media-image';
+    public const MODULE_ADMIN_MEDIA_VIDEO = 'admin-media-video';
+
+    public const MODULE_SYSTEM_CONFIG = 'system-config';
+
+    public const MODULE_STATS = 'stats';
+
     public const MODULE_MEMBER = 'member';
-    public const MODULE_DECORATION = 'decoration';
+    public const MODULE_MEMBER_TAG = 'member-tag';
+
+    public const MODULE_MP_MENU = 'mp-menu';
+    public const MODULE_MP_MESSAGE = 'mp-message';
+
     public const MODULE_VIP = 'vip';
     public const MODULE_ADDONS = 'addons';
-    public const MODULE_OTHER = 'other';
     public const MODULE_AD_FROM = 'ad-from';
+    public const MODULE_LINK = 'link';
+    public const MODULE_NAV = 'nav';
+    public const MODULE_SLIDER = 'slider';
+    public const MODULE_ORDER = 'order';
+    public const MODULE_VIEW_BLOCK = 'view-block';
+    public const MODULE_PROMO_CODE = 'promo-code';
+
     public const MODULE_ADMINISTRATOR = 'administrator';
     public const MODULE_ADMINISTRATOR_ROLE = 'administrator-role';
 
@@ -47,6 +71,9 @@ class AdministratorLog extends Model
     public static function storeLog(string $module, string $opt, $remark = ''): void
     {
         if (is_array($remark)) {
+            if (!isset($remark['path'])) {//携带上当前请求的path
+                $remark['path'] = request()->path();
+            }
             $remark = json_encode($remark, JSON_UNESCAPED_UNICODE);
         }
 

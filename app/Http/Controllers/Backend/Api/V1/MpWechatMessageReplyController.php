@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Other\Models\MpWechatMessageReply;
 use App\Http\Requests\Backend\MpWechatMessageReplyRequest;
 
@@ -29,6 +31,12 @@ class MpWechatMessageReplyController extends BaseController
             })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MP_MESSAGE,
+            AdministratorLog::OPT_VIEW,
+            compact('type', 'keywords')
+        );
 
         return $this->successData([
             'data' => $data,
@@ -64,12 +72,26 @@ class MpWechatMessageReplyController extends BaseController
             }
         }
         MpWechatMessageReply::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MP_MESSAGE,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
         return $this->success();
     }
 
     public function edit($id)
     {
         $data = MpWechatMessageReply::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MP_MESSAGE,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
         ]);
@@ -85,8 +107,15 @@ class MpWechatMessageReplyController extends BaseController
                 return $this->error(__('无效规则'));
             }
         }
-
         $message = MpWechatMessageReply::query()->where('id', $id)->firstOrFail();
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MP_MESSAGE,
+            AdministratorLog::OPT_UPDATE,
+            $data,
+            Arr::only($message->toArray(), [
+                'type', 'event_type', 'event_key', 'rule', 'reply_content',
+            ])
+        );
         $message->fill($data)->save();
         return $this->success();
     }
@@ -94,6 +123,11 @@ class MpWechatMessageReplyController extends BaseController
     public function destroy($id)
     {
         MpWechatMessageReply::destroy($id);
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MP_MESSAGE,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
         return $this->success();
     }
 }

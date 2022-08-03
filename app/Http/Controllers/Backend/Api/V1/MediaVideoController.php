@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Meedu\Alyun\Vod;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Events\VideoUploadedEvent;
 use Illuminate\Support\Facades\DB;
 use App\Services\Course\Models\MediaVideo;
@@ -35,6 +36,12 @@ class MediaVideoController extends BaseController
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            compact('keywords', 'isOpen')
+        );
+
         return $this->successData($videos);
     }
 
@@ -48,7 +55,7 @@ class MediaVideoController extends BaseController
         $storageFileId = $request->input('storage_file_id');
         $isOpen = (int)$request->input('is_open');
 
-        $mediaVideo = MediaVideo::create([
+        $data = [
             'title' => $title,
             'thumb' => $thumb,
             'duration' => $duration,
@@ -56,7 +63,15 @@ class MediaVideoController extends BaseController
             'storage_driver' => $storageDriver,
             'storage_file_id' => $storageFileId,
             'is_open' => $isOpen,
-        ]);
+        ];
+
+        $mediaVideo = MediaVideo::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         event(new VideoUploadedEvent($storageFileId, $storageDriver, 'media_video', $mediaVideo['id']));
 
@@ -69,6 +84,12 @@ class MediaVideoController extends BaseController
         if (!$ids || !is_array($ids)) {
             return $this->error(__('请选择需要删除的视频'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_DESTROY,
+            compact('ids')
+        );
 
         $videos = MediaVideo::query()->whereIn('id', $ids)->select(['id', 'storage_driver', 'storage_file_id'])->get();
         if (!$videos) {
