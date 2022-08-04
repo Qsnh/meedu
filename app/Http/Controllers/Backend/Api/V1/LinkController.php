@@ -23,7 +23,7 @@ class LinkController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_LINK,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData($links);

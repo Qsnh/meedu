@@ -333,4 +333,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::put('/{id}', 'ViewBlockController@update');
         Route::delete('/{id}', 'ViewBlockController@destroy');
     });
+
+    Route::group(['prefix' => 'log'], function () {
+        Route::get('/admin', 'LogController@admin');
+    });
 });

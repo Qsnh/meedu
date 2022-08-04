@@ -486,6 +486,14 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'DELETE',
                         'url' => 'administrator_role/\d+',
                     ],
+
+                    // 日志
+                    [
+                        'display_name' => '系统-日志-后台日志',
+                        'slug' => 'system.log.admin',
+                        'method' => 'GET',
+                        'url' => 'login/admin',
+                    ],
                 ],
             ],
 

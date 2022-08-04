@@ -59,7 +59,7 @@ class RoleController extends BaseController
 
     public function edit($id)
     {
-        $info = Role::query()->where('id', $id)->firstOrFail();
+        $role = Role::query()->where('id', $id)->firstOrFail();
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VIP,
@@ -67,7 +67,7 @@ class RoleController extends BaseController
             compact('id')
         );
 
-        return $this->successData($info);
+        return $this->successData($role);
     }
 
     public function update(RoleRequest $request, $id)
