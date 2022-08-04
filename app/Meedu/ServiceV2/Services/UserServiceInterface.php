@@ -15,4 +15,10 @@ interface UserServiceInterface
     public function getUserLearnedCoursePaginateWithProgress(int $userId, int $page, int $size): array;
 
     public function getUserLikeCoursePaginateWithProgress(int $userId, int $page, int $size): array;
+
+    public function storeUserDelete(int $userId): void;
+
+    public function cancelUserDelete(int $userId): void;
+
+    public function notifySimpleMessage(int $userId, string $message): void;
 }

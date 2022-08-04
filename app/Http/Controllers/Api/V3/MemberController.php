@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\Api\V3;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Exceptions\ServiceException;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
@@ -270,5 +272,18 @@ class MemberController extends BaseController
             'data' => $data,
             'total' => $total,
         ]);
+    }
+
+    public function destroy(UserServiceInterface $userService)
+    {
+        try {
+            $userService->storeUserDelete($this->id());
+
+            return $this->success();
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        } catch (\Exception $e) {
+            Log::error(__METHOD__, ['message' => $e->getMessage()]);
+        }
     }
 }

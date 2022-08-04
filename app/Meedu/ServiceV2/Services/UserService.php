@@ -8,6 +8,9 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Exceptions\ServiceException;
+use App\Events\UserDeleteCancelEvent;
+use App\Events\UserDeleteSubmitEvent;
 use App\Meedu\ServiceV2\Dao\UserDaoInterface;
 
 class UserService implements UserServiceInterface
@@ -119,5 +122,33 @@ class UserService implements UserServiceInterface
         }
 
         return compact('total', 'data');
+    }
+
+    public function storeUserDelete(int $userId): void
+    {
+        $deleteJob = $this->userDao->findUserDeleteJobUnHandle($userId);
+        if ($deleteJob) {
+            throw new ServiceException(__('用户已申请注销'));
+        }
+        $detail = $this->userDao->findUserOrFail($userId, ['id', 'mobile']);
+        $this->userDao->storeUserDeleteJob($userId, $detail['mobile']);
+
+        event(new UserDeleteSubmitEvent($userId, $detail['mobile']));
+    }
+
+    public function cancelUserDelete(int $userId): void
+    {
+        $deleteJob = $this->userDao->findUserDeleteJobUnHandle($userId);
+        if (!$deleteJob) {
+            throw new ServiceException(__('当前用户不存在注销申请'));
+        }
+        $this->userDao->deleteUserDeleteJobUnHandle($userId);
+
+        event(new UserDeleteCancelEvent($deleteJob['user_id'], $deleteJob['submit_at'], $deleteJob['expired_at']));
+    }
+
+    public function notifySimpleMessage(int $userId, string $message): void
+    {
+        $this->userDao->notifySimpleMessage($userId, $message);
     }
 }

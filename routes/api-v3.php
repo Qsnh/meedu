@@ -16,5 +16,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('/courses', 'MemberController@courses');
         Route::get('/courses/learned', 'MemberController@learnedCourses');
         Route::get('/courses/like', 'MemberController@likeCourses');
+
+        Route::post('/destroy', 'MemberController@destroy');
     });
 });

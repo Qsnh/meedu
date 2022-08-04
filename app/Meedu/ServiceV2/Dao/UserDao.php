@@ -8,12 +8,16 @@
 
 namespace App\Meedu\ServiceV2\Dao;
 
+use Carbon\Carbon;
 use App\Constant\TableConstant;
 use Illuminate\Support\Facades\DB;
+use App\Meedu\ServiceV2\Models\User;
 use App\Meedu\ServiceV2\Models\UserCourse;
+use App\Meedu\ServiceV2\Models\UserDeleteJob;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Meedu\ServiceV2\Models\CourseUserRecord;
 use App\Meedu\ServiceV2\Models\UserVideoWatchRecord;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class UserDao implements UserDaoInterface
 {
@@ -125,5 +129,39 @@ SQL;
         $data = $data->items();
 
         return compact('total', 'data');
+    }
+
+    public function findUserDeleteJobUnHandle(int $userId): array
+    {
+        $job = UserDeleteJob::query()->where('user_id', $userId)->where('is_handle', 0)->first();
+        return $job ? $job->toArray() : [];
+    }
+
+    public function findUserOrFail(int $userId, array $fields): array
+    {
+        return User::query()->select($fields)->where('id', $userId)->firstOrFail()->toArray();
+    }
+
+    public function storeUserDeleteJob(int $userId, string $mobile): int
+    {
+        $job = UserDeleteJob::create([
+            'user_id' => $userId,
+            'mobile' => $mobile,
+            'is_handle' => 0,
+            'submit_at' => Carbon::now()->toDateTimeLocalString(),
+            'expired_at' => Carbon::now()->addDays(7)->toDateTimeLocalString(),
+        ]);
+        return $job['id'];
+    }
+
+    public function deleteUserDeleteJobUnHandle(int $userId): int
+    {
+        return UserDeleteJob::query()->where('user_id', $userId)->where('is_handle', 0)->delete();
+    }
+
+    public function notifySimpleMessage(int $userId, string $message)
+    {
+        $user = User::query()->where('id', $userId)->firstOrFail();
+        $user->notify(new SimpleMessageNotification($message));
     }
 }

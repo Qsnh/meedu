@@ -37,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
         // 用户登录event
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
+            'App\Listeners\UserLoginEvent\UserDeleteCancelListener',
         ],
         // 用户看完视频event
         'App\Events\UserVideoWatchedEvent' => [
@@ -81,6 +82,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderRefundProcessed' => [
             'App\Listeners\OrderRefundProcessed\OrderRefundStatusChange',
             'App\Listeners\OrderRefundProcessed\UserNotify',
+        ],
+        // 用户删除提交事件
+        'App\Events\UserDeleteSubmitEvent' => [
+        ],
+        // 用户已删除事件
+        'App\Events\UserDeletedEvent' => [
+        ],
+        // 用户删除-取消事件
+        'App\Events\UserDeleteCancelEvent' => [
+            'App\Listeners\UserDeleteCancelEvent\UserNotify',
         ],
     ];
 }

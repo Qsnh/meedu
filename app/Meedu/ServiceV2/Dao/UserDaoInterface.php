@@ -23,4 +23,14 @@ interface UserDaoInterface
     public function getUserLikeCoursePaginate(int $userId, int $page, int $size): array;
 
     public function getPerUserLearnedCourseLastVideo(int $userId, array $courseIds): array;
+
+    public function findUserDeleteJobUnHandle(int $userId): array;
+
+    public function findUserOrFail(int $userId, array $fields): array;
+
+    public function storeUserDeleteJob(int $userId, string $mobile): int;
+
+    public function deleteUserDeleteJobUnHandle(int $userId): int;
+
+    public function notifySimpleMessage(int $userId, string $message);
 }
