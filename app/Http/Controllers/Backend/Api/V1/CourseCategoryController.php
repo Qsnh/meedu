@@ -43,7 +43,7 @@ class CourseCategoryController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD_CATEGORY,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData([

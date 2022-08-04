@@ -24,7 +24,7 @@ class AdministratorRoleController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData($roles);

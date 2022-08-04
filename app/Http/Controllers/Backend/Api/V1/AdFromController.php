@@ -24,7 +24,7 @@ class AdFromController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_AD_FROM,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData($list);
@@ -109,7 +109,7 @@ class AdFromController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_AD_FROM,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData([

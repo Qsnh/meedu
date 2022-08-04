@@ -31,7 +31,7 @@ class AdministratorController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMINISTRATOR,
             AdministratorLog::OPT_VIEW,
-            $request->path()
+            []
         );
 
         return $this->successData($administrators);
@@ -120,7 +120,7 @@ class AdministratorController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMINISTRATOR,
             AdministratorLog::OPT_UPDATE,
-            __('更换密码')
+            []
         );
 
         return $this->success();

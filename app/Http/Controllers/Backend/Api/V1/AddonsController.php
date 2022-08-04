@@ -42,7 +42,7 @@ class AddonsController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADDONS,
             AdministratorLog::OPT_VIEW,
-            __('浏览了本地插件')
+            []
         );
 
         return $this->successData(array_values($addons));
@@ -69,7 +69,7 @@ class AddonsController extends BaseController
             AdministratorLog::storeLog(
                 AdministratorLog::MODULE_ADDONS,
                 AdministratorLog::OPT_UPDATE,
-                $action === 'enabled' ? __('启用[:addons]插件', $sign) : __('停用[:addons]插件', $sign)
+                compact('sign', 'action')
             );
 
             return $this->success();
@@ -94,7 +94,7 @@ class AddonsController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADDONS,
             AdministratorLog::OPT_UPDATE,
-            __('浏览了远程插件库')
+            []
         );
 
         $addonsData = [];
@@ -149,7 +149,7 @@ class AddonsController extends BaseController
             AdministratorLog::storeLog(
                 AdministratorLog::MODULE_ADDONS,
                 AdministratorLog::OPT_UPDATE,
-                __('购买了[:addons]插件', $addonsId)
+                compact('addonsId')
             );
 
             return $this->success();
@@ -177,7 +177,7 @@ class AddonsController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADDONS,
             AdministratorLog::OPT_UPDATE,
-            __('安装了[:addons]插件', $addonsSign)
+            compact('addonsId', 'addonsSign')
         );
 
         try {
@@ -220,7 +220,7 @@ class AddonsController extends BaseController
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADDONS,
             AdministratorLog::OPT_UPDATE,
-            __('升级了[:addons]插件', $addonsId)
+            compact('addonsId', 'addonsSign')
         );
 
         try {
