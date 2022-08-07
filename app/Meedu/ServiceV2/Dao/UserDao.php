@@ -203,9 +203,22 @@ SQL;
         return User::query()->where('id', $userId)->delete();
     }
 
-
     public function changeUserDeleteJobsHandled(array $ids): int
     {
         return UserDeleteJob::query()->whereIn('id', $ids)->update(['is_handle' => 1]);
+    }
+
+    public function findUser(array $filter, array $fields): array
+    {
+        $user = User::query()
+            ->select($fields)
+            ->when(isset($filter['id']), function ($query) use ($filter) {
+                $query->where('id', $filter['id']);
+            })
+            ->when(isset($filter['mobile']), function ($query) use ($filter) {
+                $query->where('mobile', $filter['mobile']);
+            })
+            ->first();
+        return $user ? $user->toArray() : [];
     }
 }

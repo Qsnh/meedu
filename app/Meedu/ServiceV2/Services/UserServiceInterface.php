@@ -25,4 +25,8 @@ interface UserServiceInterface
     public function userDeleteBatchHandle(): void;
 
     public function destroyUser(int $userId): void;
+
+    public function findUserById(int $userId): array;
+
+    public function findUserByMobile(string $mobile): array;
 }

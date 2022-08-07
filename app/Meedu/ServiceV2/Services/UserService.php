@@ -174,4 +174,14 @@ class UserService implements UserServiceInterface
             $this->userDao->changeUserDeleteJobsHandled([$jobItem['id']]);
         }
     }
+
+    public function findUserById(int $userId): array
+    {
+        return $this->userDao->findUser(['id' => $userId], ['*']);
+    }
+
+    public function findUserByMobile(string $mobile): array
+    {
+        return $this->userDao->findUser(['mobile' => $mobile], ['*']);
+    }
 }

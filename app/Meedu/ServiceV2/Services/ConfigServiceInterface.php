@@ -11,4 +11,6 @@ namespace App\Meedu\ServiceV2\Services;
 interface ConfigServiceInterface
 {
     public function getSuperAdministratorSlug(): string;
+
+    public function getEnabledSocialiteApps(): array;
 }

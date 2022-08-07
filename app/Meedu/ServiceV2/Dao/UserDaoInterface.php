@@ -38,7 +38,9 @@ interface UserDaoInterface
 
     public function deleteUserRelateData(int $userId): void;
 
-    public function destroyUser(int $userId):int;
+    public function destroyUser(int $userId): int;
 
     public function changeUserDeleteJobsHandled(array $ids): int;
+
+    public function findUser(array $filter, array $fields): array;
 }

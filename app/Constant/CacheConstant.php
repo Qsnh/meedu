@@ -155,4 +155,10 @@ class CacheConstant
         'name' => self::PREFIX_C . 'aliyun:play:i:%d:t:%d:f:%s',
         'expire' => 1800, //30分钟
     ];
+
+    // 社交登录
+    public const USER_SOCIALITE_LOGIN = [
+        'name' => self::PREFIX_C . 'socialite:login:%s',
+        'expire' => 600, //10分钟
+    ];
 }

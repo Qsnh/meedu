@@ -14,4 +14,11 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.administrator.super_slug') ?? '';
     }
+
+    public function getEnabledSocialiteApps(): array
+    {
+        return collect(config('meedu.member.socialite', []))->filter(function ($item) {
+            return (int)($item['enabled'] ?? 0) == 1;
+        })->toArray();
+    }
 }
