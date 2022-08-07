@@ -8,6 +8,7 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Events\UserDeletedEvent;
 use App\Exceptions\ServiceException;
 use App\Events\UserDeleteCancelEvent;
 use App\Events\UserDeleteSubmitEvent;
@@ -150,5 +151,27 @@ class UserService implements UserServiceInterface
     public function notifySimpleMessage(int $userId, string $message): void
     {
         $this->userDao->notifySimpleMessage($userId, $message);
+    }
+
+    public function destroyUser(int $userId): void
+    {
+        $this->userDao->deleteUserRelateData($userId);
+        $this->userDao->destroyUser($userId);
+
+        event(new UserDeletedEvent($userId));
+    }
+
+    public function userDeleteBatchHandle(): void
+    {
+        // 读取到期等待处理的申请-每次处理50条
+        $jobs = $this->userDao->getUserDeleteJobUnHandle(50);
+        if (!$jobs) {
+            return;
+        }
+
+        foreach ($jobs as $jobItem) {
+            $this->destroyUser($jobItem['user_id']);
+            $this->userDao->changeUserDeleteJobsHandled([$jobItem['id']]);
+        }
     }
 }

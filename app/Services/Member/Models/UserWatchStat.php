@@ -8,6 +8,7 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,7 +16,7 @@ class UserWatchStat extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'user_watch_stat';
+    protected $table = TableConstant::TABLE_USER_WATCH_STAT;
 
     protected $fillable = [
         'user_id', 'year', 'month', 'day', 'seconds',

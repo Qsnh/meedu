@@ -8,6 +8,7 @@
 
 namespace App\Services\Order\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ class PromoCode extends Model
 {
     use SoftDeletes, HasFactory;
 
-    protected $table = 'promo_codes';
+    protected $table = TableConstant::TABLE_PROMO_CODES;
 
     protected $fillable = [
         'user_id', 'code', 'expired_at',

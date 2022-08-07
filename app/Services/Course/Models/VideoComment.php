@@ -8,6 +8,7 @@
 
 namespace App\Services\Course\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,7 +16,7 @@ class VideoComment extends Base
 {
     use SoftDeletes,HasFactory;
 
-    protected $table = 'video_comments';
+    protected $table = TableConstant::TABLE_VIDEO_COMMENTS;
 
     protected $fillable = [
         'user_id', 'video_id', 'original_content', 'render_content',

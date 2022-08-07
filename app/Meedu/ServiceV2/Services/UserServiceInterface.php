@@ -21,4 +21,8 @@ interface UserServiceInterface
     public function cancelUserDelete(int $userId): void;
 
     public function notifySimpleMessage(int $userId, string $message): void;
+
+    public function userDeleteBatchHandle(): void;
+
+    public function destroyUser(int $userId): void;
 }

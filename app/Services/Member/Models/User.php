@@ -8,6 +8,7 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -89,7 +90,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function tags()
     {
-        return $this->belongsToMany(UserTag::class, 'user_tag', 'user_id', 'tag_id');
+        return $this->belongsToMany(UserTag::class, TableConstant::TABLE_USER_TAG, 'user_id', 'tag_id');
     }
 
     /**

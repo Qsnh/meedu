@@ -19,7 +19,7 @@ class CreateUserProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_PROFILES, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unique()->default(0)->comment('用户id');
             $table->string('real_name', 32)->default('')->comment('真实姓名');
@@ -48,6 +48,6 @@ class CreateUserProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_PROFILES);
     }
 }

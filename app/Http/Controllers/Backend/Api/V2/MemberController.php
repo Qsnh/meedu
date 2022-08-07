@@ -175,4 +175,11 @@ class MemberController extends BaseController
             'course_watch_record' => $courseWatchRecord,
         ]);
     }
+
+    public function destroy(UserServiceInterface $userService, $id)
+    {
+        $id = (int)$id;
+        $userService->destroyUser($id);
+        return $this->success();
+    }
 }

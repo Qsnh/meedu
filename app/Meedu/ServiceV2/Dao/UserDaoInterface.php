@@ -33,4 +33,12 @@ interface UserDaoInterface
     public function deleteUserDeleteJobUnHandle(int $userId): int;
 
     public function notifySimpleMessage(int $userId, string $message);
+
+    public function getUserDeleteJobUnHandle(int $limit): array;
+
+    public function deleteUserRelateData(int $userId): void;
+
+    public function destroyUser(int $userId):int;
+
+    public function changeUserDeleteJobsHandled(array $ids): int;
 }

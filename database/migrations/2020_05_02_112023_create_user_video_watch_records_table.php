@@ -19,7 +19,7 @@ class CreateUserVideoWatchRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_video_watch_records', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_VIDEO_WATCH_RECORDS, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('course_id');
@@ -42,6 +42,6 @@ class CreateUserVideoWatchRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_video_watch_records');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_VIDEO_WATCH_RECORDS);
     }
 }

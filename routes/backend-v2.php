@@ -13,5 +13,7 @@ Route::group([
         Route::get('/courses', 'MemberController@courses');
         Route::get('/course/progress', 'MemberController@courseProgress');
         Route::get('/videos', 'MemberController@videos');
+
+        Route::delete('/{id}', 'MemberController@destroy');
     });
 });

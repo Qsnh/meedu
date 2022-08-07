@@ -84,14 +84,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\OrderRefundProcessed\UserNotify',
         ],
         // 用户删除提交事件
-        'App\Events\UserDeleteSubmitEvent' => [
-        ],
-        // 用户已删除事件
-        'App\Events\UserDeletedEvent' => [
-        ],
+        'App\Events\UserDeleteSubmitEvent' => [],
         // 用户删除-取消事件
         'App\Events\UserDeleteCancelEvent' => [
             'App\Listeners\UserDeleteCancelEvent\UserNotify',
         ],
+        // 用户已删除事件
+        'App\Events\UserDeletedEvent' => [],
     ];
 }

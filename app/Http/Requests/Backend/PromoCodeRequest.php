@@ -8,6 +8,8 @@
 
 namespace App\Http\Requests\Backend;
 
+use App\Constant\TableConstant;
+
 class PromoCodeRequest extends BaseRequest
 {
     /**
@@ -33,7 +35,7 @@ class PromoCodeRequest extends BaseRequest
             'use_times' => 'required',
         ];
 
-        $this->isMethod('post') && $rules['code'] .= '|unique:promo_codes';
+        $this->isMethod('post') && $rules['code'] .= '|unique:' . TableConstant::TABLE_PROMO_CODES;
 
         return $rules;
     }

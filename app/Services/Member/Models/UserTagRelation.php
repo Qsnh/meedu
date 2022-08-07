@@ -8,9 +8,10 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 
 class UserTagRelation extends Model
 {
-    protected $table = 'user_tag';
+    protected $table = TableConstant::TABLE_USER_TAG;
 }

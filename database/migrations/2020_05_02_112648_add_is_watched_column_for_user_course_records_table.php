@@ -19,7 +19,7 @@ class AddIsWatchedColumnForUserCourseRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::table('course_user_records', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_COURSE_USER_RECORDS, function (Blueprint $table) {
             $table->tinyInteger('is_watched')->default(0)->comment('看完,0否,1是');
             $table->timestamp('watched_at')->nullable(true)->default(null);
         });
@@ -32,7 +32,7 @@ class AddIsWatchedColumnForUserCourseRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::table('course_user_records', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_COURSE_USER_RECORDS, function (Blueprint $table) {
             $table->dropColumn('is_watched');
             $table->dropColumn('watched_at');
         });

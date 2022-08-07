@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Constant\TableConstant;
 use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
@@ -708,7 +709,7 @@ class MemberController extends BaseController
                         ];
                     }
                 }
-                $tagInsertList && DB::table('user_tag')->insert($tagInsertList);
+                $tagInsertList && DB::table(TableConstant::TABLE_USER_TAG)->insert($tagInsertList);
             }
         });
 

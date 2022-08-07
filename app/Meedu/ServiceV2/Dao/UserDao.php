@@ -164,4 +164,48 @@ SQL;
         $user = User::query()->where('id', $userId)->firstOrFail();
         $user->notify(new SimpleMessageNotification($message));
     }
+
+    public function getUserDeleteJobUnHandle(int $limit): array
+    {
+        return UserDeleteJob::query()
+            ->where('is_handle', 0)
+            ->orderBy('id')
+            ->limit($limit)
+            ->get()
+            ->toArray();
+    }
+
+    public function deleteUserRelateData(int $userId): void
+    {
+        $tables = [
+            TableConstant::TABLE_PROMO_CODES,//邀请码表[v4.8之后用户不再生成此表数据]兼容老数据
+            TableConstant::TABLE_USER_CREDIT_RECORDS,//用户积分[credit1]变动表
+            TableConstant::TABLE_USER_JOIN_ROLE_RECORDS,//用户VIP变更记录表
+            TableConstant::TABLE_USER_LIKE_COURSES,//用户收藏的录播课表
+            TableConstant::TABLE_USER_LOGIN_RECORDS,//用户登录记录表
+            TableConstant::TABLE_USER_PROFILES,//用户详细资料表
+            TableConstant::TABLE_USER_REMARKS,//用户备注表[CRM]
+            TableConstant::TABLE_USER_TAG,//用户标签关联表
+            TableConstant::TABLE_USER_VIDEO,//用户购买的录播视频表[v4.7之后用户不可以单独购买录播视频]兼容老数据
+            TableConstant::TABLE_USER_VIDEO_WATCH_RECORDS,//用户录播视频观看进度表
+            TableConstant::TABLE_VIDEO_COMMENTS,//录播视频评论表
+            TableConstant::TABLE_COURSE_COMMENTS,//录播课评论表
+            TableConstant::TABLE_COURSE_USER_RECORDS,//用户录播课观看进度表
+            TableConstant::TABLE_USER_COURSE,//用户已购录播课表
+        ];
+        foreach ($tables as $tableName) {
+            DB::table($tableName)->where('user_id', $userId)->delete();
+        }
+    }
+
+    public function destroyUser(int $userId): int
+    {
+        return User::query()->where('id', $userId)->delete();
+    }
+
+
+    public function changeUserDeleteJobsHandled(array $ids): int
+    {
+        return UserDeleteJob::query()->whereIn('id', $ids)->update(['is_handle' => 1]);
+    }
 }

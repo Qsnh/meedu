@@ -19,7 +19,7 @@ class CreateUserTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_tag', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_TAG, function (Blueprint $table) {
             $table->bigInteger('user_id');
             $table->bigInteger('tag_id');
 
@@ -34,6 +34,6 @@ class CreateUserTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_tag');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_TAG);
     }
 }

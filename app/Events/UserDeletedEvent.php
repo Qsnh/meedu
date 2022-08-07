@@ -16,15 +16,12 @@ class UserDeletedEvent
     use Dispatchable, SerializesModels;
 
     public $userId;
-    public $mobile;
 
     /**
      * @param $userId
-     * @param $mobile
      */
-    public function __construct($userId, $mobile)
+    public function __construct($userId)
     {
         $this->userId = $userId;
-        $this->mobile = $mobile;
     }
 }
