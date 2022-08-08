@@ -43,7 +43,6 @@ class MemberTest extends Base
         $this->assertEquals($this->member->nick_name, $response['data']['nick_name']);
     }
 
-
     public function test_password()
     {
         $cacheService = $this->app->make(CacheServiceInterface::class);

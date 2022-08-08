@@ -8,7 +8,6 @@
 
 namespace App\Bus;
 
-use Carbon\Carbon;
 use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
@@ -53,17 +52,8 @@ class AuthBus
 
     public function tokenLogin(int $userId, string $platform)
     {
-        $loginAt = Carbon::now();
-
-        $token = Auth::guard('apiv2')
-            ->claims([
-                // 分发的token携带最后一次登录时间
-                FrontendConstant::USER_LOGIN_AT_COOKIE_NAME => $loginAt->timestamp,
-            ])
-            ->tokenById($userId);
-
-        event(new UserLoginEvent($userId, $platform, $loginAt->toDateTimeLocalString()));
-
+        $token = Auth::guard(FrontendConstant::API_GUARD)->tokenById($userId);
+        event(new UserLoginEvent($userId, $platform, request()->getClientIp(), request_ua(), $token));
         return $token;
     }
 

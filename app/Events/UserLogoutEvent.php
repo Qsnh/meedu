@@ -11,22 +11,16 @@ namespace App\Events;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class UserLoginEvent
+class UserLogoutEvent
 {
     use Dispatchable, SerializesModels;
 
     public $userId;
-    public $platform;
-    public $ip;
     public $token;
-    public $ua;
 
-    public function __construct(int $userId, string $platform, string $ip, string $ua, string $token)
+    public function __construct(int $userId, string $token)
     {
         $this->userId = $userId;
-        $this->platform = $platform;
-        $this->ip = $ip;
-        $this->ua = $ua;
         $this->token = $token;
     }
 }

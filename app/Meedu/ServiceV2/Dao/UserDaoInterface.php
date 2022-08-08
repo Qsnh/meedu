@@ -43,4 +43,12 @@ interface UserDaoInterface
     public function changeUserDeleteJobsHandled(array $ids): int;
 
     public function findUser(array $filter, array $fields): array;
+
+    public function storeUserLoginRecord(int $userId, string $token, string $platform, string $ua, string $ip): int;
+
+    public function updateUserLastLoginId(int $userId, int $loginId): int;
+
+    public function findUserLoginRecordOrFail(int $id): array;
+
+    public function logoutUserLoginRecord(int $userId, string $jti): int;
 }

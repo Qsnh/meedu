@@ -14,6 +14,7 @@ use App\Meedu\WechatMini;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
+use App\Events\UserLogoutEvent;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
@@ -538,9 +539,14 @@ class LoginController extends BaseController
      *
      * @apiSuccess {Number} code 0成功,非0失败
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        $userId = Auth::guard(FrontendConstant::API_GUARD)->id();
+        $token = explode(' ', $request->header('Authorization'))[1];
+        event(new UserLogoutEvent($userId, $token));
+
         Auth::guard(FrontendConstant::API_GUARD)->logout();
+
         return $this->success();
     }
 }

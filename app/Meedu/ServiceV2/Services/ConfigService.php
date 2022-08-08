@@ -21,4 +21,9 @@ class ConfigService implements ConfigServiceInterface
             return (int)($item['enabled'] ?? 0) == 1;
         })->toArray();
     }
+
+    public function getLoginLimitRule(): int
+    {
+        return (int)config('meedu.system.login.limit.rule', 0);
+    }
 }

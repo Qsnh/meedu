@@ -15,6 +15,7 @@ use App\Meedu\ServiceV2\Models\User;
 use App\Meedu\ServiceV2\Models\UserCourse;
 use App\Meedu\ServiceV2\Models\UserDeleteJob;
 use App\Services\Member\Models\UserLikeCourse;
+use App\Meedu\ServiceV2\Models\UserLoginRecord;
 use App\Meedu\ServiceV2\Models\CourseUserRecord;
 use App\Meedu\ServiceV2\Models\UserVideoWatchRecord;
 use App\Services\Member\Notifications\SimpleMessageNotification;
@@ -220,5 +221,39 @@ SQL;
             })
             ->first();
         return $user ? $user->toArray() : [];
+    }
+
+    public function storeUserLoginRecord(int $userId, string $token, string $platform, string $ua, string $ip): int
+    {
+        $tokenPayload = token_payload($token);
+
+        $record = UserLoginRecord::create([
+            'user_id' => $userId,
+            'platform' => $platform,
+            'ip' => $ip,
+            'created_at' => Carbon::now()->toDateTimeLocalString(),
+            'ua' => $ua,
+            'token' => $token,
+            'iss' => $tokenPayload['iss'],
+            'exp' => $tokenPayload['exp'],
+            'jti' => $tokenPayload['jti'],
+        ]);
+
+        return $record['id'];
+    }
+
+    public function updateUserLastLoginId(int $userId, int $loginId): int
+    {
+        return User::query()->where('id', $userId)->update(['last_login_id' => $loginId]);
+    }
+
+    public function findUserLoginRecordOrFail(int $id): array
+    {
+        return UserLoginRecord::query()->where('id', $id)->firstOrCreate()->toArray();
+    }
+
+    public function logoutUserLoginRecord(int $userId, string $jti): int
+    {
+        return UserLoginRecord::query()->where('jti', $jti)->where('user_id', $userId)->update(['is_logout' => 1]);
     }
 }

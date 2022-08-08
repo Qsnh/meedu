@@ -76,8 +76,6 @@ class LoginLimitTest extends OriginalTestCase
         $content = $this->assertResponseOk($response);
         $token1 = $content['data']['token'];
 
-        sleep(1);
-
         // 第二次登录
         $response = $this->post('/api/v2/login/password', [
             'mobile' => $user['mobile'],

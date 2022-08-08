@@ -23,33 +23,37 @@ class EventServiceProvider extends ServiceProvider
             '\App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
             '\App\Listeners\PaymentSuccessEvent\Credit1RewardListener',
         ],
-        // 订单取消event
+        // 订单取消
         'App\Events\OrderCancelEvent' => [
             '\App\Listeners\OrderCancelEvent\PromoCodeResumeListener',
         ],
-        // 用户注册event
+        // 用户注册
         'App\Events\UserRegisterEvent' => [
             'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
             'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
             'App\Listeners\UserRegisterEvent\RegisterCredit1RewardListener',
             'App\Listeners\UserRegisterEvent\RegisterSendVipListener',
         ],
-        // 用户登录event
+        // 用户登录
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
             'App\Listeners\UserLoginEvent\UserDeleteCancelListener',
         ],
-        // 用户看完视频event
+        // 用户退出登录
+        'App\Events\UserLogoutEvent' => [
+            'App\Listeners\UserLogoutEvent\LoginRecordUpdateListener',
+        ],
+        // 用户看完视频
         'App\Events\UserVideoWatchedEvent' => [
             'App\Listeners\UserVideoWatchedEvent\UserVideoWatchedListener',
             'App\Listeners\UserVideoWatchedEvent\UserVideoWatchedCredit1RewardListener',
         ],
-        // 用户看完录播课程event
+        // 用户看完录播课程
         'App\Events\UserCourseWatchedEvent' => [
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedListener',
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedCredit1RewardListener',
         ],
-        // 系统配置变更event
+        // 系统配置变更
         'App\Events\AppConfigSavedEvent' => [],
         // 录播课程的增改删
         'App\Events\VodCourseCreatedEvent' => [

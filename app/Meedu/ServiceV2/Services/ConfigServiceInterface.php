@@ -13,4 +13,6 @@ interface ConfigServiceInterface
     public function getSuperAdministratorSlug(): string;
 
     public function getEnabledSocialiteApps(): array;
+
+    public function getLoginLimitRule(): int;
 }

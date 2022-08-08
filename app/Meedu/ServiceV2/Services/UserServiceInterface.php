@@ -29,4 +29,10 @@ interface UserServiceInterface
     public function findUserById(int $userId): array;
 
     public function findUserByMobile(string $mobile): array;
+
+    public function storeUserLoginRecord(int $userId, string $token, string $platform, string $ua, string $ip): void;
+
+    public function findLastLoginJTI(int $userId): string;
+
+    public function jtiLogout(int $userId, string $jti): void;
 }

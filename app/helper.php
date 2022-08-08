@@ -472,7 +472,7 @@ if (!function_exists('save_image')) {
             $url,
             request()->path(),
             request()->getClientIp(),
-            request()->header('User-Agent', ''),
+            request_ua()
         );
 
         return $data;
@@ -566,5 +566,32 @@ if (!function_exists('mobile_code_check')) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('token_payload')) {
+    /**
+     * TokenPayload解析
+     *
+     * @param string $token
+     * @return array
+     * @throws \App\Exceptions\ServiceException
+     */
+    function token_payload(string $token): array
+    {
+        $arr = explode('.', $token);
+        if (count($arr) !== 3) {
+            throw new \App\Exceptions\ServiceException(__('token格式错误'));
+        }
+        return json_decode(base64_decode($arr[1]), true);
+    }
+}
+
+if (!function_exists('request_ua')) {
+    function request_ua($maxLength = 255): string
+    {
+        $ua = request()->header('User-Agent', '');
+        mb_strlen($ua) > $maxLength && $ua = mb_substr($ua, 0, $maxLength);
+        return $ua;
     }
 }

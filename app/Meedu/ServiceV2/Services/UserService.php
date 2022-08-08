@@ -184,4 +184,25 @@ class UserService implements UserServiceInterface
     {
         return $this->userDao->findUser(['mobile' => $mobile], ['*']);
     }
+
+    public function storeUserLoginRecord(int $userId, string $token, string $platform, string $ua, string $ip): void
+    {
+        $loginId = $this->userDao->storeUserLoginRecord($userId, $token, $platform, $ua, $ip);
+        $this->userDao->updateUserLastLoginId($userId, $loginId);
+    }
+
+    public function findLastLoginJTI(int $userId): string
+    {
+        $user = $this->userDao->findUser(['id' => $userId], ['id', 'last_login_id']);
+        if (!$user['last_login_id']) {
+            return '';
+        }
+        $loginRecord = $this->userDao->findUserLoginRecordOrFail($user['last_login_id']);
+        return $loginRecord['jti'];
+    }
+
+    public function jtiLogout(int $userId, string $jti): void
+    {
+        $this->userDao->logoutUserLoginRecord($userId, $jti);
+    }
 }
