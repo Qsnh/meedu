@@ -9,7 +9,6 @@
 namespace App\Services\Member\Services;
 
 use Carbon\Carbon;
-use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Course\Services\CourseService;
 use App\Services\Member\Interfaces\RoleServiceInterface;
@@ -59,23 +58,6 @@ class DeliverService implements DeliverServiceInterface
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $courseService->userCountInc($courseId, 1);
-    }
-
-    /**
-     * 视频发货.
-     *
-     * @param int $userId
-     * @param int $videoId
-     * @param int $charge
-     */
-    public function deliverVideo(int $userId, int $videoId, int $charge): void
-    {
-        UserVideo::create([
-            'user_id' => $userId,
-            'video_id' => $videoId,
-            'charge' => $charge,
-            'created_at' => Carbon::now(),
-        ]);
     }
 
     /**

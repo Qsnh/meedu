@@ -157,7 +157,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/order/video 创建视频订单
+     * @api {post} /api/v2/order/video 创建视频订单[v4.8-移除]
      * @apiGroup 订单
      * @apiName StoreOrderVideo
      * @apiVersion v2.0.0
@@ -184,26 +184,6 @@ class OrderController extends BaseController
      * @apiSuccess {Number} data.goods.charge 价格
      * @apiSuccess {String} data.created_at 时间
      */
-    public function createVideoOrder(Request $request)
-    {
-        $videoId = $request->input('video_id');
-        $video = $this->videoService->find($videoId);
-        if ((int)$video['is_ban_sell'] === 1) {
-            return $this->error(__('当前视频无法购买'));
-        }
-        if ($video['charge'] === 0) {
-            return $this->error(__('当前视频无法购买'));
-        }
-        if ($this->userService->hasVideo($this->id(), $video['id'])) {
-            return $this->error(__('请勿重复购买'));
-        }
-        $code = $request->input('promo_code');
-        $promoCode = [];
-        $code && $promoCode = $this->promoCodeService->findCode($code);
-        $order = $this->orderService->createVideoOrder($this->id(), $video, $promoCode['id'] ?? 0);
-        $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
-        return $this->data($order);
-    }
 
     /**
      * @api {get} /api/v2/order/status 订单状态查询
@@ -220,7 +200,10 @@ class OrderController extends BaseController
      */
     public function queryStatus(Request $request)
     {
-        $orderId = $request->input('order_id', '');
+        $orderId = $request->input('order_id');
+        if (!$orderId) {
+            return $this->error(__('参数错误'));
+        }
         $order = $this->orderService->findUser($this->id(), $orderId);
 
         return $this->data([

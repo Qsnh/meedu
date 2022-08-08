@@ -37,17 +37,13 @@ class BusinessState
      */
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
-        // 如果video的价格为0那么可以直接观看
-        if ($video['charge'] === 0) {
-            return true;
-        }
         /**
          * @var CourseService $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($course['id']);
-        // 如果课程免费就可以观看
-        if ((int)$course['is_free'] === Course::IS_FREE_YES) {
+        // 录播课设置免费的话可以直接看该录播课下所有视频
+        if ((int)$course['is_free'] === 1) {
             return true;
         }
         /**
@@ -58,12 +54,12 @@ class BusinessState
         if ($userService->hasCourse($user['id'], $course['id'])) {
             return true;
         }
-        // 如果用户买了当前视频可以直接观看
-        if ($userService->hasVideo($user['id'], $video['id'])) {
-            return true;
-        }
         // 如果用户买了会员可以直接观看
         if ($this->isRole($user)) {
+            return true;
+        }
+        // 如果用户买了当前视频可以直接观看
+        if ($userService->hasVideo($user['id'], $video['id'])) {
             return true;
         }
         return false;

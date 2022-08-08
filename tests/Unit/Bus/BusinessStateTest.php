@@ -53,16 +53,6 @@ class BusinessStateTest extends TestCase
         $this->assertTrue($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
     }
 
-    public function test_canSeeVideo_with_free_video()
-    {
-        $user = User::factory()->create();
-        $course = Course::factory()->create();
-        $video = Video::factory()->create(['charge' => 0]);
-
-        // 视频免费
-        $this->assertTrue($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
-    }
-
     public function test_canSeeVideo_with_no_role()
     {
         $user = User::factory()->create();
@@ -226,14 +216,6 @@ class BusinessStateTest extends TestCase
         $role = Role::factory()->create();
         $user = User::factory()->create(['role_id' => $role['id'], 'role_expired_at' => Carbon::now()->addDays(1)->toDateTimeLocalString()]);
         $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
-    }
-
-    public function test_videoCanComment_with_free_video()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
-        $user = User::factory()->create();
-        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 0]);
-        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
     }
 
     public function test_videoCanComment_with_free_course()
