@@ -19,4 +19,9 @@ class UserLoginRecord extends Model
         'user_id', 'ip', 'platform',
         'ua', 'token', 'iss', 'jti', 'exp', 'is_logout',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

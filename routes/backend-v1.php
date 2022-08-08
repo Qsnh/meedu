@@ -333,5 +333,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
 
     Route::group(['prefix' => 'log'], function () {
         Route::get('/admin', 'LogController@admin');
+        Route::get('/userLogin', 'LogController@userLogin');
+        Route::get('/uploadImages', 'LogController@uploadImages');
     });
 });

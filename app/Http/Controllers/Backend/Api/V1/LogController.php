@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
+use App\Meedu\ServiceV2\Models\UserLoginRecord;
+use App\Meedu\ServiceV2\Models\UserUploadImage;
 
 class LogController extends BaseController
 {
@@ -35,6 +37,42 @@ class LogController extends BaseController
         return $this->successData([
             'total' => $logs->total(),
             'data' => $logs->items(),
+        ]);
+    }
+
+    public function userLogin(Request $request)
+    {
+        $userId = (int)$request->input('user_id');
+
+        $list = UserLoginRecord::query()
+            ->select(['id', 'user_id', 'ip', 'platform', 'ua', 'iss', 'jti', 'exp', 'is_logout'])
+            ->with(['user:id,nick_name,avatar'])
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        return $this->successData([
+            'data' => $list->items(),
+            'total' => $list->total(),
+        ]);
+    }
+
+    public function uploadImages(Request $request)
+    {
+        $userId = (int)$request->input('user_id');
+
+        $list = UserUploadImage::query()
+            ->when($userId, function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->orderByDesc('id')
+            ->paginate($request->input('size', 10));
+
+        return $this->successData([
+            'data' => $list->items(),
+            'total' => $list->total(),
         ]);
     }
 }
