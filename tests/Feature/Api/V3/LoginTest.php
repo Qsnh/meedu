@@ -514,4 +514,126 @@ class LoginTest extends Base
         ]);
         $this->assertResponseError($response, __('参数错误'));
     }
+
+    public function test_loginByCode_with_wechat_code_and_repeat()
+    {
+        // mock-data
+        $code = Str::random(32);
+        $openid = Str::random(32);
+        $cacheKey = get_cache_key(CacheConstant::USER_SOCIALITE_LOGIN['name'], $code);
+        Cache::put(
+            $cacheKey,
+            serialize([
+                'type' => 'socialite',
+                'app' => FrontendConstant::WECHAT_LOGIN_SIGN,
+                'data' => [
+                    'openid' => $openid,
+                    'nickname' => '昵称',
+                    'avatar' => 'https://mock.com/mock.png',
+                    'original' => [],
+                ],
+            ]),
+            CacheConstant::USER_SOCIALITE_LOGIN['expire']
+        );
+
+        // mock-user
+        $mockUser = User::factory()->create(['is_lock' => 0]);
+        Socialite::create([
+            'user_id' => $mockUser['id'],
+            'app' => FrontendConstant::WECHAT_LOGIN_SIGN,
+            'app_user_id' => $openid,
+            'data' => '',
+            'union_id' => '',
+        ]);
+
+        $response = $this->postJson('/api/v3/auth/login/code', [
+            'code' => $code,
+        ]);
+        $this->assertResponseSuccess($response);
+
+        // 用相同的code再次去请求会失败
+        $response = $this->postJson('/api/v3/auth/login/code', [
+            'code' => $code,
+        ]);
+        $this->assertResponseError($response, __('已过期'));
+    }
+
+    public function test_register_with_socialite_and_repeat()
+    {
+        // mock-data
+        $code = Str::random(32);
+        $openid = Str::random(32);
+        $cacheKey = get_cache_key(CacheConstant::USER_SOCIALITE_LOGIN['name'], $code);
+        Cache::put(
+            $cacheKey,
+            serialize([
+                'type' => 'socialite',
+                'app' => FrontendConstant::WECHAT_LOGIN_SIGN,
+                'data' => [
+                    'openid' => $openid,
+                    'nickname' => '昵称',
+                    'avatar' => 'https://mock.com/mock.png',
+                    'original' => [],
+                ],
+            ]),
+            CacheConstant::USER_SOCIALITE_LOGIN['expire']
+        );
+
+        $mobile = '13899990001';
+        $mobileCode = '123123';
+        Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
+
+        $response = $this->postJson('/api/v3/auth/register/socialite', [
+            'code' => $code,
+            'mobile' => $mobile,
+            'mobile_code' => $mobileCode,
+        ]);
+        $this->assertResponseSuccess($response);
+
+        $mobile = '13899990002';
+        $mobileCode = '123456';
+        Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
+
+        $response = $this->postJson('/api/v3/auth/register/socialite', [
+            'code' => $code,
+            'mobile' => $mobile,
+            'mobile_code' => $mobileCode,
+        ]);
+        $this->assertResponseError($response, __('已过期'));
+    }
+
+    public function test_register_with_socialite_and_exists_mobile()
+    {
+        // mock-data
+        $code = Str::random(32);
+        $openid = Str::random(32);
+        $cacheKey = get_cache_key(CacheConstant::USER_SOCIALITE_LOGIN['name'], $code);
+        Cache::put(
+            $cacheKey,
+            serialize([
+                'type' => 'socialite',
+                'app' => FrontendConstant::WECHAT_LOGIN_SIGN,
+                'data' => [
+                    'openid' => $openid,
+                    'nickname' => '昵称',
+                    'avatar' => 'https://mock.com/mock.png',
+                    'original' => [],
+                ],
+            ]),
+            CacheConstant::USER_SOCIALITE_LOGIN['expire']
+        );
+
+        $mobile = '13899990001';
+        $mobileCode = '123123';
+        Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
+
+        User::factory()->create(['mobile' => $mobile]);
+
+        $response = $this->postJson('/api/v3/auth/register/socialite', [
+            'code' => $code,
+            'mobile' => $mobile,
+            'mobile_code' => $mobileCode,
+        ]);
+        $this->assertResponseError($response, __('手机号已存在'));
+    }
 }
