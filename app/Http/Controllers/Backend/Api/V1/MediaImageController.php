@@ -58,8 +58,12 @@ class MediaImageController extends BaseController
     public function upload(ImageUploadRequest $request)
     {
         $file = $request->filldata();
-        $data = save_image($file);
+        $group = $request->input('group');
         $from = (int)$request->input('from');
+
+        $imageGroup = 'admin' . ($group ? '-' . $group : '');
+
+        $data = save_image($file, $imageGroup);
 
         $data = [
             'from' => $from,

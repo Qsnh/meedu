@@ -430,7 +430,7 @@ if (!function_exists('get_cache_key')) {
 }
 
 if (!function_exists('save_image')) {
-    function save_image($file, $pathPrefix = ''): array
+    function save_image($file, $group = ''): array
     {
         /**
          * @var \Illuminate\Http\UploadedFile $file
@@ -440,12 +440,41 @@ if (!function_exists('save_image')) {
          * @var $configService \App\Services\Base\Services\ConfigService
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+
+        /**
+         * @var \App\Meedu\ServiceV2\Services\OtherServiceInterface $otherService
+         */
+        $otherService = app()->make(\App\Meedu\ServiceV2\Services\OtherServiceInterface::class);
+
+        // 获取图片存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
         $disk = $configService->getImageStorageDisk();
-        $path = $file->store($configService->getImageStoragePath() . ($pathPrefix ? '/' . $pathPrefix : ''), compact('disk'));
+        // 保存图片并返回存储的的路径
+        $path = $file->store($configService->getImageStoragePath() . ($group ? '/' . $group : ''), compact('disk'));
+        // 根据path获取对应磁盘的访问url
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+
         $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
         $data = compact('path', 'url', 'disk', 'name');
+        $data['expired_time'] = time() + 1800;
         $data['encryptData'] = encrypt(json_encode($data));
+
+        $userId = 0;
+        if (\Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->check()) {
+            $userId = \Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->id();
+        }
+
+        $otherService->storeUserUploadImage(
+            $userId,
+            $group,
+            $disk,
+            $path,
+            $name,
+            $url,
+            request()->path(),
+            request()->getClientIp(),
+            request()->header('User-Agent', ''),
+        );
+
         return $data;
     }
 }

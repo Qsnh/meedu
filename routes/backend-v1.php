@@ -252,9 +252,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
         Route::delete('/refund/{id}', 'OrderController@deleteRefundOrder');
     });
 
-    // 图片上传
-    Route::post('/upload/image/tinymce', 'UploadController@tinymceImageUpload');
-
     // 优惠码
     Route::group(['prefix' => 'promoCode'], function () {
         Route::get('/', 'PromoCodeController@index');
