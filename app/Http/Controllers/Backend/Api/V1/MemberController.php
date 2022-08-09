@@ -173,12 +173,15 @@ class MemberController extends BaseController
         // 字段默认值
         $data['role_id'] = (int)($data['role_id'] ?? 0);
         $data['role_expired_at'] = $data['role_expired_at'] ?? null;
-        // 时间格式不允许空字符串
-        $data['role_expired_at'] = $data['role_expired_at'] ?: null;
-        // 如果删除了时间，那么将roleId重置为0
-        $data['role_expired_at'] || $data['role_id'] = 0;
-        // 如果roleId为0的话，那么role_expired_at也重置为null
-        $data['role_id'] || $data['role_expired_at'] = null;
+        // role_expired_at与role_id必须同时存在
+        if (!$data['role_expired_at'] || !$data['role_id']) {
+            $data['role_expired_at'] = null;
+            $data['role_id'] = 0;
+        } else {
+            // 时间格式解析->兼容性更好
+            $data['role_expired_at'] = Carbon::parse($data['role_expired_at'])->toDateTimeLocalString();
+        }
+
         // 修改密码
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
 
