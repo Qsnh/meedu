@@ -363,6 +363,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'POST',
                         'url' => '(^member\/\d+\/message$|^member\/message\/multi$)',
                     ],
+                    [
+                        'display_name' => '学员-删除',
+                        'slug' => 'member.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'member/\d+',
+                    ],
 
                     // 学员标签
                     [
@@ -493,6 +499,18 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'system.log.admin',
                         'method' => 'GET',
                         'url' => 'login/admin',
+                    ],
+                    [
+                        'display_name' => '系统-日志-学员登录日志',
+                        'slug' => 'system.log.userLogin',
+                        'method' => 'GET',
+                        'url' => 'login/userLogin',
+                    ],
+                    [
+                        'display_name' => '系统-日志-图片上传日志',
+                        'slug' => 'system.log.uploadImages',
+                        'method' => 'GET',
+                        'url' => 'login/uploadImages',
                     ],
                 ],
             ],
