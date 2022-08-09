@@ -52,8 +52,8 @@ class MemberController extends BaseController
         $members = User::query()
             ->with(['role:id,name', 'tags:id,name'])
             ->when($keywords, function ($query) use ($keywords) {
-                $query->where('nick_name', $keywords)
-                    ->orWhere('mobile', $keywords)
+                $query->where('nick_name', 'like', '%' . $keywords . '%')
+                    ->orWhere('mobile', 'like', '%' . $keywords . '%')
                     ->orWhere('id', $keywords);
             })
             ->when($roleId, function ($query) use ($roleId) {
