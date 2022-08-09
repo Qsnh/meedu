@@ -45,7 +45,7 @@ class LogController extends BaseController
         $userId = (int)$request->input('user_id');
 
         $list = UserLoginRecord::query()
-            ->select(['id', 'user_id', 'ip', 'platform', 'ua', 'iss', 'jti', 'exp', 'is_logout'])
+            ->select(['id', 'user_id', 'ip', 'platform', 'ua', 'iss', 'jti', 'exp', 'is_logout', 'created_at'])
             ->with(['user:id,nick_name,avatar'])
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
