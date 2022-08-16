@@ -205,4 +205,31 @@ class UserService implements UserServiceInterface
     {
         $this->userDao->logoutUserLoginRecord($userId, $jti);
     }
+
+    public function socialiteBind(int $userId, string $app, string $appId, array $data, string $unionId = ''): void
+    {
+        // unionId的绑定判断
+        // 确保每个app的unionId(不同app但是unionId相同)绑定的user_id是相同的
+        if ($unionId) {
+            $record = $this->userDao->findSocialiteRecordByUnionId($unionId);
+            if ($record && $record['user_id'] !== $userId) {
+                throw new ServiceException(__('同渠道账号已绑定其它用户'));
+            }
+        }
+
+        // 判断用户是否重复绑定app渠道的账号 => 每个用户对于同一个渠道(app)只能绑定一个账户
+        $userSocialites = $this->userDao->findUserSocialites($userId);
+        $userSocialites && $userSocialites = array_column($userSocialites, null, 'app');
+        if (isset($userSocialites[$app])) {
+            throw new ServiceException(__('您已经绑定了该渠道的账号'));
+        }
+
+        // 判断当前的渠道账号是否被重复绑定了 => 同一个渠道(app)的账号只能被一个用户绑定
+        $record = $this->userDao->findSocialiteRecord($app, $appId);
+        if ($record) {
+            throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
+        }
+
+        $this->userDao->storeSocialiteRecord($userId, $app, $appId, $data, $unionId);
+    }
 }

@@ -35,4 +35,6 @@ interface UserServiceInterface
     public function findLastLoginJTI(int $userId): string;
 
     public function jtiLogout(int $userId, string $jti): void;
+
+    public function socialiteBind(int $userId, string $app, string $appId, array $data, string $unionId = ''): void;
 }

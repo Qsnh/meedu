@@ -407,13 +407,13 @@ class LoginTest extends Base
         ]);
         ['data' => $data] = $this->assertResponseSuccess($response);
 
-        $this->assertEquals(1, $data['bind_mobile']);
+        $this->assertEquals('bind_mobile', $data['action']);
         $this->assertEquals($code, $data['code']);
     }
 
     public function test_register_with_socialite_with_empty_params()
     {
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => '',
             'mobile' => '',
         ]);
@@ -445,7 +445,7 @@ class LoginTest extends Base
         $mobileCode = '123123';
         Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => $code,
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
@@ -475,7 +475,7 @@ class LoginTest extends Base
         $mobileCode = '123123';
         Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => Str::random(32),
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
@@ -507,7 +507,7 @@ class LoginTest extends Base
         $mobileCode = '123123';
         Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => $code,
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
@@ -583,7 +583,7 @@ class LoginTest extends Base
         $mobileCode = '123123';
         Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => $code,
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
@@ -594,7 +594,7 @@ class LoginTest extends Base
         $mobileCode = '123456';
         Cache::put(get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile), $mobileCode, CacheConstant::MOBILE_CODE['expire']);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => $code,
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
@@ -629,7 +629,7 @@ class LoginTest extends Base
 
         User::factory()->create(['mobile' => $mobile]);
 
-        $response = $this->postJson('/api/v3/auth/register/socialite', [
+        $response = $this->postJson('/api/v3/auth/register/withSocialite', [
             'code' => $code,
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,

@@ -25,20 +25,35 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class LoginController extends BaseController
 {
+
+    /**
+     * @api {GET} /api/v3/auth/login/wechat/oauth 微信公众号授权登录
+     * @apiGroup Auth-V3
+     * @apiName  AuthLoginWechatOauth
+     * @apiVersion v3.0.0
+     *
+     * @apiParam {String} s_url 登录成功跳转地址
+     * @apiParam {String} f_url 登录失败跳转地址
+     * @apiParam {String=login,bind} action 行为[login:登录,bind:绑定]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function wechatOauthLogin(SocialiteLoginRequest $request)
     {
         $sUrl = $request->input('s_url');//登录成功之后跳转的地址
         $fUrl = $request->input('f_url');//登录失败跳转的地址-失败的话会在fUrl中携带msg参数
+        $action = $request->input('action');
 
         $appRedirect = new AppRedirect(
             route('api.v3.login.wechat.callback'),
-            ['s_url' => $sUrl, 'f_url' => $fUrl]
+            ['s_url' => $sUrl, 'f_url' => $fUrl, 'action' => $action]
         );
 
         return Wechat::getInstance()->oauth->redirect($appRedirect->getRedirectUrl());
     }
 
-    public function wechatScanLoginCallback(Request $request)
+    public function wechatOauthCallback(Request $request)
     {
         $data = $request->input('data');
         if (!$data) {
@@ -48,6 +63,7 @@ class LoginController extends BaseController
         $baseUrl = config('app.url');
         $appRedirect = new AppRedirect();
         $fUrl = $baseUrl;
+        $action = '';
 
         try {
             $data = $appRedirect->decrypt($data);
@@ -57,6 +73,7 @@ class LoginController extends BaseController
 
             $sUrl = $data['s_url'] ?: $baseUrl;
             $fUrl = $data['f_url'] ?: $baseUrl;
+            $action = $data['action'] ?? '';
 
             $appUser = Wechat::getInstance()->oauth->user();
             if (!$appUser) {
@@ -83,12 +100,25 @@ class LoginController extends BaseController
                 CacheConstant::USER_SOCIALITE_LOGIN['expire']
             );
 
-            return redirect(url_append_query($sUrl, ['code' => $code]));
+            return redirect(url_append_query($sUrl, ['login_code' => $code, 'action' => $action]));
         } catch (ServiceException $e) {
-            return redirect(url_append_query($fUrl, ['msg' => $e->getMessage()]));
+            return redirect(url_append_query($fUrl, ['login_err_msg' => $e->getMessage(), 'action' => $action]));
         }
     }
 
+    /**
+     * @api {GET} /api/v3/auth/login/socialite/{app} 社交账号登录
+     * @apiGroup Auth-V3
+     * @apiName  AuthLoginSocialite
+     * @apiVersion v3.0.0
+     *
+     * @apiParam {String} s_url 登录成功跳转地址
+     * @apiParam {String} f_url 登录失败跳转地址
+     * @apiParam {String=login,bind} action 行为[login:登录,bind:绑定]
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function socialiteLogin(ConfigServiceInterface $configService, SocialiteLoginRequest $request, $app)
     {
         $enabledSocialites = $configService->getEnabledSocialiteApps();
@@ -98,10 +128,11 @@ class LoginController extends BaseController
 
         $sUrl = $request->input('s_url');//登录成功之后跳转的地址
         $fUrl = $request->input('f_url');//登录失败跳转的地址-失败的话会在fUrl中携带msg参数
+        $action = $request->input('action');
 
         $appRedirect = new AppRedirect(
             route('api.v3.login.socialite.callback', [$app]),
-            ['s_url' => $sUrl, 'f_url' => $fUrl]
+            ['s_url' => $sUrl, 'f_url' => $fUrl, 'action' => $action]
         );
 
         return Socialite::driver($app)
@@ -120,6 +151,7 @@ class LoginController extends BaseController
         $baseUrl = config('app.url');
         $appRedirect = new AppRedirect(route('api.v3.login.socialite.callback', [$app]));
         $fUrl = $baseUrl;
+        $action = '';
 
         try {
             $data = $appRedirect->decrypt($data);
@@ -129,6 +161,7 @@ class LoginController extends BaseController
 
             $sUrl = $data['s_url'] ?: $baseUrl;
             $fUrl = $data['f_url'] ?: $baseUrl;
+            $action = $data['action'] ?? '';
 
             // 获取授权登录成功之后的用户信息
             // 这里需要那再次构建社交登录的回调URL[query可与登录前不一样，但是path必须相同]
@@ -159,12 +192,26 @@ class LoginController extends BaseController
                 CacheConstant::USER_SOCIALITE_LOGIN['expire']
             );
 
-            return redirect(url_append_query($sUrl, ['code' => $code]));
+            return redirect(url_append_query($sUrl, ['login_code' => $code, 'action' => $action]));
         } catch (ServiceException $e) {
-            return redirect(url_append_query($fUrl, ['msg' => $e->getMessage()]));
+            return redirect(url_append_query($fUrl, ['login_err_msg' => $e->getMessage(), 'action' => $action]));
         }
     }
 
+    /**
+     * @api {POST} /api/v3/auth/login/code 三方账号登录
+     * @apiGroup Auth-V3
+     * @apiName  AuthLoginWithCode
+     * @apiVersion v3.0.0
+     *
+     * @apiParam {String} code 社交的登录返回的code
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {Number} data.success 是否成功[1:是,0:否]
+     * @apiSuccess {String} data.token 登录成功后的用户token[success=1时返回]
+     * @apiSuccess {String=bind_mobile} data.action 登录失败后需要进一步操作[bind_mobile:需要现绑定手机号]
+     */
     public function loginByCode(Request $request, AuthBus $authBus, UserServiceInterface $userService)
     {
         $code = $request->input('code');
@@ -208,10 +255,15 @@ class LoginController extends BaseController
                 Cache::forget($cacheKey);
 
                 return $this->data([
+                    'success' => 1,
                     'token' => $token,
                 ]);
             } elseif ($userId === AuthBus::ERROR_CODE_BIND_MOBILE) {//强制绑定手机号
-                return $this->data(['bind_mobile' => 1, 'code' => $code]);
+                return $this->data([
+                    'success' => 0,
+                    'action' => 'bind_mobile',
+                    'code' => $code,
+                ]);
             }
 
             throw new ServiceException(__('未知错误'));
@@ -220,6 +272,20 @@ class LoginController extends BaseController
         }
     }
 
+    /**
+     * @api {POST} /api/v3/auth/register/withSocialite 社交账号注册[绑定手机号]
+     * @apiGroup Auth-V3
+     * @apiName  AuthRegisterWithCode
+     * @apiVersion v3.0.0
+     *
+     * @apiParam {String} code 社交的登录返回的code
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token 用户token
+     */
     public function registerWithSocialite(Request $request, AuthBus $authBus)
     {
         $mobile = $request->input('mobile');
@@ -257,9 +323,7 @@ class LoginController extends BaseController
 
             $token = $authBus->tokenLogin($userId, get_platform());
 
-            return $this->data([
-                'token' => $token,
-            ]);
+            return $this->data(['token' => $token]);
         } catch (ServiceException $e) {
             return $this->error($e->getMessage());
         }

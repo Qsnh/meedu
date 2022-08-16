@@ -51,4 +51,12 @@ interface UserDaoInterface
     public function findUserLoginRecordOrFail(int $id): array;
 
     public function logoutUserLoginRecord(int $userId, string $jti): int;
+
+    public function findSocialiteRecord(string $app, string $appId): array;
+
+    public function findSocialiteRecordByUnionId(string $unionId): array;
+
+    public function findUserSocialites(int $userId): array;
+
+    public function storeSocialiteRecord(int $userId, string $app, string $appId, array $data, string $unionId): int;
 }

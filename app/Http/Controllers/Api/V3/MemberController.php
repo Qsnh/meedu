@@ -9,8 +9,9 @@
 namespace App\Http\Controllers\Api\V3;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Constant\CacheConstant;
 use App\Exceptions\ServiceException;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
@@ -274,16 +275,67 @@ class MemberController extends BaseController
         ]);
     }
 
+    /**
+     * @api {POST} /api/v3/member/destroy 注销账户
+     * @apiGroup 用户-V3
+     * @apiName  MemberDestroy
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
     public function destroy(UserServiceInterface $userService)
     {
         try {
             $userService->storeUserDelete($this->id());
+            return $this->success();
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @api {POST} /api/v3/member/socialite/bindWithCode 社交账号绑定
+     * @apiGroup 用户-V3
+     * @apiName  MemberSocialiteBindWithCode
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     *
+     * @apiParam {String} string code
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function socialiteBindByCode(Request $request, UserServiceInterface $userService)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+
+        try {
+            $cacheKey = get_cache_key(CacheConstant::USER_SOCIALITE_LOGIN['name'], $code);
+            $value = Cache::get($cacheKey);
+            if (!$value) {
+                throw new ServiceException(__('已过期'));
+            }
+
+            $value = unserialize($value);
+            $type = $value['type'] ?? null;
+            $app = $value['app'] ?? null;
+            $data = $value['data'] ?? [];
+            if ($type !== 'socialite' || !$app || !isset($data['openid'])) {
+                throw new ServiceException(__('参数错误'));
+            }
+
+            $userService->socialiteBind($this->id(), $app, $data['openid'], $data, $data['unionid'] ?? '');
+
+            Cache::forget($cacheKey);
 
             return $this->success();
         } catch (ServiceException $e) {
             return $this->error($e->getMessage());
-        } catch (\Exception $e) {
-            Log::error(__METHOD__, ['message' => $e->getMessage()]);
         }
     }
 }

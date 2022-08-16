@@ -17,6 +17,7 @@ class SocialiteLoginRequest extends BaseRequest
         return [
             's_url' => 'required|max:255',
             'f_url' => 'required|max:255',
+            'action' => 'required|in:login,bind',
         ];
     }
 
@@ -27,6 +28,8 @@ class SocialiteLoginRequest extends BaseRequest
             's_url.size' => __('参数错误'),
             'f_url.required' => __('参数错误'),
             'f_url.size' => __('参数错误'),
+            'action.required' => __('参数错误'),
+            'action.in' => __('参数错误'),
         ];
     }
 }

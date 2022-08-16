@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Constant\TableConstant;
 use Illuminate\Support\Facades\DB;
 use App\Meedu\ServiceV2\Models\User;
+use App\Meedu\ServiceV2\Models\Socialite;
 use App\Meedu\ServiceV2\Models\UserCourse;
 use App\Meedu\ServiceV2\Models\UserDeleteJob;
 use App\Services\Member\Models\UserLikeCourse;
@@ -255,5 +256,34 @@ SQL;
     public function logoutUserLoginRecord(int $userId, string $jti): int
     {
         return UserLoginRecord::query()->where('jti', $jti)->where('user_id', $userId)->update(['is_logout' => 1]);
+    }
+
+    public function findSocialiteRecord(string $app, string $appId): array
+    {
+        $record = Socialite::query()->where('app', $app)->where('app_user_id', $appId)->first();
+        return $record ? $record->toArray() : [];
+    }
+
+    public function findSocialiteRecordByUnionId(string $unionId): array
+    {
+        $record = Socialite::query()->where('union_id', $unionId)->first();
+        return $record ? $record->toArray() : [];
+    }
+
+    public function findUserSocialites(int $userId): array
+    {
+        return Socialite::query()->where('user_id', $userId)->get()->toArray();
+    }
+
+    public function storeSocialiteRecord(int $userId, string $app, string $appId, array $data, string $unionId): int
+    {
+        $record = Socialite::create([
+            'user_id' => $userId,
+            'app' => $app,
+            'app_user_id' => $appId,
+            'data' => serialize($data),
+            'union_id' => $unionId,
+        ]);
+        return $record['id'];
     }
 }
