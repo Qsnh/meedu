@@ -31,6 +31,7 @@ class LoginController extends BaseController
      * @apiGroup Auth-V3
      * @apiName  AuthLoginWechatOauth
      * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
      *
      * @apiParam {String} s_url 登录成功跳转地址
      * @apiParam {String} f_url 登录失败跳转地址
@@ -111,6 +112,7 @@ class LoginController extends BaseController
      * @apiGroup Auth-V3
      * @apiName  AuthLoginSocialite
      * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
      *
      * @apiParam {String} s_url 登录成功跳转地址
      * @apiParam {String} f_url 登录失败跳转地址
@@ -203,6 +205,7 @@ class LoginController extends BaseController
      * @apiGroup Auth-V3
      * @apiName  AuthLoginWithCode
      * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
      *
      * @apiParam {String} code 社交的登录返回的code
      *
@@ -277,6 +280,7 @@ class LoginController extends BaseController
      * @apiGroup Auth-V3
      * @apiName  AuthRegisterWithCode
      * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
      *
      * @apiParam {String} code 社交的登录返回的code
      * @apiParam {String} mobile 手机号

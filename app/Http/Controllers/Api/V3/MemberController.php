@@ -281,6 +281,7 @@ class MemberController extends BaseController
      * @apiName  MemberDestroy
      * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.8新增
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -301,6 +302,7 @@ class MemberController extends BaseController
      * @apiName  MemberSocialiteBindWithCode
      * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.8新增
      *
      * @apiParam {String} string code
      *
