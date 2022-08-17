@@ -143,7 +143,7 @@ class BusinessState
          */
         $orderService = app()->make(OrderServiceInterface::class);
         $sum = $order['charge'] - $orderService->getOrderPaidRecordsTotal($order['id']);
-        return $sum >= 0 ? $sum : 0;
+        return max($sum, 0);
     }
 
     /**
