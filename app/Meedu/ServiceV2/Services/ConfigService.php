@@ -26,4 +26,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return (int)config('meedu.system.login.limit.rule', 0);
     }
+
+    public function isCloseDeprecatedApi(): bool
+    {
+        return (bool)config('meedu.system.close_deprecated_api');
+    }
 }

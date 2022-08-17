@@ -15,4 +15,6 @@ interface ConfigServiceInterface
     public function getEnabledSocialiteApps(): array;
 
     public function getLoginLimitRule(): int;
+
+    public function isCloseDeprecatedApi(): bool;
 }
