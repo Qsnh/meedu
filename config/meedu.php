@@ -150,25 +150,6 @@ return [
         ],
     ],
 
-    // SEO
-    'seo' => [
-        'index' => [
-            'title' => '首页',
-            'keywords' => '',
-            'description' => '',
-        ],
-        'course_list' => [
-            'title' => '所有课程',
-            'keywords' => '',
-            'description' => '',
-        ],
-        'role_list' => [
-            'title' => 'VIP',
-            'keywords' => '',
-            'description' => '',
-        ],
-    ],
-
     // 系统配置
     'system' => [
         // ICP备案

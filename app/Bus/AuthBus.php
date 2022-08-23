@@ -84,44 +84,6 @@ class AuthBus
         return $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_LOGIN_SIGN, $openId, $data, $unionId);
     }
 
-    public function wechatMiniLogin(string $openId, string $unionId)
-    {
-        if ($unionId && $socialiteRecord = $this->socialiteService->findUnionId($unionId)) {
-            return $socialiteRecord['user_id'];
-        }
-
-        $socialiteRecord = $this->socialiteService->findBind(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openId);
-        if ($socialiteRecord) {
-            // 更新unionId
-            $unionId && $this->socialiteService->updateUnionId($socialiteRecord['id'], $unionId);
-
-            return $socialiteRecord['user_id'];
-        }
-
-        return 0;
-    }
-
-    public function wechatMiniMobileLogin(string $openId, string $unionId, string $mobile, $data)
-    {
-        $user = $this->userService->findMobile($mobile);
-        $userSocialites = [];
-
-        if ($user) {
-            // 读取已经绑定的socialite
-            $userSocialites = $this->socialiteService->userSocialites($user['id']);
-        } else {
-            // 创建新的账户
-            $user = $this->userService->createWithMobile($mobile, '', $data['nickName'], $data['avatarUrl']);
-        }
-
-        if (!in_array(FrontendConstant::WECHAT_MINI_LOGIN_SIGN, array_column($userSocialites, 'app'))) {
-            // 当前用户未绑定当前的小程序账户的话
-            $this->socialiteService->bindApp($user['id'], FrontendConstant::WECHAT_MINI_LOGIN_SIGN, $openId, $data, $unionId);
-        }
-
-        return $user;
-    }
-
     public function socialiteLogin(string $app, string $id, array $data)
     {
         $userId = $this->socialiteService->getBindUserId($app, $id);

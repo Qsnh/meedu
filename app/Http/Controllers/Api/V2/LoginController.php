@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
-use App\Meedu\WechatMini;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
@@ -130,143 +129,6 @@ class LoginController extends BaseController
             $user = $this->userService->createWithMobile($mobile, '', '');
         }
 
-        try {
-            $token = $this->token($user);
-
-            return $this->data(compact('token'));
-        } catch (ServiceException $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    /**
-     * @api {post} /api/v2/login/wechatMiniMobile 微信小程序手机号登录
-     * @apiGroup Auth
-     * @apiName WechatMiniLogin
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} openid openid
-     * @apiParam {String} iv iv
-     * @apiParam {String} encryptedData encryptedData
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.token token
-     */
-    public function wechatMiniMobile(Request $request, AuthBus $authBus)
-    {
-        $openid = $request->input('openid');
-        $encryptedData = $request->input('encryptedData');
-        $iv = $request->input('iv');
-        $userInfo = $request->input('userInfo');
-
-        if (
-            !$openid || !$encryptedData || !$iv ||
-            !$userInfo ||
-            !($userInfo['encryptedData'] ?? '') ||
-            !($userInfo['iv'] ?? '') ||
-            !($userInfo['rawData'] ?? '') ||
-            !($userInfo['signature'] ?? '')
-        ) {
-            return $this->error(__('错误'));
-        }
-
-        $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
-        if (!$sessionKey) {
-            return $this->error(__('错误'));
-        }
-
-        // 校验签名
-        if (sha1($userInfo['rawData'] . $sessionKey) !== $userInfo['signature']) {
-            return $this->error(__('参数错误'));
-        }
-
-        $mini = WechatMini::getInstance();
-
-        // 解密获取手机号
-        $data = $mini->encryptor->decryptData($sessionKey, $iv, $encryptedData);
-        $mobile = $data['phoneNumber'];
-        // 解密获取用户信息
-        $userData = $mini->encryptor->decryptData($sessionKey, $userInfo['iv'], $userInfo['encryptedData']);
-
-        if ($openid !== $userData['openId']) {
-            return $this->error(__('错误'));
-        }
-
-        // unionId
-        $unionId = $userData['unionId'] ?? '';
-
-        $user = $authBus->wechatMiniMobileLogin($openid, $unionId, $mobile, $userData);
-
-        try {
-            $token = $this->token($user);
-
-            return $this->data(compact('token'));
-        } catch (ServiceException $e) {
-            return $this->error($e->getMessage());
-        }
-    }
-
-    /**
-     * @api {post} /api/v2/login/wechatMini 微信小程序静默授权登录
-     * @apiGroup Auth
-     * @apiName WechatMini
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} openid openid
-     * @apiParam {String} iv iv
-     * @apiParam {String} encryptedData encryptedData
-     * @apiParam {String} rawData rawData
-     * @apiParam {String} signature signature
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.token token
-     */
-    public function wechatMini(Request $request, AuthBus $authBus)
-    {
-        $openid = $request->input('openid');
-        $raw = $request->input('rawData');
-        $signature = $request->input('signature');
-        $encryptedData = $request->input('encryptedData');
-        $iv = $request->input('iv');
-
-        if (
-            !$openid ||
-            !$raw ||
-            !$signature ||
-            !$encryptedData ||
-            !$iv
-        ) {
-            return $this->error(__('错误'));
-        }
-
-        $sessionKey = $this->cacheService->get(get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid));
-        if (!$sessionKey) {
-            return $this->error(__('错误'));
-        }
-
-        // 验签
-        if (sha1($raw . $sessionKey) !== $signature) {
-            return $this->error(__('错误'));
-        }
-
-        // 解密获取用户信息
-        $userData = WechatMini::getInstance()->encryptor->decryptData($sessionKey, $iv, $encryptedData);
-
-        if ($openid !== $userData['openId']) {
-            return $this->error(__('错误'));
-        }
-
-        // unionId
-        $unionId = $userData['unionId'] ?? '';
-
-        $userId = $authBus->wechatMiniLogin($openid, $unionId);
-        if (!$userId) {
-            return $this->error(__('错误'));
-        }
-
-        $user = $this->userService->find($userId);
         try {
             $token = $this->token($user);
 
@@ -492,42 +354,6 @@ class LoginController extends BaseController
         return $this->data([
             'status' => 1,
             'token' => $token,
-        ]);
-    }
-
-    /**
-     * @api {post} /api/v2/login/wechatMini/session 微信小程序session记录
-     * @apiGroup Auth
-     * @apiName WechatMiniSession
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} code 随机值
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.openid 当前微信小程序用户openid
-     */
-    public function wechatMiniSession(Request $request)
-    {
-        $code = $request->input('code');
-        if (!$code) {
-            return $this->error(__('参数错误'));
-        }
-        $info = WechatMini::getInstance()->auth->session($code);
-        if (!isset($info['openid'])) {
-            return $this->error(__('错误'));
-        }
-        $openid = $info['openid'];
-
-        // session_key存入缓存
-        $this->cacheService->put(
-            get_cache_key(CacheConstant::WECHAT_MINI_SESSION_KEY['name'], $openid),
-            $info['session_key'],
-            CacheConstant::WECHAT_MINI_SESSION_KEY['expire']
-        );
-
-        return $this->data([
-            'openid' => $openid,
         ]);
     }
 

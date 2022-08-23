@@ -29,6 +29,11 @@ class UpgradeTo48
                 'meedu.member.invite.effective_days',
                 'meedu.member.invite.per_order_draw',
                 'meedu.member.credit1.invite',//邀请送积分
+
+                //微信小程序相关配置
+                'pay.wechat.miniapp_id',
+                'tencent.wechat.mini.app_id',
+                'tencent.wechat.mini.secret',
             ])
             ->delete();
     }

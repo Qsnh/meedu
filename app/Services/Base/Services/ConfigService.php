@@ -378,16 +378,6 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * 腾讯小程序配置
-     *
-     * @return array
-     */
-    public function getTencentWechatMiniConfig(): array
-    {
-        return config('tencent.wechat.mini');
-    }
-
-    /**
      * 阿里云私密播放状态
      *
      * @return bool

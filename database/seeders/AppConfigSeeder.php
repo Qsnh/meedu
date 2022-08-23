@@ -648,15 +648,6 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '支付',
-                'name' => '微信支付小程序AppId',
-                'field_type' => 'text',
-                'sort' => 9,
-                'default_value' => '',
-                'key' => 'pay.wechat.miniapp_id',
-                'value' => '',
-            ],
-            [
-                'group' => '支付',
                 'name' => '微信支付MchId',
                 'field_type' => 'text',
                 'sort' => 10,
@@ -872,27 +863,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.member.credit1.paid_order',
                 'value' => 0,
                 'help' => '注意，支付订单的积分奖励与上面不同，它是根据订单金额*百分比奖励的，所以这里应该填写百分比。举个例子：订单支付金额100元，这里填写0.1，则用户奖励10积分。',
-            ],
-
-            // 微信小程序
-            [
-                'group' => '微信小程序',
-                'name' => 'AppId',
-                'field_type' => 'text',
-                'sort' => 0,
-                'default_value' => '',
-                'key' => 'tencent.wechat.mini.app_id',
-                'value' => '',
-            ],
-            [
-                'group' => '微信小程序',
-                'name' => 'AppSecret',
-                'field_type' => 'text',
-                'sort' => 1,
-                'default_value' => '',
-                'key' => 'tencent.wechat.mini.secret',
-                'value' => '',
-                'is_private' => 1,
             ],
 
             // 插件配置

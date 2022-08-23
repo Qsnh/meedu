@@ -17,13 +17,6 @@ Route::post('/password/reset', 'PasswordController@reset');
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
-// 微信小程序session
-Route::post('/wechat/mini/login', 'LoginController@wechatMiniSession')->middleware(['deprecated.api']); // 该路径将在后面的某个版本中删除，请使用下面的新路径/login/wechatMini/session
-Route::post('/login/wechatMini/session', 'LoginController@wechatMiniSession')->middleware(['deprecated.api']);
-// 微信小程序静默登录
-Route::post('/login/wechatMini', 'LoginController@wechatMini')->middleware(['deprecated.api']);
-// 微信小程序手机号登录
-Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile')->middleware(['deprecated.api']);
 // 微信公众号扫码登录
 Route::get('/login/wechatScan', 'LoginController@wechatScan');
 Route::get('/login/wechatScan/query', 'LoginController@wechatScanQuery');
@@ -100,8 +93,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     // 订单状态查询
     Route::get('/order/status', 'OrderController@queryStatus');
 
-    // 微信小程序支付
-    Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay')->middleware(['deprecated.api']);
     // 跳转到第三方平台支付[如：支付宝web支付]
     Route::get('/order/pay/redirect', 'PaymentController@payRedirect');
     // 手动打款支付
