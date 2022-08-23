@@ -47,4 +47,6 @@ class TableConstant
     public const TABLE_USER_COURSE = 'user_course';
 
     public const TABLE_USER_UPLOAD_IMAGES = 'user_upload_images';
+
+    public const TABLE_USER_SOCIALITE = 'socialite';
 }

@@ -36,8 +36,7 @@ class Alipay implements Payment
         ConfigServiceInterface $configService,
         OrderServiceInterface  $orderService,
         BusinessState          $businessState
-    )
-    {
+    ) {
         $this->configService = $configService;
         $this->orderService = $orderService;
         $this->businessState = $businessState;
