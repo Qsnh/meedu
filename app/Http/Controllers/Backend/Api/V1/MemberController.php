@@ -674,7 +674,7 @@ class MemberController extends BaseController
                     // VIP处理l
                     $tmpRoleId = (int)($item[2] ?? 0);
                     $tmpRoleExpiredAt = null;
-                    if ($item[3]) {
+                    if (isset($item[3]) && $item[3]) {
                         $tmpRoleExpiredAt = Carbon::parse($item[3])->toDateTimeLocalString();
                     }
                     // 是否锁定
