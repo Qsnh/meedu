@@ -58,15 +58,14 @@ class Credit1RewardListener implements ShouldQueue
      */
     public function handle(PaymentSuccessEvent $event)
     {
-        $credit1 = $this->configService->getPaidOrderSceneCredit1();
-        $credit = (int)($credit1 * $event->order['charge']);
-        if ($credit <= 0) {
-            // 未开启积分奖励
+        $credit1RewardRate = $this->configService->getPaidOrderSceneCredit1();
+        $rewardCredit1 = (int)($credit1RewardRate * $event->order['charge']);
+        if ($rewardCredit1 <= 0) {
             return;
         }
 
-        $message = sprintf(__('已支付订单送%d积分'), $credit1);
-        $this->creditService->createCredit1Record($event->order['user_id'], $credit, $message);
-        $this->notificationService->notifyCredit1Message($event->order['user_id'], $credit, $message);
+        $message = sprintf(__('已支付订单送%d积分'), $rewardCredit1);
+        $this->creditService->createCredit1Record($event->order['user_id'], $rewardCredit1, $message);
+        $this->notificationService->notifyCredit1Message($event->order['user_id'], $rewardCredit1, $message);
     }
 }
