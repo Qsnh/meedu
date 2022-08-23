@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Meedu\Alyun\Vod;
+use App\Meedu\Aliyun\Vod;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
 use App\Events\VideoUploadedEvent;

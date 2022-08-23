@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Meedu\Alyun;
+namespace App\Meedu\Aliyun;
 
 use Illuminate\Support\Facades\Log;
 use AlibabaCloud\Client\AlibabaCloud;
