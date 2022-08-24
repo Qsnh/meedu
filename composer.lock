@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0ea5d8c1d90c1f6cf924448cd1ae32e",
+    "content-hash": "6aaa2f9520a031eeab7c40384ec40579",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -9147,6 +9147,55 @@
                 "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.696"
             },
             "time": "2022-08-04T08:07:10+00:00"
+        },
+        {
+            "name": "tencentcloud/live",
+            "version": "3.0.696",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/live.git",
+                "reference": "aaacea04e832fe5378da200aa8a5c937239eaa3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/live/zipball/aaacea04e832fe5378da200aa8a5c937239eaa3f",
+                "reference": "aaacea04e832fe5378da200aa8a5c937239eaa3f",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "tencentcloud/common": "3.0.696"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/live",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk live",
+            "homepage": "https://github.com/tencentcloud-sdk-php/live",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/live/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/live/tree/3.0.696"
+            },
+            "time": "2022-08-04T08:49:38+00:00"
         },
         {
             "name": "tencentcloud/sms",
