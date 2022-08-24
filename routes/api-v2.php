@@ -30,7 +30,7 @@ Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCal
 Route::post('/logout', 'LoginController@logout')->middleware(['auth:apiv2']);
 
 // 课程搜索
-Route::get('/search', 'SearchController@index');
+Route::get('/search', 'SearchController@index')->middleware(['deprecated.api']);
 
 // 课程
 Route::get('/courses', 'CourseController@paginate');
