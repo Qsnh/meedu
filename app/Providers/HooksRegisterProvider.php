@@ -10,6 +10,7 @@ namespace App\Providers;
 
 use App\Meedu\Hooks\HookContainer;
 use App\Hooks\MpWechatSubscribeHook;
+use App\Hooks\MpWechatScanEvtSubHook;
 use App\Hooks\MpWechatMessageReplyHook;
 use Illuminate\Support\ServiceProvider;
 use App\Hooks\ViewBlock\Data\VodV1DataHook;
@@ -21,6 +22,7 @@ class HooksRegisterProvider extends ServiceProvider
         PositionConstant::MP_WECHAT_RECEIVER_MESSAGE => [
             MpWechatSubscribeHook::class,
             MpWechatMessageReplyHook::class,
+            MpWechatScanEvtSubHook::class,
         ],
         PositionConstant::VIEW_BLOCK_DATA_RENDER => [
             VodV1DataHook::class,

@@ -17,4 +17,6 @@ interface ConfigServiceInterface
     public function getLoginLimitRule(): int;
 
     public function isCloseDeprecatedApi(): bool;
+
+    public function getMpWechatScanLoginAlert(): string;
 }

@@ -10,10 +10,12 @@ namespace App\Http\Controllers\Api\V3;
 
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
+use App\Bus\WechatScanBus;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
 use App\Meedu\Utils\AppRedirect;
+use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Cache;
@@ -331,5 +333,126 @@ class LoginController extends BaseController
         } catch (ServiceException $e) {
             return $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * @api {GET} /api/v3/auth/login/wechat/scan 微信公众号扫码登录
+     * @apiGroup Auth-V3
+     * @apiName  AuthLoginWechatScan
+     * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code code
+     * @apiSuccess {String} data.image 二维码
+     */
+    public function wechatScan(BusinessState $businessState, WechatScanBus $wechatScanBus)
+    {
+        if (!$businessState->enabledMpScanLogin()) {
+            throw new ServiceException(__('未开启微信公众号扫码登录'));
+        }
+
+        $code = $wechatScanBus->generateLoginCode();
+        // 该方法会生成携带自定义参数的(上面的code)二维码,用户扫码即可关注
+        // 关注之后服务端会收到SCAN+自定义参数的事件
+        $image = wechat_qrcode_image($code);
+
+        return $this->data([
+            'code' => $code,
+            'image' => $image,
+        ]);
+    }
+
+    /**
+     * @api {GET} /api/v3/auth/login/wechat/scan/query 微信公众号扫码登录结果查询
+     * @apiGroup Auth-V3
+     * @apiName  AuthLoginWechatScanQuery
+     * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
+     *
+     * @apiParam {string} code code
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.success 状态[-1:不做任何操作,1:登录成功,0:登录失败]
+     * @apiSuccess {String} data.token token
+     * @apiSuccess {String} data.code code(失败返回)
+     * @apiSuccess {String} data.action action[bind_mobile:绑定手机号](失败返回)
+     */
+    public function wechatScanQuery(Request $request, AuthBus $authBus, WechatScanBus $wechatScanBus)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+
+        $userId = $wechatScanBus->getLoginUserId($code);
+        if (!$userId) {
+            return $this->data(['success' => -1]);
+        }
+
+        if ($userId === AuthBus::ERROR_CODE_BIND_MOBILE) {
+            return $this->data([
+                'success' => 0,
+                'action' => 'bind_mobile',
+                'code' => $code,
+            ]);
+        }
+
+        $token = $authBus->tokenLogin($userId, FrontendConstant::LOGIN_PLATFORM_PC);
+
+        return $this->data([
+            'success' => 1,
+            'token' => $token,
+        ]);
+    }
+
+    /**
+     * @api {POST} /api/v3/auth/register/withWechatScan 微信扫码注册[绑定手机号]
+     * @apiGroup Auth-V3
+     * @apiName  AuthRegisterWithWechatScan
+     * @apiVersion v3.0.0
+     * @apiDescription v4.8新增
+     *
+     * @apiParam {String} code 微信扫码的code
+     * @apiParam {String} mobile 手机号
+     * @apiParam {String} mobile_code 短信验证码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.token 用户token
+     */
+    public function registerWithWechatScan(Request $request, AuthBus $authBus, WechatScanBus $wechatScanBus)
+    {
+        $mobile = $request->input('mobile');
+        $code = $request->input('code');
+        if (!$mobile || !$code) {
+            return $this->error(__('参数错误'));
+        }
+
+        $this->mobileCodeCheck();
+
+        $userData = $wechatScanBus->getLoginUser($code);
+        if (!$userData) {
+            return $this->error(__('已过期'));
+        }
+
+        $userId = $authBus->registerWithSocialite(
+            $mobile,
+            FrontendConstant::WECHAT_LOGIN_SIGN,
+            $userData['openid'],
+            $userData['unionid'] ?? '',
+            '',
+            '',
+            $userData
+        );
+
+        // 删除缓存
+        $wechatScanBus->delLoginUser($code);
+
+        $token = $authBus->tokenLogin($userId, FrontendConstant::LOGIN_PLATFORM_PC);
+
+        return $this->data(['token' => $token]);
     }
 }

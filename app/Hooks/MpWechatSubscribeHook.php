@@ -11,6 +11,7 @@ namespace App\Hooks;
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
 use App\Bus\WechatBindBus;
+use App\Bus\WechatScanBus;
 use App\Constant\CacheConstant;
 use App\Meedu\Hooks\HookParams;
 use App\Exceptions\ServiceException;
@@ -20,6 +21,7 @@ use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
+// @Deprecated
 class MpWechatSubscribeHook implements HookRuntimeInterface
 {
     public function handle(HookParams $params, \Closure $next)
@@ -27,18 +29,29 @@ class MpWechatSubscribeHook implements HookRuntimeInterface
         $msgType = $params->getValue('MsgType', '');
         $event = $params->getValue('raw.Event', '');
 
+        // 仅订阅subscribe,SCAN事件
         if (!($msgType === 'event' && ($event === 'subscribe' || $event === 'SCAN'))) {
             return $next($params);
         }
 
+        // 剔除`qrscene_`这个前缀,剩余的字符串就是自定义二维码携带的自定义参数
         $eventKey = str_replace('qrscene_', '', $params->getValue('raw.EventKey'));
         if (!$eventKey) {
-            // case: 直接关注event
+            // case: 直接关注公众号event
             return $next($params);
         }
 
+        /**
+         * @var WechatScanBus $wechatScanBus
+         */
+        $wechatScanBus = app()->make(WechatScanBus::class);
+        if ($wechatScanBus->isLoginAction($eventKey) || $wechatScanBus->isBindAction($eventKey)) {
+            // v2-handler
+            return $next($params);
+        }
 
         $openid = $params->getValue('FromUserName');
+        // 通过openid获取微信用户信息
         $userData = Wechat::getInstance()->user->get($openid);
         $unionId = $userData['unionid'] ?? '';
 

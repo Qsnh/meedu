@@ -31,4 +31,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return (bool)config('meedu.system.close_deprecated_api');
     }
+
+    public function getMpWechatScanLoginAlert(): string
+    {
+        return config('meedu.mp_wechat.scan_login_alert') ?? '';
+    }
 }
