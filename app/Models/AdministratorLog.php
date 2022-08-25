@@ -105,8 +105,6 @@ class AdministratorLog extends Model
                 $oldValCompare = json_encode($oldValCompare, JSON_UNESCAPED_UNICODE);
             }
 
-            Log::info(__METHOD__, compact('newValCompare', 'oldValCompare'));
-
             if ($newValCompare !== $oldValCompare) {//直接比较
                 $diff[] = sprintf("%s\nfrom:\n%s\nto:\n%s", $key, $oldValCompare, $newValCompare);
             }
