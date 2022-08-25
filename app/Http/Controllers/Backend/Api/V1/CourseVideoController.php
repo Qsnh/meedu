@@ -365,14 +365,13 @@ class CourseVideoController extends BaseController
             // 行数[用户报错提示]
             $line = $startLine + $index;
 
-            $courseName = trim($item[0] ?? '');
-            if ($courseName === '') {
-                continue;
+            if (!isset($item[0]) || !$item[0]) {
+                return $this->error(__('第 :line 行所属课程为空', ['line' => $line]));
             }
 
-            $courseId = $courses[$courseName] ?? 0;
+            $courseId = $courses[trim($item[0])] ?? 0;
             if (!$courseId) {
-                return $this->error(sprintf(__('第%d行课程不存在'), $line));
+                return $this->error(__('第 :line 行所属课程不存在', ['line' => $line]));
             }
 
             $chapterName = $item[1] ?? '';
@@ -387,7 +386,7 @@ class CourseVideoController extends BaseController
 
             $videoName = trim($item[2] ?? '');
             if (!$videoName) {
-                return $this->error(sprintf(__('第%d视频名为空'), $line));
+                return $this->error(__('第 :line 视频名为空', ['line' => $line]));
             }
 
             $duration = (int)($item[3] ?? 0);
