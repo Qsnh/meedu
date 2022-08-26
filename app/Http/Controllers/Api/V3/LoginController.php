@@ -292,7 +292,7 @@ class LoginController extends BaseController
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.token 用户token
      */
-    public function registerWithSocialite(Request $request, AuthBus $authBus)
+    public function registerWithSocialite(Request $request, AuthBus $authBus, UserServiceInterface $userService)
     {
         $mobile = $request->input('mobile');
         $code = $request->input('code');
@@ -324,6 +324,12 @@ class LoginController extends BaseController
             $avatar = $data['avatar'];
 
             $userId = $authBus->registerWithSocialite($mobile, $app, $openid, $unionId, $nickname, $avatar, $data);
+
+            // 注册默认锁定判断
+            $user = $userService->findUserById($userId);
+            if ($user['is_lock'] === 1) {
+                throw new ServiceException(__('用户已锁定无法登录'));
+            }
 
             Cache::forget($cacheKey);
 
@@ -423,7 +429,7 @@ class LoginController extends BaseController
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.token 用户token
      */
-    public function registerWithWechatScan(Request $request, AuthBus $authBus, WechatScanBus $wechatScanBus)
+    public function registerWithWechatScan(Request $request, AuthBus $authBus, WechatScanBus $wechatScanBus, UserServiceInterface $userService)
     {
         $mobile = $request->input('mobile');
         $code = $request->input('code');
@@ -447,6 +453,12 @@ class LoginController extends BaseController
             '',
             $userData
         );
+
+        // 注册默认锁定判断
+        $user = $userService->findUserById($userId);
+        if ($user['is_lock'] === 1) {
+            throw new ServiceException(__('用户已锁定无法登录'));
+        }
 
         // 删除缓存
         $wechatScanBus->delLoginUser($code);
