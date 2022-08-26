@@ -165,8 +165,8 @@ class MemberController extends BaseController
         $this->mobileCodeCheck();
         ['password' => $password, 'mobile' => $mobile] = $request->filldata();
         $user = $this->userService->find($this->id());
-        if ($user['mobile'] != $mobile) {
-            return $this->error(__('短信验证码错误'));
+        if ($user['mobile'] !== $mobile) {
+            return $this->error(__('请绑定手机号'));
         }
         $this->userService->changePassword($this->id(), $password);
 
