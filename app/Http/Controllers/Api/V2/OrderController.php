@@ -157,35 +157,6 @@ class OrderController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/order/video 创建视频订单[v4.8-移除]
-     * @apiGroup 订单
-     * @apiName StoreOrderVideo
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} video_id videoID
-     * @apiParam {String} [promo_code] 优惠码/邀请码
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.id 订单ID
-     * @apiSuccess {Number} data.user_id 用户ID
-     * @apiSuccess {Number} data.charge 价格
-     * @apiSuccess {String} data.order_id 订单编号
-     * @apiSuccess {String} data.payment_method 支付渠道
-     * @apiSuccess {String} data.payment_text 支付方法
-     * @apiSuccess {String} data.status_text 状态
-     * @apiSuccess {Number} data.continue_pay 继续支付[已废弃]
-     * @apiSuccess {Object} data.goods
-     * @apiSuccess {Number} data.goods.id 记录ID
-     * @apiSuccess {String} data.goods.goods_text 商品名
-     * @apiSuccess {String} data.goods.goods_type 商品类型
-     * @apiSuccess {Number} data.goods.num 数量
-     * @apiSuccess {Number} data.goods.charge 价格
-     * @apiSuccess {String} data.created_at 时间
-     */
-
-    /**
      * @api {get} /api/v2/order/status 订单状态查询
      * @apiGroup 订单
      * @apiName OrderStatusQuery
