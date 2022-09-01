@@ -27,7 +27,7 @@ class MemberController extends BaseController
 
         $userId = (int)$request->input('user_id');
 
-        ['data' => $data, 'total' => $total] = $userService->getUserCoursePaginateWithProgress($userId, $page, $pageSize);
+        ['data' => $data, 'total' => $total] = $userService->getUserLearnedCoursePaginateWithProgress($userId, $page, $pageSize);
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
