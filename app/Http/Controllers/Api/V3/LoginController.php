@@ -320,7 +320,10 @@ class LoginController extends BaseController
 
             $openid = $data['openid'];
             $unionId = $data['unionid'] ?? '';
+            // 昵称-防止重复
             $nickname = $data['nickname'];
+            $nickname && $nickname .= '_' . Str::random(4);
+            // 头像
             $avatar = $data['avatar'];
 
             $userId = $authBus->registerWithSocialite($mobile, $app, $openid, $unionId, $nickname, $avatar, $data);
