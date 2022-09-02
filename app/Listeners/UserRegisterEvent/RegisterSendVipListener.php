@@ -10,13 +10,16 @@ namespace App\Listeners\UserRegisterEvent;
 
 use Carbon\Carbon;
 use App\Events\UserRegisterEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
-class RegisterSendVipListener
+class RegisterSendVipListener implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var ConfigService

@@ -20,9 +20,7 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\CreditServiceInterface;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
-use App\Services\Member\Proxies\UserInviteBalanceServiceProxy;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
-use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberServiceRegisterProvider extends ServiceProvider
 {
@@ -33,7 +31,6 @@ class MemberServiceRegisterProvider extends ServiceProvider
         $this->app->instance(DeliverServiceInterface::class, $this->app->make(DeliverService::class));
         $this->app->instance(NotificationServiceInterface::class, $this->app->make(NotificationService::class));
         $this->app->instance(SocialiteServiceInterface::class, $this->app->make(SocialiteService::class));
-        $this->app->instance(UserInviteBalanceServiceInterface::class, $this->app->make(UserInviteBalanceServiceProxy::class));
         $this->app->instance(CreditServiceInterface::class, $this->app->make(CreditService::class));
     }
 }

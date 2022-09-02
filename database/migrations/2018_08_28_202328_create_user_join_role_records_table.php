@@ -19,7 +19,7 @@ class CreateUserJoinRoleRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_join_role_records', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_JOIN_ROLE_RECORDS, function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('role_id');
@@ -39,6 +39,6 @@ class CreateUserJoinRoleRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_join_role_records');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_JOIN_ROLE_RECORDS);
     }
 }

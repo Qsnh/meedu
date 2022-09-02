@@ -17,27 +17,20 @@ Route::post('/password/reset', 'PasswordController@reset');
 Route::post('/login/password', 'LoginController@passwordLogin');
 // 手机号登录
 Route::post('/login/mobile', 'LoginController@mobileLogin');
-// 微信小程序session
-Route::post('/wechat/mini/login', 'LoginController@wechatMiniSession'); // 该路径将在后面的某个版本中删除，请使用下面的新路径/login/wechatMini/session
-Route::post('/login/wechatMini/session', 'LoginController@wechatMiniSession');
-// 微信小程序静默登录
-Route::post('/login/wechatMini', 'LoginController@wechatMini');
-// 微信小程序手机号登录
-Route::post('/login/wechatMiniMobile', 'LoginController@wechatMiniMobile');
 // 微信公众号扫码登录
 Route::get('/login/wechatScan', 'LoginController@wechatScan');
 Route::get('/login/wechatScan/query', 'LoginController@wechatScanQuery');
 // 微信公众号授权登录
-Route::get('/login/wechat/oauth', 'LoginController@wechatLogin');
+Route::get('/login/wechat/oauth', 'LoginController@wechatLogin')->middleware(['deprecated.api']);
 Route::get('/login/wechat/oauth/callback', 'LoginController@wechatLoginCallback')->name('api.v2.login.wechat.callback');
 // 社交登录
-Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin');
+Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin')->middleware(['deprecated.api']);
 Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v2.login.socialite.callback');
 // 安全退出
 Route::post('/logout', 'LoginController@logout')->middleware(['auth:apiv2']);
 
 // 课程搜索
-Route::get('/search', 'SearchController@index');
+Route::get('/search', 'SearchController@index')->middleware(['deprecated.api']);
 
 // 课程
 Route::get('/courses', 'CourseController@paginate');
@@ -88,22 +81,18 @@ Route::group(['prefix' => 'other'], function () {
 Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
 
 // 微信公众号授权绑定回调
-Route::get('wechatBind/callback', 'MemberController@wechatBindCallback')->name('api.v2.wechatBind.callback');
+Route::get('wechatBind/callback', 'MemberController@wechatBindCallback')->name('api.v2.wechatBind.callback')->middleware(['deprecated.api']);
 // 社交账号绑定回调
-Route::get('socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('api.v2.socialite.bind.callback');
+Route::get('socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('api.v2.socialite.bind.callback')->middleware(['deprecated.api']);
 
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
     // 创建录播课程订单
     Route::post('/order/course', 'OrderController@createCourseOrder');
     // 创建VIP订单
     Route::post('/order/role', 'OrderController@createRoleOrder');
-    // 创建视频订单
-    Route::post('/order/video', 'OrderController@createVideoOrder');
     // 订单状态查询
     Route::get('/order/status', 'OrderController@queryStatus');
 
-    // 微信小程序支付
-    Route::post('/order/payment/wechat/mini', 'PaymentController@wechatMiniPay');
     // 跳转到第三方平台支付[如：支付宝web支付]
     Route::get('/order/pay/redirect', 'PaymentController@payRedirect');
     // 手动打款支付
@@ -113,6 +102,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     // 获取可用支付网关
     Route::get('/order/payments', 'PaymentController@payments');
 
+    // 检测是否可以使用promoCode
     Route::get('/promoCode/{code}/check', 'PromoCodeController@checkCode');
 
     Route::post('/upload/image', 'UploadController@image');
@@ -144,16 +134,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('roles', 'MemberController@roles');
         // 我的消息
         Route::get('messages', 'MemberController@messages');
-        // 邀请余额明细
-        Route::get('inviteBalanceRecords', 'MemberController@inviteBalanceRecords');
-        // 我的邀请注册用户
-        Route::get('inviteUsers', 'MemberController@inviteUsers');
-        // 邀请余额提现记录
-        Route::get('withdrawRecords', 'MemberController@withdrawRecords');
-        // 邀请余额提现
-        Route::post('withdraw', 'MemberController@createWithdraw');
-        // 我的邀请码
-        Route::get('promoCode', 'MemberController@promoCode');
         // 消息已读
         Route::get('notificationMarkAsRead/{notificationId}', 'MemberController@notificationMarkAsRead');
         // 消息全部已读
@@ -172,8 +152,8 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         // 社交账号取消绑定
         Route::delete('socialite/{app}', 'MemberController@socialiteCancelBind');
         // 社交账号绑定
-        Route::get('socialite/{app}', 'MemberController@socialiteBind');
+        Route::get('socialite/{app}', 'MemberController@socialiteBind')->middleware(['deprecated.api']);
         // 微信公众号授权绑定
-        Route::get('wechatBind', 'MemberController@wechatBind');
+        Route::get('wechatBind', 'MemberController@wechatBind')->middleware(['deprecated.api']);
     });
 });

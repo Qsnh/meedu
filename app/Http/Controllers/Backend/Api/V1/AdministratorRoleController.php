@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
 use App\Models\AdministratorPermission;
 use App\Http\Requests\Backend\AdministratorRoleRequest;
@@ -19,12 +21,23 @@ class AdministratorRoleController extends BaseController
     {
         $roles = AdministratorRole::query()->orderByDesc('id')->paginate($request->input('size', 10));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData($roles);
     }
 
     public function create()
     {
-        $permissions = AdministratorPermission::query()->select(['id', 'slug', 'display_name', 'group_name'])->get()->groupBy('group_name');
+        $permissions = AdministratorPermission::query()
+            ->select(['id', 'slug', 'display_name', 'group_name'])
+            ->get()
+            ->groupBy('group_name')
+            ->toArray();
+
         return $this->successData([
             'permissions' => $permissions,
         ]);
@@ -32,11 +45,19 @@ class AdministratorRoleController extends BaseController
 
     public function store(
         AdministratorRoleRequest $request,
-        AdministratorRole $role
+        AdministratorRole        $role
     ) {
-        $role->fill($request->filldata())->save();
+        $data = $request->filldata();
+        $permissionIds = $request->input('permission_ids', []);
 
-        $role->permissions()->sync($request->input('permission_ids', []));
+        $role->fill($data)->save();
+        $permissionIds && $role->permissions()->sync($permissionIds);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
+            AdministratorLog::OPT_STORE,
+            array_merge($data, ['permission_ids' => $permissionIds])
+        );
 
         return $this->success();
     }
@@ -45,6 +66,12 @@ class AdministratorRoleController extends BaseController
     {
         $role = AdministratorRole::query()->where('id', $id)->firstOrFail();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData($role);
     }
 
@@ -52,9 +79,20 @@ class AdministratorRoleController extends BaseController
     {
         $role = AdministratorRole::query()->where('id', $id)->firstOrFail();
 
-        $role->fill($request->filldata())->save();
+        $data = $request->filldata();
+        $permissionIds = $request->input('permission_ids', []);
 
-        $role->permissions()->sync($request->input('permission_ids', []));
+        $oldPermissionIds = $role->permissions()->select(['id'])->get()->pluck('id')->toArray();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
+            AdministratorLog::OPT_UPDATE,
+            Arr::only(array_merge($data, ['permission_ids' => $permissionIds]), ['display_name', 'slug', 'description', 'permission_ids']),
+            Arr::only(array_merge($role->toArray(), ['permission_id' => $oldPermissionIds]), ['display_name', 'slug', 'description', 'permission_ids'])
+        );
+
+        $role->fill($data)->save();
+        $role->permissions()->sync($permissionIds);
 
         return $this->success();
     }
@@ -70,7 +108,14 @@ class AdministratorRoleController extends BaseController
         if ($role['slug'] === config('meedu.administrator.super_slug')) {
             return $this->error(__('当前用户是超级管理员账户无法删除'));
         }
+
         $role->delete();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
 
         return $this->success();
     }

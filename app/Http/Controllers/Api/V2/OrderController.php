@@ -157,55 +157,6 @@ class OrderController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/order/video 创建视频订单
-     * @apiGroup 订单
-     * @apiName StoreOrderVideo
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} video_id videoID
-     * @apiParam {String} [promo_code] 优惠码/邀请码
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.id 订单ID
-     * @apiSuccess {Number} data.user_id 用户ID
-     * @apiSuccess {Number} data.charge 价格
-     * @apiSuccess {String} data.order_id 订单编号
-     * @apiSuccess {String} data.payment_method 支付渠道
-     * @apiSuccess {String} data.payment_text 支付方法
-     * @apiSuccess {String} data.status_text 状态
-     * @apiSuccess {Number} data.continue_pay 继续支付[已废弃]
-     * @apiSuccess {Object} data.goods
-     * @apiSuccess {Number} data.goods.id 记录ID
-     * @apiSuccess {String} data.goods.goods_text 商品名
-     * @apiSuccess {String} data.goods.goods_type 商品类型
-     * @apiSuccess {Number} data.goods.num 数量
-     * @apiSuccess {Number} data.goods.charge 价格
-     * @apiSuccess {String} data.created_at 时间
-     */
-    public function createVideoOrder(Request $request)
-    {
-        $videoId = $request->input('video_id');
-        $video = $this->videoService->find($videoId);
-        if ((int)$video['is_ban_sell'] === 1) {
-            return $this->error(__('当前视频无法购买'));
-        }
-        if ($video['charge'] === 0) {
-            return $this->error(__('当前视频无法购买'));
-        }
-        if ($this->userService->hasVideo($this->id(), $video['id'])) {
-            return $this->error(__('请勿重复购买'));
-        }
-        $code = $request->input('promo_code');
-        $promoCode = [];
-        $code && $promoCode = $this->promoCodeService->findCode($code);
-        $order = $this->orderService->createVideoOrder($this->id(), $video, $promoCode['id'] ?? 0);
-        $order = arr1_clear($order, ApiV2Constant::MODEL_ORDER_FIELD);
-        return $this->data($order);
-    }
-
-    /**
      * @api {get} /api/v2/order/status 订单状态查询
      * @apiGroup 订单
      * @apiName OrderStatusQuery
@@ -220,7 +171,10 @@ class OrderController extends BaseController
      */
     public function queryStatus(Request $request)
     {
-        $orderId = $request->input('order_id', '');
+        $orderId = $request->input('order_id');
+        if (!$orderId) {
+            return $this->error(__('参数错误'));
+        }
         $order = $this->orderService->findUser($this->id(), $orderId);
 
         return $this->data([

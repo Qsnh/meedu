@@ -8,13 +8,15 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserVideo extends Model
 {
     use HasFactory;
-    protected $table = 'user_video';
+
+    protected $table = TableConstant::TABLE_USER_VIDEO;
 
     protected $fillable = [
         'user_id', 'video_id', 'charge', 'created_at',

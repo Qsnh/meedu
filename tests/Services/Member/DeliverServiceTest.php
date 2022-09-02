@@ -12,9 +12,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
-use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
-use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Services\DeliverService;
 use App\Services\Member\Interfaces\DeliverServiceInterface;
@@ -41,16 +39,6 @@ class DeliverServiceTest extends TestCase
         $this->service->deliverCourse($user->id, $course->id, $charge);
         $userCourse = UserCourse::whereUserId($user->id)->whereCourseId($course->id)->get();
         $this->assertEquals(1, $userCourse->count());
-    }
-
-    public function test_deliverVideo()
-    {
-        $user = User::factory()->create();
-        $video = Video::factory()->create();
-        $charge = random_int(0, 10);
-        $this->service->deliverVideo($user->id, $video->id, $charge);
-        $userVideo = UserVideo::whereUserId($user->id)->whereVideoId($video->id)->get();
-        $this->assertEquals(1, $userVideo->count());
     }
 
     public function test_deliverRole()

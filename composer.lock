@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffa7114dcaf8806c97a17be868ec8ce4",
+    "content-hash": "6aaa2f9520a031eeab7c40384ec40579",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -9099,17 +9099,17 @@
             "time": "2022-05-21T10:24:18+00:00"
         },
         {
-            "name": "tencentcloud/tencentcloud-sdk-php",
-            "version": "3.0.656",
+            "name": "tencentcloud/common",
+            "version": "3.0.696",
             "source": {
                 "type": "git",
-                "url": "https://github.com/TencentCloud/tencentcloud-sdk-php.git",
-                "reference": "1f941a488e9de15f433e0e051063d3ac38355e2b"
+                "url": "https://github.com/tencentcloud-sdk-php/common.git",
+                "reference": "97e26a0fd33c1c0b950c60819bb375a8a9152ea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TencentCloud/tencentcloud-sdk-php/zipball/1f941a488e9de15f433e0e051063d3ac38355e2b",
-                "reference": "1f941a488e9de15f433e0e051063d3ac38355e2b",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/common/zipball/97e26a0fd33c1c0b950c60819bb375a8a9152ea1",
+                "reference": "97e26a0fd33c1c0b950c60819bb375a8a9152ea1",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -9119,17 +9119,14 @@
                 ]
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "guzzlehttp/guzzle": "^6.3||^7.0",
                 "php": ">=5.6.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "TencentCloud\\": "./src/TencentCloud"
-                },
-                "classmap": [
-                    "src/QcloudApi/QcloudApi.php"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -9137,19 +9134,166 @@
             ],
             "authors": [
                 {
-                    "name": "coolli",
+                    "name": "tencentcloudapi",
                     "email": "tencentcloudapi@tencent.com",
                     "homepage": "https://cloud.tencent.com/document/sdk/PHP",
                     "role": "Developer"
                 }
             ],
             "description": "TencentCloudApi php sdk",
-            "homepage": "https://github.com/TencentCloud/tencentcloud-sdk-php",
+            "homepage": "https://github.com/tencentcloud-sdk-php/common",
             "support": {
-                "issues": "https://github.com/TencentCloud/tencentcloud-sdk-php/issues",
-                "source": "https://github.com/TencentCloud/tencentcloud-sdk-php/tree/3.0.656"
+                "issues": "https://github.com/tencentcloud-sdk-php/common/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.696"
             },
-            "time": "2022-06-22T22:30:30+00:00"
+            "time": "2022-08-04T08:07:10+00:00"
+        },
+        {
+            "name": "tencentcloud/live",
+            "version": "3.0.696",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/live.git",
+                "reference": "aaacea04e832fe5378da200aa8a5c937239eaa3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/live/zipball/aaacea04e832fe5378da200aa8a5c937239eaa3f",
+                "reference": "aaacea04e832fe5378da200aa8a5c937239eaa3f",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "tencentcloud/common": "3.0.696"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/live",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk live",
+            "homepage": "https://github.com/tencentcloud-sdk-php/live",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/live/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/live/tree/3.0.696"
+            },
+            "time": "2022-08-04T08:49:38+00:00"
+        },
+        {
+            "name": "tencentcloud/sms",
+            "version": "3.0.696",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/sms.git",
+                "reference": "14afd1c05b92077110ec6983914e6420f79b692d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/sms/zipball/14afd1c05b92077110ec6983914e6420f79b692d",
+                "reference": "14afd1c05b92077110ec6983914e6420f79b692d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "tencentcloud/common": "3.0.696"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/sms",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk sms",
+            "homepage": "https://github.com/tencentcloud-sdk-php/sms",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/sms/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/sms/tree/3.0.696"
+            },
+            "time": "2022-08-04T09:47:52+00:00"
+        },
+        {
+            "name": "tencentcloud/vod",
+            "version": "3.0.696",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/vod.git",
+                "reference": "e61af97b4df53958acfe2e68ca2cf98ebc2a2bbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/vod/zipball/e61af97b4df53958acfe2e68ca2cf98ebc2a2bbc",
+                "reference": "e61af97b4df53958acfe2e68ca2cf98ebc2a2bbc",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "tencentcloud/common": "3.0.696"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/vod",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk vod",
+            "homepage": "https://github.com/tencentcloud-sdk-php/vod",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/vod/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/vod/tree/3.0.696"
+            },
+            "time": "2022-08-04T10:16:33+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -12450,5 +12594,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

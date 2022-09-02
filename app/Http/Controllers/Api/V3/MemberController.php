@@ -8,7 +8,12 @@
 
 namespace App\Http\Controllers\Api\V3;
 
+use App\Bus\WechatScanBus;
 use Illuminate\Http\Request;
+use App\Constant\CacheConstant;
+use App\Businesses\BusinessState;
+use App\Exceptions\ServiceException;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
@@ -269,6 +274,102 @@ class MemberController extends BaseController
         return $this->data([
             'data' => $data,
             'total' => $total,
+        ]);
+    }
+
+    /**
+     * @api {POST} /api/v3/member/destroy 注销账户
+     * @apiGroup 用户-V3
+     * @apiName  MemberDestroy
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.8新增
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function destroy(UserServiceInterface $userService)
+    {
+        try {
+            $userService->storeUserDelete($this->id());
+            return $this->success();
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @api {POST} /api/v3/member/socialite/bindWithCode 社交账号绑定
+     * @apiGroup 用户-V3
+     * @apiName  MemberSocialiteBindWithCode
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.8新增
+     *
+     * @apiParam {String} string code
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function socialiteBindByCode(Request $request, UserServiceInterface $userService)
+    {
+        $code = $request->input('code');
+        if (!$code) {
+            return $this->error(__('参数错误'));
+        }
+
+        try {
+            $cacheKey = get_cache_key(CacheConstant::USER_SOCIALITE_LOGIN['name'], $code);
+            $value = Cache::get($cacheKey);
+            if (!$value) {
+                throw new ServiceException(__('已过期'));
+            }
+
+            $value = unserialize($value);
+            $type = $value['type'] ?? null;
+            $app = $value['app'] ?? null;
+            $data = $value['data'] ?? [];
+            if ($type !== 'socialite' || !$app || !isset($data['openid'])) {
+                throw new ServiceException(__('参数错误'));
+            }
+
+            $userService->socialiteBind($this->id(), $app, $data['openid'], $data, $data['unionid'] ?? '');
+
+            Cache::forget($cacheKey);
+
+            return $this->success();
+        } catch (ServiceException $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * @api {GET} /api/v3/member/wechatScanBind 微信账号扫码绑定
+     * @apiGroup 用户-V3
+     * @apiName  MemberWechatScanBind
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.8新增*
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.code code
+     * @apiSuccess {String} data.image 二维码
+     */
+    public function wechatScanBind(BusinessState $businessState, WechatScanBus $wechatScanBus)
+    {
+        if (!$businessState->enabledMpScanLogin()) {
+            throw new ServiceException(__('未开启微信公众号扫码登录'));
+        }
+
+        $code = $wechatScanBus->generateBindCode($this->id());
+        // 该方法会生成携带自定义参数的(上面的code)二维码,用户扫码即可关注
+        // 关注之后服务端会收到SCAN+自定义参数的事件
+        $image = wechat_qrcode_image($code);
+
+        return $this->data([
+            'code' => $code,
+            'image' => $image,
         ]);
     }
 }

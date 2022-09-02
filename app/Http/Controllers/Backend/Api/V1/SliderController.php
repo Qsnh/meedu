@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Other\Models\Slider;
 use App\Http\Requests\Backend\SliderRequest;
 
@@ -18,34 +20,64 @@ class SliderController extends BaseController
     {
         $platform = $request->input('platform');
 
-        $links = Slider::query()
+        $sliders = Slider::query()
             ->when($platform, function ($query) use ($platform) {
                 $query->where('platform', $platform);
             })
             ->orderBy('sort')
             ->get();
 
-        return $this->successData($links);
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SLIDER,
+            AdministratorLog::OPT_VIEW,
+            compact('platform')
+        );
+
+        return $this->successData($sliders);
     }
 
     public function store(SliderRequest $request)
     {
-        Slider::create($request->filldata());
+        $data = $request->filldata();
+
+        Slider::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SLIDER,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         return $this->success();
     }
 
     public function edit($id)
     {
-        $link = Slider::findOrFail($id);
+        $slider = Slider::query()->where('id', $id)->firstOrFail();
 
-        return $this->successData($link);
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SLIDER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
+        return $this->successData($slider);
     }
 
     public function update(SliderRequest $request, $id)
     {
-        $role = Slider::findOrFail($id);
-        $role->fill($request->filldata())->save();
+        $data = $request->filldata();
+
+        $slider = Slider::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_SLIDER,
+            AdministratorLog::OPT_UPDATE,
+            $data,
+            Arr::only($slider->toArray(), ['thumb', 'sort', 'url', 'platform'])
+        );
+
+        $slider->fill($data)->save();
 
         return $this->success();
     }
@@ -53,6 +85,12 @@ class SliderController extends BaseController
     public function destroy($id)
     {
         Slider::destroy($id);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SLIDER,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
 
         return $this->success();
     }

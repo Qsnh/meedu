@@ -19,7 +19,7 @@ class CreateUserLoginRecords extends Migration
      */
     public function up()
     {
-        Schema::create('user_login_records', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_LOGIN_RECORDS, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('ip')->default('')->comment('ip');
@@ -41,6 +41,6 @@ class CreateUserLoginRecords extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_login_records');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_LOGIN_RECORDS);
     }
 }

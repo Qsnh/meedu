@@ -10,6 +10,7 @@ namespace App\Meedu\Payment\Wechat;
 
 use Exception;
 use Yansongda\Pay\Pay;
+use App\Meedu\Cache\MemoryCache;
 use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\Log;
@@ -42,9 +43,9 @@ class WechatJSAPI implements Payment
 
     public function __construct(
         ConfigServiceInterface $configService,
-        OrderServiceInterface $orderService,
-        CacheServiceInterface $cacheService,
-        BusinessState $businessState
+        OrderServiceInterface  $orderService,
+        CacheServiceInterface  $cacheService,
+        BusinessState          $businessState
     ) {
         $this->configService = $configService;
         $this->orderService = $orderService;
@@ -123,9 +124,14 @@ class WechatJSAPI implements Payment
 
         try {
             $data = $pay->verify();
-            Log::info($data);
 
+            Log::info(__METHOD__ . '|微信支付回调数据', compact('data'));
+
+            // 查找订单
             $order = $this->orderService->findOrFail($data['out_trade_no']);
+
+            // 支付订单加入内存缓存中
+            MemoryCache::getInstance()->set($data['out_trade_no'], $order, true);
 
             event(new PaymentSuccessEvent($order));
 

@@ -10,13 +10,16 @@ namespace App\Listeners\OrderRefundProcessed;
 
 use App\Bus\RefundBus;
 use App\Events\OrderRefundProcessed;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Order\Services\OrderService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Member\Interfaces\NotificationServiceInterface;
 
-class UserNotify
+class UserNotify implements ShouldQueue
 {
+    use InteractsWithQueue;
 
     /**
      * @var NotificationService

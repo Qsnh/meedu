@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Carbon\Carbon;
 use App\Bus\RefundBus;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Events\OrderRefundCreated;
 use Illuminate\Support\Facades\DB;
 use App\Events\PaymentSuccessEvent;
@@ -109,6 +110,12 @@ class OrderController extends BaseController
             Order::STATUS_PAYING => (clone $query)->where('status', Order::STATUS_PAYING)->count(),
         ];
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ORDER,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData(compact('orders', 'users', 'countMap'));
     }
 
@@ -124,6 +131,12 @@ class OrderController extends BaseController
             ->where('id', $order['user_id'])
             ->first();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ORDER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'order' => $order,
             'user' => $user,
@@ -134,6 +147,11 @@ class OrderController extends BaseController
     {
         $order = Order::query()->where('id', $id)->firstOrFail();
         event(new PaymentSuccessEvent($order->toArray()));
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ORDER,
+            AdministratorLog::OPT_UPDATE,
+            compact('id')
+        );
         return $this->success();
     }
 
@@ -191,6 +209,12 @@ class OrderController extends BaseController
         }
 
         DB::transaction(function () use ($amount, $reason, $isLocal, $directPayAmount, $order) {
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ORDER,
+                AdministratorLog::OPT_REFUND,
+                array_merge(compact('amount', 'reason', 'isLocal', 'directPayAmount'), ['orderId' => $order['id']])
+            );
+
             // 创建退款订单
             $refundData = [
                 'order_id' => $order['id'],
@@ -304,6 +328,12 @@ class OrderController extends BaseController
             }
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ORDER,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData([
             'data' => [
                 'data' => $items,
@@ -317,6 +347,12 @@ class OrderController extends BaseController
         $refundOrder = OrderRefund::query()->where('id', $id)->firstOrFail();
         $orderAllRefundOrdersCount = (int)OrderRefund::query()->where('order_id', $refundOrder['order_id'])->count();
         DB::transaction(function () use ($refundOrder, $orderAllRefundOrdersCount) {
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ORDER,
+                AdministratorLog::OPT_DESTROY,
+                ['refundOrderId' => $refundOrder['id']]
+            );
+
             // 删除退款订单
             $refundOrder->delete();
 

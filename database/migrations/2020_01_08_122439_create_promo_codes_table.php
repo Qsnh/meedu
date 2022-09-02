@@ -19,7 +19,7 @@ class CreatePromoCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('promo_codes', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_PROMO_CODES, function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->default(0)->comment('用户id');
             $table->string('code', 24)->unique()->comment('优惠码');
@@ -42,6 +42,6 @@ class CreatePromoCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promo_codes');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_PROMO_CODES);
     }
 }

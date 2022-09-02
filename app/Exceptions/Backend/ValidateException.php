@@ -10,6 +10,11 @@ namespace App\Exceptions\Backend;
 
 class ValidateException extends \Exception
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @codeCoverageIgnore
+     */
     public function render()
     {
         return response()->json([

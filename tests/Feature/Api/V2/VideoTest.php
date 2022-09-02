@@ -49,26 +49,6 @@ class VideoTest extends Base
         $r = $this->assertResponseSuccess($r);
     }
 
-    public function test_video_detail_free_watch()
-    {
-        $user = User::factory()->create();
-
-        $course = Course::factory()->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $video = Video::factory()->create([
-            'course_id' => $course->id,
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'charge' => 0,
-        ]);
-
-        $r = $this->user($user)->getJson('api/v2/video/' . $video->id);
-        $r = $this->assertResponseSuccess($r);
-        $this->assertTrue($r['data']['is_watch']);
-    }
-
     public function test_video_detail_paid()
     {
         $user = User::factory()->create();
@@ -219,22 +199,6 @@ class VideoTest extends Base
         UserVideo::create([
             'video_id' => $video->id,
             'user_id' => $user->id,
-        ]);
-
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($r);
-    }
-
-    public function test_video_comment_only_paid_for_free()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'charge' => 0,
-            'published_at' => Carbon::now()->subDays(1),
         ]);
 
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [

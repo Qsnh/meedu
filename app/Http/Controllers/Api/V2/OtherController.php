@@ -123,8 +123,6 @@ class OtherController extends BaseController
                 'watched_video' => $this->configService->getWatchedVideoSceneCredit1(),
                 // 已支付订单[抽成]
                 'paid_order' => $this->configService->getPaidOrderSceneCredit1(),
-                // 邀请用户注册
-                'invite' => $this->configService->getInviteSceneCredit1(),
             ],
             // 已用插件
             'enabled_addons' => $enabledAddons,

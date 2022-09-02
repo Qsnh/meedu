@@ -42,6 +42,8 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      *
      * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     *
+     * @codeCoverageIgnore
      */
     protected function schedule(Schedule $schedule)
     {
@@ -62,6 +64,12 @@ class Kernel extends ConsoleKernel
             ->onOneServer()
             ->everyFiveMinutes()
             ->appendOutputTo(storage_path('logs/order_refund.log'));
+
+        // 用户注销任务
+        $schedule->command('meedu:user-delete-job')
+            ->onOneServer()
+            ->everyThirtyMinutes()
+            ->appendOutputTo(storage_path('logs/user-delete-job.log'));
 
         // 预留定时任务钩子
         ScheduleContainer::instance()->exec($schedule);

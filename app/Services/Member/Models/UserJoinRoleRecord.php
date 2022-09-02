@@ -8,6 +8,7 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,7 +16,7 @@ class UserJoinRoleRecord extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_join_role_records';
+    protected $table = TableConstant::TABLE_USER_JOIN_ROLE_RECORDS;
 
     protected $fillable = [
         'user_id', 'role_id', 'charge', 'started_at', 'expired_at',

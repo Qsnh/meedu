@@ -19,7 +19,7 @@ class CreateCourseCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_comments', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_COURSE_COMMENTS, function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('course_id');
@@ -38,6 +38,6 @@ class CreateCourseCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_comments');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_COURSE_COMMENTS);
     }
 }

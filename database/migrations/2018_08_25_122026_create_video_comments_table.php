@@ -19,7 +19,7 @@ class CreateVideoCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('video_comments', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_VIDEO_COMMENTS, function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('video_id');
@@ -38,6 +38,6 @@ class CreateVideoCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('video_comments');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_VIDEO_COMMENTS);
     }
 }

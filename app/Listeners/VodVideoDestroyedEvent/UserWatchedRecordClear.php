@@ -9,11 +9,15 @@
 namespace App\Listeners\VodVideoDestroyedEvent;
 
 use App\Events\VodVideoDestroyedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
-class UserWatchedRecordClear
+class UserWatchedRecordClear implements ShouldQueue
 {
+    use InteractsWithQueue;
+
 
     /**
      * @var UserService $userService

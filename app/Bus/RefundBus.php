@@ -65,7 +65,7 @@ class RefundBus
 
     /**
      * 判断给定的订单是否已经处理完成
-     * @param $refundOrder
+     * @param array $refundOrder
      * @return bool
      */
     public function isProcessed(array $refundOrder): bool

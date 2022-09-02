@@ -19,7 +19,7 @@ class AddChargeColumnForUserCourseTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_course', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_USER_COURSE, function (Blueprint $table) {
             $table->integer('charge')->default(0)->comment('收费');
         });
     }
@@ -31,7 +31,7 @@ class AddChargeColumnForUserCourseTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_course', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_USER_COURSE, function (Blueprint $table) {
             $table->dropColumn('charge');
         });
     }

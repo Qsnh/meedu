@@ -28,6 +28,6 @@ class UploadImageRequest extends BaseRequest
 
     public function filldata()
     {
-        return save_image($this->file('file'));
+        return save_image($this->file('file'), 'upload');
     }
 }

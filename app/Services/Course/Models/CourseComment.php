@@ -8,14 +8,15 @@
 
 namespace App\Services\Course\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CourseComment extends Base
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
 
-    protected $table = 'course_comments';
+    protected $table = TableConstant::TABLE_COURSE_COMMENTS;
 
     protected $fillable = [
         'user_id', 'course_id', 'original_content', 'render_content',

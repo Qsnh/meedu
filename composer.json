@@ -14,6 +14,7 @@
         "alibabacloud/client": "^1.5",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.2",
         "jacobcyl/ali-oss-storage": "^2.1",
@@ -26,16 +27,17 @@
         "mews/purifier": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8",
         "nelexa/zip": "^3.3",
+        "overtrue/laravel-filesystem-cos": "1.0.2",
         "overtrue/wechat": "~4.0",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^4.0",
-        "tencentcloud/tencentcloud-sdk-php": "^3.0",
+        "tencentcloud/live": "3.0.696",
+        "tencentcloud/sms": "3.0.696",
+        "tencentcloud/vod": "3.0.696",
         "tymon/jwt-auth": "^1.0",
         "yansongda/laravel-pay": "^2.0",
-        "zgldh/qiniu-laravel-storage": "^0.10.3",
-        "fruitcake/laravel-cors": "^2.0",
-        "overtrue/laravel-filesystem-cos": "1.0.2"
+        "zgldh/qiniu-laravel-storage": "^0.10.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -100,7 +102,11 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "symfony/thanks": true,
+            "easywechat-composer/easywechat-composer": true
+        }
     },
     "repositories": {
         "packagist": {

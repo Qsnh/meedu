@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
-use App\Services\Order\Models\PromoCode;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -283,33 +282,6 @@ class UserServiceTest extends TestCase
         $this->assertNotEmpty($this->service->findNickname('meedu'));
     }
 
-    public function test_inviteUsers()
-    {
-        $user = User::factory()->create();
-        Auth::login($user);
-        User::factory()->count(9)->create([
-            'invite_user_id' => $user->id,
-        ]);
-        $r = $this->service->inviteUsers(1, 5);
-        $this->assertEquals(9, $r['total']);
-    }
-
-    public function test_updateInviteUserId()
-    {
-        $user = User::factory()->create();
-        $user1 = User::factory()->create();
-        $promoCode = PromoCode::factory()->create([
-            'user_id' => $user->id,
-            'invite_user_reward' => 60,
-            'invited_user_reward' => 12,
-        ]);
-        $this->service->updateInviteUserId($user1->id, $promoCode['user_id'], $promoCode['invite_user_reward']);
-
-        $user->refresh();
-        $this->assertEquals(60, $user->invite_balance);
-        $user1->refresh();
-        $this->assertEquals($user->id, $user1->invite_user_id);
-    }
 
     public function test_getCurrentUserCourseCount()
     {
@@ -333,26 +305,6 @@ class UserServiceTest extends TestCase
 
         UserVideo::factory()->count(5)->create(['user_id' => $user]);
         $this->assertEquals(11, $this->service->getUserVideoCount($user['id']));
-    }
-
-    public function test_inviteBalanceInc()
-    {
-        $user = User::factory()->create(['invite_balance' => 0]);
-        $this->service->inviteBalanceInc($user['id'], 10);
-        $user->refresh();
-        $this->assertEquals(10, $user->invite_balance);
-
-        $this->service->inviteBalanceInc($user['id'], -3);
-        $user->refresh();
-        $this->assertEquals(7, $user->invite_balance);
-    }
-
-    public function test_setUsedPromoCode()
-    {
-        $user = User::factory()->create(['is_used_promo_code' => 0]);
-        $this->service->setUsedPromoCode($user->id);
-        $user->refresh();
-        $this->assertEquals(1, $user->is_used_promo_code);
     }
 
     public function test_changeMobile()

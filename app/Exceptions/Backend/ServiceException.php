@@ -12,6 +12,11 @@ use Exception;
 
 class ServiceException extends Exception
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @codeCoverageIgnore
+     */
     public function render()
     {
         return response()->json([

@@ -21,6 +21,14 @@ class VideoUploadedEvent
     public $from;
     public $fromId;
 
+    /**
+     * @param $fileId
+     * @param $service
+     * @param $from
+     * @param $fromId
+     *
+     * @codeCoverageIgnore
+     */
     public function __construct($fileId, $service, $from, $fromId)
     {
         $this->fileId = $fileId;

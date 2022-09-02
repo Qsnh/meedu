@@ -19,7 +19,7 @@ class CreateUserWatchStatTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_watch_stat', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_WATCH_STAT, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->default(0)->comment('用户id');
             $table->mediumInteger('year')->default(0)->comment('年份');
@@ -42,6 +42,6 @@ class CreateUserWatchStatTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_watch_stat');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_WATCH_STAT);
     }
 }

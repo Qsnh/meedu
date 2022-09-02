@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Meedu\Setting;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Events\AppConfigSavedEvent;
 
 class SettingController extends BaseController
@@ -35,6 +36,12 @@ class SettingController extends BaseController
             $item['is_show'] === 1 && $data[$item['group']][] = $item;
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SYSTEM_CONFIG,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData($data);
     }
 
@@ -44,6 +51,12 @@ class SettingController extends BaseController
         $setting->append($data);
 
         event(new AppConfigSavedEvent());
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SYSTEM_CONFIG,
+            AdministratorLog::OPT_UPDATE,
+            []
+        );
 
         return $this->success();
     }

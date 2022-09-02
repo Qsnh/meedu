@@ -19,7 +19,7 @@ class CreateUserCreditRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_credit_records', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_CREDIT_RECORDS, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('field')->default('')->comment('字段');
@@ -41,6 +41,6 @@ class CreateUserCreditRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_credit_records');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_CREDIT_RECORDS);
     }
 }

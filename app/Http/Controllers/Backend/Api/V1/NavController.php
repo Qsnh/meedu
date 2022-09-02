@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
 use App\Http\Requests\Backend\NavRequest;
@@ -31,6 +33,12 @@ class NavController extends BaseController
             ->where('parent_id', 0)
             ->orderBy('sort')
             ->get();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_NAV,
+            AdministratorLog::OPT_VIEW,
+            compact('platform')
+        );
 
         return $this->successData($navs);
     }
@@ -57,22 +65,48 @@ class NavController extends BaseController
 
     public function store(NavRequest $request)
     {
-        Nav::create($request->filldata());
+        $data = $request->filldata();
+
+        Nav::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_NAV,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         return $this->success();
     }
 
     public function edit($id)
     {
-        $info = Nav::findOrFail($id);
+        $nav = Nav::query()->where('id', $id)->firstOrFail();
 
-        return $this->successData($info);
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_NAV,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
+        return $this->successData($nav);
     }
 
     public function update(NavRequest $request, $id)
     {
-        $role = Nav::findOrFail($id);
-        $role->fill($request->filldata())->save();
+        $data = $request->filldata();
+
+        $nav = Nav::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_NAV,
+            AdministratorLog::OPT_UPDATE,
+            $data,
+            Arr::only($nav->toArray(), [
+                'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id', 'blank',
+            ])
+        );
+
+        $nav->fill($data)->save();
 
         return $this->success();
     }
@@ -83,6 +117,12 @@ class NavController extends BaseController
 
         // 重置parent_id
         Nav::query()->where('parent_id', $id)->update(['parent_id' => 0]);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_NAV,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
 
         return $this->success();
     }

@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use Illuminate\Http\Request;
+use App\Constant\TableConstant;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -86,7 +87,7 @@ class Administrator extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(
             AdministratorRole::class,
-            'administrator_role_relation',
+            TableConstant::TABLE_ADMIN_ROLE_RELATION,
             'administrator_id',
             'role_id'
         );

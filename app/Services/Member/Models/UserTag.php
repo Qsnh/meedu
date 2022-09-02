@@ -8,11 +8,12 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 
 class UserTag extends Model
 {
-    protected $table = 'user_tags';
+    protected $table = TableConstant::TABLE_USER_TAGS;
 
     protected $fillable = [
         'name',
@@ -20,6 +21,6 @@ class UserTag extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_tag', 'tag_id', 'user_id');
+        return $this->belongsToMany(User::class, TableConstant::TABLE_USER_TAG, 'tag_id', 'user_id');
     }
 }

@@ -9,9 +9,15 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {
+    public function adminId()
+    {
+        return Auth::guard('administrator')->id();
+    }
+
     /**
      * @param string $message
      *
@@ -27,7 +33,7 @@ class BaseController extends Controller
     }
 
     /**
-     * @param array  $data
+     * @param array $data
      * @param string $message
      *
      * @return \Illuminate\Http\JsonResponse

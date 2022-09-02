@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use App\Meedu\MeEdu;
+use App\Models\AdministratorLog;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 
@@ -61,6 +62,12 @@ class DashboardController extends BaseController
             ->where('status', Order::STATUS_PAID)
             ->sum('charge');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_DASHBOARD,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData([
             'today_register_user_count' => $todayRegisterUserCount,
             'user_count' => $userCount,
@@ -87,6 +94,13 @@ class DashboardController extends BaseController
         if (file_exists(base_path('public/install.php'))) {
             return $this->error(__('请删除傻瓜安装脚本public/install.php文件'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_DASHBOARD,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->success();
     }
 
@@ -97,6 +111,13 @@ class DashboardController extends BaseController
             'php_version' => phpversion(),
             'laravel_version' => app()->version(),
         ];
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_DASHBOARD,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData($info);
     }
 }

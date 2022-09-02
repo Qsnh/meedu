@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\VideoComment;
@@ -47,6 +48,12 @@ class VideoCommentController extends BaseController
             ->get()
             ->keyBy('id');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_VIDEO_COMMENT,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId', 'videoId', 'userId', 'createdAt')
+        );
+
         return $this->successData([
             'data' => $comments,
             'users' => $users,
@@ -58,6 +65,12 @@ class VideoCommentController extends BaseController
         $ids = $request->input('ids');
 
         VideoComment::destroy($ids);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_VIDEO_COMMENT,
+            AdministratorLog::OPT_DESTROY,
+            compact('ids')
+        );
 
         return $this->success();
     }

@@ -10,6 +10,7 @@ namespace App\Meedu\Payment\Alipay;
 
 use Exception;
 use Yansongda\Pay\Pay;
+use App\Meedu\Cache\MemoryCache;
 use App\Businesses\BusinessState;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Support\Facades\Log;
@@ -34,8 +35,8 @@ class Alipay implements Payment
 
     public function __construct(
         ConfigServiceInterface $configService,
-        OrderServiceInterface $orderService,
-        BusinessState $businessState
+        OrderServiceInterface  $orderService,
+        BusinessState          $businessState
     ) {
         $this->configService = $configService;
         $this->orderService = $orderService;
@@ -94,9 +95,20 @@ class Alipay implements Payment
         try {
             $data = $pay->verify();
 
-            Log::info(__METHOD__, [$data]);
+            $notifyType = $data['notify_type'];
+            $tradeStatus = $data['trade_status'];
+
+            Log::info(__METHOD__ . '|支付宝支付回调数据|' . $notifyType . '|' . $tradeStatus, [$data]);
+
+            if (!($notifyType === 'trade_status_sync' && $tradeStatus === 'TRADE_SUCCESS')) {
+                Log::info('非支付成功回调');
+                return '非支付成功回调';
+            }
 
             $order = $this->orderService->findOrFail($data['out_trade_no']);
+
+            // 支付订单加入内存缓存中
+            MemoryCache::getInstance()->set($data['out_trade_no'], $order, true);
 
             event(new PaymentSuccessEvent($order));
 

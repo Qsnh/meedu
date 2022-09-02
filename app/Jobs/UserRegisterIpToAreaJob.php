@@ -25,20 +25,12 @@ class UserRegisterIpToAreaJob implements ShouldQueue
     public $userId;
     public $times;
 
-    /**
-     * UserRegisterIpToAreaJob constructor.
-     * @param $userId
-     * @param int $times
-     */
     public function __construct($userId, $times = 0)
     {
         $this->userId = $userId;
         $this->times = $times;
     }
 
-    /**
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function handle()
     {
         try {

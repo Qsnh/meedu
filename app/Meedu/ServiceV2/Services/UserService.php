@@ -8,6 +8,10 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Events\UserDeletedEvent;
+use App\Exceptions\ServiceException;
+use App\Events\UserDeleteCancelEvent;
+use App\Events\UserDeleteSubmitEvent;
 use App\Meedu\ServiceV2\Dao\UserDaoInterface;
 
 class UserService implements UserServiceInterface
@@ -119,5 +123,113 @@ class UserService implements UserServiceInterface
         }
 
         return compact('total', 'data');
+    }
+
+    public function storeUserDelete(int $userId): void
+    {
+        $deleteJob = $this->userDao->findUserDeleteJobUnHandle($userId);
+        if ($deleteJob) {
+            throw new ServiceException(__('用户已申请注销'));
+        }
+        $detail = $this->userDao->findUserOrFail($userId, ['id', 'mobile']);
+        $this->userDao->storeUserDeleteJob($userId, $detail['mobile']);
+
+        event(new UserDeleteSubmitEvent($userId, $detail['mobile']));
+    }
+
+    public function cancelUserDelete(int $userId): void
+    {
+        $deleteJob = $this->userDao->findUserDeleteJobUnHandle($userId);
+        if (!$deleteJob) {
+            throw new ServiceException(__('当前用户不存在注销申请'));
+        }
+        $this->userDao->deleteUserDeleteJobUnHandle($userId);
+
+        event(new UserDeleteCancelEvent($deleteJob['user_id'], $deleteJob['submit_at'], $deleteJob['expired_at']));
+    }
+
+    public function notifySimpleMessage(int $userId, string $message): void
+    {
+        $this->userDao->notifySimpleMessage($userId, $message);
+    }
+
+    public function destroyUser(int $userId): void
+    {
+        $this->userDao->deleteUserRelateData($userId);
+        $this->userDao->destroyUser($userId);
+
+        event(new UserDeletedEvent($userId));
+    }
+
+    public function userDeleteBatchHandle(): void
+    {
+        // 读取到期等待处理的申请-每次处理50条
+        $jobs = $this->userDao->getUserDeleteJobUnHandle(50);
+        if (!$jobs) {
+            return;
+        }
+
+        foreach ($jobs as $jobItem) {
+            $this->destroyUser($jobItem['user_id']);
+            $this->userDao->changeUserDeleteJobsHandled([$jobItem['id']]);
+        }
+    }
+
+    public function findUserById(int $userId): array
+    {
+        return $this->userDao->findUser(['id' => $userId], ['*']);
+    }
+
+    public function findUserByMobile(string $mobile): array
+    {
+        return $this->userDao->findUser(['mobile' => $mobile], ['*']);
+    }
+
+    public function storeUserLoginRecord(int $userId, string $token, string $platform, string $ua, string $ip): void
+    {
+        $loginId = $this->userDao->storeUserLoginRecord($userId, $token, $platform, $ua, $ip);
+        $this->userDao->updateUserLastLoginId($userId, $loginId);
+    }
+
+    public function findLastLoginJTI(int $userId): string
+    {
+        $user = $this->userDao->findUser(['id' => $userId], ['id', 'last_login_id']);
+        if (!$user['last_login_id']) {
+            return '';
+        }
+        $loginRecord = $this->userDao->findUserLoginRecordOrFail($user['last_login_id']);
+        return $loginRecord['jti'];
+    }
+
+    public function jtiLogout(int $userId, string $jti): void
+    {
+        $this->userDao->logoutUserLoginRecord($userId, $jti);
+    }
+
+    public function socialiteBind(int $userId, string $app, string $appId, array $data, string $unionId = ''): void
+    {
+        // unionId的绑定判断
+        // 确保每个app的unionId(不同app但是unionId相同)绑定的user_id是相同的
+        if ($unionId) {
+            $record = $this->userDao->findSocialiteRecordByUnionId($unionId);
+            if ($record && $record['user_id'] !== $userId) {
+                throw new ServiceException(__('同渠道账号已绑定其它用户'));
+            }
+        }
+
+        // 判断用户是否重复绑定app渠道的账号 => 每个用户对于同一个渠道(app)只能绑定一个账户
+        $userSocialites = $this->userDao->findUserSocialites($userId);
+        $userSocialites && $userSocialites = array_column($userSocialites, null, 'app');
+        if (isset($userSocialites[$app])) {
+            throw new ServiceException(__('您已经绑定了该渠道的账号'));
+        }
+
+        // 判断当前的渠道账号是否被重复绑定了 => 同一个渠道(app)的账号只能被一个用户绑定
+        $record = $this->userDao->findSocialiteRecord($app, $appId);
+        if ($record) {
+            throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
+        }
+
+        $this->userDao->storeSocialiteRecord($userId, $app, $appId, $data, $unionId);
     }
 }

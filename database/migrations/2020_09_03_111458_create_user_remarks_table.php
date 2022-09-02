@@ -19,7 +19,7 @@ class CreateUserRemarksTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_remarks', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_REMARKS, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unique();
             $table->text('remark')->nullable(true)->default(null)->comment('备注');
@@ -36,6 +36,6 @@ class CreateUserRemarksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_remarks');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_REMARKS);
     }
 }
