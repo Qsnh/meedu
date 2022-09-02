@@ -10,9 +10,13 @@ namespace App\Listeners\VodCourseDestroyedEvent;
 
 use App\Meedu\Search\VodSearchNotify;
 use App\Events\VodCourseDestroyedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SearchRecordNotify
+class SearchRecordNotify implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *

@@ -19,7 +19,7 @@ class CreateUserLikeCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_like_courses', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_LIKE_COURSES, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('course_id');
@@ -39,6 +39,6 @@ class CreateUserLikeCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_like_courses');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_LIKE_COURSES);
     }
 }

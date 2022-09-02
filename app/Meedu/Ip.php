@@ -52,7 +52,7 @@ class Ip
             return $country . $city;
         } catch (\Exception $e) {
             Log::error(__METHOD__ . '|' . $e->getMessage());
-            return '';
+            return false;
         }
     }
 }

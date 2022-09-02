@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Models\MediaImage;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Http\Requests\Backend\ImageUploadRequest;
 
 class MediaImageController extends BaseController
@@ -19,14 +20,18 @@ class MediaImageController extends BaseController
         $from = (int)$request->input('from');
 
         $images = MediaImage::query()
-            ->select([
-                'id', 'from', 'url', 'path', 'disk', 'name', 'created_at',
-            ])
+            ->select(['id', 'from', 'url', 'path', 'disk', 'name', 'created_at'])
             ->when($from, function ($query) use ($from) {
                 $query->where('from', $from);
             })
             ->orderByDesc('id')
             ->paginate($request->input('size'));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_IMAGE,
+            AdministratorLog::OPT_VIEW,
+            compact('from')
+        );
 
         return $this->successData([
             'data' => [
@@ -53,17 +58,28 @@ class MediaImageController extends BaseController
     public function upload(ImageUploadRequest $request)
     {
         $file = $request->filldata();
-        $data = save_image($file);
+        $group = $request->input('group');
         $from = (int)$request->input('from');
 
-        // 创建记录
-        MediaImage::create([
+        $imageGroup = 'admin' . ($group ? '-' . $group : '');
+
+        $data = save_image($file, $imageGroup);
+
+        $data = [
             'from' => $from,
             'name' => $data['name'],
             'url' => $data['url'],
             'path' => $data['path'],
             'disk' => $data['disk'],
-        ]);
+        ];
+
+        MediaImage::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_IMAGE,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         return $this->successData($data);
     }

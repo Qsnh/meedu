@@ -23,11 +23,9 @@ use App\Services\Member\Models\UserProfile;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
-use App\Services\Member\Models\UserLoginRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class UserService implements UserServiceInterface
 {
@@ -397,27 +395,6 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param int $id
-     * @param $userId
-     * @param int $reward
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function updateInviteUserId(int $id, $userId, $reward = 0): void
-    {
-        $inviteConfig = $this->configService->getMemberInviteConfig();
-        $expiredDays = $inviteConfig['effective_days'] ?? 0;
-        User::whereId($id)->update([
-            'invite_user_id' => $userId,
-            'invite_user_expired_at' => $expiredDays ? Carbon::now()->addDays($expiredDays) : null,
-        ]);
-        /**
-         * @var $userInviteBalanceService UserInviteBalanceService
-         */
-        $userInviteBalanceService = app()->make(UserInviteBalanceServiceInterface::class);
-        $userInviteBalanceService->createInvite($userId, $reward);
-    }
-
-    /**
      * @param int $userId
      * @return int
      */
@@ -582,14 +559,6 @@ class UserService implements UserServiceInterface
 
     /**
      * @param int $id
-     */
-    public function setUsedPromoCode(int $id): void
-    {
-        User::query()->where('id', $id)->update(['is_used_promo_code' => 1]);
-    }
-
-    /**
-     * @param int $id
      * @param string $ip
      */
     public function setRegisterIp(int $id, string $ip): void
@@ -616,44 +585,6 @@ class UserService implements UserServiceInterface
         return User::query()
             ->where('role_expired_at', '<=', Carbon::now())
             ->update(['role_id' => 0, 'role_expired_at' => null]);
-    }
-
-    /**
-     * 用户登录记录
-     *
-     * @param int $userId
-     * @param string $platform
-     * @param string $ip
-     * @param string $at
-     */
-    public function createLoginRecord(int $userId, string $platform, string $ip, string $at): void
-    {
-        $record = UserLoginRecord::create([
-            'user_id' => $userId,
-            'ip' => $ip,
-            'area' => '',
-            'platform' => $platform,
-            'at' => $at,
-        ]);
-
-        User::query()->where('id', $userId)->update(['last_login_id' => $record->id]);
-    }
-
-    /**
-     * @param int $userId
-     * @param string $platform
-     * @return array
-     */
-    public function findUserLastLoginRecord(int $userId, string $platform): array
-    {
-        $record = UserLoginRecord::query()
-            ->where('user_id', $userId)
-            ->when($platform, function ($query) use ($platform) {
-                $query->where('platform', $platform);
-            })
-            ->orderByDesc('id')
-            ->first();
-        return $record ? $record->toArray() : [];
     }
 
     /**

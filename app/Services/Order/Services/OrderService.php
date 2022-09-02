@@ -128,27 +128,6 @@ class OrderService implements OrderServiceInterface
 
     /**
      * @param int $userId
-     * @param array $video
-     * @param int $promoCodeId
-     * @return array
-     */
-    public function createVideoOrder(int $userId, array $video, int $promoCodeId): array
-    {
-        return $this->createOrder($userId, $video['charge'], [
-            [
-                'id' => $video['id'],
-                'charge' => $video['charge'],
-                'type' => OrderGoods::GOODS_TYPE_VIDEO,
-                'goods_name' => $video['title'] ?? '',
-                'goods_thumb' => '',
-                'goods_charge' => $video['charge'] ?? 0,
-                'goods_ori_charge' => $video['charge'] ?? 0,
-            ]
-        ], $promoCodeId);
-    }
-
-    /**
-     * @param int $userId
      * @param array $role
      * @param int $promoCodeId
      * @return array

@@ -172,81 +172,6 @@ if (!function_exists('aliyun_sdk_client')) {
     }
 }
 
-if (!function_exists('is_h5')) {
-    /**
-     * @return bool
-     */
-    function is_h5()
-    {
-        return (new Mobile_Detect())->isMobile();
-    }
-}
-
-if (!function_exists('is_wechat')) {
-    /**
-     * @return bool
-     */
-    function is_wechat()
-    {
-        if (strpos(request()->server('HTTP_USER_AGENT'), 'MicroMessenger')) {
-            return true;
-        }
-        return false;
-    }
-}
-
-if (!function_exists('duration_humans')) {
-    /**
-     * @param $duration
-     *
-     * @return string
-     */
-    function duration_humans($duration)
-    {
-        $minute = intdiv($duration, 60);
-        $second = $duration % 60;
-        if ($minute >= 60) {
-            $hours = intdiv($minute, 60);
-            $minute %= 60;
-
-            return sprintf('%02d:%02d:%02d', $hours, $minute, $second);
-        }
-
-        return $minute ? sprintf('%02d:%02d', $minute, $second) : sprintf('00:%02d', $second);
-    }
-}
-
-if (!function_exists('enabled_socialites')) {
-    /**
-     * 获取已启用的第三方登录.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    function enabled_socialites()
-    {
-        $socialites = config('meedu.member.socialite', []);
-        $enabled = collect($socialites)->filter(function ($item) {
-            return (int)$item['enabled'] === 1;
-        });
-
-        return $enabled;
-    }
-}
-
-if (!function_exists('get_payment_scene')) {
-    /**
-     * @return string
-     */
-    function get_payment_scene()
-    {
-        if (is_wechat()) {
-            return \App\Constant\FrontendConstant::PAYMENT_SCENE_WECHAT;
-        }
-        $scene = is_h5() ? \App\Constant\FrontendConstant::PAYMENT_SCENE_H5 : \App\Constant\FrontendConstant::PAYMENT_SCENE_PC;
-        return $scene;
-    }
-}
-
 if (!function_exists('get_payments')) {
     /**
      * @param $scene
@@ -504,28 +429,8 @@ if (!function_exists('get_cache_key')) {
     }
 }
 
-if (!function_exists('query_builder')) {
-    /**
-     * @param array $fields
-     * @param array $rewrite
-     * @return string
-     */
-    function query_builder(array $fields, array $rewrite = []): string
-    {
-        $request = request();
-        $data = [
-            'page' => $request->input('page', 1),
-        ];
-        foreach ($fields as $item) {
-            $data[$item] = $request->input($item, '');
-        }
-        $rewrite && $data = array_merge($data, $rewrite);
-        return http_build_query($data);
-    }
-}
-
 if (!function_exists('save_image')) {
-    function save_image($file, $pathPrefix = ''): array
+    function save_image($file, $group = ''): array
     {
         /**
          * @var \Illuminate\Http\UploadedFile $file
@@ -535,12 +440,41 @@ if (!function_exists('save_image')) {
          * @var $configService \App\Services\Base\Services\ConfigService
          */
         $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+
+        /**
+         * @var \App\Meedu\ServiceV2\Services\OtherServiceInterface $otherService
+         */
+        $otherService = app()->make(\App\Meedu\ServiceV2\Services\OtherServiceInterface::class);
+
+        // 获取图片存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
         $disk = $configService->getImageStorageDisk();
-        $path = $file->store($configService->getImageStoragePath() . ($pathPrefix ? '/' . $pathPrefix : ''), compact('disk'));
+        // 保存图片并返回存储的的路径
+        $path = $file->store($configService->getImageStoragePath() . ($group ? '/' . $group : ''), compact('disk'));
+        // 根据path获取对应磁盘的访问url
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+
         $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
         $data = compact('path', 'url', 'disk', 'name');
+        $data['expired_time'] = time() + 1800;
         $data['encryptData'] = encrypt(json_encode($data));
+
+        $userId = 0;
+        if (\Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->check()) {
+            $userId = \Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->id();
+        }
+
+        $otherService->storeUserUploadImage(
+            $userId,
+            $group,
+            $disk,
+            $path,
+            $name,
+            $url,
+            request()->path(),
+            request()->getClientIp(),
+            request_ua()
+        );
+
         return $data;
     }
 }
@@ -556,25 +490,6 @@ if (!function_exists('url_append_query')) {
         }
 
         return $url;
-    }
-}
-
-if (!function_exists('wechat_jssdk')) {
-    /**
-     * @param array $apiList
-     *
-     * @return array
-     *
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
-     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     */
-    function wechat_jssdk(array $apiList): array
-    {
-        $app = \App\Meedu\Wechat::getInstance();
-        return $app->jssdk->buildConfig($apiList, is_dev(), false, false);
     }
 }
 
@@ -651,5 +566,32 @@ if (!function_exists('mobile_code_check')) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('token_payload')) {
+    /**
+     * TokenPayload解析
+     *
+     * @param string $token
+     * @return array
+     * @throws \App\Exceptions\ServiceException
+     */
+    function token_payload(string $token): array
+    {
+        $arr = explode('.', $token);
+        if (count($arr) !== 3) {
+            throw new \App\Exceptions\ServiceException(__('token格式错误'));
+        }
+        return json_decode(base64_decode($arr[1]), true);
+    }
+}
+
+if (!function_exists('request_ua')) {
+    function request_ua($maxLength = 255): string
+    {
+        $ua = request()->header('User-Agent', '');
+        mb_strlen($ua) > $maxLength && $ua = mb_substr($ua, 0, $maxLength);
+        return $ua;
     }
 }

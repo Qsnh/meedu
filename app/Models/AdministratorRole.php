@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -39,7 +40,7 @@ class AdministratorRole extends Model
     {
         return $this->belongsToMany(
             Administrator::class,
-            'administrator_role_relation',
+            TableConstant::TABLE_ADMIN_ROLE_RELATION,
             'role_id',
             'administrator_id'
         );
@@ -54,7 +55,7 @@ class AdministratorRole extends Model
     {
         return $this->belongsToMany(
             AdministratorPermission::class,
-            'administrator_role_permission_relation',
+            TableConstant::TABLE_ROLE_PERMISSION_RELATION,
             'role_id',
             'permission_id'
         );

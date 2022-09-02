@@ -19,7 +19,7 @@ class CreateUserTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_tags', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_TAGS, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 24)->unique()->comment('标签名');
             $table->timestamps();
@@ -35,6 +35,6 @@ class CreateUserTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_tags');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_TAGS);
     }
 }

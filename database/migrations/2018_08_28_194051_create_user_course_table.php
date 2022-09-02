@@ -19,7 +19,7 @@ class CreateUserCourseTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_course', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_COURSE, function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('course_id');
             $table->timestamp('created_at')->default(null)->nullable(true);
@@ -35,6 +35,6 @@ class CreateUserCourseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_course');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_COURSE);
     }
 }

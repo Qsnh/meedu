@@ -9,8 +9,11 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Constant\TableConstant;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
@@ -30,8 +33,6 @@ use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
-use App\Events\UserInviteBalanceWithdrawHandledEvent;
-use App\Services\Member\Models\UserInviteBalanceWithdrawOrder;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberController extends BaseController
@@ -51,8 +52,8 @@ class MemberController extends BaseController
         $members = User::query()
             ->with(['role:id,name', 'tags:id,name'])
             ->when($keywords, function ($query) use ($keywords) {
-                $query->where('nick_name', $keywords)
-                    ->orWhere('mobile', $keywords)
+                $query->where('nick_name', 'like', '%' . $keywords . '%')
+                    ->orWhere('mobile', 'like', '%' . $keywords . '%')
                     ->orWhere('id', $keywords);
             })
             ->when($roleId, function ($query) use ($roleId) {
@@ -79,6 +80,12 @@ class MemberController extends BaseController
             ->get()
             ->keyBy('user_id');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            array_merge(compact('keywords', 'roleId', 'tagId', 'createdAt', 'sort', 'order'), ['path' => $request->path()])
+        );
+
         return $this->successData([
             'data' => $members,
             'roles' => $roles,
@@ -91,6 +98,7 @@ class MemberController extends BaseController
     {
         $roles = Role::query()->select(['id', 'name'])->orderByDesc('id')->get();
         $tags = UserTag::query()->select(['id', 'name'])->orderByDesc('id')->get();
+
         return $this->successData(compact('roles', 'tags'));
     }
 
@@ -101,61 +109,26 @@ class MemberController extends BaseController
             ->where('id', $id)
             ->firstOrFail();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData($member);
     }
 
     public function store(MemberRequest $request)
     {
-        User::create($request->filldata());
+        $data = $request->filldata();
 
-        return $this->success();
-    }
+        $user = User::create($data);
 
-    // 用户提现订单
-    public function inviteBalanceWithdrawOrders(Request $request)
-    {
-        $userId = $request->input('user_id');
-        $status = (int)$request->input('status');
-        $name = $request->input('name');
-
-        $orders = UserInviteBalanceWithdrawOrder::query()
-            ->when($userId, function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
-            ->when($name, function ($query) use ($name) {
-                $query->where('channel_name', 'like', '%' . $name . '%');
-            })
-            ->when($status !== -1, function ($query) use ($status) {
-                $query->where('status', $status);
-            })
-            ->orderByDesc('id')
-            ->paginate($request->input('size', 10));
-
-        $users = User::query()
-            ->select(['id', 'nick_name', 'mobile', 'avatar'])
-            ->whereIn('id', array_column($orders->items(), 'user_id'))
-            ->get()
-            ->keyBy('id');
-
-        return $this->successData(compact('orders', 'users'));
-    }
-
-    // 用户提现订单处理
-    public function inviteBalanceWithdrawOrderHandle(Request $request)
-    {
-        $ids = $request->input('ids');
-        $status = $request->input('status');
-        $remark = $request->input('remark', '');
-
-        UserInviteBalanceWithdrawOrder::query()
-            ->whereIn('id', $ids)
-            ->update([
-                'status' => $status,
-                'remark' => $remark,
-            ]);
-
-        // 提现处理后事件
-        event(new UserInviteBalanceWithdrawHandledEvent($ids, $status));
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            ['id' => $user['id'], 'nick_name' => $user['nick_name']]
+        );
 
         return $this->success();
     }
@@ -200,14 +173,30 @@ class MemberController extends BaseController
         // 字段默认值
         $data['role_id'] = (int)($data['role_id'] ?? 0);
         $data['role_expired_at'] = $data['role_expired_at'] ?? null;
-        // 时间格式不允许空字符串
-        $data['role_expired_at'] = $data['role_expired_at'] ?: null;
-        // 如果删除了时间，那么将roleId重置为0
-        $data['role_expired_at'] || $data['role_id'] = 0;
-        // 如果roleId为0的话，那么role_expired_at也重置为null
-        $data['role_id'] || $data['role_expired_at'] = null;
+        // role_expired_at与role_id必须同时存在
+        if (!$data['role_expired_at'] || !$data['role_id']) {
+            $data['role_expired_at'] = null;
+            $data['role_id'] = 0;
+        } else {
+            // 时间格式解析->兼容性更好
+            $data['role_expired_at'] = Carbon::parse($data['role_expired_at'])->toDateTimeLocalString();
+        }
+
         // 修改密码
         ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            Arr::only($data, [
+                'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
+                'invite_user_id', 'invite_balance', 'invite_user_expired_at',
+            ]),
+            Arr::only($user->toArray(), [
+                'avatar', 'nick_name', 'mobile', 'is_lock', 'is_active', 'role_id', 'role_expired_at',
+                'invite_user_id', 'invite_balance', 'invite_user_expired_at',
+            ])
+        );
 
         $user->fill($data)->save();
 
@@ -236,6 +225,12 @@ class MemberController extends BaseController
             ->where('id', $id)
             ->firstOrFail();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $user,
         ]);
@@ -246,6 +241,13 @@ class MemberController extends BaseController
         $data = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -257,6 +259,13 @@ class MemberController extends BaseController
         $data = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $videoIds = get_array_ids($data->items(), 'video_id');
         $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'videos' => $videos,
@@ -271,6 +280,12 @@ class MemberController extends BaseController
             ->orderByDesc('created_at')
             ->paginate($request->input('size', 20));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
         ]);
@@ -281,6 +296,13 @@ class MemberController extends BaseController
         $data = UserLikeCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -292,6 +314,13 @@ class MemberController extends BaseController
         $data = CourseUserRecord::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
         $courseIds = get_array_ids($data->items(), 'course_id');
         $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $data,
             'courses' => $courses,
@@ -300,11 +329,22 @@ class MemberController extends BaseController
 
     public function userOrders(Request $request, $id)
     {
+        $status = (int)$request->input('status');
+
         $data = Order::query()
             ->with(['goods', 'paidRecords'])
             ->where('user_id', $id)
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->orderByDesc('created_at')
-            ->paginate($request->input('size', 20));
+            ->paginate($request->input('size', 10));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData([
             'data' => $data,
@@ -317,6 +357,12 @@ class MemberController extends BaseController
             ->select(['id', 'nick_name', 'avatar', 'mobile', 'created_at', 'invite_user_expired_at'])
             ->where('invite_user_id', $id)
             ->paginate($request->input('size', 20));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData([
             'data' => $data,
@@ -331,6 +377,13 @@ class MemberController extends BaseController
             ->where('field', 'credit1')
             ->orderByDesc('id')
             ->paginate($request->input('size', 20));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'data' => $records,
         ]);
@@ -342,18 +395,27 @@ class MemberController extends BaseController
         $userId = $request->input('user_id');
         $credit1 = $request->input('credit1');
         $remark = $request->input('remark', '');
+
         DB::transaction(function () use ($userId, $credit1, $remark) {
             $user = User::query()->where('id', $userId)->firstOrFail();
 
             $user->credit1 += $credit1;
             $user->save();
 
-            UserCreditRecord::create([
+            $userCreditRecordData = [
                 'user_id' => $userId,
                 'field' => 'credit1',
                 'sum' => $credit1,
                 'remark' => $remark,
-            ]);
+            ];
+
+            UserCreditRecord::create($userCreditRecordData);
+
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_MEMBER,
+                AdministratorLog::OPT_UPDATE,
+                $userCreditRecordData
+            );
         });
 
         return $this->success();
@@ -361,9 +423,18 @@ class MemberController extends BaseController
 
     public function tagUpdate(Request $request, $userId)
     {
-        $tagIds = explode(',', $request->input('tag_ids', ''));
+        $tagIdsStr = $request->input('tag_ids', '');
+        $tagIds = $tagIdsStr ? explode(',', $tagIdsStr) : [];
 
         $user = User::query()->where('id', $userId)->firstOrFail();
+        $userTagIds = $user->tags()->select(['id'])->get()->pluck('id')->toArray();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_UPDATE,
+            ['tag_ids' => $tagIds],
+            ['tag_ids' => $userTagIds]
+        );
 
         $user->tags()->sync($tagIds);
 
@@ -375,6 +446,13 @@ class MemberController extends BaseController
     {
         $userRemark = UserRemark::query()->where('user_id', $id)->first();
         $remark = $userRemark ? $userRemark['remark'] : '';
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
+
         return $this->successData([
             'remark' => $remark,
         ]);
@@ -385,7 +463,10 @@ class MemberController extends BaseController
     {
         $remark = $request->input('remark', '');
         $userRemark = UserRemark::query()->where('user_id', $id)->first();
+        $oldRemark = '';
+
         if ($userRemark) {
+            $oldRemark = $userRemark['remark'];
             $userRemark->update(['remark' => $remark]);
         } else {
             UserRemark::create([
@@ -393,6 +474,13 @@ class MemberController extends BaseController
                 'remark' => $remark,
             ]);
         }
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            ['remark' => $remark],
+            ['remark' => $oldRemark]
+        );
 
         return $this->success();
     }
@@ -412,6 +500,12 @@ class MemberController extends BaseController
             return $this->error('单次发送消息不能超过100人');
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            compact('userIds', 'message')
+        );
+
         $users = User::query()->whereIn('id', $userIds)->get();
         foreach ($users as $user) {
             $user->notify(new SimpleMessageNotification($message));
@@ -427,6 +521,12 @@ class MemberController extends BaseController
         if (!$message) {
             return $this->error(__('参数错误'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_STORE,
+            compact('userId', 'message')
+        );
 
         $user->notify(new SimpleMessageNotification($message));
 
@@ -448,6 +548,12 @@ class MemberController extends BaseController
         if ($videoIds) {
             $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title'])->get()->keyBy('id');
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData([
             'data' => $records,
@@ -554,6 +660,12 @@ class MemberController extends BaseController
                     break;
                 }
 
+                AdministratorLog::storeLog(
+                    AdministratorLog::MODULE_MEMBER,
+                    AdministratorLog::OPT_IMPORT,
+                    ['mobiles' => array_column($usersItem, 0)]
+                );
+
                 // 批量插入用户
                 foreach ($usersItem as $item) {
                     $tmpMobile = $item[0];
@@ -562,7 +674,7 @@ class MemberController extends BaseController
                     // VIP处理l
                     $tmpRoleId = (int)($item[2] ?? 0);
                     $tmpRoleExpiredAt = null;
-                    if ($item[3]) {
+                    if (isset($item[3]) && $item[3]) {
                         $tmpRoleExpiredAt = Carbon::parse($item[3])->toDateTimeLocalString();
                     }
                     // 是否锁定
@@ -577,7 +689,6 @@ class MemberController extends BaseController
                         'password' => Hash::make($tmpPassword),
                         'is_password_set' => 0,
                         'is_set_nickname' => 0,
-                        'is_used_promo_code' => 0,
                         'role_id' => $tmpRoleId,
                         'role_expired_at' => $tmpRoleExpiredAt,
                         'created_at' => $now,
@@ -601,7 +712,7 @@ class MemberController extends BaseController
                         ];
                     }
                 }
-                $tagInsertList && DB::table('user_tag')->insert($tagInsertList);
+                $tagInsertList && DB::table(TableConstant::TABLE_USER_TAG)->insert($tagInsertList);
             }
         });
 
@@ -626,8 +737,7 @@ class MemberController extends BaseController
 
         // 必须是白名单内的字段才可以更改
         $fieldsWhitelist = [
-            'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname',
-            'tag',
+            'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname', 'tag',
         ];
         if (!$field || !in_array($field, $fieldsWhitelist)) {
             return $this->error('待修改字段不合法');
@@ -637,6 +747,12 @@ class MemberController extends BaseController
         if ($field === 'role_id' && (int)$value && !$roleExpiredAt) {
             return $this->error('请选择VIP过期时间');
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_UPDATE,
+            compact('field', 'value', 'roleExpiredAt', 'tagIds', 'userIds')
+        );
 
         if ($field === 'tag') {
             $tagIds = $tagIds && is_array($tagIds) ? $tagIds : [];

@@ -41,4 +41,8 @@ jobs:
       - name: 'Directory Permissions'
         run: chmod -R 777 storage bootstrap/cache
       - name: 'Execute tests (Unit and Feature tests) via PHPUnit'
+        env:
+          WECHAT_MP_APP_ID: ${{secrets.WECHAT_MP_APP_ID}}
+          WECHAT_MP_APP_SECRET: ${{secrets.WECHAT_MP_APP_SECRET}}
+          WECHAT_MP_TOKEN: ${{secrets.WECHAT_MP_TOKEN}}
         run: vendor/bin/phpunit

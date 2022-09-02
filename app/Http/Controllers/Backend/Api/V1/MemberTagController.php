@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Member\Models\UserTag;
 
 class MemberTagController extends BaseController
@@ -16,6 +18,12 @@ class MemberTagController extends BaseController
     public function index(Request $request)
     {
         $tags = UserTag::query()->select(['id', 'name'])->orderByDesc('id')->paginate($request->input('size', 10));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
 
         return $this->successData($tags);
     }
@@ -36,7 +44,15 @@ class MemberTagController extends BaseController
             return $this->error(__('用户标签已存在'));
         }
 
-        UserTag::create(['name' => $name]);
+        $data = ['name' => $name];
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
+        UserTag::create($data);
 
         return $this->success();
     }
@@ -44,6 +60,11 @@ class MemberTagController extends BaseController
     public function edit($id)
     {
         $tag = UserTag::query()->where('id', $id)->firstOrFail();
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
         return $this->successData($tag);
     }
 
@@ -60,7 +81,16 @@ class MemberTagController extends BaseController
             return $this->error(__('用户标签已存在'));
         }
 
-        $tag->fill(['name' => $name])->save();
+        $updateData = ['name' => $name];
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_UPDATE,
+            $updateData,
+            Arr::only($tag->toArray(), ['name'])
+        );
+
+        $tag->fill($updateData)->save();
 
         return $this->success();
     }
@@ -72,6 +102,12 @@ class MemberTagController extends BaseController
         if ($tag->users()->count() > 0) {
             return $this->error(__('当前标签已关联用户，无法删除'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER_TAG,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
 
         $tag->delete();
         return $this->success();

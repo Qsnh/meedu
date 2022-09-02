@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Carbon\Carbon;
 use App\Meedu\Verify;
 use App\Meedu\Wechat;
 use App\Bus\WechatBindBus;
@@ -27,7 +26,6 @@ use App\Services\Course\Services\CourseService;
 use App\Services\Member\Services\CreditService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Http\Requests\ApiV2\MobileChangeRequest;
-use App\Services\Order\Services\PromoCodeService;
 use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
@@ -35,14 +33,10 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
-use App\Http\Requests\ApiV2\InviteBalanceWithdrawRequest;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Interfaces\CreditServiceInterface;
-use App\Services\Member\Services\UserInviteBalanceService;
-use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
-use App\Services\Member\Interfaces\UserInviteBalanceServiceInterface;
 
 class MemberController extends BaseController
 {
@@ -171,8 +165,8 @@ class MemberController extends BaseController
         $this->mobileCodeCheck();
         ['password' => $password, 'mobile' => $mobile] = $request->filldata();
         $user = $this->userService->find($this->id());
-        if ($user['mobile'] != $mobile) {
-            return $this->error(__('短信验证码错误'));
+        if ($user['mobile'] !== $mobile) {
+            return $this->error(__('请绑定手机号'));
         }
         $this->userService->changePassword($this->id(), $password);
 
@@ -598,77 +592,6 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/inviteBalanceRecords 邀请余额明细
-     * @apiGroup 用户
-     * @apiName MemberInviteBalanceRecords
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 明细ID
-     * @apiSuccess {Number} data.data.user_id 用户ID
-     * @apiSuccess {Number} data.data.type 类型[0:支出,1:订单抽成奖励,2:提现,3:提现退还]
-     * @apiSuccess {Number} data.data.total 变动金额
-     * @apiSuccess {String} data.data.desc 变动描述
-     */
-    public function inviteBalanceRecords(Request $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
-    {
-        /**
-         * @var UserInviteBalanceService $userInviteBalanceService
-         */
-
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $userInviteBalanceService->simplePaginate($page, $pageSize);
-        $records = $this->paginator($list, $total, $page, $pageSize);
-
-        return $this->data($records);
-    }
-
-    /**
-     * @api {get} /api/v2/member/promoCode 邀请码
-     * @apiGroup 用户
-     * @apiName MemberPromoCode
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.per_order_draw 订单抽成
-     * @apiSuccess {Number} data.invited_user_reward 被邀请用户奖励
-     * @apiSuccess {Number} data.invite_user_reward 邀请奖励
-     * @apiSuccess {String} data.code 邀请码
-     * @apiSuccess {String} data.expired_at 过期时间
-     */
-    public function promoCode(PromoCodeServiceInterface $promoCodeService)
-    {
-        /**
-         * @var PromoCodeService $promoCodeService
-         */
-
-        $promoCode = $promoCodeService->getUserPromoCode($this->id());
-        if (!$promoCode && $this->businessState->canGenerateInviteCode($this->user())) {
-            // 如果可以生成邀请码的话则直接创建邀请码
-            $promoCodeService->userCreate($this->user());
-            $promoCode = $promoCodeService->userPromoCode($this->id());
-        }
-
-        $promoCode = arr1_clear($promoCode, ApiV2Constant::MODEL_PROMO_CODE_FIELD);
-        $promoCode['per_order_draw'] = $this->configService->getMemberInviteConfig()['per_order_draw'];
-
-        return $this->data($promoCode);
-    }
-
-    /**
      * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} 消息标记已读
      * @apiGroup 用户
      * @apiName MemberMessageMarkReadAction
@@ -713,130 +636,6 @@ class MemberController extends BaseController
     public function notificationMarkAllAsRead()
     {
         $this->userService->notificationMarkAllAsRead($this->id());
-        return $this->success();
-    }
-
-    /**
-     * @api {get} /api/v2/member/inviteUsers 已邀请用户
-     * @apiGroup 用户
-     * @apiName MemberInviteUsers
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {String} data.data.mobile 邀请用户手机号
-     * @apiSuccess {String} data.data.created_at 邀请时间
-     */
-    public function inviteUsers(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 10);
-
-        [
-            'list' => $list,
-            'total' => $total,
-        ] = $this->userService->inviteUsers($page, $pageSize);
-
-        $list = array_map(function ($item) {
-            $mobile = '******' . mb_substr($item['mobile'], 6);
-            return [
-                'mobile' => $mobile,
-                'created_at' => Carbon::parse($item['created_at'])->format('Y-m-d'),
-            ];
-        }, $list);
-
-        return $this->data([
-            'total' => $total,
-            'data' => $list,
-        ]);
-    }
-
-    /**
-     * @api {get} /api/v2/member/withdrawRecords 邀请余额提现记录
-     * @apiGroup 用户
-     * @apiName MemberWithdrawRecords
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 记录ID
-     * @apiSuccess {Number} data.data.total 提现金额
-     * @apiSuccess {Number} data.data.before_balance 提现前余额
-     * @apiSuccess {Number} data.data.status 记录状态[0:已提交,1:成功,2:失败]
-     * @apiSuccess {String} data.data.channel 打款渠道
-     * @apiSuccess {String} data.data.channel_name 打款渠道-姓名
-     * @apiSuccess {String} data.data.channel_account 打款渠道-账户
-     * @apiSuccess {String} data.data.channel_address 打款渠道-地址
-     * @apiSuccess {String} data.data.remark 打款渠道-备注
-     * @apiSuccess {String} data.data.created_at 打款渠道-时间
-     */
-    public function withdrawRecords(Request $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
-    {
-        /**
-         * @var UserInviteBalanceService $userInviteBalanceService
-         */
-
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 10);
-
-        [
-            'list' => $list,
-            'total' => $total,
-        ] = $userInviteBalanceService->currentUserOrderPaginate($page, $pageSize);
-
-        return $this->data([
-            'total' => $total,
-            'data' => $list,
-        ]);
-    }
-
-    /**
-     * @api {post} /api/v2/member/withdraw 邀请余额提现
-     * @apiGroup 用户
-     * @apiName MemberWithdrawAction
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {String} channel 打款渠道
-     * @apiParam {String} channel_name 打款渠道-姓名
-     * @apiParam {String} channel_account 打款渠道-账户
-     * @apiParam {String} [channel_address] 打款渠道-地址
-     * @apiParam {Number} total 提现金额
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 记录ID
-     * @apiSuccess {Number} data.data.total 提现金额
-     * @apiSuccess {Number} data.data.before_balance 提现前余额
-     * @apiSuccess {Number} data.data.status 记录状态[0:已提交,1:成功,2:失败]
-     * @apiSuccess {String} data.data.channel 打款渠道
-     * @apiSuccess {String} data.data.channel_name 打款渠道-姓名
-     * @apiSuccess {String} data.data.channel_account 打款渠道-账户
-     * @apiSuccess {String} data.data.channel_address 打款渠道-地址
-     * @apiSuccess {String} data.data.remark 打款渠道-备注
-     * @apiSuccess {String} data.data.created_at 打款渠道-时间
-     */
-    public function createWithdraw(InviteBalanceWithdrawRequest $request, UserInviteBalanceServiceInterface $userInviteBalanceService)
-    {
-        /**
-         * @var UserInviteBalanceService $userInviteBalanceService
-         */
-        $data = $request->filldata();
-        $userInviteBalanceService->createCurrentUserWithdraw($data['total'], $data['channel']);
         return $this->success();
     }
 

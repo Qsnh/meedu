@@ -14,6 +14,12 @@ class ApiV2Exception extends \Exception
 {
     use ResponseTrait;
 
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @codeCoverageIgnore
+     */
     public function render()
     {
         return $this->error($this->getMessage());

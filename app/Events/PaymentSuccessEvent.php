@@ -9,15 +9,11 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 
 class PaymentSuccessEvent
 {
-    use Dispatchable;
-    use InteractsWithSockets;
-    use SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $order;
 
@@ -25,21 +21,11 @@ class PaymentSuccessEvent
      * PaymentSuccessEvent constructor.
      *
      * @param array $order
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(array $order)
     {
         $this->order = $order;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     *
-     * @codeCoverageIgnore
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
     }
 }

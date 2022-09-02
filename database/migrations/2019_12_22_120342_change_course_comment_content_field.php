@@ -19,7 +19,7 @@ class ChangeCourseCommentContentField extends Migration
      */
     public function up()
     {
-        Schema::table('course_comments', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_COURSE_COMMENTS, function (Blueprint $table) {
             // 删除content字段
             $table->dropColumn('content');
 
@@ -36,7 +36,7 @@ class ChangeCourseCommentContentField extends Migration
      */
     public function down()
     {
-        Schema::table('course_comments', function (Blueprint $table) {
+        Schema::table(\App\Constant\TableConstant::TABLE_COURSE_COMMENTS, function (Blueprint $table) {
             // 删除content字段
             $table->dropColumn('original_content');
             $table->dropColumn('render_content');

@@ -13,6 +13,7 @@ use App\Meedu\Addons;
 use GuzzleHttp\Client;
 use App\Meedu\MeEduCloud;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 
 class AddonsController extends BaseController
 {
@@ -38,6 +39,12 @@ class AddonsController extends BaseController
             }
         }, $addons);
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData(array_values($addons));
     }
 
@@ -58,6 +65,13 @@ class AddonsController extends BaseController
                 $lib->uninstall($sign);
                 $lib->disabled($sign);
             }
+
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ADDONS,
+                AdministratorLog::OPT_UPDATE,
+                compact('sign', 'action')
+            );
+
             return $this->success();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
@@ -75,6 +89,12 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.domain'),
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
+        );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            []
         );
 
         $addonsData = [];
@@ -126,6 +146,12 @@ class AddonsController extends BaseController
         try {
             $mc->addonsBuy($addonsId);
 
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_ADDONS,
+                AdministratorLog::OPT_UPDATE,
+                compact('addonsId')
+            );
+
             return $this->success();
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
@@ -147,6 +173,13 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
         );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            compact('addonsId', 'addonsSign')
+        );
+
         try {
             // 获取下载url
             $url = $mc->addonsDownloadUrl($addonsId, 0);
@@ -183,6 +216,13 @@ class AddonsController extends BaseController
             config('meedu.meeducloud.user_id'),
             config('meedu.meeducloud.password')
         );
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADDONS,
+            AdministratorLog::OPT_UPDATE,
+            compact('addonsId', 'addonsSign')
+        );
+
         try {
             // 获取下载url
             $url = $mc->addonsDownloadUrl($addonsId, 0);

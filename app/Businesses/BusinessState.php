@@ -37,17 +37,13 @@ class BusinessState
      */
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
-        // 如果video的价格为0那么可以直接观看
-        if ($video['charge'] === 0) {
-            return true;
-        }
         /**
          * @var CourseService $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($course['id']);
-        // 如果课程免费就可以观看
-        if ((int)$course['is_free'] === Course::IS_FREE_YES) {
+        // 录播课设置免费的话可以直接看该录播课下所有视频
+        if ((int)$course['is_free'] === 1) {
             return true;
         }
         /**
@@ -58,12 +54,12 @@ class BusinessState
         if ($userService->hasCourse($user['id'], $course['id'])) {
             return true;
         }
-        // 如果用户买了当前视频可以直接观看
-        if ($userService->hasVideo($user['id'], $video['id'])) {
-            return true;
-        }
         // 如果用户买了会员可以直接观看
         if ($this->isRole($user)) {
+            return true;
+        }
+        // 如果用户买了当前视频可以直接观看
+        if ($userService->hasVideo($user['id'], $video['id'])) {
             return true;
         }
         return false;
@@ -108,37 +104,6 @@ class BusinessState
     }
 
     /**
-     * 是否可以生成邀请码
-     *
-     * @param array $user
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function canGenerateInviteCode(array $user): bool
-    {
-        /**
-         * @var $configService ConfigService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-        /**
-         * @var $promoCodeService PromoCodeService
-         */
-        $promoCodeService = app()->make(PromoCodeServiceInterface::class);
-        $inviteConfig = $configService->getMemberInviteConfig();
-        $isRole = $this->isRole($user);
-        if ((bool)$inviteConfig['free_user_enabled'] === false && !$isRole) {
-            // 开启了非会员无法生成优惠码
-            return false;
-        }
-        $userPromoCode = $promoCodeService->userPromoCode($user['id']);
-        if ($userPromoCode) {
-            // 已经生成
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * @param int $loginUserId
      * @param array $promoCode
      * @return bool
@@ -163,29 +128,7 @@ class BusinessState
         if ($useRecords) {
             return false;
         }
-        // 非用户邀请优惠码可以多次使用
-        if (!$this->isUserInvitePromoCode($promoCode['code'])) {
-            return true;
-        }
-        /**
-         * @var $userService UserService
-         */
-        $userService = app()->make(UserServiceInterface::class);
-        $user = $userService->find($loginUserId);
-        if ((int)$user['is_used_promo_code'] === 1) {
-            // 用户邀请优惠码只能使用一次
-            return false;
-        }
         return true;
-    }
-
-    /**
-     * @param string $code
-     * @return bool
-     */
-    public function isUserInvitePromoCode(string $code): bool
-    {
-        return strtolower($code[0]) === 'u';
     }
 
     /**
@@ -200,7 +143,7 @@ class BusinessState
          */
         $orderService = app()->make(OrderServiceInterface::class);
         $sum = $order['charge'] - $orderService->getOrderPaidRecordsTotal($order['id']);
-        return $sum >= 0 ? $sum : 0;
+        return max($sum, 0);
     }
 
     /**
@@ -212,9 +155,6 @@ class BusinessState
      */
     public function isBuyCourse(int $userId, int $courseId): bool
     {
-        if (!$userId) {
-            return false;
-        }
         /**
          * @var CourseService $courseService
          */
@@ -237,46 +177,21 @@ class BusinessState
         return false;
     }
 
-    /**
-     * 是否可以评论课程
-     *
-     * @param array $user
-     * @param array $course
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function courseCanComment(array $user, array $course): bool
     {
-        if (!$user) {
-            return false;
-        }
-        if ($this->isBuyCourse($user['id'], $course['id'])) {
-            return true;
-        }
-        return false;
+        return $this->isBuyCourse($user['id'], $course['id']);
     }
 
     public function videoCanComment(array $user, array $video): bool
     {
-        if (!$user) {
-            return false;
-        }
         /**
          * @var CourseService $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($video['course_id']);
-        if ($this->canSeeVideo($user, $course, $video)) {
-            return true;
-        }
-        return false;
+        return $this->canSeeVideo($user, $course, $video);
     }
 
-    /**
-     * 是否开启微信公众号授权登录
-     *
-     * @return bool
-     */
     public function isEnabledMpOAuthLogin(): bool
     {
         /**
@@ -288,10 +203,6 @@ class BusinessState
         return $enabledOAuthLogin === 1;
     }
 
-    /**
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function enabledMpScanLogin(): bool
     {
         /**

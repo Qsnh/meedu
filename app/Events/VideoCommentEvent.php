@@ -9,38 +9,25 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 
 class VideoCommentEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $videoId;
 
     public $commentId;
 
     /**
-     * CourseCommentEvent constructor.
      * @param int $videoId
      * @param int $commentId
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(int $videoId, int $commentId)
     {
         $this->videoId = $videoId;
         $this->commentId = $commentId;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     *
-     * @codeCoverageIgnore
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
     }
 }

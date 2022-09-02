@@ -8,8 +8,10 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Meedu\ViewBlock\Render;
+use App\Models\AdministratorLog;
 use App\Meedu\ViewBlock\Constant;
 use App\Services\Other\Models\ViewBlock;
 
@@ -31,6 +33,12 @@ class ViewBlockController extends BaseController
             ->toArray();
 
         $blocks = Render::dataRender($blocks);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VIEW_BLOCK,
+            AdministratorLog::OPT_VIEW,
+            compact('page', 'platform')
+        );
 
         return $this->successData($blocks);
     }
@@ -55,13 +63,21 @@ class ViewBlockController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        ViewBlock::create([
+        $data = [
             'platform' => $platform,
             'page' => $page,
             'sign' => $sign,
             'config' => json_encode($config ?: []),
             'sort' => $sort,
-        ]);
+        ];
+
+        ViewBlock::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VIEW_BLOCK,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         return $this->success();
     }
@@ -69,6 +85,11 @@ class ViewBlockController extends BaseController
     public function edit($id)
     {
         $block = ViewBlock::query()->where('id', $id)->firstOrFail();
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VIEW_BLOCK,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
         return $this->successData($block);
     }
 
@@ -76,10 +97,18 @@ class ViewBlockController extends BaseController
     {
         $config = $request->input('config');
         $sort = $request->input('sort');
+        $updateData = ['config' => $config, 'sort' => $sort];
 
         $block = ViewBlock::query()->where('id', $id)->firstOrFail();
 
-        $block->fill(['config' => $config, 'sort' => $sort])->save();
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_VIEW_BLOCK,
+            AdministratorLog::OPT_UPDATE,
+            $updateData,
+            Arr::only($block->toArray(), ['config', 'sort'])
+        );
+
+        $block->fill($updateData)->save();
 
         return $this->success();
     }
@@ -87,6 +116,11 @@ class ViewBlockController extends BaseController
     public function destroy($id)
     {
         ViewBlock::query()->where('id', $id)->delete();
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VIEW_BLOCK,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
         return $this->success();
     }
 }

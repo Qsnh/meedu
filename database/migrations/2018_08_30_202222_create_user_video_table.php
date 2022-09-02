@@ -19,7 +19,7 @@ class CreateUserVideoTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_video', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_USER_VIDEO, function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('video_id');
             $table->integer('charge')->default(0)->comment('收费');
@@ -36,6 +36,6 @@ class CreateUserVideoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_video');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_USER_VIDEO);
     }
 }

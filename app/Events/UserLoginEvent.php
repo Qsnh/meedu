@@ -9,42 +9,24 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
 
 class UserLoginEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $userId;
-
     public $platform;
+    public $ip;
+    public $token;
+    public $ua;
 
-    public $at;
-
-    /**
-     * UserLoginEvent constructor.
-     * @param int $userId
-     * @param string $platform
-     * @param string $at
-     */
-    public function __construct(int $userId, string $platform = '', $at = '')
+    public function __construct(int $userId, string $platform, string $ip, string $ua, string $token)
     {
         $this->userId = $userId;
         $this->platform = $platform;
-        $this->at = $at;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     *
-     * @codeCoverageIgnore
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
+        $this->ip = $ip;
+        $this->ua = $ua;
+        $this->token = $token;
     }
 }

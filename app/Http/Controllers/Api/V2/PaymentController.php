@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
 use App\Exceptions\SystemException;
-use App\Meedu\Payment\Wechat\WechatMini;
 use App\Meedu\Payment\Wechat\WechatScan;
 use App\Services\Base\Services\CacheService;
 use App\Meedu\Payment\Contract\PaymentStatus;
@@ -38,61 +37,6 @@ class PaymentController extends BaseController
     {
         $this->orderService = $orderService;
         $this->cacheService = $cacheService;
-    }
-
-    /**
-     * @api {post} /api/v2/order/payment/wechat/mini 微信小程序支付
-     * @apiGroup 订单
-     * @apiName PaymentWechatMini
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {String} openid openid
-     * @apiParam {String} order_id 订单编号
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.appId appId
-     * @apiSuccess {String} data.nonceStr nonceStr
-     * @apiSuccess {String} data.package package
-     * @apiSuccess {String} data.paySign paySign
-     * @apiSuccess {String} data.signType signType
-     * @apiSuccess {String} data.timeStamp timeStamp
-     */
-    public function wechatMiniPay(Request $request)
-    {
-        $openid = $request->input('openid');
-        $orderId = $request->input('order_id');
-        if (!$openid || !$orderId) {
-            return $this->error(__('参数错误'));
-        }
-
-        $order = $this->orderService->findUser($this->id(), $orderId);
-        if ($order['status'] !== FrontendConstant::ORDER_UN_PAY) {
-            return $this->error(__('订单状态错误'));
-        }
-
-        $updateData = [
-            'payment' => FrontendConstant::PAYMENT_SCENE_WECHAT,
-            'payment_method' => FrontendConstant::PAYMENT_SCENE_WECHAT_MINI,
-        ];
-        $this->orderService->change2Paying($order['id'], $updateData);
-        $order = array_merge($order, $updateData);
-
-        // 创建远程订单
-        $paymentHandler = app()->make(WechatMini::class);
-
-        /**
-         * @var PaymentStatus $createResult
-         */
-        $createResult = $paymentHandler->create($order, ['openid' => $openid]);
-        if ($createResult->status === false) {
-            throw new SystemException(__('系统错误'));
-        }
-
-        $data = $createResult->data;
-
-        return $this->data($data);
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use App\Services\Course\Models\Course;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Course\Models\CourseAttach;
@@ -21,6 +22,13 @@ class CourseAttachController extends BaseController
         $courseId = $request->input('course_id');
         $course = Course::query()->where('id', $courseId)->firstOrFail();
         $attach = CourseAttach::query()->where('course_id', $courseId)->get();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_ATTACH,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId')
+        );
+
         return $this->successData([
             'data' => $attach,
             'course' => $course,
@@ -31,6 +39,13 @@ class CourseAttachController extends BaseController
     {
         $data = $request->filldata();
         CourseAttach::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_ATTACH,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
         return $this->success();
     }
 
@@ -38,11 +53,19 @@ class CourseAttachController extends BaseController
     {
         $attach = CourseAttach::query()->where('id', $id)->firstOrFail();
 
+        $path = $attach['path'];
+
         // 删除附件
-        Storage::disk(config('meedu.upload.attach.course.disk'))->delete($attach['path']);
+        Storage::disk(config('meedu.upload.attach.course.disk'))->delete($path);
 
         // 删除数据库记录
         $attach->delete();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_ATTACH,
+            AdministratorLog::OPT_DESTROY,
+            compact('path', 'id')
+        );
 
         return $this->success();
     }

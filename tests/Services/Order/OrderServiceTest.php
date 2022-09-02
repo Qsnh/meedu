@@ -14,7 +14,6 @@ use App\Exceptions\ServiceException;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
-use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
 use App\Services\Order\Models\PromoCode;
 use App\Services\Order\Models\OrderGoods;
@@ -56,28 +55,6 @@ class OrderServiceTest extends TestCase
         ]);
 
         $order = $this->service->createCourseOrder($user['id'], $course->toArray(), $promoCode['id']);
-        $this->assertNotEmpty($order);
-    }
-
-    public function test_createVideoOrder()
-    {
-        $user = User::factory()->create();
-        $video = Video::factory()->create();
-
-        $order = $this->service->createVideoOrder($user->id, $video->toArray(), 0);
-        $this->assertNotEmpty($order);
-    }
-
-    public function test_createVideoOrder_with_PromoCode()
-    {
-        $user = User::factory()->create();
-        $video = Video::factory()->create();
-        $promoCode = PromoCode::factory()->create([
-            'invited_user_reward' => 10,
-            'used_times' => 0,
-        ]);
-
-        $order = $this->service->createVideoOrder($user->id, $video->toArray(), $promoCode->id);
         $this->assertNotEmpty($order);
     }
 

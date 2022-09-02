@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use Illuminate\Support\Arr;
+use App\Models\AdministratorLog;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseChapter;
 use App\Http\Requests\Backend\CourseChapterRequest;
@@ -23,30 +25,61 @@ class CourseChapterController extends BaseController
             ->orderBy('sort')
             ->get();
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_CHAPTER,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId')
+        );
+
         return $this->successData(compact('course', 'chapters'));
     }
 
     public function store(CourseChapterRequest $request, $courseId)
     {
-        $course = Course::query()->where('id', $courseId)->firstOrFail();
+        $data = $request->filldata();
+        $data['course_id'] = $courseId;
 
-        $course->chapters()->save(new CourseChapter($request->filldata()));
+        CourseChapter::create($data);
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_CHAPTER,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
 
         return $this->success();
     }
 
     public function edit($courseId, $id)
     {
-        $chapter = CourseChapter::query()->where('id', $id)->where('course_id', $courseId)->firstOrFail();
+        $chapter = CourseChapter::query()
+            ->where('id', $id)
+            ->where('course_id', $courseId)
+            ->firstOrFail();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_CHAPTER,
+            AdministratorLog::OPT_VIEW,
+            compact('id', 'courseId')
+        );
 
         return $this->successData($chapter);
     }
 
     public function update(CourseChapterRequest $request, $courseId, $id)
     {
+        $data = $request->filldata();
+
         $chapter = CourseChapter::query()->where('id', $id)->where('course_id', $courseId)->firstOrFail();
 
-        $chapter->fill($request->filldata())->save();
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_VOD_CHAPTER,
+            AdministratorLog::OPT_UPDATE,
+            Arr::only($data, ['course_id', 'title', 'sort']),
+            Arr::only($chapter->toArray(), ['course_id', 'title', 'sort']),
+        );
+
+        $chapter->fill($data)->save();
 
         return $this->success();
     }
@@ -60,6 +93,12 @@ class CourseChapterController extends BaseController
         }
 
         $chapter->delete();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_CHAPTER,
+            AdministratorLog::OPT_DESTROY,
+            compact('id', 'courseId')
+        );
 
         return $this->success();
     }

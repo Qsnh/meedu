@@ -9,7 +9,9 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Order\Models\PromoCode;
 use App\Http\Requests\Backend\PromoCodeRequest;
@@ -44,6 +46,12 @@ class PromoCodeController extends BaseController
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_PROMO_CODE,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         return $this->successData($items);
     }
 
@@ -55,6 +63,12 @@ class PromoCodeController extends BaseController
             return $this->error(__('优惠码格式错误'));
         }
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_PROMO_CODE,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
         PromoCode::create($data);
 
         return $this->success();
@@ -62,15 +76,34 @@ class PromoCodeController extends BaseController
 
     public function edit($id)
     {
-        $info = PromoCode::findOrFail($id);
+        $info = PromoCode::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_PROMO_CODE,
+            AdministratorLog::OPT_VIEW,
+            compact('id')
+        );
 
         return $this->successData($info);
     }
 
     public function update(PromoCodeRequest $request, $id)
     {
-        $item = PromoCode::findOrFail($id);
-        $item->fill($request->filldata())->save();
+        $data = $request->filldata();
+        $info = PromoCode::query()->where('id', $id)->firstOrFail();
+
+        AdministratorLog::storeLogDiff(
+            AdministratorLog::MODULE_PROMO_CODE,
+            AdministratorLog::OPT_UPDATE,
+            $data,
+            Arr::only($info->toArray(), [
+                'user_id', 'code', 'expired_at',
+                'invite_user_reward', 'invited_user_reward',
+                'use_times', 'used_times',
+            ])
+        );
+
+        $info->fill($data)->save();
 
         return $this->success();
     }
@@ -79,7 +112,15 @@ class PromoCodeController extends BaseController
     {
         $ids = $request->input('ids', []);
 
-        $ids && PromoCode::query()->whereIn('id', $ids)->delete();
+        if ($ids) {
+            PromoCode::query()->whereIn('id', $ids)->delete();
+
+            AdministratorLog::storeLog(
+                AdministratorLog::MODULE_PROMO_CODE,
+                AdministratorLog::OPT_DESTROY,
+                compact('ids')
+            );
+        }
 
         return $this->success();
     }
@@ -96,6 +137,12 @@ class PromoCodeController extends BaseController
         if (empty($data)) {
             return $this->error(__('数据为空'));
         }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_PROMO_CODE,
+            AdministratorLog::OPT_IMPORT,
+            compact('data')
+        );
 
         $insertData = [];
         foreach ($data as $index => $line) {
@@ -175,6 +222,12 @@ class PromoCodeController extends BaseController
 
         DB::transaction(function () use ($insertData) {
             foreach (array_chunk($insertData, 200) as $chunk) {
+                AdministratorLog::storeLog(
+                    AdministratorLog::MODULE_PROMO_CODE,
+                    AdministratorLog::OPT_IMPORT,
+                    compact('chunk')
+                );
+
                 PromoCode::insert($chunk);
             }
         });

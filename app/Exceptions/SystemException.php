@@ -14,6 +14,11 @@ class SystemException extends \Exception
 {
     use ResponseTrait;
 
+    /**
+     * @return \Illuminate\Http\JsonResponse|void
+     *
+     * @codeCoverageIgnore
+     */
     public function render()
     {
         if (request()->wantsJson()) {

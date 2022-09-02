@@ -36,9 +36,9 @@ class CaptchaController extends BaseController
     protected $cacheService;
 
     public function __construct(
-        SmsServiceInterface $smsService,
+        SmsServiceInterface    $smsService,
         ConfigServiceInterface $configService,
-        CacheServiceInterface $cacheService
+        CacheServiceInterface  $cacheService
     ) {
         $this->smsService = $smsService;
         $this->configService = $configService;
@@ -56,8 +56,9 @@ class CaptchaController extends BaseController
      * @apiSuccess {String} data.key 随机键值
      * @apiSuccess {String} data.img 图片base64码
      */
-    public function imageCaptcha(Captcha $captcha)
+    public function imageCaptcha()
     {
+        $captcha = app()->make('captcha');
         $data = $captcha->create('default', true);
 
         return $this->data($data);

@@ -8,11 +8,12 @@
 
 namespace App\Services\Member\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRemark extends Model
 {
-    protected $table = 'user_remarks';
+    protected $table = TableConstant::TABLE_USER_REMARKS;
 
     protected $fillable = [
         'remark', 'user_id',

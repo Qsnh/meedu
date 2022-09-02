@@ -19,7 +19,7 @@ class CreateCourseUserRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_user_records', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::TABLE_COURSE_USER_RECORDS, function (Blueprint $table) {
             $table->increments('id');
             $table->integer('course_id');
             $table->integer('user_id');
@@ -40,6 +40,6 @@ class CreateCourseUserRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_user_records');
+        Schema::dropIfExists(\App\Constant\TableConstant::TABLE_COURSE_USER_RECORDS);
     }
 }

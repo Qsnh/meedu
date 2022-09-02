@@ -22,7 +22,7 @@ class MpWechatController extends BaseController
         $mp->server->push(function ($message) {
             return HookRun::run(PositionConstant::MP_WECHAT_RECEIVER_MESSAGE, new HookParams([
                 'MsgType' => $message['MsgType'] ?? '',
-                'ToUserName' => $message['ToUserName'] ?? '',
+                'ToUserName' => $message['ToUserName'] ?? '',//openid
                 'FromUserName' => $message['FromUserName'] ?? '',
                 'CreateTime' => $message['CreateTime'] ?? '',
                 'MsgId' => $message['MsgId'] ?? '',

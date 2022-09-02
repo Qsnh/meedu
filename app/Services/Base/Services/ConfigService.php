@@ -44,14 +44,6 @@ class ConfigService implements ConfigServiceInterface
     }
 
     /**
-     * @return int
-     */
-    public function getInviteSceneCredit1(): int
-    {
-        return (int)config('meedu.member.credit1.invite');
-    }
-
-    /**
      * 获取服务配置
      *
      * @param string $app
@@ -383,16 +375,6 @@ class ConfigService implements ConfigServiceInterface
     public function getTencentVodConfig(): array
     {
         return config('tencent.vod');
-    }
-
-    /**
-     * 腾讯小程序配置
-     *
-     * @return array
-     */
-    public function getTencentWechatMiniConfig(): array
-    {
-        return config('tencent.wechat.mini');
     }
 
     /**
