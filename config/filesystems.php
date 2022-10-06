@@ -91,11 +91,12 @@ return [
 
         'oss' => [
             'driver' => 'oss',
-            'access_id' => env('ALI_OSS_ACCESS_ID'),
-            'access_key' => env('ALI_OSS_ACCESS_KEY'),
+            'access_key_id' => env('ALI_OSS_ACCESS_KEY_ID'),
+            'access_key_secret' => env('ALI_OSS_ACCESS_KEY_SECRET'),
             'bucket' => env('ALI_OSS_BUCKET'),
             'endpoint' => env('ALI_OSS_ENDPOINT'),
             'cdnDomain' => env('ALI_OSS_DOMAIN'),
+            'root' => env('ALI_OSS_ROOT', ''),
             'ssl' => true,
             'isCName' => true,
             'debug' => false,
