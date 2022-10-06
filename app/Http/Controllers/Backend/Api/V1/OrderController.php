@@ -205,7 +205,7 @@ class OrderController extends BaseController
             ->whereIn('status', [OrderRefund::STATUS_DEFAULT, OrderRefund::STATUS_SUCCESS])
             ->sum('amount');
         if ($directPayAmount < $refundTotalAmount + $amount) {
-            return $this->error('超过订单实际支付额度');
+            return $this->error(sprintf('超过订单实际支付额度，原支付金额:%s, 已退款金额:%s', $directPayAmount, $refundTotalAmount));
         }
 
         DB::transaction(function () use ($amount, $reason, $isLocal, $directPayAmount, $order) {
