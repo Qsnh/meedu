@@ -7,18 +7,17 @@
     "homepage": "https://meedu.vip",
     "type": "project",
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.0.2",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*",
         "alibabacloud/client": "^1.5",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.0",
-        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.2",
         "jacobcyl/ali-oss-storage": "^2.1",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^9.2",
         "laravel/helpers": "^1.2",
         "laravel/scout": "^9.2",
         "laravel/socialite": "^5.2.0",
@@ -26,18 +25,18 @@
         "mews/captcha": "^3.0",
         "mews/purifier": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8",
-        "nelexa/zip": "^3.3",
-        "overtrue/laravel-filesystem-cos": "1.0.2",
-        "overtrue/wechat": "~4.0",
+        "nelexa/zip": "^4.0",
+        "overtrue/laravel-filesystem-cos": "3.1.0",
+        "overtrue/wechat": "^5.0",
+        "php-open-source-saver/jwt-auth": "~2.0.0",
         "predis/predis": "^1.1",
-        "simplesoftwareio/simple-qrcode": "^2.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "socialiteproviders/qq": "^4.0",
         "tencentcloud/live": "3.0.696",
         "tencentcloud/sms": "3.0.696",
         "tencentcloud/vod": "3.0.696",
-        "tymon/jwt-auth": "^1.0",
-        "yansongda/laravel-pay": "^2.0",
-        "zgldh/qiniu-laravel-storage": "^0.10.3"
+        "yansongda/laravel-pay": "~3.2.0",
+        "zgldh/qiniu-laravel-storage": "~9.0.4"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -45,7 +44,9 @@
         "laravel/browser-kit-testing": "^6.2.0",
         "mockery/mockery": "^1.0",
         "phpunit/phpunit": "^9.0",
-        "symfony/thanks": "^1.0"
+        "symfony/thanks": "^1.0",
+        "nunomaduro/collision": "^6.1",
+        "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {
         "psr-4": {
