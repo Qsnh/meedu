@@ -8,6 +8,8 @@
 
 Route::get('/search', 'SearchController@index');
 
+Route::get('/status', 'SystemController@status');
+
 Route::get('/auth/login/wechat/oauth', 'LoginController@wechatOauthLogin');
 Route::get('/auth/login/wechat/callback', 'LoginController@wechatOauthCallback')->name('api.v3.login.wechat.callback');
 Route::get('/auth/login/socialite/{app}', 'LoginController@socialiteLogin');
