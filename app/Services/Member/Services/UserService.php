@@ -512,11 +512,16 @@ class UserService implements UserServiceInterface
             ->where('video_id', $videoId)
             ->first();
 
+        $isEmitWatchedEvent = false;
+
         if ($record) {
             if ($record->watched_at === null && $record->watch_seconds <= $duration) {
                 // 如果有记录[没看完 && 当前时间超过已记录的时间]
                 $data = ['watch_seconds' => $duration];
-                $isWatched && $data['watched_at'] = Carbon::now();
+                if ($isWatched) {
+                    $data['watched_at'] = Carbon::now();
+                    $isEmitWatchedEvent = true;
+                }
                 $record->fill($data)->save();
             }
         } else {
@@ -527,10 +532,10 @@ class UserService implements UserServiceInterface
                 'watch_seconds' => $duration,
                 'watched_at' => $isWatched ? Carbon::now() : null,
             ]);
+            $isEmitWatchedEvent = $isWatched;
         }
 
-        // 视频看完event
-        $isWatched && event(new UserVideoWatchedEvent($userId, $videoId));
+        $isEmitWatchedEvent && event(new UserVideoWatchedEvent($userId, $videoId));
     }
 
     /**
