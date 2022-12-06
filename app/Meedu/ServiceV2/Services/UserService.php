@@ -232,4 +232,26 @@ class UserService implements UserServiceInterface
 
         $this->userDao->storeSocialiteRecord($userId, $app, $appId, $data, $unionId);
     }
+
+    public function findUserProfile(int $userId): array
+    {
+        $profile = $this->userDao->findUserProfile($userId);
+        if (!$profile) {
+            $this->userDao->storeUserProfile($userId, [
+                'real_name' => '',
+                'gender' => '',
+                'age' => 0,
+                'birthday' => '',
+                'profession' => '',
+                'address' => '',
+                'graduated_school' => '',
+                'diploma' => '',
+                'id_number' => '',
+                'id_frontend_thumb' => '',
+                'id_backend_thumb' => '',
+                'id_hand_thumb' => '',
+            ]);
+        }
+        return $profile;
+    }
 }

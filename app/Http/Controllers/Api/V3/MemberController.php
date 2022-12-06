@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Api\V3;
 
+use App\Bus\MemberBus;
 use App\Bus\WechatScanBus;
+use App\Meedu\Tencent\Face;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
@@ -70,7 +72,11 @@ class MemberController extends BaseController
         $page = (int)$request->input('page', 1);
         $pageSize = (int)$request->input('size', 10);
 
-        ['data' => $data, 'total' => $total] = $userService->getUserCoursePaginateWithProgress($this->id(), $page, $pageSize);
+        ['data' => $data, 'total' => $total] = $userService->getUserCoursePaginateWithProgress(
+            $this->id(),
+            $page,
+            $pageSize
+        );
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
@@ -154,7 +160,11 @@ class MemberController extends BaseController
         $page = (int)$request->input('page', 1);
         $pageSize = (int)$request->input('size', 10);
 
-        ['data' => $data, 'total' => $total] = $userService->getUserLearnedCoursePaginateWithProgress($this->id(), $page, $pageSize);
+        ['data' => $data, 'total' => $total] = $userService->getUserLearnedCoursePaginateWithProgress(
+            $this->id(),
+            $page,
+            $pageSize
+        );
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
@@ -371,5 +381,62 @@ class MemberController extends BaseController
             'code' => $code,
             'image' => $image,
         ]);
+    }
+
+    /**
+     * @api {POST} /api/v3/member/tencent/faceVerify 微信实人认证
+     * @apiGroup 用户-V3
+     * @apiName  MemberTencentFaceVerify
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.9新增
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.biz_token bizToken
+     * @apiSuccess {String} data.rule_id RuleID
+     * @apiSuccess {String} data.url 认证的URL
+     * @apiSuccess {String} data.request_id RequestId
+     */
+    public function tencentFaceVerify(MemberBus $bus, Face $face)
+    {
+        $userId = (int)$this->id();
+        if ($bus->isVerify($userId)) {
+            return $this->error(__('当前学员已完成实人认证'));
+        }
+        // todo redirectUrl 修改
+        $data = $face->create('https://meedu.vip');
+        if (!$data) {
+            return $this->error(__('系统错误'));
+        }
+        // todo 创建记录
+        return $this->data($data);
+    }
+
+    /**
+     * @api {GET} /api/v3/member/tencent/faceVerify 微信实人认证结果查询
+     * @apiGroup 用户-V3
+     * @apiName  MemberTencentFaceVerifyQuery
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.9新增
+     *
+     * @apiParam {String} biz_token bizToken
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function queryTencentFaceVerify(Request $request, Face $face)
+    {
+        $bizToken = $request->input('biz_token');
+        $ruleId = $request->input('rule_id');
+        if (!$bizToken || !$ruleId) {
+            return $this->error(__('参数错误'));
+        }
+        $data = $face->query($ruleId, $bizToken);
+        if (!$data) {
+            abort(404);
+        }
+        return $this->data($data);
     }
 }

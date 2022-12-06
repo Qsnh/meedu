@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6aaa2f9520a031eeab7c40384ec40579",
+    "content-hash": "4bc54fff4f5c8d1c5f4a4627a3e3684e",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -9147,6 +9147,55 @@
                 "source": "https://github.com/tencentcloud-sdk-php/common/tree/3.0.696"
             },
             "time": "2022-08-04T08:07:10+00:00"
+        },
+        {
+            "name": "tencentcloud/faceid",
+            "version": "3.0.696",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tencentcloud-sdk-php/faceid.git",
+                "reference": "f50a4262a2f3be73d4d65ac45039a50f3e31dc5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tencentcloud-sdk-php/faceid/zipball/f50a4262a2f3be73d4d65ac45039a50f3e31dc5e",
+                "reference": "f50a4262a2f3be73d4d65ac45039a50f3e31dc5e",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "tencentcloud/common": "3.0.696"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TencentCloud\\": "./src/TencentCloud"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tencentcloudapi",
+                    "email": "tencentcloudapi@tencent.com",
+                    "homepage": "https://github.com/tencentcloud-sdk-php/faceid",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TencentCloudApi php sdk faceid",
+            "homepage": "https://github.com/tencentcloud-sdk-php/faceid",
+            "support": {
+                "issues": "https://github.com/tencentcloud-sdk-php/faceid/issues",
+                "source": "https://github.com/tencentcloud-sdk-php/faceid/tree/3.0.696"
+            },
+            "time": "2022-08-04T08:30:38+00:00"
         },
         {
             "name": "tencentcloud/live",

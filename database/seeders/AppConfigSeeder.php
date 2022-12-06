@@ -1091,7 +1091,7 @@ class AppConfigSeeder extends Seeder
             // 全文搜索配置
             [
                 'group' => '全文搜索',
-                'name' => 'MeiLiSearch Host',
+                'name' => 'MeiliSearch Host',
                 'field_type' => 'text',
                 'sort' => 1,
                 'key' => 'scout.meilisearch.host',
@@ -1099,12 +1099,39 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '全文搜索',
-                'name' => 'MeiLiSearch Key',
+                'name' => 'MeiliSearch Key',
                 'field_type' => 'text',
                 'sort' => 5,
                 'key' => 'scout.meilisearch.key',
                 'value' => '',
                 'is_private' => true,
+            ],
+
+            // 微信实人认证
+            [
+                'group' => '微信实人认证',
+                'name' => '微信实人认证-SecretId',
+                'field_type' => 'text',
+                'sort' => 10,
+                'key' => 'tencent.face.secret_id',
+                'value' => '',
+            ],
+            [
+                'group' => '微信实人认证',
+                'name' => '微信实人认证-SecretKey',
+                'field_type' => 'text',
+                'sort' => 20,
+                'key' => 'tencent.face.secret_key',
+                'value' => '',
+                'is_private' => true,
+            ],
+            [
+                'group' => '微信实人认证',
+                'name' => '微信实人认证-RuleID',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'tencent.face.rule_id',
+                'value' => '',
             ],
         ];
 

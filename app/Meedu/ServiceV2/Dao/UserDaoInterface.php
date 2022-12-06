@@ -59,4 +59,8 @@ interface UserDaoInterface
     public function findUserSocialites(int $userId): array;
 
     public function storeSocialiteRecord(int $userId, string $app, string $appId, array $data, string $unionId): int;
+
+    public function findUserProfile(int $userId): array;
+
+    public function storeUserProfile(int $userId, array $data): array;
 }
