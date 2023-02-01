@@ -17,6 +17,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.2",
+        "intervention/image": "^2.7",
         "jacobcyl/ali-oss-storage": "^2.1",
         "laravel/framework": "^8.0",
         "laravel/helpers": "^1.2",
