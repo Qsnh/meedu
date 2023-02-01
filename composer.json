@@ -29,6 +29,7 @@
         "nelexa/zip": "^3.3",
         "overtrue/laravel-filesystem-cos": "1.0.2",
         "overtrue/wechat": "~4.0",
+        "pion/laravel-chunk-upload": "^1.5",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "socialiteproviders/qq": "^4.0",
