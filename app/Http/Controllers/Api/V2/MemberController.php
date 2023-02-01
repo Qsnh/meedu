@@ -679,68 +679,6 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/profile 我的资料
-     * @apiGroup 用户
-     * @apiName MemberProfile
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {String} data.real_name 真实姓名
-     * @apiSuccess {String} data.gender 性别[1:男,2:女,0:未公开]
-     * @apiSuccess {String} data.age 年龄
-     * @apiSuccess {String} data.birthday 生日
-     * @apiSuccess {String} data.profession 职业
-     * @apiSuccess {String} data.address 住址
-     * @apiSuccess {String} data.graduated_school 毕业院校
-     * @apiSuccess {String} data.diploma 毕业证照片
-     * @apiSuccess {String} data.id_number 身份证号
-     * @apiSuccess {String} data.id_frontend_thumb 身份证人像面
-     * @apiSuccess {String} data.id_backend_thumb 身份证国徽面
-     * @apiSuccess {String} data.id_hand_thumb 手持身份证照片
-     */
-    public function profile()
-    {
-        $profile = $this->userService->getProfile($this->id());
-        $profile = arr1_clear($profile, ApiV2Constant::MODEL_MEMBER_PROFILE_FIELD);
-        return $this->data($profile);
-    }
-
-    /**
-     * @api {post} /api/v2/member/profile 资料编辑
-     * @apiGroup 用户
-     * @apiName MemberProfileUpdate
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {String} [real_name] 真实姓名
-     * @apiParam {String} [gender] 性别[1:男,2:女,0:未公开]
-     * @apiParam {String} [age] 年龄
-     * @apiParam {String} [birthday] 生日
-     * @apiParam {String} [profession] 职业
-     * @apiParam {String} [address] 住址
-     * @apiParam {String} [graduated_school] 毕业院校
-     * @apiParam {String} [diploma] 毕业证照片
-     * @apiParam {String} [id_number] 身份证号
-     * @apiParam {String} [id_frontend_thumb] 身份证人像面
-     * @apiParam {String} [id_backend_thumb] 身份证国徽面
-     * @apiParam {String} [id_hand_thumb] 手持身份证照片
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     */
-    public function profileUpdate(Request $request)
-    {
-        $data = $request->all();
-        $this->userService->saveProfile($this->id(), $data);
-        return $this->success();
-    }
-
-    /**
      * @api {post} /api/v2/member/verify 校验
      * @apiGroup 用户
      * @apiName MemberVerify

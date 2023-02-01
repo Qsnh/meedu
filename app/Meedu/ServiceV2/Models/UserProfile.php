@@ -21,6 +21,11 @@ class UserProfile extends Model
     protected $fillable = [
         'user_id',
         'real_name',//真实姓名
+        'id_number',//身份证号
+        'is_verify',//是否实名认证
+        'verify_image_url',//实名认证图片URL
+
+        //v4.9开始废弃字段
         'gender',//性别
         'age',//年龄
         'birthday',//生日
@@ -28,17 +33,8 @@ class UserProfile extends Model
         'address',//住址
         'graduated_school',//毕业院校
         'diploma',//毕业证照片
-        'id_number',//身份证号
         'id_frontend_thumb',//身份证人像面
         'id_backend_thumb',//身份证国徽面
         'id_hand_thumb',//手持身份证照
-        'is_verify',//是否实名认证
-        'verify_image_url',//实名认证图片URL
-    ];
-
-    public const EDIT_COLUMNS = [
-        'real_name', 'gender', 'age', 'birthday', 'profession', 'address',
-        'graduated_school', 'diploma',
-        'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
     ];
 }

@@ -791,6 +791,15 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '会员',
+                'name' => '强制实名认证后学习',
+                'field_type' => 'switch',
+                'sort' => 0,
+                'default_value' => 0,
+                'key' => 'meedu.member.enabled_face_verify',
+                'value' => 0,
+            ],
+            [
+                'group' => '会员',
                 'name' => '会员注册默认锁定',
                 'field_type' => 'switch',
                 'sort' => 2,

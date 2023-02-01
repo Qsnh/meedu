@@ -41,4 +41,9 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('tencent.face') ?? [];
     }
+
+    public function enabledFaceVerify(): bool
+    {
+        return (int)config('meedu.member.enabled_face_verify') === 1;
+    }
 }

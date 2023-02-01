@@ -28,6 +28,6 @@ class UserProfileUpdateListener
      */
     public function handle(UserVerifyFaceSuccessEvent $event)
     {
-        $this->userService->change2Verified($event->userId, $event->verifyImageUrl);
+        $this->userService->change2Verified($event->userId, $event->name, $event->idNumber, $event->verifyImageUrl);
     }
 }

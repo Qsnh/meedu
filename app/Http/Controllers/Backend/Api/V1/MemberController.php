@@ -143,22 +143,14 @@ class MemberController extends BaseController
         ]);
 
         $profileData = $request->only([
-            'real_name', 'gender', 'age', 'birthday', 'profession', 'address', 'graduated_school', 'diploma',
-            'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
+            'real_name', 'id_number', 'is_verify', 'verify_image_url',
         ]);
+
         if ($profileData) {
             $profileData['real_name'] = $profileData['real_name'] ?? '';
-            $profileData['gender'] = $profileData['gender'] ?? '';
-            $profileData['age'] = $profileData['age'] ?? 0;
-            $profileData['birthday'] = $profileData['birthday'] ?? '';
-            $profileData['profession'] = $profileData['profession'] ?? '';
-            $profileData['address'] = $profileData['address'] ?? '';
-            $profileData['graduated_school'] = $profileData['graduated_school'] ?? '';
-            $profileData['diploma'] = $profileData['diploma'] ?? '';
             $profileData['id_number'] = $profileData['id_number'] ?? '';
-            $profileData['id_frontend_thumb'] = $profileData['id_frontend_thumb'] ?? '';
-            $profileData['id_backend_thumb'] = $profileData['id_backend_thumb'] ?? '';
-            $profileData['id_hand_thumb'] = $profileData['id_hand_thumb'] ?? '';
+            $profileData['is_verify'] = (int)($profileData['is_verify'] ?? 0);
+            $profileData['verify_image_url'] = $profileData['verify_image_url'] ?? '';
         }
 
         // 手机号校验
@@ -219,7 +211,7 @@ class MemberController extends BaseController
             ->with([
                 'role:id,name',
                 'invitor:id,nick_name,mobile,avatar',
-                'profile', 'tags:id,name',
+                'profile:id,user_id,real_name,id_number,is_verify,verify_image_url', 'tags:id,name',
                 'remark:user_id,remark',
             ])
             ->where('id', $id)

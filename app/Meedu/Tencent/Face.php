@@ -74,10 +74,14 @@ class Face
             $resp = $client->GetDetectInfoEnhanced($req);
 
             return [
-                'best_frame' => $resp->getBestFrame(),
-                'text' => $resp->getText(),
+                'best_frame' => $resp->getBestFrame()->getBestFrame(),
+                'info' => [
+                    'name' => $resp->getText()->getName(),
+                    'id_number' => $resp->getText()->getIdCard(),
+                    'gender' => $resp->getText()->getOcrGender(),
+                ],
                 'id_card_data' => $resp->getIdCardData(),
-                'video_data' => $resp->getVideoData(),
+                'video_data' => $resp->getVideoData()->getLivenessVideo(),
                 'request_id' => $resp->getRequestId(),
             ];
         } catch (TencentCloudSDKException $e) {

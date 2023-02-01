@@ -21,12 +21,17 @@ class UserVerifyFaceSuccessEvent
 
     public $datetime;
 
+    public $name;
+    public $idNumber;
 
-    public function __construct(int $userId, string $verifyImageUrl, string $verifyVideoUrl, string $datetime)
+
+    public function __construct(int $userId, string $name, string $idNumber, string $verifyImageUrl, string $verifyVideoUrl, string $datetime)
     {
         $this->userId = $userId;
         $this->verifyImageUrl = $verifyImageUrl;
         $this->verifyVideoUrl = $verifyVideoUrl;
         $this->datetime = $datetime;
+        $this->name = $name;
+        $this->idNumber = $idNumber;
     }
 }

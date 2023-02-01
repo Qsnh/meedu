@@ -21,4 +21,6 @@ interface ConfigServiceInterface
     public function getMpWechatScanLoginAlert(): string;
 
     public function getTencentFaceConfig(): array;
+
+    public function enabledFaceVerify(): bool;
 }

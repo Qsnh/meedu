@@ -56,5 +56,5 @@ interface UserServiceInterface
         string $verifyVideoUrl
     ): int;
 
-    public function change2Verified(int $userId, string $verifyImageUrl): int;
+    public function change2Verified(int $userId, string $name, string $idNumber, string $verifyImageUrl): int;
 }

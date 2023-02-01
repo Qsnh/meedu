@@ -485,7 +485,16 @@ class MemberController extends BaseController
             $verifyVideoUrl
         );
 
-        event(new UserVerifyFaceSuccessEvent($this->id(), $verifyImageUrl, $verifyVideoUrl, Carbon::now()->toDateTimeLocalString()));
+        event(
+            new UserVerifyFaceSuccessEvent(
+                $this->id(),
+                $data['info']['name'],
+                $data['info']['id_number'],
+                $verifyImageUrl,
+                $verifyVideoUrl,
+                Carbon::now()->toDateTimeLocalString()
+            )
+        );
 
         return $this->data([
             'status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,

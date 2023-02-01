@@ -253,6 +253,7 @@ class UserService implements UserServiceInterface
                 'id_backend_thumb' => '',
                 'id_hand_thumb' => '',
             ]);
+            $profile = $this->userDao->findUserProfile($userId);
         }
         return $profile;
     }
@@ -281,11 +282,13 @@ class UserService implements UserServiceInterface
             ]);
     }
 
-    public function change2Verified(int $userId, string $verifyImageUrl): int
+    public function change2Verified(int $userId, string $name, string $idNumber, string $verifyImageUrl): int
     {
         return UserProfile::query()
             ->where('user_id', $userId)
             ->update([
+                'real_name' => $name,
+                'id_number' => $idNumber,
                 'is_verify' => 1,
                 'verify_image_url' => $verifyImageUrl,
             ]);
