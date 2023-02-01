@@ -33,6 +33,7 @@ class UserProfile extends Model
         'id_backend_thumb',//身份证国徽面
         'id_hand_thumb',//手持身份证照
         'is_verify',//是否实名认证
+        'verify_image_url',//实名认证图片URL
     ];
 
     public const EDIT_COLUMNS = [

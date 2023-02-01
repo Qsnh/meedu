@@ -21,6 +21,7 @@ class AddIsVerifyForUserProfile extends Migration
     {
         Schema::table(\App\Constant\TableConstant::TABLE_USER_PROFILES, function (Blueprint $table) {
             $table->tinyInteger('is_verify')->default(0)->comment('实名认证[0:否,1:是]');
+            $table->string('verify_image_url')->default('')->comment('认证图片URL');
         });
     }
 
@@ -33,6 +34,7 @@ class AddIsVerifyForUserProfile extends Migration
     {
         Schema::table(\App\Constant\TableConstant::TABLE_USER_PROFILES, function (Blueprint $table) {
             $table->dropColumn('is_verify');
+            $table->dropColumn('verify_image_url');
         });
     }
 }

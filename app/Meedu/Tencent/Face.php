@@ -81,7 +81,7 @@ class Face
                 'request_id' => $resp->getRequestId(),
             ];
         } catch (TencentCloudSDKException $e) {
-            Log::error(__METHOD__ . '|发起腾讯云实名认证错误|错误信息:' . $e->getMessage());
+            Log::error(__METHOD__ . '|腾讯云实名认证结果查询错误|错误信息:' . $e->getMessage());
             return null;
         }
     }

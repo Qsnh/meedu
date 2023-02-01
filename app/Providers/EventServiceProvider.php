@@ -95,5 +95,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         // 用户已删除事件
         'App\Events\UserDeletedEvent' => [],
+        // 用户实名认证通过事件
+        'App\Events\UserVerifyFaceSuccessEvent' => [
+            'App\Listeners\UserVerifyFaceSuccessEvent\UserNotifyListener',
+            'App\Listeners\UserVerifyFaceSuccessEvent\UserProfileUpdateListener',
+        ],
     ];
 }

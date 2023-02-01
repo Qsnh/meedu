@@ -8,14 +8,18 @@
 
 namespace App\Http\Controllers\Api\V3;
 
+use Carbon\Carbon;
 use App\Bus\MemberBus;
 use App\Bus\WechatScanBus;
 use App\Meedu\Tencent\Face;
 use Illuminate\Http\Request;
+use App\Constant\BusConstant;
 use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Cache;
+use App\Events\UserVerifyFaceSuccessEvent;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
@@ -391,6 +395,8 @@ class MemberController extends BaseController
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription v4.9新增
      *
+     * @apiParam {String} s_url 成功之后的跳转地址
+     *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.biz_token bizToken
@@ -398,18 +404,32 @@ class MemberController extends BaseController
      * @apiSuccess {String} data.url 认证的URL
      * @apiSuccess {String} data.request_id RequestId
      */
-    public function tencentFaceVerify(MemberBus $bus, Face $face)
+    public function tencentFaceVerify(Request $request, MemberBus $bus, Face $face, UserServiceInterface $userService)
     {
-        $userId = (int)$this->id();
+        $sUrl = $request->input('s_url');
+        if (!$sUrl) {
+            return $this->error(__('参数错误'));
+        }
+
+        $userId = $this->id();
         if ($bus->isVerify($userId)) {
             return $this->error(__('当前学员已完成实人认证'));
         }
-        // todo redirectUrl 修改
-        $data = $face->create('https://meedu.vip');
+
+        $data = $face->create($sUrl);
         if (!$data) {
-            return $this->error(__('系统错误'));
+            return $this->error(__('无法发起实名认证'));
         }
-        // todo 创建记录
+
+        // 保存发起实名认证记录
+        $userService->storeUserFaceVerifyTencentRecord(
+            $this->id(),
+            $data['rule_id'],
+            $data['request_id'],
+            $data['url'],
+            $data['biz_token']
+        );
+
         return $this->data($data);
     }
 
@@ -426,7 +446,7 @@ class MemberController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function queryTencentFaceVerify(Request $request, Face $face)
+    public function queryTencentFaceVerify(Request $request, Face $face, UserServiceInterface $userService)
     {
         $bizToken = $request->input('biz_token');
         $ruleId = $request->input('rule_id');
@@ -435,8 +455,40 @@ class MemberController extends BaseController
         }
         $data = $face->query($ruleId, $bizToken);
         if (!$data) {
-            abort(404);
+            return $this->success(['status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_FAIL]);
         }
-        return $this->data($data);
+
+        $verifyImageUrl = '';
+        $verifyVideoUrl = '';
+        if ($data['best_frame']) {
+            ['url' => $verifyImageUrl] = base64_save(
+                $data['best_frame'],
+                FrontendConstant::USER_VERIFY_FACE_IMAGE_SAVE_PATH,
+                'user-' . $this->id(),
+                'png'
+            );
+        }
+        if ($data['video_data']) {
+            ['url' => $verifyVideoUrl] = base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_VIDEO_SAVE_PATH,
+                'user-' . $this->id(),
+                'mp4'
+            );
+        }
+
+        $userService->updateUserFaceVerifyTencentRecord(
+            $this->id(),
+            $bizToken,
+            BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,
+            $verifyImageUrl,
+            $verifyVideoUrl
+        );
+
+        event(new UserVerifyFaceSuccessEvent($this->id(), $verifyImageUrl, $verifyVideoUrl, Carbon::now()->toDateTimeLocalString()));
+
+        return $this->data([
+            'status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,
+        ]);
     }
 }

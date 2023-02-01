@@ -12,7 +12,9 @@ use App\Events\UserDeletedEvent;
 use App\Exceptions\ServiceException;
 use App\Events\UserDeleteCancelEvent;
 use App\Events\UserDeleteSubmitEvent;
+use App\Meedu\ServiceV2\Models\UserProfile;
 use App\Meedu\ServiceV2\Dao\UserDaoInterface;
+use App\Meedu\ServiceV2\Models\UserFaceVerifyTencentRecord;
 
 class UserService implements UserServiceInterface
 {
@@ -253,5 +255,39 @@ class UserService implements UserServiceInterface
             ]);
         }
         return $profile;
+    }
+
+    public function storeUserFaceVerifyTencentRecord(int $userId, string $ruleId, string $requestId, string $url, string $bizToken): int
+    {
+        $record = UserFaceVerifyTencentRecord::create([
+            'user_id' => $userId,
+            'rule_id' => $ruleId,
+            'request_id' => $requestId,
+            'url' => $url,
+            'biz_token' => $bizToken,
+        ]);
+        return $record['id'];
+    }
+
+    public function updateUserFaceVerifyTencentRecord(int $userId, string $bizToken, int $status, string $verifyImageUrl, string $verifyVideoUrl): int
+    {
+        return UserFaceVerifyTencentRecord::query()
+            ->where('biz_token', $bizToken)
+            ->where('user_id', $userId)
+            ->update([
+                'status' => $status,
+                'verify_image_url' => $verifyImageUrl,
+                'verify_video_url' => $verifyVideoUrl,
+            ]);
+    }
+
+    public function change2Verified(int $userId, string $verifyImageUrl): int
+    {
+        return UserProfile::query()
+            ->where('user_id', $userId)
+            ->update([
+                'is_verify' => 1,
+                'verify_image_url' => $verifyImageUrl,
+            ]);
     }
 }

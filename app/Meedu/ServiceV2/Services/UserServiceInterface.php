@@ -39,4 +39,22 @@ interface UserServiceInterface
     public function socialiteBind(int $userId, string $app, string $appId, array $data, string $unionId = ''): void;
 
     public function findUserProfile(int $userId): array;
+
+    public function storeUserFaceVerifyTencentRecord(
+        int    $userId,
+        string $ruleId,
+        string $requestId,
+        string $url,
+        string $bizToken
+    ): int;
+
+    public function updateUserFaceVerifyTencentRecord(
+        int    $userId,
+        string $bizToken,
+        int    $status,
+        string $verifyImageUrl,
+        string $verifyVideoUrl
+    ): int;
+
+    public function change2Verified(int $userId, string $verifyImageUrl): int;
 }

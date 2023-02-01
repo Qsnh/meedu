@@ -74,4 +74,7 @@ class FrontendConstant
     // 点播服务
     public const VOD_SERVICE_TENCENT = 'tencent';
     public const VOD_SERVICE_ALIYUN = 'aliyun';
+
+    public const USER_VERIFY_FACE_IMAGE_SAVE_PATH = 'meedu/userFaceVerify/images';
+    public const USER_VERIFY_FACE_VIDEO_SAVE_PATH = 'meedu/userFaceVerify/videos';
 }

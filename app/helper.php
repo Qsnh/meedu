@@ -595,3 +595,25 @@ if (!function_exists('request_ua')) {
         return $ua;
     }
 }
+
+if (!function_exists('base64_save')) {
+    function base64_save(string $base64Content, string $path, string $namePrefix, string $extension)
+    {
+        /**
+         * @var $configService \App\Services\Base\Services\ConfigService
+         */
+        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+
+        $name = ($namePrefix ? $namePrefix . '-' : '') . \Illuminate\Support\Str::random(32) . '.' . $extension;
+        $path .= DIRECTORY_SEPARATOR . $name;
+
+        // 获取存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
+        $disk = $configService->getImageStorageDisk();
+        // 保存图片并返回存储的的路径
+        $path = \Illuminate\Support\Facades\Storage::disk($disk)->put($path, base64_decode($base64Content));
+        // 根据path获取对应磁盘的访问url
+        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+
+        return compact('path', 'url', 'disk', 'name');
+    }
+}
