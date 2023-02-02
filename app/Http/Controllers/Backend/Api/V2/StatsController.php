@@ -132,4 +132,62 @@ SQL;
 
         return $this->successData($result);
     }
+
+    public function transactionGraph(Request $request)
+    {
+        $statAt = $request->input('start_at');//格式:Y-m-d
+        $endAt = $request->input('end_at');//同上
+        if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
+            return $this->error(__('参数错误'));
+        }
+
+        $statAt = Carbon::parse($statAt)->toDateTimeLocalString();
+        $endAt = Carbon::parse($endAt)->toDateTimeLocalString();
+
+        $paidSum = []; //每日支付金额
+        $paidCount = []; //每日已支付订单数
+        $paidUserCount = []; //每日已支付学员数
+        $paidAvgCharge = []; //客单价
+
+        $tmpDate = Carbon::parse($statAt);
+        while ($tmpDate->lt($endAt)) {
+            $tmpAt = $tmpDate->format('Y-m-d');
+            $paidSum[$tmpAt] = 0;
+            $paidCount[$tmpAt] = 0;
+            $paidUserCount[$tmpAt] = [];
+            $paidAvgCharge[$tmpAt] = 0;
+
+            $tmpDate->addDays(1);
+        }
+
+        //读取这段时间的已支付订单
+        $orders = Order::query()
+            ->whereBetween('created_at', [$statAt, $endAt])
+            ->where('status', Order::STATUS_PAID)
+            ->get();
+
+        foreach ($orders as $tmpOrderItem) {
+            $tmpDate = Carbon::parse($tmpOrderItem['created_at'])->format('Y-m-d');
+
+            $paidSum[$tmpDate] += $tmpOrderItem['charge'];//每日支付金额
+            $paidCount[$tmpDate] += 1;//每日订单数量
+            $paidUserCount[$tmpDate][] = $tmpOrderItem['user_id'];
+        }
+
+        foreach ($paidSum as $key => $daySum) {//每日客单价计算
+            $tmpCount = $paidCount[$key] ?? 0;
+            $paidAvgCharge[$key] = $tmpCount === 0 ? 0 : (int)($daySum / $tmpCount);
+        }
+
+        foreach ($paidUserCount as $key => $tmpItem) {
+            $paidUserCount[$key] = count(array_unique($tmpItem));
+        }
+
+        return $this->successData([
+            'paid_sum' => $paidSum,
+            'paid_count' => $paidCount,
+            'paid_user_count' => $paidUserCount,
+            'paid_avg_charge' => $paidAvgCharge,
+        ]);
+    }
 }

@@ -19,6 +19,7 @@ Route::group([
 
     Route::group(['prefix' => 'stats'], function () {
         Route::get('/transaction', 'StatsController@transaction');
-        Route::get('/transactionTop', 'StatsController@transactionTop');
+        Route::get('/transaction-top', 'StatsController@transactionTop');
+        Route::get('/transaction-graph', 'StatsController@transactionGraph');
     });
 });
