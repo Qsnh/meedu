@@ -16,4 +16,9 @@ Route::group([
 
         Route::delete('/{id}', 'MemberController@destroy');
     });
+
+    Route::group(['prefix' => 'stats'], function () {
+        Route::get('/transaction', 'StatsController@transaction');
+        Route::get('/transactionTop', 'StatsController@transactionTop');
+    });
 });
