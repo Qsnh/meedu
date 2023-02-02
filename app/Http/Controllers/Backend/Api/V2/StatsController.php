@@ -101,6 +101,8 @@ class StatsController extends BaseController
         $size = (int)$request->input('size', 10);
         $offset = ($page - 1) * $size;
 
+        $goodsType = $request->input('goods_type');
+
         $statAt = $request->input('start_at');
         $endAt = $request->input('end_at');
         if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
@@ -113,6 +115,11 @@ class StatsController extends BaseController
         $tableOrders = TableConstant::TABLE_ORDERS;
         $tableOrderGoods = TableConstant::TABLE_ORDER_GOODS;
 
+        $goodsTypeSql = '';
+        if ($goodsType) {
+            $goodsTypeSql = ' and ' . $tableOrderGoods . '.goods_type=' . $goodsType . ' ';
+        }
+
         $sql = <<<SQL
 SELECT
         {$tableOrderGoods}.goods_id,
@@ -122,7 +129,7 @@ SELECT
 FROM {$tableOrders}
 INNER JOIN {$tableOrderGoods}
     ON {$tableOrderGoods}.oid = {$tableOrders}.id
-WHERE {$tableOrders}.status = 9 and {$tableOrders}.created_at between '{$statAt}' and '{$endAt}'
+WHERE {$tableOrders}.status = 9 and {$tableOrders}.created_at between '{$statAt}' and '{$endAt}' {$goodsTypeSql}
 GROUP BY  {$tableOrderGoods}.goods_id,{$tableOrderGoods}.goods_name
 ORDER BY  orders_paid_sum desc
 limit {$offset},{$size};
