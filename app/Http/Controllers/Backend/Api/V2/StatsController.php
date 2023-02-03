@@ -8,13 +8,14 @@
 
 namespace App\Http\Controllers\Backend\Api\V2;
 
-use App\Meedu\ServiceV2\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\TableConstant;
 use Illuminate\Support\Facades\DB;
+use App\Meedu\ServiceV2\Models\User;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\OrderRefund;
+use App\Services\Member\Models\UserWatchStat;
 
 class StatsController extends BaseController
 {
@@ -217,15 +218,15 @@ SQL;
         $tableOrders = TableConstant::TABLE_ORDERS;
 
         $countSql = <<<SQL
-select count(distinct `user_id`) as document_count from `{$tableOrders}` where `created_at` between '{$statAt}' and '{$endAt}';
+select count(distinct `user_id`) as document_count from `{$tableOrders}` where `status` = ? and `created_at` between ? and ?;
 SQL;
 
         $sql = <<<SQL
-select `user_id`,sum(`charge`) as `total`,count(`id`) as `count` from `{$tableOrders}` where `created_at` between '{$statAt}' and '{$endAt}' group by `user_id` order by `total` desc limit {$offset},{$size};
+select `user_id`,sum(`charge`) as `total`,count(`id`) as `count` from `{$tableOrders}` where `status` = ? and `created_at` between ? and ? group by `user_id` order by `total` desc limit ?,?;
 SQL;
 
-        $countResult = DB::selectOne($countSql);
-        $data = DB::select($sql);
+        $countResult = DB::selectOne($countSql, [Order::STATUS_PAID, $statAt, $endAt]);
+        $data = DB::select($sql, [Order::STATUS_PAID, $statAt, $endAt, $offset, $size]);
         if ($data) {
             $data = json_decode(json_encode($data), true);
             $userIds = array_column($data, 'user_id');
@@ -241,4 +242,103 @@ SQL;
         ]);
     }
 
+    public function user()
+    {
+        $today = explode('-', Carbon::now()->format('Y-m-d'));
+        $yesterday = explode('-', Carbon::now()->subDays(1)->format('Y-m-d'));
+
+        //今日观看视频人数
+        $todayWatchCount = UserWatchStat::query()
+            ->where('year', $today[0])
+            ->where('month', $today[1])
+            ->where('day', $today[2])
+            ->count();
+
+        $yesterdayWatchCount = UserWatchStat::query()
+            ->where('year', $yesterday[0])
+            ->where('month', $yesterday[1])
+            ->where('day', $yesterday[2])
+            ->count();
+
+
+        //昨日观看视频人数
+
+        //用户总数
+        $userCount = User::query()->count();
+        //今日注册数量
+        $todayCount = User::query()->where('created_at', Carbon::now()->format('Y-m-d'))->count();
+        //昨日注册数量
+        $yesterdayCount = User::query()
+            ->whereBetween('created_at', [Carbon::now()->subDays()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->count();
+        //本周注册人数
+        $weekCount = User::query()
+            ->whereBetween('created_at', [Carbon::now()->startOfWeek()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->count();
+        //本月注册人数
+        $monthCount = User::query()
+            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->count();
+
+        return $this->successData([
+            'user_count' => $userCount,//总人数
+            'yesterday_count' => $yesterdayCount,//昨日注册人数
+            'today_count' => $todayCount,//今日注册人数
+            'week_count' => $weekCount,//本周注册人数
+            'month_count' => $monthCount,//本月注册人数
+
+            'today_watch_count' => $todayWatchCount,//今日观看视频人数
+            'yesterday_watch_count' => $yesterdayWatchCount,//昨日观看视频人数
+        ]);
+    }
+
+    public function userGraph(Request $request)
+    {
+        $statAt = $request->input('start_at');//格式:Y-m-d
+        $endAt = $request->input('end_at');//同上
+        if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
+            return $this->error(__('参数错误'));
+        }
+
+        $statAt = Carbon::parse($statAt)->toDateTimeLocalString();
+        $endAt = Carbon::parse($endAt)->toDateTimeLocalString();
+
+        $tableOrders = TableConstant::TABLE_ORDERS;
+
+        //读取时间范围内创建订单并支付的用户ids
+        $userIds = Order::query()
+            ->select(['user_id'])
+            ->distinct('user_id')
+            ->where('status', Order::STATUS_PAID)
+            ->whereBetween('created_at', [$statAt, $endAt])
+            ->get();
+        $userIds = $userIds->pluck('user_id')->toArray();
+
+        //读取用户的已支付订单数量
+        $sql = <<<SQL
+select `user_id`,count(`id`) as `paid_count` from `{$tableOrders}` where `status` = ? group by `user_id`;
+SQL;
+        $paidCount = DB::select($sql, [Order::STATUS_PAID]);
+        $paidCount = json_decode(json_encode($paidCount), true);
+        $paidCount = array_column($paidCount, null, 'user_id');
+
+        $firstCount = 0;
+        $nonFirstCount = 0;
+
+        foreach ($userIds as $tmpUserId) {
+            $tmpPaidCount = isset($paidCount[$tmpUserId]) ? $paidCount[$tmpUserId]['paid_count'] : 0;
+            if ($tmpPaidCount <= 1) {
+                $firstCount++;
+            } else {
+                $nonFirstCount++;
+            }
+        }
+
+        return $this->successData([
+            'first-non-first' => [//首次付费-非首次付费
+                'first_count' => $firstCount,//首次付费人数
+                'non_first_count' => $nonFirstCount,//非首次付费人数
+            ],
+        ]);
+    }
 }
