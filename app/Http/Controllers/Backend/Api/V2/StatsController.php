@@ -254,30 +254,30 @@ SQL;
             ->where('day', $today[2])
             ->count();
 
+        //昨日观看视频人数
         $yesterdayWatchCount = UserWatchStat::query()
             ->where('year', $yesterday[0])
             ->where('month', $yesterday[1])
             ->where('day', $yesterday[2])
             ->count();
 
-
-        //昨日观看视频人数
+        $todayDate = Carbon::now()->format('Y-m-d');
 
         //用户总数
         $userCount = User::query()->count();
         //今日注册数量
-        $todayCount = User::query()->where('created_at', Carbon::now()->format('Y-m-d'))->count();
+        $todayCount = User::query()->where('created_at', $todayDate)->count();
         //昨日注册数量
         $yesterdayCount = User::query()
-            ->whereBetween('created_at', [Carbon::now()->subDays()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->whereBetween('created_at', [Carbon::now()->subDays()->format('Y-m-d'), $todayDate])
             ->count();
         //本周注册人数
         $weekCount = User::query()
-            ->whereBetween('created_at', [Carbon::now()->startOfWeek()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->whereBetween('created_at', [Carbon::now()->startOfWeek()->format('Y-m-d'), $todayDate])
             ->count();
         //本月注册人数
         $monthCount = User::query()
-            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->format('Y-m-d'), $todayDate])
             ->count();
 
         return $this->successData([
