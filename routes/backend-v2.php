@@ -21,5 +21,6 @@ Route::group([
         Route::get('/transaction', 'StatsController@transaction');
         Route::get('/transaction-top', 'StatsController@transactionTop');
         Route::get('/transaction-graph', 'StatsController@transactionGraph');
+        Route::get('/user-paid-top', 'StatsController@userPaidTop');
     });
 });

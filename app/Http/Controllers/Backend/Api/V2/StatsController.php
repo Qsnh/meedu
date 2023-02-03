@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V2;
 
+use App\Meedu\ServiceV2\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\TableConstant;
@@ -197,4 +198,47 @@ SQL;
             'paid_avg_charge' => $paidAvgCharge,
         ]);
     }
+
+    public function userPaidTop(Request $request)
+    {
+        $page = (int)$request->input('page', 1);
+        $size = (int)$request->input('size', 10);
+        $offset = ($page - 1) * $size;
+
+        $statAt = $request->input('start_at');//格式:Y-m-d
+        $endAt = $request->input('end_at');//同上
+        if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
+            return $this->error(__('参数错误'));
+        }
+
+        $statAt = Carbon::parse($statAt)->toDateTimeLocalString();
+        $endAt = Carbon::parse($endAt)->toDateTimeLocalString();
+
+        $tableOrders = TableConstant::TABLE_ORDERS;
+
+        $countSql = <<<SQL
+select count(distinct `user_id`) as document_count from `{$tableOrders}` where `created_at` between '{$statAt}' and '{$endAt}';
+SQL;
+
+        $sql = <<<SQL
+select `user_id`,sum(`charge`) as `total`,count(`id`) as `count` from `{$tableOrders}` where `created_at` between '{$statAt}' and '{$endAt}' group by `user_id` order by `total` desc limit {$offset},{$size};
+SQL;
+
+        $countResult = DB::selectOne($countSql);
+        $data = DB::select($sql);
+        if ($data) {
+            $data = json_decode(json_encode($data), true);
+            $userIds = array_column($data, 'user_id');
+            $users = User::query()->select(['id', 'nick_name', 'avatar'])->whereIn('id', $userIds)->get()->keyBy('id')->toArray();
+            foreach ($data as $key => $tmpItem) {
+                $data[$key]['user'] = $users[$tmpItem['user_id']] ?? [];
+            }
+        }
+
+        return $this->successData([
+            'total' => $countResult ? $countResult->document_count : 0,
+            'data' => $data,
+        ]);
+    }
+
 }
