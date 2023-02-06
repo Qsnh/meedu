@@ -119,7 +119,7 @@ class StatsController extends BaseController
 
         $goodsTypeSql = '';
         if ($goodsType) {
-            $goodsTypeSql = ' and ' . $tableOrderGoods . '.goods_type=' . $goodsType . ' ';
+            $goodsTypeSql = ' and ' . $tableOrderGoods . ".goods_type='{$goodsType}' ";
         }
 
         $sql = <<<SQL
