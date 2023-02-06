@@ -52,7 +52,7 @@ class StatsController extends BaseController
             ->count();
 
         //今日退款订单数
-        $todayRefundCount = OrderRefund::query()->where('created_at', '>=', date('Y-m-d'))->count();
+        $todayRefundCount = OrderRefund::query()->distinct('order_id')->where('created_at', '>=', date('Y-m-d'))->count();
 
         //今日已支付订单人数
         $todayPaidUserCount = Order::query()
@@ -71,7 +71,6 @@ class StatsController extends BaseController
         //今日订单创建数量
         $todayCount = Order::query()
             ->where('created_at', '>=', date('Y-m-d'))
-            ->where('status', Order::STATUS_PAID)
             ->count();
 
         //昨日订单创建数量
