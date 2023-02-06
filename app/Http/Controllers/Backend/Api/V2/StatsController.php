@@ -209,10 +209,10 @@ SQL;
         }
 
         return $this->successData([
-            'paid_sum' => $paidSum,
-            'paid_count' => $paidCount,
-            'paid_user_count' => $paidUserCount,
-            'paid_avg_charge' => $paidAvgCharge,
+            'paid_sum' => $paidSum,//每日支付额度
+            'paid_count' => $paidCount,//每日支付订单数量
+            'paid_user_count' => $paidUserCount,//每日支付用户数量
+            'paid_avg_charge' => $paidAvgCharge,//每日客单价
         ]);
     }
 
