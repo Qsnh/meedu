@@ -234,4 +234,20 @@ class BusinessState
             throw new ServiceException(__('当前渠道账号已绑定了其它账号'));
         }
     }
+
+    public function isFaceVerify(int $userId): bool
+    {
+        /**
+         * @var \App\Meedu\ServiceV2\Services\UserServiceInterface $userService
+         */
+        $userService = app()->make(\App\Meedu\ServiceV2\Services\UserServiceInterface::class);
+
+        $profile = $userService->findUserProfile($userId);
+        $isVerify = $profile['is_verify'] ?? 0;
+
+        if ($isVerify === 1) {
+            return true;
+        }
+        return false;
+    }
 }

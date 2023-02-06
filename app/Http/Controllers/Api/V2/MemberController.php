@@ -80,7 +80,8 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState             $businessState,
         ConfigServiceInterface    $configService
-    ) {
+    )
+    {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -121,6 +122,7 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
      * @apiSuccess {Number} data.invite_people_count 邀请人数
+     * @apiSuccess {Boolean} data.is_face_verify 是否完成实名认证
      */
     public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
@@ -142,6 +144,9 @@ class MemberController extends BaseController
 
         // 邀请人数
         $user['invite_people_count'] = $this->userService->inviteCount($this->id());
+
+        // 是否实名认证
+        $user['is_face_verify'] = $businessState->isFaceVerify($this->id());
 
         return $this->data($user);
     }
@@ -754,8 +759,9 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState             $businessState,
         Request                   $request,
-        $app
-    ) {
+                                  $app
+    )
+    {
         /**
          * @var SocialiteService $socialiteService
          */

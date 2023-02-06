@@ -411,6 +411,10 @@ class MemberController extends BaseController
             return $this->error(__('参数错误'));
         }
 
+        if ($sUrl === 'PC') {//PC使用默认的成功页面
+            $sUrl = route('face.verify.success');
+        }
+
         $userId = $this->id();
         if ($bus->isVerify($userId)) {
             return $this->error(__('当前学员已完成实人认证'));
