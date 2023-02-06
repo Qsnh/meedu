@@ -122,6 +122,18 @@ class StatsController extends BaseController
             $goodsTypeSql = ' and ' . $tableOrderGoods . ".goods_type='{$goodsType}' ";
         }
 
+        $countSql = <<<SQL
+SELECT count(*) as `document_count` from (
+    SELECT
+        {$tableOrderGoods}.goods_id
+FROM {$tableOrders}
+INNER JOIN {$tableOrderGoods}
+    ON {$tableOrderGoods}.oid = {$tableOrders}.id
+WHERE {$tableOrders}.status = 9 and {$tableOrders}.created_at between '{$statAt}' and '{$endAt}' {$goodsTypeSql}
+GROUP BY  {$tableOrderGoods}.goods_id,{$tableOrderGoods}.goods_name
+) as `tmp_order_goods_table`;
+SQL;
+
         $sql = <<<SQL
 SELECT
         {$tableOrderGoods}.goods_id,
@@ -137,9 +149,13 @@ ORDER BY  orders_paid_sum desc
 limit {$offset},{$size};
 SQL;
 
+        $count = DB::selectOne($countSql);
         $result = DB::select($sql);
 
-        return $this->successData($result);
+        return $this->successData([
+            'data' => $result,
+            'total' => $count->document_count,
+        ]);
     }
 
     public function transactionGraph(Request $request)
