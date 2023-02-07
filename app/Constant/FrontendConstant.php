@@ -75,6 +75,9 @@ class FrontendConstant
     public const VOD_SERVICE_TENCENT = 'tencent';
     public const VOD_SERVICE_ALIYUN = 'aliyun';
 
+    // 实名认证最佳帧图片存储路径
     public const USER_VERIFY_FACE_IMAGE_SAVE_PATH = 'meedu/userFaceVerify/images';
+    // 实名认证视频存储路径
     public const USER_VERIFY_FACE_VIDEO_SAVE_PATH = 'meedu/userFaceVerify/videos';
+    public const USER_VERIFY_FACE_ID_CARD_SAVE_PATH = '/meedu/userFaceVerify/idCard';
 }

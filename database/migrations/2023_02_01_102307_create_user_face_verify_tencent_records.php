@@ -24,7 +24,7 @@ class CreateUserFaceVerifyTencentRecords extends Migration
             $table->bigInteger('user_id')->default(0)->comment('用户ID');
             $table->string('rule_id', 32)->default('')->comment('认证的规则ID');
             $table->string('request_id', 128)->default('')->comment('requestId');
-            $table->string('url', 255)->default('')->comment('实名认证URL');
+            $table->string('url', 2550)->default('')->comment('实名认证URL');
             $table->string('biz_token', 128)->default('')->comment('bizToken');
             $table->tinyInteger('status')->default(0)->comment('状态[0:已提交,5:未通过,9:已通过]');
             $table->string('verify_image_url', 255)->default('')->comment('认证结果图片URL');

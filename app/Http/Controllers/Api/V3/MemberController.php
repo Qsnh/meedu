@@ -464,6 +464,7 @@ class MemberController extends BaseController
 
         $verifyImageUrl = '';
         $verifyVideoUrl = '';
+
         if ($data['best_frame']) {
             ['url' => $verifyImageUrl] = base64_save(
                 $data['best_frame'],
@@ -478,6 +479,20 @@ class MemberController extends BaseController
                 FrontendConstant::USER_VERIFY_FACE_VIDEO_SAVE_PATH,
                 'user-' . $this->id(),
                 'mp4'
+            );
+        }
+        if ($data['id_card']['front_image'] && $data['id_card']['back_image']) {
+            base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
+                'user-' . $this->id() . '-front',
+                'png'
+            );
+            base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
+                'user-' . $this->id() . '-back',
+                'png'
             );
         }
 

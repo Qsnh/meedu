@@ -73,7 +73,7 @@ class Face
 
             $resp = $client->GetDetectInfoEnhanced($req);
 
-            return [
+            $info = [
                 'best_frame' => $resp->getBestFrame()->getBestFrame(),
                 'info' => [
                     'name' => $resp->getText()->getName(),
@@ -81,9 +81,25 @@ class Face
                     'gender' => $resp->getText()->getOcrGender(),
                 ],
                 'id_card_data' => $resp->getIdCardData(),
+                'id_card' => [
+                    'front_image' => $resp->getIdCardData()->getProcessedFrontImage(),
+                    'back_image' => $resp->getIdCardData()->getProcessedBackImage(),
+                    'front_warn_infos' => $resp->getIdCardData()->getWarnInfos(),
+                    'back_warn_infos' => $resp->getIdCardData()->getBackWarnInfos(),
+                ],
                 'video_data' => $resp->getVideoData()->getLivenessVideo(),
                 'request_id' => $resp->getRequestId(),
             ];
+
+            if ($info['id_card']['front_warn_infos'] || $info['id_card']['back_warn_infos']) {//身份证识别失败
+                return null;
+            }
+
+            if (!$info['info']['name'] || !$info['best_frame'] || !$info['video_data']) {//还没有拿到全部的结果
+                return null;
+            }
+
+            return $info;
         } catch (TencentCloudSDKException $e) {
             Log::error(__METHOD__ . '|腾讯云实名认证结果查询错误|错误信息:' . $e->getMessage());
             return null;

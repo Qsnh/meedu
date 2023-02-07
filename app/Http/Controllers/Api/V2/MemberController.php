@@ -80,8 +80,7 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState             $businessState,
         ConfigServiceInterface    $configService
-    )
-    {
+    ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
@@ -123,13 +122,17 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
      * @apiSuccess {Number} data.invite_people_count 邀请人数
      * @apiSuccess {Boolean} data.is_face_verify 是否完成实名认证
+     * @apiSuccess {Boolean} data.profile_real_name 真实姓名
+     * @apiSuccess {Boolean} data.profile_id_number 身份证号
      */
     public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
         /**
          * @var SocialiteService $socialiteService
          */
-        $user = $this->userService->find($this->id(), ['role']);
+        $user = $this->userService->find($this->id(), ['role:id,name', 'profile:user_id,real_name,id_number,is_verify']);
+        $userProfile = $user['profile'] ?? [];
+        // user信息返回字段过滤
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         $socialites = $socialiteService->userSocialites($this->id());
@@ -146,7 +149,14 @@ class MemberController extends BaseController
         $user['invite_people_count'] = $this->userService->inviteCount($this->id());
 
         // 是否实名认证
-        $user['is_face_verify'] = $businessState->isFaceVerify($this->id());
+        $user['is_face_verify'] = false;
+        $user['profile_real_name'] = '';
+        $user['profile_id_number'] = '';
+        if ($userProfile) {
+            $user['is_face_verify'] = $userProfile['is_verify'] === 1;
+            $user['profile_real_name'] = name_mask($userProfile['real_name']);
+            $user['profile_id_number'] = id_mask($userProfile['id_number']);
+        }
 
         return $this->data($user);
     }
@@ -759,9 +769,8 @@ class MemberController extends BaseController
         SocialiteServiceInterface $socialiteService,
         BusinessState             $businessState,
         Request                   $request,
-                                  $app
-    )
-    {
+        $app
+    ) {
         /**
          * @var SocialiteService $socialiteService
          */

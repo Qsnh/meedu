@@ -610,10 +610,39 @@ if (!function_exists('base64_save')) {
         // 获取存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
         $disk = $configService->getImageStorageDisk();
         // 保存图片并返回存储的的路径
-        $path = \Illuminate\Support\Facades\Storage::disk($disk)->put($path, base64_decode($base64Content));
+        $uploadResult = \Illuminate\Support\Facades\Storage::disk($disk)->put($path, base64_decode($base64Content));
         // 根据path获取对应磁盘的访问url
         $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
 
         return compact('path', 'url', 'disk', 'name');
+    }
+}
+
+if (!function_exists('id_mask')) {
+    function id_mask(string $idNumber): string
+    {
+        if (!$idNumber) {
+            return '';
+        }
+        if (mb_strlen($idNumber) === 15) {
+            return mb_substr($idNumber, 0, 6) . '****' . mb_substr($idNumber, 12, 3);
+        }
+        return mb_substr($idNumber, 0, 6) . '****' . mb_substr($idNumber, 14, 4);
+    }
+}
+
+if (!function_exists('name_mask')) {
+    function name_mask(string $name): string
+    {
+        if (!$name) {
+            return '';
+        }
+        $length = mb_strlen($name);
+        if ($length === 1) {
+            return $name;
+        } elseif ($length === 2) {
+            return mb_substr($name, 0, 1) . '*';
+        }
+        return mb_substr($name, 0, 1) . '*' . mb_substr($name, -1, 1);
     }
 }
