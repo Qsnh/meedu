@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     Route::group(['prefix' => 'member'], function () {
         Route::get('/courses', 'MemberController@courses');
         Route::get('/courses/learned', 'MemberController@learnedCourses');
+        Route::get('/course/learned/{courseId}/detail', 'MemberController@learnedCourseDetail');
         Route::get('/courses/like', 'MemberController@likeCourses');
 
         // 账户注销

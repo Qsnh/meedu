@@ -300,4 +300,9 @@ SQL;
         $profile = UserProfile::create(array_merge($data, ['user_id' => $userId]));
         return $profile->toArray();
     }
+
+    public function getUserVideoWatchRecordsByVideoIds(int $userId, array $videoIds): array
+    {
+        return UserVideoWatchRecord::query()->where('user_id', $userId)->whereIn('video_id', $videoIds)->get()->toArray();
+    }
 }

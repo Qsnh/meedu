@@ -293,4 +293,9 @@ class UserService implements UserServiceInterface
                 'verify_image_url' => $verifyImageUrl,
             ]);
     }
+
+    public function getUserVideoWatchRecordsByChunkVideoIds(int $userId, array $videoIds): array
+    {
+        return $this->userDao->getUserVideoWatchRecordsByVideoIds($userId, $videoIds);
+    }
 }

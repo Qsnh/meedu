@@ -519,4 +519,36 @@ class MemberController extends BaseController
             'status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,
         ]);
     }
+
+    public function learnedCourseDetail(
+        Request                $request,
+        UserServiceInterface   $userService,
+        CourseServiceInterface $courseService,
+        $courseId
+    ) {
+        $videos = $courseService->getCoursePublishedVideos($courseId, ['id', 'title', 'published_at', 'duration']);
+        $videos = collect($videos)->sort(function ($a, $b) {
+            return Carbon::parse($a['published_at'])->gte($b['published_at']);
+        })->toArray();
+
+        // 读取课时学习记录
+        $watchRecords = $userService->getUserVideoWatchRecordsByChunkVideoIds($this->id(), array_column($videos, 'id'));
+        $watchRecords = array_column($watchRecords, null, 'video_id');
+
+        foreach ($videos as $key => $tmpVideoItem) {
+            $tmpWatchRecord = $watchRecords[$tmpVideoItem['id']] ?? [];
+            $tmpRecord = null;
+            if ($tmpWatchRecord) {
+                $tmpRecord = [
+                    'watch_seconds' => $tmpWatchRecord['watch_seconds'],//已观看秒数
+                    'watched_at' => $tmpWatchRecord['watched_at'] ? Carbon::parse($tmpWatchRecord['watched_at'])->toDateTimeLocalString() : null,
+                    'created_at' => Carbon::parse($tmpWatchRecord['created_at'])->toDateTimeLocalString(),
+                ];
+            }
+
+            $videos[$key]['watch_record'] = $tmpRecord;
+        }
+
+        return $this->data($videos);
+    }
 }

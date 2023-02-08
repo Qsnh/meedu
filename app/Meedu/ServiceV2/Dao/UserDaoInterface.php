@@ -63,4 +63,6 @@ interface UserDaoInterface
     public function findUserProfile(int $userId): array;
 
     public function storeUserProfile(int $userId, array $data): array;
+
+    public function getUserVideoWatchRecordsByVideoIds(int $userId, array $videoIds): array;
 }
