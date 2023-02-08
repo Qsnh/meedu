@@ -90,8 +90,8 @@ class StatsController extends BaseController
             'today_count' => $todayCount,//今日订单创建数量
             'yesterday_count' => $yesterdayCount,//昨日订单创建数量
 
-            // 今日客单价 = 今日支付总额 / 今日已支付订单数量
-            // 昨日客单价 = 昨日支付总额 / 昨日已支付订单数量
+            // 今日客单价 = 今日支付总额 / 今日支付学员数
+            // 昨日客单价 = 昨日支付总额 / 昨日支付学员数
         ]);
     }
 
@@ -199,7 +199,7 @@ SQL;
         }
 
         foreach ($paidSum as $key => $daySum) {//每日客单价计算
-            $tmpCount = $paidCount[$key] ?? 0;
+            $tmpCount = count($paidUserCount[$key] ?? []);
             $paidAvgCharge[$key] = $tmpCount === 0 ? 0 : (int)($daySum / $tmpCount);
         }
 
@@ -281,7 +281,7 @@ SQL;
         //用户总数
         $userCount = User::query()->count();
         //今日注册数量
-        $todayCount = User::query()->where('created_at', $todayDate)->count();
+        $todayCount = User::query()->where('created_at', '>=', $todayDate)->count();
         //昨日注册数量
         $yesterdayCount = User::query()
             ->whereBetween('created_at', [Carbon::now()->subDays()->format('Y-m-d'), $todayDate])
