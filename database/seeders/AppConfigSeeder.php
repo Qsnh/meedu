@@ -1116,18 +1116,18 @@ class AppConfigSeeder extends Seeder
                 'is_private' => true,
             ],
 
-            // 微信实人认证
+            // 微信实名认证
             [
-                'group' => '微信实人认证',
-                'name' => '微信实人认证-SecretId',
+                'group' => '微信实名认证',
+                'name' => 'SecretId',
                 'field_type' => 'text',
                 'sort' => 10,
                 'key' => 'tencent.face.secret_id',
                 'value' => '',
             ],
             [
-                'group' => '微信实人认证',
-                'name' => '微信实人认证-SecretKey',
+                'group' => '微信实名认证',
+                'name' => 'SecretKey',
                 'field_type' => 'text',
                 'sort' => 20,
                 'key' => 'tencent.face.secret_key',
@@ -1136,7 +1136,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '微信实人认证',
-                'name' => '微信实人认证-RuleID',
+                'name' => 'RuleID',
                 'field_type' => 'text',
                 'sort' => 30,
                 'key' => 'tencent.face.rule_id',
