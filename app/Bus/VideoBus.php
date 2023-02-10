@@ -55,12 +55,9 @@ class VideoBus
          */
         $userService = app()->make(UserServiceInterface::class);
 
-        // 用户观看时间统计[年/月/日]
-        // 目前的统计方法会有一定的误差，也就是每次缓存过期的第一次用户观看的时间
-        // 将会不纳入用户的观看时间统计里，具体的误差多少时间看前台的轮训周期时间
-        // 比如说前台每10s执行一次的话，那么这个误差的时间就是10s(一个缓存的周期)
-        if ($lastSubmitTimestamp && ($seconds = $duration - $lastSubmitTimestamp) > 0) {
-            $userService->watchStatSave($userId, $seconds);
+        // 用户每天的观看时间统计
+        if (($diffSeconds = $duration - $lastSubmitTimestamp) >= 0) {
+            $userService->watchStatSave($userId, $diffSeconds);
         }
 
         // 用户视频观看进度
