@@ -27,9 +27,13 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     Route::post('/order/pay/handPay', 'PaymentController@handPay');
 
     Route::group(['prefix' => 'member'], function () {
+        // 学员已购录播课
         Route::get('/courses', 'MemberController@courses');
+        // 学员的全部已学习录播课
         Route::get('/courses/learned', 'MemberController@learnedCourses');
+        // 学员某个课程的学习明细(课程的所有课时观看进度)
         Route::get('/learned/course/{courseId}', 'MemberController@learnedCourseDetail');
+        // 学员喜欢的课程
         Route::get('/courses/like', 'MemberController@likeCourses');
 
         // 账户注销
@@ -39,8 +43,9 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         // 微信账号扫码绑定
         Route::get('/wechatScanBind', 'MemberController@wechatScanBind');
 
-        // 微信实人认证
+        // 微信实人认证结果查询
         Route::get('/tencent/faceVerify', 'MemberController@queryTencentFaceVerify');
+        // 请求发起微信实人认证
         Route::post('/tencent/faceVerify', 'MemberController@tencentFaceVerify');
     });
 });

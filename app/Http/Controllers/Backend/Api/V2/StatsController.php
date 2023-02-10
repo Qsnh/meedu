@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Backend\Api\V2;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Constant\TableConstant;
+use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Meedu\ServiceV2\Models\User;
 use App\Services\Order\Models\Order;
@@ -22,6 +23,12 @@ class StatsController extends BaseController
     // 每日交易数据统计
     public function transaction()
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         //今日支付总额
         $todayPaidSum = (int)Order::query()
             ->where('created_at', '>=', date('Y-m-d'))
@@ -98,6 +105,12 @@ class StatsController extends BaseController
     //交易排名
     public function transactionTop(Request $request)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $page = (int)$request->input('page', 1);
         $size = (int)$request->input('size', 10);
         $offset = ($page - 1) * $size;
@@ -159,6 +172,12 @@ SQL;
 
     public function transactionGraph(Request $request)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $statAt = $request->input('start_at');//格式:Y-m-d
         $endAt = $request->input('end_at');//同上
         if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
@@ -217,6 +236,12 @@ SQL;
 
     public function userPaidTop(Request $request)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $page = (int)$request->input('page', 1);
         $size = (int)$request->input('size', 10);
         $offset = ($page - 1) * $size;
@@ -259,6 +284,12 @@ SQL;
 
     public function user()
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $today = explode('-', Carbon::now()->format('Y-m-d'));
         $yesterday = explode('-', Carbon::now()->subDays(1)->format('Y-m-d'));
 
@@ -309,6 +340,12 @@ SQL;
 
     public function userGraph(Request $request)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_STATUS_V2,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $statAt = $request->input('start_at');//格式:Y-m-d
         $endAt = $request->input('end_at');//同上
         if (!$statAt || !$endAt || Carbon::parse($statAt)->gte($endAt)) {
