@@ -872,6 +872,30 @@ class AdministratorPermissionSeeder extends Seeder
                     ],
                 ],
             ],
+
+            [
+                'group_name' => '数据',
+                'children' => [
+                    [
+                        'display_name' => '数据-交易分析',
+                        'slug' => 'stats.transaction',
+                        'method' => 'GET',
+                        'url' => '(^stats/transaction$|^stats/transaction-top$|^stats/transaction-graph$)',
+                    ],
+                    [
+                        'display_name' => '数据-内容分析',
+                        'slug' => 'stats.course',
+                        'method' => 'GET',
+                        'url' => '(^stats/transaction-top$)',
+                    ],
+                    [
+                        'display_name' => '数据-学员分析',
+                        'slug' => 'stats.user',
+                        'method' => 'GET',
+                        'url' => '(^stats/user$|^stats/user-top$|^stats/user-graph$)',
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $groupItem) {

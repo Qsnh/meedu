@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('/dashboard/check', 'DashboardController@check');
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
+    Route::get('/dashboard/graph', 'DashboardController@graph');
 
     Route::group(['prefix' => 'media/videos'], function () {
         Route::get('/index', 'MediaVideoController@index');

@@ -63,9 +63,11 @@ class WechatJSAPI implements Payment
         $sUrl = request()->input('s_url');
         $sUrl || $sUrl = request()->input('redirect');
         $sUrl || $sUrl = url('/');
+        $sUrl = strip_tags($sUrl);//xss过滤[该参数会在wechat-jsapi.blade中渲染]
 
         $fUrl = request()->input('f_url');
         $fUrl || $fUrl = url('/');
+        $fUrl = strip_tags($fUrl);//同上
 
         // 构建Response
         $data = [

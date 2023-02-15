@@ -36,4 +36,14 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.mp_wechat.scan_login_alert') ?? '';
     }
+
+    public function getTencentFaceConfig(): array
+    {
+        return config('tencent.face') ?? [];
+    }
+
+    public function enabledFaceVerify(): bool
+    {
+        return (int)config('meedu.member.enabled_face_verify') === 1;
+    }
 }

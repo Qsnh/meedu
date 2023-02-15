@@ -8,6 +8,7 @@
 
 namespace App\Services\Order\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Base\Services\ConfigService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ class Order extends Model
         self::STATUS_CANCELED => '已取消',
     ];
 
-    protected $table = 'orders';
+    protected $table = TableConstant::TABLE_ORDERS;
 
     protected $fillable = [
         'user_id', 'charge', 'status', 'order_id', 'payment',

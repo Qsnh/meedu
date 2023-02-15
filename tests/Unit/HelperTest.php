@@ -175,4 +175,27 @@ class HelperTest extends TestCase
         wechat_qrcode_image($code);
         $this->assertTrue(true);
     }
+
+    public function test_id_mask()
+    {
+        $this->assertEquals('', id_mask(''));
+
+        // 15位
+        $this->assertEquals('110110****123', id_mask('110110890212123'));
+
+        // 18位
+        $this->assertEquals('110110****1234', id_mask('110110199502121234'));
+    }
+
+    public function test_name_mask()
+    {
+        $this->assertEquals('', name_mask(''));
+
+        // 15位
+        $this->assertEquals('张*', name_mask('张三'));
+        $this->assertEquals('李*', name_mask('李四'));
+
+        // 18位
+        $this->assertEquals('马*克', name_mask('马斯克'));
+    }
 }

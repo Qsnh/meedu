@@ -49,4 +49,8 @@ class TableConstant
     public const TABLE_USER_UPLOAD_IMAGES = 'user_upload_images';
 
     public const TABLE_USER_SOCIALITE = 'socialite';
+
+    public const TABLE_ORDERS = 'orders';
+
+    public const TABLE_ORDER_GOODS = 'order_goods';
 }

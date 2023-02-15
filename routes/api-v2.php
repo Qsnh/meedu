@@ -142,9 +142,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::get('unreadNotificationCount', 'MemberController@unreadNotificationCount');
         // 积分明细
         Route::get('credit1Records', 'MemberController@credit1Records');
-        // 我的资料
-        Route::get('profile', 'MemberController@profile');
-        Route::post('profile', 'MemberController@profileUpdate');
         // 安全校验[手机号]
         Route::post('verify', 'MemberController@verify');
         // 微信扫码登录绑定

@@ -13,16 +13,19 @@ return [
 
     // 会员配置
     'member' => [
-        'is_active_default' => 1,
-        'is_lock_default' => 0,
+        'is_active_default' => 1,//注册学员默认激活[1:是,0:否]
+        'is_lock_default' => 0,//注册学员默认锁定[1:是,0:否]
 
         // 用户协议
         'protocol' => '',
         // 隐私协议
         'private_protocol' => '',
 
-        // 是否提醒绑定手机号
+        // 强制用户绑定手机号[1:是,0:否]
         'enabled_mobile_bind_alert' => 0,
+
+        // 强制用户实名认证
+        'enabled_face_verify' => 0,
 
         // 头像
         'default_avatar' => '/images/default_avatar.jpg',

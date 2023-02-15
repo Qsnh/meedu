@@ -9,7 +9,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use App\Http\Middleware\DeprecatedApiGuardMiddleware;
+use App\Http\Middleware\Api\DeprecatedApiGuardMiddleware;
 use App\Http\Middleware\Backend\BackendPermissionCheckMiddleware;
 
 class Kernel extends HttpKernel

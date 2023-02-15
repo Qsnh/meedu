@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Services\Member\Models;
+namespace App\Meedu\ServiceV2\Models;
 
 use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
@@ -36,11 +36,5 @@ class UserProfile extends Model
         'id_frontend_thumb',//身份证人像面
         'id_backend_thumb',//身份证国徽面
         'id_hand_thumb',//手持身份证照
-    ];
-
-    public const EDIT_COLUMNS = [
-        'real_name', 'gender', 'age', 'birthday', 'profession', 'address',
-        'graduated_school', 'diploma',
-        'id_number', 'id_frontend_thumb', 'id_backend_thumb', 'id_hand_thumb',
     ];
 }

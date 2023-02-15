@@ -37,8 +37,8 @@ class AdministratorLog extends Model
     public const MODULE_ADMIN_MEDIA_VIDEO = 'admin-media-video';
 
     public const MODULE_SYSTEM_CONFIG = 'system-config';
-
     public const MODULE_STATS = 'stats';
+    public const MODULE_STATUS_V2 = 'stats-v2';
 
     public const MODULE_MEMBER = 'member';
     public const MODULE_MEMBER_TAG = 'member-tag';
