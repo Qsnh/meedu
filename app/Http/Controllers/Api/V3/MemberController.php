@@ -8,12 +8,18 @@
 
 namespace App\Http\Controllers\Api\V3;
 
+use Carbon\Carbon;
+use App\Bus\MemberBus;
 use App\Bus\WechatScanBus;
+use App\Meedu\Tencent\Face;
 use Illuminate\Http\Request;
+use App\Constant\BusConstant;
 use App\Constant\CacheConstant;
 use App\Businesses\BusinessState;
+use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Cache;
+use App\Events\UserVerifyFaceSuccessEvent;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
@@ -70,7 +76,11 @@ class MemberController extends BaseController
         $page = (int)$request->input('page', 1);
         $pageSize = (int)$request->input('size', 10);
 
-        ['data' => $data, 'total' => $total] = $userService->getUserCoursePaginateWithProgress($this->id(), $page, $pageSize);
+        ['data' => $data, 'total' => $total] = $userService->getUserCoursePaginateWithProgress(
+            $this->id(),
+            $page,
+            $pageSize
+        );
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
@@ -154,7 +164,11 @@ class MemberController extends BaseController
         $page = (int)$request->input('page', 1);
         $pageSize = (int)$request->input('size', 10);
 
-        ['data' => $data, 'total' => $total] = $userService->getUserLearnedCoursePaginateWithProgress($this->id(), $page, $pageSize);
+        ['data' => $data, 'total' => $total] = $userService->getUserLearnedCoursePaginateWithProgress(
+            $this->id(),
+            $page,
+            $pageSize
+        );
 
         if ($data) {
             $courseIds = array_column($data, 'course_id');
@@ -371,5 +385,170 @@ class MemberController extends BaseController
             'code' => $code,
             'image' => $image,
         ]);
+    }
+
+    /**
+     * @api {POST} /api/v3/member/tencent/faceVerify 微信实人认证
+     * @apiGroup 用户-V3
+     * @apiName  MemberTencentFaceVerify
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.9新增
+     *
+     * @apiParam {String} s_url 成功之后的跳转地址
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     * @apiSuccess {String} data.biz_token bizToken
+     * @apiSuccess {String} data.rule_id RuleID
+     * @apiSuccess {String} data.url 认证的URL
+     * @apiSuccess {String} data.request_id RequestId
+     */
+    public function tencentFaceVerify(Request $request, MemberBus $bus, Face $face, UserServiceInterface $userService)
+    {
+        $sUrl = $request->input('s_url');
+        if (!$sUrl) {
+            return $this->error(__('参数错误'));
+        }
+
+        if ($sUrl === 'PC') {//PC使用默认的成功页面
+            $sUrl = route('face.verify.success');
+        }
+
+        $userId = $this->id();
+        if ($bus->isVerify($userId)) {
+            return $this->error(__('当前学员已完成实人认证'));
+        }
+
+        $data = $face->create($sUrl);
+        if (!$data) {
+            return $this->error(__('无法发起实名认证'));
+        }
+
+        // 保存发起实名认证记录
+        $userService->storeUserFaceVerifyTencentRecord(
+            $this->id(),
+            $data['rule_id'],
+            $data['request_id'],
+            $data['url'],
+            $data['biz_token']
+        );
+
+        return $this->data($data);
+    }
+
+    /**
+     * @api {GET} /api/v3/member/tencent/faceVerify 微信实人认证结果查询
+     * @apiGroup 用户-V3
+     * @apiName  MemberTencentFaceVerifyQuery
+     * @apiVersion v3.0.0
+     * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription v4.9新增
+     *
+     * @apiParam {String} biz_token bizToken
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data 数据
+     */
+    public function queryTencentFaceVerify(Request $request, Face $face, UserServiceInterface $userService)
+    {
+        $bizToken = $request->input('biz_token');
+        $ruleId = $request->input('rule_id');
+        if (!$bizToken || !$ruleId) {
+            return $this->error(__('参数错误'));
+        }
+        $data = $face->query($ruleId, $bizToken);
+        if (!$data) {
+            return $this->success(['status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_FAIL]);
+        }
+
+        $verifyImageUrl = '';
+        $verifyVideoUrl = '';
+
+        if ($data['best_frame']) {
+            ['url' => $verifyImageUrl] = base64_save(
+                $data['best_frame'],
+                FrontendConstant::USER_VERIFY_FACE_IMAGE_SAVE_PATH,
+                'user-' . $this->id(),
+                'png'
+            );
+        }
+        if ($data['video_data']) {
+            ['url' => $verifyVideoUrl] = base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_VIDEO_SAVE_PATH,
+                'user-' . $this->id(),
+                'mp4'
+            );
+        }
+        if ($data['id_card']['front_image'] && $data['id_card']['back_image']) {
+            base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
+                'user-' . $this->id() . '-front',
+                'png'
+            );
+            base64_save(
+                $data['video_data'],
+                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
+                'user-' . $this->id() . '-back',
+                'png'
+            );
+        }
+
+        $userService->updateUserFaceVerifyTencentRecord(
+            $this->id(),
+            $bizToken,
+            BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,
+            $verifyImageUrl,
+            $verifyVideoUrl
+        );
+
+        event(
+            new UserVerifyFaceSuccessEvent(
+                $this->id(),
+                $data['info']['name'],
+                $data['info']['id_number'],
+                $verifyImageUrl,
+                $verifyVideoUrl,
+                Carbon::now()->toDateTimeLocalString()
+            )
+        );
+
+        return $this->data([
+            'status' => BusConstant::USER_VERIFY_FACE_TENCENT_STATUS_SUCCESS,
+        ]);
+    }
+
+    public function learnedCourseDetail(
+        Request                $request,
+        UserServiceInterface   $userService,
+        CourseServiceInterface $courseService,
+        $courseId
+    ) {
+        $videos = $courseService->getCoursePublishedVideos($courseId, ['id', 'title', 'published_at', 'duration']);
+        $videos = collect($videos)->sort(function ($a, $b) {
+            return Carbon::parse($a['published_at'])->gte($b['published_at']);
+        })->toArray();
+
+        // 读取课时学习记录
+        $watchRecords = $userService->getUserVideoWatchRecordsByChunkVideoIds($this->id(), array_column($videos, 'id'));
+        $watchRecords = array_column($watchRecords, null, 'video_id');
+
+        foreach ($videos as $key => $tmpVideoItem) {
+            $tmpWatchRecord = $watchRecords[$tmpVideoItem['id']] ?? [];
+            $tmpRecord = null;
+            if ($tmpWatchRecord) {
+                $tmpRecord = [
+                    'watch_seconds' => $tmpWatchRecord['watch_seconds'],//已观看秒数
+                    'watched_at' => $tmpWatchRecord['watched_at'] ? Carbon::parse($tmpWatchRecord['watched_at'])->toDateTimeLocalString() : null,
+                    'created_at' => Carbon::parse($tmpWatchRecord['created_at'])->toDateTimeLocalString(),
+                ];
+            }
+
+            $videos[$key]['watch_record'] = $tmpRecord;
+        }
+
+        return $this->data($videos);
     }
 }

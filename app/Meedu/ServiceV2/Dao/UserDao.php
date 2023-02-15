@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Meedu\ServiceV2\Models\User;
 use App\Meedu\ServiceV2\Models\Socialite;
 use App\Meedu\ServiceV2\Models\UserCourse;
+use App\Meedu\ServiceV2\Models\UserProfile;
 use App\Meedu\ServiceV2\Models\UserDeleteJob;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Meedu\ServiceV2\Models\UserLoginRecord;
@@ -286,5 +287,22 @@ SQL;
             'union_id' => $unionId,
         ]);
         return $record['id'];
+    }
+
+    public function findUserProfile(int $userId): array
+    {
+        $profile = UserProfile::query()->where('user_id', $userId)->first();
+        return $profile ? $profile->toArray() : [];
+    }
+
+    public function storeUserProfile(int $userId, array $data): array
+    {
+        $profile = UserProfile::create(array_merge($data, ['user_id' => $userId]));
+        return $profile->toArray();
+    }
+
+    public function getUserVideoWatchRecordsByVideoIds(int $userId, array $videoIds): array
+    {
+        return UserVideoWatchRecord::query()->where('user_id', $userId)->whereIn('video_id', $videoIds)->get()->toArray();
     }
 }

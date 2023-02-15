@@ -28,4 +28,10 @@ class CourseService implements CourseServiceInterface
     {
         return $this->courseDao->videoChunk($ids, $fields, $params, $with, $withCount);
     }
+
+    public function getCoursePublishedVideos(int $courseId, array $fields): array
+    {
+        $videoIds = $this->courseDao->getCoursePublishedVideoIds($courseId);
+        return $this->courseDao->videoChunk($videoIds, $fields, [], [], []);
+    }
 }

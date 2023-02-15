@@ -12,7 +12,9 @@ use App\Events\UserDeletedEvent;
 use App\Exceptions\ServiceException;
 use App\Events\UserDeleteCancelEvent;
 use App\Events\UserDeleteSubmitEvent;
+use App\Meedu\ServiceV2\Models\UserProfile;
 use App\Meedu\ServiceV2\Dao\UserDaoInterface;
+use App\Meedu\ServiceV2\Models\UserFaceVerifyTencentRecord;
 
 class UserService implements UserServiceInterface
 {
@@ -231,5 +233,69 @@ class UserService implements UserServiceInterface
         }
 
         $this->userDao->storeSocialiteRecord($userId, $app, $appId, $data, $unionId);
+    }
+
+    public function findUserProfile(int $userId): array
+    {
+        $profile = $this->userDao->findUserProfile($userId);
+        if (!$profile) {
+            $this->userDao->storeUserProfile($userId, [
+                'real_name' => '',
+                'gender' => '',
+                'age' => 0,
+                'birthday' => '',
+                'profession' => '',
+                'address' => '',
+                'graduated_school' => '',
+                'diploma' => '',
+                'id_number' => '',
+                'id_frontend_thumb' => '',
+                'id_backend_thumb' => '',
+                'id_hand_thumb' => '',
+            ]);
+            $profile = $this->userDao->findUserProfile($userId);
+        }
+        return $profile;
+    }
+
+    public function storeUserFaceVerifyTencentRecord(int $userId, string $ruleId, string $requestId, string $url, string $bizToken): int
+    {
+        $record = UserFaceVerifyTencentRecord::create([
+            'user_id' => $userId,
+            'rule_id' => $ruleId,
+            'request_id' => $requestId,
+            'url' => $url,
+            'biz_token' => $bizToken,
+        ]);
+        return $record['id'];
+    }
+
+    public function updateUserFaceVerifyTencentRecord(int $userId, string $bizToken, int $status, string $verifyImageUrl, string $verifyVideoUrl): int
+    {
+        return UserFaceVerifyTencentRecord::query()
+            ->where('biz_token', $bizToken)
+            ->where('user_id', $userId)
+            ->update([
+                'status' => $status,
+                'verify_image_url' => $verifyImageUrl,
+                'verify_video_url' => $verifyVideoUrl,
+            ]);
+    }
+
+    public function change2Verified(int $userId, string $name, string $idNumber, string $verifyImageUrl): int
+    {
+        return UserProfile::query()
+            ->where('user_id', $userId)
+            ->update([
+                'real_name' => $name,
+                'id_number' => $idNumber,
+                'is_verify' => 1,
+                'verify_image_url' => $verifyImageUrl,
+            ]);
+    }
+
+    public function getUserVideoWatchRecordsByChunkVideoIds(int $userId, array $videoIds): array
+    {
+        return $this->userDao->getUserVideoWatchRecordsByVideoIds($userId, $videoIds);
     }
 }

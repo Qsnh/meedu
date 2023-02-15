@@ -19,4 +19,8 @@ interface ConfigServiceInterface
     public function isCloseDeprecatedApi(): bool;
 
     public function getMpWechatScanLoginAlert(): string;
+
+    public function getTencentFaceConfig(): array;
+
+    public function enabledFaceVerify(): bool;
 }

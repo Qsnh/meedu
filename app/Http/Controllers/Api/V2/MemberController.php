@@ -121,13 +121,18 @@ class MemberController extends BaseController
      * @apiSuccess {Number} data.is_bind_wechat 是否绑定微信[1:是,0:否]
      * @apiSuccess {Number} data.is_bind_mobile 是否绑定手机号[1:是,0:否]
      * @apiSuccess {Number} data.invite_people_count 邀请人数
+     * @apiSuccess {Boolean} data.is_face_verify 是否完成实名认证
+     * @apiSuccess {Boolean} data.profile_real_name 真实姓名
+     * @apiSuccess {Boolean} data.profile_id_number 身份证号
      */
     public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
         /**
          * @var SocialiteService $socialiteService
          */
-        $user = $this->userService->find($this->id(), ['role']);
+        $user = $this->userService->find($this->id(), ['role:id,name', 'profile:user_id,real_name,id_number,is_verify']);
+        $userProfile = $user['profile'] ?? [];
+        // user信息返回字段过滤
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
         $socialites = $socialiteService->userSocialites($this->id());
@@ -142,6 +147,16 @@ class MemberController extends BaseController
 
         // 邀请人数
         $user['invite_people_count'] = $this->userService->inviteCount($this->id());
+
+        // 是否实名认证
+        $user['is_face_verify'] = false;
+        $user['profile_real_name'] = '';
+        $user['profile_id_number'] = '';
+        if ($userProfile) {
+            $user['is_face_verify'] = $userProfile['is_verify'] === 1;
+            $user['profile_real_name'] = name_mask($userProfile['real_name']);
+            $user['profile_id_number'] = id_mask($userProfile['id_number']);
+        }
 
         return $this->data($user);
     }
@@ -676,68 +691,6 @@ class MemberController extends BaseController
             'total' => $total,
             'data' => $list,
         ]);
-    }
-
-    /**
-     * @api {get} /api/v2/member/profile 我的资料
-     * @apiGroup 用户
-     * @apiName MemberProfile
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {String} data.real_name 真实姓名
-     * @apiSuccess {String} data.gender 性别[1:男,2:女,0:未公开]
-     * @apiSuccess {String} data.age 年龄
-     * @apiSuccess {String} data.birthday 生日
-     * @apiSuccess {String} data.profession 职业
-     * @apiSuccess {String} data.address 住址
-     * @apiSuccess {String} data.graduated_school 毕业院校
-     * @apiSuccess {String} data.diploma 毕业证照片
-     * @apiSuccess {String} data.id_number 身份证号
-     * @apiSuccess {String} data.id_frontend_thumb 身份证人像面
-     * @apiSuccess {String} data.id_backend_thumb 身份证国徽面
-     * @apiSuccess {String} data.id_hand_thumb 手持身份证照片
-     */
-    public function profile()
-    {
-        $profile = $this->userService->getProfile($this->id());
-        $profile = arr1_clear($profile, ApiV2Constant::MODEL_MEMBER_PROFILE_FIELD);
-        return $this->data($profile);
-    }
-
-    /**
-     * @api {post} /api/v2/member/profile 资料编辑
-     * @apiGroup 用户
-     * @apiName MemberProfileUpdate
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {String} [real_name] 真实姓名
-     * @apiParam {String} [gender] 性别[1:男,2:女,0:未公开]
-     * @apiParam {String} [age] 年龄
-     * @apiParam {String} [birthday] 生日
-     * @apiParam {String} [profession] 职业
-     * @apiParam {String} [address] 住址
-     * @apiParam {String} [graduated_school] 毕业院校
-     * @apiParam {String} [diploma] 毕业证照片
-     * @apiParam {String} [id_number] 身份证号
-     * @apiParam {String} [id_frontend_thumb] 身份证人像面
-     * @apiParam {String} [id_backend_thumb] 身份证国徽面
-     * @apiParam {String} [id_hand_thumb] 手持身份证照片
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     */
-    public function profileUpdate(Request $request)
-    {
-        $data = $request->all();
-        $this->userService->saveProfile($this->id(), $data);
-        return $this->success();
     }
 
     /**

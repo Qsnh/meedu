@@ -8,6 +8,7 @@
 
 namespace App\Services\Order\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,7 +20,7 @@ class OrderGoods extends Model
     const GOODS_TYPE_VIDEO = 'VIDEO';
     const GOODS_TYPE_ROLE = 'ROLE';
 
-    protected $table = 'order_goods';
+    protected $table = TableConstant::TABLE_ORDER_GOODS;
 
     protected $fillable = [
         // 订单表orders的id

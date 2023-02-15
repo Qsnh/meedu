@@ -32,4 +32,9 @@ class IndexController extends FrontendController
         $aboutus = $this->configService->getAboutus();
         return view('index.aboutus', compact('aboutus'));
     }
+
+    public function faceVerifySuccess()
+    {
+        return view('index.face_verify_success');
+    }
 }

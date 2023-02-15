@@ -52,6 +52,7 @@ class OtherController extends BaseController
      * @apiSuccess {Number} data.player.bullet_secret.size 跑马灯—文字大小
      * @apiSuccess {Object} data.member
      * @apiSuccess {Number} data.member.enabled_mobile_bind_alert 强制绑定手机号[1:是,0否]
+     * @apiSuccess {Number} data.member.enabled_face_verify 强制实名认证[1:是,0否]
      * @apiSuccess {Number} data.socialites.qq QQ登录[1:是,0否]
      * @apiSuccess {Number} data.socialites.wechat_scan 微信扫码登录[1:是,0否]
      * @apiSuccess {Number} data.socialites.wechat_oauth 微信授权登录[1:是,0否]
@@ -68,6 +69,11 @@ class OtherController extends BaseController
         $bulletSecret = $playerConfig['bullet_secret'] ?? [];
 
         $enabledAddons = $addons->enabledAddons();
+
+        /**
+         * @var \App\Meedu\ServiceV2\Services\ConfigServiceInterface $configServiceV2
+         */
+        $configServiceV2 = app()->make(\App\Meedu\ServiceV2\Services\ConfigServiceInterface::class);
 
         $data = [
             // 网站名
@@ -106,6 +112,8 @@ class OtherController extends BaseController
             'member' => [
                 // 强制绑定手机号
                 'enabled_mobile_bind_alert' => $this->configService->getEnabledMobileBindAlert(),
+                // 强制实名认证
+                'enabled_face_verify' => $configServiceV2->enabledFaceVerify(),
             ],
             // 社交登录
             'socialites' => [

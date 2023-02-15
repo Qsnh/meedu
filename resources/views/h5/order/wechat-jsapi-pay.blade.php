@@ -23,10 +23,10 @@
             function (res) {
                 if (res.err_msg === "get_brand_wcpay_request:ok") {
                     alert('支付成功');
-                    window.location = '{{$sUrl}}';
+                    window.location = '{!! $sUrl !!}';
                 } else {
                     alert('未支付');
-                    window.location = '{{$fUrl}}';
+                    window.location = '{!! $fUrl !!}';
                 }
             });
     }

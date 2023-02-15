@@ -12,4 +12,9 @@ return [
         'secret_id' => '',
         'secret_key' => '',
     ],
+    'face' => [
+        'rule_id' => '',
+        'secret_id' => '',
+        'secret_key' => '',
+    ],
 ];

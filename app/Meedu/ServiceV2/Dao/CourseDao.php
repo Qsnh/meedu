@@ -8,6 +8,7 @@
 
 namespace App\Meedu\ServiceV2\Dao;
 
+use Carbon\Carbon;
 use App\Meedu\ServiceV2\Models\Course;
 use App\Meedu\ServiceV2\Models\CourseVideo;
 use App\Meedu\ServiceV2\Models\CourseCategory;
@@ -66,6 +67,18 @@ class CourseDao implements CourseDaoInterface
                 }
             })
             ->get()
+            ->toArray();
+    }
+
+    public function getCoursePublishedVideoIds(int $courseId): array
+    {
+        return CourseVideo::query()
+            ->where('course_id', $courseId)
+            ->select(['id'])
+            ->where('published_at', '<=', Carbon::now())
+            ->where('is_show', 1)
+            ->get()
+            ->pluck('id')
             ->toArray();
     }
 }
