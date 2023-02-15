@@ -18,18 +18,9 @@ class AppConfigSeeder extends Seeder
             // 系统配置
             [
                 'group' => '系统',
-                'name' => '网站名',
-                'field_type' => 'text',
-                'sort' => 0,
-                'default_value' => 'MeEdu',
-                'key' => 'app.name',
-                'value' => '',
-            ],
-            [
-                'group' => '系统',
                 'name' => 'DEBUG',
                 'field_type' => 'switch',
-                'sort' => 0,
+                'sort' => 10,
                 'default_value' => 0,
                 'key' => 'app.debug',
                 'value' => 0,
@@ -37,9 +28,27 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '系统',
+                'name' => '网站名',
+                'field_type' => 'text',
+                'sort' => 20,
+                'default_value' => 'MeEdu',
+                'key' => 'app.name',
+                'value' => '',
+            ],
+            [
+                'group' => '系统',
+                'name' => '网站Logo',
+                'field_type' => 'image',
+                'sort' => 25,
+                'default_value' => asset('/images/logo.png'),
+                'key' => 'meedu.system.logo',
+                'value' => asset('/images/logo.png'),
+            ],
+            [
+                'group' => '系统',
                 'name' => 'API访问地址',
                 'field_type' => 'text',
-                'sort' => 1,
+                'sort' => 30,
                 'default_value' => '',
                 'key' => 'app.url',
                 'value' => '',
@@ -49,7 +58,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => 'PC访问地址',
                 'field_type' => 'text',
-                'sort' => 1,
+                'sort' => 40,
                 'default_value' => '',
                 'key' => 'meedu.system.pc_url',
                 'value' => '',
@@ -59,7 +68,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => 'H5访问地址',
                 'field_type' => 'text',
-                'sort' => 1,
+                'sort' => 50,
                 'default_value' => '',
                 'key' => 'meedu.system.h5_url',
                 'value' => '',
@@ -67,18 +76,9 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '系统',
-                'name' => '网站Logo',
-                'field_type' => 'image',
-                'sort' => 2,
-                'default_value' => asset('/images/logo.png'),
-                'key' => 'meedu.system.logo',
-                'value' => asset('/images/logo.png'),
-            ],
-            [
-                'group' => '系统',
                 'name' => 'ICP备案号',
                 'field_type' => 'text',
-                'sort' => 6,
+                'sort' => 70,
                 'default_value' => '',
                 'key' => 'meedu.system.icp',
                 'value' => '',
@@ -87,7 +87,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => 'ICP备案号点击链接',
                 'field_type' => 'text',
-                'sort' => 6,
+                'sort' => 80,
                 'default_value' => '',
                 'key' => 'meedu.system.icp_link',
                 'value' => '',
@@ -96,7 +96,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => '公安网备案号',
                 'field_type' => 'text',
-                'sort' => 6,
+                'sort' => 90,
                 'default_value' => '',
                 'key' => 'meedu.system.icp2',
                 'value' => '',
@@ -105,7 +105,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => '公安网备案号点击链接',
                 'field_type' => 'text',
-                'sort' => 6,
+                'sort' => 100,
                 'default_value' => '',
                 'key' => 'meedu.system.icp2_link',
                 'value' => '',
@@ -114,7 +114,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '系统',
                 'name' => '关于我们',
                 'field_type' => 'longtext',
-                'sort' => 8,
+                'sort' => 110,
                 'default_value' => '',
                 'key' => 'meedu.aboutus',
                 'value' => '',
@@ -782,7 +782,7 @@ class AppConfigSeeder extends Seeder
             // 会员配置
             [
                 'group' => '会员',
-                'name' => '手机号强制绑定',
+                'name' => '强制绑定手机号',
                 'field_type' => 'switch',
                 'sort' => 0,
                 'default_value' => 0,
@@ -791,7 +791,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '会员',
-                'name' => '强制实名认证后学习',
+                'name' => '强制实名认证',
                 'field_type' => 'switch',
                 'sort' => 0,
                 'default_value' => 0,
@@ -800,7 +800,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '会员',
-                'name' => '会员注册默认锁定',
+                'name' => '新学员注册默认冻结',
                 'field_type' => 'switch',
                 'sort' => 2,
                 'default_value' => 0,
@@ -1150,12 +1150,26 @@ class AppConfigSeeder extends Seeder
         }
 
         foreach ($config as $item) {
-            if (\App\Services\Base\Model\AppConfig::query()->where('key', $item['key'])->exists()) {
-                continue;
+            $configItem = \App\Services\Base\Model\AppConfig::query()->where('key', $item['key'])->first();
+            if ($configItem) {
+                if (
+                    $item['group'] !== $configItem['group'] ||
+                    $item['name'] !== $configItem['name'] ||
+                    $item['field_type'] !== $configItem['field_type'] ||
+                    $item['sort'] !== $configItem['sort']
+                ) {//产生了变化->提交修改
+                    $configItem->fill([
+                        'group' => $item['group'],
+                        'name' => $item['name'],
+                        'field_type' => $item['field_type'],
+                        'sort' => $item['sort'],
+                    ])->save();
+                }
+            } else {
+                $val = \Illuminate\Support\Arr::get($localConfig, $item['key']);
+                $item['value'] = $val ?: ($item['value'] ?? '');
+                \App\Services\Base\Model\AppConfig::create($item);
             }
-            $val = \Illuminate\Support\Arr::get($localConfig, $item['key']);
-            $item['value'] = $val ?: ($item['value'] ?? '');
-            \App\Services\Base\Model\AppConfig::create($item);
         }
     }
 }
