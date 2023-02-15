@@ -892,7 +892,7 @@ class AdministratorPermissionSeeder extends Seeder
                         'display_name' => '数据-学员分析',
                         'slug' => 'stats.user',
                         'method' => 'GET',
-                        'url' => '(^stats/user$|^stats/user-top$|^stats/user-graph$)',
+                        'url' => '(^stats/user$|^stats/user-top$|^stats/user-paid-top$|^stats/user-graph$)',
                     ],
                 ],
             ],
