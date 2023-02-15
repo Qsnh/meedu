@@ -1135,7 +1135,7 @@ class AppConfigSeeder extends Seeder
                 'is_private' => true,
             ],
             [
-                'group' => '微信实人认证',
+                'group' => '微信实名认证',
                 'name' => 'RuleID',
                 'field_type' => 'text',
                 'sort' => 30,
