@@ -23,4 +23,14 @@ interface ConfigServiceInterface
     public function getTencentFaceConfig(): array;
 
     public function enabledFaceVerify(): bool;
+
+    public function getVideoDefaultService(): string;
+
+    public function getApiUrl(): string;
+
+    public function getPCUrl(): string;
+
+    public function getH5Url(): string;
+
+    public function getLogo(): string;
 }

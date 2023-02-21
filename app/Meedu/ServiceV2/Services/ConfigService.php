@@ -46,4 +46,29 @@ class ConfigService implements ConfigServiceInterface
     {
         return (int)config('meedu.member.enabled_face_verify') === 1;
     }
+
+    public function getVideoDefaultService(): string
+    {
+        return config('meedu.upload.video.default_service') ?? '';
+    }
+
+    public function getApiUrl(): string
+    {
+        return config('app.url') ?? '';
+    }
+
+    public function getPCUrl(): string
+    {
+        return config('meedu.system.pc_url') ?? '';
+    }
+
+    public function getH5Url(): string
+    {
+        return config('meedu.system.h5_url') ?? '';
+    }
+
+    public function getLogo(): string
+    {
+        return config('meedu.system.logo') ?? '';
+    }
 }

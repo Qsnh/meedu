@@ -704,28 +704,31 @@ class AppConfigSeeder extends Seeder
                 'value' => '',
             ],
 
+            [
+                'group' => '视频',
+                'name' => '视频存储默认服务',
+                'field_type' => 'select',
+                'sort' => 1,
+                'key' => 'meedu.upload.video.default_service',
+                'option_value' => json_encode([
+                    [
+                        'title' => '阿里云',
+                        'key' => 'aliyun',
+                    ],
+                    [
+                        'title' => '腾讯云',
+                        'key' => 'tencent',
+                    ],
+                ]),
+                'value' => '',
+            ],
+
             // 阿里云视频配置
-            [
-                'group' => '视频',
-                'name' => '阿里云视频Region',
-                'field_type' => 'text',
-                'sort' => 0,
-                'key' => 'meedu.upload.video.aliyun.region',
-                'value' => '',
-            ],
-            [
-                'group' => '视频',
-                'name' => '阿里云视频Host',
-                'field_type' => 'text',
-                'sort' => 0,
-                'key' => 'meedu.upload.video.aliyun.host',
-                'value' => '',
-            ],
             [
                 'group' => '视频',
                 'name' => '阿里云视频AccessKeyId',
                 'field_type' => 'text',
-                'sort' => 1,
+                'sort' => 10,
                 'key' => 'meedu.upload.video.aliyun.access_key_id',
                 'value' => '',
             ],
@@ -733,10 +736,26 @@ class AppConfigSeeder extends Seeder
                 'group' => '视频',
                 'name' => '阿里云视频AccessKeySecret',
                 'field_type' => 'text',
-                'sort' => 2,
+                'sort' => 20,
                 'key' => 'meedu.upload.video.aliyun.access_key_secret',
                 'value' => '',
                 'is_private' => 1,
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云视频Region',
+                'field_type' => 'text',
+                'sort' => 30,
+                'key' => 'meedu.upload.video.aliyun.region',
+                'value' => '',
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云视频Host',
+                'field_type' => 'text',
+                'sort' => 40,
+                'key' => 'meedu.upload.video.aliyun.host',
+                'value' => '',
             ],
 
             // 腾讯云视频
@@ -744,7 +763,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '视频',
                 'name' => '腾讯云视频AppId',
                 'field_type' => 'text',
-                'sort' => 3,
+                'sort' => 100,
                 'default_value' => '',
                 'key' => 'tencent.vod.app_id',
                 'value' => '',
@@ -753,7 +772,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '视频',
                 'name' => '腾讯云视频SecretId',
                 'field_type' => 'text',
-                'sort' => 4,
+                'sort' => 110,
                 'default_value' => '',
                 'key' => 'tencent.vod.secret_id',
                 'value' => '',
@@ -762,7 +781,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '视频',
                 'name' => '腾讯云视频SecretKey',
                 'field_type' => 'text',
-                'sort' => 5,
+                'sort' => 120,
                 'default_value' => '',
                 'key' => 'tencent.vod.secret_key',
                 'value' => '',
@@ -772,7 +791,7 @@ class AppConfigSeeder extends Seeder
                 'group' => '视频',
                 'name' => '腾讯云播放key',
                 'field_type' => 'text',
-                'sort' => 6,
+                'sort' => 130,
                 'default_value' => '',
                 'key' => 'meedu.system.player.tencent_play_key',
                 'value' => '',
@@ -1156,13 +1175,15 @@ class AppConfigSeeder extends Seeder
                     $item['group'] !== $configItem['group'] ||
                     $item['name'] !== $configItem['name'] ||
                     $item['field_type'] !== $configItem['field_type'] ||
-                    $item['sort'] !== $configItem['sort']
+                    $item['sort'] !== $configItem['sort'] ||
+                    (isset($item['option_value']) && $item['option_value'] !== $configItem['option_value'])
                 ) {//产生了变化->提交修改
                     $configItem->fill([
                         'group' => $item['group'],
                         'name' => $item['name'],
                         'field_type' => $item['field_type'],
                         'sort' => $item['sort'],
+                        'option_value' => $item['option_value'] ?? null,
                     ])->save();
                 }
             } else {

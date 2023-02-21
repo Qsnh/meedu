@@ -91,6 +91,7 @@ return [
             'params' => '',
         ],
         'video' => [
+            'default_service' => '',
             'aliyun' => [
                 'region' => 'cn-shanghai',
                 'host' => '',
