@@ -100,10 +100,10 @@ class MemberTest extends Base
     public function test_mobile_bind_mobile_exists()
     {
         User::factory()->create(['mobile' => '12345679876']);
+
+        // 短信验证码写入缓存
         $cacheService = $this->app->make(CacheServiceInterface::class);
         $cacheService->put(get_cache_key(CacheConstant::MOBILE_CODE['name'], '12345679876'), 'code', 1);
-
-        $sign = $this->app->make(Verify::class)->gen();
 
         // 必须是未绑定的手机号才能绑定
         $this->member->mobile = '27898765423';
@@ -112,7 +112,6 @@ class MemberTest extends Base
         $response = $this->user($this->member)->postJson('api/v2/member/detail/mobile', [
             'mobile_code' => 'code',
             'mobile' => '12345679876',
-            'sign' => $sign,
         ]);
         $this->assertResponseError($response, __('手机号已存在'));
     }

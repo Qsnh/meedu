@@ -214,13 +214,10 @@ class UserService implements UserServiceInterface
      */
     public function changeMobile(int $userId, string $mobile): void
     {
-        $exists = $this->findMobile($mobile);
-        if ($exists) {
+        if ($this->findMobile($mobile)) {
             throw new ServiceException(__('手机号已存在'));
         }
-        $user = User::findOrFail($userId);
-        $user->mobile = $mobile;
-        $user->save();
+        User::query()->where('id', $userId)->update(['mobile' => $mobile]);
     }
 
     /**
