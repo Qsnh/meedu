@@ -91,6 +91,7 @@ return [
             'params' => '',
         ],
         'video' => [
+            'default_service' => '',
             'aliyun' => [
                 'region' => 'cn-shanghai',
                 'host' => '',
@@ -126,15 +127,15 @@ return [
         'wechat' => [
             'enabled' => 0,
             'handler' => \App\Meedu\Payment\Wechat\WechatScan::class,
-            'name' => '微信支付',
+            'name' => '微信扫码支付',
             'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat',
             'default_method' => 'scan',
             'pc' => 'scan',
         ],
         'wechat-jsapi' => [
-            'enabled' => 1,
-            'name' => '微信支付',
+            'enabled' => 0,
+            'name' => '微信JSAPI支付',
             'logo' => '/images/icons/wechat-pay.png',
             'sign' => 'wechat-jsapi',
             'handler' => \App\Meedu\Payment\Wechat\WechatJSAPI::class,

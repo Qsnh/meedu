@@ -14,17 +14,8 @@ class ServiceException extends \Exception
 {
     use ResponseTrait;
 
-    /**
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     *
-     * @codeCoverageIgnore
-     */
     public function render()
     {
-        $message = $this->getMessage();
-        if (request()->wantsJson()) {
-            return $this->error($message);
-        }
-        return back();
+        return $this->error($this->getMessage());
     }
 }

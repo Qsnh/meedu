@@ -22,6 +22,12 @@ class MediaVideoController extends BaseController
         $keywords = $request->input('keywords');
         $isOpen = (int)$request->input('is_open');
 
+        $sort = strtolower($request->input('sort', 'id'));
+        $order = strtolower($request->input('order', 'desc'));
+        if (!in_array($sort, ['id', 'duration', 'size', 'created_at']) || !in_array($order, ['desc', 'asc'])) {
+            return $this->error(__('排序参数错误'));
+        }
+
         $videos = MediaVideo::query()
             ->select([
                 'id', 'title', 'thumb', 'duration', 'size', 'storage_driver', 'storage_file_id',

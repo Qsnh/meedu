@@ -7,23 +7,29 @@
  */
 
 Route::group([
-    'middleware' => ['auth:administrator', 'backend.permission'],
+    'middleware' => ['auth:administrator'],
 ], function () {
-    Route::group(['prefix' => 'member'], function () {
-        Route::get('/courses', 'MemberController@courses');
-        Route::get('/course/progress', 'MemberController@courseProgress');
-        Route::get('/videos', 'MemberController@videos');
+    Route::get('/system/config', 'SystemController@config');
 
-        Route::delete('/{id}', 'MemberController@destroy');
-    });
+    Route::group([
+        'middleware' => ['backend.permission'],
+    ], function () {
+        Route::group(['prefix' => 'member'], function () {
+            Route::get('/courses', 'MemberController@courses');
+            Route::get('/course/progress', 'MemberController@courseProgress');
+            Route::get('/videos', 'MemberController@videos');
 
-    Route::group(['prefix' => 'stats'], function () {
-        Route::get('/transaction', 'StatsController@transaction');
-        Route::get('/transaction-top', 'StatsController@transactionTop');
-        Route::get('/transaction-graph', 'StatsController@transactionGraph');
+            Route::delete('/{id}', 'MemberController@destroy');
+        });
 
-        Route::get('/user-paid-top', 'StatsController@userPaidTop');
-        Route::get('/user', 'StatsController@user');
-        Route::get('/user-graph', 'StatsController@userGraph');
+        Route::group(['prefix' => 'stats'], function () {
+            Route::get('/transaction', 'StatsController@transaction');
+            Route::get('/transaction-top', 'StatsController@transactionTop');
+            Route::get('/transaction-graph', 'StatsController@transactionGraph');
+
+            Route::get('/user-paid-top', 'StatsController@userPaidTop');
+            Route::get('/user', 'StatsController@user');
+            Route::get('/user-graph', 'StatsController@userGraph');
+        });
     });
 });
