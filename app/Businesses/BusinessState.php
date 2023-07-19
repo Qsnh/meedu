@@ -115,8 +115,12 @@ class BusinessState
         if ($promoCode['user_id'] === $loginUserId) {
             return false;
         }
+        // 使用次数已用完
         if ($promoCode['use_times'] > 0 && $promoCode['use_times'] - $promoCode['used_times'] <= 0) {
-            // 使用次数已用完
+            return false;
+        }
+        // 是否过期
+        if ($promoCode['expired_at'] && Carbon::now()->gt($promoCode['expired_at'])) {
             return false;
         }
         /**
