@@ -136,7 +136,7 @@ class DashboardController extends BaseController
 
         $startAt = Carbon::parse($startAt)->format('Y-m-d');
 
-        $endAt = Carbon::parse($endAt)->format('Y-m-d');
+        $endAt = Carbon::parse($endAt)->format('Y-m-d') . ' 23:59:59';
         $endAtCarbon = Carbon::parse($endAt);
 
         // 每日注册学员数量统计
