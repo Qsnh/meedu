@@ -20,6 +20,18 @@ class AdministratorPermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
+            // 主面板
+            [
+                'group_name' => '主面板',
+                'children' => [
+                    [
+                        'display_name' => '主面板',
+                        'slug' => 'dashboard',
+                        'method' => 'GET',
+                        'url' => '(^dashboard$|^dashboard\/check$|^dashboard\/system\/info$|^dashboard\/graph$)',
+                    ],
+                ],
+            ],
             // 录播课
             [
                 'group_name' => '录播课',
