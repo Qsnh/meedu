@@ -19,7 +19,7 @@ class NavService implements NavServiceInterface
      */
     public function all($platform = ''): array
     {
-        return Nav::query()
+        $navs = Nav::query()
             ->with(['children'])
             ->select(['id', 'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id', 'blank'])
             ->when($platform, function ($query) use ($platform) {
@@ -29,5 +29,18 @@ class NavService implements NavServiceInterface
             ->orderBy('sort')
             ->get()
             ->toArray();
+
+        foreach ($navs as $key => $navItem) {
+            $children = $navItem['children'] ?? [];
+            if (!$children) {
+                continue;
+            }
+            usort($children, function ($a, $b) {
+                return $a['sort'] - $b['sort'];
+            });
+            $navs[$key]['children'] = $children;
+        }
+
+        return $navs;
     }
 }

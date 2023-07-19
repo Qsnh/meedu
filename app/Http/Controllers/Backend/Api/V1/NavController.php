@@ -22,17 +22,29 @@ class NavController extends BaseController
         $platform = $request->input('platform');
 
         $navs = Nav::query()
+            ->with(['children'])
             ->select([
                 'id', 'sort', 'name', 'url', 'active_routes', 'platform', 'parent_id',
                 'blank', 'created_at', 'updated_at',
             ])
-            ->with(['children'])
             ->when($platform, function ($query) use ($platform) {
                 $query->where('platform', $platform);
             })
             ->where('parent_id', 0)
             ->orderBy('sort')
-            ->get();
+            ->get()
+            ->toArray();
+
+        foreach ($navs as $key => $navItem) {
+            $children = $navItem['children'] ?? [];
+            if (!$children) {
+                continue;
+            }
+            usort($children, function ($a, $b) {
+                return $a['sort'] - $b['sort'];
+            });
+            $navs[$key]['children'] = $children;
+        }
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_NAV,
