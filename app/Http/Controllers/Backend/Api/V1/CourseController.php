@@ -384,6 +384,7 @@ class CourseController extends BaseController
         if ($chapters->isEmpty()) {
             foreach ($videos as $videoItem) {
                 $tmp = [
+                    'video_id' => $videoItem['id'],
                     'video_title' => $videoItem['title'],
                     'duration' => $videoItem['duration'],
                     'watch_seconds' => $videoWatchRecords[$videoItem['id']]['watch_seconds'] ?? 0,
@@ -401,6 +402,7 @@ class CourseController extends BaseController
 
                 foreach ($list as $videoItem) {
                     $tmp = [
+                        'video_id' => $videoItem['id'],
                         'video_title' => sprintf('%s-%s', $chapter['title'], $videoItem['title']),
                         'duration' => $videoItem['duration'],
                         'watch_seconds' => $videoWatchRecords[$videoItem['id']]['watch_seconds'] ?? 0,
