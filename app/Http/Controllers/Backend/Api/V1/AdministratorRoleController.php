@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
@@ -48,6 +49,7 @@ class AdministratorRoleController extends BaseController
         AdministratorRole        $role
     ) {
         $data = $request->filldata();
+        $data['slug'] = Str::random(16);
         $permissionIds = $request->input('permission_ids', []);
 
         $role->fill($data)->save();
@@ -87,8 +89,8 @@ class AdministratorRoleController extends BaseController
         AdministratorLog::storeLogDiff(
             AdministratorLog::MODULE_ADMINISTRATOR_ROLE,
             AdministratorLog::OPT_UPDATE,
-            Arr::only(array_merge($data, ['permission_ids' => $permissionIds]), ['display_name', 'slug', 'description', 'permission_ids']),
-            Arr::only(array_merge($role->toArray(), ['permission_id' => $oldPermissionIds]), ['display_name', 'slug', 'description', 'permission_ids'])
+            Arr::only(array_merge($data, ['permission_ids' => $permissionIds]), ['display_name', 'description', 'permission_ids']),
+            Arr::only(array_merge($role->toArray(), ['permission_id' => $oldPermissionIds]), ['display_name', 'description', 'permission_ids'])
         );
 
         $role->fill($data)->save();
