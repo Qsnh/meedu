@@ -8,11 +8,20 @@
 
 namespace App\Listeners\AppConfigSavedEvent;
 
+use App\Meedu\Setting;
 use App\Events\AppConfigSavedEvent;
 use App\Constant\ConfigConstant as C;
 
 class WechatCertGenerateListener
 {
+
+    private $setting;
+
+    public function __construct(Setting $setting)
+    {
+        $this->setting = $setting;
+    }
+
     public function handle(AppConfigSavedEvent $event)
     {
         // 分下面几种情况
@@ -48,11 +57,13 @@ class WechatCertGenerateListener
             if (file_exists($path)) {
                 @unlink($path);
             }
+            $this->setting->put([C::WECHAT_PAY_CERT_CLIENT_KEY => '']);
             return;
         }
 
         // 更新了配置
         file_put_contents($path, $new);
+        $this->setting->put([C::WECHAT_PAY_CERT_CLIENT_KEY => $path]);
     }
 
     private function certKeyHandle($new, $old)
@@ -67,10 +78,12 @@ class WechatCertGenerateListener
             if (file_exists($path)) {
                 @unlink($path);
             }
+            $this->setting->put([C::WECHAT_PAY_CERT_KEY_KEY => '']);
             return;
         }
 
         // 更新了配置
         file_put_contents($path, $new);
+        $this->setting->put([C::WECHAT_PAY_CERT_KEY_KEY => $path]);
     }
 }

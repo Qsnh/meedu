@@ -9,7 +9,6 @@
 namespace App\Meedu\Payment\Wechat;
 
 use Yansongda\Pay\Pay;
-use App\Constant\ConfigConstant;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\ServiceException;
 use App\Services\Base\Services\ConfigService;
@@ -52,15 +51,13 @@ class WechatRefund
         // 退款异步通知
         $config['notify_url'] = route('wechat.pay.refund.notify');
 
-        $certPath = storage_path(ConfigConstant::WECHAT_PAY_CERT_CLIENT_PATH);
-        $keyPath = storage_path(ConfigConstant::WECHAT_PAY_CERT_KEY_KEY_PATH);
-
-        if (!file_exists($certPath) || !file_exists($keyPath)) {
+        if (!$config['cert_client'] || !$config['cert_key']) {
             throw new ServiceException(__('微信证书未配置'));
         }
 
-        $config['cert_client'] = $certPath;
-        $config['cert_key'] = $keyPath;
+        if (!is_file($config['cert_client']) || !is_file($config['cert_key'])) {
+            throw new ServiceException(__('微信证书未配置'));
+        }
 
         return $config;
     }
