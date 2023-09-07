@@ -20,6 +20,6 @@ class ConfigConstant
 
     public const ALIPAY_APP_CERT_PUBLIC_KEY_KEY = 'pay.alipay.app_cert_public_key';
     public const ALIPAY_ROOT_CERT_KEY = 'pay.alipay.alipay_root_cert';
-    public const ALIPAY_APP_CERT_PUBLIC_KEY_PATH = 'private/alipay_app_cert_public_key.csr';
-    public const ALIPAY_ROOT_CERT_PATH = 'private/alipay_root_cert.csr';
+    public const ALIPAY_APP_CERT_PUBLIC_KEY_PATH = 'private/alipay_app_cert_public_key.crt';
+    public const ALIPAY_ROOT_CERT_PATH = 'private/alipay_root_cert.crt';
 }

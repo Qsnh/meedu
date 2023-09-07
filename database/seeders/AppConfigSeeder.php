@@ -605,7 +605,15 @@ class AppConfigSeeder extends Seeder
                 'key' => 'pay.alipay.ali_public_key',
                 'value' => '',
                 'is_private' => 1,
-                'help' => '支付宝公钥证书',
+            ],
+            [
+                'group' => '支付',
+                'name' => '应用私钥',
+                'field_type' => 'text',
+                'sort' => 35,
+                'key' => 'pay.alipay.private_key',
+                'value' => '',
+                'is_private' => 1,
             ],
             [
                 'group' => '支付',
@@ -615,7 +623,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'pay.alipay.alipay_root_cert',
                 'value' => '',
                 'is_private' => 1,
-                'help' => '支付宝根证书',
             ],
             [
                 'group' => '支付',
@@ -625,7 +632,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'pay.alipay.app_cert_public_key',
                 'value' => '',
                 'is_private' => 1,
-                'help' => '应用公钥证书',
             ],
 
             // 微信支付

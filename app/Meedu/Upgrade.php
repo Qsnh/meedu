@@ -10,11 +10,11 @@ namespace App\Meedu;
 
 use App\Meedu\UpgradeLog\UpgradeTo48;
 use App\Meedu\UpgradeLog\UpgradeToV4;
+use App\Meedu\UpgradeLog\UpgradeV493;
 use App\Meedu\UpgradeLog\UpgradeToV42;
 use App\Meedu\UpgradeLog\UpgradeToV45;
 use App\Meedu\UpgradeLog\UpgradeToV46;
 use App\Meedu\UpgradeLog\UpgradeToV454;
-use App\Meedu\UpgradeLog\UpgradeToV493;
 
 class Upgrade
 {
@@ -26,6 +26,6 @@ class Upgrade
         UpgradeToV454::handle();
         UpgradeToV46::handle();
         UpgradeTo48::handle();
-        UpgradeToV493::handle();
+        UpgradeV493::handle();
     }
 }

@@ -24,47 +24,38 @@ class AlipayCertGenerateListener
 
     public function handle(AppConfigSavedEvent $event)
     {
+        // 如果有值就意味着重新配置
+
         if (isset($event->newConfig[C::ALIPAY_ROOT_CERT_KEY])) {
             $new = $event->newConfig[C::ALIPAY_ROOT_CERT_KEY];
-            $old = $event->oldConfig[C::ALIPAY_ROOT_CERT_KEY] ?? '';
-
-            $this->rootCertHandle($new, $old);
+            $this->rootCertHandle($new);
         }
 
         if (isset($event->newConfig[C::ALIPAY_APP_CERT_PUBLIC_KEY_KEY])) {
             $new = $event->newConfig[C::ALIPAY_APP_CERT_PUBLIC_KEY_KEY];
-            $old = $event->oldConfig[C::ALIPAY_APP_CERT_PUBLIC_KEY_KEY] ?? '';
-            $this->appCertPublicKeyHandle($new, $old);
+            $this->appCertPublicKeyHandle($new);
         }
     }
 
-    private function rootCertHandle($new, $old)
+    private function rootCertHandle($new)
     {
-        if ($old === $new) {
-            return;
-        }
-
         $path = storage_path(C::ALIPAY_ROOT_CERT_PATH);
         if (!$new) {
             // 清空了配置
             if (file_exists($path)) {
                 @unlink($path);
             }
-            $this->setting->put([C::ALIPAY_ROOT_CERT_PATH => '']);
+            $this->setting->put([C::ALIPAY_ROOT_CERT_KEY => '']);
             return;
         }
 
         // 更新了配置
         file_put_contents($path, $new);
-        $this->setting->put([C::ALIPAY_ROOT_CERT_PATH => $path]);
+        $this->setting->put([C::ALIPAY_ROOT_CERT_KEY => $path]);
     }
 
-    private function appCertPublicKeyHandle($new, $old)
+    private function appCertPublicKeyHandle($new)
     {
-        if ($old === $new) {
-            return;
-        }
-
         $path = storage_path(C::ALIPAY_APP_CERT_PUBLIC_KEY_PATH);
         if (!$new) {
             // 清空了配置
