@@ -108,7 +108,8 @@
         "optimize-autoloader": true,
         "allow-plugins": {
             "symfony/thanks": true,
-            "easywechat-composer/easywechat-composer": true
+            "easywechat-composer/easywechat-composer": true,
+            "php-http/discovery": true
         }
     },
     "repositories": {

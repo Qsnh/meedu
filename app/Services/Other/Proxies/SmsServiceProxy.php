@@ -18,10 +18,10 @@ class SmsServiceProxy extends ServiceProxy implements SmsServiceInterface
     public function __construct(SmsService $service)
     {
         parent::__construct($service);
-//        $this->limit['sendCode'] = function ($mobile, $code, $templateId) {
-//            ['times' => $times, 'minutes' => $minutes] = $this->configService->getSmsLimiter();
-//
-//            return new LimiterInfo('os:sms:'.$mobile, $times, $minutes);
-//        };
+        //        $this->limit['sendCode'] = function ($mobile, $code, $templateId) {
+        //            ['times' => $times, 'minutes' => $minutes] = $this->configService->getSmsLimiter();
+        //
+        //            return new LimiterInfo('os:sms:'.$mobile, $times, $minutes);
+        //        };
     }
 }

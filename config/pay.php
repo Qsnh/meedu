@@ -23,13 +23,20 @@ return [
         // 自己的私钥，签名时使用
         'private_key' => env('ALI_PRIVATE_KEY', ''),
 
-        // optional，默认 warning；日志路径为：sys_get_temp_dir().'/logs/yansongda.pay.log'
+        // optional，默认 warning；日志路径为：().'/logssys_get_temp_dir/yansongda.pay.log'
         'log' => [
             'file' => storage_path('logs/alipay.log'),
             'level' => 'debug',
             'type' => 'single', // optional, 可选 daily.
             'max_file' => 30,
         ],
+
+//        // 支付宝公钥证书路径
+//        'ali_public_key' => '',
+//        // 应用公钥证书路径
+//        'app_cert_public_key' => '',
+//        // 支付宝根证书
+//        'alipay_root_cert' => '',
 
         // optional，设置此参数，将进入沙箱模式
         // 'mode' => 'dev',

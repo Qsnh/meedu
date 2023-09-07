@@ -54,7 +54,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedCredit1RewardListener',
         ],
         // 系统配置变更
-        'App\Events\AppConfigSavedEvent' => [],
+        'App\Events\AppConfigSavedEvent' => [
+            'App\Listeners\AppConfigSavedEvent\WechatCertGenerateListener',
+        ],
         // 录播课程的增改删
         'App\Events\VodCourseCreatedEvent' => [
             'App\Listeners\VodCourseCreatedEvent\SearchRecordNotify',

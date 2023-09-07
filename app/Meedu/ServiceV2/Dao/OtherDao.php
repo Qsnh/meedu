@@ -9,6 +9,7 @@
 namespace App\Meedu\ServiceV2\Dao;
 
 use Carbon\Carbon;
+use App\Meedu\ServiceV2\Models\AppConfig;
 use App\Meedu\ServiceV2\Models\UserUploadImage;
 
 class OtherDao implements OtherDaoInterface
@@ -28,4 +29,11 @@ class OtherDao implements OtherDaoInterface
             'created_at' => Carbon::now()->toDateTimeLocalString(),
         ]);
     }
+
+    public function appConfigValueKey(): array
+    {
+        return AppConfig::query()->get()->pluck('value', 'key')->toArray();
+    }
+
+
 }
