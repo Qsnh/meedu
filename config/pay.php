@@ -17,10 +17,14 @@ return [
         // 支付成功后同步通知地址
         'return_url' => env('ALI_RETURN_URL', ''),
 
-        // 阿里公共密钥，验证签名时使用
-        'ali_public_key' => env('ALI_PUBLIC_KEY', ''),
+        // 支付宝公钥证书-路径
+        'ali_public_key' => '',
+        // 应用公钥证书-路径
+        'app_cert_public_key' => '',
+        // 支付宝根证书-路径
+        'alipay_root_cert' => '',
 
-        // 自己的私钥，签名时使用
+        // 自己的私钥，签名时使用 - 使用证书签名，该参数用不到
         'private_key' => env('ALI_PRIVATE_KEY', ''),
 
         // optional，默认 warning；日志路径为：().'/logssys_get_temp_dir/yansongda.pay.log'
@@ -30,13 +34,6 @@ return [
             'type' => 'single', // optional, 可选 daily.
             'max_file' => 30,
         ],
-
-//        // 支付宝公钥证书路径
-//        'ali_public_key' => '',
-//        // 应用公钥证书路径
-//        'app_cert_public_key' => '',
-//        // 支付宝根证书
-//        'alipay_root_cert' => '',
 
         // optional，设置此参数，将进入沙箱模式
         // 'mode' => 'dev',
