@@ -8,8 +8,23 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
+
 class ConfigService implements ConfigServiceInterface
 {
+
+    private $dao;
+
+    public function __construct(OtherDaoInterface $dao)
+    {
+        $this->dao = $dao;
+    }
+
+    public function allKeyValue(): array
+    {
+        return $this->dao->appConfigValueKey();
+    }
+
     public function getSuperAdministratorSlug(): string
     {
         return config('meedu.administrator.super_slug') ?? '';

@@ -15,13 +15,12 @@ class AppConfigSavedEvent
 {
     use Dispatchable, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $newConfig;
+    public $oldConfig;
+
+    public function __construct(array $newConfig, array $oldConfig)
     {
-        //
+        $this->newConfig = $newConfig;
+        $this->oldConfig = $oldConfig;
     }
 }

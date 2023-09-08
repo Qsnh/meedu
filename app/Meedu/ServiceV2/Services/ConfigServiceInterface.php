@@ -33,4 +33,6 @@ interface ConfigServiceInterface
     public function getH5Url(): string;
 
     public function getLogo(): string;
+
+    public function allKeyValue(): array;
 }

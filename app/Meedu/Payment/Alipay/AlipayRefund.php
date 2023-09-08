@@ -43,11 +43,7 @@ class AlipayRefund
             'out_request_no' => $refundNo,
         ];
 
-        // 支付宝配置
         $config = $this->configService->getAlipayPay();
-        // 回调地址
-        $config['notify_url'] = route('payment.callback', ['alipay']);
-
         $result = Pay::alipay($config)->refund($params);
         Log::info(__METHOD__ . '|支付宝退款返回参数', $result->toArray());
     }

@@ -8,6 +8,7 @@
 
 namespace App\Services\Base\Services;
 
+use App\Exceptions\ServiceException;
 use App\Services\Base\Model\AppConfig;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -202,17 +203,60 @@ class ConfigService implements ConfigServiceInterface
      */
     public function getWechatPay(): array
     {
-        return config('pay.wechat');
+        $data = config('pay.wechat');
+
+        // 回调地址
+        $data['notify_url'] = route('payment.callback', ['wechat']);
+
+        // 证书
+        if (!$data['cert_client'] || !$data['cert_key']) {
+            throw new ServiceException(__('微信证书未配置'));
+        }
+
+        // 微信证书生成
+        $hash = md5($data['cert_client']);
+        $certClientPath = storage_path('private/wechat_pay_cert_client_' . $hash . '.pem');
+        if (!is_file($certClientPath)) {
+            file_put_contents($certClientPath, $data['cert_client']);
+        }
+        $data['cert_client'] = $certClientPath;
+
+        $hash = md5($data['cert_key']);
+        $certKeyPath = storage_path('private/wechat_pay_cert_key_' . $hash . '.pem');
+        if (!is_file($certKeyPath)) {
+            file_put_contents($certKeyPath, $data['cert_key']);
+        }
+        $data['cert_key'] = $certKeyPath;
+
+        return $data;
     }
 
-    /**
-     * 支付宝支付配置
-     *
-     * @return array
-     */
     public function getAlipayPay(): array
     {
-        return config('pay.alipay');
+        $data = config('pay.alipay');
+        if (!$data['app_cert_public_key'] || !$data['alipay_root_cert']) {
+            throw new ServiceException(__('支付宝证书未配置'));
+        }
+
+        // 支付宝回调地址
+        $data['notify_url'] = route('payment.callback', ['alipay']);
+
+        // 证书
+        $hash = md5($data['app_cert_public_key']);
+        $appCertPublicKeyPath = storage_path('private/alipay_app_cert_public_key_' . $hash . '.crt');
+        if (!is_file($appCertPublicKeyPath)) {
+            file_put_contents($appCertPublicKeyPath, $data['app_cert_public_key']);
+        }
+        $data['app_cert_public_key'] = $appCertPublicKeyPath;
+
+        $hash = md5($data['alipay_root_cert']);
+        $rootCertPath = storage_path('private/alipay_root_cert_' . $hash . '.crt');
+        if (!is_file($rootCertPath)) {
+            file_put_contents($rootCertPath, $data['alipay_root_cert']);
+        }
+        $data['alipay_root_cert'] = $rootCertPath;
+
+        return $data;
     }
 
     /**
@@ -559,7 +603,6 @@ class ConfigService implements ConfigServiceInterface
             return [];
         }
         return array_map('strtolower', explode(',', $whitelist));
-        ;
     }
 
     /**

@@ -26,9 +26,9 @@ use App\Meedu\ServiceV2\Services\CourseServiceInterface;
 class ServiceInit
 {
     public $dao = [
+        OtherDaoInterface::class => OtherDao::class,
         UserDaoInterface::class => UserDao::class,
         CourseDaoInterface::class => CourseDao::class,
-        OtherDaoInterface::class => OtherDao::class,
     ];
 
     public $service = [

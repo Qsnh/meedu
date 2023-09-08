@@ -6,9 +6,10 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Meedu;
+namespace App\Constant;
 
-class MeEdu
+class ConfigConstant
 {
-    const VERSION = 'v4.9.3';
+
+    public const PRIVATE_MASK = '************';
 }

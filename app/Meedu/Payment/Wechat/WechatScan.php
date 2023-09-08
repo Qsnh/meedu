@@ -65,8 +65,6 @@ class WechatScan implements Payment
             $payOrderData = array_merge($payOrderData, $extra);
 
             $config = $this->configService->getWechatPay();
-            // 回调地址
-            $config['notify_url'] = route('payment.callback', ['wechat']);
 
             // 创建微信支付订单
             // $createResult['code_url'] = 微信支付二维码的文本值[需要根据该文本值生成二维码]
