@@ -603,7 +603,6 @@ class ConfigService implements ConfigServiceInterface
             return [];
         }
         return array_map('strtolower', explode(',', $whitelist));
-        ;
     }
 
     /**
