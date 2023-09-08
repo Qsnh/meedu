@@ -102,7 +102,6 @@ class WechatJSAPI implements Payment
 
             // 微信支付配置
             $config = $this->configService->getWechatPay();
-            $config['notify_url'] = route('payment.callback', ['wechat']);
 
             // 创建订单
             $createResult = Pay::wechat($config)->{$order['payment_method']}($payOrderData);
@@ -110,7 +109,6 @@ class WechatJSAPI implements Payment
             return $createResult;
         } catch (Exception $exception) {
             exception_record($exception);
-
             throw new ServiceException(__('system error'));
         }
     }
