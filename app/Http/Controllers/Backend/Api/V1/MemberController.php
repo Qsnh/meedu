@@ -11,7 +11,9 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Constant\TableConstant;
 use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +51,12 @@ class MemberController extends BaseController
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_MEMBER,
+            AdministratorLog::OPT_VIEW,
+            array_merge(compact('keywords', 'roleId', 'tagId', 'createdAt', 'sort', 'order'), ['path' => $request->path()])
+        );
+
         $members = User::query()
             ->with(['role:id,name', 'tags:id,name'])
             ->when($keywords, function ($query) use ($keywords) {
@@ -70,28 +78,27 @@ class MemberController extends BaseController
             ->paginate($request->input('size', 10));
 
         // 全部VIP
-        $roles = Role::query()->select(['id', 'name'])->get();
+        $roles = Role::query()->select(['id', 'name'])->get()->toArray();
         // 全部TAG
-        $tags = UserTag::query()->select(['id', 'name'])->get();
+        $tags = UserTag::query()->select(['id', 'name'])->orderByDesc('id')->get()->toArray();
         // 会员备注
         $userRemarks = UserRemark::query()
             ->whereIn('user_id', array_column($members->items(), 'id'))
             ->select(['user_id', 'remark'])
             ->get()
-            ->keyBy('user_id');
+            ->keyBy('user_id')
+            ->toArray();
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            array_merge(compact('keywords', 'roleId', 'tagId', 'createdAt', 'sort', 'order'), ['path' => $request->path()])
-        );
-
-        return $this->successData([
+        $data = [
             'data' => $members,
             'roles' => $roles,
             'tags' => $tags,
             'user_remarks' => $userRemarks,
-        ]);
+        ];
+
+        HookRun::mount(HookConstant::BACKEND_MEMBER_CONTROLLER_INDEX_RETURN_DATA, $data);
+
+        return $this->successData($data);
     }
 
     public function create()

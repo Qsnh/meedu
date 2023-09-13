@@ -13,7 +13,6 @@ use App\Bus\RefundBus;
 use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
 use App\Constant\HookConstant;
-use App\Meedu\Hooks\HookParams;
 use App\Models\AdministratorLog;
 use App\Events\OrderRefundCreated;
 use Illuminate\Support\Facades\DB;
@@ -93,7 +92,7 @@ class OrderController extends BaseController
                 $query->whereBetween('created_at', [$openAt, $closeAt]);
             });
 
-        $query = HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_QUERY_BUILDER, new HookParams($query));
+        $query = HookRun::mount(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_QUERY_BUILDER, $query);
 
         $orders = (clone $query)
             ->when($status, function ($query) use ($status) {
@@ -126,7 +125,7 @@ class OrderController extends BaseController
 
         $data = compact('orders', 'users', 'countMap');
 
-        $data = HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_RETURN_DATA, new HookParams($data));
+        $data = HookRun::mount(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_RETURN_DATA, $data);
 
         return $this->successData($data);
     }
@@ -153,7 +152,7 @@ class OrderController extends BaseController
 
         $data = compact('order', 'user');
 
-        HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_DETAIL_RETURN_DATA, new HookParams($data));
+        HookRun::mount(HookConstant::BACKEND_ORDER_CONTROLLER_DETAIL_RETURN_DATA, $data);
 
         return $this->successData($data);
     }

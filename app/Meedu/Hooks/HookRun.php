@@ -12,6 +12,12 @@ use Illuminate\Pipeline\Pipeline;
 
 class HookRun
 {
+
+    public static function mount(string $hookName, $data)
+    {
+        return self::run($hookName, new HookParams($data));
+    }
+
     /**
      * 运行得到response
      * @param $hook
