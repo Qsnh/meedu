@@ -10,7 +10,9 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Services\Member\Models\User;
@@ -54,6 +56,12 @@ class CourseController extends BaseController
         $sort = $request->input('sort', 'created_at');
         $order = $request->input('order', 'desc');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_VIEW,
+            compact('id', 'keywords', 'cid', 'sort', 'order')
+        );
+
         $courses = Course::query()
             ->select([
                 'id', 'user_id', 'title', 'slug', 'thumb', 'charge', 'short_description',
@@ -74,27 +82,35 @@ class CourseController extends BaseController
             ->orderBy($sort, $order)
             ->paginate($request->input('size', 10));
 
-        $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get();
+        $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get()->toArray();
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD,
-            AdministratorLog::OPT_VIEW,
-            compact('id', 'keywords', 'cid', 'sort', 'order')
-        );
+        $data = HookRun::mount(HookConstant::BACKEND_COURSE_CONTROLLER_INDEX_RETURN_DATA, [
+            'courses' => $courses,
+            'categories' => $categories,
+        ]);
 
-        return $this->successData(compact('courses', 'categories'));
+        return $this->successData($data);
     }
 
     public function create()
     {
         $categories = $this->getCourseCategoriesAndChildren();
 
-        return $this->successData(compact('categories'));
+        $data = HookRun::mount(HookConstant::BACKEND_COURSE_CONTROLLER_CREATE_RETURN_DATA, compact('categories'));
+
+        return $this->successData($data);
     }
 
     public function store(CourseRequest $request, Course $course)
     {
         $data = $request->filldata();
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_STORE,
+            $data
+        );
+
         $course->fill($data)->save();
 
         event(new VodCourseCreatedEvent(
@@ -106,18 +122,16 @@ class CourseController extends BaseController
             $course['original_desc']
         ));
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD,
-            AdministratorLog::OPT_STORE,
-            $data
-        );
+        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_STORE_SUCCESS, $course->toArray());
 
         return $this->success();
     }
 
     public function edit($id)
     {
-        $course = Course::query()->where('id', $id)->firstOrFail();
+        $course = Course::query()->where('id', $id)->firstOrFail()->toArray();
+
+        $course = HookRun::mount(HookConstant::BACKEND_COURSE_CONTROLLER_EDIT_RETURN_DATA, $course);
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD,
@@ -162,11 +176,19 @@ class CourseController extends BaseController
             $course['original_desc']
         ));
 
+        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS, $course->toArray());
+
         return $this->success();
     }
 
     public function destroy($id)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD,
+            AdministratorLog::OPT_DESTROY,
+            compact('id')
+        );
+
         $course = Course::query()->where('id', $id)->firstOrFail();
 
         if ($course->videos()->exists()) {
@@ -177,11 +199,7 @@ class CourseController extends BaseController
 
         event(new VodCourseDestroyedEvent($id));
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD,
-            AdministratorLog::OPT_DESTROY,
-            compact('id')
-        );
+        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_DESTROY_SUCCESS, ['id' => $id]);
 
         return $this->success();
     }

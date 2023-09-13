@@ -18,6 +18,11 @@ class HookRun
         return self::run($hookName, new HookParams($data));
     }
 
+    public static function subscribe(string $hookName, $data = [])
+    {
+        return self::pack($hookName, new HookParams($data));
+    }
+
     /**
      * 运行得到response
      * @param $hook
