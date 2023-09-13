@@ -15,24 +15,26 @@ class HookRun
     /**
      * 运行得到response
      * @param $hook
-     * @param HookParams $hookParams
+     * @param HookParams $params
      * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public static function run($hook, HookParams $hookParams)
+    public static function run($hook, HookParams $params)
     {
         $hooks = HookContainer::getInstance()->get($hook);
-        if ($hooks) {
-            return app()->make(Pipeline::class)
-                ->send($hookParams)
-                ->through($hooks)
-                ->then(function ($response) {
-                    /**
-                     * @var HookParams $response
-                     */
-                    return $response->getResponse();
-                });
+        if (!$hooks) {
+            return $params->getParams();
         }
+
+        return app()->make(Pipeline::class)
+            ->send($params)
+            ->through($hooks)
+            ->then(function ($params) {
+                /**
+                 * @var HookParams $params
+                 */
+                return $params->getResponse();
+            });
     }
 
     /**

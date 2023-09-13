@@ -16,23 +16,26 @@ class HookParams
 
     protected $response;
 
-    public function __construct(array $params)
+    public function __construct($params)
     {
         $this->params = $params;
     }
 
-    public function setParams(array $params): void
+    public function setParams($params): void
     {
         $this->params = $params;
     }
 
-    public function getParams(): array
+    public function getParams()
     {
-        return $this->params ?? [];
+        return $this->params ?? null;
     }
 
     public function getValue($key, $default = null)
     {
+        if (!is_array($this->params)) {
+            return $this->params;
+        }
         return Arr::get($this->params ?? [], $key, $default);
     }
 

@@ -10,7 +10,10 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use App\Bus\RefundBus;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
+use App\Meedu\Hooks\HookParams;
 use App\Models\AdministratorLog;
 use App\Events\OrderRefundCreated;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +34,7 @@ class OrderController extends BaseController
         $userId = $request->input('user_id');
         // 订单编号
         $orderId = $request->input('order_id');
-        // 订单创建时间
+        // 订单创建时间,格式[开始时间,结束时间]
         $createdAt = $request->input('created_at');
         // 商品id
         $goodsId = $request->input('goods_id');
@@ -46,6 +49,7 @@ class OrderController extends BaseController
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
 
+        // 先把部分查询条件转成orderIds
         $orderIds = [];
         if ($goodsId) {
             $orderIds = OrderGoods::query()->where('goods_id', $goodsId)->select(['oid'])->get()->pluck('oid')->toArray();
@@ -83,9 +87,13 @@ class OrderController extends BaseController
             ->when($isRefund !== -1, function ($query) use ($isRefund) {
                 $query->where('is_refund', $isRefund);
             })
-            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
-                $query->whereBetween('created_at', $createdAt);
+            ->when($createdAt && is_array($createdAt) && count($createdAt) === 2, function ($query) use ($createdAt) {
+                $openAt = Carbon::parse($createdAt[0])->toDateTimeLocalString();
+                $closeAt = Carbon::parse($createdAt[1])->toDateTimeLocalString();
+                $query->whereBetween('created_at', [$openAt, $closeAt]);
             });
+
+        $query = HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_QUERY_BUILDER, new HookParams($query));
 
         $orders = (clone $query)
             ->when($status, function ($query) use ($status) {
@@ -116,7 +124,11 @@ class OrderController extends BaseController
             []
         );
 
-        return $this->successData(compact('orders', 'users', 'countMap'));
+        $data = compact('orders', 'users', 'countMap');
+
+        $data = HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_INDEX_RETURN_DATA, new HookParams($data));
+
+        return $this->successData($data);
     }
 
     public function detail($id)
@@ -124,12 +136,14 @@ class OrderController extends BaseController
         $order = Order::query()
             ->with(['goods', 'paidRecords', 'refund'])
             ->where('id', $id)
-            ->firstOrFail();
+            ->firstOrFail()
+            ->toArray();
 
         $user = User::query()
             ->select(['id', 'nick_name', 'avatar', 'mobile'])
             ->where('id', $order['user_id'])
-            ->first();
+            ->firstOrFail()
+            ->toArray();
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ORDER,
@@ -137,10 +151,11 @@ class OrderController extends BaseController
             compact('id')
         );
 
-        return $this->successData([
-            'order' => $order,
-            'user' => $user,
-        ]);
+        $data = compact('order', 'user');
+
+        HookRun::run(HookConstant::BACKEND_ORDER_CONTROLLER_DETAIL_RETURN_DATA, new HookParams($data));
+
+        return $this->successData($data);
     }
 
     public function finishOrder($id)
