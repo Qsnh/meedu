@@ -22,4 +22,10 @@ class HookConstant
     public const BACKEND_COURSE_CONTROLLER_STORE_SUCCESS = 'backend_course_controller_store_success';
     public const BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS = 'backend_course_controller_update_success';
     public const BACKEND_COURSE_CONTROLLER_DESTROY_SUCCESS = 'backend_course_controller_destroy_success';
+
+    public const BACKEND_COURSE_VIDEO_CONTROLLER_INDEX_RETURN_DATA = 'backend_course_video_controller_index_return_data';
+    public const BACKEND_COURSE_VIDEO_CONTROLLER_CREATE_RETURN_DATA = 'backend_course_video_controller_create_return_data';
+    public const BACKEND_COURSE_VIDEO_CONTROLLER_STORE_SUCCESS = 'backend_course_video_controller_store_success';
+    public const BACKEND_COURSE_VIDEO_CONTROLLER_UPDATE_SUCCESS = 'backend_course_video_controller_update_success';
+    public const BACKEND_COURSE_VIDEO_CONTROLLER_DESTROY_SUCCESS = 'backend_course_video_controller_destroy_success';
 }

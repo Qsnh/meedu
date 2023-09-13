@@ -10,7 +10,9 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Events\VodVideoCreatedEvent;
@@ -29,10 +31,17 @@ class CourseVideoController extends BaseController
     {
         $courseId = $request->input('cid');
         $keywords = $request->input('keywords');
+        $size = (int)$request->input('size', 10);
 
         // 排序字段
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'desc');
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId', 'keywords', 'sort', 'order')
+        );
 
         $videos = Video::query()
             ->select([
@@ -51,15 +60,11 @@ class CourseVideoController extends BaseController
                 $query->where('title', 'like', '%' . $keywords . '%');
             })
             ->orderBy($sort, $order)
-            ->paginate($request->input('size', 10));
+            ->paginate($size);
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD_VIDEO,
-            AdministratorLog::OPT_VIEW,
-            []
-        );
+        $data = HookRun::mount(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_INDEX_RETURN_DATA, compact('videos'));
 
-        return $this->successData(compact('videos'));
+        return $this->successData($data);
     }
 
     public function create()
@@ -69,7 +74,9 @@ class CourseVideoController extends BaseController
             ->orderByDesc('id')
             ->get();
 
-        return $this->successData(compact('courses'));
+        $data = HookRun::mount(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_CREATE_RETURN_DATA, compact('courses'));
+
+        return $this->successData($data);
     }
 
     public function store(CourseVideoRequest $request, Video $video)
@@ -90,6 +97,8 @@ class CourseVideoController extends BaseController
         );
 
         $video->fill($data)->save();
+
+        HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_STORE_SUCCESS, $video->toArray());
 
         event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
 
@@ -142,6 +151,8 @@ class CourseVideoController extends BaseController
 
         $video->fill($data)->save();
 
+        HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_UPDATE_SUCCESS, $video->toArray());
+
         event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
 
         return $this->success();
@@ -158,6 +169,8 @@ class CourseVideoController extends BaseController
 
             event(new VodVideoDestroyedEvent($videoId));
 
+            HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_DESTROY_SUCCESS, ['id' => $videoId]);
+
             AdministratorLog::storeLog(
                 AdministratorLog::MODULE_VOD_VIDEO,
                 AdministratorLog::OPT_DESTROY,
@@ -172,6 +185,16 @@ class CourseVideoController extends BaseController
     {
         $ids = $request->input('ids');
 
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_VIDEO,
+            AdministratorLog::OPT_DESTROY,
+            compact('ids')
+        );
+
+        if (!$ids || !is_array($ids)) {
+            return $this->error(__('参数错误'));
+        }
+
         DB::transaction(function () use ($ids) {
             $videos = Video::query()->select(['id'])->whereIn('id', $ids)->get();
 
@@ -181,13 +204,9 @@ class CourseVideoController extends BaseController
                 $video->delete();
 
                 event(new VodVideoDestroyedEvent($videoId));
-            }
 
-            AdministratorLog::storeLog(
-                AdministratorLog::MODULE_VOD_VIDEO,
-                AdministratorLog::OPT_DESTROY,
-                compact('ids')
-            );
+                HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_DESTROY_SUCCESS, ['id' => $videoId]);
+            }
         });
 
         return $this->success();
