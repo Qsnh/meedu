@@ -11,8 +11,7 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Constant\FrontendConstant;
-use App\Services\Other\Services\SliderService;
-use App\Services\Other\Interfaces\SliderServiceInterface;
+use App\Meedu\Cache\Impl\SliderCache;
 
 class SliderController extends BaseController
 {
@@ -31,14 +30,11 @@ class SliderController extends BaseController
      * @apiSuccess {String} data.platform 平台
      * @apiSuccess {Number} data.sort 升序
      */
-    public function all(SliderServiceInterface $sliderService, Request $request)
+    public function all(Request $request, SliderCache $sliderCache)
     {
-        /**
-         * @var SliderService $sliderService
-         */
         $platform = $request->input('platform') ?: FrontendConstant::SLIDER_PLATFORM_APP;
         $platform = strtoupper($platform);
-        $sliders = $sliderService->all($platform);
+        $sliders = $sliderCache->get($platform);
         $sliders = arr2_clear($sliders, ApiV2Constant::MODEL_SLIDER_FIELD);
         return $this->data($sliders);
     }

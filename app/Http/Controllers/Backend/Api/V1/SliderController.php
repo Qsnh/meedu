@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
+use App\Events\SliderUpdateEvent;
 use App\Services\Other\Models\Slider;
 use App\Http\Requests\Backend\SliderRequest;
 
@@ -48,6 +49,8 @@ class SliderController extends BaseController
             $data
         );
 
+        event(new SliderUpdateEvent());
+
         return $this->success();
     }
 
@@ -79,6 +82,8 @@ class SliderController extends BaseController
 
         $slider->fill($data)->save();
 
+        event(new SliderUpdateEvent());
+
         return $this->success();
     }
 
@@ -91,6 +96,8 @@ class SliderController extends BaseController
             AdministratorLog::OPT_DESTROY,
             compact('id')
         );
+
+        event(new SliderUpdateEvent());
 
         return $this->success();
     }

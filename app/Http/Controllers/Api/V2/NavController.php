@@ -10,8 +10,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
-use App\Services\Other\Services\NavService;
-use App\Services\Other\Interfaces\NavServiceInterface;
+use App\Meedu\Cache\Impl\NavCache;
 
 class NavController extends BaseController
 {
@@ -33,17 +32,10 @@ class NavController extends BaseController
      * @apiSuccess {String} data.children.url 子导航链接
      * @apiSuccess {Number} data.children.blank 新窗口打开[1:是,0否]
      */
-    public function all(Request $request)
+    public function all(Request $request, NavCache $navCache)
     {
         $platform = $request->input('platform', FrontendConstant::NAV_PLATFORM_PC);
-
-        /**
-         * @var NavService $navService
-         */
-        $navService = app()->make(NavServiceInterface::class);
-
-        $navs = $navService->all($platform);
-
+        $navs = $navCache->get($platform);
         return $this->data($navs);
     }
 }

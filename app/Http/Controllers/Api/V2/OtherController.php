@@ -11,6 +11,10 @@ namespace App\Http\Controllers\Api\V2;
 use App\Meedu\Addons;
 use App\Meedu\Hooks\HookRun;
 use App\Constant\HookConstant;
+use App\Constant\FrontendConstant;
+use App\Meedu\Cache\Impl\NavCache;
+use App\Meedu\Cache\Impl\LinkCache;
+use App\Meedu\Cache\Impl\SliderCache;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class OtherController extends BaseController
@@ -52,8 +56,17 @@ class OtherController extends BaseController
      * @apiSuccess {Number} data.credit1_reward.paid_order 支付订单[按订单金额比率奖励积分]
      * @apiSuccess {Number} data.credit1_reward.invite 邀请用户注册
      * @apiSuccess {String[]} data.enabled_addons 已启用插件
+     * @apiSuccess {Object[]} data.links 友情链接
+     * @apiSuccess {String} data.links.name 链接名
+     * @apiSuccess {String} data.links.url 链接地址
+     * @apiSuccess {Object[]} data.sliders PC的幻灯片
+     * @apiSuccess {String} data.sliders.thumb 幻灯片地址
+     * @apiSuccess {String} data.sliders.url 链接地址
+     * @apiSuccess {Object[]} data.navs PC的导航栏
+     * @apiSuccess {String} data.navs.name 导航名
+     * @apiSuccess {String} data.navs.url 导航地址
      */
-    public function config(Addons $addons, ConfigServiceInterface $configService)
+    public function config(Addons $addons, ConfigServiceInterface $configService, LinkCache $linkCache, SliderCache $sliderCache, NavCache $navCache)
     {
         // 跑马灯的配置
         $playerConfig = $configService->getPlayer();
@@ -129,6 +142,13 @@ class OtherController extends BaseController
             // 已用插件
             'enabled_addons' => $enabledAddons,
         ];
+
+        // PC幻灯片
+        $data['sliders'] = $sliderCache->get(FrontendConstant::SLIDER_PLATFORM_PC);
+        // PC导航栏
+        $data['navs'] = $navCache->get(FrontendConstant::NAV_PLATFORM_PC);
+        // PC首页友情链接
+        $data['links'] = $linkCache->get();
 
         $data = HookRun::mount(HookConstant::FRONTEND_OTHER_CONTROLLER_CONFIG_RETURN_DATA, $data);
 

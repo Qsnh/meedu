@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use Mews\Captcha\Captcha;
 use App\Constant\CacheConstant;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ApiV2\SmsRequest;

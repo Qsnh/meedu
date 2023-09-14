@@ -100,5 +100,17 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserVerifyFaceSuccessEvent\UserNotifyListener',
             'App\Listeners\UserVerifyFaceSuccessEvent\UserProfileUpdateListener',
         ],
+        // 幻灯片更新事件
+        'App\Events\SliderUpdateEvent' => [
+            'App\Listeners\SliderUpdateEvent\CacheClearListener',
+        ],
+        // 友情链接更新事件
+        'App\Events\LinkUpdateEvent' => [
+            'App\Listeners\LinkUpdateEvent\CacheClearListener',
+        ],
+        // 导航栏更新事件
+        'App\Events\NavUpdateEvent' => [
+            'App\Listeners\NavUpdateEvent\CacheClearListener',
+        ],
     ];
 }

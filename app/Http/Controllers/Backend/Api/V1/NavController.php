@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Events\NavUpdateEvent;
 use App\Models\AdministratorLog;
 use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
@@ -87,6 +88,8 @@ class NavController extends BaseController
             $data
         );
 
+        event(new NavUpdateEvent());
+
         return $this->success();
     }
 
@@ -120,21 +123,26 @@ class NavController extends BaseController
 
         $nav->fill($data)->save();
 
+        event(new NavUpdateEvent());
+
         return $this->success();
     }
 
     public function destroy($id)
     {
-        Nav::destroy($id);
-
-        // 重置parent_id
-        Nav::query()->where('parent_id', $id)->update(['parent_id' => 0]);
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_NAV,
             AdministratorLog::OPT_DESTROY,
             compact('id')
         );
+
+        Nav::destroy($id);
+
+        // 重置parent_id
+        Nav::query()->where('parent_id', $id)->update(['parent_id' => 0]);
+
+        event(new NavUpdateEvent());
 
         return $this->success();
     }

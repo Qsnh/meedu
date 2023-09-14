@@ -8,8 +8,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
-use App\Services\Other\Services\LinkService;
-use App\Services\Other\Interfaces\LinkServiceInterface;
+use App\Meedu\Cache\Impl\LinkCache;
 
 class LinkController extends BaseController
 {
@@ -25,15 +24,8 @@ class LinkController extends BaseController
      * @apiSuccess {String} data.name 链接名
      * @apiSuccess {String} data.url 链接
      */
-    public function all()
+    public function all(LinkCache $linkCache)
     {
-        /**
-         * @var LinkService $linkService
-         */
-        $linkService = app()->make(LinkServiceInterface::class);
-
-        $links = $linkService->all();
-
-        return $this->data($links);
+        return $this->data($linkCache->get());
     }
 }
