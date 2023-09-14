@@ -9,22 +9,12 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Meedu\Addons;
-use App\Services\Base\Services\ConfigService;
+use App\Meedu\Hooks\HookRun;
+use App\Constant\HookConstant;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class OtherController extends BaseController
 {
-
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
-
-    public function __construct(ConfigServiceInterface $configService)
-    {
-        $this->configService = $configService;
-    }
-
     /**
      * @api {get} /api/v2/other/config 系统配置
      * @apiGroup 其它
@@ -63,11 +53,13 @@ class OtherController extends BaseController
      * @apiSuccess {Number} data.credit1_reward.invite 邀请用户注册
      * @apiSuccess {String[]} data.enabled_addons 已启用插件
      */
-    public function config(Addons $addons)
+    public function config(Addons $addons, ConfigServiceInterface $configService)
     {
-        $playerConfig = $this->configService->getPlayer();
+        // 跑马灯的配置
+        $playerConfig = $configService->getPlayer();
         $bulletSecret = $playerConfig['bullet_secret'] ?? [];
 
+        // 已启用的插件
         $enabledAddons = $addons->enabledAddons();
 
         /**
@@ -77,29 +69,31 @@ class OtherController extends BaseController
 
         $data = [
             // 网站名
-            'webname' => $this->configService->getName(),
+            'webname' => $configService->getName(),//webname字段将在未来某个版本移除
+            // 网站名-推荐前端以后用这个
+            'name' => $configService->getName(),
+            // 网站logo
+            'logo' => $configService->getLogo(),
             // 网站地址
-            'url' => trim($this->configService->getUrl(), '/'),
-            'pc_url' => trim($this->configService->getPcUrl(), '/'),
-            'h5_url' => trim($this->configService->getH5Url(), '/'),
+            'url' => trim($configService->getUrl(), '/'),
+            'pc_url' => trim($configService->getPcUrl(), '/'),
+            'h5_url' => trim($configService->getH5Url(), '/'),
             // ICP备案
-            'icp' => $this->configService->getIcp(),
-            'icp_link' => $this->configService->getIcpLink(),
+            'icp' => $configService->getIcp(),
+            'icp_link' => $configService->getIcpLink(),
             // 公安网备案
-            'icp2' => $this->configService->getIcp2(),
-            'icp2_link' => $this->configService->getIcp2Link(),
+            'icp2' => $configService->getIcp2(),
+            'icp2_link' => $configService->getIcp2Link(),
             // 用户协议URL
             'user_protocol' => route('user.protocol'),
             // 用户隐私协议URL
             'user_private_protocol' => route('user.private_protocol'),
             // 关于我们URL
             'aboutus' => route('aboutus'),
-            // 网站logo
-            'logo' => $this->configService->getLogo(),
             // 播放器配置
             'player' => [
                 // 播放器封面
-                'cover' => $this->configService->getPlayerCover(),
+                'cover' => $configService->getPlayerCover(),
                 // 跑马灯
                 'enabled_bullet_secret' => $playerConfig['enabled_bullet_secret'] ?? 0,
                 'bullet_secret' => [
@@ -111,30 +105,33 @@ class OtherController extends BaseController
             ],
             'member' => [
                 // 强制绑定手机号
-                'enabled_mobile_bind_alert' => $this->configService->getEnabledMobileBindAlert(),
+                'enabled_mobile_bind_alert' => $configService->getEnabledMobileBindAlert(),
                 // 强制实名认证
                 'enabled_face_verify' => $configServiceV2->enabledFaceVerify(),
             ],
             // 社交登录
             'socialites' => [
-                'qq' => (int)$this->configService->getSocialiteQQLoginEnabled(),
-                'wechat_scan' => (int)$this->configService->getSocialiteWechatScanLoginEnabled(),
-                'wechat_oauth' => (int)$this->configService->getSocialiteWechatLoginEnabled(),
+                'qq' => $configService->getSocialiteQQLoginEnabled(),
+                'wechat_scan' => $configService->getSocialiteWechatScanLoginEnabled(),
+                'wechat_oauth' => $configService->getSocialiteWechatLoginEnabled(),
             ],
             // 积分奖励
             'credit1_reward' => [
                 // 注册
-                'register' => $this->configService->getRegisterSceneCredit1(),
+                'register' => $configService->getRegisterSceneCredit1(),
                 // 看完录播课
-                'watched_vod_course' => $this->configService->getWatchedCourseSceneCredit1(),
+                'watched_vod_course' => $configService->getWatchedCourseSceneCredit1(),
                 // 看完视频
-                'watched_video' => $this->configService->getWatchedVideoSceneCredit1(),
+                'watched_video' => $configService->getWatchedVideoSceneCredit1(),
                 // 已支付订单[抽成]
-                'paid_order' => $this->configService->getPaidOrderSceneCredit1(),
+                'paid_order' => $configService->getPaidOrderSceneCredit1(),
             ],
             // 已用插件
             'enabled_addons' => $enabledAddons,
         ];
+
+        $data = HookRun::mount(HookConstant::FRONTEND_OTHER_CONTROLLER_CONFIG_RETURN_DATA, $data);
+
         return $this->data($data);
     }
 }

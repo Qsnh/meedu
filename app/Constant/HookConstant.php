@@ -28,4 +28,6 @@ class HookConstant
     public const BACKEND_COURSE_VIDEO_CONTROLLER_STORE_SUCCESS = 'backend_course_video_controller_store_success';
     public const BACKEND_COURSE_VIDEO_CONTROLLER_UPDATE_SUCCESS = 'backend_course_video_controller_update_success';
     public const BACKEND_COURSE_VIDEO_CONTROLLER_DESTROY_SUCCESS = 'backend_course_video_controller_destroy_success';
+
+    public const FRONTEND_OTHER_CONTROLLER_CONFIG_RETURN_DATA = 'frontend_other_controller_config_return_data';
 }

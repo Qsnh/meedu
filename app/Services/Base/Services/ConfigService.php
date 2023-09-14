@@ -503,40 +503,27 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.member.register.vip') ?? [];
     }
 
-    /**
-     * 获取高德地图应用key
-     *
-     * @return string
-     */
     public function getAmapkey(): string
     {
-        return config('meedu.services.amap.key', '');
+        return config('meedu.services.amap.key') ?? '';
     }
 
-    /**
-     * 获取微信扫码登录成功回复语
-     *
-     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
     public function getMpWechatScanLoginAlert()
     {
-        return config('meedu.mp_wechat.scan_login_alert');
+        return config('meedu.mp_wechat.scan_login_alert') ?? '';
     }
 
-    /**
-     * @return int
-     */
-    public function getSocialiteQQLoginEnabled()
+    public function getSocialiteQQLoginEnabled(): int
     {
         return (int)config('meedu.member.socialite.qq.enabled');
     }
 
-    public function getSocialiteWechatScanLoginEnabled()
+    public function getSocialiteWechatScanLoginEnabled(): int
     {
         return (int)config('meedu.mp_wechat.enabled_scan_login');
     }
 
-    public function getSocialiteWechatLoginEnabled()
+    public function getSocialiteWechatLoginEnabled(): int
     {
         return (int)config('meedu.mp_wechat.enabled_oauth_login');
     }
