@@ -227,15 +227,6 @@ return [
         'password' => env('MEEDUCLOUD_PASSWORD'),
     ],
 
-    // 第三方服务
-    'services' => [
-        // 高德地图配置（用于ip解析）
-        'amap' => [
-            // @see https://lbs.amap.com/api/webservice/guide/create-project/get-key
-            'key' => '',
-        ],
-    ],
-
     // 微信公众号配置
     'mp_wechat' => [
         'app_id' => '',

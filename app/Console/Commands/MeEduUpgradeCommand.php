@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 use App\Meedu\Addons;
-use App\Meedu\Upgrade;
+use App\Meedu\Core\Upgrade;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 

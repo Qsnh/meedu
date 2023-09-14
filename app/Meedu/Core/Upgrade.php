@@ -6,15 +6,15 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Meedu;
+namespace App\Meedu\Core;
 
-use App\Meedu\UpgradeLog\UpgradeTo48;
-use App\Meedu\UpgradeLog\UpgradeToV4;
-use App\Meedu\UpgradeLog\UpgradeV493;
-use App\Meedu\UpgradeLog\UpgradeToV42;
-use App\Meedu\UpgradeLog\UpgradeToV45;
-use App\Meedu\UpgradeLog\UpgradeToV46;
-use App\Meedu\UpgradeLog\UpgradeToV454;
+use App\Meedu\Core\UpgradeLog\UpgradeTo48;
+use App\Meedu\Core\UpgradeLog\UpgradeToV4;
+use App\Meedu\Core\UpgradeLog\UpgradeV493;
+use App\Meedu\Core\UpgradeLog\UpgradeToV42;
+use App\Meedu\Core\UpgradeLog\UpgradeToV45;
+use App\Meedu\Core\UpgradeLog\UpgradeToV46;
+use App\Meedu\Core\UpgradeLog\UpgradeToV454;
 
 class Upgrade
 {

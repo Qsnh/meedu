@@ -40,7 +40,8 @@
         "tencentcloud/vod": "3.0.696",
         "tymon/jwt-auth": "^1.0",
         "yansongda/laravel-pay": "^2.0",
-        "zgldh/qiniu-laravel-storage": "^0.10.3"
+        "zgldh/qiniu-laravel-storage": "^0.10.3",
+        "zoujingli/ip2region": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

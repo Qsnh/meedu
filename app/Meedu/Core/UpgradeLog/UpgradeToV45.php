@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Meedu\UpgradeLog;
+namespace App\Meedu\Core\UpgradeLog;
 
 use App\Services\Course\Models\Video;
 use App\Services\Base\Model\AppConfig;

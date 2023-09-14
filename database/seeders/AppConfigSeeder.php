@@ -1116,17 +1116,6 @@ class AppConfigSeeder extends Seeder
                 'value' => 0,
             ],
 
-            // 高德地图配置
-            [
-                'group' => '高德地图',
-                'name' => '应用Key',
-                'field_type' => 'text',
-                'sort' => 1,
-                'key' => 'meedu.services.amap.key',
-                'value' => '',
-                'is_private' => 1,
-            ],
-
             // 全文搜索配置
             [
                 'group' => '全文搜索',

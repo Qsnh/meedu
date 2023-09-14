@@ -8,8 +8,8 @@
 
 namespace App\Listeners\UserRegisterEvent;
 
+use App\Meedu\Utils\IP;
 use App\Events\UserRegisterEvent;
-use App\Jobs\UserRegisterIpToAreaJob;
 use App\Services\Member\Services\UserService;
 use App\Services\Member\Interfaces\UserServiceInterface;
 
@@ -20,26 +20,17 @@ class RegisterIpRecordListener
      */
     protected $userService;
 
-    /**
-     * RegisterIpRecordListener constructor.
-     * @param UserServiceInterface $userService
-     */
     public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param UserRegisterEvent $event
-     * @return void
-     */
     public function handle(UserRegisterEvent $event)
     {
         $ip = request()->getClientIp();
         $this->userService->setRegisterIp($event->userId, $ip);
 
-        dispatch(new UserRegisterIpToAreaJob($event->userId))->delay(3);
+        $city = IP::queryCity($ip);
+        $this->userService->setRegisterArea($event->userId, $city);
     }
 }

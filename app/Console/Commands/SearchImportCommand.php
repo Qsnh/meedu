@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Meedu\UpgradeLog\UpgradeToV45;
+use App\Meedu\Core\UpgradeLog\UpgradeToV45;
 
 class SearchImportCommand extends Command
 {
