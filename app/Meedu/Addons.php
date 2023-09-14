@@ -196,7 +196,12 @@ class Addons
         }
     }
 
-    public function enabledAddons()
+    /**
+     * 获取已启用的插件
+     * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function enabledAddons(): array
     {
         $maps = $this->getProvidersMap();
         $data = [];

@@ -8,48 +8,24 @@
 
 namespace App\Console\Commands;
 
+use App\Meedu\Addons;
 use App\Meedu\Upgrade;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 class MeEduUpgradeCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'meedu:upgrade';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'MeEdu升级处理命令';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         // 数据库迁移命令
         $this->info('执行数据库迁移...');
         Artisan::call('migrate', ['--force' => true]);
 
-        // 同步meedu最新配置
+        // 同步最新配置
         $this->info('同步最新配置...');
         Artisan::call('install', ['action' => 'config']);
 
@@ -60,6 +36,19 @@ class MeEduUpgradeCommand extends Command
         // 执行升级业务逻辑
         $this->info('执行升级业务逻辑...');
         (new Upgrade)->run();
+
+        // 执行已安装插件的升级
+        $enabledAddons = (new Addons())->enabledAddons();
+        if ($enabledAddons) {
+            $this->info('开始插件升级...');
+            foreach ($enabledAddons as $addonSign) {
+                $this->info(sprintf('插件%s正在升级...', $addonSign));
+                // 插件升级的实际逻辑
+                Artisan::call($addonSign, ['action' => 'upgrade']);
+            }
+        } else {
+            $this->info('未检测到已启用插件，跳过升级');
+        }
 
         // 清空路由缓存
         $this->info('清除路由缓存...');
