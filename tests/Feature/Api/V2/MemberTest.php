@@ -21,6 +21,7 @@ use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
+use App\Meedu\Cache\Impl\UserNotificationCountCache;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
@@ -235,6 +236,8 @@ class MemberTest extends Base
         $response = $this->user($this->member)->getJson('api/v2/member/notificationMarkAllAsRead');
         $this->assertResponseSuccess($response);
         $this->member->refresh();
+        $cache = new UserNotificationCountCache();
+        $cache->destroy($this->member['id']);
         $this->assertEquals(0, $this->member->unreadNotifications->count());
     }
 
@@ -251,7 +254,11 @@ class MemberTest extends Base
 
         $response = $this->user($this->member)->getJson('api/v2/member/unreadNotificationCount');
         $response = $this->assertResponseSuccess($response);
-        $this->assertEquals(3, $response['data']);
+        $this->assertEquals(2, $response['data']);//存在缓存
+
+        // 刷新缓存
+        $cache = new UserNotificationCountCache();
+        $cache->destroy($this->member['id']);
     }
 
     public function test_credit1Records()

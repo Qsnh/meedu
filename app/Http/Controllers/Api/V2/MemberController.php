@@ -29,6 +29,7 @@ use App\Http\Requests\ApiV2\MobileChangeRequest;
 use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
 use App\Services\Member\Services\SocialiteService;
+use App\Meedu\Cache\Impl\UserNotificationCountCache;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -632,9 +633,9 @@ class MemberController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Number} data 未读消息数量
      */
-    public function unreadNotificationCount()
+    public function unreadNotificationCount(UserNotificationCountCache $cache)
     {
-        $count = $this->userService->unreadNotificationCount($this->id());
+        $count = $cache->get($this->id());
         return $this->data($count);
     }
 
