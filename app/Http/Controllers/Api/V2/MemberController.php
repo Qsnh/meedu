@@ -17,6 +17,7 @@ use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Laravel\Socialite\Facades\Socialite;
+use App\Events\UserNotificationReadEvent;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
@@ -620,6 +621,7 @@ class MemberController extends BaseController
     public function notificationMarkAsRead($notificationId)
     {
         $this->userService->notificationMarkAsRead($this->id(), $notificationId);
+        event(new UserNotificationReadEvent($this->id()));
         return $this->success();
     }
 
@@ -652,6 +654,7 @@ class MemberController extends BaseController
     public function notificationMarkAllAsRead()
     {
         $this->userService->notificationMarkAllAsRead($this->id());
+        event(new UserNotificationReadEvent($this->id()));
         return $this->success();
     }
 

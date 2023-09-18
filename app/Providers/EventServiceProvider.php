@@ -112,5 +112,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\NavUpdateEvent' => [
             'App\Listeners\NavUpdateEvent\CacheClearListener',
         ],
+        // 站内消息已全部阅读
+        'App\Events\UserNotificationReadEvent' => [
+            'App\Listeners\UserNotificationReadEvent\NotificationCountCacheUpdateListener',
+        ],
     ];
 }

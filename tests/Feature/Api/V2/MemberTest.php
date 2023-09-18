@@ -236,8 +236,6 @@ class MemberTest extends Base
         $response = $this->user($this->member)->getJson('api/v2/member/notificationMarkAllAsRead');
         $this->assertResponseSuccess($response);
         $this->member->refresh();
-        $cache = new UserNotificationCountCache();
-        $cache->destroy($this->member['id']);
         $this->assertEquals(0, $this->member->unreadNotifications->count());
     }
 
