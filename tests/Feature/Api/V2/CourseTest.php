@@ -119,7 +119,7 @@ class CourseTest extends Base
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
         ]);
-        $this->assertResponseError($response, __('课程无法评论'));
+        $this->assertResponseError($response, __('无权限'));
     }
 
     public function test_course_comment_vip()

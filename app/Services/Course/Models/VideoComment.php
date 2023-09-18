@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VideoComment extends Base
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory;
 
     protected $table = TableConstant::TABLE_VIDEO_COMMENTS;
 
     protected $fillable = [
-        'user_id', 'video_id', 'original_content', 'render_content',
+        'user_id', 'video_id', 'original_content', 'render_content', 'ip', 'ip_province',
     ];
 
     protected $hidden = [

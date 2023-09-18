@@ -8,51 +8,33 @@
 
 namespace App\Services\Course\Services;
 
+use App\Meedu\Utils\IP;
 use App\Events\CourseCommentEvent;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\CourseComment;
 use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseCommentService implements CourseCommentServiceInterface
 {
-
-    /**
-     * @param int $courseId
-     * @return array
-     */
     public function courseComments(int $courseId): array
     {
-        $comments = CourseComment::query()->whereCourseId($courseId)->orderByDesc('id')->limit(200)->get()->toArray();
-
-        return $comments;
+        return CourseComment::query()->whereCourseId($courseId)->orderByDesc('id')->limit(200)->get()->toArray();
     }
 
-    /**
-     * @param int $courseId
-     * @param string $originalContent
-     *
-     * @return array
-     */
-    public function create(int $courseId, string $originalContent): array
+    public function create(int $userId, int $courseId, string $originalContent): array
     {
+        $ip = request()->getClientIp();
+
         $comment = CourseComment::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'course_id' => $courseId,
             'original_content' => $originalContent,
             'render_content' => $originalContent,
+            'ip' => $ip,
+            'ip_province' => IP::queryProvince($ip),
         ]);
 
         event(new CourseCommentEvent($courseId, $comment['id']));
 
         return $comment->toArray();
-    }
-
-    /**
-     * @param int $id
-     * @return array
-     */
-    public function find(int $id): array
-    {
-        return CourseComment::findOrFail($id)->toArray();
     }
 }

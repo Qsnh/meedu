@@ -258,10 +258,16 @@ class VideoController extends BaseController
     {
         $video = $this->videoService->find($id);
         if ($this->businessState->videoCanComment($this->user(), $video) === false) {
-            return $this->error(__('视频无法评论'));
+            return $this->error(__('无权限'));
         }
+
         ['content' => $content] = $request->filldata();
-        $this->videoCommentService->create($id, $content);
+        if (!$content) {
+            return $this->error(__('参数错误'));
+        }
+
+        $this->videoCommentService->create($this->id(), $id, $content);
+
         return $this->success();
     }
 
@@ -286,14 +292,14 @@ class VideoController extends BaseController
      * @apiSuccess {Number} data.users.id 用户ID
      * @apiSuccess {String} data.users.nick_name 用户昵称
      * @apiSuccess {String} data.users.avatar 用户头像
-     * @apiSuccess {String} data.users.mobile 用户手机号
      */
     public function comments($id)
     {
         $comments = $this->videoCommentService->videoComments($id);
         $comments = arr2_clear($comments, ApiV2Constant::MODEL_VIDEO_COMMENT_FIELD);
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
-        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_FIELD);
+
+        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_SIMPLE);
         $commentUsers = array_column($commentUsers, null, 'id');
 
         return $this->data([

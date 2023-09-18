@@ -10,4 +10,7 @@ namespace App\Services\Course\Interfaces;
 
 interface CourseCommentServiceInterface
 {
+    public function courseComments(int $courseId): array;
+
+    public function create(int $userId, int $courseId, string $originalContent): array;
 }

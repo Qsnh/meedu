@@ -150,7 +150,7 @@ class VideoTest extends Base
         $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
         ]);
-        $this->assertResponseError($response, __('视频无法评论'));
+        $this->assertResponseError($response, __('无权限'));
     }
 
     public function test_video_comment_only_paid()
@@ -164,7 +164,7 @@ class VideoTest extends Base
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
         ]);
-        $this->assertResponseError($r, __('视频无法评论'));
+        $this->assertResponseError($r, __('无权限'));
     }
 
     public function test_video_comment_only_paid_for_vip()

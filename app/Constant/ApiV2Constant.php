@@ -33,6 +33,10 @@ class ApiV2Constant
         'created_at', 'credit1', 'credit2', 'credit3', 'role',
     ];
 
+    public const MODEL_MEMBER_SIMPLE = [
+        'id', 'avatar', 'nick_name',
+    ];
+
     public const MODEL_ROLE_FIELD = [
         'id', 'name', 'charge', 'expire_days', 'desc_rows',
     ];
@@ -46,11 +50,11 @@ class ApiV2Constant
     ];
 
     public const MODEL_COURSE_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content', 'created_at',
+        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province',
     ];
 
     public const MODEL_VIDEO_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content', 'created_at',
+        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province',
     ];
 
     public const MODEL_ORDER_FIELD = [

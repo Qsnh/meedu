@@ -8,37 +8,35 @@
 
 namespace App\Services\Course\Services;
 
+use App\Meedu\Utils\IP;
 use App\Events\VideoCommentEvent;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Course\Models\VideoComment;
 use App\Services\Course\Interfaces\VideoCommentServiceInterface;
 
 class VideoCommentService implements VideoCommentServiceInterface
 {
-    /**
-     * @param int $courseId
-     * @return array
-     */
-    public function videoComments(int $courseId): array
-    {
-        $comments = VideoComment::whereVideoId($courseId)->orderByDesc('id')->limit(200)->get()->toArray();
 
-        return $comments;
+    public function videoComments(int $videoId): array
+    {
+        return VideoComment::query()
+            ->where('video_id', $videoId)
+            ->orderByDesc('id')
+            ->limit(200)
+            ->get()
+            ->toArray();
     }
 
-    /**
-     * @param int $videoId
-     * @param string $originalContent
-     *
-     * @return array
-     */
-    public function create(int $videoId, string $originalContent): array
+    public function create(int $userId, int $videoId, string $originalContent): array
     {
+        $ip = request()->getClientIp();
+
         $comment = VideoComment::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'video_id' => $videoId,
             'original_content' => $originalContent,
             'render_content' => $originalContent,
+            'ip' => $ip,
+            'ip_province' => IP::queryProvince($ip),
         ]);
 
         event(new VideoCommentEvent($videoId, $comment['id']));
@@ -46,12 +44,4 @@ class VideoCommentService implements VideoCommentServiceInterface
         return $comment->toArray();
     }
 
-    /**
-     * @param int $id
-     * @return array
-     */
-    public function find(int $id): array
-    {
-        return VideoComment::findOrFail($id)->toArray();
-    }
 }

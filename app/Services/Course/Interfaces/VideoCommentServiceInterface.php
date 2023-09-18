@@ -10,4 +10,7 @@ namespace App\Services\Course\Interfaces;
 
 interface VideoCommentServiceInterface
 {
+    public function videoComments(int $courseId): array;
+
+    public function create(int $userId, int $videoId, string $originalContent): array;
 }

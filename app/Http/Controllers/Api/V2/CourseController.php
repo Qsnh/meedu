@@ -17,7 +17,6 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
-use App\Services\Course\Services\CourseCommentService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -36,9 +35,7 @@ class CourseController extends BaseController
      * @var ConfigService
      */
     protected $configService;
-    /**
-     * @var CourseCommentService
-     */
+
     protected $courseCommentService;
     /**
      * @var UserService
@@ -59,13 +56,13 @@ class CourseController extends BaseController
     protected $businessState;
 
     public function __construct(
-        CourseServiceInterface $courseService,
-        ConfigServiceInterface $configService,
+        CourseServiceInterface        $courseService,
+        ConfigServiceInterface        $configService,
         CourseCommentServiceInterface $courseCommentService,
-        UserServiceInterface $userService,
-        VideoServiceInterface $videoService,
-        OrderServiceInterface $orderService,
-        BusinessState $businessState
+        UserServiceInterface          $userService,
+        VideoServiceInterface         $videoService,
+        OrderServiceInterface         $orderService,
+        BusinessState                 $businessState
     ) {
         $this->courseService = $courseService;
         $this->configService = $configService;
@@ -262,11 +259,17 @@ class CourseController extends BaseController
     public function createComment(CommentRequest $request, $id)
     {
         $course = $this->courseService->find($id);
-        if ($this->businessState->courseCanComment($this->user(), $course) == false) {
-            return $this->error(__('课程无法评论'));
+        if (!$this->businessState->courseCanComment($this->user(), $course)) {
+            return $this->error(__('无权限'));
         }
+
         ['content' => $content] = $request->filldata();
-        $this->courseCommentService->create($id, $content);
+        if (!$content) {
+            return $this->error(__('参数错误'));
+        }
+
+        $this->courseCommentService->create($this->id(), $id, $content);
+
         return $this->success();
     }
 
@@ -291,7 +294,6 @@ class CourseController extends BaseController
      * @apiSuccess {Number} data.users.id 用户ID
      * @apiSuccess {String} data.users.nick_name 用户昵称
      * @apiSuccess {String} data.users.avatar 用户头像
-     * @apiSuccess {String} data.users.mobile 用户手机号
      */
     public function comments($id)
     {
@@ -299,7 +301,7 @@ class CourseController extends BaseController
         $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
 
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role:id,name']);
-        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_FIELD);
+        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_SIMPLE);
         $commentUsers = array_column($commentUsers, null, 'id');
 
         return $this->data([
