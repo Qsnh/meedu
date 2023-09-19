@@ -29,7 +29,6 @@ use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Http\Requests\ApiV2\MobileChangeRequest;
 use App\Http\Requests\ApiV2\NicknameChangeRequest;
 use App\Http\Requests\ApiV2\PasswordChangeRequest;
-use App\Services\Member\Services\SocialiteService;
 use App\Meedu\Cache\Impl\UserNotificationCountCache;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\RoleServiceInterface;
@@ -62,10 +61,6 @@ class MemberController extends BaseController
      * @var OrderService
      */
     protected $orderService;
-    /**
-     * @var SocialiteService
-     */
-    protected $socialiteService;
 
     protected $businessState;
     /**
@@ -74,21 +69,19 @@ class MemberController extends BaseController
     protected $configService;
 
     public function __construct(
-        UserServiceInterface      $userService,
-        CourseServiceInterface    $courseService,
-        VideoServiceInterface     $videoService,
-        RoleServiceInterface      $roleService,
-        OrderServiceInterface     $orderService,
-        SocialiteServiceInterface $socialiteService,
-        BusinessState             $businessState,
-        ConfigServiceInterface    $configService
+        UserServiceInterface   $userService,
+        CourseServiceInterface $courseService,
+        VideoServiceInterface  $videoService,
+        RoleServiceInterface   $roleService,
+        OrderServiceInterface  $orderService,
+        BusinessState          $businessState,
+        ConfigServiceInterface $configService
     ) {
         $this->userService = $userService;
         $this->courseService = $courseService;
         $this->videoService = $videoService;
         $this->roleService = $roleService;
         $this->orderService = $orderService;
-        $this->socialiteService = $socialiteService;
         $this->businessState = $businessState;
         $this->configService = $configService;
     }
@@ -129,9 +122,6 @@ class MemberController extends BaseController
      */
     public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
         $user = $this->userService->find($this->id(), ['role:id,name', 'profile:user_id,real_name,id_number,is_verify']);
         $userProfile = $user['profile'] ?? [];
         // user信息返回字段过滤
@@ -758,14 +748,12 @@ class MemberController extends BaseController
      */
     public function socialiteCancelBind(SocialiteServiceInterface $socialiteService, $app)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
         if (!$app || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ, FrontendConstant::WECHAT_LOGIN_SIGN])) {
             return $this->error(__('参数错误'));
         }
+
         $socialiteService->cancelBind($app, $this->id());
+
         return $this->success();
     }
 
@@ -775,10 +763,6 @@ class MemberController extends BaseController
         Request                   $request,
         $app
     ) {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
         $data = $request->input('data');
         $redirectUrl = urldecode($request->input('redirect_url'));
 
@@ -820,10 +804,6 @@ class MemberController extends BaseController
      */
     public function socialiteBind(SocialiteServiceInterface $socialiteService, Request $request, $app)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
         $redirectUrl = urldecode($request->input('redirect_url'));
 
         if (!$app || !$redirectUrl || !in_array($app, [FrontendConstant::SOCIALITE_APP_QQ])) {
@@ -886,10 +866,6 @@ class MemberController extends BaseController
 
     public function wechatBindCallback(SocialiteServiceInterface $socialiteService, BusinessState $businessState, Request $request)
     {
-        /**
-         * @var SocialiteService $socialiteService
-         */
-
         $app = FrontendConstant::WECHAT_LOGIN_SIGN;
 
         $data = $request->input('data');

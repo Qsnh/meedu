@@ -17,7 +17,6 @@ use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
-use App\Services\Member\Services\SocialiteService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
@@ -28,13 +27,6 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 class BusinessState
 {
 
-    /**
-     * @param array $user
-     * @param array $course
-     * @param array $video
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
         /**
@@ -224,7 +216,7 @@ class BusinessState
     public function socialiteBindCheck(int $userId, string $app, string $appId): void
     {
         /**
-         * @var SocialiteService $socialiteService
+         * @var SocialiteServiceInterface $socialiteService
          */
         $socialiteService = app()->make(SocialiteServiceInterface::class);
 

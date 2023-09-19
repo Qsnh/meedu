@@ -14,28 +14,28 @@ use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\Socialite;
-use App\Services\Member\Services\SocialiteService;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class SocialiteServiceTest extends TestCase
 {
 
     /**
-     * @var SocialiteService
+     * @var SocialiteServiceInterface
      */
     protected $service;
 
     public function setUp(): void
     {
         parent::setUp();
+
         $this->service = $this->app->make(SocialiteServiceInterface::class);
     }
 
     public function test_getBindUserId()
     {
         $user = User::factory()->create();
-        $socialite = Socialite::factory()->create(['user_id' => $user->id]);
-        $userId = $this->service->getBindUserId($socialite->app, $socialite->app_user_id);
+        $socialite = Socialite::factory()->create(['user_id' => $user['id']]);
+        $userId = $this->service->getBindUserId($socialite->app, $socialite['app_user_id']);
         $this->assertEquals($user->id, $userId);
     }
 
@@ -80,11 +80,12 @@ class SocialiteServiceTest extends TestCase
     public function test_cancelBind()
     {
         $user = User::factory()->create();
-        Auth::login($user);
         $app = 'app1';
         $appUserId = Str::random();
-        $this->service->bindApp($user->id, $app, $appUserId, []);
+
+        $this->service->bindApp($user['id'], $app, $appUserId, []);
         $this->service->cancelBind($app, $user['id']);
-        $this->assertEmpty(Socialite::whereUserId($user->id)->where('app', $app)->whereAppUserId($appUserId)->first());
+
+        $this->assertFalse(Socialite::query()->where('user_id', $user['id'])->where('app', $app)->where('app_user_id', $appUserId)->exists());
     }
 }

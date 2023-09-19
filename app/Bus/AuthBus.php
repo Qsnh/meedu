@@ -16,7 +16,6 @@ use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
-use App\Services\Member\Services\SocialiteService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
@@ -25,9 +24,6 @@ class AuthBus
 {
     public const ERROR_CODE_BIND_MOBILE = -100;
 
-    /**
-     * @var SocialiteService
-     */
     protected $socialiteService;
 
     /**

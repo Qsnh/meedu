@@ -24,7 +24,6 @@ use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
 use App\Http\Requests\ApiV2\PasswordLoginRequest;
-use App\Services\Member\Services\SocialiteService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -47,18 +46,8 @@ class LoginController extends BaseController
      */
     protected $cacheService;
 
-    /**
-     * @var SocialiteService
-     */
     protected $socialiteService;
 
-    /**
-     * LoginController constructor.
-     * @param UserServiceInterface $userService
-     * @param ConfigServiceInterface $configService
-     * @param CacheServiceInterface $cacheService
-     * @param SocialiteServiceInterface $socialiteService
-     */
     public function __construct(
         UserServiceInterface      $userService,
         ConfigServiceInterface    $configService,

@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
-use App\Services\Member\Services\SocialiteService;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class WechatBindBus
@@ -59,7 +58,7 @@ class WechatBindBus
         $this->bus->socialiteBindCheck($userId, FrontendConstant::WECHAT_LOGIN_SIGN, $appId);
 
         /**
-         * @var SocialiteService $socialiteService
+         * @var SocialiteServiceInterface $socialiteService
          */
         $socialiteService = app()->make(SocialiteServiceInterface::class);
 
