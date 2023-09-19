@@ -10,4 +10,5 @@ namespace App\Services\Other\Interfaces;
 
 interface NavServiceInterface
 {
+    public function all($platform = ''): array;
 }

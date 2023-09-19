@@ -11,14 +11,13 @@ namespace Tests\Services\Other;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\Other\Models\Announcement;
-use App\Services\Other\Services\AnnouncementService;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class AnnouncementServiceTest extends TestCase
 {
 
     /**
-     * @var AnnouncementService
+     * @var AnnouncementServiceInterface
      */
     protected $service;
 
@@ -28,32 +27,9 @@ class AnnouncementServiceTest extends TestCase
         $this->service = $this->app->make(AnnouncementServiceInterface::class);
     }
 
-    public function test_latest_with_cache()
+
+    public function test_latest()
     {
-        config(['meedu.system.cache.status' => 1]);
-
-        $announce = Announcement::factory()->create([
-            'admin_id' => 0,
-        ]);
-
-        $latest = $this->service->latest();
-
-        $this->assertEquals($announce['admin_id'], $latest['admin_id']);
-        $this->assertEquals($announce['announcement'], $latest['announcement']);
-
-        $newAnnouncement = Announcement::factory()->create([
-            'admin_id' => 1,
-        ]);
-        $latest = $this->service->latest();
-
-        $this->assertEquals($announce['admin_id'], $latest['admin_id']);
-        $this->assertEquals($announce['announcement'], $latest['announcement']);
-    }
-
-    public function test_latest_with_no_cache()
-    {
-        config(['meedu.system.cache.status' => 0]);
-
         $announce = Announcement::factory()->create([
             'admin_id' => 0,
             'created_at' => Carbon::now()->subDays(1),

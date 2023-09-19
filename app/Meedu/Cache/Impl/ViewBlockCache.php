@@ -9,7 +9,6 @@
 namespace App\Meedu\Cache\Impl;
 
 use Illuminate\Support\Facades\Cache;
-use App\Services\Other\Services\ViewBlockService;
 use App\Services\Other\Interfaces\ViewBlockServiceInterface;
 
 class ViewBlockCache
@@ -17,9 +16,6 @@ class ViewBlockCache
 
     public const KEY_NAME = 'viewBlocks';
 
-    /**
-     * @var ViewBlockService
-     */
     private $viewBlockService;
 
     public function __construct(ViewBlockServiceInterface $viewBlockService)

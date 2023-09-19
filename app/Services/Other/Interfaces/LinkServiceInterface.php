@@ -10,4 +10,7 @@ namespace App\Services\Other\Interfaces;
 
 interface LinkServiceInterface
 {
+
+    public function all(): array;
+
 }

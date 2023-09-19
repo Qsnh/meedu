@@ -13,10 +13,6 @@ use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavService implements NavServiceInterface
 {
-    /**
-     * @param string $platform
-     * @return array
-     */
     public function all($platform = ''): array
     {
         $navs = Nav::query()

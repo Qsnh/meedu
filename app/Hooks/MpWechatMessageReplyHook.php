@@ -10,7 +10,6 @@ namespace App\Hooks;
 
 use App\Meedu\Hooks\HookParams;
 use App\Meedu\Hooks\HookRuntimeInterface;
-use App\Services\Other\Services\MpWechatService;
 use App\Services\Other\Interfaces\MpWechatServiceInterface;
 
 class MpWechatMessageReplyHook implements HookRuntimeInterface
@@ -38,7 +37,7 @@ class MpWechatMessageReplyHook implements HookRuntimeInterface
         }
 
         /**
-         * @var MpWechatService $mpWechatService
+         * @var MpWechatServiceInterface $mpWechatService
          */
         $mpWechatService = app()->make(MpWechatServiceInterface::class);
 

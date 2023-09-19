@@ -10,4 +10,8 @@ namespace App\Services\Other\Interfaces;
 
 interface MpWechatServiceInterface
 {
+
+    public function textMessageReplyFind(string $text): string;
+
+    public function eventMessageReplyFind(string $event, $eventKey = ''): string;
 }

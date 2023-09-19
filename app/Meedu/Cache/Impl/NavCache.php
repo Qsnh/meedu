@@ -9,7 +9,6 @@
 namespace App\Meedu\Cache\Impl;
 
 use Illuminate\Support\Facades\Cache;
-use App\Services\Other\Services\NavService;
 use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavCache
@@ -17,9 +16,6 @@ class NavCache
 
     public const KEY_NAME = 'navs';
 
-    /**
-     * @var NavService
-     */
     private $navService;
 
     public function __construct(NavServiceInterface $navService)

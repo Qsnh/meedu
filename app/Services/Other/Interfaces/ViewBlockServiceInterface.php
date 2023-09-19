@@ -10,4 +10,5 @@ namespace App\Services\Other\Interfaces;
 
 interface ViewBlockServiceInterface
 {
+    public function getPageBlocks(string $platform, string $page): array;
 }

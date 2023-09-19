@@ -16,9 +16,7 @@ class ViewBlockService implements ViewBlockServiceInterface
     public function getPageBlocks(string $platform, string $page): array
     {
         return ViewBlock::query()
-            ->select([
-                'id', 'platform', 'page', 'sign', 'sort', 'config',
-            ])
+            ->select(['id', 'platform', 'page', 'sign', 'sort', 'config'])
             ->where('platform', $platform)
             ->where('page', $page)
             ->orderBy('sort')

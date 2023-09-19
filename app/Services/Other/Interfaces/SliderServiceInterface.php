@@ -10,4 +10,5 @@ namespace App\Services\Other\Interfaces;
 
 interface SliderServiceInterface
 {
+    public function all($platform = ''): array;
 }

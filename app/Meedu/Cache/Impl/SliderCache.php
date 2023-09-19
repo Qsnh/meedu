@@ -9,7 +9,6 @@
 namespace App\Meedu\Cache\Impl;
 
 use Illuminate\Support\Facades\Cache;
-use App\Services\Other\Services\SliderService;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 
 class SliderCache
@@ -17,9 +16,6 @@ class SliderCache
 
     public const KEY_NAME = 'sliders';
 
-    /**
-     * @var SliderService
-     */
     private $sliderService;
 
     public function __construct(SliderServiceInterface $sliderService)

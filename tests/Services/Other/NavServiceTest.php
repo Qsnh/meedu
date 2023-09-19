@@ -11,14 +11,13 @@ namespace Tests\Services\Other;
 use Tests\TestCase;
 use App\Constant\FrontendConstant;
 use App\Services\Other\Models\Nav;
-use App\Services\Other\Services\NavService;
 use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavServiceTest extends TestCase
 {
 
     /**
-     * @var NavService
+     * @var NavServiceInterface
      */
     protected $service;
 
@@ -28,35 +27,8 @@ class NavServiceTest extends TestCase
         $this->service = $this->app->make(NavServiceInterface::class);
     }
 
-    public function test_all_with_cache()
+    public function test_all()
     {
-        // 开启缓存
-        config(['meedu.system.cache.status' => 1]);
-
-        $platform = 'pc';
-
-        $nav = Nav::factory()->create(['sort' => 1, 'platform' => $platform]);
-
-        $all = $this->service->all($platform);
-
-        $this->assertEquals(1, count($all));
-        $this->assertEquals($nav->sort, $all[0]['sort']);
-        $this->assertEquals($nav->name, $all[0]['name']);
-        $this->assertEquals($nav->url, $all[0]['url']);
-
-        // 再创建一个
-        $nav1 = Nav::factory()->create(['sort' => 2, 'platform' => $platform]);
-        $all = $this->service->all($platform);
-
-        $this->assertEquals(1, count($all));
-        $this->assertEquals($nav->name, $all[0]['name']);
-    }
-
-    public function test_all_with_no_cache()
-    {
-        // 开启缓存
-        config(['meedu.system.cache.status' => 0]);
-
         $platform = 'pc';
 
         $nav = Nav::factory()->create(['sort' => 1, 'platform' => $platform]);

@@ -13,10 +13,6 @@ use App\Services\Other\Interfaces\SliderServiceInterface;
 
 class SliderService implements SliderServiceInterface
 {
-    /**
-     * @param string $platform
-     * @return array
-     */
     public function all($platform = ''): array
     {
         return Slider::query()

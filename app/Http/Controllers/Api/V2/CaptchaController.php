@@ -11,23 +11,15 @@ namespace App\Http\Controllers\Api\V2;
 use App\Constant\CacheConstant;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ApiV2\SmsRequest;
-use App\Services\Other\Services\SmsService;
 use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class CaptchaController extends BaseController
 {
-
-    /**
-     * @var SmsService
-     */
     protected $smsService;
-    /**
-     * @var ConfigService
-     */
+
     protected $configService;
     /**
      * @var CacheService

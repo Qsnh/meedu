@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Services\Other\Proxies;
+namespace App\Services\Other\Services;
 
 use App\Services\Other\Models\SearchRecord;
 use App\Services\Other\Interfaces\SearchRecordServiceInterface;
@@ -43,7 +43,7 @@ class SearchRecordService implements SearchRecordServiceInterface
         }
     }
 
-    public function search(string $keywords, int $page = 1, int $size = 10, $type = '')
+    public function search(string $keywords, int $page = 1, int $size = 10, $type = ''): array
     {
         $results = SearchRecord::search($keywords)->take($type ? 300 : 100)->get();
 

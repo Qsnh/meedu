@@ -12,7 +12,6 @@ use Tests\TestCase;
 use Illuminate\Support\Str;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Models\Socialite;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 

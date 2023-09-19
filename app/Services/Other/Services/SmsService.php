@@ -11,57 +11,49 @@ namespace App\Services\Other\Services;
 use Illuminate\Support\Str;
 use App\Meedu\Sms\SmsInterface;
 use App\Services\Other\Models\SmsRecord;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class SmsService implements SmsServiceInterface
 {
-    /**
-     * @var ConfigService
-     */
-    protected $configService;
+    private $configService;
 
     public function __construct(ConfigServiceInterface $configService)
     {
         $this->configService = $configService;
     }
 
-    /**
-     * @param $mobile
-     * @param $code
-     * @param $scene
-     */
     public function sendCode($mobile, $code, $scene): void
     {
         $sceneMethod = sprintf('get%sSceneTemplateId', Str::camel($scene));
         $templateId = $this->$sceneMethod();
 
         /**
-         * @var SmsInterface $sms
+         * @var SmsInterface $smsHandler
          */
-        $sms = app()->make(SmsInterface::class);
-        $sms->sendCode($mobile, $code, $templateId);
+        $smsHandler = app()->make(SmsInterface::class);
+
+        $smsHandler->sendCode($mobile, $code, $templateId);
 
         SmsRecord::createData($mobile, compact('code'), []);
     }
 
-    protected function getLoginSceneTemplateId()
+    private function getLoginSceneTemplateId()
     {
         return $this->configService->getLoginSmsTemplateId();
     }
 
-    protected function getRegisterSceneTemplateId()
+    private function getRegisterSceneTemplateId()
     {
         return $this->configService->getRegisterSmsTemplateId();
     }
 
-    protected function getPasswordResetSceneTemplateId()
+    private function getPasswordResetSceneTemplateId()
     {
         return $this->configService->getPasswordResetSmsTemplateId();
     }
 
-    protected function getMobileBindSceneTemplateId()
+    private function getMobileBindSceneTemplateId()
     {
         return $this->configService->getMobileBindSmsTemplateId();
     }

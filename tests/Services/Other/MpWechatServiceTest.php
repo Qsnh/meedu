@@ -9,21 +9,21 @@
 namespace Tests\Services\Other;
 
 use Tests\TestCase;
-use App\Services\Other\Services\MpWechatService;
 use App\Services\Other\Models\MpWechatMessageReply;
+use App\Services\Other\Interfaces\MpWechatServiceInterface;
 
 class MpWechatServiceTest extends TestCase
 {
 
     /**
-     * @var MpWechatService
+     * @var MpWechatServiceInterface
      */
     protected $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->service = $this->app->make(MpWechatService::class);
+        $this->service = $this->app->make(MpWechatServiceInterface::class);
     }
 
     public function test_textMessageReplyFind()

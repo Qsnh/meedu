@@ -10,14 +10,13 @@ namespace Tests\Services\Other;
 
 use Tests\TestCase;
 use App\Meedu\Sms\SmsInterface;
-use App\Services\Other\Services\SmsService;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 
 class SmsServiceTest extends TestCase
 {
 
     /**
-     * @var SmsService
+     * @var SmsServiceInterface
      */
     protected $service;
 

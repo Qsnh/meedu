@@ -10,4 +10,11 @@ namespace App\Services\Other\Interfaces;
 
 interface AnnouncementServiceInterface
 {
+    public function latest(): array;
+
+    public function paginate($page, $size): array;
+
+    public function findOrFail(int $id): array;
+
+    public function viewTimesInc(int $id): void;
 }

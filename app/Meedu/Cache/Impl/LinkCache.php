@@ -9,7 +9,6 @@
 namespace App\Meedu\Cache\Impl;
 
 use Illuminate\Support\Facades\Cache;
-use App\Services\Other\Services\LinkService;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 
 class LinkCache
@@ -17,9 +16,6 @@ class LinkCache
 
     public const KEY_NAME = 'links';
 
-    /**
-     * @var LinkService
-     */
     private $linkService;
 
     public function __construct(LinkServiceInterface $linkService)

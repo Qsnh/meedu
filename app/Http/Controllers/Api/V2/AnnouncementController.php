@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Http\Request;
-use App\Services\Other\Services\AnnouncementService;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class AnnouncementController extends BaseController
@@ -28,16 +27,10 @@ class AnnouncementController extends BaseController
      * @apiSuccess {Number} data.view_times 浏览次数
      * @apiSuccess {String} data.created_at 时间
      */
-    public function latest()
+    public function latest(AnnouncementServiceInterface $service)
     {
-        /**
-         * @var AnnouncementService $annService
-         */
-        $annService = app()->make(AnnouncementServiceInterface::class);
-
-        $ann = $annService->latest();
-
-        return $this->data($ann);
+        $data = $service->latest();
+        return $this->data($data);
     }
 
     /**
@@ -53,15 +46,9 @@ class AnnouncementController extends BaseController
      * @apiSuccess {Number} data.view_times 浏览次数
      * @apiSuccess {String} data.created_at 时间
      */
-    public function detail($id)
+    public function detail(AnnouncementServiceInterface $service, $id)
     {
-        /**
-         * @var AnnouncementService $annService
-         */
-        $annService = app()->make(AnnouncementServiceInterface::class);
-
-        $ann = $annService->findOrFail($id);
-
+        $ann = $service->findOrFail($id);
         return $this->data($ann);
     }
 
@@ -81,17 +68,12 @@ class AnnouncementController extends BaseController
      * @apiSuccess {Number} data.view_times 浏览次数
      * @apiSuccess {String} data.created_at 创建时间
      */
-    public function list(Request $request)
+    public function list(Request $request, AnnouncementServiceInterface $service)
     {
         $page = (int)$request->input('page', 1);
         $size = (int)$request->input('size', 10);
 
-        /**
-         * @var AnnouncementService $annService
-         */
-        $annService = app()->make(AnnouncementServiceInterface::class);
-
-        $data = $annService->paginate($page, $size);
+        $data = $service->paginate($page, $size);
 
         return $this->data($data);
     }
