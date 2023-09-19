@@ -16,7 +16,6 @@ use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
@@ -37,9 +36,7 @@ class VideoController extends BaseController
      * @var VideoService
      */
     protected $videoService;
-    /**
-     * @var ConfigService
-     */
+
     protected $configService;
     /**
      * @var VideoCommentService

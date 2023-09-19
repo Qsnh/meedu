@@ -9,7 +9,6 @@
 namespace App\Meedu\Player;
 
 use Illuminate\Support\Str;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class TencentKey
@@ -19,13 +18,8 @@ class TencentKey
     // 播放key
     protected $key;
 
-    public function __construct()
+    public function __construct(ConfigServiceInterface $configService)
     {
-        /**
-         * @var ConfigService $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-
         $tencentVodConfig = $configService->getTencentVodConfig();
         $this->appId = $tencentVodConfig['app_id'];
         $this->key = $configService->getTencentVodPlayKey();

@@ -14,18 +14,11 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
-
-    /**
-     * @return int
-     */
     public function getWatchedVideoSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.watched_video');
     }
 
-    /**
-     * @return int
-     */
     public function getWatchedCourseSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.watched_course');
@@ -36,85 +29,46 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.member.credit1.paid_order');
     }
 
-    /**
-     * @return int
-     */
     public function getRegisterSceneCredit1(): int
     {
         return (int)config('meedu.member.credit1.register');
     }
 
-    /**
-     * 获取服务配置
-     *
-     * @param string $app
-     * @return array
-     */
-    public function getServiceConfig(string $app): array
-    {
-        return config('services.' . $app, []);
-    }
-
-    /**
-     * 网站名
-     *
-     * @return string
-     */
     public function getName(): string
     {
-        return config('app.name');
+        return config('app.name') ?? '';
     }
 
-    /**
-     * ICP
-     *
-     * @return string
-     */
     public function getIcp(): string
     {
-        return config('meedu.system.icp', '');
+        return config('meedu.system.icp') ?? '';
     }
 
-    public function getIcpLink()
+    public function getIcpLink(): string
     {
-        return config('meedu.system.icp_link');
+        return config('meedu.system.icp_link') ?? '';
     }
 
-    public function getIcp2()
+    public function getIcp2(): string
     {
-        return config('meedu.system.icp2', '');
+        return config('meedu.system.icp2') ?? '';
     }
 
-    public function getIcp2Link()
+    public function getIcp2Link(): string
     {
-        return config('meedu.system.icp2_link', '');
+        return config('meedu.system.icp2_link') ?? '';
     }
 
-    /**
-     * 播放器封面
-     *
-     * @return string
-     */
     public function getPlayerCover(): string
     {
         return config('meedu.system.player_thumb') ?? '';
     }
 
-    /**
-     * 播放器配置
-     *
-     * @return array
-     */
     public function getPlayer(): array
     {
         return config('meedu.system.player');
     }
 
-    /**
-     * 获取logo
-     *
-     * @return array
-     */
     public function getLogo(): array
     {
         return [
@@ -123,84 +77,46 @@ class ConfigService implements ConfigServiceInterface
         ];
     }
 
-    /**
-     * 获取用户协议
-     * @return string
-     */
     public function getMemberProtocol(): string
     {
-        return config('meedu.member.protocol', '');
+        return config('meedu.member.protocol') ?? '';
     }
 
-    /**
-     * 获取用户隐私协议
-     * @return string
-     */
     public function getMemberPrivateProtocol(): string
     {
         return config('meedu.member.private_protocol') ?? '';
     }
 
-    /**
-     * 关于我们
-     * @return string
-     */
     public function getAboutus(): string
     {
         return config('meedu.aboutus') ?? '';
     }
 
-    /**
-     * 用户默认头像
-     * @return string
-     */
     public function getMemberDefaultAvatar(): string
     {
         return config('meedu.member.default_avatar') ?? '';
     }
 
-    /**
-     * 用户默认锁定状态
-     * @return int
-     */
     public function getMemberLockStatus(): int
     {
         return (int)config('meedu.member.is_lock_default');
     }
 
-    /**
-     * 用户默认激活状态
-     * @return int
-     */
     public function getMemberActiveStatus(): int
     {
         return (int)config('meedu.member.is_active_default');
     }
 
-    /**
-     * 短信配置
-     * @return array
-     */
     public function getSms(): array
     {
         return config('sms');
     }
 
-    /**
-     * 支付网关
-     *
-     * @return array
-     */
     public function getPayments(): array
     {
         return config('meedu.payment');
     }
 
-    /**
-     * 微信支付配置
-     *
-     * @return array
-     */
     public function getWechatPay(): array
     {
         $data = config('pay.wechat');
@@ -259,92 +175,46 @@ class ConfigService implements ConfigServiceInterface
         return $data;
     }
 
-    /**
-     * 缓存状态
-     *
-     * @return boolean
-     */
     public function getCacheStatus(): bool
     {
         return (int)config('meedu.system.cache.status') === 1;
     }
 
-    /**
-     * 缓存时间
-     *
-     * @return integer
-     */
     public function getCacheExpire(): int
     {
         return (int)config('meedu.system.cache.expire');
     }
 
-    /**
-     * 图片存储驱动
-     *
-     * @return string
-     */
     public function getImageStorageDisk(): string
     {
         return config('meedu.upload.image.disk');
     }
 
-    /**
-     * 图片存储路径
-     *
-     * @return string
-     */
     public function getImageStoragePath(): string
     {
         return config('meedu.upload.image.path');
     }
 
-    /**
-     * 注册短信模板ID
-     *
-     * @return string
-     */
     public function getRegisterSmsTemplateId(): string
     {
         return $this->getTemplateId('register');
     }
 
-    /**
-     * 登录短信模板ID
-     *
-     * @return string
-     */
     public function getLoginSmsTemplateId(): string
     {
         return $this->getTemplateId('login');
     }
 
-    /**
-     * 密码重置模板ID
-     *
-     * @return string
-     */
     public function getPasswordResetSmsTemplateId(): string
     {
         return $this->getTemplateId('password_reset');
     }
 
-    /**
-     * 手机号绑定模板ID
-     *
-     * @return string
-     */
     public function getMobileBindSmsTemplateId(): string
     {
         return $this->getTemplateId('mobile_bind');
     }
 
-    /**
-     * 获取某个场景的短信模板id
-     *
-     * @param [type] $scene
-     * @return string
-     */
     protected function getTemplateId($scene): string
     {
         $supplier = config('meedu.system.sms');
@@ -353,21 +223,11 @@ class ConfigService implements ConfigServiceInterface
         return $supplierConfig['template'][$scene] ?? '';
     }
 
-    /**
-     * 手动支付详情
-     *
-     * @return string
-     */
     public function getHandPayIntroducation(): string
     {
         return config('meedu.payment.handPay.introduction') ?? '';
     }
 
-    /**
-     * 已开启的社交登录app
-     *
-     * @return array
-     */
     public function getEnabledSocialiteApps(): array
     {
         $apps = config('meedu.member.socialite');
@@ -381,79 +241,41 @@ class ConfigService implements ConfigServiceInterface
         return $list;
     }
 
-    /**
-     * meedu系统配置
-     *
-     * @return array
-     */
     public function getMeEduConfig(): array
     {
         return config('meedu');
     }
 
-    /**
-     * 获取手机号强制绑定状态开关
-     *
-     * @return integer
-     */
     public function getEnabledMobileBindAlert(): int
     {
         return (int)config('meedu.member.enabled_mobile_bind_alert', 0);
     }
 
-    /**
-     * 会员邀请配置
-     *
-     * @return array
-     */
     public function getMemberInviteConfig(): array
     {
         return config('meedu.member.invite');
     }
 
-    /**
-     * 腾讯云VOD配置
-     *
-     * @return array
-     */
     public function getTencentVodConfig(): array
     {
         return config('tencent.vod');
     }
 
-    /**
-     * 阿里云私密播放状态
-     *
-     * @return bool
-     */
     public function getAliyunPrivatePlayStatus(): bool
     {
         return (int)config('meedu.system.player.enabled_aliyun_private') === 1;
     }
 
-    /**
-     * 获取所有配置
-     * @return array
-     */
     public function all(): array
     {
         return AppConfig::query()->orderBy('sort')->get()->toArray();
     }
 
-    /**
-     * 检测配置是否存在
-     * @param string $key
-     * @return bool
-     */
     public function isConfigExists(string $key): bool
     {
         return AppConfig::query()->where('key', $key)->exists();
     }
 
-    /**
-     * 写入配置
-     * @param array $config
-     */
     public function setConfig(array $config): void
     {
         $data = array_column($this->all(), 'key');
@@ -465,50 +287,28 @@ class ConfigService implements ConfigServiceInterface
         }
     }
 
-    /**
-     * 获取阿里云VOD配置
-     * @return array
-     */
     public function getAliyunVodConfig(): array
     {
         return config('meedu.upload.video.aliyun');
     }
 
-    /**
-     * 登录限制规则
-     *
-     * @return int
-     */
     public function getLoginLimitRule(): int
     {
         return (int)config('meedu.system.login.limit.rule');
     }
 
-    /**
-     * 微信公众号配置
-     * @return array
-     */
     public function getMpWechatConfig(): array
     {
         $config = config('meedu.mp_wechat');
         return $config ? $config : [];
     }
 
-    /**
-     * 获取注册送VIP的配置
-     * @return array
-     */
     public function getMemberRegisterSendVipConfig(): array
     {
         return config('meedu.member.register.vip') ?? [];
     }
 
-    public function getAmapkey(): string
-    {
-        return config('meedu.services.amap.key') ?? '';
-    }
-
-    public function getMpWechatScanLoginAlert()
+    public function getMpWechatScanLoginAlert(): string
     {
         return config('meedu.mp_wechat.scan_login_alert') ?? '';
     }
@@ -530,59 +330,34 @@ class ConfigService implements ConfigServiceInterface
 
     public function getUrl(): string
     {
-        return config('app.url');
+        return config('app.url') ?? '';
     }
 
-    // deprecated
-    public function getTencentVodTranscodeFormat(): array
-    {
-        $format = strtolower(config('tencent.vod.transcode_format', ''));
-        return $format ? explode(',', $format) : [];
-    }
-
-    /**
-     * @return array
-     */
     public function getTencentSms(): array
     {
         return config('sms.gateways.tencent');
     }
 
-    /**
-     * @return string
-     */
     public function getPcUrl(): string
     {
-        return config('meedu.system.pc_url');
+        return config('meedu.system.pc_url') ?? '';
     }
 
-    /**
-     * @return string
-     */
     public function getH5Url(): string
     {
-        return config('meedu.system.h5_url');
+        return config('meedu.system.h5_url') ?? '';
     }
 
-    /**
-     * @return bool
-     */
     public function enabledFullSearch(): bool
     {
         return (bool)config('scout.meilisearch.host');
     }
 
-    /**
-     * @return string
-     */
     public function getTencentVodPlayKey(): string
     {
-        return config('meedu.system.player.tencent_play_key', '') ?? '';
+        return config('meedu.system.player.tencent_play_key') ?? '';
     }
 
-    /**
-     * @return array
-     */
     public function getPlayVideoFormatWhitelist(): array
     {
         $whitelist = config('meedu.system.player.video_format_whitelist') ?? '';
@@ -592,11 +367,8 @@ class ConfigService implements ConfigServiceInterface
         return array_map('strtolower', explode(',', $whitelist));
     }
 
-    /**
-     * @return bool
-     */
     public function enabledRedisCache(): bool
     {
-        return config('cache.default') === 'redis';
+        return 'redis' === config('cache.default');
     }
 }

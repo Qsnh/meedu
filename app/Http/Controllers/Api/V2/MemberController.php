@@ -18,12 +18,10 @@ use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Laravel\Socialite\Facades\Socialite;
 use App\Events\UserNotificationReadEvent;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\RoleService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
-use App\Services\Course\Services\CourseService;
 use App\Services\Member\Services\CreditService;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
 use App\Http\Requests\ApiV2\MobileChangeRequest;
@@ -45,9 +43,7 @@ class MemberController extends BaseController
      * @var UserService
      */
     protected $userService;
-    /**
-     * @var CourseService
-     */
+
     protected $courseService;
     /**
      * @var VideoService
@@ -63,9 +59,7 @@ class MemberController extends BaseController
     protected $orderService;
 
     protected $businessState;
-    /**
-     * @var ConfigService
-     */
+
     protected $configService;
 
     public function __construct(

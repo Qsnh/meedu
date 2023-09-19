@@ -20,7 +20,6 @@ use App\Events\UserVideoWatchedEvent;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserProfile;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserVideoWatchRecord;
@@ -29,10 +28,8 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class UserService implements UserServiceInterface
 {
-    /**
-     * @var ConfigService
-     */
     protected $configService;
+
     protected $businessState;
 
     public function __construct(ConfigServiceInterface $configService, BusinessState $businessState)

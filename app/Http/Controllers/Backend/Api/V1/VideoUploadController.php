@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
@@ -31,10 +30,6 @@ class VideoUploadController extends BaseController
 
     public function aliyunCreateVideoToken(Request $request, ConfigServiceInterface $configService)
     {
-        /**
-         * @var ConfigService $configService
-         */
-
         $title = $request->input('title');
         $filename = $request->input('filename');
 
@@ -77,10 +72,6 @@ class VideoUploadController extends BaseController
 
     public function aliyunRefreshVideoToken(Request $request, ConfigServiceInterface $configService)
     {
-        /**
-         * @var ConfigService $configService
-         */
-
         $videoId = $request->input('video_id');
 
         AdministratorLog::storeLog(

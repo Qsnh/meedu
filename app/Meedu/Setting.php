@@ -9,16 +9,12 @@
 namespace App\Meedu;
 
 use App\Meedu\Sms\SmsInterface;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Setting
 {
     const VERSION = 1;
 
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     /**

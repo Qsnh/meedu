@@ -8,7 +8,6 @@
 
 namespace App\Meedu\Sms;
 
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Aliyun implements SmsInterface
@@ -16,7 +15,7 @@ class Aliyun implements SmsInterface
     public function sendCode(string $mobile, $code, $template)
     {
         /**
-         * @var ConfigService $configService
+         * @var ConfigServiceInterface $configService
          */
         $configService = app()->make(ConfigServiceInterface::class);
         $config = $configService->getSms()['gateways']['aliyun'];

@@ -20,7 +20,6 @@ use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\MobileLoginRequest;
 use App\Http\Requests\ApiV2\PasswordLoginRequest;
@@ -36,9 +35,6 @@ class LoginController extends BaseController
      */
     protected $userService;
 
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     /**
@@ -219,10 +215,6 @@ class LoginController extends BaseController
      */
     public function socialiteLogin(Request $request, ConfigServiceInterface $configService, $app)
     {
-        /**
-         * @var ConfigService $configService
-         */
-
         $successRedirect = $request->input('success_redirect');
         $failedRedirect = $request->input('failed_redirect');
 

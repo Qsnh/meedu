@@ -10,14 +10,10 @@ namespace App\Meedu\Payment\Alipay;
 
 use Yansongda\Pay\Pay;
 use Illuminate\Support\Facades\Log;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class AlipayRefund
 {
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     public function __construct(ConfigServiceInterface $configService)

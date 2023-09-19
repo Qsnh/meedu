@@ -10,8 +10,8 @@ namespace App\Services\Order\Models;
 
 use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Base\Services\ConfigService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Order extends Model
 {
@@ -77,9 +77,9 @@ class Order extends Model
     public function getPaymentText()
     {
         /**
-         * @var ConfigService
+         * @var ConfigServiceInterface
          */
-        $configService = app()->make(ConfigService::class);
+        $configService = app()->make(ConfigServiceInterface::class);
         $payments = collect($configService->getPayments());
 
         return $payments[$this->payment]['name'] ?? '';

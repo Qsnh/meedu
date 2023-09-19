@@ -14,7 +14,6 @@ use App\Exceptions\SystemException;
 use App\Meedu\Payment\Wechat\WechatScan;
 use App\Services\Base\Services\CacheService;
 use App\Meedu\Payment\Contract\PaymentStatus;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -67,7 +66,9 @@ class PaymentController extends BaseController
                 'icon' => url($val['logo']),
             ];
         })->toArray();
+
         sort($payments);
+
         return $this->data($payments);
     }
 
@@ -137,15 +138,10 @@ class PaymentController extends BaseController
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.text 手动打款支付信息
      */
-    public function handPay()
+    public function handPay(ConfigServiceInterface $configService)
     {
-        /**
-         * @var ConfigService $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
 
         $text = $configService->getHandPayIntroducation();
-
         return $this->data(['text' => $text]);
     }
 

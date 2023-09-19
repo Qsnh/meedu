@@ -11,7 +11,6 @@ namespace App\Listeners\PaymentSuccessEvent;
 use App\Events\PaymentSuccessEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\CreditService;
 use App\Services\Member\Services\NotificationService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -22,9 +21,6 @@ class Credit1RewardListener implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     /**
@@ -37,12 +33,6 @@ class Credit1RewardListener implements ShouldQueue
      */
     protected $notificationService;
 
-    /**
-     * Credit1RewardListener constructor.
-     * @param ConfigServiceInterface $configService
-     * @param CreditServiceInterface $creditService
-     * @param NotificationServiceInterface $notificationService
-     */
     public function __construct(ConfigServiceInterface $configService, CreditServiceInterface $creditService, NotificationServiceInterface $notificationService)
     {
         $this->configService = $configService;

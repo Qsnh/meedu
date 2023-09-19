@@ -13,8 +13,8 @@ use App\Exceptions\SystemException;
 use App\Meedu\ServiceProxy\Lock\LockInfo;
 use App\Meedu\ServiceProxy\Cache\CacheInfo;
 use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
 use App\Meedu\ServiceProxy\Limiter\LimiterInfo;
+use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class ServiceProxy
 {
@@ -26,7 +26,7 @@ class ServiceProxy
     protected $cacheService;
 
     /**
-     * @var ConfigService
+     * @var ConfigServiceInterface
      */
     protected $configService;
 
@@ -55,7 +55,7 @@ class ServiceProxy
     {
         $this->service = $service;
         $this->cacheService = app()->make(CacheService::class);
-        $this->configService = app()->make(ConfigService::class);
+        $this->configService = app()->make(ConfigServiceInterface::class);
     }
 
     /**

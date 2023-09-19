@@ -12,10 +12,8 @@ use Carbon\Carbon;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use App\Services\Course\Models\Course;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
-use App\Services\Course\Services\CourseService;
 use App\Services\Order\Services\PromoCodeService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -30,7 +28,7 @@ class BusinessState
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
         /**
-         * @var CourseService $courseService
+         * @var CourseServiceInterface $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($course['id']);
@@ -152,7 +150,7 @@ class BusinessState
     public function isBuyCourse(int $userId, int $courseId): bool
     {
         /**
-         * @var CourseService $courseService
+         * @var CourseServiceInterface $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($courseId);
@@ -181,7 +179,7 @@ class BusinessState
     public function videoCanComment(array $user, array $video): bool
     {
         /**
-         * @var CourseService $courseService
+         * @var CourseServiceInterface $courseService
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($video['course_id']);
@@ -191,7 +189,7 @@ class BusinessState
     public function isEnabledMpOAuthLogin(): bool
     {
         /**
-         * @var ConfigService $configService
+         * @var ConfigServiceInterface $configService
          */
         $configService = app()->make(ConfigServiceInterface::class);
         $mpWechatConfig = $configService->getMpWechatConfig();
@@ -202,7 +200,7 @@ class BusinessState
     public function enabledMpScanLogin(): bool
     {
         /**
-         * @var ConfigService $configService
+         * @var ConfigServiceInterface $configService
          */
         $configService = app()->make(ConfigServiceInterface::class);
 

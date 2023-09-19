@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Http\Requests\ApiV2\CommentRequest;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
@@ -31,9 +30,7 @@ class CourseController extends BaseController
      * @var CourseService
      */
     protected $courseService;
-    /**
-     * @var ConfigService
-     */
+
     protected $configService;
 
     protected $courseCommentService;

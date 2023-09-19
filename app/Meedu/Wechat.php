@@ -9,7 +9,6 @@
 namespace App\Meedu;
 
 use EasyWeChat\Factory;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Wechat
@@ -28,7 +27,7 @@ class Wechat
     {
         if (!self::$instance) {
             /**
-             * @var ConfigService $configService
+             * @var ConfigServiceInterface $configService
              */
             $configService = app()->make(ConfigServiceInterface::class);
             $mpWechatConfig = $configService->getMpWechatConfig();

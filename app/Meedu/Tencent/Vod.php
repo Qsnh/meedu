@@ -9,7 +9,6 @@
 namespace App\Meedu\Tencent;
 
 use Illuminate\Support\Facades\Log;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use TencentCloud\Vod\V20180717\Models\DeleteMediaRequest;
 
@@ -20,12 +19,8 @@ class Vod
 
     protected $client;
 
-    public function __construct()
+    public function __construct(ConfigServiceInterface $configService)
     {
-        /**
-         * @var ConfigService $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
         $config = $configService->getTencentVodConfig();
 
         $this->secretId = $config['secret_id'];
@@ -48,9 +43,7 @@ class Vod
             'vodSubAppId' => config('tencent.vod.app_id'),
         ];
         $queryString = http_build_query($data);
-        $sign = base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true) . $queryString);
-
-        return $sign;
+        return base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true) . $queryString);
     }
 
     public function deleteVideos(array $fileIds): void

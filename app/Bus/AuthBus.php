@@ -14,7 +14,6 @@ use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Member\Services\UserService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -31,9 +30,6 @@ class AuthBus
      */
     protected $userService;
 
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     public function __construct(

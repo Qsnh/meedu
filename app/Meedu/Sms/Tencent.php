@@ -11,7 +11,6 @@ namespace App\Meedu\Sms;
 use TencentCloud\Common\Credential;
 use TencentCloud\Sms\V20210111\SmsClient;
 use TencentCloud\Common\Profile\HttpProfile;
-use App\Services\Base\Services\ConfigService;
 use TencentCloud\Common\Profile\ClientProfile;
 use TencentCloud\Sms\V20210111\Models\SendSmsRequest;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -21,7 +20,7 @@ class Tencent implements SmsInterface
     public function sendCode(string $mobile, $code, $template)
     {
         /**
-         * @var ConfigService $configService
+         * @var ConfigServiceInterface $configService
          */
         $configService = app()->make(ConfigServiceInterface::class);
         $config = $configService->getTencentSms();

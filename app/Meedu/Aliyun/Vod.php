@@ -10,7 +10,6 @@ namespace App\Meedu\Aliyun;
 
 use Illuminate\Support\Facades\Log;
 use AlibabaCloud\Client\AlibabaCloud;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Vod
@@ -22,9 +21,6 @@ class Vod
 
     public const API_VERSION = '2017-03-21';
 
-    /**
-     * @var ConfigService
-     */
     protected $configService;
 
     public function __construct(ConfigServiceInterface $configService)

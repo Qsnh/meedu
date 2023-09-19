@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Api\V3;
 
 use Illuminate\Http\Request;
 use App\Constant\FrontendConstant;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Order\Services\OrderService;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -32,7 +31,7 @@ class PaymentController extends BaseController
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.text 手动打款支付信息
      */
-    public function handPay(Request $request, OrderServiceInterface $orderService)
+    public function handPay(Request $request, OrderServiceInterface $orderService, ConfigServiceInterface $configService)
     {
         $orderId = $request->input('order_id');
         if (!$orderId) {
@@ -52,10 +51,6 @@ class PaymentController extends BaseController
             $orderService->change2Paying($order['id'], $updateData);
         }
 
-        /**
-         * @var ConfigService $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
         $text = $configService->getHandPayIntroducation();
 
         return $this->data(['text' => $text]);

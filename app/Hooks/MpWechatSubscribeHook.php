@@ -17,7 +17,6 @@ use App\Meedu\Hooks\HookParams;
 use App\Exceptions\ServiceException;
 use App\Meedu\Hooks\HookRuntimeInterface;
 use App\Services\Base\Services\CacheService;
-use App\Services\Base\Services\ConfigService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
@@ -100,7 +99,7 @@ class MpWechatSubscribeHook implements HookRuntimeInterface
         );
 
         /**
-         * @var ConfigService $configService
+         * @var ConfigServiceInterface $configService
          */
         $configService = app()->make(ConfigServiceInterface::class);
         $replyContent = $configService->getMpWechatScanLoginAlert() ?? '';
