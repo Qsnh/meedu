@@ -8,6 +8,7 @@
 
 namespace App\Services\Base\Services;
 
+use Illuminate\Support\Str;
 use App\Exceptions\ServiceException;
 use App\Services\Base\Model\AppConfig;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
@@ -157,7 +158,17 @@ class ConfigService implements ConfigServiceInterface
         // 支付宝回调地址
         $data['notify_url'] = route('payment.callback', ['alipay']);
 
-        // 证书
+        // 支付宝公钥证书
+        if (Str::startsWith($data['ali_public_key'], '-----BEGIN')) {
+            $hash = md5($data['ali_public_key']);
+            $aliPublicKeyPath = storage_path('private/ali_public_key_' . $hash . '.crt');
+            if (!is_file($aliPublicKeyPath)) {
+                file_put_contents($aliPublicKeyPath, $data['ali_public_key']);
+            }
+            $data['ali_public_key'] = $aliPublicKeyPath;
+        }
+
+        // 支付宝应用公钥证书
         $hash = md5($data['app_cert_public_key']);
         $appCertPublicKeyPath = storage_path('private/alipay_app_cert_public_key_' . $hash . '.crt');
         if (!is_file($appCertPublicKeyPath)) {
@@ -165,6 +176,7 @@ class ConfigService implements ConfigServiceInterface
         }
         $data['app_cert_public_key'] = $appCertPublicKeyPath;
 
+        // 支付宝根证书
         $hash = md5($data['alipay_root_cert']);
         $rootCertPath = storage_path('private/alipay_root_cert_' . $hash . '.crt');
         if (!is_file($rootCertPath)) {
