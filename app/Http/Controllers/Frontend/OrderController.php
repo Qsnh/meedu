@@ -11,24 +11,11 @@ namespace App\Http\Controllers\Frontend;
 use App\Meedu\Wechat;
 use Illuminate\Http\Request;
 use App\Meedu\Payment\Wechat\WechatJSAPI;
-use App\Services\Order\Services\OrderService;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends FrontendController
 {
-    /**
-     * @var OrderService
-     */
-    protected $orderService;
-
-    public function __construct(OrderServiceInterface $orderService)
-    {
-        parent::__construct();
-
-        $this->orderService = $orderService;
-    }
-
-    public function wechatJSAPI(Request $request)
+    public function wechatJSAPI(Request $request, OrderServiceInterface $orderService)
     {
         // 跳转地址
         $data = $request->input('data');
@@ -67,7 +54,7 @@ class OrderController extends FrontendController
             }
 
             // 订单
-            $order = $this->orderService->findOrFail($orderId);
+            $order = $orderService->findOrFail($orderId);
 
             /**
              * @var WechatJSAPI $jsapi
