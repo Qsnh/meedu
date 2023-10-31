@@ -11,6 +11,8 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use App\Models\MediaImage;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Backend\ImageUploadRequest;
 
 class MediaImageController extends BaseController
@@ -82,5 +84,34 @@ class MediaImageController extends BaseController
         );
 
         return $this->successData($data);
+    }
+
+    public function destroy(Request $request)
+    {
+        $ids = $request->input('ids');
+        if (!$ids || !is_array($ids)) {
+            return $this->error(__('参数错误'));
+        }
+
+        $images = MediaImage::query()
+            ->select(['id', 'disk', 'path'])
+            ->whereIn('id', $ids)
+            ->get();
+
+        if ($images->isNotEmpty()) {
+            foreach ($images as $imageItem) {
+                $disk = $imageItem['disk'];
+                $path = $imageItem['path'];
+
+                try {
+                    $imageItem->delete();
+                    Storage::disk($imageItem['disk'])->delete($imageItem['path']);
+                } catch (\Exception $e) {
+                    Log::error(__METHOD__, ['msg' => $e->getMessage(), 'path' => $path, 'disk' => $disk]);
+                }
+            }
+        }
+
+        return $this->success();
     }
 }

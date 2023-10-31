@@ -28,6 +28,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission']], fun
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
     Route::get('/dashboard/graph', 'DashboardController@graph');
 
+    // 素材库-图片-批量删除
+    Route::post('/media/image/delete/multi', 'MediaImageController@destroy');
+
     Route::group(['prefix' => 'media/videos'], function () {
         Route::get('/index', 'MediaVideoController@index');
         Route::post('/create', 'MediaVideoController@store');

@@ -882,6 +882,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'POST',
                         'url' => '(^video\/token\/aliyun\/refresh$|^video\/token\/aliyun\/create$)',
                     ],
+                    [
+                        'display_name' => '素材库-图片-删除',
+                        'slug' => 'media.image.delete.multi',
+                        'method' => 'POST',
+                        'url' => 'media/image/delete/multi',
+                    ],
                 ],
             ],
 
