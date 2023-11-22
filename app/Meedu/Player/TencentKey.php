@@ -43,7 +43,7 @@ class TencentKey
         $urlInfo = parse_url($url);
         $dir = pathinfo($urlInfo['path'], PATHINFO_DIRNAME) . '/';
         // 默认三个小时
-        $t = time() + 3600 * 3;
+        $t = dechex(time() + 3600 * 3);
         // 试看逻辑
         $exper = 0;
         if ($isTry && $freeSeconds = ($video['free_seconds'] ?? 0)) {
