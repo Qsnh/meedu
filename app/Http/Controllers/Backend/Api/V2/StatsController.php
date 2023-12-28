@@ -129,9 +129,12 @@ class StatsController extends BaseController
         $tableOrders = TableConstant::TABLE_ORDERS;
         $tableOrderGoods = TableConstant::TABLE_ORDER_GOODS;
 
+        $queryParams = [];
+
         $goodsTypeSql = '';
         if ($goodsType) {
-            $goodsTypeSql = ' and ' . $tableOrderGoods . ".goods_type='{$goodsType}' ";
+            $goodsTypeSql = ' and ' . $tableOrderGoods . '.goods_type=? ';
+            $queryParams[] = $goodsType;
         }
 
         $countSql = <<<SQL
@@ -161,8 +164,8 @@ ORDER BY  orders_paid_sum desc
 limit {$offset},{$size};
 SQL;
 
-        $count = DB::selectOne($countSql);
-        $result = DB::select($sql);
+        $count = DB::selectOne($countSql, $queryParams);
+        $result = DB::select($sql, $queryParams);
 
         return $this->successData([
             'data' => $result,
