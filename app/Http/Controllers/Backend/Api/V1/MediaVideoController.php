@@ -9,7 +9,9 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Meedu\Aliyun\Vod;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
 use App\Events\VideoUploadedEvent;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +30,7 @@ class MediaVideoController extends BaseController
             return $this->error(__('排序参数错误'));
         }
 
-        $videos = MediaVideo::query()
+        $records = MediaVideo::query()
             ->select([
                 'id', 'title', 'thumb', 'duration', 'size', 'storage_driver', 'storage_file_id',
                 'transcode_status', 'ref_count', 'created_at', 'updated_at',
@@ -42,13 +44,20 @@ class MediaVideoController extends BaseController
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
+        $data = [
+            'total' => $records->total(),
+            'data' => $records->items(),
+        ];
+
+        $data = HookRun::mount(HookConstant::BACKEND_MEDIA_VIDEO_CONTROLLER_INDEX_RETURN_DATA, $data);
+
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
             AdministratorLog::OPT_VIEW,
             compact('keywords', 'isOpen')
         );
 
-        return $this->successData($videos);
+        return $this->successData($data);
     }
 
     public function store(Request $request)
@@ -98,9 +107,10 @@ class MediaVideoController extends BaseController
         );
 
         $videos = MediaVideo::query()->whereIn('id', $ids)->select(['id', 'storage_driver', 'storage_file_id'])->get();
-        if (!$videos) {
+        if ($videos->isEmpty()) {
             return $this->error(__('数据为空'));
         }
+
         $aliyunFileIds = [];
         $tencentFileIds = [];
         foreach ($videos as $videoItem) {
@@ -112,14 +122,10 @@ class MediaVideoController extends BaseController
         }
 
         DB::transaction(function () use ($ids, $aliyunFileIds, $tencentFileIds, $aliyunVod, $tencentVod) {
-            // 删除本地记录
+            $aliyunFileIds && $aliyunVod->deleteVideos($aliyunFileIds);
+            $tencentFileIds && $tencentVod->deleteVideos($tencentFileIds);
+
             MediaVideo::query()->whereIn('id', $ids)->delete();
-            if ($aliyunFileIds) {
-                $aliyunVod->deleteVideos($aliyunFileIds);
-            }
-            if ($tencentFileIds) {
-                $tencentVod->deleteVideos($tencentFileIds);
-            }
         });
 
         return $this->successData();
