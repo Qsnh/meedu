@@ -9,6 +9,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Constant\BackendApiConstant;
 
 class AdministratorPermissionSeeder extends Seeder
 {
@@ -891,6 +892,7 @@ class AdministratorPermissionSeeder extends Seeder
                 ],
             ],
 
+            // 数据统计权限
             [
                 'group_name' => '数据',
                 'children' => [
@@ -911,6 +913,37 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'stats.user',
                         'method' => 'GET',
                         'url' => '(^stats/user$|^stats/user-top$|^stats/user-paid-top$|^stats/user-graph$)',
+                    ],
+                ],
+            ],
+
+            // 敏感数据权限
+            [
+                'group_name' => '敏感数据',
+                'children' => [
+                    [
+                        'display_name' => '敏感数据-学员-手机号',
+                        'slug' => BackendApiConstant::P_DATA_USER_MOBILE,
+                        'method' => 'DATA',
+                        'url' => '',
+                    ],
+                    [
+                        'display_name' => '敏感数据-学员-真实姓名',
+                        'slug' => BackendApiConstant::P_DATA_USER_REAL_NAME,
+                        'method' => 'DATA',
+                        'url' => '',
+                    ],
+                    [
+                        'display_name' => '敏感数据-学员-身份证号',
+                        'slug' => BackendApiConstant::P_DATA_USER_ID_NUMBER,
+                        'method' => 'DATA',
+                        'url' => '',
+                    ],
+                    [
+                        'display_name' => '敏感数据-管理员-注册邮箱',
+                        'slug' => BackendApiConstant::P_DATA_ADMINISTRATOR_EMAIL,
+                        'method' => 'DATA',
+                        'url' => '',
                     ],
                 ],
             ],

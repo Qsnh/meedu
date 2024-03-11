@@ -11,22 +11,33 @@ namespace App\Http\Controllers\Backend\Api\V1;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\Administrator;
+use App\Bus\AdminPermissionBus;
 use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Log;
 use App\Constant\BackendApiConstant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Meedu\Utils\SensitiveDataMask;
 use App\Http\Requests\Backend\Administrator\EditPasswordRequest;
 use App\Http\Requests\Backend\Administrator\AdministratorRequest;
 
 class AdministratorController extends BaseController
 {
-    public function index(Request $request)
+    public function index(Request $request, AdminPermissionBus $adminPermissionBus)
     {
         $administrators = Administrator::query()
             ->orderByDesc('id')
-            ->paginate(request()->input('size', 10));
+            ->paginate($request->input('size', 10));
+
+        $total = $administrators->total();
+        $data = $administrators->items();
+
+        if ($data) {
+            if (!$adminPermissionBus->hasDATAAdministratorEmailPermission($this->adminId())) {
+                $data = SensitiveDataMask::valueMask(json_decode(json_encode($data), true), 'email');
+            }
+        }
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMINISTRATOR,
@@ -34,7 +45,10 @@ class AdministratorController extends BaseController
             []
         );
 
-        return $this->successData($administrators);
+        return $this->successData([
+            'total' => $total,
+            'data' => $data,
+        ]);
     }
 
     public function create()

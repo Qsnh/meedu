@@ -11,6 +11,7 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\Api\DeprecatedApiGuardMiddleware;
 use App\Http\Middleware\Backend\BackendPermissionCheckMiddleware;
+use App\Http\Middleware\Backend\BackendSensitiveDataMaskMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -86,6 +87,8 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
 
         'backend.permission' => BackendPermissionCheckMiddleware::class,//后台权限控制
+        'backend.sensitive.mask' => BackendSensitiveDataMaskMiddleware::class,//后台敏感数据打码
+
         'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,//用户多端口登录控制
         'deprecated.api' => DeprecatedApiGuardMiddleware::class,
     ];

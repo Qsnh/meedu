@@ -16,15 +16,15 @@ class AdministratorPermission extends Model
     protected $table = 'administrator_permissions';
 
     protected $fillable = [
-        'display_name', 'slug', 'description',
-        'method', 'url', 'route', 'group_name',
+        'display_name', 'slug', 'description', 'url', 'group_name',
+
+        // HTTP请求方法[GET,POST,PUT,DELETE] 还有额外的 [DATA] => 意味着数据权限
+        'method',
+
+        // 废弃字段
+        'route',
     ];
 
-    /**
-     * 权限下的角色.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function roles()
     {
         return $this->belongsToMany(
@@ -35,10 +35,7 @@ class AdministratorPermission extends Model
         );
     }
 
-    /**
-     * @return array
-     */
-    public function getMethodArray()
+    public function getMethodArray(): array
     {
         $method = $this->getOriginal('method');
 

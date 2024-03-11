@@ -12,7 +12,7 @@ Route::group([
     Route::get('/system/config', 'SystemController@config');
 
     Route::group([
-        'middleware' => ['backend.permission'],
+        'middleware' => ['backend.permission', 'backend.sensitive.mask'],
     ], function () {
         Route::group(['prefix' => 'member'], function () {
             Route::get('/courses', 'MemberController@courses');

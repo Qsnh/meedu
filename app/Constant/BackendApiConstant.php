@@ -14,4 +14,9 @@ class BackendApiConstant
 
     public const ERROR_CODE = 500;
     public const NO_AUTH_CODE = 401;
+
+    public const P_DATA_USER_MOBILE = 'data.user.mobile';
+    public const P_DATA_USER_ID_NUMBER = 'data.user.id_number';
+    public const P_DATA_USER_REAL_NAME = 'data.user.real_name';
+    public const P_DATA_ADMINISTRATOR_EMAIL = 'data.administrator.email';
 }
