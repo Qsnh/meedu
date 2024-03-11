@@ -143,12 +143,12 @@ class MemberController extends BaseController
     public function update(Request $request, $id)
     {
         $user = User::query()->where('id', $id)->firstOrFail();
+        // 只可白名单的字段更新
         $data = $request->only([
             'avatar', 'nick_name', 'mobile', 'password',
             'is_lock', 'is_active', 'role_id', 'role_expired_at',
             'invite_user_id', 'invite_balance', 'invite_user_expired_at',
         ]);
-
         $profileData = $request->only([
             'real_name', 'id_number', 'is_verify', 'verify_image_url',
         ]);
@@ -181,8 +181,14 @@ class MemberController extends BaseController
             $data['role_expired_at'] = Carbon::parse($data['role_expired_at'])->toDateTimeLocalString();
         }
 
-        // 修改密码
-        ($data['password'] ?? '') && $data['password'] = Hash::make($data['password']);
+        // 如果传递了password字段且有值
+        if (isset($data['password'])) {
+            if ($data['password']) {
+                $data['password'] = Hash::make($data['password']);
+            } else {
+                unset($data['password']);
+            }
+        }
 
         AdministratorLog::storeLogDiff(
             AdministratorLog::MODULE_MEMBER,
