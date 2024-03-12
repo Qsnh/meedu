@@ -496,13 +496,13 @@ class MemberController extends BaseController
         $userIds = $request->input('user_ids');
 
         if (!is_array($userIds) || !$userIds) {
-            return $this->error('请选择需要发送消息的用户');
+            return $this->error(__('请选择需要发送消息的用户'));
         }
         if (!$message) {
-            return $this->error('请输入需要发送的消息');
+            return $this->error(__('请输入需要发送的消息'));
         }
         if (count($userIds) > 100) {
-            return $this->error('单次发送消息不能超过100人');
+            return $this->error(__('单次发送消息不能超过100人'));
         }
 
         AdministratorLog::storeLog(
@@ -728,7 +728,7 @@ class MemberController extends BaseController
     {
         $userIds = $request->input('user_ids');
         if (!$userIds || !is_array($userIds)) {
-            return $this->error('请选择需要修改的用户');
+            return $this->error(__('请选择需要修改的用户'));
         }
 
         // 要更改的字段
@@ -745,12 +745,12 @@ class MemberController extends BaseController
             'is_lock', 'is_active', 'role_id', 'role_expired_at', 'is_password_set', 'is_set_nickname', 'tag',
         ];
         if (!$field || !in_array($field, $fieldsWhitelist)) {
-            return $this->error('待修改字段不合法');
+            return $this->error(__('待修改字段不合法'));
         }
 
         // 如果选择了有效的roleId的话，那么role_expired_at则必须是有效的时间
         if ($field === 'role_id' && (int)$value && !$roleExpiredAt) {
-            return $this->error('请选择VIP过期时间');
+            return $this->error(__('请选择VIP过期时间'));
         }
 
         AdministratorLog::storeLog(
@@ -779,6 +779,18 @@ class MemberController extends BaseController
 
             User::query()->whereIn('id', $userIds)->update($updateData);
         }
+
+        return $this->success();
+    }
+
+    public function deleteUserProfile($userId)
+    {
+        $userProfile = UserProfile::query()->where('user_id', $userId)->first();
+        if (!$userProfile) {
+            return $this->error(__('当前学员未完成实名认证'));
+        }
+
+        $userProfile->forceDelete();
 
         return $this->success();
     }

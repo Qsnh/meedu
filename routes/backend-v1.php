@@ -203,6 +203,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/{id}', 'MemberController@edit');
         Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
+        Route::delete('/{id}/profile', 'MemberController@deleteUserProfile');
         Route::put('/field/multi', 'MemberController@updateFieldMulti');
 
         // 更新用户标签

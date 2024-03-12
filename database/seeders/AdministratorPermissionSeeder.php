@@ -382,6 +382,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'DELETE',
                         'url' => 'member/\d+',
                     ],
+                    [
+                        'display_name' => '学员-实名信息-删除',
+                        'slug' => 'member.profile.destroy',
+                        'method' => 'DELETE',
+                        'url' => 'member/\d+/profile',
+                    ],
 
                     // 学员标签
                     [
