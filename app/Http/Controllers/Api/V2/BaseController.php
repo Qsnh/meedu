@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Constant\FrontendConstant;
-use App\Exceptions\ApiV2Exception;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Member\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -42,10 +42,7 @@ class BaseController
         return Auth::guard($this->guard)->id();
     }
 
-    /**
-     * @return array
-     */
-    protected function user()
+    protected function user(): array
     {
         if (!$this->user) {
             /**
@@ -70,16 +67,13 @@ class BaseController
         return new LengthAwarePaginator($list, $total, $pageSize, $page, ['path' => request()->path()]);
     }
 
-    /**
-     * @throws ApiV2Exception
-     */
     protected function mobileCodeCheck()
     {
         $mobile = request()->input('mobile');
         $mobileCode = request()->input('mobile_code');
 
-        if (mobile_code_check($mobile, $mobileCode) === false) {
-            throw new ApiV2Exception(__('短信验证码错误'));
+        if (false === mobile_code_check($mobile, $mobileCode)) {
+            throw new ServiceException(__('短信验证码错误'));
         }
     }
 }

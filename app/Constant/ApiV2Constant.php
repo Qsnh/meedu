@@ -10,9 +10,6 @@ namespace App\Constant;
 
 class ApiV2Constant
 {
-    public const ERROR_CODE = 1;
-    public const ERROR_NO_AUTH_CODE = 401;
-
     public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_rec', 'is_show', 'user_count', 'category_id', 'is_free',

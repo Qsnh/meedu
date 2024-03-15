@@ -8,7 +8,7 @@
 
 namespace App\Http\Requests\ApiV2;
 
-use App\Exceptions\ApiV2Exception;
+use App\Exceptions\ServiceException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -19,13 +19,8 @@ class BaseRequest extends FormRequest
         return true;
     }
 
-    /**
-     * @param Validator $validator
-     *
-     * @throws ApiV2Exception
-     */
     protected function failedValidation(Validator $validator)
     {
-        throw new ApiV2Exception(implode(',', $validator->errors()->all()));
+        throw new ServiceException(implode(',', $validator->errors()->all()));
     }
 }

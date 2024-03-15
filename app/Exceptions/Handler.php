@@ -9,8 +9,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Support\Str;
-use App\Constant\ApiV2Constant;
-use App\Constant\BackendApiConstant;
 use Illuminate\Auth\AuthenticationException;
 use App\Exceptions\Backend\ValidateException;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
@@ -27,7 +25,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        ApiV2Exception::class,
         ServiceException::class,
         ValidateException::class,
     ];
@@ -44,35 +41,31 @@ class Handler extends ExceptionHandler
 
     public function render($request, \Throwable $e)
     {
-        if ($e instanceof ServiceException || $e instanceof ApiV2Exception) {
+        // 如果异常自定义了响应的方法则直接交给框架处理
+        // 也就是直接走异常自定义的 render 方法
+        if (method_exists($e, 'render')) {
             return parent::render($request, $e);
         }
 
-        // 后台的异常错误
-        if (Str::contains($request->getUri(), '/backend/api/v1')) {
-            $code = BackendApiConstant::ERROR_CODE;
-            if ($e instanceof AuthenticationException) {//未登录异常
-                $code = BackendApiConstant::NO_AUTH_CODE;
-            } elseif ($e instanceof ThrottleRequestsException) {//限流异常
-                $code = 429;
-            }
+        $isReqOnBackend = Str::startsWith($request->getUri(), '/backend');
 
+        $errCode = 1;
+        $errMsg = $isReqOnBackend ? $e->getMessage() : __('错误');
+        if ($e instanceof AuthenticationException) {//未登录异常
+            $errCode = 401;
+            $errMsg = __('请登录');
+        } elseif ($e instanceof ThrottleRequestsException) {//API限流异常
+            $errCode = 429;
+            $errMsg = __('请稍后再试');
+        }
+
+        if ($isReqOnBackend) {
             return response()->json([
-                'status' => $code,
-                'message' => $e->getMessage(),
+                'status' => $errCode,
+                'message' => $errMsg,
             ]);
         }
 
-        if (Str::contains($request->getUri(), '/api/v2')) {
-            $code = ApiV2Constant::ERROR_CODE;//默认的错误code
-            if ($e instanceof AuthenticationException) {//未登录code=401
-                $code = ApiV2Constant::ERROR_NO_AUTH_CODE;
-            } elseif ($e instanceof ThrottleRequestsException) {
-                $code = 429;
-            }
-            return $this->error(__('错误'), $code);
-        }
-
-        return parent::render($request, $e);
+        return $this->error($errMsg, $errCode);
     }
 }
