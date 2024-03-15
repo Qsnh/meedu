@@ -27,6 +27,10 @@ class AdministratorController extends BaseController
     public function index(Request $request, AdminPermissionBus $adminPermissionBus)
     {
         $administrators = Administrator::query()
+            ->select([
+                'id', 'name', 'email', 'last_login_date', 'is_ban_login',
+                'login_times', 'created_at', 'updated_at',
+            ])
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
