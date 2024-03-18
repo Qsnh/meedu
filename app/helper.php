@@ -497,8 +497,11 @@ if (!function_exists('wechat_qrcode_image')) {
     function wechat_qrcode_image(string $code): string
     {
         $result = \App\Meedu\Wechat::getInstance()->qrcode->temporary($code, 3600);
-        $url = $result['url'] ?? '';
-        return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($url));
+        if (!isset($result['url'])) {
+            \Illuminate\Support\Facades\Log::error(__METHOD__ . '|微信扫码登录生成二维码失败,返回信息:' . json_encode($result, JSON_UNESCAPED_UNICODE));
+            throw new \App\Exceptions\ServiceException(__('生成微信临时二维码失败'));
+        }
+        return 'data:image/png;base64, ' . base64_encode(\QrCode::format('png')->size(300)->generate($result['url']));
     }
 }
 
