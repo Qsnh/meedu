@@ -1,4 +1,7 @@
-<!doctype html>
+@if(mb_substr($protocol, -7,7) === '</html>')
+{!! $protocol !!}
+@else
+        <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,3 +14,5 @@
 {!! $protocol !!}
 </body>
 </html>
+@endif
+

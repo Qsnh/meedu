@@ -1,4 +1,7 @@
-<!doctype html>
+@if(mb_substr($aboutus, -7,7) === '</html>')
+{!! $aboutus !!}
+@else
+        <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,3 +14,5 @@
 {!! $aboutus !!}
 </body>
 </html>
+@endif
+
