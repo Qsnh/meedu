@@ -21,7 +21,9 @@ use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use App\Services\Order\Models\OrderGoods;
 use App\Services\Order\Models\OrderRefund;
+use App\Services\Order\Services\OrderService;
 use App\Services\Order\Models\OrderPaidRecord;
+use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends BaseController
 {
@@ -160,12 +162,15 @@ class OrderController extends BaseController
     public function finishOrder($id)
     {
         $order = Order::query()->where('id', $id)->firstOrFail();
-        event(new PaymentSuccessEvent($order->toArray()));
+
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ORDER,
             AdministratorLog::OPT_UPDATE,
             compact('id')
         );
+
+        event(new PaymentSuccessEvent($order->toArray()));
+
         return $this->success();
     }
 
@@ -359,7 +364,7 @@ class OrderController extends BaseController
     public function deleteRefundOrder($id)
     {
         $refundOrder = OrderRefund::query()->where('id', $id)->firstOrFail();
-        $orderAllRefundOrdersCount = (int)OrderRefund::query()->where('order_id', $refundOrder['order_id'])->count();
+        $orderAllRefundOrdersCount = OrderRefund::query()->where('order_id', $refundOrder['order_id'])->count();
         DB::transaction(function () use ($refundOrder, $orderAllRefundOrdersCount) {
             AdministratorLog::storeLog(
                 AdministratorLog::MODULE_ORDER,
@@ -377,6 +382,29 @@ class OrderController extends BaseController
                     ->update(['is_refund' => 0]);
             }
         });
+        return $this->success();
+    }
+
+    public function cancel(OrderServiceInterface  $orderService, $id)
+    {
+
+        /**
+         * @var OrderService $orderService
+         */
+
+        $order = Order::query()->where('id', $id)->firstOrFail();
+        if (!in_array($order['status'], [Order::STATUS_UNPAY, Order::STATUS_PAYING])) {
+            return $this->error(__('订单状态异常'));
+        }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ORDER,
+            AdministratorLog::OPT_UPDATE,
+            compact('id')
+        );
+
+        $orderService->cancel($order['id']);
+
         return $this->success();
     }
 }

@@ -574,6 +574,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'DELETE',
                         'url' => 'order/refund/\d+',
                     ],
+                    [
+                        'display_name' => '订单-取消订单',
+                        'slug' => 'order.cancel',
+                        'method' => 'GET',
+                        'url' => 'order/\d+/cancel',
+                    ],
                 ],
             ],
 

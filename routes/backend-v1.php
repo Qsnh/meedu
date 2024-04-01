@@ -252,6 +252,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/', 'OrderController@index');
         Route::get('/{id}', 'OrderController@detail');
         Route::get('/{id}/finish', 'OrderController@finishOrder');
+        Route::get('/{id}/cancel', 'OrderController@cancel');
         Route::post('/{id}/refund', 'OrderController@submitRefund');
         Route::get('/refund/list', 'OrderController@refundOrders');
         Route::delete('/refund/{id}', 'OrderController@deleteRefundOrder');
