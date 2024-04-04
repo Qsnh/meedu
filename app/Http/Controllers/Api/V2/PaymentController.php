@@ -63,7 +63,7 @@ class PaymentController extends BaseController
             return [
                 'sign' => $val['sign'],
                 'name' => $val['name'],
-                'icon' => url($val['logo']),
+                'icon' => url_v2($val['logo']),
             ];
         })->toArray();
 

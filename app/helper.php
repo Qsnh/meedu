@@ -451,7 +451,7 @@ if (!function_exists('save_image')) {
         // 保存图片并返回存储的的路径
         $path = $file->store($configService->getImageStoragePath() . ($group ? '/' . $group : ''), compact('disk'));
         // 根据path获取对应磁盘的访问url
-        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+        $url = url_v2(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
 
         $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
         $data = compact('path', 'url', 'disk', 'name');
@@ -615,7 +615,7 @@ if (!function_exists('base64_save')) {
         // 保存图片并返回存储的的路径
         $uploadResult = \Illuminate\Support\Facades\Storage::disk($disk)->put($path, base64_decode($base64Content));
         // 根据path获取对应磁盘的访问url
-        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
+        $url = url_v2(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
 
         return compact('path', 'url', 'disk', 'name');
     }
@@ -648,4 +648,26 @@ if (!function_exists('name_mask')) {
         }
         return mb_substr($name, 0, 1) . '*' . mb_substr($name, -1, 1);
     }
+}
+
+if (!function_exists('url_v2')) {
+    function url_v2($path): string
+    {
+        if ('http://' === mb_substr($path, 0, 7) || 'https://' === mb_substr($path, 0, 8)) {
+            return $path;
+        }
+
+        static $domain;
+        if (!$domain) {
+            /**
+             * @var \App\Meedu\ServiceV2\Services\ConfigServiceInterface $configService
+             */
+            $configService = app()->make(\App\Meedu\ServiceV2\Services\ConfigServiceInterface::class);
+
+            $domain = rtrim($configService->getApiUrl(), '/');
+        }
+
+        return $domain . '/' . ltrim($path);
+    }
+
 }

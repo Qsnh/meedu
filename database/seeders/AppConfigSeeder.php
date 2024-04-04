@@ -1004,7 +1004,6 @@ class AppConfigSeeder extends Seeder
                 'sort' => 0,
                 'key' => 'meedu.mp_wechat.app_id',
                 'value' => '',
-                'help' => '微信公众号URL：' . url('api/wechat/serve'),
             ],
             [
                 'group' => '微信公众号',

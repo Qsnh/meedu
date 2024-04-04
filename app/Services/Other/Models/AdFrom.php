@@ -27,7 +27,7 @@ class AdFrom extends Model
 
     public function getUrlAttribute()
     {
-        return url('/') . '?from_key=' . $this->from_key;
+        return url_v2('/') . '?from_key=' . $this->from_key;
     }
 
     /**

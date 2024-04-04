@@ -37,14 +37,4 @@ class BaseController extends Controller
     {
         return Auth::user()->toArray();
     }
-
-    public function redirectTo()
-    {
-        return url('/');
-    }
-
-    public function userPlatform()
-    {
-        return get_platform();
-    }
 }

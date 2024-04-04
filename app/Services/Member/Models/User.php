@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getAvatarAttribute($avatar)
     {
-        return $avatar ?: url(config('meedu.member.default_avatar'));
+        return $avatar ?: url_v2(config('meedu.member.default_avatar'));
     }
 
     /**
