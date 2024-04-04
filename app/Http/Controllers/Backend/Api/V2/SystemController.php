@@ -26,9 +26,9 @@ class SystemController extends BaseController
                 'logo' => $configService->getLogo(),
                 //访问地址
                 'url' => [
-                    'api' => rtrim($configService->getApiUrl()),
-                    'pc' => rtrim($configService->getPCUrl()),
-                    'h5' => rtrim($configService->getH5Url()),
+                    'api' => $configService->getApiUrl(),
+                    'pc' => $configService->getPCUrl(),
+                    'h5' => $configService->getH5Url(),
                 ],
             ],
         ];

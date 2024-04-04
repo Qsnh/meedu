@@ -62,7 +62,11 @@ class ConfigService implements ConfigServiceInterface
 
     public function getPlayerCover(): string
     {
-        return config('meedu.system.player_thumb') ?? '';
+        $cover = config('meedu.system.player_thumb') ?? '';
+        if ($cover) {
+            $cover = url_v2($cover);
+        }
+        return $cover;
     }
 
     public function getPlayer(): array
@@ -73,8 +77,8 @@ class ConfigService implements ConfigServiceInterface
     public function getLogo(): array
     {
         return [
-            'logo' => config('meedu.system.logo'),
-            'white_logo' => config('meedu.system.white_logo'),
+            'logo' => url_v2(config('meedu.system.logo')),
+            'white_logo' => url_v2(config('meedu.system.white_logo')),
         ];
     }
 

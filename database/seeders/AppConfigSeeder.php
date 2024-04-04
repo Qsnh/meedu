@@ -40,9 +40,8 @@ class AppConfigSeeder extends Seeder
                 'name' => '网站Logo',
                 'field_type' => 'image',
                 'sort' => 25,
-                'default_value' => asset('/images/logo.png'),
                 'key' => 'meedu.system.logo',
-                'value' => asset('/images/logo.png'),
+                'value' => '/images/logo.png',
             ],
             [
                 'group' => '系统',
@@ -842,9 +841,8 @@ class AppConfigSeeder extends Seeder
                 'name' => '默认头像',
                 'field_type' => 'image',
                 'sort' => 3,
-                'default_value' => asset('/images/default_avatar.jpg'),
                 'key' => 'meedu.member.default_avatar',
-                'value' => asset('/images/default_avatar.jpg'),
+                'value' => '/images/default_avatar.jpg',
             ],
             [
                 'group' => '会员',
@@ -940,9 +938,8 @@ class AppConfigSeeder extends Seeder
                 'name' => '播放器封面',
                 'field_type' => 'image',
                 'sort' => 0,
-                'default_value' => asset('/images/player-thumb.png'),
                 'key' => 'meedu.system.player_thumb',
-                'value' => asset('/images/player-thumb.png'),
+                'value' => '/images/player-thumb.png',
             ],
             [
                 'group' => '播放器配置',

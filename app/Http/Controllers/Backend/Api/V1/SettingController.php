@@ -20,25 +20,38 @@ class SettingController extends BaseController
     public function index(Setting $setting)
     {
         $config = $setting->getCanEditConfig();
+
         foreach ($config as $key => $val) {
             if ($val['is_show'] !== 1) {
-                // 界面隐藏的配置项
                 continue;
             }
-            // 可选值
+
+            // 可选值解析 => 主要用于 select 类型的配置
             if ($val['option_value']) {
                 $config[$key]['option_value'] = json_decode($val['option_value'], true);
             }
-            // 私密信息
-            if ((int)$val['is_private'] === 1 && $config[$key]['value']) {
+
+            // 如果配置了 is_private=1 的话则返回的值进行打码
+            if (1 === (int)$val['is_private'] && $config[$key]['value']) {
                 $config[$key]['value'] = str_pad('', 12, '*');
             }
+
+            if (in_array($val['key'], [
+                'meedu.system.logo',
+                'meedu.member.default_avatar',
+                'meedu.system.player_thumb',
+            ])) {
+                $config[$key]['value'] = url_v2($val['value']);
+            }
         }
+
         $data = [];
+        // 按照 group 整理数据
         foreach ($config as $item) {
             if (!isset($data[$item['group']])) {
                 $data[$item['group']] = [];
             }
+
             $item['is_show'] === 1 && $data[$item['group']][] = $item;
         }
 

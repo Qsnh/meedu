@@ -69,21 +69,25 @@ class ConfigService implements ConfigServiceInterface
 
     public function getApiUrl(): string
     {
-        return config('app.url') ?? '';
+        return rtrim(config('app.url') ?? '');
     }
 
     public function getPCUrl(): string
     {
-        return config('meedu.system.pc_url') ?? '';
+        return rtrim(config('meedu.system.pc_url') ?? '');
     }
 
     public function getH5Url(): string
     {
-        return config('meedu.system.h5_url') ?? '';
+        return rtrim(config('meedu.system.h5_url') ?? '');
     }
 
     public function getLogo(): string
     {
-        return config('meedu.system.logo') ?? '';
+        $url= config('meedu.system.logo') ?? '';
+        if ($url) {
+            $url = url_v2($url);
+        }
+        return $url;
     }
 }
