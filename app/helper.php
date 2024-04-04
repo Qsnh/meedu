@@ -667,7 +667,11 @@ if (!function_exists('url_v2')) {
             $domain = rtrim($configService->getApiUrl(), '/');
         }
 
-        return $domain . '/' . ltrim($path);
+        if ($domain) {
+            return $domain . '/' . ltrim($path);
+        }
+
+        return $path;
     }
 
 }
