@@ -668,7 +668,7 @@ if (!function_exists('url_v2')) {
         }
 
         if ($domain) {
-            return $domain . '/' . ltrim($path);
+            return $domain . '/' . ltrim($path, '/');
         }
 
         return $path;
