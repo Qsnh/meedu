@@ -1,0 +1,32 @@
+.none {
+  width: 100%;
+  height: 100%;
+  float: left;
+  background-color: #f4fafe;
+}
+
+.none.active {
+  background-color: #fff;
+}
+
+.none.gray {
+  background-color: #f6f6f6;
+}
+
+.none > .empty-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.none > .empty-box > .image-empty-item {
+  display: inline-block;
+}
+
+.none > .empty-box > .image-empty-item > img {
+  width: 120px;
+  height: 120px;
+}

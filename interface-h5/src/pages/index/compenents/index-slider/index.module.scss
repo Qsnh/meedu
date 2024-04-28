@@ -1,0 +1,21 @@
+.slider-box {
+  width: 100%;
+  margin-top: 0px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  height: 135px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 115px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.swiper-slide > img {
+  width: 100%;
+  height: 115px;
+}

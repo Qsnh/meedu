@@ -1,0 +1,228 @@
+.container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  // overflow: hidden;
+}
+
+.user-icon {
+  width: 100%;
+  background: #ffffff;
+  height: 25px;
+  float: left;
+  box-sizing: border-box;
+  display: flex;
+}
+
+/* 用户信息 */
+.user-info-box {
+  width: 100%;
+  background: #ffffff;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 25px 15px 30px 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.user-avatar-box {
+  width: auto;
+  height: 64px;
+  box-sizing: border-box;
+  padding-right: 15px;
+}
+
+.user-avatar-box > img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+.user-body {
+  flex: 1;
+  height: 64px;
+  text-align: left;
+}
+
+.user-body > .user-nickname {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  line-height: 16px;
+}
+
+.user-body > .role-name {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666666;
+  line-height: 13px;
+}
+
+.user-body > .login-button {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 64px;
+}
+
+.vip-banner-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  background: #ffffff;
+  box-sizing: border-box;
+  padding: 0px 15px;
+}
+
+.vip-banner-box > .banner {
+  width: 100%;
+  float: left;
+  height: 94px;
+  background: linear-gradient(90deg, #ffe9b8 0%, #efcc8d 100%);
+  box-shadow: 0px 8px 24px 0px rgba(255, 179, 59, 0.2);
+  border-radius: 16px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 30px;
+  text-align: left;
+}
+
+.vip-banner-box > .banner > .icon {
+  position: absolute;
+  height: 20px;
+  top: 20px;
+  left: 30px;
+}
+
+.vip-banner-box > .banner > .back {
+  position: absolute;
+  height: 68px;
+  top: 0px;
+  right: 0px;
+}
+
+.vip-banner-box > .banner > .info {
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #613400;
+  line-height: 14px;
+  margin-top: 30px;
+}
+
+.vip-banner-box > .banner > .btn {
+  position: absolute;
+  top: 34px;
+  right: 20px;
+  width: 68px;
+  height: 26px;
+  background: #9b5300;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #f9ddb2;
+  line-height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-banner-item {
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 20px 0px;
+}
+
+.banner-body {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
+.banner-body > .item {
+  width: 100%;
+  height: 75px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.banner-body > .item > .icon {
+  width: 100%;
+  height: 35px;
+  float: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+}
+
+.banner-body > .item > .icon > .icon-img {
+  display: inline-block;
+  height: 35px;
+}
+
+.banner-body > .item > .icon > .icon-img > img {
+  width: 35px;
+  height: 35px;
+  margin-right: 15px;
+}
+
+.banner-body > .item > .icon > .name {
+  width: 100%;
+  float: left;
+  height: 15px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 15px;
+}
+
+.banner-body > .item > .count {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #ff4d4f;
+  border-radius: 50%;
+  top: 33px;
+  right: 45px;
+}
+
+.banner-body > .item > .arrow-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+.banner-body > .item > .arrow-icon > img {
+  width: 15px;
+  height: 15px;
+}

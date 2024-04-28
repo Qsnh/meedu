@@ -1,0 +1,13 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 55px;
+  box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  z-index: 100;
+  box-sizing: border-box;
+  padding-bottom: constant(safe-area-inset-bottom); /* 兼容iOS 11.0 - 11.2 */
+  padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS 11.2+ */
+}

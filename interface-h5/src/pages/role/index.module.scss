@@ -1,0 +1,131 @@
+.container {
+  box-sizing: border-box;
+  padding-top: 50px;
+  background: #f6f6f6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.user-info {
+  width: 100%;
+  height: auto;
+  float: left;
+  display: flex;
+  padding: 20px 15px;
+  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+  text-align: left;
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+  }
+
+  .role-info {
+    padding-top: 4px;
+    margin-left: 15px;
+    flex: 1;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    line-height: 20px;
+  }
+}
+
+.role-item-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 15px;
+
+  .role-item {
+    width: calc(50% - 5px);
+    height: auto;
+    float: left;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid white;
+    background-color: white;
+    text-align: left;
+
+    &:nth-of-type(even) {
+      margin-left: 10px;
+    }
+
+    &.active {
+      border: 1px solid rgba(225, 165, 0, 1);
+      background: rgba(255, 237, 237, 1);
+    }
+
+    .name {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(225, 165, 0, 1);
+      line-height: 14px;
+      margin-bottom: 20px;
+    }
+
+    .price {
+      width: 100%;
+      height: 28px;
+      float: left;
+      font-size: 28px;
+      font-weight: 600;
+      color: rgba(51, 51, 51, 1);
+      line-height: 28px;
+      margin-bottom: 15px;
+
+      .small {
+        font-size: 18px;
+      }
+    }
+
+    .desc {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+      line-height: 18px;
+    }
+  }
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 49px;
+  background-color: #cea200;
+  line-height: 49px;
+  text-align: center;
+  color: white;
+
+  &:active {
+    background-color: rgba(#cea200, 0.9);
+  }
+}
