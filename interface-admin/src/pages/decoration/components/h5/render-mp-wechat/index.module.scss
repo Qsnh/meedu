@@ -1,0 +1,62 @@
+.mp-wechat-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  text-align: left;
+
+  .mp-wechat-icon {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-right: 15px;
+  }
+
+  .mp-wechat-body {
+    flex: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .name {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333333;
+      line-height: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 12px;
+      font-weight: 400;
+      color: #999999;
+      line-height: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .options {
+    margin-left: 15px;
+
+    a {
+      font-size: 14px;
+      font-weight: 400;
+      color: #01de6d;
+      line-height: 50px;
+    }
+  }
+}

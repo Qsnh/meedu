@@ -1,0 +1,55 @@
+.user-main-body {
+  width: 100%;
+  height: auto;
+  float: left;
+  .panel-info-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-top: 30px;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    display: grid;
+    row-gap: 30px;
+    column-gap: 0px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    .panel-info-item {
+      height: 14px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 14px;
+      text-align: left;
+    }
+  }
+}
+.info-item {
+  width: 324px;
+  height: auto;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  .info-label {
+    width: 100%;
+    float: left;
+    height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 14px;
+    margin-bottom: 20px;
+  }
+  .info-value {
+    width: 100%;
+    height: auto;
+    float: left;
+    .image {
+      width: 150px;
+      height: 200px;
+      background: #f0f0f8;
+      border-radius: 8px;
+    }
+  }
+}

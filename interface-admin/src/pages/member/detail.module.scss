@@ -1,0 +1,126 @@
+.user-main-body {
+  width: 100%;
+  height: auto;
+  float: left;
+  .user-info-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    flex-direction: column;
+
+    .user-base-info-box {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f3f6f9;
+      display: flex;
+      flex-direction: row;
+
+      .user-avatar {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin-right: 20px;
+        img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+        }
+      }
+      .user-info {
+        width: auto;
+        height: 80px;
+        float: left;
+        display: flex;
+        flex-direction: column;
+        .user-nickname {
+          width: auto;
+          height: 20px;
+          float: left;
+          font-size: 20px;
+          font-weight: 600;
+          color: #333333;
+          line-height: 20px;
+          margin-top: 13px;
+          text-align: left;
+        }
+        .buttons {
+          width: auto;
+          height: auto;
+          float: left;
+          display: flex;
+          flex-direction: row;
+          margin-top: 20px;
+          text-align: left;
+          .real-profile {
+            padding: 0;
+            margin-right: 20px;
+            color: #409eff;
+            height: auto;
+          }
+          .edit-profile {
+            padding: 0;
+            color: #409eff;
+            margin-right: 20px;
+            height: auto;
+          }
+        }
+      }
+    }
+    .panel-info-box {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      padding-bottom: 20px;
+      padding-top: 0px;
+
+      display: flex;
+      flex-wrap: wrap;
+      .panel-info-item {
+        display: flex;
+        width: 360px;
+        height: auto;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333333;
+        box-sizing: border-box;
+        padding: 0px 5px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        &.large {
+          width: 650px;
+        }
+        .item {
+          flex: 1;
+          line-height: 20px;
+          margin-left: 5px;
+        }
+        .item-box {
+          flex: 1;
+          line-height: 14px;
+          margin-left: 20px;
+        }
+        .remark-text {
+          flex: 1;
+          display: inline-block;
+          margin-top: 1px;
+          text-align: left;
+          p {
+            margin: 0px 0px 10px 0px;
+            line-height: 16px;
+            &:last-child {
+              margin: 0px 0px 0px 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

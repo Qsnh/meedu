@@ -1,0 +1,87 @@
+.vod-title {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 30px;
+  font-weight: 600;
+  color: #333333;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.vod-courses-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 50px;
+  text-align: left;
+
+  .vod-item {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .course-thumb {
+      width: 100%;
+      float: left;
+      height: 198px;
+      overflow: hidden;
+
+      img {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+    }
+
+    .course-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      padding: 15px 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 16px;
+    }
+
+    .course-info {
+      width: 100%;
+      height: auto;
+      float: left;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 8px 15px 8px;
+      .sub {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 14px;
+      }
+
+      .charge {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ef4444;
+        line-height: 20px;
+
+        .unit {
+          font-size: 14px;
+        }
+        .free {
+          color: #04c877;
+        }
+      }
+    }
+  }
+}

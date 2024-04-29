@@ -1,0 +1,108 @@
+.vod-v1-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  position: relative;
+  padding-bottom: 40px;
+  text-align: left;
+
+  .footer-button {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 70px;
+    background: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    padding: 15px 30px;
+  }
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    border-left: 5px solid #3ca7fa;
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 30px;
+  }
+
+  .config-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top: 1px solid #f1f2f9;
+
+    .config-item-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 14px;
+      padding-bottom: 30px;
+    }
+
+    .config-item-body {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+
+      .form-label {
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 14px;
+      }
+
+      .courses-list-box {
+        width: 100%;
+        height: auto;
+        float: left;
+        box-sizing: border-box;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        .course-item {
+          position: relative;
+          cursor: pointer;
+
+          img {
+            border-radius: 4px;
+          }
+
+          .default-box {
+            border-radius: 4px;
+            width: 78px;
+            height: 58px;
+            border: 1px dashed #dcdfe6;
+            font-size: 12px;
+            color: #3ca7fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .btn-del {
+            position: absolute;
+            top: -17px;
+            right: -17px;
+          }
+        }
+      }
+    }
+  }
+}

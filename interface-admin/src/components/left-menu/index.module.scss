@@ -1,0 +1,37 @@
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #e5e5e5;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 0px;
+}
+.left-menu {
+  width: 200px;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  .App-logo {
+    width: 112px;
+    height: 30px;
+    margin-top: 26px;
+    cursor: pointer;
+  }
+
+  .menu-box {
+    width: 200px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-top: 24px;
+  }
+}

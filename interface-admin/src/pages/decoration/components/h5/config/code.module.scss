@@ -1,0 +1,64 @@
+.vod-v1-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  position: relative;
+  padding-bottom: 40px;
+  text-align: left;
+
+  .footer-button {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 70px;
+    background: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    padding: 15px 30px;
+  }
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    border-left: 5px solid #3ca7fa;
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 30px;
+  }
+
+  .config-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top: 1px solid #f1f2f9;
+
+    .config-item-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 14px;
+      padding-bottom: 30px;
+    }
+
+    .config-item-body {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+    }
+  }
+}

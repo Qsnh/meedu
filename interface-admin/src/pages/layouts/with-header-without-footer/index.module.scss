@@ -1,0 +1,39 @@
+.layout-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  .left-menu {
+    width: 200px;
+    height: 100%;
+    float: left;
+  }
+  .right-cont {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f2f9;
+    .right-top {
+      height: 56px;
+      position: sticky;
+      left: 0;
+      top: 0;
+      right: 0;
+      z-index: 10;
+    }
+    .right-main {
+      float: left;
+      height: auto;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      /* Firefox */
+      -webkit-box-sizing: border-box;
+      /* Safari */
+      padding: 20px;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+  }
+}
