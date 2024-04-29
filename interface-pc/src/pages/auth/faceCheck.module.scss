@@ -1,0 +1,18 @@
+.box {
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tip {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  line-height: 30px;
+  margin-top: 15px;
+}

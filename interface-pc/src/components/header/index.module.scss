@@ -1,0 +1,98 @@
+.app-header {
+  width: 100%;
+  // position: sticky;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  height: auto;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f2fa;
+  z-index: 100;
+  .main-header {
+    width: 1200px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    .top-header {
+      width: 100%;
+      height: 74px;
+      display: flex;
+      align-items: center;
+      .App-logo {
+        width: auto;
+        height: 50px;
+        text-align: left;
+        flex: 0 1 auto;
+        img {
+          width: auto;
+          height: 50px;
+        }
+      }
+      .content-box {
+        display: flex;
+        padding-right: 3rem;
+        flex: 1 1 0%;
+        justify-content: flex-end;
+        .search-box {
+          width: 250px;
+          height: 40px;
+          position: relative;
+          .search-input {
+            width: 250px;
+            border-radius: 20px;
+            height: 40px;
+            border: 1px solid #d4d4e3;
+            outline: none;
+            font-size: 14px;
+            font-weight: 400;
+            color: #999999;
+            line-height: 14px;
+            padding-right: 40px;
+          }
+          .btn-search {
+            width: 20px;
+            height: 20px;
+            outline: none;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 100;
+          }
+        }
+      }
+      .user-box {
+        flex: 0 1 auto;
+        display: flex;
+        align-items: center;
+        .vip-icon {
+          height: 40px;
+          color: #e1a500;
+          text-align: center;
+          margin-right: 3rem;
+          border-radius: 0.25rem;
+          .text {
+            text-align: center;
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+        .study-icon {
+          height: 40px;
+          position: relative;
+          text-align: center;
+          --tw-text-opacity: 1;
+          color: rgba(107, 114, 128, var(--tw-text-opacity));
+          margin-right: 3rem;
+          border-radius: 0.25rem;
+          .text {
+            text-align: center;
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+}

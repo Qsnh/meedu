@@ -1,0 +1,9 @@
+.list-box {
+  width: 100%;
+  float: left;
+  height: auto;
+  display: grid;
+  row-gap: 30px;
+  column-gap: 48px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}

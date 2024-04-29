@@ -1,0 +1,117 @@
+.category-box {
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  .categories {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 15px 30px 5px 0px;
+    .box {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      .label {
+        width: auto;
+        height: 14px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 14px;
+        margin-right: 15px;
+        margin-top: 10px;
+      }
+      .item-box {
+        width: 1068px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-direction: row;
+        .item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 20px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #333333;
+          line-height: 14px;
+          padding: 10px 15px;
+          cursor: pointer;
+          margin-bottom: 10px;
+        }
+        .active-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 20px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 14px;
+          padding: 10px 15px;
+          cursor: pointer;
+          margin-bottom: 10px;
+          background-color: rgba(160, 175, 187, 0.15);
+          border-radius: 4px;
+          color: #3ca7fa;
+        }
+      }
+    }
+    .box2 {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      margin-top: 25px;
+      .label {
+        width: auto;
+        height: 24px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 24px;
+        margin-right: 20px;
+      }
+      .item-box {
+        width: 1053px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-direction: row;
+        margin-bottom: 5px;
+        .item {
+          padding: 4px 9px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 30px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #333333;
+          line-height: 14px;
+          border: 1px solid #fff;
+          cursor: pointer;
+          margin-bottom: 10px;
+        }
+        .active-item {
+          padding: 4px 9px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 30px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 14px;
+          border: 1px solid #fff;
+          cursor: pointer;
+          margin-bottom: 10px;
+          color: #3ca7fa;
+          border-radius: 13px;
+          border: 1px solid #3ca7fa;
+        }
+      }
+    }
+  }
+}

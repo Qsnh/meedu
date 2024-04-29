@@ -1,0 +1,123 @@
+.content {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  .box {
+    width: 1200px;
+    margin: 0 auto;
+    min-height: 650px;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding-top: 55px;
+    padding-bottom: 50px;
+    .title {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 50px;
+        height: 50px;
+        margin-right: 20px;
+      }
+      span {
+        margin-top: 5px;
+        height: 30px;
+        font-size: 30px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 30px;
+      }
+    }
+    .role-item-box {
+      width: 100%;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      box-sizing: border-box;
+      display: grid;
+      gap: 50px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      .role-item {
+        position: relative;
+        width: 366px;
+        height: auto;
+        background: linear-gradient(
+          135deg,
+          #fff4e4 0%,
+          #fff4e4 0%,
+          #fece86 100%
+        );
+        border-radius: 16px;
+        padding: 30px;
+        box-sizing: border-box;
+        &:hover {
+          box-shadow: 0px 10px 30px 0px rgba(51, 46, 24, 0.2);
+        }
+        .name {
+          width: 100%;
+          height: 24px;
+          font-size: 24px;
+          font-weight: bold;
+          color: #572f1d;
+          line-height: 36px;
+          letter-spacing: 1px;
+          margin-bottom: 30px;
+          text-align: left;
+        }
+        .price {
+          width: 100%;
+          height: 48px;
+          font-size: 48px;
+          font-weight: 600;
+          color: #572f1d;
+          line-height: 48px;
+          margin-bottom: 30px;
+          text-align: left;
+          .small {
+            font-size: 20px;
+          }
+        }
+        .desc {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: auto;
+          min-height: 162px;
+          text-align: left;
+          p {
+            display: block;
+            width: 100%;
+            float: left;
+            height: auto;
+            font-size: 16px;
+            font-weight: 500;
+            color: #572f1d;
+            line-height: 24px;
+            margin-bottom: 30px;
+            text-align: left;
+          }
+        }
+        .button {
+          width: 306px;
+          height: 50px;
+          background: #e1a500;
+          border-radius: 4px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 500;
+          color: #ffffff;
+          line-height: 20px;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+  }
+}

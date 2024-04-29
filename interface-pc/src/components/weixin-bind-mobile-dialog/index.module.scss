@@ -1,0 +1,76 @@
+.tabs {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    .tab-active-item {
+      width: auto;
+      height: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 20px;
+      margin-right: 50px;
+      cursor: pointer;
+      position: relative;
+      color: #333333;
+      .actline {
+        width: 80px;
+        height: 4px;
+        background: #3ca7fa;
+        position: absolute;
+        left: 0px;
+        top: 40px;
+      }
+    }
+    .tab-item {
+      width: auto;
+      height: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #666666;
+      line-height: 20px;
+      margin-right: 50px;
+      cursor: pointer;
+      position: relative;
+      .actline {
+        width: 80px;
+        height: 4px;
+        background: #3ca7fa;
+        position: absolute;
+        left: 0px;
+        top: 40px;
+      }
+    }
+    .linkTab {
+      position: absolute;
+      top: 5px;
+      right: 54px;
+      height: 14px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #3ca7fa;
+      line-height: 14px;
+      cursor: pointer;
+    }
+  }
+  
+  .buttons {
+    flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    .send-sms-button {
+      display: inline-block;
+      width: auto;
+      height: 18px;
+      font-size: 18px;
+      font-weight: 400;
+      color: #3ca7fa;
+      line-height: 18px;
+      cursor: pointer;
+      :hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  

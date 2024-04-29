@@ -1,0 +1,140 @@
+.box {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  .right-box {
+    margin-left: 30px;
+    width: 999px;
+    height: auto;
+    box-sizing: border-box;
+    .exchange-box {
+      width: 999px;
+      height: auto;
+      background: #ffffff;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      padding: 30px;
+      .exchange-content {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        .tit {
+          height: 14px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #333333;
+          margin-right: 0px;
+        }
+        .credit {
+          height: 14px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #333333;
+          color: #ff4d4f;
+        }
+      }
+    }
+    .rules {
+      display: flex;
+      flex-direction: row;
+      width: 999px;
+      height: auto;
+
+      .project-box {
+        display: flex;
+        flex-direction: column;
+        width: 644px;
+        height: auto;
+        background: #ffffff;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 30px;
+        margin-right: 10px;
+        text-align: left;
+        .btn-title {
+          width: 80px;
+          height: 16px;
+          font-size: 16px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 16px;
+        }
+        .project-item {
+          width: 100%;
+          height: 14px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 30px;
+          .title {
+            width: 300px;
+            height: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+            line-height: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .value {
+            margin-left: 30px;
+            width: 100px;
+            height: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 14px;
+            color: #ff4d4f;
+          }
+          .info {
+            flex: 1;
+            height: 14px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #666666;
+            line-height: 14px;
+            text-align: right;
+          }
+        }
+      }
+      .rules-content {
+        display: flex;
+        flex-direction: column;
+        width: 345px;
+        height: auto;
+        background: #ffffff;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 30px;
+        text-align: left;
+        .btn-title {
+          width: 80px;
+          height: 16px;
+          font-size: 16px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 16px;
+          margin-bottom: 15px;
+        }
+        .rules-item {
+          width: 100%;
+          margin-top: 15px;
+          height: auto;
+          p {
+            font-size: 14px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 14px;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}
