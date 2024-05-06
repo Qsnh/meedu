@@ -1,0 +1,86 @@
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "10"
+
+networks:
+  meedu-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.11.10.0/24
+
+volumes:
+  data_mysql:
+  data_redis:
+  data_meilisearch:
+  conf_mysql:
+
+services:
+  meedu:
+    build: .
+    restart: always
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=meedu
+      - DB_USERNAME=root
+      - DB_PASSWORD=meeduxyz
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=meeduxyz
+      - REDIS_PORT=6379
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_DRIVER=sync
+      - APP_KEY=base64:s9M5EmBWLWerXU/udZ8biH8GYGKBAEtatGNI2XnzEVM=
+      - JWT_SECRET=26tpIiNHtYE0YsXeDge837qfIXVmlOES8l9M2u9OTrCZ9NASZcqJdYXBaOSPeLsh
+    ports:
+      - 8000:8000
+      - 8100:8100
+      - 8200:8200
+      - 8300:8300
+    networks:
+      - meedu-network
+    depends_on:
+      - mysql
+      - redis
+    logging: *default-logging
+
+  redis:
+    build: ./docker-compose/redis
+    restart: always
+    volumes:
+      - data_redis:/data
+    # ports:
+    #   - 6379:6379
+    networks:
+      - meedu-network
+    logging: *default-logging
+
+  mysql:
+    build: ./docker-compose/mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=meedu
+      - MYSQL_ROOT_PASSWORD=meeduxyz
+    volumes:
+      - data_mysql:/var/lib/mysql
+      - conf_mysql:/etc/mysql/conf.d
+    # ports:
+    #   - 3306:3306
+    networks:
+      - meedu-network
+    logging: *default-logging
+  
+  meilisearch:
+    image: registry.cn-hangzhou.aliyuncs.com/meedu/meilisearch:0.24
+    restart: always
+    volumes:
+      - data_meilisearch:/meilisearch/data
+    # ports:
+    #   - 7700:7700
+    networks:
+      - meedu-network
+    logging: *default-logging
