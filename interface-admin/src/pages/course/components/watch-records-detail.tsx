@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Modal, Table, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useSelector } from "react-redux";
-import { course, snapshot } from "../../../api/index";
-import { DurationText, SnapshotDialog } from "../../../components";
+import { course } from "../../../api/index";
+import { DurationText } from "../../../components";
 
 interface DataType {
   id: React.Key;
@@ -51,9 +51,6 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
           data.map((item: any) => {
             arr.push(item.video_id);
           });
-        }
-        if (enabledAddons["Snapshot"]) {
-          getImages(arr);
         }
       })
       .catch((e) => {
@@ -119,18 +116,6 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
       : {},
   ];
 
-  const getImages = (ids: any) => {
-    snapshot
-      .list({
-        user_id: props.uid,
-        type: "vod",
-        other_ids: ids,
-      })
-      .then((res: any) => {
-        setImages(res.data);
-      });
-  };
-
   const showDialog = (id: number) => {
     setVid(id);
     setVisiable(true);
@@ -167,14 +152,6 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
           </div>
         </Modal>
       ) : null}
-      <SnapshotDialog
-        open={visiable}
-        vid={vid}
-        uid={props.uid}
-        onCancel={() => {
-          hideDialog();
-        }}
-      ></SnapshotDialog>
     </>
   );
 };

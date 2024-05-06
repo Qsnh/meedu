@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Modal, Table, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useSelector } from "react-redux";
-import { member, snapshot } from "../../../api/index";
-import { DurationText, SnapshotDialog } from "../../../components";
+import { member } from "../../../api/index";
+import { DurationText } from "../../../components";
 import { dateFormat } from "../../../utils";
 
 interface PropsInterface {
@@ -154,24 +154,9 @@ export const VideoTableDialog = (props: PropsInterface) => {
         }
         setList(list);
         setLoading(false);
-        if (enabledAddons["Snapshot"]) {
-          getImages(arr);
-        }
       })
       .catch((e) => {
         setLoading(false);
-      });
-  };
-
-  const getImages = (ids: any) => {
-    snapshot
-      .list({
-        user_id: props.userId,
-        type: "vod",
-        other_ids: ids,
-      })
-      .then((res: any) => {
-        setImages(res.data);
       });
   };
 
@@ -211,14 +196,6 @@ export const VideoTableDialog = (props: PropsInterface) => {
           </div>
         </Modal>
       ) : null}
-      <SnapshotDialog
-        open={visiable}
-        vid={vid}
-        uid={props.userId}
-        onCancel={() => {
-          hideDialog();
-        }}
-      ></SnapshotDialog>
     </>
   );
 };

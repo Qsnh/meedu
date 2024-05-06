@@ -4,7 +4,6 @@ import type { ColumnsType } from "antd/es/table";
 import { member } from "../../../api/index";
 import { ThumbBar } from "../../../components";
 import { dateFormat } from "../../../utils/index";
-import paperIcon from "../../../assets/img/default-paper.png";
 import vipIcon from "../../../assets/img/default-vip.png";
 
 interface PropsInterface {
@@ -75,32 +74,14 @@ export const UserOrdersComp = (props: PropsInterface) => {
         <>
           {record.goods.map((item: any) => (
             <div key={item.id}>
-              {item.goods_type === "BOOK" ? (
-                <ThumbBar
-                  value={item.goods_thumb}
-                  width={67.5}
-                  height={90}
-                  title={item.goods_name}
-                  border={4}
-                ></ThumbBar>
-              ) : item.goods_type === "模拟试卷" ||
-                item.goods_type === "试卷" ||
-                item.goods_type === "练习" ? (
-                <ThumbBar
-                  value={paperIcon}
-                  width={120}
-                  height={90}
-                  title={item.goods_name}
-                  border={4}
-                ></ThumbBar>
-              ) : item.goods_type === "ROLE" ? (
+              {item.goods_type === "ROLE" ? (
                 <ThumbBar
                   value={vipIcon}
                   width={120}
                   height={90}
                   title={item.goods_name}
                   border={4}
-                ></ThumbBar>
+                />
               ) : (
                 <ThumbBar
                   value={item.goods_thumb}
@@ -108,7 +89,7 @@ export const UserOrdersComp = (props: PropsInterface) => {
                   height={90}
                   title={item.goods_name}
                   border={4}
-                ></ThumbBar>
+                />
               )}
             </div>
           ))}

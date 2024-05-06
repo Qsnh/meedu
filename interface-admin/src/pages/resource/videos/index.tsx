@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Input, Button, Space } from "antd";
+import { Table, Modal, message, Input, Button } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
@@ -96,12 +96,6 @@ const ResourceVideosPage = () => {
       if (list[i].storage_driver === "tencent") {
         tenbox.push(list[i].storage_file_id);
       }
-    }
-    if (newbox.length > 0 && enabledAddons["AliyunHls"]) {
-      getAliRecords(newbox);
-    }
-    if (tenbox.length > 0 && enabledAddons["TencentCloudHls"]) {
-      getTenRecords(tenbox);
     }
   }, [list, enabledAddons]);
 
@@ -211,40 +205,6 @@ const ResourceVideosPage = () => {
       width: 200,
       render: (_, record: any) => <div>{dateFormat(record.created_at)}</div>,
     },
-    {
-      title: "操作",
-      width: 120,
-      render: (_, record: any) => (
-        <Space>
-          {record.storage_driver === "aliyun" && (
-            <PerButton
-              type="link"
-              text="加密"
-              class="c-primary"
-              icon={null}
-              p="ali-hls-transcode.submit"
-              onClick={() => {
-                submit(record.storage_file_id);
-              }}
-              disabled={null}
-            />
-          )}
-          {record.storage_driver === "tencent" && (
-            <PerButton
-              type="link"
-              text="加密"
-              class="c-primary"
-              icon={null}
-              p="addons.TencentCloudHls.transcode.submit"
-              onClick={() => {
-                tenSubmit(record.storage_file_id);
-              }}
-              disabled={null}
-            />
-          )}
-        </Space>
-      ),
-    },
   ];
 
   const checkTrans = (val: string) => {
@@ -300,13 +260,8 @@ const ResourceVideosPage = () => {
     }
     setLoading(true);
     try {
-      if (selectedLocalKeys.length > 0) {
-        let localRes: any = await media.localDestroyVideo({
-          ids: selectedLocalKeys,
-        });
-      }
       if (selectedOtherKeys.length > 0) {
-        let otherRes: any = await media.newDestroyVideo({
+        await media.newDestroyVideo({
           ids: selectedOtherKeys,
         });
       }
@@ -318,71 +273,12 @@ const ResourceVideosPage = () => {
     }
   };
 
-  const submit = (fileId: number) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "确认加密选中的视频？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        let ids = [];
-        ids.push(fileId);
-        media.aliyunTranscode({ file_ids: ids }).then(() => {
-          message.success("成功");
-          resetData();
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  const tenSubmit = (fileId: number) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "确认加密选中的视频？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        let ids = [];
-        ids.push(fileId);
-        media.tencentTranscode({ file_ids: ids }).then(() => {
-          message.success("成功");
-          resetData();
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
   const resetData = () => {
     resetLocalSearchParams({
       page: 1,
     });
     setList([]);
     setRefresh(!refresh);
-  };
-
-  const getAliRecords = (newbox: any) => {
-    media.aliyunTranscodeRecords({ file_ids: newbox }).then((res: any) => {
-      if (res.data.records) {
-        setRecords(res.data.records);
-      }
-    });
-  };
-  const getTenRecords = (newbox: any) => {
-    media.tencentTranscodeRecords({ file_ids: newbox }).then((res: any) => {
-      if (res.data) {
-        setTenRecords(res.data);
-      }
-    });
   };
 
   const completeUpload = () => {
@@ -463,7 +359,7 @@ const ResourceVideosPage = () => {
         onSuccess={() => {
           completeUpload();
         }}
-      ></UploadVideoItem>
+      />
     </div>
   );
 };

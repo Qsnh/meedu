@@ -147,32 +147,19 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       title: "操作",
       width: 100,
       fixed: "right",
-      render: (_, record: any) =>
-        record.storage_driver === "local" ? (
-          <PerButton
-            type="link"
-            text="删除"
-            class="c-red"
-            icon={null}
-            p="addons.LocalUpload.video.destroy"
-            onClick={() => {
-              destoryLocal(record.storage_file_id);
-            }}
-            disabled={null}
-          />
-        ) : (
-          <PerButton
-            type="link"
-            text="删除"
-            class="c-red"
-            icon={null}
-            p="media.video.delete.multi"
-            onClick={() => {
-              destory(record.id);
-            }}
-            disabled={null}
-          />
-        ),
+      render: (_, record: any) => (
+        <PerButton
+          type="link"
+          text="删除"
+          class="c-red"
+          icon={null}
+          p="media.video.delete.multi"
+          onClick={() => {
+            destory(record.id);
+          }}
+          disabled={null}
+        />
+      ),
     },
   ];
 
@@ -199,38 +186,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
         setLoading(true);
         media
           .newDestroyVideo({ ids: ids })
-          .then(() => {
-            setLoading(false);
-            message.success("成功");
-            resetData();
-          })
-          .catch((e) => {
-            setLoading(false);
-          });
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  const destoryLocal = (item: any) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "确认删除选中的视频？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        if (loading) {
-          return;
-        }
-        let ids = [];
-        ids.push(item);
-        setLoading(true);
-        media
-          .localDestroyVideo({ ids: ids })
           .then(() => {
             setLoading(false);
             message.success("成功");
