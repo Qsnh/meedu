@@ -1,0 +1,7 @@
+/interface-h5/node_modules/
+/interface-pc/node_modules/
+/interface-admin/node_modules/
+
+/service-api/vendor/
+/service-api/.env
+/service-api/.phpunit.result.cache
