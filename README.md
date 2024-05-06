@@ -17,10 +17,10 @@
 
 | 文件夹            | 说明             |
 | ----------------- | ---------------- |
-| `interface-admin` | 后台管理界面     |
-| `interface-h5`    | 学员端口 H5 界面 |
-| `interface-pc`    | 学员端口 PC 界面 |
-| `service-api`     | API 接口服务     |
+| `xyz.meedu.admin` | 后台管理界面     |
+| `xyz.meedu.h5`    | 学员端口 H5 界面 |
+| `xyz.meedu.pc`    | 学员端口 PC 界面 |
+| `xyz.meedu.api`   | API 接口服务     |
 
 ## 许可
 

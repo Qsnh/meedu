@@ -6,9 +6,9 @@ RUN yarn global add pnpm &&\
 # 编译后端
 WORKDIR /app
 
-COPY interface-admin /app/admin
-COPY interface-h5 /app/h5
-COPY interface-pc /app/pc
+COPY xyz.meedu.admin /app/admin
+COPY xyz.meedu.h5 /app/h5
+COPY xyz.meedu.pc /app/pc
 
 # 编译后台
 WORKDIR /app/admin
@@ -69,7 +69,7 @@ RUN chown -R www-data:www-data /var/log/php
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # 下载API程序代码
-COPY --chown=www-data:www-data service-api /var/www/api
+COPY --chown=www-data:www-data xyz.meedu.api /var/www/api
 
 # 设置工作目录
 WORKDIR /var/www/api
