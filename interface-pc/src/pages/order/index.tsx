@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { order } from "../../api/index";
 import { Input, message, Button } from "antd";
@@ -19,7 +19,7 @@ const OrderPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [payment, setPayment] = useState<string>("");
   const [payments, setPayments] = useState<any>([]);
-  const [paymentScene, setPaymentScene] = useState<string>("pc");
+  const [paymentScene] = useState<string>("pc");
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
   const [pcCheckLoading, setPcCheckLoading] = useState(false);
@@ -29,22 +29,14 @@ const OrderPage = () => {
   const [hasThumb, setHasThumb] = useState<boolean>(false);
   const [configTip, setConfigTip] = useState<number>(999);
   const [discount, setDiscount] = useState<number>(0);
-  const [goodsType, setGoodsType] = useState(result.get("goods_type"));
-  const [goodsId, setGoodsId] = useState(Number(result.get("goods_id")));
-  const [goodsThumb, setGoodsThumb] = useState<string>(
-    String(result.get("goods_thumb"))
-  );
-  const [goodsName, setGoodsName] = useState(result.get("goods_name"));
-  const [goodsLabel, setGoodsLabel] = useState(result.get("goods_label"));
-  const [tgGid, setTgGid] = useState(Number(result.get("tg_gid")) || 0);
-  const [courseId, setCourseId] = useState(Number(result.get("course_id")));
-  const [goodsCharge, setGoodsCharge] = useState(
-    Number(result.get("goods_charge"))
-  );
-  const [courseType, setCourseType] = useState(result.get("course_type"));
-  const [total, setTotal] = useState<number>(
-    Number(result.get("goods_charge"))
-  );
+  const [goodsType] = useState(result.get("goods_type"));
+  const [goodsId] = useState(Number(result.get("goods_id")));
+  const [goodsThumb] = useState<string>(String(result.get("goods_thumb")));
+  const [goodsName] = useState(result.get("goods_name"));
+  const [goodsLabel] = useState(result.get("goods_label"));
+  const [courseId] = useState(Number(result.get("course_id")));
+  const [courseType] = useState(result.get("course_type"));
+  const [total] = useState<number>(Number(result.get("goods_charge")));
   const [totalVal, setTotalVal] = useState<number>(0);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
@@ -94,24 +86,6 @@ const OrderPage = () => {
     } else if (goodsType === "live") {
       setHasThumb(true);
     } else if (goodsType === "video") {
-      setHasThumb(true);
-    } else if (goodsType === "book") {
-      setHasThumb(true);
-    } else if (goodsType === "topic") {
-      setHasThumb(true);
-    } else if (goodsType === "path") {
-      setHasThumb(true);
-    } else if (goodsType === "tg") {
-      setHasThumb(true);
-    } else if (goodsType === "ms") {
-      setHasThumb(true);
-    } else if (goodsType === "k12") {
-      setHasThumb(true);
-    } else if (goodsType === "paper") {
-      setHasThumb(true);
-    } else if (goodsType === "mockpaper") {
-      setHasThumb(true);
-    } else if (goodsType === "practice") {
       setHasThumb(true);
     }
     params();
@@ -214,127 +188,6 @@ const OrderPage = () => {
       order
         .createRoleOrder({
           role_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "live") {
-      order
-        .createLiveOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "book") {
-      order
-        .createBookOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "paper") {
-      order
-        .createPaperOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "practice") {
-      order
-        .createPracticeOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "mockpaper") {
-      order
-        .createMockpaperOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "path") {
-      order
-        .createPathOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "tg") {
-      order
-        .createTgOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-          gid: tgGid,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "ms") {
-      order
-        .createMsOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "topic") {
-      order
-        .createTopicOrder(goodsId, {
-          goods_id: goodsId,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "k12") {
-      order
-        .createK12Order(goodsId, {
-          goods_id: goodsId,
           promo_code: promoCode,
         })
         .then((res: any) => {

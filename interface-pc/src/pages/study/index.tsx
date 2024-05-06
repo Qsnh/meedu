@@ -6,9 +6,6 @@ import { user as member, study } from "../../api/index";
 import { Empty } from "../../components";
 import { useSelector } from "react-redux";
 import { CourseItemComp } from "./components/course-item";
-import { LiveItemComp } from "./components/live-item";
-import { BookItemComp } from "./components/book-item";
-import { TopicItemComp } from "./components/topic-item";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 
 const StudyCenterPage = () => {
@@ -66,48 +63,6 @@ const StudyCenterPage = () => {
         .catch((e) => {
           setLoading(false);
         });
-    } else if (current === "live") {
-      study
-        .live({
-          page: page,
-          size: size,
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (current === "topic") {
-      study
-        .topic({
-          page: page,
-          size: size,
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (current === "book") {
-      study
-        .book({
-          page: page,
-          size: size,
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
     }
   };
 
@@ -150,57 +105,7 @@ const StudyCenterPage = () => {
         .catch((e) => {
           setLoading(false);
         });
-    } else if (current === "live") {
-      study
-        .likeCourses({
-          page: page,
-          size: size,
-          type: "live",
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (current === "topic") {
-      study
-        .topicLikeCourses({
-          page: page,
-          size: size,
-        })
-        .then((res: any) => {
-          setList(res.data.data.data);
-          setTotal(res.data.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (current === "book") {
-      study
-        .likeCourses({
-          page: page,
-          size: size,
-          type: "book",
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
     }
-  };
-
-  const resetList = () => {
-    setPage(1);
-    setList([]);
-    setRefresh(!refresh);
   };
 
   const onChange = (e: RadioChangeEvent) => {
@@ -279,24 +184,6 @@ const StudyCenterPage = () => {
                     list={list}
                     currentStatus={currentStatus}
                   ></CourseItemComp>
-                )}
-                {current === "live" && (
-                  <LiveItemComp
-                    list={list}
-                    currentStatus={currentStatus}
-                  ></LiveItemComp>
-                )}
-                {current === "book" && (
-                  <BookItemComp
-                    list={list}
-                    currentStatus={currentStatus}
-                  ></BookItemComp>
-                )}
-                {current === "topic" && (
-                  <TopicItemComp
-                    list={list}
-                    currentStatus={currentStatus}
-                  ></TopicItemComp>
                 )}
               </>
             )}
