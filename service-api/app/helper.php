@@ -653,6 +653,8 @@ if (!function_exists('name_mask')) {
 if (!function_exists('url_v2')) {
     function url_v2($path): string
     {
+        $path || $path = '';
+
         if ('http://' === mb_substr($path, 0, 7) || 'https://' === mb_substr($path, 0, 8)) {
             return $path;
         }
