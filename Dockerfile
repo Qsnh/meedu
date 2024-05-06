@@ -1,6 +1,7 @@
 FROM node:20-alpine as nodeBase
 
-RUN yarn global add pnpm
+RUN yarn global add pnpm &&\
+  pnpm config set registry https://registry.npmmirror.com
 
 # 编译后端
 WORKDIR /app
@@ -22,6 +23,8 @@ WORKDIR /app/h5
 RUN pnpm i --frozen-lockfile && VITE_APP_URL=/api/ yarn build
 
 FROM php:7.4-fpm-alpine as base
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
 RUN apk update && apk upgrade && apk add --no-cache \
   bash \
