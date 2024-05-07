@@ -1,23 +1,118 @@
-![MeEdu](https://meedu.cloud.oss.meedu.vip/github/banner.png)
+## MeEdu API 程序
 
-## 系统介绍
+本程序使用 PHP7.4 + Laravel8 + MySQL + Redis + Meilisearch 开发。
 
-**MeEdu** 是一款基于 PHP7.4 + Laravel8 开发的开源网校(知识付费)解决方案。支持线上点播、课程购买、网校装修、学员手机号登录注册、学习统计、角色管理等丰富功能。
-**MeEdu** 是前后端分离的架构，支持 PC,H5 端口。此为 MeEdu 开源版本。**与此同时，我们还提供商业版本解决方案。商业版本支持直播课、考试练习、电子书、图文、站内问答、秒杀、团购、兑换码等更多功能；在开源的基础上还支持微信小程序、安卓APP、苹果APP端口。商业版本多信息请点击下方的商业版链接查看。**
+## 快速上手
 
-## 常用链接
+### 环境要求
 
-| 站点       | 链接                                                                                     |
-|----------|----------------------------------------------------------------------------------------|
-| 官网       | [https://meedu.vip](https://meedu.vip)                                                 |
-| **商业版本** | [https://meedu.vip/price.html](https://meedu.vip/price.html)                           |
-| 开源使用协议   | [https://www.yuque.com/meedu/fvvkbf/amfw7z](https://www.yuque.com/meedu/fvvkbf/amfw7z) |
-| 安装和使用手册  | [https://www.yuque.com/meedu/fvvkbf](https://www.yuque.com/meedu/fvvkbf)               |
+- Linux 系统(centos,ubuntu等)
+- PHP7.4
+- MySQL 5.6+
+- Redis 5.0+
+- Meilisearch 0.24.0
+- Composer 2.x
 
-## 依赖项目
+### PHP 扩展
 
-| 项目                                                    | 框架        |
-|-------------------------------------------------------|-----------|
-| [MeEdu 后台界面程序](https://github.com/Meedu/backend-v3)   | `React18` |
-| [MeEdu PC端界面程序](https://github.com/Meedu/frontend-v3) | `React18` |
-| [MeEdu H5端界面程序](https://github.com/meedu/h5-v1)       | `Vue2`    |
+- Zip PHP Extension
+- OpenSSL PHP Extension
+- PDOMysql PHP Extension
+- Mbstring PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
+- Fileinfo PHP Extension
+
+### PHP 函数解除禁用
+
+- `passthru`
+- `proc_open`
+- `proc_get_status`
+- `symlink`
+- `putenv`
+
+### 开始安装
+
+> 假设您已经下载本程序代码，并进入到了 API 程序目录。
+
+- 安装程序依赖：  
+
+```
+composer install --no-dev
+```
+
+- 复制配置文件：  
+
+```
+cp .env.example .env
+```
+
+打开 `.env` 配置文件，并修改其中的 MySQL 和 Redis 的连接信息。配置项如下：
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=meedu
+DB_USERNAME=root
+DB_PASSWORD=root
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+```
+
+> 注意，上述是我的本地配置，您需要根据您的环境配置修改。
+
+- 生成系统秘钥：
+
+```
+php artisan key:generate
+php artisan jwt:secret
+```
+
+- 目录权限问题：
+
+请注意 `API` 程序的文件和目录权限所属用户和用户组与 `Nginx` 运行用户和用户组一致（一般是 `www` 或者 `www-data`）。如果不一致的话，那么您需要手动授权下下面目录的权限：
+
+```
+chmod -R 0777 storage
+chmod -R 0777 addons
+```
+
+- 创建静态资源软链接：
+
+```
+php artisan storage:link
+```
+
+- 配置 Nginx 伪静态，规则如下：
+
+```
+location / {  
+	try_files $uri $uri/ /index.php$is_args$query_string;  
+}
+```
+
+- 安装数据库表和默认数据：
+
+```
+php artisan migrate
+php artisan install role
+php artisan install config
+php artisan install administrator
+```
+
+- 生成安装锁文件：
+
+```
+php artisan install:lock
+```
+
+- 定时任务配置：
+
+将下面的命令添加到 `crontab` 中：
+
+```
+* * * * * php /你的meedu api程序所在目录/artisan schedule:run >> /dev/null 2>&1
+```
