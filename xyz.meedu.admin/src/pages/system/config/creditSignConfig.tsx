@@ -25,14 +25,6 @@ const SystemCreditSignConfigPage = () => {
     system
       .setting()
       .then((res: any) => {
-        let configData = res.data["每日签到"];
-        for (let index in configData) {
-          if (configData[index].key === "meedu.addons.DaySignIn.reward_rule") {
-            form.setFieldsValue({
-              "meedu.addons.DaySignIn.reward_rule": configData[index].value,
-            });
-          }
-        }
         let newConfig = res.data["积分"];
         for (let index in newConfig) {
           if (newConfig[index].key === "meedu.member.credit1.register") {
@@ -118,12 +110,6 @@ const SystemCreditSignConfigPage = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item
-              label="积分签到奖励规则"
-              name="meedu.addons.DaySignIn.reward_rule"
-            >
-              <Input style={{ width: 300 }} allowClear />
-            </Form.Item>
             <Form.Item label="注册奖励" name="meedu.member.credit1.register">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>

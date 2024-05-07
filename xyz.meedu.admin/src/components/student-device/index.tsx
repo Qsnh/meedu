@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { QRCode, Modal, Button } from "antd";
 import { system } from "../../api/index";
 import styles from "./index.module.scss";
+import { useSelector } from "react-redux";
 import closeIcon from "../../assets/img/close.png";
 
 interface PropInterface {
@@ -13,6 +14,9 @@ export const StudentDeviceDialog: React.FC<PropInterface> = ({
   open,
   onCancel,
 }) => {
+  const systemUrl = useSelector(
+    (state: any) => state.systemConfig.value.system.url
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [qrode, setQrode] = useState<string>("");
   const [pcUrl, setPcUrl] = useState<string>("");
@@ -21,28 +25,11 @@ export const StudentDeviceDialog: React.FC<PropInterface> = ({
     if (open) {
       getData();
     }
-  }, [open]);
+  }, [open, systemUrl]);
 
   const getData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    system.setting().then((res: any) => {
-      let configData = res.data["系统"];
-      for (let index in configData) {
-        if (configData[index].key === "meedu.system.pc_url") {
-          let url = configData[index].value;
-          setPcUrl(url);
-        } else if (configData[index].key === "meedu.system.h5_url") {
-          let h5Url = configData[index].value;
-          setQrode(h5Url);
-        }
-      }
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-    });
+    setPcUrl(systemUrl.pc);
+    setQrode(systemUrl.h5);
   };
 
   const goPCDevice = () => {
