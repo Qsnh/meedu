@@ -2,12 +2,6 @@
 
 本项目使用 React18 + TypeScript + Ant.design 构建。
 
-## 常用链接
-
-- [MeEdu 官网](https://meedu.vip)
-- [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
-- [MeEdu API 服务端程序代码](https://github.com/Qsnh/meedu)
-
 ## 快速上手
 
 #### 一、安装依赖：

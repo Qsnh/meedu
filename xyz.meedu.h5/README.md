@@ -1,22 +1,59 @@
-<p align="center">
-<img src="https://playedu.xyz/images/index/logo-big.png?v=2023032901" width="150"/>
-</p>
+## MeEdu H5 界面程序
 
-<h1 align="center">H5界面程序 - PlayEdu开源培训系统</h1>
-<p align="center">一款开源的培训系统，您可以使用它快速搭建私有化内部培训平台</p>
+本项目使用 React18 + TypeScript + Ant.design 构建。
 
-### 常用链接
+## 快速上手
 
-+ [官网](https://playedu.xyz)
-+ [快速上手](https://playedu.xyz/docs/docs/category/pc%E7%95%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F%E5%AE%89%E8%A3%85)
+#### 一、安装依赖：
 
-### 开发团队
+```
+pnpm install
+```
 
-杭州白书科技有限公司
+#### 二、修改配置：
 
-### 使用协议
+```
+cp .env.example .env.production
+```
 
-欢迎使用杭州白书科技有限公司提供的开源培训解决方案！请您仔细阅读以下条款。通过使用 PlayEdu ，您表示同意接受以下所有条款。
+打开 `.env` 文件，修改其中的配置如下：
 
-+ 本开源项目中所有代码基于 Apache-2.0 许可协议，您默认遵守许可协议中约定的义务。
-+ 您默认授权我们将您使用 PlayEdu 所在业务的 Logo 放置在本官网展示。
+```
+VITE_APP_URL=meedu的API服务地址
+```
+
+例如，我的 `meedu` 的 `API` 地址是 `https://demo-api.meedu.xyz` ，那么我的 `.env` 文件内容如下：
+
+```
+VITE_APP_URL=https://demo-api.meedu.xyz
+```
+
+#### 三、编译：
+
+```
+pnpm build
+```
+
+编译好，将会生成 `dist` 目录。将 `dist` 目录下的文件部署到新的站点。需要注意的是：
+
+- 本项目默认开启了 gzip 压缩（可以提高访问速度、节省服务器流量）所以，建议您使用 nginx 部署。这里给出 nginx 开启 gzip 的配置：
+
+```
+gzip on;
+gzip_min_length  1k;
+gzip_buffers     4 16k;
+gzip_http_version 1.1;
+gzip_comp_level 2;
+gzip_types     text/plain application/javascript application/x-javascript text/javascript text/css application/xml;
+gzip_vary on;
+gzip_proxied   expired no-cache no-store private auth;
+gzip_disable   "MSIE [1-6]\.";
+```
+
+- 本项目的路由模式采用的是 history 模式，因此部署本项目需要配置伪静态规则，下面给出 nginx 的伪静态规则：
+
+```
+location / {
+    try_files $uri $uri/ /index.html;
+}
+```

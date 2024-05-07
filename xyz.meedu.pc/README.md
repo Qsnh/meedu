@@ -2,12 +2,6 @@
 
 本项目使用 React18 + TypeScript + Ant.design 构建。
 
-## 常用链接
-
-- [MeEdu 官网](https://meedu.vip)
-- [MeEdu 使用手册](https://www.yuque.com/meedu/fvvkbf)
-- [MeEdu API 服务端程序代码](https://github.com/Qsnh/meedu)
-
 ## 快速上手
 
 #### 一、安装依赖：
@@ -26,14 +20,12 @@ cp .env.example .env.production
 
 ```
 VITE_APP_URL=meedu的API服务地址
-VITE_APP_GO_MEEDU_URL=go-meedu地址(如果你是开源用户则留空即可无需配置)
 ```
 
-例如，我的 meedu 的 API 地址是 `https://demo-api.meedu.xyz` ，我的 go-meedu 的 API 地址是 `https://demo-go.meedu.xyz` 那么我的 `.env` 文件内容如下：
+例如，我的 meedu 的 API 地址是 `https://demo-api.meedu.xyz` ，那么我的 `.env` 文件内容如下：
 
 ```
 VITE_APP_URL=https://demo-api.meedu.xyz
-VITE_APP_GO_MEEDU_URL=https://demo-go.meedu.xyz
 ```
 
 #### 三、编译：
