@@ -1,7 +1,7 @@
-/interface-h5/node_modules/
-/interface-pc/node_modules/
-/interface-admin/node_modules/
+/xyz.meedu.h5/node_modules/
+/xyz.meedu.pc/node_modules/
+/xyz.meedu.admin/node_modules/
 
-/service-api/vendor/
-/service-api/.env
-/service-api/.phpunit.result.cache
+/xyz.meedu.api/vendor/
+/xyz.meedu.api/.env
+/xyz.meedu.api/.phpunit.result.cache
