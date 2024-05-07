@@ -88,4 +88,4 @@ EXPOSE 8300
 COPY docker/run.sh /run.sh
 RUN chmod +x /run.sh
 
-ENTRYPOINT ["/run.sh"]
+CMD ["sh", "/run.sh"]
