@@ -75,10 +75,10 @@ services:
     logging: *default-logging
   
   meilisearch:
-    image: registry.cn-hangzhou.aliyuncs.com/meedu/meilisearch:0.24
+    image: getmeili/meilisearch:v0.24.0
     restart: always
     volumes:
-      - data_meilisearch:/meilisearch/data
+      - data_meilisearch:/meili_data
     # ports:
     #   - 7700:7700
     networks:
