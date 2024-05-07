@@ -373,6 +373,16 @@ if (!function_exists('is_dev')) {
     }
 }
 
+if (!function_exists('is_testing')) {
+    /**
+     * @return bool|string
+     */
+    function is_testing()
+    {
+        return app()->environment(['test', 'testing']);
+    }
+}
+
 if (!function_exists('get_array_ids')) {
     /**
      * @param array $data

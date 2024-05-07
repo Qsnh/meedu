@@ -56,7 +56,7 @@ class ThrottleRequests
     public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1, $prefix = '')
     {
         $clientIp = $request->getClientIp();
-        if (config('throttle.whitelist_ip') && in_array($clientIp, config('throttle.whitelist_ip'))) {
+        if (is_dev() || is_testing() || config('throttle.whitelist_ip') && in_array($clientIp, config('throttle.whitelist_ip'))) {
             return $next($request);
         }
 
