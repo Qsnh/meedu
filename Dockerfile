@@ -28,6 +28,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 
 RUN apk update && apk upgrade && apk add --no-cache \
   bash \
+  libgcc \
+  tini \
+  curl \
   nginx \
   libzip-dev \
   freetype \
@@ -88,4 +91,6 @@ EXPOSE 8300
 COPY docker/run.sh /run.sh
 RUN chmod +x /run.sh
 
-CMD ["sh", "/run.sh"]
+ENTRYPOINT ["tini", "--"]
+
+CMD /run.sh
