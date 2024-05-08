@@ -21,7 +21,6 @@ import {
 import logo from "../../assets/home/logo.png";
 
 const EditConfigPage = () => {
-  document.title = "系统配置";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -181,7 +180,7 @@ const EditConfigPage = () => {
           <div className={styles["app-header"]}>
             <div className={styles["main-header"]}>
               <img src={logo} className={styles["App-logo"]} />
-              <div className={styles["page-name"]}>系统配置</div>
+              <div className={styles["page-name"]}></div>
               <div className={styles["device-bar"]}>
                 <Button.Group className={styles["user-info"]}>
                   <Dropdown menu={{ items, onClick }} placement="bottomRight">
