@@ -1,0 +1,43 @@
+.protocol {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 15px 30px;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: left;
+  &.active {
+    padding: 15px 0;
+  }
+
+  .checkbox-circle {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    border: 1px solid #e5e5e5;
+  }
+  .checkbox-dot {
+    width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+  }
+
+  .protocol-text {
+    font-size: 12px;
+    line-height: 12px;
+    display: inline-block;
+    padding-left: 10px;
+
+    .href {
+      color: #3ca7fa;
+      margin-left: 5px;
+      margin-right: 5px;
+
+      &:active {
+        color: rgba(#3ca7fa, 0.9);
+      }
+    }
+  }
+}

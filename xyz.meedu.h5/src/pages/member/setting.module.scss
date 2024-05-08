@@ -1,0 +1,40 @@
+.container {
+  box-sizing: border-box;
+  padding-top: 50px;
+  background: #f6f6f6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  .group-box {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+    background-color: white;
+    text-align: left;
+    margin-top: 15px;
+    .group-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      box-sizing: border-box;
+      padding: 8px 15px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      .name {
+        width: 150px;
+        height: auto;
+        float: left;
+        line-height: 36px;
+        font-size: 15px;
+        color: #333333;
+      }
+    }
+  }
+}

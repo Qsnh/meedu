@@ -1,0 +1,22 @@
+.dialog-body {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: 30px 30px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .qrcode {
+    width: 150px;
+    height: 150px;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #666666;
+    line-height: 14px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+  }
+}

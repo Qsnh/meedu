@@ -1,0 +1,37 @@
+.link-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: #0f0a1e;
+  box-sizing: border-box;
+  padding: 30px 30px 0 30px;
+  cursor: pointer;
+  text-align: left;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 20px;
+  }
+
+  .links {
+    width: 100%;
+    height: auto;
+    float: left;
+
+    .link-item {
+      display: inline-block;
+      margin-right: 30px;
+      margin-bottom: 30px;
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(white, 0.5);
+      line-height: 16px;
+    }
+  }
+}

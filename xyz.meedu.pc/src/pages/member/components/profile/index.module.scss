@@ -1,0 +1,61 @@
+.pro-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  .profile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .profile-item {
+      width: 100%;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      font-size: 14px;
+      font-weight: 400;
+      color: #666666;
+      line-height: 14px;
+      margin-bottom: 30px;
+      text-align: left;
+      .label {
+        width: 70px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .btn-box {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    .button-submit {
+      width: 96px;
+      height: 44px;
+      margin-left: 52px;
+      background: #3ca7fa;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .result {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .thumb {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 30px;
+    }
+  }
+}

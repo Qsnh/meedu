@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3943555 */
+  src: url('iconfont.woff2?t=1679564530649') format('woff2'),
+       url('iconfont.woff?t=1679564530649') format('woff'),
+       url('iconfont.ttf?t=1679564530649') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon-tips:before {
+  content: "\e74a";
+}
+
+.icon-icon-fold:before {
+  content: "\e749";
+}
+
+.icon-icon-12:before {
+  content: "\e748";
+}
+
+.icon-waterprint:before {
+  content: "\e747";
+}
+
+.icon-adduser:before {
+  content: "\e743";
+}
+
+.icon-upvideo:before {
+  content: "\e744";
+}
+
+.icon-onlinelesson:before {
+  content: "\e745";
+}
+
+.icon-department:before {
+  content: "\e746";
+}
+
+.icon-icon-drag:before {
+  content: "\e740";
+}
+
+.icon-icon-edit:before {
+  content: "\e741";
+}
+
+.icon-icon-delete:before {
+  content: "\e742";
+}
+
+.icon-icon-video:before {
+  content: "\e73f";
+}
+
+.icon-icon-home:before {
+  content: "\e737";
+}
+
+.icon-icon-category:before {
+  content: "\e738";
+}
+
+.icon-icon-file:before {
+  content: "\e739";
+}
+
+.icon-icon-study:before {
+  content: "\e73a";
+}
+
+.icon-icon-user:before {
+  content: "\e73b";
+}
+
+.icon-icon-setting:before {
+  content: "\e73c";
+}
+
+.icon-icon-password:before {
+  content: "\e73d";
+}
+
+.icon-a-icon-logout:before {
+  content: "\e73e";
+}
+

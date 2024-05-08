@@ -1,0 +1,375 @@
+:root {
+  --adm-color-primary: #3ca7fa !important;
+  --adm-color-success: #00b578;
+  --adm-color-warning: #ff8f1f;
+  --adm-color-danger: #ff3141;
+
+  --adm-color-white: #ffffff;
+  --adm-color-text: #333333;
+  --adm-color-text-secondary: #666666;
+  --adm-color-weak: #999999;
+  --adm-color-light: #cccccc;
+  --adm-color-border: #eeeeee;
+  --adm-color-box: #f5f5f5;
+  --adm-color-background: #ffffff;
+}
+
+.adm-badge-wrapper {
+  height: 30px;
+}
+
+@keyframes window-open {
+  0% {
+    transform: translateY(120px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: all 0.3s linear;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transition: all 0.3s linear;
+}
+
+body {
+  margin: 0 !important;
+  font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.adm-tab-bar-item-title {
+  font-size: 11px !important;
+  font-weight: 400;
+  margin-top: 3px !important;
+  line-height: 11px !important;
+  color: #333333;
+}
+
+.adm-tab-bar-item-active {
+  .adm-tab-bar-item-title {
+    color: #333333 !important;
+  }
+}
+
+.float-left {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
+.c-red {
+  color: red;
+}
+
+.borderbox {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */
+  -webkit-box-sizing: border-box;
+  /* Safari */
+}
+
+.container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.navheader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #ffffff;
+  z-index: 100;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #f1f2f6;
+
+  .back {
+    position: absolute;
+    left: 15px;
+    width: 19px;
+    height: 19px;
+  }
+
+  .title {
+    width: 72%;
+    height: auto;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+    color: #333333;
+    line-height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .input {
+    width: 252px;
+    height: 34px;
+    background: #f5f5f5;
+    border-radius: 17px;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    color: #333333;
+    font-size: 14px;
+    margin-left: 28px;
+    input {
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+  .btn-search {
+    margin-left: 15px;
+    height: auto;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 400;
+    color: #3ca7fa;
+  }
+
+  .sum {
+    position: absolute;
+    right: 15px;
+    height: 13px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #666666;
+    line-height: 13px;
+  }
+}
+
+.analysis-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  background-color: #f1f2f6;
+  padding: 10px 0px 70px 0px;
+  display: flex;
+  flex-direction: column;
+
+  .status {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 20px 15px 0px 15px;
+
+    .success {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #04c877;
+    }
+
+    .error {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ff5068;
+    }
+
+    .score {
+      width: 100%;
+      height: 16px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #3ca7fa;
+      line-height: 16px;
+    }
+  }
+
+  .answer {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 20px 15px;
+    word-wrap: break-word;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    line-height: 14px;
+
+    .input-answer-name {
+      margin-bottom: 20px;
+    }
+
+    .input-answer-body {
+      .input-answer-body-item {
+        margin-bottom: 20px;
+
+        .input-answer-body-item-name {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .remark {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 0px 15px 20px 15px;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
+
+    strong {
+      width: 100%;
+      height: 16px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.navfooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
+  background-color: #ffffff;
+  z-index: 100;
+  padding: 5px 15px;
+  display: grid;
+  column-gap: 63px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid #f1f2f6;
+
+  &.active {
+    padding: 5px 40px;
+    display: grid;
+    column-gap: 96px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .item-footer {
+    width: 36px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 4px;
+    }
+
+    span {
+      height: 11px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #666666;
+      line-height: 11px;
+    }
+  }
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+.pl-30 {
+  padding-left: 15px;
+}
+.pr-30 {
+  padding-right: 15px;
+}
+.pl-60 {
+  padding-left: 30px;
+}
+
+.pr-60 {
+  padding-right: 30px;
+}

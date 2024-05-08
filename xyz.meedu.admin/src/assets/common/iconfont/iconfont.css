@@ -1,0 +1,55 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2692558 */
+  src: url('iconfont.woff2?t=1689919465075') format('woff2'),
+       url('iconfont.woff?t=1689919465075') format('woff'),
+       url('iconfont.ttf?t=1689919465075') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon-file:before {
+  content: "\e74e";
+}
+
+.icon-icon-data-n:before {
+  content: "\e735";
+}
+
+.icon-icon-exam-n:before {
+  content: "\e731";
+}
+
+.icon-icon-setting-n:before {
+  content: "\e730";
+}
+
+.icon-icon-lesson:before {
+  content: "\e729";
+}
+
+.icon-icon-operate:before {
+  content: "\e72a";
+}
+
+.icon-icon-money-n:before {
+  content: "\e72b";
+}
+
+.icon-icon-me-n:before {
+  content: "\e72d";
+}
+
+.icon-icon-decorate:before {
+  content: "\e72e";
+}
+
+.icon-icon-study-n:before {
+  content: "\e72f";
+}
+

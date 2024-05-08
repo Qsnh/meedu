@@ -1,0 +1,16 @@
+export * as login from "./login";
+export * as user from "./user";
+export * as course from "./course";
+export * as system from "./system";
+export * as home from "./home";
+export * as administrator from "./administrator";
+export * as adminRole from "./admin-role";
+export * as stats from "./stats";
+export * as role from "./role";
+export * as wechat from "./wechat";
+export * as promocode from "./promocode";
+export * as media from "./media";
+export * as order from "./order";
+export * as member from "./member";
+export * as viewBlock from "./viewBlock";
+export * as pre from "./pre";

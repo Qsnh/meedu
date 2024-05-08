@@ -1,0 +1,100 @@
+.grid-nav-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  position: relative;
+  padding-bottom: 60px;
+  text-align: left;
+
+  .footer-button {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 70px;
+    background: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    padding: 15px 30px;
+  }
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    border-left: 5px solid #3ca7fa;
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 16px;
+    margin-bottom: 30px;
+  }
+
+  .config-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top: 1px solid #f1f2f9;
+
+    .config-item-title {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 14px;
+      padding-bottom: 30px;
+    }
+
+    .config-body {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+
+      .form-label {
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 14px;
+      }
+
+      .nav-item {
+        position: relative;
+        width: 100%;
+        height: auto;
+        float: left;
+        box-sizing: border-box;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.15);
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .btn-del {
+          position: absolute;
+          top: -17px;
+          right: -17px;
+        }
+
+        .nav-icon {
+          margin-right: 30px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

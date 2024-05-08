@@ -1,0 +1,159 @@
+.course-info {
+  width: 1200px;
+  height: 578px;
+  background: #ffffff;
+  border-radius: 8px;
+  .video-box {
+    width: 1200px;
+    height: 506px;
+    display: flex;
+    flex-direction: row;
+    .play-box {
+      width: 900px;
+      height: 506px;
+      position: relative;
+      .des-video {
+        position: absolute;
+        left: 350px;
+        top: 216px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 15px;
+      }
+      .goCurrent {
+        position: absolute;
+        z-index: 2003;
+        width: auto;
+        height: auto;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 0px 4px 4px 0px;
+        left: 0;
+        bottom: 50px;
+        display: flex;
+        flex-direction: row;
+        padding: 15px 20px;
+        span {
+          font-size: 16px;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 22px;
+          &.link {
+            cursor: pointer;
+            color: #3ca7fa;
+            margin-left: 10px;
+          }
+        }
+      }
+
+      .alert-message {
+        width: 900px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: white;
+        .subscribe-button {
+          box-sizing: border-box;
+          margin: 0 auto;
+          width: 200px;
+          padding: 15px 20px;
+          text-align: center;
+          font-size: 15px;
+          font-weight: 400;
+          border-radius: 4px;
+          background-color: #ff4d4f;
+          color: white;
+          cursor: pointer;
+        }
+
+        .subscribe-button2 {
+          margin-top: 30px;
+          font-size: 15px;
+          font-weight: 400;
+          color: #ff4d4f;
+          line-height: 15px;
+          cursor: pointer;
+        }
+
+        .subscribe-info {
+          margin-top: -30px;
+          margin-bottom: 30px;
+        }
+
+        .next-page {
+          box-sizing: border-box;
+          margin: 0 auto;
+          width: 152px;
+          height: auto;
+          padding: 10px 20px;
+          margin-bottom: 20px;
+          background: #3ca7fa;
+          color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          text-align: center;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+
+        .last-video {
+          font-size: 15px;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 15px;
+        }
+      }
+    }
+  }
+}
+
+.attach-list-box {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 50px 30px;
+  background: #ffffff;
+  margin-top: 30px;
+  border-radius: 8px;
+  .attach-item {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    &:first-child {
+      margin-top: 0px;
+    }
+
+    .attach-name {
+      height: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333333;
+      line-height: 16px;
+      text-align: left;
+    }
+    .download-attach {
+      margin-left: 30px;
+      width: 104px;
+      height: 40px;
+      background: #3ca7fa;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.image-preview-shadow-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.img {
+  max-width: 100%;
+}

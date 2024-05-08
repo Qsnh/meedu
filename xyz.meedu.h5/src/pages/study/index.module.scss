@@ -1,0 +1,123 @@
+.container {
+  margin-bottom: 53px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.top-nav {
+  position: fixed;
+  z-index: 400;
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  display: flex;
+  padding: 15px 20px 4px 20px;
+  background-color: white;
+
+  .nav-item {
+    position: relative;
+    width: auto;
+    height: auto;
+    margin-right: 40px;
+    &:last-child {
+      margin-right: 0px;
+    }
+    .item-text {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 14px;
+      font-weight: 400;
+      color: #666666;
+      line-height: 14px;
+      text-align: center;
+      padding-bottom: 9px;
+    }
+
+    .item-dot {
+      position: absolute;
+      bottom: 0;
+      width: 28px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    &.active {
+      .item-text {
+        color: #3ca7fa;
+        font-weight: 600;
+      }
+
+      .item-dot {
+        background-color: #3ca7fa;
+      }
+    }
+  }
+}
+.gray {
+  float: left;
+  width: 100%;
+  height: 10px;
+  background: #f3f6f9;
+}
+
+.courses-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: white;
+  box-sizing: border-box;
+  margin-top: 42px;
+  padding: 15px;
+}
+
+.loadmore-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.btn-login-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .btn-login {
+    width: 100%;
+    height: 46px;
+    box-sizing: border-box;
+    line-height: 46px;
+    background: #3ca7fa;
+    border-radius: 4px;
+    float: left;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+.drop {
+  display: block;
+  width: 100%;
+  float: left;
+  text-align: center;
+  color: #cccccc;
+  font-size: 14px;
+  margin-top: 30px;
+  margin-bottom: calc(
+    60px + constant(safe-area-inset-bottom)
+  ); /* 兼容iOS 11.0 - 11.2 */
+  margin-bottom: calc(60px + env(safe-area-inset-bottom)); /* 兼容iOS 11.2+ */
+}

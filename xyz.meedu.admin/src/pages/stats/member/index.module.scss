@@ -1,0 +1,195 @@
+.el_content {
+  min-width: 1169px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  .el_top_row1 {
+    width: 100%;
+    height: 204px !important;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    .el_row_item {
+      width: 32.5%;
+      height: 204px !important;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0px 2px 4px 0px rgba(102, 102, 102, 0.05);
+      border-radius: 8px;
+      margin-right: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      &:last-child {
+        margin-right: 0px;
+      }
+      .item_title {
+        width: 100%;
+        padding-left: 10px;
+        height: 16px;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        span {
+          height: 16px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 16px;
+        }
+        .icon {
+          width: 16px;
+          height: 16px;
+          margin-left: 10px;
+        }
+      }
+      p {
+        width: 100%;
+        padding-left: 10px;
+        height: 36px;
+        font-size: 36px;
+        text-align: left;
+        font-weight: 600;
+        color: #333333;
+        line-height: 36px;
+        margin: 0;
+      }
+      .item_info {
+        margin-top: 30px;
+        width: 100%;
+        min-height: 42px;
+        background: #f1f2f9;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+        span {
+          width: 50%;
+          height: 22px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 22px;
+          strong {
+            color: #3ca7fa;
+          }
+        }
+      }
+    }
+  }
+  .el_top_row2 {
+    width: 100%;
+    float: left;
+    height: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    .el_row_left {
+      flex: 1;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0px 2px 4px 0px rgba(102, 102, 102, 0.05);
+      border-radius: 8px;
+      margin-right: 20px;
+      padding: 16px 30px 30px 30px;
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      .header {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .item_title {
+          flex: 1;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          span {
+            height: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            line-height: 16px;
+          }
+          .icon {
+            width: 16px;
+            height: 16px;
+            margin-left: 10px;
+          }
+        }
+        .controls {
+          width: 112px;
+          height: 44px;
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+    .el_row_right {
+      width: 32.5%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      .el_row_right_item {
+        width: 100%;
+        height: 349px !important;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0px 2px 4px 0px rgba(102, 102, 102, 0.05);
+        border-radius: 8px;
+        margin-right: 20px;
+        padding: 16px 30px 0px 30px;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .header {
+          width: 100%;
+          height: auto;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .item_title {
+            flex: 1;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            span {
+              height: 16px;
+              font-size: 16px;
+              font-weight: 600;
+              color: #333333;
+              line-height: 16px;
+            }
+            .icon {
+              width: 16px;
+              height: 16px;
+              margin-left: 10px;
+            }
+          }
+          .controls {
+            width: 112px;
+            height: 44px;
+            display: flex;
+            flex-direction: row;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,145 @@
+.container {
+  width: 100%;
+  height: 100%;
+  float: left;
+  background: #f6f6f6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+
+.tabs-box {
+  width: 100%;
+  float: left;
+  height: 40px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  padding: 0px 8px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
+.category-box {
+  width: 100%;
+  float: left;
+  height: auto;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.category-content {
+  width: 100%;
+  float: left;
+  height: auto;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  padding: 20px 20px 0px 20px;
+  text-align: left;
+  position: fixed;
+  top: 40px;
+  z-index: 10;
+}
+
+.category-box {
+  width: 100%;
+  height: 330px;
+  box-sizing: border-box;
+  padding: 10px 20px 20px 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  .category-item {
+    width: 100%;
+    float: left;
+    height: auto;
+    .category-tit {
+      width: 100%;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      line-height: 30px;
+      margin-bottom: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .active-category-item {
+    width: 100%;
+    float: left;
+    height: auto;
+    .category-tit {
+      width: 100%;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ff4d4f;
+      line-height: 30px;
+      margin-bottom: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.child-item {
+  width: 100%;
+  float: left;
+  height: auto;
+  box-sizing: border-box;
+  padding-left: 20px;
+  .category-child-tit {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.88);
+    line-height: 30px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .act-category-child-tit {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    color: #ff4d4f !important;
+    line-height: 30px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.list-box {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding: 0px 20px 55px 20px;
+  text-align: left;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: calc(
+    55px + constant(safe-area-inset-bottom)
+  ); /* 兼容iOS 11.0 - 11.2 */
+  padding-bottom: calc(55px + env(safe-area-inset-bottom)); /* 兼容iOS 11.2+ */
+  .item {
+    width: 100%;
+    float: left;
+    height: auto;
+    box-sizing: border-box;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    &:first-child {
+      padding-top: 20px;
+    }
+  }
+}

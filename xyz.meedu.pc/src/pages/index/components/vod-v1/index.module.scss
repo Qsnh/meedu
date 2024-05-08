@@ -1,0 +1,27 @@
+.index-section-box {
+  width: 100%;
+  margin-top: 40px;
+  .index-section-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 50px;
+    .index-section-title-text {
+      height: 30px;
+      font-size: 30px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 30px;
+    }
+  }
+  .index-section-body {
+    width: 100%;
+    display: grid;
+    row-gap: 30px;
+    column-gap: 48px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding-bottom: 40px;
+  }
+}

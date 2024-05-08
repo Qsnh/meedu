@@ -1,0 +1,8 @@
+.cursor-pointer {
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
