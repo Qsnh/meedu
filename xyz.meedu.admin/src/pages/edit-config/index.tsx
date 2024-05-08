@@ -259,7 +259,7 @@ const EditConfigPage = () => {
               </div>
             )}
             <div className="bottom-menus">
-              <div className="bottom-menus-box" style={{ left: 20, right: 20 }}>
+              <div className="bottom-menus-box" style={{ left: 0, right: 0 }}>
                 <div>
                   <Button
                     loading={loading}
