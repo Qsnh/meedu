@@ -37,9 +37,9 @@ docker-compose up -d
 
 现在，打开您的浏览器，输入 `http://localhost:8300` 即可访问后台管理界面，默认管理员账号和密码 `meedu@meedu.meedu / meedu123` 。
 
-- PC 端口 `http://locaolhost:8100`
-- H5 端口 `http://locaolhost:8200`
-- API 端口 `http://locaolhost:8000`
+- PC 端口 `http://localhost:8100`
+- H5 端口 `http://localhost:8200`
+- API 端口 `http://localhost:8000`
 
 ## 🔰️ 软件安全
 
