@@ -7,7 +7,7 @@
 <h4 align="center">
   <a href="https://www.meedu.vip">官网</a> |
   <a href="https://meedu.vip/price.html">商业版</a> |
-  <a href="https://faq.meedu.vip/doc/i3gx9ixTo0">使用手册</a>
+  <a href="https://faq.meedu.vip">文档中心</a>
 </h4>
 
 <p align="center">⚡ 基于 PHP+Laravel 开发的在线网校解决方案 🔍</p>
