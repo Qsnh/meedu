@@ -7,7 +7,7 @@
 <h4 align="center">
   <a href="https://www.meedu.vip">官网</a> |
   <a href="https://meedu.vip/price.html">商业版</a> |
-  <a href="https://faq.meedu.vip/doc/YwXuZhfuoE">使用手册</a>
+  <a href="https://faq.meedu.vip/doc/i3gx9ixTo0">使用手册</a>
 </h4>
 
 <p align="center">⚡ 基于 PHP+Laravel 开发的在线网校解决方案 🔍</p>
@@ -17,25 +17,29 @@
 
 ## 🚀 快速上手
 
-拉取代码：  
+拉取代码：
 
 ```
 git clone https://github.com/qsnh/meedu.git meedu
 ```
 
-构建镜像：  
+构建镜像：
 
 ```
 cd meedu && docker-compose build
 ```
 
-运行镜像：  
+运行镜像：
 
 ```
 docker-compose up -d
 ```
 
-现在，打开您的浏览器，输入 `http://localhost:8300` 即可访问。
+现在，打开您的浏览器，输入 `http://localhost:8300` 即可访问后台管理界面，默认管理员账号和密码 `meedu@meedu.meedu / meedu123` 。
+
+- PC 端口 `http://locaolhost:8100`
+- H5 端口 `http://locaolhost:8200`
+- API 端口 `http://locaolhost:8000`
 
 ## 🔰️ 软件安全
 
