@@ -31,8 +31,6 @@ services:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=meeduxyz
       - REDIS_PORT=6379
-      - CACHE_DRIVER=redis
-      - SESSION_DRIVER=redis
       - QUEUE_DRIVER=sync
       - APP_KEY=base64:s9M5EmBWLWerXU/udZ8biH8GYGKBAEtatGNI2XnzEVM=
       - JWT_SECRET=26tpIiNHtYE0YsXeDge837qfIXVmlOES8l9M2u9OTrCZ9NASZcqJdYXBaOSPeLsh
