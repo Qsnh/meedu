@@ -88,9 +88,6 @@ EXPOSE 8100
 EXPOSE 8200
 EXPOSE 8300
 
-COPY docker/run.sh /run.sh
-RUN chmod +x /run.sh
-
 ENTRYPOINT ["tini", "--"]
 
-CMD /run.sh
+CMD echo "Waiting for mysql/redis to start..."; sleep 15; php /var/www/api/artisan migrate --force; php /var/www/api/artisan install config; php /var/www/api/artisan install role; php /var/www/api/artisan install administrator -q; nginx; php-fpm
