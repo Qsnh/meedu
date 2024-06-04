@@ -18,6 +18,8 @@ This additional condition applies solely to the use of the software for commerci
 
 For interpretation of any part of this license, please consult the copyright holder or seek legal counsel.
 
+---
+
 附加到 Apache 2.0 许可证的条款
 
 版权所有（C）[2024] 杭州白书科技有限公司
