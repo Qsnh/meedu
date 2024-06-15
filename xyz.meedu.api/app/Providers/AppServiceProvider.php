@@ -26,13 +26,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // service-v2
-        (new ServiceInit())->run();
-        // 数据库
+        // 兼容MySQL5.6
         Schema::defaultStringLength(191);
+        // ServiceV2注册
+        (new ServiceInit())->run();
         // 自定义配置同步
         $this->app->make(Setting::class)->sync();
-        // 日志链路
+        // 日志链路配置
         $this->logInit();
     }
 
@@ -49,9 +49,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(OrderServiceRegisterProvider::class);
     }
 
-    protected function logInit()
+    private function logInit()
     {
-        // 日志链路配置
         $requestId = Str::random(12);
         $logger = $this->app->make('log');
         $logger->pushProcessor(function ($record) use ($requestId) {

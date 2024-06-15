@@ -16,4 +16,6 @@ class PositionConstant
 
     // ViewBlock钩子
     public const VIEW_BLOCK_DATA_RENDER = 'view_block_data_render';
+
+    public const SYSTEM_APP_CONFIG_SYNC_WHITELIST = 'system_app_config_sync_whitelist';
 }

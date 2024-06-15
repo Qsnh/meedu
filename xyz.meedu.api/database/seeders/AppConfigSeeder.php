@@ -51,7 +51,6 @@ class AppConfigSeeder extends Seeder
                 'default_value' => '',
                 'key' => 'app.url',
                 'value' => '',
-                'help' => '请填写API访问地址，需携带http://或https://协议',
             ],
             [
                 'group' => '系统',
@@ -61,7 +60,6 @@ class AppConfigSeeder extends Seeder
                 'default_value' => '',
                 'key' => 'meedu.system.pc_url',
                 'value' => '',
-                'help' => '请填写PC界面访问地址，需携带http://或https://协议',
             ],
             [
                 'group' => '系统',
@@ -71,7 +69,6 @@ class AppConfigSeeder extends Seeder
                 'default_value' => '',
                 'key' => 'meedu.system.h5_url',
                 'value' => '',
-                'help' => '请填写H5界面访问地址，需携带http://或https://协议',
             ],
             [
                 'group' => '系统',

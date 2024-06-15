@@ -9,8 +9,11 @@
 namespace Tests\Services\Course;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
+use App\Constant\CacheConstant;
 use App\Services\Course\Models\Video;
+use Illuminate\Support\Facades\Cache;
 use App\Services\Course\Models\Course;
 use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Services\VideoService;
@@ -29,6 +32,12 @@ class VideoServiceTest extends TestCase
     {
         parent::setUp();
         $this->service = $this->app->make(VideoServiceInterface::class);
+    }
+
+    public function tearDown(): void
+    {
+        Artisan::call('cache:clear');
+        parent::tearDown();
     }
 
     public function test_courseVideos_with_no_chapters()
@@ -96,20 +105,21 @@ class VideoServiceTest extends TestCase
 
     public function test_courseVideos_with_chapters_with_cache()
     {
-        config(['meedu.system.cache.status' => 1]);
-        config(['meedu.system.cache.expire' => 10]);
+        config(['meedu.system.cache.status' => 1]);//开启缓存
+        config(['meedu.system.cache.expire' => 10]);//缓存时效10s
+
         $total = [];
         $course = Course::factory()->create();
         $chapters = CourseChapter::factory()->count(random_int(1, 5))->create();
         foreach ($chapters as $chapter) {
             $count = random_int(1, 5);
             Video::factory()->count($count)->create([
-                'course_id' => $course->id,
-                'published_at' => Carbon::now()->subDays(1),
+                'course_id' => $course['id'],
+                'published_at' => Carbon::now()->subDays(),
                 'is_show' => Video::IS_SHOW_YES,
-                'chapter_id' => $chapter->id,
+                'chapter_id' => $chapter['id'],
             ]);
-            $total[$chapter->id] = $count;
+            $total[$chapter['id']] = $count;
         }
 
         $list = $this->service->courseVideos($course['id']);

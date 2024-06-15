@@ -19,13 +19,16 @@ class SettingController extends BaseController
 {
     public function index(Setting $setting)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SYSTEM_CONFIG,
+            AdministratorLog::OPT_VIEW,
+            []
+        );
+
         $config = $setting->getCanEditConfig();
+        $syncWhitelistKeys = $setting->syncWhitelistKeys();
 
         foreach ($config as $key => $val) {
-            if ($val['is_show'] !== 1) {
-                continue;
-            }
-
             // 可选值解析 => 主要用于 select 类型的配置
             if ($val['option_value']) {
                 $config[$key]['option_value'] = json_decode($val['option_value'], true);
@@ -43,6 +46,11 @@ class SettingController extends BaseController
             ])) {
                 $config[$key]['value'] = url_v2($val['value']);
             }
+
+            // 将AppConfig的value为空但是本地变量存在值的配置项进行同步
+            if (in_array($val['key'], $syncWhitelistKeys) && trim($val['value']) === '' && config($val['key']) !== '') {
+                $config[$key]['value'] = config($val['key']);
+            }
         }
 
         $data = [];
@@ -55,17 +63,17 @@ class SettingController extends BaseController
             $item['is_show'] === 1 && $data[$item['group']][] = $item;
         }
 
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_SYSTEM_CONFIG,
-            AdministratorLog::OPT_VIEW,
-            []
-        );
-
         return $this->successData($data);
     }
 
     public function saveHandler(Request $request, ConfigServiceInterface $configService, Setting $setting)
     {
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_SYSTEM_CONFIG,
+            AdministratorLog::OPT_UPDATE,
+            []
+        );
+
         // 前端提交的配置数据，格式：{key: value,...}
         $newConfigData = $request->input('config');
         if (!$newConfigData) {
@@ -85,12 +93,6 @@ class SettingController extends BaseController
         $setting->append($newConfigData);
 
         event(new AppConfigSavedEvent($newConfigData, $oldConfigData));
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_SYSTEM_CONFIG,
-            AdministratorLog::OPT_UPDATE,
-            []
-        );
 
         return $this->success();
     }
