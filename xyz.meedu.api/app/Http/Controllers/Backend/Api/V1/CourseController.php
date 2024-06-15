@@ -263,16 +263,23 @@ class CourseController extends BaseController
     {
         $ids = $request->input('record_ids', []) ?: [0];
 
-        CourseUserRecord::query()
-            ->whereIn('id', $ids)
-            ->where('course_id', $courseId)
-            ->delete();
-
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD,
             AdministratorLog::OPT_DESTROY,
             compact('ids')
         );
+
+        $records = CourseUserRecord::query()
+            ->whereIn('id', $ids)
+            ->where('course_id', $courseId)
+            ->get();
+
+        if ($records->isNotEmpty()) {
+            foreach ($records as $item) {
+                UserVideoWatchRecord::query()->where('user_id', $item['user_id'])->where('course_id', $item['course_id'])->forceDelete();
+                $item->delete();
+            }
+        }
 
         return $this->success();
     }
