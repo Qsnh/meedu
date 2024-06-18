@@ -1,18 +1,13 @@
-@if(mb_substr($content, -7,7) === '</html>')
-{!! $content !!}
-@else
-        <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{__('关于我们')}}</title>
+    <title>{{__('会员服务协议')}}</title>
 </head>
 <body>
 {!! $content !!}
 </body>
 </html>
-@endif
-

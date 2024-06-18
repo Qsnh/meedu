@@ -84,10 +84,15 @@ class ConfigService implements ConfigServiceInterface
 
     public function getLogo(): string
     {
-        $url= config('meedu.system.logo') ?? '';
+        $url = config('meedu.system.logo') ?? '';
         if ($url) {
             $url = url_v2($url);
         }
         return $url;
+    }
+
+    public function getVipProtocol(): string
+    {
+        return config('meedu.member.vip_protocol') ?? '';
     }
 }

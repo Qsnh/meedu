@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
+
 class IndexController extends FrontendController
 {
     public function index()
@@ -29,12 +31,18 @@ class IndexController extends FrontendController
 
     public function aboutus()
     {
-        $aboutus = $this->configService->getAboutus();
-        return view('index.aboutus', compact('aboutus'));
+        $content = $this->configService->getAboutus();
+        return view('index.aboutus', compact('content'));
     }
 
     public function faceVerifySuccess()
     {
         return view('index.face_verify_success');
+    }
+
+    public function vipProtocol(ConfigServiceInterface  $configService)
+    {
+        $content = $configService->getVipProtocol();
+        return view('index.vip_protocol', compact('content'));
     }
 }

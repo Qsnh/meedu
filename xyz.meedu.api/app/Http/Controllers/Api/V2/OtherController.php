@@ -101,6 +101,8 @@ class OtherController extends BaseController
             'user_protocol' => route('user.protocol'),
             // 用户隐私协议URL
             'user_private_protocol' => route('user.private_protocol'),
+            // VIP协议
+            'vip_protocol' => route('user.vip_protocol'),
             // 关于我们URL
             'aboutus' => route('aboutus'),
             // 播放器配置

@@ -165,7 +165,6 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 50px;
     span {
       display: inline-block;
       height: 16px;
@@ -208,7 +207,7 @@
     color: #ffffff;
     float: right;
     &:hover {
-      background: #ff4d4f;
+      background: #ff4d4f !important;
       opacity: 0.8;
     }
   }

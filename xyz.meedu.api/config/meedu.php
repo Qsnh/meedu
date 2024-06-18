@@ -20,6 +20,8 @@ return [
         'protocol' => '',
         // 隐私协议
         'private_protocol' => '',
+        // 会员服务协议=>购买VIP会员需要先同意此协议
+        'vip_protocol' => '',
 
         // 强制用户绑定手机号[1:是,0:否]
         'enabled_mobile_bind_alert' => 0,

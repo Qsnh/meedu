@@ -140,7 +140,7 @@ class OrderTest extends Base
         $this->assertEquals('已支付', $order['data']['status_text']);
     }
 
-    public function test_createRoleOrder()
+    public function test_createRoleOrder_without_agree_protocol()
     {
         $user = User::factory()->create();
         $role = Role::factory()->create([
@@ -150,6 +150,22 @@ class OrderTest extends Base
         $response = $this->user($user)->postJson('/api/v2/order/role', [
             'role_id' => $role->id,
             'promo_code' => 0,
+            'agree' => 0,
+        ]);
+        $this->assertResponseError($response, __('请同意协议'));
+    }
+
+    public function test_createRoleOrder_with_agree_protocol()
+    {
+        $user = User::factory()->create();
+        $role = Role::factory()->create([
+            'charge' => 100,
+            'is_show' => Course::SHOW_YES,
+        ]);
+        $response = $this->user($user)->postJson('/api/v2/order/role', [
+            'role_id' => $role->id,
+            'promo_code' => 0,
+            'agree' => 1,
         ]);
         $this->assertResponseSuccess($response);
     }
@@ -165,13 +181,14 @@ class OrderTest extends Base
         $promoCode = PromoCode::factory()->create([
             'invited_user_reward' => 10,
             'code' => 'code1234',
-            'expired_at' => Carbon::now()->addDays(1),
+            'expired_at' => Carbon::now()->addDays(),
             'use_times' => 0,
         ]);
 
         $response = $this->user($user)->postJson('/api/v2/order/role', [
-            'role_id' => $role->id,
-            'promo_code' => $promoCode->code,
+            'role_id' => $role['id'],
+            'promo_code' => $promoCode['code'],
+            'agree' => 1,
         ]);
         $order = $this->assertResponseSuccess($response);
 

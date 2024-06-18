@@ -35,4 +35,6 @@ interface ConfigServiceInterface
     public function getLogo(): string;
 
     public function allKeyValue(): array;
+
+    public function getVipProtocol(): string;
 }

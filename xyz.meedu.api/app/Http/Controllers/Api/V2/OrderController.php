@@ -148,6 +148,9 @@ class OrderController extends BaseController
     {
         $roleId = $request->input('role_id');
         $code = $request->input('promo_code');
+        if ((int)$request->input('agree') !== 1) {
+            return $this->error(__('请同意协议'));
+        }
         $promoCode = [];
         $code && $promoCode = $this->promoCodeService->findCode($code);
         $role = $this->roleService->find($roleId);

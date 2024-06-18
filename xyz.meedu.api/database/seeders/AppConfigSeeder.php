@@ -843,7 +843,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '会员',
-                'name' => '会员协议',
+                'name' => '注册协议',
                 'field_type' => 'textarea',
                 'sort' => 4,
                 'default_value' => '',
@@ -852,11 +852,20 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '会员',
-                'name' => '会员隐私协议',
+                'name' => '隐私政策',
                 'field_type' => 'textarea',
                 'sort' => 5,
                 'default_value' => '',
                 'key' => 'meedu.member.private_protocol',
+                'value' => '',
+            ],
+            [
+                'group' => '会员',
+                'name' => '会员服务协议',
+                'field_type' => 'textarea',
+                'sort' => 10,
+                'default_value' => '',
+                'key' => 'meedu.member.vip_protocol',
                 'value' => '',
             ],
 

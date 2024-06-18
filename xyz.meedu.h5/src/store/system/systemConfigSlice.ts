@@ -47,6 +47,7 @@ type AppConfigInterface = {
   url: string;
   user_private_protocol: string;
   user_protocol: string;
+  vip_protocol: string;
   webname: string;
 };
 
@@ -95,6 +96,7 @@ let defaultValue: AppConfigInterface = {
   url: "",
   user_private_protocol: "",
   user_protocol: "",
+  vip_protocol: "",
   webname: "",
 };
 

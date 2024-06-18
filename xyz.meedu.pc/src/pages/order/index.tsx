@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { order } from "../../api/index";
-import { Input, message, Button } from "antd";
+import { Input, message, Button, Checkbox } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { ThumbBar } from "../../components";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -38,6 +39,7 @@ const OrderPage = () => {
   const [courseType] = useState(result.get("course_type"));
   const [total] = useState<number>(Number(result.get("goods_charge")));
   const [totalVal, setTotalVal] = useState<number>(0);
+  const [agreeProtocol, setAgreeProtocol] = useState<boolean>(false);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
@@ -77,6 +79,10 @@ const OrderPage = () => {
     }
     setPayments(data);
   }, [aliStatus, weStatus, handStatus]);
+
+  const onChange = (e: CheckboxChangeEvent) => {
+    setAgreeProtocol(e.target.checked);
+  };
 
   const initData = () => {
     if (goodsType === "role") {
@@ -154,6 +160,10 @@ const OrderPage = () => {
       message.error("请选择支付方式");
       return;
     }
+    if (goodsType === "role" && agreeProtocol !== true) {
+      message.error("请同意《会员服务协议》");
+      return;
+    }
     if (loading) {
       return;
     }
@@ -189,6 +199,7 @@ const OrderPage = () => {
         .createRoleOrder({
           role_id: goodsId,
           promo_code: promoCode,
+          agree: 1,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -354,7 +365,29 @@ const OrderPage = () => {
           ))}
         </div>
         <div className={styles["line"]}></div>
-        <div className={styles["price-box"]}>
+        {goodsType === "role" && (
+          <div className={styles["price-box"]} style={{ marginTop: 50 }}>
+            <div className="flex items-center h-5">
+              <Checkbox onChange={onChange} defaultChecked={agreeProtocol} />
+            </div>
+            <div className="ml-10 text-sm" style={{ fontSize: 16 }}>
+              <label className="text-gray-normal">
+                我已阅读并同意
+                <a
+                  className="text-blue"
+                  href={systemConfig.vip_protocol}
+                  target="_blank"
+                >
+                  《会员服务协议》
+                </a>
+              </label>
+            </div>
+          </div>
+        )}
+        <div
+          className={styles["price-box"]}
+          style={{ marginTop: goodsType === "role" ? 30 : 50 }}
+        >
           {goodsType !== "ms" && goodsType !== "tg" && (
             <>
               <span>优惠码已减</span>

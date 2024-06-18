@@ -15,6 +15,7 @@ use App\Meedu\Core\UpgradeLog\UpgradeV498;
 use App\Meedu\Core\UpgradeLog\UpgradeToV42;
 use App\Meedu\Core\UpgradeLog\UpgradeToV45;
 use App\Meedu\Core\UpgradeLog\UpgradeToV46;
+use App\Meedu\Core\UpgradeLog\UpgradeV4910;
 use App\Meedu\Core\UpgradeLog\UpgradeToV454;
 
 class Upgrade
@@ -29,5 +30,6 @@ class Upgrade
         UpgradeTo48::handle();
         UpgradeV493::handle();
         UpgradeV498::handle();
+        UpgradeV4910::handle();
     }
 }

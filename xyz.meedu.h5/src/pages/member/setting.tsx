@@ -33,6 +33,12 @@ const MemberSettingPage = () => {
         </div>
         <div
           className={styles["group-item"]}
+          onClick={() => openPage(config.vip_protocol)}
+        >
+          <div className={styles["name"]}>会员服务协议</div>
+        </div>
+        <div
+          className={styles["group-item"]}
           onClick={() => openPage(config.aboutus)}
         >
           <div className={styles["name"]}>关于我们</div>

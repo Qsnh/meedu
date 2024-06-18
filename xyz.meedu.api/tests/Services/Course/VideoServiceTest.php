@@ -9,12 +9,10 @@
 namespace Tests\Services\Course;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
-use App\Constant\CacheConstant;
 use App\Services\Course\Models\Video;
-use Illuminate\Support\Facades\Cache;
 use App\Services\Course\Models\Course;
+use Illuminate\Support\Facades\Artisan;
 use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Services\VideoService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

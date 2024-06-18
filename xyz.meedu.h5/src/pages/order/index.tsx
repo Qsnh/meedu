@@ -32,6 +32,7 @@ const OrderPage = () => {
   const [payment, setPayment] = useState("");
   const [paymentScene, setPaymentScene] = useState("h5");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
+  const [openmask2, setOpenmask2] = useState(false);
 
   useEffect(() => {
     document.title = "收银台";
@@ -136,12 +137,32 @@ const OrderPage = () => {
       });
   };
 
+  const submitProtocol = () => {
+    setLoading(true);
+    order
+      .CreateRoleOrder({
+        role_id: goods.id,
+        promo_code: promoCode,
+        agree: 1,
+      })
+      .then((res: any) => {
+        orderCreatedHandler(res.data);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
   const payHandler = () => {
     if (!payment) {
       Toast.show("请选择支付方式");
       return;
     }
     if (loading) {
+      return;
+    }
+    if (goods.type === "role") {
+      setOpenmask2(true);
       return;
     }
     setLoading(true);
@@ -163,18 +184,6 @@ const OrderPage = () => {
       order
         .CreateVideoOrder({
           video_id: goods.id,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goods.type === "role") {
-      order
-        .CreateRoleOrder({
-          role_id: goods.id,
           promo_code: promoCode,
         })
         .then((res: any) => {
@@ -236,6 +245,10 @@ const OrderPage = () => {
     }
   };
 
+  const openPage = (url: string) => {
+    window.open(url);
+  };
+
   return (
     <div className={styles["container"]}>
       <NavHeader text="收银台" />
@@ -257,6 +270,33 @@ const OrderPage = () => {
             </div>
             <div className={styles["confirm"]} onClick={() => checkPromoCode()}>
               验证
+            </div>
+          </div>
+        </div>
+      )}
+      {openmask2 && (
+        <div className={styles["mask"]}>
+          <div className={styles["dialog-box"]}>
+            <div className={styles["dialog-header"]}>提示</div>
+            <div className={styles["dialog-content"]}>
+              我已阅读并同意
+              <span onClick={() => openPage(config.vip_protocol)}>
+                《会员服务协议》
+              </span>
+            </div>
+            <div className={styles["dialog-bottom"]}>
+              <div
+                className={styles["button2"]}
+                onClick={() => setOpenmask2(false)}
+              >
+                取消
+              </div>
+              <div
+                className={styles["button"]}
+                onClick={() => submitProtocol()}
+              >
+                阅读并同意
+              </div>
             </div>
           </div>
         </div>
