@@ -61,11 +61,11 @@ class WechatJSAPI implements Payment
         // 跳转的url
         $sUrl = request()->input('s_url');
         $sUrl || $sUrl = request()->input('redirect');
-        $sUrl || $sUrl = url_v2('/');
+        $sUrl || $sUrl = url('/');
         $sUrl = strip_tags($sUrl);//xss过滤[该参数会在wechat-jsapi.blade中渲染]
 
         $fUrl = request()->input('f_url');
-        $fUrl || $fUrl = url_v2('/');
+        $fUrl || $fUrl = url('/');
         $fUrl = strip_tags($fUrl);//同上
 
         // 构建Response

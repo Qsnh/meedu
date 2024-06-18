@@ -44,7 +44,7 @@ class SettingController extends BaseController
                 'meedu.member.default_avatar',
                 'meedu.system.player_thumb',
             ])) {
-                $config[$key]['value'] = url_v2($val['value']);
+                $config[$key]['value'] = url($val['value']);
             }
 
             // 将AppConfig的value为空但是本地变量存在值的配置项进行同步

@@ -687,7 +687,7 @@ class MemberController extends BaseController
 
                     $data[] = [
                         'mobile' => $tmpMobile,
-                        'avatar' => url_v2(config('meedu.member.default_avatar')),
+                        'avatar' => url(config('meedu.member.default_avatar')),
                         'nick_name' => mb_substr($tmpMobile, 0, 8) . '_' . Str::random(5),
                         'is_active' => (int)config('meedu.member.is_active_default'),
                         'is_lock' => $tmpIsLock,

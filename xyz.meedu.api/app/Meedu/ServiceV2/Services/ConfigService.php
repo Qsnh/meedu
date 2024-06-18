@@ -86,7 +86,7 @@ class ConfigService implements ConfigServiceInterface
     {
         $url = config('meedu.system.logo') ?? '';
         if ($url) {
-            $url = url_v2($url);
+            $url = url($url);
         }
         return $url;
     }
