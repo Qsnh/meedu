@@ -204,7 +204,6 @@ const PromoCodePage = () => {
         <>
           <div className="mb-10">{record.code}</div>
           <div>面值：{record.invited_user_reward}元</div>
-          <div>奖励：{record.invite_user_reward}元</div>
         </>
       ),
     },

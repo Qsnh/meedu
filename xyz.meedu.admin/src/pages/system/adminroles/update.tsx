@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, TreeSelect, Spin } from "antd";
+import { Button, Input, message, Form, Cascader, Spin } from "antd";
 import { adminRole } from "../../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
+const { SHOW_CHILD } = Cascader;
 
 const SystemAdminrolesUpdatePage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -14,6 +15,7 @@ const SystemAdminrolesUpdatePage = () => {
   const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [permissionsTransform, setPermissionsTransform] = useState<any>([]);
+  const [selectedValues, setSelectedValues] = useState([]);
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
@@ -28,11 +30,10 @@ const SystemAdminrolesUpdatePage = () => {
 
   const initData = async () => {
     await params();
-    await getDetail();
     setInit(false);
   };
 
-  const getDetail = async () => {
+  const getDetail = async (box: any[]) => {
     if (id === 0) {
       return;
     }
@@ -41,8 +42,28 @@ const SystemAdminrolesUpdatePage = () => {
     form.setFieldsValue({
       description: data.description,
       display_name: data.display_name,
-      permission_ids: data.permission_ids,
     });
+    setSelectedValues(data.permission_ids);
+    if (data.permission_ids.length > 0) {
+      const arr: any = [];
+      data.permission_ids.map((item: any) => {
+        box.map((it: any) => {
+          let parentLabel = it.value;
+          it.children.map((yet: any) => {
+            if (yet.value === item) {
+              arr.push([parentLabel, yet.value]);
+            }
+          });
+        });
+      });
+      form.setFieldsValue({
+        permission_ids: arr,
+      });
+    } else {
+      form.setFieldsValue({
+        permission_ids: [],
+      });
+    }
   };
 
   const params = async () => {
@@ -55,17 +76,18 @@ const SystemAdminrolesUpdatePage = () => {
       for (let j = 0; j < roles[i].length; j++) {
         children.push({
           value: roles[i][j].id,
-          title: roles[i][j].display_name,
+          label: roles[i][j].display_name,
         });
       }
 
       arr.push({
         value: i,
-        title: i,
+        label: i,
         children: children,
       });
     }
     setPermissionsTransform(arr);
+    await getDetail(arr);
   };
 
   const onFinish = (values: any) => {
@@ -74,7 +96,11 @@ const SystemAdminrolesUpdatePage = () => {
     }
     setLoading(true);
     adminRole
-      .updateAdminRole(id, values)
+      .updateAdminRole(id, {
+        display_name: values.display_name,
+        description: values.description,
+        permission_ids: selectedValues,
+      })
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -87,6 +113,34 @@ const SystemAdminrolesUpdatePage = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const getChildValues = (children: any) => {
+    return children.map((child: any) => child.value);
+  };
+
+  const handleChange = (value: any, selectedOptions: any) => {
+    if (selectedOptions.length > 0) {
+      // If only the parent is selected, get all child values
+      const parent = selectedOptions;
+      let box: any = [];
+      parent.map((item: any) => {
+        if (item[1]) {
+          box.push(item[1].value);
+        } else {
+          const childValues = getChildValues(item[0].children);
+          box.push(...childValues);
+        }
+      });
+      setSelectedValues(box);
+    } else {
+      // If any child is selected, just set the selected value
+      setSelectedValues(value);
+    }
+  };
+
+  const displayRender = (label: any, selectedOptions: any) => {
+    return label[label.length - 1];
   };
 
   return (
@@ -132,14 +186,16 @@ const SystemAdminrolesUpdatePage = () => {
           </Form.Item>
 
           <Form.Item label="权限" name="permission_ids">
-            <TreeSelect
-              listHeight={400}
+            <Cascader
               style={{ width: "100%" }}
-              treeCheckable={true}
               placeholder="请选择权限"
               multiple
               allowClear
-              treeData={permissionsTransform}
+              options={permissionsTransform}
+              onChange={handleChange}
+              expand-trigger="hover"
+              displayRender={displayRender}
+              showCheckedStrategy={SHOW_CHILD}
             />
           </Form.Item>
         </Form>
