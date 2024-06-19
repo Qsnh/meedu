@@ -20,16 +20,10 @@
 拉取代码：
 
 ```
-git clone https://github.com/qsnh/meedu.git meedu
+git clone --branch main https://gitee.com/myteng/MeEdu.git meedu
 ```
 
-构建镜像：
-
-```
-cd meedu && docker-compose build
-```
-
-运行镜像：
+运行：
 
 ```
 docker-compose up -d
