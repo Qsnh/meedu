@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AdminLogComp } from "./components/admin-log";
 import { UserLoginLogComp } from "./components/user-login-log";
 import { UploadImagesComp } from "./components/upload-images-log";
+import { RunTimeLogComp } from "./components/runtime-log";
 import { titleAction } from "../../../store/user/loginUserSlice";
 
 interface LocalSearchParamsInterface {
@@ -51,6 +52,12 @@ const SystemLogPage = () => {
       types.push({
         name: "图片上传日志",
         key: "uploadImages",
+      });
+    }
+    if (checkPermission("system.log.runtime")) {
+      types.push({
+        name: "运行日志",
+        key: "runtime",
       });
     }
     setTabTypes(types);
@@ -102,9 +109,10 @@ const SystemLogPage = () => {
         </Radio.Group>
       </div>
       <div className="float-left mt-30">
-        {tabActive === "admin" && <AdminLogComp></AdminLogComp>}
-        {tabActive === "userLogin" && <UserLoginLogComp></UserLoginLogComp>}
-        {tabActive === "uploadImages" && <UploadImagesComp></UploadImagesComp>}
+        {tabActive === "admin" && <AdminLogComp />}
+        {tabActive === "userLogin" && <UserLoginLogComp />}
+        {tabActive === "uploadImages" && <UploadImagesComp />}
+        {tabActive === "runtime" && <RunTimeLogComp />}
       </div>
     </div>
   );

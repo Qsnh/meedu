@@ -152,3 +152,7 @@ export function linksDetail(id: number) {
 export function linksUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/link/${id}`, params);
 }
+
+export function runTimeLog() {
+  return client.get(`/backend/api/v1/log/runtime`, {});
+}
