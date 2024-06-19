@@ -1,25 +1,3 @@
-Additional Terms to the Apache 2.0 License
-
-Copyright (C) [2024] 杭州白书科技有限公司
-
-This program is free software: you can redistribute it and/or modify it under the terms of the Apache 2.0 License as published by the Apache Software Foundation. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Apache 2.0 License for more details.
-
-In addition to the terms of the Apache 2.0, the following special condition is applied:
-
-**Commercial Use Additional Condition:**
-
-Without the express written consent of the author(s) of this software, no person, entity, or organization may modify this software for commercial use within profit-seeking entities or utilize this software in a manner primarily intended for or directed toward commercial advantage or monetary compensation. For the purposes of this condition, "commercial use" refers to any activity involving the use of this software by a business, organization, or individual in exchange for monetary or other forms of compensation or in support of economic activities.
-
-Individuals or entities wishing to use this software for commercial purposes must obtain a separate, express license from the author(s) for such use, subject to terms to be negotiated.
-
-The purpose of this additional condition is to protect the interests of the software author(s) by ensuring they have the opportunity to be compensated for the commercial use of their work. This condition is not intended to restrict the freedom or open-source nature of the software but to ensure that the author(s)' rights are respected in commercial contexts.
-
-This additional condition applies solely to the use of the software for commercial purposes. In all other respects, the terms of the Apache 2.0 License remain in effect.
-
-For interpretation of any part of this license, please consult the copyright holder or seek legal counsel.
-
----
-
 附加到 Apache 2.0 许可证的条款
 
 版权所有（C）[2024] 杭州白书科技有限公司
@@ -39,3 +17,19 @@ For interpretation of any part of this license, please consult the copyright hol
 此附加条件仅适用于软件的商业用途。在所有其他方面，Apache 2.0 许可证的条款仍然有效。
 
 对于本许可证任何部分的解释，请咨询版权持有人或寻求法律顾问。
+
+--- 
+
+如果您想要将 `MeEdu` 用于通过 `MeEdu` 搭建平台售卖课程的商业行为，请按照下面步骤申请免费的商用授权证。请发送下面内容的邮件到 `tengyongzhi@meedu.vip` ，标题为 `MeEdu 商业授权申请` ：
+
+```
+公司名：xxx
+注册机构号：xxx
+使用域名：xxx.com
+```
+
+**下面几点需要注意：**  
+
+- 1.使用域名必须备案且备案主体与申请商用授权主体一致。
+- 2.如果更换了域名需要重新申请商用授权。
+- 3.如果域名更换备案则原有商用授权自动失效。

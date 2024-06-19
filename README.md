@@ -26,7 +26,7 @@ git clone --branch main https://gitee.com/myteng/MeEdu.git meedu
 运行：
 
 ```
-docker-compose up -d
+cd meedu && docker-compose up -d
 ```
 
 现在，打开您的浏览器，输入 `http://localhost:8300` 即可访问后台管理界面，默认管理员账号和密码 `meedu@meedu.meedu / meedu123` 。
