@@ -29,11 +29,13 @@ services:
       - DB_USERNAME=root
       - DB_PASSWORD=meeduxyz
       - REDIS_HOST=redis
-      - REDIS_PASSWORD=meeduxyz
+      - REDIS_PASSWORD=F9nO2FzJ*%uDX58!
       - REDIS_PORT=6379
       - QUEUE_DRIVER=sync
       - APP_KEY=base64:s9M5EmBWLWerXU/udZ8biH8GYGKBAEtatGNI2XnzEVM=
       - JWT_SECRET=26tpIiNHtYE0YsXeDge837qfIXVmlOES8l9M2u9OTrCZ9NASZcqJdYXBaOSPeLsh
+      - MEILISEARCH_HOST=http://meilisearch:7700
+      - MEILISEARCH_KEY=null
     ports:
       - 8000:8000
       - 8100:8100
@@ -47,7 +49,7 @@ services:
     logging: *default-logging
 
   redis:
-    build: ./docker-compose/redis
+    image: registry.cn-hangzhou.aliyuncs.com/hzbs/redis:7.0.12
     restart: always
     volumes:
       - data_redis:/data
@@ -58,7 +60,7 @@ services:
     logging: *default-logging
 
   mysql:
-    build: ./docker-compose/mysql
+    image: registry.cn-hangzhou.aliyuncs.com/hzbs/mysql:8.1
     restart: always
     environment:
       - MYSQL_DATABASE=meedu
@@ -73,7 +75,7 @@ services:
     logging: *default-logging
   
   meilisearch:
-    image: getmeili/meilisearch:v0.24.0
+    image: registry.cn-hangzhou.aliyuncs.com/hzbs/meilisearch:0.24.0
     restart: always
     volumes:
       - data_meilisearch:/meili_data
