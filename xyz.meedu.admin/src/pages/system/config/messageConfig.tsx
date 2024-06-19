@@ -384,7 +384,7 @@ const SystemMessageConfigPage = () => {
                   <Form.Item name="sms.gateways.yunpian.template.password_reset">
                     <Input.TextArea
                       rows={3}
-                      style={{ width: 300 }}
+                      style={{ width: 300, resize: "none" }}
                       allowClear
                     />
                   </Form.Item>
@@ -396,19 +396,31 @@ const SystemMessageConfigPage = () => {
                   label="云片注册模板"
                   name="sms.gateways.yunpian.template.register"
                 >
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <Form.Item
                   label="云片手机号绑定模板"
                   name="sms.gateways.yunpian.template.mobile_bind"
                 >
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <Form.Item
                   label="云片手机号登陆模板"
                   name="sms.gateways.yunpian.template.login"
                 >
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
               </>
             )}

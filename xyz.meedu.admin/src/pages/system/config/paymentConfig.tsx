@@ -336,7 +336,11 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="支付宝公钥" name="pay.alipay.ali_public_key">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.ali_public_key">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliPublicProps} showUploadList={false}>
@@ -351,7 +355,11 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="应用私钥" name="pay.alipay.private_key">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.private_key">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliCertPrivateProps} showUploadList={false}>
@@ -365,7 +373,11 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="支付宝根证书" name="pay.alipay.alipay_root_cert">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.alipay_root_cert">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliRootCertProps} showUploadList={false}>
@@ -382,7 +394,11 @@ const SystemPaymentConfigPage = () => {
             >
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.app_cert_public_key">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliCertPublicProps} showUploadList={false}>
@@ -426,7 +442,11 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="微信证书Client" name="pay.wechat.cert_client">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.wechat.cert_client">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadCertClientProps} showUploadList={false}>
@@ -440,7 +460,11 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="微信证书Key" name="pay.wechat.cert_key">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.wechat.cert_key">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                  <Input.TextArea
+                    rows={3}
+                    style={{ width: 300, resize: "none" }}
+                    allowClear
+                  />
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadKeyClientProps} showUploadList={false}>

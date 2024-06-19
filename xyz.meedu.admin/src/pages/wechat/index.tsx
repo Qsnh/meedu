@@ -7,6 +7,8 @@ import { wechat } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, OptionBar } from "../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { WechatCreateDialog } from "./components/create";
+import { WechatUpdateDialog } from "./components/update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -33,6 +35,9 @@ const WechatPage = () => {
   const [list, setList] = useState<any>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [showAddWin, setShowAddWin] = useState<boolean>(false);
+  const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [updateId, setUpdateId] = useState<number>(0);
 
   useEffect(() => {
     document.title = "公众号";
@@ -117,7 +122,8 @@ const WechatPage = () => {
             icon={null}
             p="mpWechatMessageReply.update"
             onClick={() => {
-              navigate("/wechat/messagereply/update?id=" + record.id);
+              setUpdateId(record.id);
+              setShowUpdateWin(true);
             }}
             disabled={null}
           />
@@ -196,6 +202,23 @@ const WechatPage = () => {
 
   return (
     <div className="meedu-main-body">
+      <WechatCreateDialog
+        open={showAddWin}
+        onCancel={() => setShowAddWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowAddWin(false);
+        }}
+      />
+      <WechatUpdateDialog
+        id={updateId}
+        open={showUpdateWin}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowUpdateWin(false);
+        }}
+      />
       <div className="float-left mb-30">
         <PerButton
           type="primary"
@@ -203,7 +226,7 @@ const WechatPage = () => {
           class=""
           icon={null}
           p="mpWechatMessageReply.store"
-          onClick={() => navigate("/wechat/messagereply/create")}
+          onClick={() => setShowAddWin(true)}
           disabled={null}
         />
         <PerButton

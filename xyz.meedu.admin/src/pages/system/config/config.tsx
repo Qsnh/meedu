@@ -143,7 +143,7 @@ const SystemNormalConfigPage = () => {
                     <Form.Item name={c.key}>
                       <Input.TextArea
                         rows={3}
-                        style={{ width: 300 }}
+                        style={{ width: 300, resize: "none" }}
                         allowClear
                       />
                     </Form.Item>

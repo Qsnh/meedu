@@ -158,35 +158,37 @@ export const UploadImageButton = (props: PropsInterface) => {
                   <Empty description="暂无图片" />
                 </Col>
               )}
-              <div className={styles["image-list-box"]}>
-                {imageList.map((item) => (
-                  <div
-                    key={item.id}
-                    className={
-                      selected.indexOf(item.url) !== -1
-                        ? styles["image-active-item"]
-                        : styles["image-item"]
-                    }
-                    onClick={() => {
-                      setSelected(item.url);
-                    }}
-                  >
-                    {selected.indexOf(item.url) !== -1 && (
-                      <div className={styles["sel"]}>
-                        <img src={selectedIcon} />
+              <div className={styles["image-box"]}>
+                <div className={styles["image-list-box"]}>
+                  {imageList.map((item) => (
+                    <div
+                      key={item.id}
+                      className={
+                        selected.indexOf(item.url) !== -1
+                          ? styles["image-active-item"]
+                          : styles["image-item"]
+                      }
+                      onClick={() => {
+                        setSelected(item.url);
+                      }}
+                    >
+                      {selected.indexOf(item.url) !== -1 && (
+                        <div className={styles["sel"]}>
+                          <img src={selectedIcon} />
+                        </div>
+                      )}
+                      <div className={styles["image-render"]}>
+                        <div
+                          className={styles["image-view"]}
+                          style={{ backgroundImage: `url(${item.url})` }}
+                        ></div>
                       </div>
-                    )}
-                    <div className={styles["image-render"]}>
-                      <div
-                        className={styles["image-view"]}
-                        style={{ backgroundImage: `url(${item.url})` }}
-                      ></div>
+                      <div className={styles["image-name"]}>
+                        <div className={styles["name"]}>{item.name}</div>
+                      </div>
                     </div>
-                    <div className={styles["image-name"]}>
-                      <div className={styles["name"]}>{item.name}</div>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               {imageList.length > 0 && (
                 <Col

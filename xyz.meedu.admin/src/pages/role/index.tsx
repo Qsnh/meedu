@@ -7,6 +7,8 @@ import { role } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton } from "../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { RoletCreateDialog } from "./components/create";
+import { RoletUpdateDialog } from "./components/update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -22,6 +24,9 @@ const RolePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
+  const [showAddWin, setShowAddWin] = useState<boolean>(false);
+  const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [updateId, setUpdateId] = useState<number>(0);
 
   useEffect(() => {
     document.title = "VIP会员";
@@ -81,7 +86,8 @@ const RolePage = () => {
             icon={null}
             p="role.update"
             onClick={() => {
-              navigate("/editrole?id=" + record.id);
+              setUpdateId(record.id);
+              setShowUpdateWin(true);
             }}
             disabled={null}
           />
@@ -141,6 +147,23 @@ const RolePage = () => {
 
   return (
     <div className="meedu-main-body">
+      <RoletCreateDialog
+        open={showAddWin}
+        onCancel={() => setShowAddWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowAddWin(false);
+        }}
+      />
+      <RoletUpdateDialog
+        id={updateId}
+        open={showUpdateWin}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowUpdateWin(false);
+        }}
+      />
       <div className="float-left mb-30">
         <PerButton
           type="primary"
@@ -148,7 +171,7 @@ const RolePage = () => {
           class=""
           icon={null}
           p="role.store"
-          onClick={() => navigate("/addrole")}
+          onClick={() => setShowAddWin(true)}
           disabled={null}
         />
       </div>

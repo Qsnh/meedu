@@ -18,6 +18,8 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton } from "../../components";
 import { dateFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { PromocodeCreateDialog } from "./components/create";
+import { PromocodeCreateMultiDialog } from "./components/create-multi";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 
@@ -58,6 +60,8 @@ const PromoCodePage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const [showAddWin, setShowAddWin] = useState<boolean>(false);
+  const [showAddMultiWin, setShowAddMultiWin] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = "优惠码";
@@ -246,6 +250,22 @@ const PromoCodePage = () => {
 
   return (
     <div className="meedu-main-body">
+      <PromocodeCreateDialog
+        open={showAddWin}
+        onCancel={() => setShowAddWin(false)}
+        onSuccess={() => {
+          resetList();
+          setShowAddWin(false);
+        }}
+      />
+      <PromocodeCreateMultiDialog
+        open={showAddMultiWin}
+        onCancel={() => setShowAddMultiWin(false)}
+        onSuccess={() => {
+          resetList();
+          setShowAddMultiWin(false);
+        }}
+      />
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton
@@ -254,7 +274,7 @@ const PromoCodePage = () => {
             class=""
             icon={null}
             p="promoCode.store"
-            onClick={() => navigate("/createcode")}
+            onClick={() => setShowAddWin(true)}
             disabled={null}
           />
           <PerButton
@@ -263,7 +283,7 @@ const PromoCodePage = () => {
             class="ml-10"
             icon={null}
             p="promoCode.generator"
-            onClick={() => navigate("/createmulticode")}
+            onClick={() => setShowAddMultiWin(true)}
             disabled={null}
           />
           <PerButton
@@ -293,7 +313,7 @@ const PromoCodePage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="优惠码关键字"
+            placeholder="请输入优惠码"
           />
           <Button className="ml-10" onClick={resetList}>
             清空
