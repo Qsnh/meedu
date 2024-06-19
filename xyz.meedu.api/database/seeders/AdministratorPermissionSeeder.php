@@ -531,6 +531,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'GET',
                         'url' => 'log/uploadImages',
                     ],
+                    [
+                        'display_name' => '系统-日志-程序运行日志',
+                        'slug' => 'system.log.runtime',
+                        'method' => 'GET',
+                        'url' => 'log/uploadImages',
+                    ],
                 ],
             ],
 

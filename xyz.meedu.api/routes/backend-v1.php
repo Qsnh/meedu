@@ -341,5 +341,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/admin', 'LogController@admin');
         Route::get('/userLogin', 'LogController@userLogin');
         Route::get('/uploadImages', 'LogController@uploadImages');
+        Route::get('/runtime', 'LogController@runtime');
     });
 });
