@@ -129,7 +129,7 @@ class StatsController extends BaseController
         $tableOrders = TableConstant::TABLE_ORDERS;
         $tableOrderGoods = TableConstant::TABLE_ORDER_GOODS;
 
-        $queryParams = [];
+        $queryParams = [$statAt, $endAt];
 
         $goodsTypeSql = '';
         if ($goodsType) {
@@ -140,27 +140,27 @@ class StatsController extends BaseController
         $countSql = <<<SQL
 SELECT count(*) as `document_count` from (
     SELECT
-        {$tableOrderGoods}.goods_id
+        {$tableOrderGoods}.`goods_id`
 FROM {$tableOrders}
 INNER JOIN {$tableOrderGoods}
-    ON {$tableOrderGoods}.oid = {$tableOrders}.id
-WHERE {$tableOrders}.status = 9 and {$tableOrders}.created_at between '{$statAt}' and '{$endAt}' {$goodsTypeSql}
-GROUP BY  {$tableOrderGoods}.goods_id,{$tableOrderGoods}.goods_name
+    ON {$tableOrderGoods}.`oid` = {$tableOrders}.`id`
+WHERE {$tableOrders}.`status` = 9 and {$tableOrders}.`created_at` between ? and ? {$goodsTypeSql}
+GROUP BY  {$tableOrderGoods}.`goods_id`,{$tableOrderGoods}.`goods_name`
 ) as `tmp_order_goods_table`;
 SQL;
 
         $sql = <<<SQL
 SELECT
-        {$tableOrderGoods}.goods_id,
-        {$tableOrderGoods}.goods_name,
-        count({$tableOrders}.id) AS orders_count,
-        sum({$tableOrders}.charge) AS orders_paid_sum
+        {$tableOrderGoods}.`goods_id`,
+        {$tableOrderGoods}.`goods_name`,
+        count({$tableOrders}.`id`) AS `orders_count`,
+        sum({$tableOrders}.`charge`) AS `orders_paid_sum`
 FROM {$tableOrders}
 INNER JOIN {$tableOrderGoods}
-    ON {$tableOrderGoods}.oid = {$tableOrders}.id
-WHERE {$tableOrders}.status = 9 and {$tableOrders}.created_at between '{$statAt}' and '{$endAt}' {$goodsTypeSql}
-GROUP BY  {$tableOrderGoods}.goods_id,{$tableOrderGoods}.goods_name
-ORDER BY  orders_paid_sum desc
+    ON {$tableOrderGoods}.`oid` = {$tableOrders}.`id`
+WHERE {$tableOrders}.`status` = 9 and {$tableOrders}.`created_at` between ? and ? {$goodsTypeSql}
+GROUP BY  {$tableOrderGoods}.`goods_id`,{$tableOrderGoods}.`goods_name`
+ORDER BY  `orders_paid_sum` desc
 limit {$offset},{$size};
 SQL;
 
