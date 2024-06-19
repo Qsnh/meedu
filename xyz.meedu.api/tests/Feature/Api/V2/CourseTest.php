@@ -97,7 +97,7 @@ class CourseTest extends Base
     public function test_course_id_not_exists()
     {
         $response = $this->getJson('/api/v2/course/123');
-        $this->assertResponseError($response, __('错误'));
+        $this->assertResponseError($response, __('资源不存在'));
     }
 
     public function test_course_id_with_no_published()
@@ -106,7 +106,7 @@ class CourseTest extends Base
             'published_at' => Carbon::now()->addDays(1),
         ]);
         $response = $this->getJson('/api/v2/course/' . $course->id);
-        $this->assertResponseError($response, __('错误'));
+        $this->assertResponseError($response, __('资源不存在'));
     }
 
     public function test_course_comment_un_vip()

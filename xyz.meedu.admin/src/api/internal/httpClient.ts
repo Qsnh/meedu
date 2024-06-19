@@ -8,6 +8,14 @@ const GoLogin = () => {
   window.location.href = "/login";
 };
 
+const GoError = (code: number, msg?: string) => {
+  let href = "/error?code=" + code;
+  if (code === 0 && msg) {
+    href = "/error?msg=" + msg;
+  }
+  window.location.replace(href);
+};
+
 export class HttpClient {
   axios: Axios;
 
@@ -35,32 +43,26 @@ export class HttpClient {
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        let status = response.data.status;
-        let code = response.data.code; //业务返回代码
-        let msg = response.data.message; //错误消息
-
+        const status = response.data.status;
+        const msg = response.data.message; //错误消息
         if (status === 0) {
           return Promise.resolve(response);
-        } else if (code === 401) {
+        } else if (status === 401) {
           message.error("请重新登录");
           GoLogin();
         } else {
-          message.error(msg);
+          GoError(0, msg);
         }
         return Promise.reject(response);
       },
       // 当http的状态码非0
       (error) => {
-        let status = error.response.status;
-        if (status === 401) {
+        const httpCode = error.response.status;
+        if (httpCode === 401) {
           message.error("请重新登录");
           GoLogin();
-        } else if (status === 404) {
-          // 跳转到404页面
-        } else if (status === 403) {
-          // 跳转到无权限页面
-        } else if (status === 500) {
-          // 跳转到500异常页面
+        } else {
+          GoError(httpCode);
         }
         return Promise.reject(error.response);
       }

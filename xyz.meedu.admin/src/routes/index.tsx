@@ -131,12 +131,13 @@ const SystemNormalConfigPage = lazy(
 );
 const EditConfigPage = lazy(() => import("../pages/edit-config/index"));
 const ErrorPage = lazy(() => import("../pages/error"));
+const NoServicePage = lazy(() => import("../pages/error/no-sevice"));
 //装修
 const DecorationPCPage = lazy(() => import("../pages/decoration/pc"));
 const DecorationH5Page = lazy(() => import("../pages/decoration/h5"));
 
 let RootPage: any = null;
-if (getToken()) {
+if (getToken() && window.location.pathname !== "/error") {
   RootPage = lazy(async () => {
     return new Promise<any>(async (resolve) => {
       try {
@@ -155,22 +156,28 @@ if (getToken()) {
         });
       } catch (e) {
         console.error("系统初始化失败", e);
-        resolve({
-          default: <ErrorPage />,
-        });
+        if (typeof e !== "undefined") {
+          resolve({
+            default: <ErrorPage />,
+          });
+        } else {
+          resolve({
+            default: <NoServicePage />,
+          });
+        }
       }
     });
   });
 } else {
   if (
     window.location.pathname !== "/login" &&
-    window.location.pathname !== "/edit-config"
+    window.location.pathname !== "/edit-config" &&
+    window.location.pathname !== "/error"
   ) {
     window.location.href = "/login";
   }
   RootPage = <InitPage />;
 }
-
 const routes: RouteObject[] = [
   {
     path: "/",

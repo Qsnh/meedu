@@ -12,8 +12,10 @@ use Illuminate\Support\Str;
 use Illuminate\Auth\AuthenticationException;
 use App\Exceptions\Backend\ValidateException;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -47,7 +49,7 @@ class Handler extends ExceptionHandler
             return parent::render($request, $e);
         }
 
-        $isReqOnBackend = Str::startsWith($request->getUri(), '/backend');
+        $isReqOnBackend = Str::startsWith($request->getPathInfo(), '/backend');
 
         $errCode = 1;
         $errMsg = $isReqOnBackend ? $e->getMessage() : __('错误');
@@ -57,6 +59,12 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof ThrottleRequestsException) {//API限流异常
             $errCode = 429;
             $errMsg = __('请稍后再试');
+        } elseif ($e instanceof ModelNotFoundException) {
+            $errCode = 404;
+            $errMsg = __('资源不存在');
+        } elseif ($e instanceof NotFoundHttpException) {
+            $errCode = 404;
+            $errMsg = __('路由不存在');
         }
 
         if ($isReqOnBackend) {

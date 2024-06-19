@@ -116,7 +116,7 @@ class VideoTest extends Base
     public function test_video_id_with_no_id()
     {
         $r = $this->getJson('api/v2/video/' . random_int(0, 1000));
-        $this->assertResponseError($r, __('错误'));
+        $this->assertResponseError($r, __('资源不存在'));
     }
 
     public function test_video_id_no_show()
@@ -126,7 +126,7 @@ class VideoTest extends Base
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $r = $this->getJson('api/v2/video/' . $video->id);
-        $this->assertResponseError($r, __('错误'));
+        $this->assertResponseError($r, __('资源不存在'));
     }
 
     public function test_video_id_no_published()
@@ -136,7 +136,7 @@ class VideoTest extends Base
             'published_at' => Carbon::now()->addDays(1),
         ]);
         $r = $this->getJson('api/v2/video/' . $video->id);
-        $this->assertResponseError($r, __('错误'));
+        $this->assertResponseError($r, __('资源不存在'));
     }
 
     public function test_video_comment_close()
