@@ -30,6 +30,25 @@ class ApplicationInstallCommandTest extends OriginalTestCase
             ->assertSuccessful();
     }
 
+    public function test_install_administrator_once()
+    {
+        $this->artisan('install', ['action' => 'administratorOnce'])
+            ->expectsOutput('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据')
+            ->assertFailed();
+
+        $this->artisan('install', ['action' => 'role']);
+
+        $this->artisan('install', ['action' => 'administratorOnce'])->assertSuccessful();
+
+        $count = Administrator::query()->count();
+        $this->assertEquals(1, $count);
+
+        $this->artisan('install', ['action' => 'administratorOnce'])->assertSuccessful();
+
+        $count = Administrator::query()->count();
+        $this->assertEquals(1, $count, '不会新增默认管理员');
+    }
+
     public function test_install_administrator()
     {
         $this->artisan('install', ['action' => 'administrator'])

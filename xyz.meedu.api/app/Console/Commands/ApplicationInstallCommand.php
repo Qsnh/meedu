@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Database\Seeders\AppConfigSeeder;
 use Database\Seeders\AdministratorSuperSeeder;
 use Database\Seeders\AdministratorPermissionSeeder;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ApplicationInstallCommand extends Command
 {
@@ -30,10 +31,36 @@ class ApplicationInstallCommand extends Command
         $method = 'action' . implode('', array_map('ucfirst', explode('_', $action)));
         if (!method_exists($this, $method)) {
             $this->warn('action不存在');
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
         return $this->{$method}();
+    }
+
+    public function actionAdministratorOnce()
+    {
+        if (Administrator::query()->count() > 0) {
+            $this->warn('系统默认管理员已初始化!');
+            return CommandAlias::SUCCESS;
+        }
+
+        $super = AdministratorRole::query()->where('slug', config('meedu.administrator.super_slug'))->first();
+        if (!$super) {
+            $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据');
+            return CommandAlias::FAILURE;
+        }
+
+        $administrator = new Administrator([
+            'name' => '超级管理员',
+            'email' => 'meedu@meedu.meedu',
+            'password' => Hash::make('meedu123'),
+        ]);
+        $administrator->save();
+        $administrator->roles()->attach($super['id']);
+
+        $this->info('管理员初始化成功');
+
+        return CommandAlias::SUCCESS;
     }
 
     public function actionAdministrator()
@@ -42,7 +69,7 @@ class ApplicationInstallCommand extends Command
         if (!$super) {
             $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据');
 
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
         // 是否静默安装
@@ -52,13 +79,13 @@ class ApplicationInstallCommand extends Command
             if (!$email) {
                 $this->warn('邮箱不能空');
 
-                return Command::FAILURE;
+                return CommandAlias::FAILURE;
             }
             $emailExists = Administrator::query()->where('email', $email)->exists();
             if ($emailExists) {
                 $this->warn('邮箱已经存在');
 
-                return Command::FAILURE;
+                return CommandAlias::FAILURE;
             }
 
             $password = '';
@@ -74,7 +101,7 @@ class ApplicationInstallCommand extends Command
             if ($passwordRepeat !== $password) {
                 $this->warn('两次输入密码不一致');
 
-                return Command::FAILURE;
+                return CommandAlias::FAILURE;
             }
         } else {
             $name = '超级管理员';
@@ -92,7 +119,7 @@ class ApplicationInstallCommand extends Command
 
         $this->info('管理员初始化成功');
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 
     // 系统权限生成
@@ -105,7 +132,7 @@ class ApplicationInstallCommand extends Command
 
         $this->info('数据初始化成功');
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 
     public function actionConfig()
@@ -116,6 +143,6 @@ class ApplicationInstallCommand extends Command
 
         $this->info('配置初始化完成');
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 }
