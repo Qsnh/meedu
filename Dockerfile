@@ -44,4 +44,4 @@ EXPOSE 8300
 
 ENTRYPOINT ["tini", "--"]
 
-CMD echo "Waiting for mysql/redis to start..."; sleep 15; php /var/www/api/artisan migrate --force; php /var/www/api/artisan install config; php /var/www/api/artisan install role; php /var/www/api/artisan install administrator -q; nginx; php-fpm
+CMD echo "Waiting for mysql/redis to start..."; sleep 15; php artisan meedu:upgrade; php artisan install administratorOnce; nginx; php-fpm
