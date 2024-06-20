@@ -49,7 +49,7 @@ const SearchPage = () => {
       },
       {
         key: "video",
-        name: "录播视频",
+        name: "录播课时",
       },
     ];
 
@@ -96,7 +96,7 @@ const SearchPage = () => {
 
   const change = (val: string) => {
     if (val === "video") {
-      return "录播视频";
+      return "录播课时";
     } else if (val === "vod") {
       return "录播课";
     } else if (val === "live") {
