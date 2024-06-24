@@ -81,7 +81,7 @@ export const RegisterDialog: React.FC<PropInterface> = ({
         mobile: form.getFieldValue("mobile"),
         image_key: captcha.key,
         image_captcha: form.getFieldValue("captcha"),
-        scene: "login",
+        scene: "register",
       })
       .then((res: any) => {
         setSmsLoading2(false);
