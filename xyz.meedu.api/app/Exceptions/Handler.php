@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Predis\Connection\ConnectionException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -65,6 +66,9 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof NotFoundHttpException) {
             $errCode = 404;
             $errMsg = __('路由不存在');
+        } elseif ($e instanceof ConnectionException) {
+            $errCode = 500;
+            $errMsg = __('无法连接redis');
         }
 
         if ($isReqOnBackend) {
