@@ -1,12 +1,12 @@
 ## 4.9.11
 
-- 修复:`docker-compose`运行方式下默认上传文件大小改为`10M`
-- 修复:后台`token`过期自动跳转到登录页面
-- 修复:PC短信注册使用手机号登录scene的bug
-- 优化:`CORS`跨域的缓存时间提升到15天
-- 优化:`redis`链接错误的信息提示
-- 优化:移除`mobiledetect/mobiledetectlib`依赖包
-- 优化:移除七牛云的支持
+- 修复:[综合]`docker-compose`运行方式下默认上传文件大小改为`10M`
+- 修复:[后台]`token`过期自动跳转到登录页面
+- 修复:[PC]短信注册使用手机号登录scene的bug
+- 优化:[API]`CORS`跨域的缓存时间提升到15天
+- 优化:[API]`redis`链接错误的信息提示
+- 优化:[API]移除`mobiledetect/mobiledetectlib`依赖包
+- 优化:[API]移除七牛云的支持
 
 ## 4.9.10
 
