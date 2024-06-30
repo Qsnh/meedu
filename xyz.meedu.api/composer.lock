@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a8c8141f7ec5e60e566a1089d58f16a",
+    "content-hash": "a0eb0c872248308ab1d0477fe299e1f0",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -3550,68 +3550,6 @@
             "time": "2022-02-12T15:54:11+00:00"
         },
         {
-            "name": "mobiledetect/mobiledetectlib",
-            "version": "2.8.38",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/serbanghita/Mobile-Detect.git",
-                "reference": "b6c4ac9686d204c49a432f527f137cf24ac0b90e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/b6c4ac9686d204c49a432f527f137cf24ac0b90e",
-                "reference": "b6c4ac9686d204c49a432f527f137cf24ac0b90e",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=5.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8.35||~5.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Detection": "namespaced/"
-                },
-                "classmap": [
-                    "Mobile_Detect.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Serban Ghita",
-                    "email": "serbanghita@gmail.com",
-                    "homepage": "http://mobiledetect.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
-            "homepage": "https://github.com/serbanghita/Mobile-Detect",
-            "keywords": [
-                "detect mobile devices",
-                "mobile",
-                "mobile detect",
-                "mobile detector",
-                "php mobile detect"
-            ],
-            "support": {
-                "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
-                "source": "https://github.com/serbanghita/Mobile-Detect/tree/2.8.38"
-            },
-            "time": "2022-02-14T12:38:04+00:00"
-        },
-        {
             "name": "monolog/monolog",
             "version": "2.7.0",
             "source": {
@@ -3787,61 +3725,6 @@
                 "source": "https://github.com/jmespath/jmespath.php/tree/2.6.1"
             },
             "time": "2021-06-14T00:11:39+00:00"
-        },
-        {
-            "name": "myclabs/php-enum",
-            "version": "1.6.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/php-enum.git",
-                "reference": "32c4202886c51fbe5cc3a7c34ec5c9a4a790345e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/32c4202886c51fbe5cc3a7c34ec5c9a4a790345e",
-                "reference": "32c4202886c51fbe5cc3a7c34ec5c9a4a790345e",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35|^5.7|^6.0",
-                "squizlabs/php_codesniffer": "1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MyCLabs\\Enum\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP Enum contributors",
-                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
-                }
-            ],
-            "description": "PHP Enum implementation",
-            "homepage": "http://github.com/myclabs/php-enum",
-            "keywords": [
-                "enum"
-            ],
-            "support": {
-                "issues": "https://github.com/myclabs/php-enum/issues",
-                "source": "https://github.com/myclabs/php-enum/tree/master"
-            },
-            "time": "2019-02-04T21:18:49+00:00"
         },
         {
             "name": "namshi/jose",
@@ -5715,69 +5598,6 @@
                 "source": "https://github.com/tencentyun/cos-php-sdk-v5/tree/v2.5.5"
             },
             "time": "2022-04-27T06:20:21+00:00"
-        },
-        {
-            "name": "qiniu/php-sdk",
-            "version": "v7.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qiniu/php-sdk.git",
-                "reference": "57033fab64c92f8c7ae165222dd958553741e711"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/57033fab64c92f8c7ae165222dd958553741e711",
-                "reference": "57033fab64c92f8c7ae165222dd958553741e711",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "myclabs/php-enum": "1.6.6",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "paragonie/random_compat": ">=2",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~3.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/Qiniu/functions.php"
-                ],
-                "psr-4": {
-                    "Qiniu\\": "src/Qiniu"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Qiniu",
-                    "email": "sdk@qiniu.com",
-                    "homepage": "http://www.qiniu.com"
-                }
-            ],
-            "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
-            "homepage": "http://developer.qiniu.com/",
-            "keywords": [
-                "cloud",
-                "qiniu",
-                "sdk",
-                "storage"
-            ],
-            "support": {
-                "issues": "https://github.com/qiniu/php-sdk/issues",
-                "source": "https://github.com/qiniu/php-sdk/tree/v7.6.0"
-            },
-            "time": "2022-06-08T10:05:47+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -9989,75 +9809,6 @@
             "time": "2020-10-14T08:17:18+00:00"
         },
         {
-            "name": "zgldh/qiniu-laravel-storage",
-            "version": "v0.10.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zgldh/qiniu-laravel-storage.git",
-                "reference": "9fc08350af8cc4ffbf61924a31bcfa23d2e96f8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zgldh/qiniu-laravel-storage/zipball/9fc08350af8cc4ffbf61924a31bcfa23d2e96f8d",
-                "reference": "9fc08350af8cc4ffbf61924a31bcfa23d2e96f8d",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "league/flysystem": "^1.0",
-                "php": ">=5.3.3",
-                "qiniu/php-sdk": "^7.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "zgldh\\QiniuStorage\\QiniuFilesystemServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "zgldh\\QiniuStorage\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "zgldh",
-                    "email": "zgldh@hotmail.com",
-                    "role": "Original Developer"
-                },
-                {
-                    "name": "abcsun",
-                    "email": "chenglongsun_nj@163.com",
-                    "homepage": "http://github.com/abcsun",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Qiniu Resource (Cloud) Storage SDK for Laravel 5",
-            "keywords": [
-                "cloud",
-                "laravel",
-                "qiniu",
-                "sdk",
-                "storage"
-            ],
-            "support": {
-                "issues": "https://github.com/zgldh/qiniu-laravel-storage/issues",
-                "source": "https://github.com/zgldh/qiniu-laravel-storage/tree/v0.10.4"
-            },
-            "time": "2020-12-16T06:17:04+00:00"
-        },
-        {
             "name": "zoujingli/ip2region",
             "version": "v2.0.4",
             "source": {
@@ -12767,5 +12518,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

@@ -26,7 +26,6 @@
         "meilisearch/meilisearch-php": "^0.19.0",
         "mews/captcha": "^3.0",
         "mews/purifier": "^3.0",
-        "mobiledetect/mobiledetectlib": "^2.8",
         "nelexa/zip": "^3.3",
         "overtrue/laravel-filesystem-cos": "1.0.2",
         "overtrue/wechat": "~4.0",
@@ -40,7 +39,6 @@
         "tencentcloud/vod": "3.0.696",
         "tymon/jwt-auth": "^1.0",
         "yansongda/laravel-pay": "^2.0",
-        "zgldh/qiniu-laravel-storage": "^0.10.3",
         "zoujingli/ip2region": "^2.0"
     },
     "require-dev": {

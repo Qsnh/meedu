@@ -4,6 +4,8 @@
 - 修复:PC短信注册使用手机号登录scene的bug
 - 优化:`CORS`跨域的缓存时间提升到15天
 - 优化:`redis`链接错误的信息提示
+- 优化:移除`mobiledetect/mobiledetectlib`依赖包
+- 优化:移除七牛云的支持
 
 ## 4.9.10
 
