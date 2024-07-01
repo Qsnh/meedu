@@ -9,14 +9,14 @@
 namespace App\Exceptions;
 
 use Illuminate\Support\Str;
+use Predis\Connection\ConnectionException;
 use Illuminate\Auth\AuthenticationException;
 use App\Exceptions\Backend\ValidateException;
 use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Predis\Connection\ConnectionException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler

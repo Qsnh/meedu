@@ -10,7 +10,6 @@ namespace App\Meedu\Core;
 
 use App\Meedu\Core\UpgradeLog\UpgradeTo48;
 use App\Meedu\Core\UpgradeLog\UpgradeToV4;
-use App\Meedu\Core\UpgradeLog\UpgradeToV4911;
 use App\Meedu\Core\UpgradeLog\UpgradeV493;
 use App\Meedu\Core\UpgradeLog\UpgradeV498;
 use App\Meedu\Core\UpgradeLog\UpgradeToV42;
@@ -18,6 +17,7 @@ use App\Meedu\Core\UpgradeLog\UpgradeToV45;
 use App\Meedu\Core\UpgradeLog\UpgradeToV46;
 use App\Meedu\Core\UpgradeLog\UpgradeV4910;
 use App\Meedu\Core\UpgradeLog\UpgradeToV454;
+use App\Meedu\Core\UpgradeLog\UpgradeToV4911;
 
 class Upgrade
 {

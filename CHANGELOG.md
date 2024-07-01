@@ -8,6 +8,8 @@
 - 优化:[API]移除`mobiledetect/mobiledetectlib`依赖包
 - 优化:[API]移除七牛云的支持
 - 优化:[API]系统维护中的异常错误友好返回
+- 优化:[API]移除`app.debug`的配置
+- 优化:[API]重命名网站名配置为`meedu.system.name`
 
 ## 4.9.10
 

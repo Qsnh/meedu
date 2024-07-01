@@ -37,7 +37,7 @@ class ConfigService implements ConfigServiceInterface
 
     public function getName(): string
     {
-        return config('app.name') ?? '';
+        return config('meedu.system.name') ?? '';
     }
 
     public function getIcp(): string

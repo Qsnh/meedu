@@ -18,21 +18,10 @@ class AppConfigSeeder extends Seeder
             // 系统配置
             [
                 'group' => '系统',
-                'name' => 'DEBUG',
-                'field_type' => 'switch',
-                'sort' => 10,
-                'default_value' => 0,
-                'key' => 'app.debug',
-                'value' => 0,
-                'help' => '开启后将可以看到网站报错详细信息',
-            ],
-            [
-                'group' => '系统',
                 'name' => '网站名',
                 'field_type' => 'text',
                 'sort' => 20,
-                'default_value' => 'MeEdu',
-                'key' => 'app.name',
+                'key' => 'meedu.system.name',
                 'value' => '',
             ],
             [

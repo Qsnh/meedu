@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the MeEdu.
+ *
+ * (c) 杭州白书科技有限公司
+ */
+
 namespace App\Meedu\Core\UpgradeLog;
 
 use App\Meedu\ServiceV2\Models\AppConfig;
@@ -10,6 +16,7 @@ class UpgradeToV4911
     public static function handle()
     {
         self::upgradeImageDiskConfigItem();
+        self::deleteSomeConfigItems();
     }
 
     public static function deleteSomeConfigItems()
@@ -21,6 +28,9 @@ class UpgradeToV4911
                 'filesystems.disks.qiniu.access_key',
                 'filesystems.disks.qiniu.secret_key',
                 'filesystems.disks.qiniu.bucket',
+
+                'app.name',
+                'app.debug',
             ])
             ->delete();
     }

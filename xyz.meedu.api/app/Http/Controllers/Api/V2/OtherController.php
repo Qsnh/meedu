@@ -81,8 +81,6 @@ class OtherController extends BaseController
         $configServiceV2 = app()->make(\App\Meedu\ServiceV2\Services\ConfigServiceInterface::class);
 
         $data = [
-            // 网站名
-            'webname' => $configService->getName(),//webname字段将在未来某个版本移除
             // 网站名-推荐前端以后用这个
             'name' => $configService->getName(),
             // 网站logo

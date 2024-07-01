@@ -158,6 +158,8 @@ return [
 
     // 系统配置
     'system' => [
+        // 网站名
+        'name' => '',
         // ICP备案
         'icp' => '',
         'icp_link' => '',
@@ -168,10 +170,8 @@ return [
         'logo' => '/images/logo.png',
         // 播放器封面
         'player_thumb' => '/images/player-thumb.png',
-
         // PC网站地址
         'pc_url' => '',
-
         // H5网站地址
         'h5_url' => '',
 
