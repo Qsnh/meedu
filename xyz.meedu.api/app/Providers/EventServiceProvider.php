@@ -116,5 +116,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserNotificationReadEvent' => [
             'App\Listeners\UserNotificationReadEvent\NotificationCountCacheUpdateListener',
         ],
+        // 录播课-附件-下载
+        'App\Events\CourseAttachDownloadEvent' => [
+            'App\Listeners\CourseAttachDownloadEvent\IncDownloadTimesListener',
+        ],
     ];
 }

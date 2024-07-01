@@ -9,7 +9,7 @@ import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
-import { getToken, latexRender, codeRender } from "../../utils/index";
+import { latexRender, codeRender } from "../../utils/index";
 import appConfig from "../../js/config";
 
 const VodDetailPage = () => {
@@ -174,7 +174,6 @@ const VodDetailPage = () => {
   };
 
   const download = (id: number) => {
-    let token = getToken();
     if (!isLogin) {
       goLogin();
       return;
@@ -183,9 +182,9 @@ const VodDetailPage = () => {
       message.error("请购买课程后下载");
       return;
     }
-    window.open(
-      `${config.url}/api/v2/course/attach/${id}/download?token=${token}`
-    );
+    vod.downloadAttachment(cid, id).then((res: any) => {
+      window.open(res.data.download_url);
+    });
   };
 
   return (

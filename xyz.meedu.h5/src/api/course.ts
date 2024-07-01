@@ -47,3 +47,7 @@ export function Categories() {
 export function CourseLikeHit(id: number) {
   return client.get(`/api/v2/course/${id}/like`, {});
 }
+
+export function downloadAttachment(courseId: number, id: number) {
+  return client.get(`/api/v3/course/${courseId}/attach/${id}`, {});
+}

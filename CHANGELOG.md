@@ -3,6 +3,7 @@
 - 修复:[综合]`docker-compose`运行方式下默认上传文件大小改为`10M`
 - 修复:[后台]`token`过期自动跳转到登录页面
 - 修复:[PC]短信注册使用手机号登录scene的bug
+- 优化:[综合]课程附件下载重构提升了安全性
 - 优化:[API]`CORS`跨域的缓存时间提升到15天
 - 优化:[API]`redis`链接错误的信息提示
 - 优化:[API]移除`mobiledetect/mobiledetectlib`依赖包

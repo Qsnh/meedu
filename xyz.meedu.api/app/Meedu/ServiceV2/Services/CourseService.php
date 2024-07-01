@@ -34,4 +34,22 @@ class CourseService implements CourseServiceInterface
         $videoIds = $this->courseDao->getCoursePublishedVideoIds($courseId);
         return $this->courseDao->videoChunk($videoIds, $fields, [], [], []);
     }
+
+    public function findAttachByIdAndCourseId(int $attachId, int $courseId): array
+    {
+        return $this->courseDao->attachFind(['id' => $attachId, 'course_id' => $courseId]);
+    }
+
+    public function findAttachById(int $id): array
+    {
+        return $this->courseDao->attachFind(['id' => $id]);
+    }
+
+    public function attachDownload(int $userId, int $courseId, int $attachId, array $data): void
+    {
+        $this->courseDao->storeCourseAttachDownloadRecord($userId, $courseId, $attachId, $data);
+        $this->courseDao->attachIncDownloadTimes($attachId);
+    }
+
+
 }

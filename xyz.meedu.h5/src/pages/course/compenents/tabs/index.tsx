@@ -340,7 +340,11 @@ export default function TabsComponent(props: PropsInterafce) {
           </div>
         )}
         {currentTab === 3 && (
-          <AttachBox list={props.data.attach} isBuy={props.data.isBuy} />
+          <AttachBox
+            cid={props.id}
+            list={props.data.attach}
+            isBuy={props.data.isBuy}
+          />
         )}
       </div>
       {currentTab !== 3 && (

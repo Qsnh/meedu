@@ -49,3 +49,7 @@ export function categories() {
 export function download(id: number, params: any) {
   return client.get(`/api/v2/course/attach/${id}/download`, params);
 }
+
+export function downloadAttachment(courseId: number, id: number) {
+  return client.get(`/api/v3/course/${courseId}/attach/${id}`, {});
+}
