@@ -7,6 +7,7 @@
 - 优化:[API]`redis`链接错误的信息提示
 - 优化:[API]移除`mobiledetect/mobiledetectlib`依赖包
 - 优化:[API]移除七牛云的支持
+- 优化:[API]系统维护中的异常错误友好返回
 
 ## 4.9.10
 
