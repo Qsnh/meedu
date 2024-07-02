@@ -136,8 +136,8 @@ return [
     */
 
     'meilisearch' => [
-        'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-        'key' => env('MEILISEARCH_KEY', null),
+        'host' => env('MEILISEARCH_HOST', ''),
+        'key' => env('MEILISEARCH_KEY', ''),
     ],
 
 ];
