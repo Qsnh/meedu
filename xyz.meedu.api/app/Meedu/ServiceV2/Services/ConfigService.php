@@ -95,4 +95,11 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.member.vip_protocol') ?? '';
     }
+
+    public function getAliVodCallbackKey(): string
+    {
+        return config('meedu.upload.video.aliyun.callback_key') ?? '';
+    }
+
+
 }

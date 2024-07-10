@@ -120,5 +120,21 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CourseAttachDownloadEvent' => [
             'App\Listeners\CourseAttachDownloadEvent\IncDownloadTimesListener',
         ],
+        // 阿里云视频回调事件之新视频上传确认 => 此时还未完整上传到服务器
+        'App\Events\AliyunVodCallbackMediaBaseChangeCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackMediaBaseChangeCompleteEvent\StoreUploadVideoListener',
+        ],
+        // 阿里云视频回调事件之新视频上传完成 => 此时已经可以获取到视频的大小
+        'App\Events\AliyunVodCallbackFileUploadCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackFileUploadCompleteEvent\UpdateMediaVideoListener',
+        ],
+        // 阿里云视频回调事件之视频分析完成 => 此时可以获取到视频的时长，宽高属性
+        'App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackVideoAnalysisCompleteEvent\UpdateMediaVideoListener',
+        ],
+        // 阿里云视频回调事件之视频转码全部完成 => 也就是单个转码任务下的多个清晰度全部完成
+        'App\Events\AliyunVodCallbackTranscodeCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackTranscodeCompleteEvent\UpdateMediaVideoListener',
+        ],
     ];
 }

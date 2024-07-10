@@ -701,6 +701,15 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.upload.video.aliyun.host',
                 'value' => '',
             ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播回调鉴权密钥',
+                'field_type' => 'text',
+                'sort' => 50,
+                'key' => 'meedu.upload.video.aliyun.callback_key',
+                'value' => '',
+                'is_show' => 0,
+            ],
 
             // 腾讯云视频
             [
@@ -1102,11 +1111,6 @@ class AppConfigSeeder extends Seeder
             ],
         ];
 
-        $localConfig = [];
-        if (file_exists(storage_path('meedu_config.json'))) {
-            $localConfig = json_decode(file_get_contents(storage_path('meedu_config.json')), true);
-        }
-
         foreach ($config as $item) {
             $configItem = \App\Services\Base\Model\AppConfig::query()->where('key', $item['key'])->first();
             if ($configItem) {
@@ -1116,18 +1120,19 @@ class AppConfigSeeder extends Seeder
                     $item['field_type'] !== $configItem['field_type'] ||
                     $item['sort'] !== $configItem['sort'] ||
                     (isset($item['option_value']) && $item['option_value'] !== $configItem['option_value'])
-                ) {//产生了变化->提交修改
-                    $configItem->fill([
-                        'group' => $item['group'],
-                        'name' => $item['name'],
-                        'field_type' => $item['field_type'],
-                        'sort' => $item['sort'],
-                        'option_value' => $item['option_value'] ?? null,
-                    ])->save();
+                ) {
+                    //产生了变化->提交修改
+                    $configItem
+                        ->fill([
+                            'group' => $item['group'],
+                            'name' => $item['name'],
+                            'field_type' => $item['field_type'],
+                            'sort' => $item['sort'],
+                            'option_value' => $item['option_value'] ?? null,
+                        ])
+                        ->save();
                 }
             } else {
-                $val = \Illuminate\Support\Arr::get($localConfig, $item['key']);
-                $item['value'] = $val ?: ($item['value'] ?? '');
                 \App\Services\Base\Model\AppConfig::create($item);
             }
         }

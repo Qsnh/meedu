@@ -37,4 +37,6 @@ interface ConfigServiceInterface
     public function allKeyValue(): array;
 
     public function getVipProtocol(): string;
+
+    public function getAliVodCallbackKey():string;
 }

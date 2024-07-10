@@ -12,3 +12,8 @@ Route::group(['namespace' => 'Wechat', 'prefix' => '/wechat'], function () {
     // 微信支付回调
     Route::any('/refund/notify', 'RefundController@notify')->name('wechat.pay.refund.notify');
 });
+
+Route::group(['namespace' => 'Media', 'prefix' => '/media'], function () {
+    // 阿里云点播回调
+    Route::any('/aliyun-vod', 'AliVodCallback@handler')->name('aliyun.vod.callback');
+});
