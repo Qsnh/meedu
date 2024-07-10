@@ -417,37 +417,42 @@ const CoursePlayPage = () => {
                       </div>
                       {configkey[index] && (
                         <div className={styles["chapter-videos-box"]}>
-                          {videos[chapter.id].map((videoItem: any) => (
-                            <div
-                              className={styles["video-item"]}
-                              key={videoItem.id}
-                              onClick={() => goVideo(videoItem)}
-                            >
-                              <div className={styles["video-title"]}>
-                                {course.is_free !== 1 &&
-                                  videoItem.free_seconds > 0 && (
-                                    <span className={styles["free"]}>试看</span>
-                                  )}
-                                <span className={styles["text"]}>
-                                  {videoItem.title}
-                                </span>
+                          {videos[chapter.id] &&
+                            videos[chapter.id].map((videoItem: any) => (
+                              <div
+                                className={styles["video-item"]}
+                                key={videoItem.id}
+                                onClick={() => goVideo(videoItem)}
+                              >
+                                <div className={styles["video-title"]}>
+                                  {course.is_free !== 1 &&
+                                    videoItem.free_seconds > 0 && (
+                                      <span className={styles["free"]}>
+                                        试看
+                                      </span>
+                                    )}
+                                  <span className={styles["text"]}>
+                                    {videoItem.title}
+                                  </span>
+                                </div>
+                                {video.id === videoItem.id ? (
+                                  <div className={styles["video-duration"]}>
+                                    <img
+                                      width="24"
+                                      height="24"
+                                      className={styles["play-icon"]}
+                                      src={playIcon}
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className={styles["video-duration"]}>
+                                    <DurationText
+                                      seconds={videoItem.duration}
+                                    />
+                                  </div>
+                                )}
                               </div>
-                              {video.id === videoItem.id ? (
-                                <div className={styles["video-duration"]}>
-                                  <img
-                                    width="24"
-                                    height="24"
-                                    className={styles["play-icon"]}
-                                    src={playIcon}
-                                  />
-                                </div>
-                              ) : (
-                                <div className={styles["video-duration"]}>
-                                  <DurationText seconds={videoItem.duration} />
-                                </div>
-                              )}
-                            </div>
-                          ))}
+                            ))}
                         </div>
                       )}
                     </div>
@@ -566,7 +571,9 @@ const CoursePlayPage = () => {
               )}
             </div>
           )}
-          {currentTab === 3 && <AttachBox list={attach} isBuy={isBuy} />}
+          {currentTab === 3 && (
+            <AttachBox cid={course.id} list={attach} isBuy={isBuy} />
+          )}
         </div>
         {!loading && currentTab === 0 && !isWatch && (
           <div className={styles["bottom-bar"]}>

@@ -225,26 +225,27 @@ export default function TabsComponent(props: PropsInterafce) {
                     </div>
                     {configkey[index] && (
                       <div className={styles["chapter-videos-box"]}>
-                        {props.data.videos[chapter.id].map((video: any) => (
-                          <div
-                            className={styles["video-item"]}
-                            key={video.id}
-                            onClick={() => goVideo(video)}
-                          >
-                            <div className={styles["video-title"]}>
-                              {props.data.course.is_free !== 1 &&
-                                video.free_seconds > 0 && (
-                                  <span className={styles["free"]}>试看</span>
-                                )}
-                              <span className={styles["text"]}>
-                                {video.title}
-                              </span>
+                        {props.data.videos[chapter.id] &&
+                          props.data.videos[chapter.id].map((video: any) => (
+                            <div
+                              className={styles["video-item"]}
+                              key={video.id}
+                              onClick={() => goVideo(video)}
+                            >
+                              <div className={styles["video-title"]}>
+                                {props.data.course.is_free !== 1 &&
+                                  video.free_seconds > 0 && (
+                                    <span className={styles["free"]}>试看</span>
+                                  )}
+                                <span className={styles["text"]}>
+                                  {video.title}
+                                </span>
+                              </div>
+                              <div className={styles["video-duration"]}>
+                                <DurationText seconds={video.duration} />
+                              </div>
                             </div>
-                            <div className={styles["video-duration"]}>
-                              <DurationText seconds={video.duration} />
-                            </div>
-                          </div>
-                        ))}
+                          ))}
                       </div>
                     )}
                   </div>
