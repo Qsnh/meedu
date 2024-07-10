@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/hzbs/node:20-alpine as nodeBase
+FROM registry.cn-hangzhou.aliyuncs.com/hzbs/node:20-alpine AS node-base
 
 COPY xyz.meedu.admin /app/admin
 COPY xyz.meedu.h5 /app/h5
@@ -13,7 +13,7 @@ RUN pnpm i --frozen-lockfile && VITE_APP_URL=/api/ pnpm build
 WORKDIR /app/h5
 RUN pnpm i --frozen-lockfile && VITE_APP_URL=/api/ pnpm build
 
-FROM registry.cn-hangzhou.aliyuncs.com/hzbs/php:7.4-fpm-alpine
+FROM registry.cn-hangzhou.aliyuncs.com/hzbs/php:7.4-fpm-alpine AS base
 
 # Nginx配置文件
 COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
@@ -24,9 +24,9 @@ COPY docker/php/php-fpm.d /usr/local/etc/php-fpm.d
 # API程序代码
 COPY --chown=www-data:www-data xyz.meedu.api /var/www/api
 
-COPY --from=nodeBase --chown=www-data:www-data /app/admin/dist /var/www/admin
-COPY --from=nodeBase --chown=www-data:www-data /app/pc/dist /var/www/pc
-COPY --from=nodeBase --chown=www-data:www-data /app/h5/dist /var/www/h5
+COPY --from=node-base --chown=www-data:www-data /app/admin/dist /var/www/admin
+COPY --from=node-base --chown=www-data:www-data /app/pc/dist /var/www/pc
+COPY --from=node-base --chown=www-data:www-data /app/h5/dist /var/www/h5
 
 # 设置工作目录
 WORKDIR /var/www/api
