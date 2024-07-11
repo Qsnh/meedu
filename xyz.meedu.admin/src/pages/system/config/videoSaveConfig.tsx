@@ -40,17 +40,6 @@ const SystemVideoSaveConfigPage = () => {
     },
   ];
 
-  const definition = [
-    {
-      label: "mp4",
-      value: "mp4",
-    },
-    {
-      label: "m3u8",
-      value: "m3u8",
-    },
-  ];
-
   useEffect(() => {
     document.title = "视频存储";
     dispatch(titleAction("视频存储"));
@@ -124,23 +113,6 @@ const SystemVideoSaveConfigPage = () => {
           }
         }
 
-        let configPlayData = res.data["播放器配置"];
-        for (let index in configPlayData) {
-          if (
-            configPlayData[index].key ===
-            "meedu.system.player.video_format_whitelist"
-          ) {
-            if (
-              configPlayData[index].value &&
-              configPlayData[index].value.length > 0
-            ) {
-              let value = lowerCase(configPlayData[index].value);
-              form.setFieldsValue({
-                "meedu.system.player.video_format_whitelist": value.split(","),
-              });
-            }
-          }
-        }
         setLoading(false);
       })
       .catch((e) => {
@@ -181,10 +153,6 @@ const SystemVideoSaveConfigPage = () => {
   const onFinish = (values: any) => {
     if (loading) {
       return;
-    }
-    if (values["meedu.system.player.video_format_whitelist"]) {
-      values["meedu.system.player.video_format_whitelist"] =
-        values["meedu.system.player.video_format_whitelist"].join(",");
     }
     let it: any = aliRegions.find(
       (o: any) => o.value === values["meedu.upload.video.aliyun.region"]
@@ -284,19 +252,6 @@ const SystemVideoSaveConfigPage = () => {
               name="meedu.system.player.tencent_play_key"
             >
               <Input style={{ width: 300 }} allowClear />
-            </Form.Item>
-            <div className="from-title mt-30">播放格式白名单</div>
-            <Form.Item
-              label="视频播放格式白名单"
-              name="meedu.system.player.video_format_whitelist"
-            >
-              <Select
-                mode="multiple"
-                style={{ width: 300 }}
-                allowClear
-                options={definition}
-                placeholder="请选择"
-              />
             </Form.Item>
           </Form>
         </div>

@@ -397,18 +397,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     let obj = { ...upload };
     obj.loading = false;
     setUpload(obj);
-    media
-      .storeVideo({
-        title: it.file.name,
-        duration: it.file.duration,
-        thumb: thumb,
-        size: it.size,
-        storage_driver: serviceRef.current,
-        storage_file_id: fileId,
-      })
-      .then((res) => {
-        message.success("上传成功");
-      });
+    message.success("上传成功");
   };
 
   const uploadFailHandle = (msg: any) => {
