@@ -100,4 +100,45 @@ class Vod
             return false;
         }
     }
+
+    public function createUploadVideo(string $title, string $filename)
+    {
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('CreateUploadVideo')
+            ->options(['query' => [
+                'Title' => $title,
+                'FileName' => $filename,
+            ]])
+            ->request();
+
+        return [
+            'upload_auth' => $response->get('UploadAuth'),
+            'upload_address' => $response->get('UploadAddress'),
+            'video_id' => $response->get('VideoId'),
+            'request_id' => $response->get('RequestId'),
+        ];
+    }
+
+    public function refreshUploadVideo(string $videoId)
+    {
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('RefreshUploadVideo')
+            ->options(['query' => [
+                'VideoId' => $videoId,
+            ]])
+            ->request();
+
+        return [
+            'upload_auth' => $response->get('UploadAuth'),
+            'upload_address' => $response->get('UploadAddress'),
+            'video_id' => $response->get('VideoId'),
+            'request_id' => $response->get('RequestId'),
+        ];
+    }
 }
