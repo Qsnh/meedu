@@ -70,9 +70,6 @@ class MediaVideoController extends BaseController
     public function deleteVideos(Request $request, ConfigServiceInterface $configService, \App\Meedu\Tencent\Vod $tencentVod)
     {
         $ids = $request->input('ids');
-        if (!$ids || !is_array($ids)) {
-            return $this->error(__('请选择需要删除的视频'));
-        }
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
@@ -80,25 +77,29 @@ class MediaVideoController extends BaseController
             compact('ids')
         );
 
+        if (!$ids || !is_array($ids)) {
+            return $this->error(__('请选择需要删除的视频'));
+        }
+
         $videos = MediaVideo::query()->whereIn('id', $ids)->select(['id', 'storage_driver', 'storage_file_id'])->get();
         if ($videos->isEmpty()) {
             return $this->error(__('数据为空'));
         }
 
-        $aliyunFileIds = [];
+        $aliFileIds = [];
         $tencentFileIds = [];
         foreach ($videos as $videoItem) {
             if ($videoItem['storage_driver'] === 'aliyun') {
-                $aliyunFileIds[] = $videoItem['storage_file_id'];
+                $aliFileIds[] = $videoItem['storage_file_id'];
             } elseif ($videoItem['storage_driver'] === 'tencent') {
                 $tencentFileIds[] = $videoItem['storage_file_id'];
             }
         }
 
-        $aliyunVod = new Vod($configService->getAliyunVodConfig());
+        $aliVod = new Vod($configService->getAliyunVodConfig());
 
-        DB::transaction(function () use ($ids, $aliyunFileIds, $tencentFileIds, $aliyunVod, $tencentVod) {
-            $aliyunFileIds && $aliyunVod->deleteVideos($aliyunFileIds);
+        DB::transaction(function () use ($ids, $aliFileIds, $tencentFileIds, $aliVod, $tencentVod) {
+            $aliFileIds && $aliVod->deleteVideos($aliFileIds);
             $tencentFileIds && $tencentVod->deleteVideos($tencentFileIds);
 
             MediaVideo::query()->whereIn('id', $ids)->delete();

@@ -140,4 +140,47 @@ class Vod
             'request_id' => $response->get('RequestId'),
         ];
     }
+
+    public function searchMedia(int $page, int $pageSize, string $scrollToken = ''): array
+    {
+        $query = [
+            'SearchType' => 'video',
+            'Fields' => 'Title,CreationTime,VideoId,Size,Duration',
+            'PageNo' => $page,
+            'PageSize' => $pageSize,
+            'Match' => "Status in ('UploadSucc', 'Transcoding', 'Normal', 'TranscodeFail')"
+        ];
+        if ($scrollToken) {
+            $query['ScrollToken'] = $scrollToken;
+        }
+
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('SearchMedia')
+            ->options(['query' => $query])
+            ->request();
+
+        $mediaList = $response->get('MediaList');
+        $data = [];
+        if ($mediaList) {
+            foreach ($mediaList as $mediaItem) {
+                $tmpVideo = $mediaItem['Video'];
+                $data[] = [
+                    'title' => $tmpVideo['Title'],
+                    'created_at' => $tmpVideo['CreationTime'],
+                    'video_id' => $tmpVideo['VideoId'],
+                    'size' => $tmpVideo['Size'] ?? 0,
+                    'duration' => ceil($tmpVideo['Duration'] ?? 0),
+                ];
+            }
+        }
+
+        return [
+            'data' => $data,
+            'total' => $response->get('Total'),
+            'scroll_token' => $response->get('ScrollToken'),
+        ];
+    }
 }
