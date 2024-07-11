@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Events\TencentVodCallbackFileDeletedEvent;
 use App\Events\TencentVodCallbackNewFileUploadEvent;
+use App\Events\TencentVodCallbackTranscodeCompleteEvent;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
+use App\Events\TencentVodCallbackProcedureStateChangedEvent;
 
 class TencentVodCallbackController
 {
@@ -61,6 +63,30 @@ class TencentVodCallbackController
                 $fileIdSet = $eventInfo['FileIdSet'] ?? null;
                 if ($fileIdSet) {
                     event(new TencentVodCallbackFileDeletedEvent($fileIdSet));
+                }
+            }
+        } elseif ('TranscodeComplete' === $eventType) {
+            $eventInfo = $data['TranscodeComplete'] ?? null;
+            if ($eventInfo) {
+                $taskId = $eventInfo['TaskId'] ?? null;
+                $message = $eventInfo['Message'] ?? null;
+                $videoId = $eventInfo['FileId'] ?? null;
+                $playInfoSet = $eventInfo['PlayInfoSet'] ?? [];
+                if ($taskId && $message && $videoId) {
+                    event(new TencentVodCallbackTranscodeCompleteEvent($videoId, $taskId, $message, $playInfoSet));
+                }
+            }
+        } elseif ('ProcedureStateChanged' === $eventType) {
+            $eventInfo = $data['ProcedureStateChangedEvent'] ?? null;
+            if ($eventInfo) {
+                $taskId = $eventInfo['TaskId'] ?? null;
+                $message = $eventInfo['Message'] ?? null;
+                $videoId = $eventInfo['FileId'] ?? null;
+                $status = $eventInfo['Status'] ?? null;
+                $resultSet = $eventInfo['MediaProcessResultSet'] ?? [];
+
+                if ($taskId && $message && $videoId && $status) {
+                    event(new TencentVodCallbackProcedureStateChangedEvent($videoId, $taskId, $message, $status, $resultSet));
                 }
             }
         }

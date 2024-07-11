@@ -152,5 +152,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TencentVodCallbackFileDeletedEvent' => [
             'App\Listeners\TencentVodCallbackFileDeletedEvent\DeleteMediaVideoListener',
         ],
+        // 腾讯云视频回调事件之视频转码结束
+        'App\Events\TencentVodCallbackTranscodeCompleteEvent' => [],
+        // 腾讯云视频回调事件之任务流状态变更
+        'App\Events\TencentVodCallbackProcedureStateChangedEvent' => [],
     ];
 }
