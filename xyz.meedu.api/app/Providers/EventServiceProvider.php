@@ -56,6 +56,7 @@ class EventServiceProvider extends ServiceProvider
         // 系统配置变更
         'App\Events\AppConfigSavedEvent' => [
             'App\Listeners\AppConfigSavedEvent\AliyunVodCallbackUrlListener',
+            'App\Listeners\AppConfigSavedEvent\TencentVodCallbackUrlListener',
         ],
         // 录播课程的增改删
         'App\Events\VodCourseCreatedEvent' => [

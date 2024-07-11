@@ -9,29 +9,30 @@
 namespace App\Meedu\Tencent;
 
 use Illuminate\Support\Facades\Log;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
+use TencentCloud\Common\Credential;
+use TencentCloud\Vod\V20180717\VodClient;
 use TencentCloud\Vod\V20180717\Models\DeleteMediaRequest;
+use TencentCloud\Vod\V20180717\Models\ModifyEventConfigRequest;
+use TencentCloud\Vod\V20180717\Models\DescribeEventConfigRequest;
 
 class Vod
 {
-    protected $secretId;
-    protected $secretKey;
+    private $appId;
+    private $secretId;
+    private $secretKey;
 
     protected $client;
 
-    public function __construct(ConfigServiceInterface $configService)
+    public function __construct(array $config)
     {
-        $config = $configService->getTencentVodConfig();
-
+        $this->appId = (int)$config['app_id'];
         $this->secretId = $config['secret_id'];
         $this->secretKey = $config['secret_key'];
+
+        $credential = new Credential($this->secretId, $this->secretKey);
+        $this->client = new VodClient($credential, '');
     }
 
-    /**
-     * 获取上传签名
-     * @return string
-     * @throws \Exception
-     */
     public function getUploadSignature()
     {
         $currentTime = time();
@@ -50,22 +51,52 @@ class Vod
     {
         foreach ($fileIds as $fileId) {
             $req = new DeleteMediaRequest();
+            $req->setSubAppId($this->appId);
             $req->setFileId($fileId);
             try {
-                // 这里只管提交不关注是否成功处理
-                $this->initClient()->DeleteMedia($req);
+                $this->client->DeleteMedia($req);
             } catch (\Exception $e) {
-                Log::error(__METHOD__ . '|腾讯云视频删除', ['err' => $e->getMessage(), 'fileId' => $fileId]);
+                Log::error(__METHOD__ . '|腾讯云视频删除失败,错误信息:' . $e->getMessage(), compact('fileIds'));
             }
         }
     }
 
-    protected function initClient()
+    public function describeEventConfig()
     {
-        if (!$this->client) {
-            $credential = new \TencentCloud\Common\Credential($this->secretId, $this->secretKey);
-            $this->client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
+        try {
+            $req = new DescribeEventConfigRequest();
+            $req->setSubAppId($this->appId);
+            $response = $this->client->DescribeEventConfig($req);
+
+            return [
+                'is_http_mode' => 'PUSH' === $response->getMode(),
+                'notification_url' => $response->getNotificationUrl(),
+                'is_enabled_upload_media_complete' => 'ON' === $response->getUploadMediaCompleteEventSwitch(),
+                'is_enabled_delete_media_complete' => 'ON' === $response->getDeleteMediaCompleteEventSwitch(),
+            ];
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云点播-回调配置-查询失败.错误信息:' . $e->getMessage());
+            return false;
         }
-        return $this->client;
     }
+
+    public function modifyEventConfig(string $callbackUrl)
+    {
+        try {
+            $req = new ModifyEventConfigRequest();
+            $req->setSubAppId($this->appId);
+            $req->setMode('PUSH');
+            $req->setNotificationUrl($callbackUrl);
+            $req->setUploadMediaCompleteEventSwitch('ON');
+            $req->setDeleteMediaCompleteEventSwitch('ON');
+
+            $this->client->ModifyEventConfig($req);
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云点播-回调配置-设置失败.错误信息:' . $e->getMessage(), compact('callbackUrl'));
+            return false;
+        }
+    }
+
 }

@@ -45,4 +45,8 @@ interface ConfigServiceInterface
     public function getAliyunVodConfig(): array;
 
     public function getChunksConfigValues(array $array): array;
+
+    public function getTencentVodConfig(): array;
+
+    public function updateTencentVodCallbackKey(string $callbackKey):void;
 }

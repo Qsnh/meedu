@@ -62,7 +62,7 @@ class MediaVideoController extends BaseController
         return $this->successData($data);
     }
 
-    public function deleteVideos(Request $request, ConfigServiceInterface $configService, \App\Meedu\Tencent\Vod $tencentVod)
+    public function deleteVideos(Request $request, ConfigServiceInterface $configService)
     {
         $ids = $request->input('ids');
 
@@ -92,6 +92,7 @@ class MediaVideoController extends BaseController
         }
 
         $aliVod = new Vod($configService->getAliyunVodConfig());
+        $tencentVod = new \App\Meedu\Tencent\Vod($configService->getTencentVodConfig());
 
         DB::transaction(function () use ($ids, $aliFileIds, $tencentFileIds, $aliVod, $tencentVod) {
             $aliFileIds && $aliVod->deleteVideos($aliFileIds);

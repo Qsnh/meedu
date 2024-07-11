@@ -13,19 +13,31 @@ use App\Meedu\Aliyun\Vod;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
 use App\Bus\AliyunVodCallbackSyncBus;
+use App\Bus\TencentVodCallbackSyncBus;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
 {
-    public function tencentToken()
+    public function tencentToken(ConfigServiceInterface $configService)
     {
-        $signature = app()->make(\App\Meedu\Tencent\Vod::class)->getUploadSignature();
-
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
             AdministratorLog::OPT_VIEW,
             []
         );
+
+        $vodConfig = $configService->getTencentVodConfig();
+
+        if (!$vodConfig['app_id'] || !$vodConfig['secret_id'] || !$vodConfig['secret_key']) {
+            return $this->error(__('腾讯云点播配置缺失'));
+        }
+
+        $bus = new TencentVodCallbackSyncBus();
+        $bus->handler($vodConfig, true);
+
+        $vod = new \App\Meedu\Tencent\Vod($vodConfig);
+
+        $signature = $vod->getUploadSignature();
 
         return $this->successData(compact('signature'));
     }
@@ -58,7 +70,7 @@ class VideoUploadController extends BaseController
 
         try {
             (new AliyunVodCallbackSyncBus())->handler($vodConfig, true);
-            
+
             $vod = new Vod($vodConfig);
             return $this->successData($vod->createUploadVideo($title, $filename));
         } catch (Exception $exception) {

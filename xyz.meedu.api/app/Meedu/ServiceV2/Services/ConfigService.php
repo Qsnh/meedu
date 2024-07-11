@@ -117,5 +117,14 @@ class ConfigService implements ConfigServiceInterface
         return $this->dao->getChunksByKeys($array);
     }
 
+    public function getTencentVodConfig(): array
+    {
+        return config('tencent.vod');
+    }
+
+    public function updateTencentVodCallbackKey(string $callbackKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_CALLBACK_KEY, $callbackKey);
+    }
 
 }

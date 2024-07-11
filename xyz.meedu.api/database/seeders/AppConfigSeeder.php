@@ -708,6 +708,7 @@ class AppConfigSeeder extends Seeder
                 'sort' => 50,
                 'key' => 'meedu.upload.video.aliyun.callback_key',
                 'value' => '',
+                'is_private' => 1,
                 'is_show' => 0,
             ],
 
@@ -749,6 +750,16 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.tencent_play_key',
                 'value' => '',
                 'is_private' => 1,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云回调鉴权密钥',
+                'field_type' => 'text',
+                'sort' => 140,
+                'key' => 'tencent.vod.callback_key',
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0,
             ],
 
             // 会员配置

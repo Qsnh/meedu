@@ -15,5 +15,7 @@ Route::group(['namespace' => 'Wechat', 'prefix' => '/wechat'], function () {
 
 Route::group(['namespace' => 'Media', 'prefix' => '/media'], function () {
     // 阿里云点播回调
-    Route::any('/aliyun-vod/{sign}', 'AliVodCallback@handler')->name('aliyun.vod.callback');
+    Route::any('/aliyun-vod/{sign}', 'AliVodCallbackController@handler')->name('aliyun.vod.callback');
+    // 腾讯云点播回调
+    Route::any('/tencent-vod/{sign}', 'TencentVodCallbackController@handler')->name('tencent.vod.callback');
 });
