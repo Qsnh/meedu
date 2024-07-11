@@ -8,6 +8,7 @@
 
 namespace App\Meedu\Core\UpgradeLog;
 
+use App\Models\AdministratorPermission;
 use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeToV4911
@@ -17,6 +18,16 @@ class UpgradeToV4911
     {
         self::upgradeImageDiskConfigItem();
         self::deleteSomeConfigItems();
+        self::deleteSomePermissions();
+    }
+
+    public static function deleteSomePermissions()
+    {
+        AdministratorPermission::query()
+            ->whereIn('slug', [
+                'media.video.store',
+            ])
+            ->delete();
     }
 
     public static function deleteSomeConfigItems()

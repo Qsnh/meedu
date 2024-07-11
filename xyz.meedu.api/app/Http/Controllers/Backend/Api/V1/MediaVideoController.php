@@ -62,11 +62,6 @@ class MediaVideoController extends BaseController
         return $this->successData($data);
     }
 
-    public function store(Request $request)
-    {
-        return $this->success();
-    }
-
     public function deleteVideos(Request $request, ConfigServiceInterface $configService, \App\Meedu\Tencent\Vod $tencentVod)
     {
         $ids = $request->input('ids');
