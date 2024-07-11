@@ -127,4 +127,10 @@ class ConfigService implements ConfigServiceInterface
         $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_CALLBACK_KEY, $callbackKey);
     }
 
+    public function getTencentVodCallbackKey(): string
+    {
+        return config('tencent.vod.callback_key') ?? '';
+    }
+
+
 }

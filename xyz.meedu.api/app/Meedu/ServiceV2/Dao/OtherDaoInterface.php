@@ -34,5 +34,5 @@ interface OtherDaoInterface
 
     public function updateMediaVideo(int $id, array $updateData):void;
 
-    public function deleteMediaVideoByVideoId(string $service, string $videoId):void;
+    public function deleteMediaVideos(string $service, array $videoIds):void;
 }

@@ -144,5 +144,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         // 阿里云视频回调事件之直播转点播录制万完成
         'App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent' => [],
+        // 腾讯云视频回调事件之视频上传
+        'App\Events\TencentVodCallbackNewFileUploadEvent' => [
+            'App\Listeners\TencentVodCallbackNewFileUploadEvent\StoreUploadVideoListener',
+        ],
+        // 腾讯云视频回调事件之视频删除
+        'App\Events\TencentVodCallbackFileDeletedEvent' => [
+            'App\Listeners\TencentVodCallbackFileDeletedEvent\DeleteMediaVideoListener',
+        ],
     ];
 }
