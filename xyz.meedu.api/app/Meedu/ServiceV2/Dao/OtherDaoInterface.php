@@ -23,4 +23,8 @@ interface OtherDaoInterface
     ): void;
 
     public function appConfigValueKey(): array;
+
+    public function updateValueByKey(string $key, string $value):void;
+
+    public function getChunksByKeys(array $array):array;
 }

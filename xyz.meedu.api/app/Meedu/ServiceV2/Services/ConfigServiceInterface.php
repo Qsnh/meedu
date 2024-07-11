@@ -38,5 +38,11 @@ interface ConfigServiceInterface
 
     public function getVipProtocol(): string;
 
-    public function getAliVodCallbackKey():string;
+    public function getAliVodCallbackKey(): string;
+
+    public function updateAliyunVodCallbackKey(string $callbackKey): void;
+
+    public function getAliyunVodConfig(): array;
+
+    public function getChunksConfigValues(array $array): array;
 }

@@ -35,5 +35,15 @@ class OtherDao implements OtherDaoInterface
         return AppConfig::query()->get()->pluck('value', 'key')->toArray();
     }
 
+    public function updateValueByKey(string $key, string $value): void
+    {
+        AppConfig::query()->where('key', $key)->update(['value' => $value]);
+    }
+
+    public function getChunksByKeys(array $array): array
+    {
+        return AppConfig::query()->whereIn('key', $array)->select(['key', 'value'])->pluck('value', 'key')->toArray();
+    }
+
 
 }

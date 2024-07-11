@@ -16,6 +16,7 @@ use App\Models\AdministratorLog;
 use App\Events\VideoUploadedEvent;
 use Illuminate\Support\Facades\DB;
 use App\Services\Course\Models\MediaVideo;
+use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class MediaVideoController extends BaseController
 {
@@ -93,7 +94,7 @@ class MediaVideoController extends BaseController
         return $this->successData($mediaVideo);
     }
 
-    public function deleteVideos(Request $request, Vod $aliyunVod, \App\Meedu\Tencent\Vod $tencentVod)
+    public function deleteVideos(Request $request, ConfigServiceInterface $configService, \App\Meedu\Tencent\Vod $tencentVod)
     {
         $ids = $request->input('ids');
         if (!$ids || !is_array($ids)) {
@@ -120,6 +121,8 @@ class MediaVideoController extends BaseController
                 $tencentFileIds[] = $videoItem['storage_file_id'];
             }
         }
+
+        $aliyunVod = new Vod($configService->getAliyunVodConfig());
 
         DB::transaction(function () use ($ids, $aliyunFileIds, $tencentFileIds, $aliyunVod, $tencentVod) {
             $aliyunFileIds && $aliyunVod->deleteVideos($aliyunFileIds);

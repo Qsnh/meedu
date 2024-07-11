@@ -8,6 +8,7 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Constant\ConfigConstant;
 use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
 
 class ConfigService implements ConfigServiceInterface
@@ -99,6 +100,21 @@ class ConfigService implements ConfigServiceInterface
     public function getAliVodCallbackKey(): string
     {
         return config('meedu.upload.video.aliyun.callback_key') ?? '';
+    }
+
+    public function updateAliyunVodCallbackKey(string $callbackKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::ALIYUN_VOD_CALLBACK_KEY, $callbackKey);
+    }
+
+    public function getAliyunVodConfig(): array
+    {
+        return config('meedu.upload.video.aliyun') ?? [];
+    }
+
+    public function getChunksConfigValues(array $array): array
+    {
+        return $this->dao->getChunksByKeys($array);
     }
 
 

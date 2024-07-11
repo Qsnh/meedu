@@ -10,7 +10,6 @@ namespace App\Meedu\Aliyun;
 
 use Illuminate\Support\Facades\Log;
 use AlibabaCloud\Client\AlibabaCloud;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class Vod
 {
@@ -23,25 +22,24 @@ class Vod
 
     protected $configService;
 
-    public function __construct(ConfigServiceInterface $configService)
+    public function __construct(array $config)
     {
-        $this->configService = $configService;
-        $config = $configService->getAliyunVodConfig();
         $this->accessKeyId = $config['access_key_id'];
         $this->accessKeySecret = $config['access_key_secret'];
         $this->region = $config['region'];
         $this->host = $config['host'];
+
+        AlibabaCloud::accessKeyClient($this->accessKeyId, $this->accessKeySecret)
+            ->regionId($this->region)
+            ->connectTimeout(3)
+            ->timeout(30)
+            ->asDefaultClient();
     }
 
     public function deleteVideos(array $fileIds): void
     {
-        // 批量删除这里不做强制的结果绑定
-        // 也就是我提交了删除的行为，具体能不能删掉不关注
-        // 这里仅记录操作的结果用作debug
         try {
-            $this->initClient();
-
-            $response = AlibabaCloud::rpc()
+            AlibabaCloud::rpc()
                 ->product('vod')
                 ->host($this->host)
                 ->version(self::API_VERSION)
@@ -49,16 +47,57 @@ class Vod
                 ->options(['query' => ['VideoIds' => implode(',', $fileIds)]])
                 ->request();
         } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|阿里云批量删除视频', ['err' => $e->getMessage(), 'fileIds' => $fileIds]);
+            Log::error(__METHOD__ . '|阿里云批量删除视频出现异常', ['err' => $e->getMessage(), 'fileIds' => $fileIds]);
         }
     }
 
-    protected function initClient()
+    public function queryMessageCallback()
     {
-        AlibabaCloud::accessKeyClient($this->accessKeyId, $this->accessKeySecret)
-            ->regionId($this->region)
-            ->connectTimeout(3)
-            ->timeout(30)
-            ->asDefaultClient();
+        try {
+            $response = AlibabaCloud::rpc()
+                ->product('vod')
+                ->host($this->host)
+                ->version(self::API_VERSION)
+                ->action('GetMessageCallback')
+                ->request();
+
+            $messageCallback = $response->get('MessageCallback');
+
+            return [
+                'callback_url' => $messageCallback['CallbackURL'] ?? '',
+                'is_enabled_auth_switch' => 'on' === ($messageCallback['AuthSwitch'] ?? ''),
+                'is_http_callback_type' => 'HTTP' === ($messageCallback['CallbackType'] ?? ''),
+                'app_id' => $messageCallback['AppId'] ?? '',
+                'is_all_event' => 'ALL' === ($messageCallback['EventTypeList'] ?? ''),
+                'auth_key' => $messageCallback['AuthKey'] ?? '',
+            ];
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|阿里云点播消息回调配置查询失败|错误信息:' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function setMessageCallback(string $callbackUrl, string $callbackKey)
+    {
+        try {
+            AlibabaCloud::rpc()
+                ->product('vod')
+                ->host($this->host)
+                ->version(self::API_VERSION)
+                ->action('SetMessageCallback')
+                ->options(['query' => [
+                    'CallbackType' => 'HTTP',
+                    'EventTypeList' => 'ALL',
+                    'AuthSwitch' => 'on',
+                    'CallbackURL' => $callbackUrl,
+                    'AuthKey' => $callbackKey,
+                ]])
+                ->request();
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|阿里云点播消息回调配置设置失败|错误信息:' . $e->getMessage());
+            return false;
+        }
     }
 }
