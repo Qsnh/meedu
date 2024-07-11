@@ -16,6 +16,7 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 use App\Events\AliyunVodCallbackDeleteMediaCompleteEvent;
 use App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent;
 use App\Events\AliyunVodCallbackMediaBaseChangeCompleteEvent;
+use App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent;
 
 class AliVodCallback
 {
@@ -65,7 +66,12 @@ class AliVodCallback
                 $height = $data['Height'] ?? 0;
                 if ($duration) {
                     $duration = ceil($duration);
-                    event(new AliyunVodCallbackVideoAnalysisCompleteEvent($videoId, compact('width', 'height', 'duration')));
+                    event(
+                        new AliyunVodCallbackVideoAnalysisCompleteEvent(
+                            $videoId,
+                            compact('width', 'height', 'duration')
+                        )
+                    );
                 }
             } elseif ('DeleteMediaComplete' === $eventType) {
                 $deleteType = $data['DeleteType'] ?? '';
@@ -73,6 +79,20 @@ class AliVodCallback
                 if ('all' === $deleteType && $videoId) {
                     event(new AliyunVodCallbackDeleteMediaCompleteEvent($videoId));
                 }
+            } elseif ('AddLiveRecordVideoComplete' === $eventType) {
+                $appName = $data['AppName'] ?? '';
+                $streamName = $data['StreamName'] ?? '';
+                $domainName = $data['DomainName'] ?? '';
+                $recordStartTime = $data['RecordStartTime'] ?? '';
+                $recordEndTime = $data['RecordEndTime'] ?? '';
+                event(new AliyunVodCallbackAddLiveRecordVideoCompleteEvent(
+                    $videoId,
+                    $appName,
+                    $streamName,
+                    $domainName,
+                    $recordStartTime,
+                    $recordEndTime
+                ));
             }
         }
 

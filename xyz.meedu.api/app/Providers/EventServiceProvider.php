@@ -137,8 +137,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         // 阿里云视频回调事件之视频转码全部完成 => 也就是单个转码任务下的多个清晰度全部完成
         'App\Events\AliyunVodCallbackTranscodeCompleteEvent' => [],
+        // 阿里云视频回调事件之视频删除
         'App\Events\AliyunVodCallbackDeleteMediaCompleteEvent' => [
             'App\Listeners\AliyunVodCallbackDeleteMediaCompleteEvent\DeleteMediaVideoListener',
         ],
+        // 阿里云视频回调事件之直播转点播录制万完成
+        'App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent' => [],
     ];
 }
