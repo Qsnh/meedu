@@ -26,6 +26,13 @@ class MediaVideoController extends BaseController
 
         $sort = strtolower($request->input('sort', 'id'));
         $order = strtolower($request->input('order', 'desc'));
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
+            AdministratorLog::OPT_VIEW,
+            compact('keywords', 'isOpen', 'sort', 'order')
+        );
+
         if (!in_array($sort, ['id', 'duration', 'size', 'created_at']) || !in_array($order, ['desc', 'asc'])) {
             return $this->error(__('排序参数错误'));
         }
@@ -41,6 +48,7 @@ class MediaVideoController extends BaseController
             ->when(in_array($isOpen, [0, 1]), function ($query) use ($isOpen) {
                 $query->where('is_open', $isOpen);
             })
+            ->where('is_hidden', 0)
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
 
@@ -50,12 +58,6 @@ class MediaVideoController extends BaseController
         ];
 
         $data = HookRun::mount(HookConstant::BACKEND_MEDIA_VIDEO_CONTROLLER_INDEX_RETURN_DATA, $data);
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
-            AdministratorLog::OPT_VIEW,
-            compact('keywords', 'isOpen')
-        );
 
         return $this->successData($data);
     }

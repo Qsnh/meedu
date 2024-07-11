@@ -24,6 +24,8 @@ interface OtherServiceInterface
 
     public function storeOrUpdateMediaVideo(string $service, string $videoId, array $data): void;
 
-    public function deleteMediaVideo(string $service, string $videoId):void;
+    public function deleteMediaVideo(string $service, string $videoId): void;
+
+    public function mediaVideoVisibilityToggle(string $service, string $videoId): void;
 
 }

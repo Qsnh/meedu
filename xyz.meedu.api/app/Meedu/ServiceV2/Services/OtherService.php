@@ -57,5 +57,13 @@ class OtherService implements OtherServiceInterface
         $this->otherDao->deleteMediaVideoByVideoId($service, $videoId);
     }
 
+    public function mediaVideoVisibilityToggle(string $service, string $videoId): void
+    {
+        $mediaVideo = $this->otherDao->findMediaVideoByVideoId($service, $videoId);
+        if ($mediaVideo && $mediaVideo['is_hidden'] !== 0) {
+            $this->otherDao->updateMediaVideo($mediaVideo['id'], ['is_hidden' => 0]);
+        }
+    }
+
 
 }

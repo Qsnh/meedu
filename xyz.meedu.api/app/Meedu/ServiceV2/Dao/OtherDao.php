@@ -10,7 +10,7 @@ namespace App\Meedu\ServiceV2\Dao;
 
 use Carbon\Carbon;
 use App\Meedu\ServiceV2\Models\AppConfig;
-use App\Services\Course\Models\MediaVideo;
+use App\Meedu\ServiceV2\Models\MediaVideo;
 use App\Meedu\ServiceV2\Models\UserUploadImage;
 
 class OtherDao implements OtherDaoInterface

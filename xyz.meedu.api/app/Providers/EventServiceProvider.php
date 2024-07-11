@@ -129,6 +129,7 @@ class EventServiceProvider extends ServiceProvider
         // 阿里云视频回调事件之新视频上传完成 => 此时已经可以获取到视频的大小
         'App\Events\AliyunVodCallbackFileUploadCompleteEvent' => [
             'App\Listeners\AliyunVodCallbackFileUploadCompleteEvent\UpdateMediaVideoListener',
+            'App\Listeners\AliyunVodCallbackFileUploadCompleteEvent\VideoVisibilityToggleListener',
         ],
         // 阿里云视频回调事件之视频分析完成 => 此时可以获取到视频的时长，宽高属性
         'App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent' => [

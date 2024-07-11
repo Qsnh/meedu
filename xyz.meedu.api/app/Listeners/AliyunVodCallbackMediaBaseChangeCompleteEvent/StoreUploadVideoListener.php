@@ -41,7 +41,10 @@ class StoreUploadVideoListener implements ShouldQueue
         $this->otherService->storeOrUpdateMediaVideo(
             FrontendConstant::VOD_SERVICE_ALIYUN,
             $event->videoId,
-            ['title' => $event->videoName]
+            [
+                'title' => $event->videoName,
+                'is_hidden' => 1,
+            ]
         );
     }
 }
