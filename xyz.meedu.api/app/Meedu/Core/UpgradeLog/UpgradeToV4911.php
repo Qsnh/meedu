@@ -31,6 +31,8 @@ class UpgradeToV4911
 
                 'app.name',
                 'app.debug',
+
+                'meedu.system.player.video_format_whitelist',
             ])
             ->delete();
     }

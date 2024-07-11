@@ -935,15 +935,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.bullet_secret.opacity',
                 'value' => 1,
             ],
-            [
-                'group' => '播放器配置',
-                'name' => '播放视频格式白名单',
-                'field_type' => 'text',
-                'sort' => 100,
-                'key' => 'meedu.system.player.video_format_whitelist',
-                'value' => '',
-                'help' => '设置视频格式后缀，多个请用英文逗号连接',
-            ],
 
             // 微信公众号
             [
