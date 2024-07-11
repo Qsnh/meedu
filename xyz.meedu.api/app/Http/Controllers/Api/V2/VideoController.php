@@ -17,6 +17,7 @@ use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Impl\AliVodPlayCache;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
+use App\Meedu\Cache\Impl\TencentVodPlayCache;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
@@ -333,12 +334,15 @@ class VideoController extends BaseController
             return $this->error(__('请购买后观看'));
         }
 
+        $previewSeconds = $canSee ? 0 : $video['free_seconds'];
+
         $urls = [];
         if ($video['aliyun_video_id']) {
-            $aliPlayCache = new AliVodPlayCache($video['id'], $video['aliyun_video_id'], $canSee ? 0 : $video['free_seconds']);
+            $aliPlayCache = new AliVodPlayCache($video['id'], $video['aliyun_video_id'], $previewSeconds);
             $urls = $aliPlayCache->get();
         } elseif ($video['tencent_video_id']) {
-            // todo 腾讯云的视频播放处理
+            $tencentCache = new TencentVodPlayCache($video['id'], $video['tencent_video_id'], $previewSeconds);
+            $urls = $tencentCache->get();
         } elseif ($video['url']) {
             $urls[] = [
                 'url' => $video['url'],
@@ -413,7 +417,8 @@ class VideoController extends BaseController
             $aliPlayCache = new AliVodPlayCache(0, $mediaVideo['storage_file_id'], 0);
             $urls = $aliPlayCache->get();
         } elseif (FrontendConstant::VOD_SERVICE_TENCENT === $mediaVideo['storage_driver']) {
-            // todo 腾讯云的视频播放处理
+            $tencentCache = new TencentVodPlayCache(0, $mediaVideo['storage_file_id'], 0);
+            $urls = $tencentCache->get();
         }
 
         return $this->data(compact('urls'));

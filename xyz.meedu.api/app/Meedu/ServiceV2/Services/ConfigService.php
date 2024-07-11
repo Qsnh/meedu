@@ -119,7 +119,9 @@ class ConfigService implements ConfigServiceInterface
 
     public function getTencentVodConfig(): array
     {
-        return config('tencent.vod');
+        $config = config('tencent.vod');
+        $config['play_key'] = config(ConfigConstant::TENCENT_VOD_PLAY_KEY);
+        return $config;
     }
 
     public function updateTencentVodCallbackKey(string $callbackKey): void
