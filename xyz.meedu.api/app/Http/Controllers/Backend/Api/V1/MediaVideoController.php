@@ -13,7 +13,6 @@ use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
 use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
-use App\Events\VideoUploadedEvent;
 use Illuminate\Support\Facades\DB;
 use App\Services\Course\Models\MediaVideo;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
@@ -63,35 +62,7 @@ class MediaVideoController extends BaseController
 
     public function store(Request $request)
     {
-        $title = mb_substr(strip_tags($request->input('title', '')), 0, 255);
-        $thumb = $request->input('thumb', '');
-        $duration = (int)$request->input('duration');
-        $size = (int)$request->input('size');
-        $storageDriver = $request->input('storage_driver');
-        $storageFileId = $request->input('storage_file_id');
-        $isOpen = (int)$request->input('is_open');
-
-        $data = [
-            'title' => $title,
-            'thumb' => $thumb,
-            'duration' => $duration,
-            'size' => $size,
-            'storage_driver' => $storageDriver,
-            'storage_file_id' => $storageFileId,
-            'is_open' => $isOpen,
-        ];
-
-        $mediaVideo = MediaVideo::create($data);
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
-            AdministratorLog::OPT_STORE,
-            $data
-        );
-
-        event(new VideoUploadedEvent($storageFileId, $storageDriver, 'media_video', $mediaVideo['id']));
-
-        return $this->successData($mediaVideo);
+        return $this->success();
     }
 
     public function deleteVideos(Request $request, ConfigServiceInterface $configService, \App\Meedu\Tencent\Vod $tencentVod)

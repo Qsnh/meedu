@@ -27,4 +27,35 @@ class OtherService implements OtherServiceInterface
 
         $this->otherDao->storeUserUploadImage($userId, $group, $disk, $path, $name, $visitUrl, $logApi, $logIp, $logUA);
     }
+
+    public function storeOrUpdateMediaVideo(string $service, string $videoId, array $data): void
+    {
+        $mediaVideo = $this->otherDao->findMediaVideoByVideoId($service, $videoId);
+        if ($mediaVideo) {
+            $updateData = [];
+            if (isset($data['title']) && $mediaVideo['title'] !== $data['title']) {
+                $updateData['title'] = $data['title'];
+            }
+            if (isset($data['size']) && $mediaVideo['size'] !== $data['size']) {
+                $updateData['size'] = $data['size'];
+            }
+            if (isset($data['duration']) && $mediaVideo['duration'] !== $data['duration']) {
+                $updateData['duration'] = $data['duration'];
+            }
+
+            $this->otherDao->updateMediaVideo($mediaVideo['id'], $updateData);
+        } else {
+            $this->otherDao->storeMediaVideo(array_merge($data, [
+                'storage_driver' => $service,
+                'storage_file_id' => $videoId,
+            ]));
+        }
+    }
+
+    public function deleteMediaVideo(string $service, string $videoId): void
+    {
+        $this->otherDao->deleteMediaVideoByVideoId($service, $videoId);
+    }
+
+
 }

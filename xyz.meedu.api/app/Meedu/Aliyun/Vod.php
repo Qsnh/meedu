@@ -77,7 +77,7 @@ class Vod
         }
     }
 
-    public function setMessageCallback(string $callbackUrl, string $callbackKey)
+    public function setMessageCallback(string $callbackUrl)
     {
         try {
             AlibabaCloud::rpc()
@@ -90,7 +90,6 @@ class Vod
                     'EventTypeList' => 'ALL',
                     'AuthSwitch' => 'on',
                     'CallbackURL' => $callbackUrl,
-                    'AuthKey' => $callbackKey,
                 ]])
                 ->request();
 

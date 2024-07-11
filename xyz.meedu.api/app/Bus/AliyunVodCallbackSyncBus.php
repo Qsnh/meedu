@@ -44,13 +44,13 @@ class AliyunVodCallbackSyncBus
             $configService->updateAliyunVodCallbackKey($vodConfig['callback_key']);
         }
 
-        $callbackUrl = trim($configService->getApiUrl(), '/') . route('aliyun.vod.callback', null, false);
+        $callbackUrl = trim($configService->getApiUrl(), '/') . route('aliyun.vod.callback', ['sign' => $vodConfig['callback_key']], false);
 
         if (
             // 回调地址不一样
             $callbackConfig['callback_url'] !== $callbackUrl ||
-            // 未开启鉴权
-            !$callbackConfig['is_enabled_auth_switch'] ||
+            // 开启鉴权
+            $callbackConfig['is_enabled_auth_switch'] ||
             // 未开启HTTP回调方式
             !$callbackConfig['is_http_callback_type'] ||
             // 未监听全部事件
@@ -58,7 +58,7 @@ class AliyunVodCallbackSyncBus
             // 鉴权的key不一致
             $callbackConfig['auth_key'] !== $vodConfig['callback_key']
         ) {
-            $result= $vod->setMessageCallback($callbackUrl, $vodConfig['callback_key']);
+            $result= $vod->setMessageCallback($callbackUrl);
 
             if ($throw && !$result) {
                 throw new ServiceException(__('阿里云点播回调设置失败'));

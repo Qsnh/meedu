@@ -13,32 +13,24 @@ use Illuminate\Support\Facades\Log;
 use App\Events\AliyunVodCallbackTranscodeCompleteEvent;
 use App\Events\AliyunVodCallbackFileUploadCompleteEvent;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
+use App\Events\AliyunVodCallbackDeleteMediaCompleteEvent;
 use App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent;
 use App\Events\AliyunVodCallbackMediaBaseChangeCompleteEvent;
 
 class AliVodCallback
 {
 
-    public function handler(Request $request, ConfigServiceInterface $configService)
+    public function handler(Request $request, ConfigServiceInterface $configService, $sign)
     {
         $data = $request->all();
-        $fullUrl = $request->fullUrl();
-        $timestamp = $request->header('X-VOD-TIMESTAMP', '');
-        $sign = $request->header('X-VOD-SIGNATURE', '');
-
-        Log::info(__METHOD__, [
-            '回调的数据' => $data,
-            'headers' => compact('timestamp', 'sign'),
-            'url' => $fullUrl,
-        ]);
-
-        if (!$data || !$timestamp || !$sign) {
+        if (!$data) {
             return response(__('参数错误'), 406);
         }
 
-        $localSign = md5($fullUrl . '|' . $timestamp . '|' . $configService->getAliVodCallbackKey());
-        if ($localSign !== strtoupper($sign)) {
-            Log::error(__METHOD__ . '|非法的阿里云点播回调|sign:' . $localSign);
+        Log::info(__METHOD__, compact('data'));
+
+        if ($sign !== $configService->getAliVodCallbackKey()) {
+            Log::error(__METHOD__ . '|非法的阿里云点播回调|sign:' . $sign);
             return response(__('参数错误'), 406);
         }
 
@@ -48,10 +40,11 @@ class AliVodCallback
 
         if ('success' === $status) {
             if ('MediaBaseChangeComplete' === $eventType) {
+                $operateMode = $data['OperateMode'] ?? '';
                 $videoId = $data['MediaId'] ?? '';
                 $mediaContent = $data['MediaContent'] ?? '';
-                if ($videoId && $mediaContent) {
-                    $mediaContent = json_decode($mediaContent, true);
+                if ($operateMode === 'create' && $videoId && $mediaContent) {
+                    $mediaContent = json_decode($mediaContent['Title'], true);
                     $title = $mediaContent['NewValue'] ?? '';
                     if ($title) {
                         $title = explode('.', $title);
@@ -64,14 +57,21 @@ class AliVodCallback
             } elseif ('FileUploadComplete' === $eventType) {
                 $size = $data['Size'] ?? 0;
                 if ($size && $videoId) {
-                    event(new AliyunVodCallbackFileUploadCompleteEvent($videoId, $size));
+                    event(new AliyunVodCallbackFileUploadCompleteEvent($videoId, (int)$size));
                 }
             } elseif ('VideoAnalysisComplete' === $eventType) {
                 $duration = $data['Duration'] ?? 0;
                 $width = $data['Width'] ?? 0;
                 $height = $data['Height'] ?? 0;
                 if ($duration) {
-                    event(new AliyunVodCallbackVideoAnalysisCompleteEvent($videoId, ceil($duration), compact('width', 'height')));
+                    $duration = ceil($duration);
+                    event(new AliyunVodCallbackVideoAnalysisCompleteEvent($videoId, compact('width', 'height', 'duration')));
+                }
+            } elseif ('DeleteMediaComplete' === $eventType) {
+                $deleteType = $data['DeleteType'] ?? '';
+                $videoId = $data['MediaId'] ?? '';
+                if ('all' === $deleteType && $videoId) {
+                    event(new AliyunVodCallbackDeleteMediaCompleteEvent($videoId));
                 }
             }
         }

@@ -27,4 +27,12 @@ interface OtherDaoInterface
     public function updateValueByKey(string $key, string $value):void;
 
     public function getChunksByKeys(array $array):array;
+
+    public function findMediaVideoByVideoId(string $service, string $videoId):array;
+
+    public function storeMediaVideo(array $data):void;
+
+    public function updateMediaVideo(int $id, array $updateData):void;
+
+    public function deleteMediaVideoByVideoId(string $service, string $videoId):void;
 }

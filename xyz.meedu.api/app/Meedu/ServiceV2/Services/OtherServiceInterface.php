@@ -11,7 +11,7 @@ namespace App\Meedu\ServiceV2\Services;
 interface OtherServiceInterface
 {
     public function storeUserUploadImage(
-        int $userId,
+        int    $userId,
         string $group,
         string $disk,
         string $path,
@@ -21,4 +21,9 @@ interface OtherServiceInterface
         string $logIp,
         string $logUA
     ): void;
+
+    public function storeOrUpdateMediaVideo(string $service, string $videoId, array $data): void;
+
+    public function deleteMediaVideo(string $service, string $videoId):void;
+
 }

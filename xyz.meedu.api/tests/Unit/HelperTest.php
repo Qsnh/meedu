@@ -24,16 +24,6 @@ class HelperTest extends TestCase
         $this->assertFalse(false);
     }
 
-    public function test_aliyun_sdk_client()
-    {
-        config([
-            'meedu.upload.video.aliyun.access_key_id' => '123',
-            'meedu.upload.video.aliyun.access_key_secret' => '456',
-        ]);
-        aliyun_sdk_client();
-        $this->assertTrue(true);
-    }
-
     public function test_array_compress()
     {
         $arr = [

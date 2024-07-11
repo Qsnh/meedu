@@ -78,7 +78,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
             'App\Listeners\VodVideoDestroyedEvent\UserWatchedRecordClear',
         ],
-        // 新视频上传event
+        // todo - 删除此事件
         'App\Events\VideoUploadedEvent' => [],
         // 视频转码完成event
         'App\Events\VideoTranscodeCompleteEvent' => [],
@@ -135,8 +135,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\AliyunVodCallbackVideoAnalysisCompleteEvent\UpdateMediaVideoListener',
         ],
         // 阿里云视频回调事件之视频转码全部完成 => 也就是单个转码任务下的多个清晰度全部完成
-        'App\Events\AliyunVodCallbackTranscodeCompleteEvent' => [
-            'App\Listeners\AliyunVodCallbackTranscodeCompleteEvent\UpdateMediaVideoListener',
+        'App\Events\AliyunVodCallbackTranscodeCompleteEvent' => [],
+        'App\Events\AliyunVodCallbackDeleteMediaCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackDeleteMediaCompleteEvent\DeleteMediaVideoListener',
         ],
     ];
 }
