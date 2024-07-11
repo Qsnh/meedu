@@ -28,6 +28,7 @@ if (!function_exists('exception_record')) {
     }
 }
 
+// todo - 删除此函数
 if (!function_exists('aliyun_play_auth')) {
     /**
      * 获取阿里云视频的播放Auth
@@ -327,6 +328,7 @@ if (!function_exists('get_tencent_play_url')) {
     }
 }
 
+// todo - 删除此函数
 if (!function_exists('get_play_url')) {
     /**
      * 获取播放地址

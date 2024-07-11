@@ -183,4 +183,58 @@ class Vod
             'scroll_token' => $response->get('ScrollToken'),
         ];
     }
+
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-getplayinfo
+    public function getPlayInfo(string $videoId, int $previewSeconds = 0)
+    {
+        $query = [
+            'VideoId' => $videoId,
+            'AuthTimeout' => 10800,//3个小时有效
+            'OutputType' => 'cdn',
+            'StreamType' => 'video',
+            'ResultType' => 'Single',
+            'Formats' => 'mp4,m3u8',
+        ];
+
+        $playConfig = [];
+        if ($previewSeconds) {
+            $playConfig['PreviewTime'] = $previewSeconds;
+        }
+
+        $playConfig && $query['PlayConfig'] = json_encode($playConfig, JSON_UNESCAPED_UNICODE);
+
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('GetPlayInfo')
+            ->options(['query' => $query])
+            ->request();
+
+        $playInfoList = $response['PlayInfoList']['PlayInfo'];
+        if (!$playInfoList) {
+            return [];
+        }
+
+        $data = [];
+        foreach ($playInfoList as $playInfoItem) {
+            $data[] = [
+                'format' => $playInfoItem['Format'],
+                'url' => $playInfoItem['PlayURL'],
+                'duration' => ceil($playInfoItem['Duration'] ?? 0),
+                'name' => $playInfoItem['Definition'],
+                'height' => $playInfoItem['Height'] ?? 0,
+                'width' => $playInfoItem['Width'] ?? 0,
+                'size' => $playInfoItem['Size'] ?? 0,
+            ];
+        }
+
+        $data = collect($data)->groupBy('format')->toArray();
+
+        if (isset($data['m3u8']) && $data['m3u8']) {
+            return $data['m3u8'];
+        }
+
+        return $data['mp4'] ?? [];
+    }
 }
