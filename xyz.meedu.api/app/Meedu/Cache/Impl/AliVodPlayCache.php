@@ -56,7 +56,7 @@ class AliVodPlayCache
             }
         }
 
-        return $value;
+        return $value ?? [];
     }
 
     public function key(): string
