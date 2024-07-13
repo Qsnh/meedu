@@ -9,6 +9,7 @@
 namespace App\Meedu\Cache\Impl;
 
 use App\Meedu\Aliyun\Vod;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
@@ -39,12 +40,19 @@ class AliVodPlayCache
              */
             $configService = app()->make(ConfigServiceInterface::class);
 
-            $aliVod = new Vod($configService->getAliyunVodConfig());
+            try {
+                $aliVod = new Vod($configService->getAliyunVodConfig());
 
-            $value = $aliVod->getPlayInfo($this->videoId, $this->previewSeconds);
+                $value = $aliVod->getPlayInfo($this->videoId, $this->previewSeconds);
 
-            if ($value) {
-                Cache::put($key, $value, self::CACHE_EXPIRE);
+                if ($value) {
+                    Cache::put($key, $value, self::CACHE_EXPIRE);
+                }
+            } catch (\Exception $e) {
+                Log::error(
+                    __METHOD__ . '|获取阿里云视频播放地址失败.错误信息:' . $e->getMessage(),
+                    ['id' => $this->id, 'video_id' => $this->videoId, 'preview_seconds' => $this->previewSeconds]
+                );
             }
         }
 
