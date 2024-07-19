@@ -878,12 +878,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'media/videos/index',
                     ],
                     [
-                        'display_name' => '素材库-视频-添加',
-                        'slug' => 'media.video.store',
-                        'method' => 'POST',
-                        'url' => 'media/videos/create',
-                    ],
-                    [
                         'display_name' => '素材库-视频-删除',
                         'slug' => 'media.video.delete.multi',
                         'method' => 'POST',

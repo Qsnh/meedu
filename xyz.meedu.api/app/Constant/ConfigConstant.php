@@ -14,6 +14,12 @@ class ConfigConstant
 
     public const APP_URL ='app.url';
 
+    public const TENCENT_VOD_APP_ID='tencent.vod.app_id';
+    public const TENCENT_VOD_SECRET_ID = 'tencent.vod.secret_id';
+    public const TENCENT_VOD_SECRET_KEY='tencent.vod.secret_key';
+    public const TENCENT_VOD_CALLBACK_KEY='tencent.vod.callback_key';
+    public const TENCENT_VOD_PLAY_KEY= 'meedu.system.player.tencent_play_key';
+
     public const ALIYUN_VOD_ACCESS_KEY_ID = 'meedu.upload.video.aliyun.access_key_id';
     public const ALIYUN_VOD_ACCESS_KEY_SECRET = 'meedu.upload.video.aliyun.access_key_secret';
     public const ALIYUN_VOD_REGION = 'meedu.upload.video.aliyun.region';

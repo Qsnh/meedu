@@ -62,10 +62,9 @@ class OtherDao implements OtherDaoInterface
         MediaVideo::query()->where('id', $id)->update($updateData);
     }
 
-    public function deleteMediaVideoByVideoId(string $service, string $videoId): void
+    public function deleteMediaVideos(string $service, array $videoIds): void
     {
-        MediaVideo::query()->where('storage_file_id', $videoId)->where('storage_driver', $service)->delete();
+        MediaVideo::query()->whereIn('storage_file_id', $videoIds)->where('storage_driver', $service)->limit(count($videoIds))->delete();
     }
-
 
 }

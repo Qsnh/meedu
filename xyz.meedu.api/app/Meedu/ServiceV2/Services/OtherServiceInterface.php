@@ -28,4 +28,6 @@ interface OtherServiceInterface
 
     public function mediaVideoVisibilityToggle(string $service, string $videoId): void;
 
+    public function deleteMediaVideos(string $service, array $videoIds):void;
+
 }

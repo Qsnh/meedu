@@ -150,11 +150,6 @@ class CacheConstant
         'expire' => 3600, //1小时
     ];
 
-    // 阿里云视频播放地址缓存
-    public const ALIYUN_PLAY_URL = [
-        'name' => self::PREFIX_C . 'aliyun:play:i:%d:t:%d:f:%s',
-        'expire' => 1800, //30分钟
-    ];
 
     // 社交登录
     public const USER_SOCIALITE_LOGIN = [

@@ -8,30 +8,40 @@
 
 namespace App\Meedu\Tencent;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
+use TencentCloud\Common\Credential;
+use TencentCloud\Vod\V20180717\VodClient;
+use TencentCloud\Vod\V20180717\Models\MediaInfo;
+use TencentCloud\Vod\V20180717\Models\MediaMetaData;
+use TencentCloud\Vod\V20180717\Models\MediaBasicInfo;
 use TencentCloud\Vod\V20180717\Models\DeleteMediaRequest;
+use TencentCloud\Vod\V20180717\Models\MediaTranscodeInfo;
+use TencentCloud\Vod\V20180717\Models\MediaTranscodeItem;
+use TencentCloud\Vod\V20180717\Models\ModifyEventConfigRequest;
+use TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest;
+use TencentCloud\Vod\V20180717\Models\DescribeEventConfigRequest;
 
 class Vod
 {
-    protected $secretId;
-    protected $secretKey;
+    private $appId;
+    private $secretId;
+    private $secretKey;
+    private $playKey;
 
     protected $client;
 
-    public function __construct(ConfigServiceInterface $configService)
+    public function __construct(array $config)
     {
-        $config = $configService->getTencentVodConfig();
-
+        $this->appId = (int)$config['app_id'];
         $this->secretId = $config['secret_id'];
         $this->secretKey = $config['secret_key'];
+        $this->playKey = $config['play_key'] ?? '';
+
+        $credential = new Credential($this->secretId, $this->secretKey);
+        $this->client = new VodClient($credential, '');
     }
 
-    /**
-     * 获取上传签名
-     * @return string
-     * @throws \Exception
-     */
     public function getUploadSignature()
     {
         $currentTime = time();
@@ -50,22 +60,157 @@ class Vod
     {
         foreach ($fileIds as $fileId) {
             $req = new DeleteMediaRequest();
+            $req->setSubAppId($this->appId);
             $req->setFileId($fileId);
             try {
-                // 这里只管提交不关注是否成功处理
-                $this->initClient()->DeleteMedia($req);
+                $this->client->DeleteMedia($req);
             } catch (\Exception $e) {
-                Log::error(__METHOD__ . '|腾讯云视频删除', ['err' => $e->getMessage(), 'fileId' => $fileId]);
+                Log::error(__METHOD__ . '|腾讯云视频删除失败,错误信息:' . $e->getMessage(), compact('fileIds'));
             }
         }
     }
 
-    protected function initClient()
+    public function describeEventConfig()
     {
-        if (!$this->client) {
-            $credential = new \TencentCloud\Common\Credential($this->secretId, $this->secretKey);
-            $this->client = new \TencentCloud\Vod\V20180717\VodClient($credential, '');
+        try {
+            $req = new DescribeEventConfigRequest();
+            $req->setSubAppId($this->appId);
+            $response = $this->client->DescribeEventConfig($req);
+
+            return [
+                'is_http_mode' => 'PUSH' === $response->getMode(),
+                'notification_url' => $response->getNotificationUrl(),
+                'is_enabled_upload_media_complete' => 'ON' === $response->getUploadMediaCompleteEventSwitch(),
+                'is_enabled_delete_media_complete' => 'ON' === $response->getDeleteMediaCompleteEventSwitch(),
+            ];
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云点播-回调配置-查询失败.错误信息:' . $e->getMessage());
+            return false;
         }
-        return $this->client;
     }
+
+    public function modifyEventConfig(string $callbackUrl): bool
+    {
+        try {
+            $req = new ModifyEventConfigRequest();
+            $req->setSubAppId($this->appId);
+            $req->setMode('PUSH');
+            $req->setNotificationUrl($callbackUrl);
+            $req->setUploadMediaCompleteEventSwitch('ON');
+            $req->setDeleteMediaCompleteEventSwitch('ON');
+
+            $this->client->ModifyEventConfig($req);
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云点播-回调配置-设置失败.错误信息:' . $e->getMessage(), compact('callbackUrl'));
+            return false;
+        }
+    }
+
+    public function getPlayUrls(string $videoId)
+    {
+        try {
+            $req = new DescribeMediaInfosRequest();
+            $req->setSubAppId($this->appId);
+            $req->setFileIds([$videoId]);
+            $req->setFilters(['basicInfo', 'metaData', 'transcodeInfo']);
+
+            $response = $this->client->DescribeMediaInfos($req);
+
+            $mediaInfoSet = $response->getMediaInfoSet();
+            $data = [];
+            foreach ($mediaInfoSet as $item) {
+                /**
+                 * @var MediaInfo $item
+                 */
+
+                if ($item->getFileId()!== $videoId) {
+                    continue;
+                }
+
+                /**
+                 * @var MediaTranscodeInfo $transcodeInfo
+                 */
+                $transcodeInfo = $item->getTranscodeInfo();
+                if ($transcodeInfo) {
+                    foreach ($transcodeInfo->getTranscodeSet() as $transcodeItem) {
+                        /**
+                         * @var MediaTranscodeItem $transcodeItem
+                         */
+
+                        $data[] = [
+                            'url' => $transcodeItem->getUrl(),
+                            'format' => strtolower(strtolower(pathinfo($transcodeItem->getUrl(), PATHINFO_EXTENSION))),
+                            'duration' => ceil($transcodeItem->getDuration()),
+                            'name' => $transcodeItem->getHeight(),
+                            'height' => $transcodeItem->getHeight(),
+                            'width' => $transcodeItem->getWidth(),
+                            'size' => $transcodeItem->getSize(),
+                        ];
+                    }
+                } else {
+                    /**
+                     * @var MediaBasicInfo $tmpBasicInfo
+                     */
+                    $tmpBasicInfo = $item->getBasicInfo();
+
+                    /**
+                     * @var MediaMetaData $tmpMetaData
+                     */
+                    $tmpMetaData = $item->getMetaData();
+
+                    // 兜底使用源文件metaData+basicInfo
+                    $data[] = [
+                        'url' => $tmpBasicInfo->getMediaUrl(),
+                        'format' => strtolower($tmpBasicInfo->getType()),
+                        'duration' => ceil($tmpMetaData->getDuration()),
+                        'name' => $tmpMetaData->getHeight(),
+                        'height' => $tmpMetaData->getHeight(),
+                        'width' => $tmpMetaData->getWidth(),
+                        'size' => $tmpMetaData->getSize(),
+                    ];
+                }
+
+                break;
+            }
+
+            $data = collect($data)->groupBy('format')->toArray();
+            if (isset($data['m3u8'])) {
+                return $data['m3u8'];
+            }
+
+            return $data['mp4'] ?? [];
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云点播-获取视频播放地址失败.错误信息:' . $e->getMessage(), compact('videoId'));
+            return false;
+        }
+    }
+
+    public function generateUrlWithSignature($url, int $previewSeconds = 0)
+    {
+        if (!$this->playKey) {
+            return $url;
+        }
+
+        $urlInfo = parse_url($url);
+        $dir = pathinfo($urlInfo['path'], PATHINFO_DIRNAME) . '/';
+        // 默认三个小时
+        $t = dechex(time() + 3600 * 3);
+        // 试看逻辑
+        $exper = 0;
+        if ($previewSeconds > 0) {
+            $exper = $previewSeconds >= 30 ? $previewSeconds : 30;
+        };
+        // ip限制[1个]
+        $rlimit = 1;
+        // 标识符
+        $us = Str::random(6);
+
+        // 生成签名
+        $sign = md5($this->playKey . $dir . $t . $exper . $rlimit . $us);
+
+        return sprintf('%s?t=%s&exper=%d&rlimit=%d&us=%s&sign=%s', $url, $t, $exper, $rlimit, $us, $sign);
+    }
+
 }

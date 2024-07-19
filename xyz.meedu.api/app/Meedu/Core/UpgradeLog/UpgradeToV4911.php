@@ -8,6 +8,8 @@
 
 namespace App\Meedu\Core\UpgradeLog;
 
+use App\Constant\ConfigConstant;
+use App\Models\AdministratorPermission;
 use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeToV4911
@@ -17,6 +19,17 @@ class UpgradeToV4911
     {
         self::upgradeImageDiskConfigItem();
         self::deleteSomeConfigItems();
+        self::deleteSomePermissions();
+        self::hideAliyunVodHostConfigItem();
+    }
+
+    public static function deleteSomePermissions()
+    {
+        AdministratorPermission::query()
+            ->whereIn('slug', [
+                'media.video.store',
+            ])
+            ->delete();
     }
 
     public static function deleteSomeConfigItems()
@@ -59,4 +72,10 @@ class UpgradeToV4911
             ]);
     }
 
+    public static function hideAliyunVodHostConfigItem()
+    {
+        AppConfig::query()
+            ->where('key', ConfigConstant::ALIYUN_VOD_HOST)
+            ->update(['is_show' => 0]);
+    }
 }

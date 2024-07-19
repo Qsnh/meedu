@@ -18,7 +18,7 @@ use App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent;
 use App\Events\AliyunVodCallbackMediaBaseChangeCompleteEvent;
 use App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent;
 
-class AliVodCallback
+class AliVodCallbackController
 {
 
     public function handler(Request $request, ConfigServiceInterface $configService, $sign)

@@ -39,6 +39,7 @@ class AliyunVodCallbackUrlListener
         ]);
 
         $bus = new AliyunVodCallbackSyncBus();
+
         $bus->handler([
             'region' => $config[ConfigConstant::ALIYUN_VOD_REGION],
             'host' => $config[ConfigConstant::ALIYUN_VOD_HOST],

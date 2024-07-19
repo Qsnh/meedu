@@ -188,8 +188,6 @@ return [
             ],
             // 腾讯云播放key
             'tencent_play_key' => '',
-            // 播放格式
-            'video_format_whitelist' => '',
         ],
 
         // 缓存开关
