@@ -122,6 +122,7 @@ class Vod
         $response = $this->client->DescribeMediaInfos($req);
 
         $mediaInfoSet = $response->getMediaInfoSet();
+
         $data = [];
         foreach ($mediaInfoSet as $item) {
             /**

@@ -187,18 +187,18 @@ class Vod
     // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-getplayinfo
     public function getPlayInfo(string $videoId, int $previewSeconds = 0)
     {
+        if (!$this->playDomain) {
+            throw new ServiceException(__('阿里云播放域名未配置'));
+        }
+        
         $query = [
             'VideoId' => $videoId,
             'AuthTimeout' => 10800,//3个小时有效
             'OutputType' => 'cdn',
             'StreamType' => 'video',
-            'ResultType' => 'Single',
+            'ResultType' => 'Single', // 每种清晰度和格式只返回一路最新转码完成的流
             'Formats' => 'mp4,m3u8',
         ];
-
-        if (!$this->playDomain) {
-            throw new ServiceException(__('阿里云播放域名未配置'));
-        }
 
         $playConfig = ['PlayDomain' => $this->playDomain];
         if ($previewSeconds) {
