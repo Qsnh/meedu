@@ -12,6 +12,7 @@ return [
         'secret_id' => '',
         'secret_key' => '',
         'callback_key' => '',
+        'play_domain' => '',
     ],
     'face' => [
         'rule_id' => '',

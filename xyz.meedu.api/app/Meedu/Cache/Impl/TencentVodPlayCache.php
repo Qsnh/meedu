@@ -9,6 +9,8 @@
 namespace App\Meedu\Cache\Impl;
 
 use App\Meedu\Tencent\Vod;
+use Illuminate\Support\Facades\Log;
+use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Cache;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
@@ -36,29 +38,40 @@ class TencentVodPlayCache
          */
         $configService = app()->make(ConfigServiceInterface::class);
 
+        $key = $this->key();
+
         $tencentVod = new Vod($configService->getTencentVodConfig());
 
-        $key = $this->key();
-        $value = Cache::get($key);
+        try {
+            $value = Cache::get($key);
 
-        if (!$value) {
-            $value = $tencentVod->getPlayUrls($this->videoId);
+            if (!$value) {
+                $value = $tencentVod->getPlayUrls($this->videoId);
 
+                if ($value) {
+                    Cache::put($key, $value, self::CACHE_EXPIRE);
+                }
+            }
+
+            $data = [];
             if ($value) {
-                Cache::put($key, $value, self::CACHE_EXPIRE);
+                foreach ($value as $tmpItem) {
+                    $data[] = array_merge($tmpItem, [
+                        'url' => $tencentVod->generateUrlWithSignature($tmpItem['url'], $this->previewSeconds),
+                    ]);
+                }
             }
-        }
 
-        $data = [];
-        if ($value) {
-            foreach ($value as $tmpItem) {
-                $data[] = array_merge($tmpItem, [
-                    'url' => $tencentVod->generateUrlWithSignature($tmpItem['url'], $this->previewSeconds),
-                ]);
-            }
+            return $data;
+        } catch (ServiceException $e) {
+            throw new $e;
+        } catch (\Exception $e) {
+            Log::error(
+                __METHOD__ . '|获取腾讯云视频播放地址失败.错误信息:' . $e->getMessage(),
+                ['id' => $this->id, 'video_id' => $this->videoId, 'preview_seconds' => $this->previewSeconds]
+            );
+            throw new ServiceException(__('无法获取视频播放地址'));
         }
-
-        return $data;
     }
 
     public function key(): string

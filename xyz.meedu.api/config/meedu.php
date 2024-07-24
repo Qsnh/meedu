@@ -100,6 +100,8 @@ return [
                 'access_key_id' => '',
                 'access_key_secret' => '',
                 'callback_key' => '',
+                'play_domain' => '',
+                'play_key' => '',
             ],
         ],
         'attach' => [

@@ -134,5 +134,10 @@ class ConfigService implements ConfigServiceInterface
         return config('tencent.vod.callback_key') ?? '';
     }
 
+    public function updateAliyunVodPlayKey(string $playKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::ALIYUN_VOD_PLAY_KEY, $playKey);
+    }
+
 
 }

@@ -48,7 +48,9 @@ interface ConfigServiceInterface
 
     public function getTencentVodConfig(): array;
 
-    public function updateTencentVodCallbackKey(string $callbackKey):void;
+    public function updateTencentVodCallbackKey(string $callbackKey): void;
 
-    public function getTencentVodCallbackKey():string;
+    public function getTencentVodCallbackKey(): string;
+
+    public function updateAliyunVodPlayKey(string $playKey): void;
 }

@@ -29,6 +29,7 @@ class TencentVodCallbackUrlListener
             ConfigConstant::TENCENT_VOD_SECRET_ID,
             ConfigConstant::TENCENT_VOD_SECRET_KEY,
             ConfigConstant::TENCENT_VOD_CALLBACK_KEY,
+            ConfigConstant::TENCENT_VOD_PLAY_DOMAIN,
         ]);
 
         $bus = new TencentVodCallbackSyncBus();
@@ -38,6 +39,7 @@ class TencentVodCallbackUrlListener
             'secret_id' => $config[ConfigConstant::TENCENT_VOD_SECRET_ID],
             'secret_key' => $config[ConfigConstant::TENCENT_VOD_SECRET_KEY],
             'callback_key' => $config[ConfigConstant::TENCENT_VOD_CALLBACK_KEY],
+            'play_domain' => $config[ConfigConstant::TENCENT_VOD_PLAY_DOMAIN],
         ]);
     }
 }

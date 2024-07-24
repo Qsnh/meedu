@@ -8,27 +8,33 @@
 
 namespace App\Meedu\Aliyun;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\ServiceException;
 use AlibabaCloud\Client\AlibabaCloud;
 
 class Vod
 {
-    protected $accessKeyId;
-    protected $accessKeySecret;
-    protected $region;
-    protected $host;
+    private $accessKeyId;
+    private $accessKeySecret;
+    private $region;
+    private $host;
+    private $playDomain;
 
     public const API_VERSION = '2017-03-21';
 
-    protected $configService;
-
     public function __construct(array $config)
     {
+        // 必选参数
         $this->accessKeyId = $config['access_key_id'];
         $this->accessKeySecret = $config['access_key_secret'];
         $this->region = $config['region'];
         $this->host = $config['host'];
 
+        // 可选参数
+        isset($config['play_domain']) && $this->playDomain = $config['play_domain'];
+
+        // 初始化客户端
         AlibabaCloud::accessKeyClient($this->accessKeyId, $this->accessKeySecret)
             ->regionId($this->region)
             ->connectTimeout(3)
@@ -36,6 +42,7 @@ class Vod
             ->asDefaultClient();
     }
 
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-deletevideo
     public function deleteVideos(array $fileIds): void
     {
         try {
@@ -51,55 +58,46 @@ class Vod
         }
     }
 
-    public function queryMessageCallback()
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-getmessagecallback
+    public function getMessageCallback()
     {
-        try {
-            $response = AlibabaCloud::rpc()
-                ->product('vod')
-                ->host($this->host)
-                ->version(self::API_VERSION)
-                ->action('GetMessageCallback')
-                ->request();
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('GetMessageCallback')
+            ->request();
 
-            $messageCallback = $response->get('MessageCallback');
+        $messageCallback = $response->get('MessageCallback');
 
-            return [
-                'callback_url' => $messageCallback['CallbackURL'] ?? '',
-                'is_enabled_auth_switch' => 'on' === ($messageCallback['AuthSwitch'] ?? ''),
-                'is_http_callback_type' => 'HTTP' === ($messageCallback['CallbackType'] ?? ''),
-                'app_id' => $messageCallback['AppId'] ?? '',
-                'is_all_event' => 'ALL' === ($messageCallback['EventTypeList'] ?? ''),
-                'auth_key' => $messageCallback['AuthKey'] ?? '',
-            ];
-        } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|阿里云点播消息回调配置查询失败|错误信息:' . $e->getMessage());
-            return false;
-        }
+        return [
+            'callback_url' => $messageCallback['CallbackURL'] ?? '',
+            'auth_switch' => $messageCallback['AuthSwitch'] ?? '',
+            'callback_type' => $messageCallback['CallbackType'] ?? '',
+            'app_id' => $messageCallback['AppId'] ?? '',
+            'event_type_list' => $messageCallback['EventTypeList'] ?? '',
+            'auth_key' => $messageCallback['AuthKey'] ?? '',
+        ];
     }
 
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-setmessagecallback
     public function setMessageCallback(string $callbackUrl)
     {
-        try {
-            AlibabaCloud::rpc()
-                ->product('vod')
-                ->host($this->host)
-                ->version(self::API_VERSION)
-                ->action('SetMessageCallback')
-                ->options(['query' => [
-                    'CallbackType' => 'HTTP',
-                    'EventTypeList' => 'ALL',
-                    'AuthSwitch' => 'on',
-                    'CallbackURL' => $callbackUrl,
-                ]])
-                ->request();
-
-            return true;
-        } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|阿里云点播消息回调配置设置失败|错误信息:' . $e->getMessage());
-            return false;
-        }
+        AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('SetMessageCallback')
+            ->options(['query' => [
+                'CallbackType' => 'HTTP',
+                'EventTypeList' => 'ALL',
+                'AuthSwitch' => 'off',
+                'CallbackURL' => $callbackUrl,
+            ]])
+            ->request();
     }
 
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-createuploadvideo
     public function createUploadVideo(string $title, string $filename)
     {
         $response = AlibabaCloud::rpc()
@@ -121,6 +119,7 @@ class Vod
         ];
     }
 
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-refreshuploadvideo
     public function refreshUploadVideo(string $videoId)
     {
         $response = AlibabaCloud::rpc()
@@ -141,6 +140,7 @@ class Vod
         ];
     }
 
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-searchmedia
     public function searchMedia(int $page, int $pageSize, string $scrollToken = ''): array
     {
         $query = [
@@ -196,12 +196,16 @@ class Vod
             'Formats' => 'mp4,m3u8',
         ];
 
-        $playConfig = [];
+        if (!$this->playDomain) {
+            throw new ServiceException(__('阿里云播放域名未配置'));
+        }
+
+        $playConfig = ['PlayDomain' => $this->playDomain];
         if ($previewSeconds) {
             $playConfig['PreviewTime'] = $previewSeconds;
         }
 
-        $playConfig && $query['PlayConfig'] = json_encode($playConfig, JSON_UNESCAPED_UNICODE);
+        $query['PlayConfig'] = json_encode($playConfig);
 
         $response = AlibabaCloud::rpc()
             ->product('vod')
@@ -236,5 +240,79 @@ class Vod
         }
 
         return $data['mp4'] ?? [];
+    }
+
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-describevoddomainconfigs
+    public function describeVodDomainAuthConfig(string $domain)
+    {
+        $response = AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('DescribeVodDomainConfigs')
+            ->options(['query' => [
+                'DomainName' => $domain,
+                'FunctionNames' => 'aliauth',
+            ]])
+            ->request();
+
+        $configData = [];
+
+        foreach ($response['DomainConfigs']['DomainConfig'] as $configItem) {
+            if ('aliauth' !== $configItem['FunctionName']) {
+                continue;
+            }
+
+            foreach ($configItem['FunctionArgs']['FunctionArg'] as $tmpItem) {
+                $configData[$tmpItem['ArgName']] = $tmpItem['ArgValue'];
+            }
+        }
+
+        return $configData;
+    }
+
+    // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-batchsetvoddomainconfigs
+    public function batchSetVodDomainAuthConfig(string $domain, string $key): void
+    {
+        AlibabaCloud::rpc()
+            ->product('vod')
+            ->host($this->host)
+            ->version(self::API_VERSION)
+            ->action('BatchSetVodDomainConfigs')
+            ->options(['query' => [
+                'DomainNames' => $domain,
+                'Functions' => json_encode([
+                    [
+                        'functionArgs' => [
+                            [
+                                'argName' => 'auth_type',
+                                'argValue' => 'type_a',
+                            ],
+                            [
+                                'argName' => 'auth_key1',
+                                'argValue' => $key,
+                            ],
+                            [
+                                'argName' => 'auth_key2',
+                                'argValue' => Str::reverse($key),
+                            ],
+                            [
+                                'argName' => 'auth_m3u8',
+                                'argValue' => 'on',
+                            ],
+                            [
+                                'argName' => 'ali_auth_delta',
+                                'argValue' => 7200,
+                            ],
+                            [
+                                'argName' => 'ali_auth_remote_desc',
+                                'argValue' => 'video_preview_arg=end auth_check_video_preview=on',
+                            ],
+                        ],
+                        'functionName' => 'aliauth',
+                    ],
+                ]),
+            ]])
+            ->request();
     }
 }

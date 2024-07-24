@@ -11,11 +11,15 @@ namespace App\Listeners\AppConfigSavedEvent;
 use App\Bus\AliVodBus;
 use App\Constant\ConfigConstant;
 use App\Events\AppConfigSavedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
-class AliyunVodCallbackUrlListener
+class AliyunPlayKeySyncListener implements ShouldQueue
 {
-    public $configService;
+    use InteractsWithQueue;
+
+    private $configService;
 
     public function __construct(ConfigServiceInterface $configService)
     {
@@ -35,7 +39,8 @@ class AliyunVodCallbackUrlListener
             ConfigConstant::ALIYUN_VOD_ACCESS_KEY_SECRET,
             ConfigConstant::ALIYUN_VOD_REGION,
             ConfigConstant::ALIYUN_VOD_HOST,
-            ConfigConstant::ALIYUN_VOD_CALLBACK_KEY,
+            ConfigConstant::ALIYUN_VOD_PLAY_DOMAIN,
+            ConfigConstant::ALIYUN_VOD_PLAY_KEY,
         ]);
 
         $newConfig = [];
@@ -43,6 +48,6 @@ class AliyunVodCallbackUrlListener
             $newConfig[str_replace(ConfigConstant::ALIYUN_VOD_PREFIX, '', $keyName)] = $keyValue;
         }
 
-        (new AliVodBus($newConfig))->callbackKeySync();
+        (new AliVodBus($newConfig))->playKeySync();
     }
 }

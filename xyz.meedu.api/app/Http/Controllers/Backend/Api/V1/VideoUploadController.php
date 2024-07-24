@@ -9,10 +9,9 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
-use App\Meedu\Aliyun\Vod;
+use App\Bus\AliVodBus;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
-use App\Bus\AliyunVodCallbackSyncBus;
 use App\Bus\TencentVodCallbackSyncBus;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
@@ -69,10 +68,11 @@ class VideoUploadController extends BaseController
         }
 
         try {
-            (new AliyunVodCallbackSyncBus())->handler($vodConfig, true);
+            $aliVodBus = new AliVodBus($vodConfig);
 
-            $vod = new Vod($vodConfig);
-            return $this->successData($vod->createUploadVideo($title, $filename));
+            $aliVodBus->callbackKeySync(true);
+
+            return $this->successData($aliVodBus->getVodLib()->createUploadVideo($title, $filename));
         } catch (Exception $exception) {
             return $this->error($exception->getMessage());
         }
@@ -104,10 +104,9 @@ class VideoUploadController extends BaseController
         }
 
         try {
-            (new AliyunVodCallbackSyncBus())->handler($vodConfig, true);
+            $aliVodBus = new AliVodBus($vodConfig);
 
-            $vod = new Vod($vodConfig);
-            return $this->successData($vod->refreshUploadVideo($videoId));
+            return $this->successData($aliVodBus->getVodLib()->refreshUploadVideo($videoId));
         } catch (Exception $exception) {
             return $this->error($exception->getMessage());
         }

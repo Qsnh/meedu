@@ -20,7 +20,7 @@ class UpgradeToV4911
         self::upgradeImageDiskConfigItem();
         self::deleteSomeConfigItems();
         self::deleteSomePermissions();
-        self::hideAliyunVodHostConfigItem();
+        self::hideSomeConfigItems();
     }
 
     public static function deleteSomePermissions()
@@ -72,10 +72,13 @@ class UpgradeToV4911
             ]);
     }
 
-    public static function hideAliyunVodHostConfigItem()
+    public static function hideSomeConfigItems()
     {
         AppConfig::query()
-            ->where('key', ConfigConstant::ALIYUN_VOD_HOST)
+            ->whereIn('key', [
+                ConfigConstant::ALIYUN_VOD_HOST,
+                ConfigConstant::TENCENT_VOD_PLAY_KEY,
+            ])
             ->update(['is_show' => 0]);
     }
 }

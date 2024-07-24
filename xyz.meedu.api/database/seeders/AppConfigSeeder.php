@@ -713,6 +713,25 @@ class AppConfigSeeder extends Seeder
                 'is_private' => 1,
                 'is_show' => 0,
             ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播播放域名',
+                'field_type' => 'text',
+                'sort' => 60,
+                'key' => ConfigConstant::ALIYUN_VOD_PLAY_DOMAIN,
+                'value' => '',
+                'is_private' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播播放密钥',
+                'field_type' => 'text',
+                'sort' => 70,
+                'key' => ConfigConstant::ALIYUN_VOD_PLAY_KEY,
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0,
+            ],
 
             // 腾讯云视频
             [
@@ -721,7 +740,7 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 100,
                 'default_value' => '',
-                'key' => 'tencent.vod.app_id',
+                'key' => ConfigConstant::TENCENT_VOD_APP_ID,
                 'value' => '',
             ],
             [
@@ -730,7 +749,7 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 110,
                 'default_value' => '',
-                'key' => 'tencent.vod.secret_id',
+                'key' => ConfigConstant::TENCENT_VOD_SECRET_ID,
                 'value' => '',
             ],
             [
@@ -739,7 +758,7 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 120,
                 'default_value' => '',
-                'key' => 'tencent.vod.secret_key',
+                'key' => ConfigConstant::TENCENT_VOD_SECRET_KEY,
                 'value' => '',
                 'is_private' => 1,
             ],
@@ -749,19 +768,29 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 130,
                 'default_value' => '',
-                'key' => 'meedu.system.player.tencent_play_key',
+                'key' => ConfigConstant::TENCENT_VOD_PLAY_KEY,
                 'value' => '',
                 'is_private' => 1,
+                'is_show' => 0
             ],
             [
                 'group' => '视频',
                 'name' => '腾讯云回调鉴权密钥',
                 'field_type' => 'text',
                 'sort' => 140,
-                'key' => 'tencent.vod.callback_key',
+                'key' => ConfigConstant::TENCENT_VOD_CALLBACK_KEY,
                 'value' => '',
                 'is_private' => 1,
                 'is_show' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云点播播放域名',
+                'field_type' => 'text',
+                'sort' => 150,
+                'key' => ConfigConstant::TENCENT_VOD_PLAY_DOMAIN,
+                'value' => '',
+                'is_private' => 0,
             ],
 
             // 会员配置
