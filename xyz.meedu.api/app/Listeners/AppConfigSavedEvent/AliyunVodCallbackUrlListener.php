@@ -11,10 +11,14 @@ namespace App\Listeners\AppConfigSavedEvent;
 use App\Bus\AliVodBus;
 use App\Constant\ConfigConstant;
 use App\Events\AppConfigSavedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
-class AliyunVodCallbackUrlListener
+class AliyunVodCallbackUrlListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     public $configService;
 
     public function __construct(ConfigServiceInterface $configService)
