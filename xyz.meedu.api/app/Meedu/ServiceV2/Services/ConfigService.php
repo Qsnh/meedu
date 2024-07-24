@@ -137,5 +137,10 @@ class ConfigService implements ConfigServiceInterface
         $this->dao->updateValueByKey(ConfigConstant::ALIYUN_VOD_PLAY_KEY, $playKey);
     }
 
+    public function updateTencentVodPlayKey(string $playKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_PLAY_KEY, $playKey);
+    }
+
 
 }

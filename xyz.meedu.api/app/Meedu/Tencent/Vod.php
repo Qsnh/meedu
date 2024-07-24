@@ -16,12 +16,16 @@ use TencentCloud\Vod\V20180717\VodClient;
 use TencentCloud\Vod\V20180717\Models\MediaInfo;
 use TencentCloud\Vod\V20180717\Models\MediaMetaData;
 use TencentCloud\Vod\V20180717\Models\MediaBasicInfo;
+use TencentCloud\Vod\V20180717\Models\DomainDetailInfo;
 use TencentCloud\Vod\V20180717\Models\DeleteMediaRequest;
 use TencentCloud\Vod\V20180717\Models\MediaTranscodeInfo;
 use TencentCloud\Vod\V20180717\Models\MediaTranscodeItem;
+use TencentCloud\Vod\V20180717\Models\UrlSignatureAuthPolicy;
 use TencentCloud\Vod\V20180717\Models\ModifyEventConfigRequest;
 use TencentCloud\Vod\V20180717\Models\DescribeMediaInfosRequest;
+use TencentCloud\Vod\V20180717\Models\DescribeVodDomainsRequest;
 use TencentCloud\Vod\V20180717\Models\DescribeEventConfigRequest;
+use TencentCloud\Vod\V20180717\Models\ModifyVodDomainConfigRequest;
 
 class Vod
 {
@@ -45,6 +49,7 @@ class Vod
         $this->client = new VodClient($credential, '');
     }
 
+    // @see https://cloud.tencent.com/document/product/266/9221
     public function getUploadSignature()
     {
         $currentTime = time();
@@ -59,6 +64,7 @@ class Vod
         return base64_encode(hash_hmac('sha1', $queryString, $this->secretKey, true) . $queryString);
     }
 
+    // @see https://cloud.tencent.com/document/product/266/31764
     public function deleteVideos(array $fileIds): void
     {
         foreach ($fileIds as $fileId) {
@@ -68,11 +74,12 @@ class Vod
             try {
                 $this->client->DeleteMedia($req);
             } catch (\Exception $e) {
-                Log::error(__METHOD__ . '|腾讯云视频删除失败,错误信息:' . $e->getMessage(), compact('fileIds'));
+                Log::error(__METHOD__ . '|腾讯云视频删除失败|错误信息:' . $e->getMessage(), compact('fileIds'));
             }
         }
     }
 
+    // @see https://cloud.tencent.com/document/product/266/55296
     public function describeEventConfig(): array
     {
         $req = new DescribeEventConfigRequest();
@@ -87,6 +94,7 @@ class Vod
         ];
     }
 
+    // @see https://cloud.tencent.com/document/product/266/55244
     public function modifyEventConfig(string $callbackUrl): void
     {
         $req = new ModifyEventConfigRequest();
@@ -189,6 +197,7 @@ class Vod
         return $playUrls;
     }
 
+    // @see https://cloud.tencent.com/document/product/266/14047
     public function generateUrlWithSignature($url, int $previewSeconds = 0)
     {
         if (!$this->playKey) {
@@ -215,4 +224,45 @@ class Vod
         return sprintf('%s?t=%s&exper=%d&rlimit=%d&us=%s&sign=%s', $url, $t, $exper, $rlimit, $us, $sign);
     }
 
+    // @see https://cloud.tencent.com/document/product/266/54176
+    public function describeVodDomains(string $domain): array
+    {
+        $req = new DescribeVodDomainsRequest();
+        $req->setSubAppId($this->appId);
+        $req->setDomains([$domain]);
+        $req->setLimit(1);
+        $req->setOffset(0);
+
+        $response = $this->client->DescribeVodDomains($req);
+
+        $domainSet = $response->getDomainSet();
+
+        if ($domainSet) {
+            foreach ($domainSet as $tmpItem) {
+                /**
+                 * @var DomainDetailInfo $tmpItem
+                 */
+
+                if ($domain === $tmpItem->getDomain()) {
+                    return json_decode($tmpItem->toJsonString(), true);
+                }
+            }
+        }
+
+        return [];
+    }
+
+    // @see https://cloud.tencent.com/document/product/266/61479
+    public function modifyVodDomainConfig(string $domain, string $key): void
+    {
+        $req = new ModifyVodDomainConfigRequest();
+        $req->setSubAppId($this->appId);
+        $req->setDomain($domain);
+        $urlSignatureAuthPolicy = new UrlSignatureAuthPolicy();
+        $urlSignatureAuthPolicy->setStatus('Enabled');
+        $urlSignatureAuthPolicy->setEncryptedKey($key);
+        $req->setUrlSignatureAuthPolicy($urlSignatureAuthPolicy);
+
+        $this->client->modifyVodDomainConfig($req);
+    }
 }

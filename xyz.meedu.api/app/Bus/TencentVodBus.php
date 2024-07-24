@@ -86,7 +86,14 @@ class TencentVodBus
 
         try {
             $callbackConfig = $vod->describeEventConfig();
-            
+
+            Log::info(__METHOD__ . '|腾讯云callback查询结果', $callbackConfig ? [
+                'mode' => $callbackConfig['mode'],
+                'is_enabled_upload_media_complete' => $callbackConfig['is_enabled_upload_media_complete'],
+                'is_enabled_delete_media_complete' => $callbackConfig['is_enabled_delete_media_complete'],
+                'notification_url' => mb_substr($callbackConfig['notification_url'], 0, mb_strlen($callbackConfig['notification_url']) - 15).'***'.mb_substr($callbackConfig['notification_url'], -8, 8),
+            ] : $callbackConfig);
+
             if (
                 !$callbackConfig ||
                 'PUSH' !== $callbackConfig['mode'] ||
@@ -106,8 +113,45 @@ class TencentVodBus
 
     public function playKeySync(): void
     {
+        if (
+            !$this->appId ||
+            !$this->secretId ||
+            !$this->secretKey ||
+            !$this->playDomain
+        ) {
+            return;
+        }
 
+        /**
+         * @var ConfigServiceInterface $configService
+         */
+        $configService = app()->make(ConfigServiceInterface::class);
+
+        if (!$this->playKey) {
+            $this->playKey = base64_decode('bWVlZFUyMDIz') . Str::random(20);
+            $configService->updateTencentVodPlayKey($this->playKey);
+        }
+
+        $vod = $this->getVodLib();
+
+        try {
+            $domainInfo = $vod->describeVodDomains($this->playDomain);
+
+            Log::info(__METHOD__ . '|腾讯云playKey查询结果', $domainInfo ? [
+                'UrlSignatureAuthPolicy.Status' => $domainInfo['UrlSignatureAuthPolicy']['Status'],
+                'UrlSignatureAuthPolicy.EncryptedKey' => mb_substr($domainInfo['UrlSignatureAuthPolicy']['EncryptedKey'], 0, 10) . '***' . mb_substr($domainInfo['UrlSignatureAuthPolicy']['EncryptedKey'], -10, 10),
+            ] : $domainInfo);
+
+            if (
+                !$domainInfo ||
+                'Enabled' !== $domainInfo['UrlSignatureAuthPolicy']['Status'] ||
+                $this->playKey !== $domainInfo['UrlSignatureAuthPolicy']['EncryptedKey']
+            ) {
+                $vod->modifyVodDomainConfig($this->playDomain, $this->playKey);
+            }
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . '|腾讯云的playKey设置失败.错误信息:' . $e->getMessage());
+        }
     }
-
 
 }

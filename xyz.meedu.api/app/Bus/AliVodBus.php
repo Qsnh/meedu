@@ -91,6 +91,13 @@ class AliVodBus
         try {
             $authConfig = $vod->describeVodDomainAuthConfig($this->playDomain);
 
+            Log::info(__METHOD__ . '|阿里云playKey查询结果', $authConfig ? [
+                'auth_type' => $authConfig['auth_type'],
+                'auth_m3u8' => $authConfig['auth_m3u8'],
+                'ali_auth_delta' => $authConfig['ali_auth_delta'],
+                'auth_key1' => mb_substr($authConfig['auth_key1'], 0, 12) . '***' . mb_substr($authConfig['auth_key1'], -10, 10),
+            ] : $authConfig);
+
             if (
                 !$authConfig ||
                 (
@@ -134,6 +141,13 @@ class AliVodBus
 
         try {
             $callbackConfig = $vod->getMessageCallback();
+
+            Log::info(__METHOD__ . '|阿里云callback查询结果', $callbackConfig ? [
+                'auth_switch' => $callbackConfig['auth_switch'],
+                'callback_type' => $callbackConfig['callback_type'],
+                'event_type_list' => $callbackConfig['event_type_list'],
+                'callback_url' => mb_substr($callbackConfig['callback_url'], 0, mb_strlen($callbackConfig['callback_url']) - 15) . '***' . mb_substr($callbackConfig['callback_url'], -8, 8),
+            ] : $callbackConfig);
 
             if (
                 !$callbackConfig ||
