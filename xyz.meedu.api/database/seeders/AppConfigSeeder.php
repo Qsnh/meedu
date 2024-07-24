@@ -764,17 +764,6 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '视频',
-                'name' => '腾讯云播放key',
-                'field_type' => 'text',
-                'sort' => 130,
-                'default_value' => '',
-                'key' => ConfigConstant::TENCENT_VOD_PLAY_KEY,
-                'value' => '',
-                'is_private' => 1,
-                'is_show' => 0
-            ],
-            [
-                'group' => '视频',
                 'name' => '腾讯云回调鉴权密钥',
                 'field_type' => 'text',
                 'sort' => 140,
@@ -791,6 +780,17 @@ class AppConfigSeeder extends Seeder
                 'key' => ConfigConstant::TENCENT_VOD_PLAY_DOMAIN,
                 'value' => '',
                 'is_private' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云点播播放key',
+                'field_type' => 'text',
+                'sort' => 160,
+                'default_value' => '',
+                'key' => ConfigConstant::TENCENT_VOD_PLAY_KEY,
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0
             ],
 
             // 会员配置

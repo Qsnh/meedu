@@ -188,8 +188,6 @@ return [
                 'color' => '', //默认red
                 'opacity' => 1, //默认1
             ],
-            // 腾讯云播放key
-            'tencent_play_key' => '',
         ],
 
         // 缓存开关

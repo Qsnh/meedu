@@ -45,7 +45,10 @@ class UpgradeToV4911
                 'app.name',
                 'app.debug',
 
+                // 视频播放格式白名单
                 'meedu.system.player.video_format_whitelist',
+                // [旧]腾讯云点播播放key
+                'meedu.system.player.tencent_play_key',
             ])
             ->delete();
     }
@@ -77,7 +80,6 @@ class UpgradeToV4911
         AppConfig::query()
             ->whereIn('key', [
                 ConfigConstant::ALIYUN_VOD_HOST,
-                ConfigConstant::TENCENT_VOD_PLAY_KEY,
             ])
             ->update(['is_show' => 0]);
     }

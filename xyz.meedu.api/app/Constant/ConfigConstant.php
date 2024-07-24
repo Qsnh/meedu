@@ -14,12 +14,13 @@ class ConfigConstant
 
     public const APP_URL = 'app.url';
 
-    public const TENCENT_VOD_APP_ID = 'tencent.vod.app_id';
-    public const TENCENT_VOD_SECRET_ID = 'tencent.vod.secret_id';
-    public const TENCENT_VOD_SECRET_KEY = 'tencent.vod.secret_key';
-    public const TENCENT_VOD_CALLBACK_KEY = 'tencent.vod.callback_key';
-    public const TENCENT_VOD_PLAY_KEY = 'meedu.system.player.tencent_play_key';
-    public const TENCENT_VOD_PLAY_DOMAIN = 'tencent.vod.play_domain';
+    public const TENCENT_VOD_PREFIX = 'tencent.vod.';
+    public const TENCENT_VOD_APP_ID = self::TENCENT_VOD_PREFIX . 'app_id';
+    public const TENCENT_VOD_SECRET_ID = self::TENCENT_VOD_PREFIX . 'secret_id';
+    public const TENCENT_VOD_SECRET_KEY = self::TENCENT_VOD_PREFIX . 'secret_key';
+    public const TENCENT_VOD_CALLBACK_KEY = self::TENCENT_VOD_PREFIX . 'callback_key';
+    public const TENCENT_VOD_PLAY_KEY = self::TENCENT_VOD_PREFIX . 'play_key';
+    public const TENCENT_VOD_PLAY_DOMAIN = self::TENCENT_VOD_PREFIX . 'play_domain';
 
     public const ALIYUN_VOD_PREFIX = 'meedu.upload.video.aliyun.';
     public const ALIYUN_VOD_ACCESS_KEY_ID = self::ALIYUN_VOD_PREFIX . 'access_key_id';
