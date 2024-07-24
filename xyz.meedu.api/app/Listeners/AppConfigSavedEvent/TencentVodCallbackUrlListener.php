@@ -8,9 +8,9 @@
 
 namespace App\Listeners\AppConfigSavedEvent;
 
+use App\Bus\TencentVodBus;
 use App\Constant\ConfigConstant;
 use App\Events\AppConfigSavedEvent;
-use App\Bus\TencentVodCallbackSyncBus;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class TencentVodCallbackUrlListener
@@ -29,17 +29,13 @@ class TencentVodCallbackUrlListener
             ConfigConstant::TENCENT_VOD_SECRET_ID,
             ConfigConstant::TENCENT_VOD_SECRET_KEY,
             ConfigConstant::TENCENT_VOD_CALLBACK_KEY,
-            ConfigConstant::TENCENT_VOD_PLAY_DOMAIN,
         ]);
 
-        $bus = new TencentVodCallbackSyncBus();
+        $newConfig = [];
+        foreach ($config as $key => $value) {
+            $newConfig[str_replace(ConfigConstant::TENCENT_VOD_PREFIX, '', $key)] = $value;
+        }
 
-        $bus->handler([
-            'app_id' => $config[ConfigConstant::TENCENT_VOD_APP_ID],
-            'secret_id' => $config[ConfigConstant::TENCENT_VOD_SECRET_ID],
-            'secret_key' => $config[ConfigConstant::TENCENT_VOD_SECRET_KEY],
-            'callback_key' => $config[ConfigConstant::TENCENT_VOD_CALLBACK_KEY],
-            'play_domain' => $config[ConfigConstant::TENCENT_VOD_PLAY_DOMAIN],
-        ]);
+        (new TencentVodBus($newConfig))->callbackSync();
     }
 }

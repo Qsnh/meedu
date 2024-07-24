@@ -73,42 +73,30 @@ class Vod
         }
     }
 
-    public function describeEventConfig()
+    public function describeEventConfig(): array
     {
-        try {
-            $req = new DescribeEventConfigRequest();
-            $req->setSubAppId($this->appId);
-            $response = $this->client->DescribeEventConfig($req);
+        $req = new DescribeEventConfigRequest();
+        $req->setSubAppId($this->appId);
+        $response = $this->client->DescribeEventConfig($req);
 
-            return [
-                'is_http_mode' => 'PUSH' === $response->getMode(),
-                'notification_url' => $response->getNotificationUrl(),
-                'is_enabled_upload_media_complete' => 'ON' === $response->getUploadMediaCompleteEventSwitch(),
-                'is_enabled_delete_media_complete' => 'ON' === $response->getDeleteMediaCompleteEventSwitch(),
-            ];
-        } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|腾讯云点播-回调配置-查询失败.错误信息:' . $e->getMessage());
-            return false;
-        }
+        return [
+            'mode' => $response->getMode(),
+            'notification_url' => $response->getNotificationUrl(),
+            'is_enabled_upload_media_complete' => 'ON' === $response->getUploadMediaCompleteEventSwitch(),
+            'is_enabled_delete_media_complete' => 'ON' === $response->getDeleteMediaCompleteEventSwitch(),
+        ];
     }
 
-    public function modifyEventConfig(string $callbackUrl): bool
+    public function modifyEventConfig(string $callbackUrl): void
     {
-        try {
-            $req = new ModifyEventConfigRequest();
-            $req->setSubAppId($this->appId);
-            $req->setMode('PUSH');
-            $req->setNotificationUrl($callbackUrl);
-            $req->setUploadMediaCompleteEventSwitch('ON');
-            $req->setDeleteMediaCompleteEventSwitch('ON');
+        $req = new ModifyEventConfigRequest();
+        $req->setSubAppId($this->appId);
+        $req->setMode('PUSH');
+        $req->setNotificationUrl($callbackUrl);
+        $req->setUploadMediaCompleteEventSwitch('ON');
+        $req->setDeleteMediaCompleteEventSwitch('ON');
 
-            $this->client->ModifyEventConfig($req);
-
-            return true;
-        } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|腾讯云点播-回调配置-设置失败.错误信息:' . $e->getMessage(), compact('callbackUrl'));
-            return false;
-        }
+        $this->client->ModifyEventConfig($req);
     }
 
     // @see https://cloud.tencent.com/document/product/266/31763
@@ -214,7 +202,7 @@ class Vod
         // 试看时长[单位:秒]
         $exper = 0;
         if ($previewSeconds > 0) {
-            $exper = $previewSeconds >= 30 ? $previewSeconds : 30;
+            $exper = max($previewSeconds, 30);
         };
         // ip限制[1个]
         $rlimit = 1;

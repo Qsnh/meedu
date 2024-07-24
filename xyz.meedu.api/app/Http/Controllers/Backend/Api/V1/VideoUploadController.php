@@ -10,9 +10,9 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
 use App\Bus\AliVodBus;
+use App\Bus\TencentVodBus;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
-use App\Bus\TencentVodCallbackSyncBus;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
@@ -31,12 +31,11 @@ class VideoUploadController extends BaseController
             return $this->error(__('腾讯云点播配置缺失'));
         }
 
-        $bus = new TencentVodCallbackSyncBus();
-        $bus->handler($vodConfig, true);
+        $tencentVodBus = new TencentVodBus($vodConfig);
 
-        $vod = new \App\Meedu\Tencent\Vod($vodConfig);
+        $tencentVodBus->callbackSync(true);
 
-        $signature = $vod->getUploadSignature();
+        $signature = $tencentVodBus->getVodLib()->getUploadSignature();
 
         return $this->successData(compact('signature'));
     }
