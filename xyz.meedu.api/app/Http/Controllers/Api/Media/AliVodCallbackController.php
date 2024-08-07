@@ -49,7 +49,9 @@ class AliVodCallbackController
                     $title = $mediaContent['NewValue'] ?? '';
                     if ($title) {
                         $title = explode('.', $title);
-                        array_pop($title);
+                        if (count($title) > 1) {
+                            array_pop($title);
+                        }
                         $title = implode('.', $title);
 
                         event(new AliyunVodCallbackMediaBaseChangeCompleteEvent($videoId, $title));

@@ -144,7 +144,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AliyunVodCallbackDeleteMediaCompleteEvent' => [
             'App\Listeners\AliyunVodCallbackDeleteMediaCompleteEvent\DeleteMediaVideoListener',
         ],
-        // 阿里云视频回调事件之直播转点播录制万完成
+        // 阿里云视频回调事件之直播转点播录制完成
         'App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent' => [],
         // 腾讯云视频回调事件之视频上传
         'App\Events\TencentVodCallbackNewFileUploadEvent' => [
