@@ -43,7 +43,7 @@ class OtherService implements OtherServiceInterface
                 $updateData['duration'] = $data['duration'];
             }
 
-            $this->otherDao->updateMediaVideo($mediaVideo['id'], $updateData);
+            $updateData && $this->otherDao->updateMediaVideo($mediaVideo['id'], $updateData);
         } else {
             $this->otherDao->storeMediaVideo(array_merge($data, [
                 'storage_driver' => $service,
@@ -69,6 +69,5 @@ class OtherService implements OtherServiceInterface
     {
         $this->otherDao->deleteMediaVideos($service, $videoIds);
     }
-
 
 }
