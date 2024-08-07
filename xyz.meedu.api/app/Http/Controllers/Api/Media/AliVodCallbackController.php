@@ -66,7 +66,7 @@ class AliVodCallbackController
                 $height = $data['Height'] ?? 0;
                 $size = $data['Size'] ?? 0;
                 if ($duration) {
-                    $duration = ceil($duration);
+                    $duration = (int)$duration;//向下取整
                     event(
                         new AliyunVodCallbackVideoAnalysisCompleteEvent(
                             $videoId,

@@ -33,13 +33,13 @@ class OtherService implements OtherServiceInterface
         $mediaVideo = $this->otherDao->findMediaVideoByVideoId($service, $videoId);
         if ($mediaVideo) {
             $updateData = [];
-            if (isset($data['title']) && $mediaVideo['title'] !== $data['title']) {
+            if (isset($data['title']) && $data['title'] && $mediaVideo['title'] !== $data['title']) {
                 $updateData['title'] = $data['title'];
             }
-            if (isset($data['size']) && $mediaVideo['size'] !== $data['size']) {
+            if (isset($data['size']) && $data['size'] && $mediaVideo['size'] !== $data['size']) {
                 $updateData['size'] = $data['size'];
             }
-            if (isset($data['duration']) && $mediaVideo['duration'] !== $data['duration']) {
+            if (isset($data['duration']) && $data['duration'] && $mediaVideo['duration'] !== $data['duration']) {
                 $updateData['duration'] = $data['duration'];
             }
 

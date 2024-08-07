@@ -33,7 +33,7 @@ class UpdateMediaVideoListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\AliyunVodCallbackFileUploadCompleteEvent  $event
+     * @param \App\Events\AliyunVodCallbackFileUploadCompleteEvent $event
      * @return void
      */
     public function handle(AliyunVodCallbackFileUploadCompleteEvent $event)
@@ -41,7 +41,7 @@ class UpdateMediaVideoListener implements ShouldQueue
         $this->otherService->storeOrUpdateMediaVideo(
             FrontendConstant::VOD_SERVICE_ALIYUN,
             $event->videoId,
-            ['size'=> $event->size]
+            ['size' => $event->size]
         );
     }
 }
