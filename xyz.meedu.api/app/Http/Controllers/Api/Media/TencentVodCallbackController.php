@@ -44,7 +44,7 @@ class TencentVodCallbackController
                 if ($videoId && $basicInfo && $metaData) {
                     $name = $basicInfo['Name'] ?? null;
                     $size = $metaData['Size'] ?? 0;
-                    $duration = $metaData['Duration'] ?? 0;
+                    $duration = (int)($metaData['Duration'] ?? 0);
 
                     if ($name && $size && $duration) {
                         $duration = ceil($duration);
