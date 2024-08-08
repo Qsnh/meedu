@@ -16,6 +16,7 @@
 
 ### 优化
 
+- 优化:[API]权限结构
 - 优化:[API]`CORS`跨域的缓存时间提升到15天
 - 优化:[API]`redis`链接错误的信息提示
 - 优化:[API]移除`mobiledetect/mobiledetectlib`依赖包

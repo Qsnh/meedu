@@ -563,7 +563,7 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'order/\d+/finish',
                     ],
                     [
-                        'display_name' => '退款-订单-列表',
+                        'display_name' => '订单-退款-列表',
                         'slug' => 'order.refund.list',
                         'method' => 'GET',
                         'url' => 'order/refund/list',
@@ -622,61 +622,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'promoCode.generator',
                         'method' => 'POST',
                         'url' => 'promoCode/generator',
-                    ],
-                ],
-            ],
-
-            // 统计
-            [
-                'group_name' => '数据统计',
-                'children' => [
-                    [
-                        'display_name' => '数据统计-每日注册数量统计',
-                        'slug' => 'statistic.userRegister',
-                        'method' => 'GET',
-                        'url' => 'statistic/userRegister',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单创建数量统计',
-                        'slug' => 'statistic.orderCreated',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderCreated',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单支付数量统计',
-                        'slug' => 'statistic.orderPaidCount',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderPaidCount',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单已支付总额统计',
-                        'slug' => 'statistic.orderPaidSum',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderPaidSum',
-                    ],
-                    [
-                        'display_name' => '数据统计-课程每日销售数量统计',
-                        'slug' => 'statistic.courseSell',
-                        'method' => 'GET',
-                        'url' => 'statistic/courseSell',
-                    ],
-                    [
-                        'display_name' => '数据统计-会员每日销售数量统计',
-                        'slug' => 'statistic.roleSell',
-                        'method' => 'GET',
-                        'url' => 'statistic/roleSell',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日视频观看时长统计',
-                        'slug' => 'statistic.videoWatchDuration',
-                        'method' => 'GET',
-                        'url' => 'statistic/videoWatchDuration',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日课程观看时长统计',
-                        'slug' => 'statistic.courseWatchDuration',
-                        'method' => 'GET',
-                        'url' => 'statistic/courseWatchDuration',
                     ],
                 ],
             ],

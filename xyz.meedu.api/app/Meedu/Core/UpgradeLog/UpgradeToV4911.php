@@ -18,21 +18,31 @@ class UpgradeToV4911
     public static function handle()
     {
         self::upgradeImageDiskConfigItem();
-        self::deleteSomeConfigItems();
-        self::deleteSomePermissions();
+        self::deleteConfigItems();
+        self::deletePermissions();
         self::hideSomeConfigItems();
+        self::permissionRename();
     }
 
-    public static function deleteSomePermissions()
+    private static function deletePermissions()
     {
         AdministratorPermission::query()
             ->whereIn('slug', [
                 'media.video.store',
+
+                'statistic/userRegister',
+                'statistic/orderCreated',
+                'statistic/orderPaidCount',
+                'statistic/orderPaidSum',
+                'statistic/courseSell',
+                'statistic/roleSell',
+                'statistic/videoWatchDuration',
+                'statistic/courseWatchDuration',
             ])
             ->delete();
     }
 
-    public static function deleteSomeConfigItems()
+    private static function deleteConfigItems()
     {
         AppConfig::query()
             ->whereIn('key', [
@@ -53,7 +63,7 @@ class UpgradeToV4911
             ->delete();
     }
 
-    public static function upgradeImageDiskConfigItem()
+    private static function upgradeImageDiskConfigItem()
     {
         AppConfig::query()
             ->where('key', 'meedu.upload.image.disk')
@@ -75,12 +85,19 @@ class UpgradeToV4911
             ]);
     }
 
-    public static function hideSomeConfigItems()
+    private static function hideSomeConfigItems()
     {
         AppConfig::query()
             ->whereIn('key', [
                 ConfigConstant::ALIYUN_VOD_HOST,
             ])
             ->update(['is_show' => 0]);
+    }
+
+    private static function permissionRename()
+    {
+        AdministratorPermission::query()
+            ->where('slug', 'order.refund.list')
+            ->update(['display_name' => '订单-退款-列表']);
     }
 }
