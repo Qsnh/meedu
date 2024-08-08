@@ -54,7 +54,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserCourseWatchedEvent\UserCourseWatchedCredit1RewardListener',
         ],
         // 系统配置变更
-        'App\Events\AppConfigSavedEvent' => [],
+        'App\Events\AppConfigSavedEvent' => [
+            'App\Listeners\AppConfigSavedEvent\AliyunVodCallbackUrlListener',
+            'App\Listeners\AppConfigSavedEvent\AliyunPlayKeySyncListener',
+            'App\Listeners\AppConfigSavedEvent\TencentVodCallbackUrlListener',
+            'App\Listeners\AppConfigSavedEvent\TencentPlayKeySyncListener',
+        ],
         // 录播课程的增改删
         'App\Events\VodCourseCreatedEvent' => [
             'App\Listeners\VodCourseCreatedEvent\SearchRecordNotify',
@@ -76,7 +81,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
             'App\Listeners\VodVideoDestroyedEvent\UserWatchedRecordClear',
         ],
-        // 新视频上传event
+        // todo - 删除此事件
         'App\Events\VideoUploadedEvent' => [],
         // 视频转码完成event
         'App\Events\VideoTranscodeCompleteEvent' => [],
@@ -120,5 +125,38 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CourseAttachDownloadEvent' => [
             'App\Listeners\CourseAttachDownloadEvent\IncDownloadTimesListener',
         ],
+        // 阿里云视频回调事件之新视频上传确认 => 此时还未完整上传到服务器
+        'App\Events\AliyunVodCallbackMediaBaseChangeCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackMediaBaseChangeCompleteEvent\StoreUploadVideoListener',
+        ],
+        // 阿里云视频回调事件之新视频上传完成 => 此时已经可以获取到视频的大小
+        'App\Events\AliyunVodCallbackFileUploadCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackFileUploadCompleteEvent\UpdateMediaVideoListener',
+            'App\Listeners\AliyunVodCallbackFileUploadCompleteEvent\VideoVisibilityToggleListener',
+        ],
+        // 阿里云视频回调事件之视频分析完成 => 此时可以获取到视频的时长，宽高属性
+        'App\Events\AliyunVodCallbackVideoAnalysisCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackVideoAnalysisCompleteEvent\UpdateMediaVideoListener',
+        ],
+        // 阿里云视频回调事件之视频转码全部完成 => 也就是单个转码任务下的多个清晰度全部完成
+        'App\Events\AliyunVodCallbackTranscodeCompleteEvent' => [],
+        // 阿里云视频回调事件之视频删除
+        'App\Events\AliyunVodCallbackDeleteMediaCompleteEvent' => [
+            'App\Listeners\AliyunVodCallbackDeleteMediaCompleteEvent\DeleteMediaVideoListener',
+        ],
+        // 阿里云视频回调事件之直播转点播录制完成
+        'App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent' => [],
+        // 腾讯云视频回调事件之视频上传
+        'App\Events\TencentVodCallbackNewFileUploadEvent' => [
+            'App\Listeners\TencentVodCallbackNewFileUploadEvent\StoreUploadVideoListener',
+        ],
+        // 腾讯云视频回调事件之视频删除
+        'App\Events\TencentVodCallbackFileDeletedEvent' => [
+            'App\Listeners\TencentVodCallbackFileDeletedEvent\DeleteMediaVideoListener',
+        ],
+        // 腾讯云视频回调事件之视频转码结束
+        'App\Events\TencentVodCallbackTranscodeCompleteEvent' => [],
+        // 腾讯云视频回调事件之任务流状态变更
+        'App\Events\TencentVodCallbackProcedureStateChangedEvent' => [],
     ];
 }

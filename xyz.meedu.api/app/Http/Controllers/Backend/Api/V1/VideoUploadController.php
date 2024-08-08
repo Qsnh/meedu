@@ -9,21 +9,33 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Exception;
+use App\Bus\AliVodBus;
+use App\Bus\TencentVodBus;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
+use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
 {
-    public function tencentToken()
+    public function tencentToken(ConfigServiceInterface $configService)
     {
-        $signature = app()->make(\App\Meedu\Tencent\Vod::class)->getUploadSignature();
-
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
             AdministratorLog::OPT_VIEW,
             []
         );
+
+        $vodConfig = $configService->getTencentVodConfig();
+
+        if (!$vodConfig['app_id'] || !$vodConfig['secret_id'] || !$vodConfig['secret_key']) {
+            return $this->error(__('腾讯云点播配置缺失'));
+        }
+
+        $tencentVodBus = new TencentVodBus($vodConfig);
+
+        $tencentVodBus->callbackSync(true);
+
+        $signature = $tencentVodBus->getVodLib()->getUploadSignature();
 
         return $this->successData(compact('signature'));
     }
@@ -39,33 +51,28 @@ class VideoUploadController extends BaseController
             compact('title', 'filename')
         );
 
+        if (!$title || !$filename) {
+            return $this->error(__('参数错误'));
+        }
+
+        $vodConfig = $configService->getAliyunVodConfig();
+
+        if (
+            !$vodConfig['access_key_id'] ||
+            !$vodConfig['access_key_secret'] ||
+            !$vodConfig['region'] ||
+            !$vodConfig['host']
+        ) {
+            return $this->error(__('阿里云点播配置缺失'));
+        }
+
         try {
-            aliyun_sdk_client();
+            $aliVodBus = new AliVodBus($vodConfig);
 
-            $config = $configService->getAliyunVodConfig();
+            $aliVodBus->callbackKeySync(true);
 
-            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
-                ->host($config['host'])
-                ->product('Vod')
-                ->version('2017-03-21')
-                ->action('CreateUploadVideo')
-                ->options([
-                    'query' => [
-                        'Title' => $title,
-                        'FileName' => $filename,
-                    ]
-                ])
-                ->request();
-
-            return $this->successData([
-                'upload_auth' => $result['UploadAuth'],
-                'upload_address' => $result['UploadAddress'],
-                'video_id' => $result['VideoId'],
-                'request_id' => $result['RequestId'],
-            ]);
+            return $this->successData($aliVodBus->getVodLib()->createUploadVideo($title, $filename));
         } catch (Exception $exception) {
-            exception_record($exception);
-
             return $this->error($exception->getMessage());
         }
     }
@@ -80,32 +87,26 @@ class VideoUploadController extends BaseController
             compact('videoId')
         );
 
+        if (!$videoId) {
+            return $this->error(__('参数错误'));
+        }
+
+        $vodConfig = $configService->getAliyunVodConfig();
+
+        if (
+            !$vodConfig['access_key_id'] ||
+            !$vodConfig['access_key_secret'] ||
+            !$vodConfig['region'] ||
+            !$vodConfig['host']
+        ) {
+            return $this->error(__('阿里云点播配置缺失'));
+        }
+
         try {
-            aliyun_sdk_client();
+            $aliVodBus = new AliVodBus($vodConfig);
 
-            $config = $configService->getAliyunVodConfig();
-
-            $result = \AlibabaCloud\Client\AlibabaCloud::rpc()
-                ->product('Vod')
-                ->host($config['host'])
-                ->version('2017-03-21')
-                ->action('RefreshUploadVideo')
-                ->options([
-                    'query' => [
-                        'VideoId' => $videoId,
-                    ]
-                ])
-                ->request();
-
-            return $this->successData([
-                'upload_auth' => $result['UploadAuth'],
-                'upload_address' => $result['UploadAddress'],
-                'video_id' => $result['VideoId'],
-                'request_id' => $result['RequestId'],
-            ]);
+            return $this->successData($aliVodBus->getVodLib()->refreshUploadVideo($videoId));
         } catch (Exception $exception) {
-            exception_record($exception);
-
             return $this->error($exception->getMessage());
         }
     }

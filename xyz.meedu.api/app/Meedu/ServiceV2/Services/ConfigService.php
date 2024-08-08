@@ -8,6 +8,7 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use App\Constant\ConfigConstant;
 use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
 
 class ConfigService implements ConfigServiceInterface
@@ -95,4 +96,51 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.member.vip_protocol') ?? '';
     }
+
+    public function getAliVodCallbackKey(): string
+    {
+        return config('meedu.upload.video.aliyun.callback_key') ?? '';
+    }
+
+    public function updateAliyunVodCallbackKey(string $callbackKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::ALIYUN_VOD_CALLBACK_KEY, $callbackKey);
+    }
+
+    public function getAliyunVodConfig(): array
+    {
+        return config('meedu.upload.video.aliyun') ?? [];
+    }
+
+    public function getChunksConfigValues(array $array): array
+    {
+        return $this->dao->getChunksByKeys($array);
+    }
+
+    public function getTencentVodConfig(): array
+    {
+        return config('tencent.vod');
+    }
+
+    public function updateTencentVodCallbackKey(string $callbackKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_CALLBACK_KEY, $callbackKey);
+    }
+
+    public function getTencentVodCallbackKey(): string
+    {
+        return config('tencent.vod.callback_key') ?? '';
+    }
+
+    public function updateAliyunVodPlayKey(string $playKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::ALIYUN_VOD_PLAY_KEY, $playKey);
+    }
+
+    public function updateTencentVodPlayKey(string $playKey): void
+    {
+        $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_PLAY_KEY, $playKey);
+    }
+
+
 }

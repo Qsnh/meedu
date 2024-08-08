@@ -40,17 +40,6 @@ const SystemVideoSaveConfigPage = () => {
     },
   ];
 
-  const definition = [
-    {
-      label: "mp4",
-      value: "mp4",
-    },
-    {
-      label: "m3u8",
-      value: "m3u8",
-    },
-  ];
-
   useEffect(() => {
     document.title = "视频存储";
     dispatch(titleAction("视频存储"));
@@ -88,6 +77,12 @@ const SystemVideoSaveConfigPage = () => {
               "meedu.upload.video.aliyun.access_key_secret":
                 configData[index].value,
             });
+          } else if (
+            configData[index].key === "meedu.upload.video.aliyun.play_domain"
+          ) {
+            form.setFieldsValue({
+              "meedu.upload.video.aliyun.play_domain": configData[index].value,
+            });
           } else if (configData[index].key === "tencent.vod.app_id") {
             form.setFieldsValue({
               "tencent.vod.app_id": configData[index].value,
@@ -100,11 +95,9 @@ const SystemVideoSaveConfigPage = () => {
             form.setFieldsValue({
               "tencent.vod.secret_key": configData[index].value,
             });
-          } else if (
-            configData[index].key === "meedu.system.player.tencent_play_key"
-          ) {
+          } else if (configData[index].key === "tencent.vod.play_domain") {
             form.setFieldsValue({
-              "meedu.system.player.tencent_play_key": configData[index].value,
+              "tencent.vod.play_domain": configData[index].value,
             });
           } else if (
             configData[index].key === "meedu.upload.video.default_service"
@@ -124,23 +117,6 @@ const SystemVideoSaveConfigPage = () => {
           }
         }
 
-        let configPlayData = res.data["播放器配置"];
-        for (let index in configPlayData) {
-          if (
-            configPlayData[index].key ===
-            "meedu.system.player.video_format_whitelist"
-          ) {
-            if (
-              configPlayData[index].value &&
-              configPlayData[index].value.length > 0
-            ) {
-              let value = lowerCase(configPlayData[index].value);
-              form.setFieldsValue({
-                "meedu.system.player.video_format_whitelist": value.split(","),
-              });
-            }
-          }
-        }
         setLoading(false);
       })
       .catch((e) => {
@@ -181,10 +157,6 @@ const SystemVideoSaveConfigPage = () => {
   const onFinish = (values: any) => {
     if (loading) {
       return;
-    }
-    if (values["meedu.system.player.video_format_whitelist"]) {
-      values["meedu.system.player.video_format_whitelist"] =
-        values["meedu.system.player.video_format_whitelist"].join(",");
     }
     let it: any = aliRegions.find(
       (o: any) => o.value === values["meedu.upload.video.aliyun.region"]
@@ -248,55 +220,39 @@ const SystemVideoSaveConfigPage = () => {
               <Select style={{ width: 300 }} allowClear options={selects} />
             </Form.Item>
             <div className="from-title mt-30">阿里云视频</div>
-            <Form.Item
-              label="阿里云视频Region"
-              name="meedu.upload.video.aliyun.region"
-            >
+            <Form.Item label="Region" name="meedu.upload.video.aliyun.region">
               <Select style={{ width: 300 }} allowClear options={aliRegions} />
             </Form.Item>
             <Form.Item
-              label="阿里云视频AccessKeyId"
+              label="AccessKeyId"
               name="meedu.upload.video.aliyun.access_key_id"
             >
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
             <Form.Item
-              label="阿里云视频AccessKeySecret"
+              label="AccessKeySecret"
               name="meedu.upload.video.aliyun.access_key_secret"
             >
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
+            <Form.Item
+              label="播放域名"
+              name="meedu.upload.video.aliyun.play_domain"
+            >
+              <Input style={{ width: 300 }} allowClear />
+            </Form.Item>
             <div className="from-title mt-30">腾讯云视频</div>
-            <Form.Item label="腾讯云视频AppId" name="tencent.vod.app_id">
+            <Form.Item label="AppId" name="tencent.vod.app_id">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
-            <Form.Item label="腾讯云视频SecretId" name="tencent.vod.secret_id">
+            <Form.Item label="SecretId" name="tencent.vod.secret_id">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
-            <Form.Item
-              label="腾讯云视频SecretKey"
-              name="tencent.vod.secret_key"
-            >
+            <Form.Item label="SecretKey" name="tencent.vod.secret_key">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
-            <Form.Item
-              label="腾讯云播放key"
-              name="meedu.system.player.tencent_play_key"
-            >
+            <Form.Item label="播放域名" name="tencent.vod.play_domain">
               <Input style={{ width: 300 }} allowClear />
-            </Form.Item>
-            <div className="from-title mt-30">播放格式白名单</div>
-            <Form.Item
-              label="视频播放格式白名单"
-              name="meedu.system.player.video_format_whitelist"
-            >
-              <Select
-                mode="multiple"
-                style={{ width: 300 }}
-                allowClear
-                options={definition}
-                placeholder="请选择"
-              />
             </Form.Item>
           </Form>
         </div>

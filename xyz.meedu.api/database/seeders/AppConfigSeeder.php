@@ -9,6 +9,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Constant\ConfigConstant;
 
 class AppConfigSeeder extends Seeder
 {
@@ -673,7 +674,7 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频AccessKeyId',
                 'field_type' => 'text',
                 'sort' => 10,
-                'key' => 'meedu.upload.video.aliyun.access_key_id',
+                'key' => ConfigConstant::ALIYUN_VOD_ACCESS_KEY_ID,
                 'value' => '',
             ],
             [
@@ -681,7 +682,7 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频AccessKeySecret',
                 'field_type' => 'text',
                 'sort' => 20,
-                'key' => 'meedu.upload.video.aliyun.access_key_secret',
+                'key' => ConfigConstant::ALIYUN_VOD_ACCESS_KEY_SECRET,
                 'value' => '',
                 'is_private' => 1,
             ],
@@ -690,7 +691,7 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频Region',
                 'field_type' => 'text',
                 'sort' => 30,
-                'key' => 'meedu.upload.video.aliyun.region',
+                'key' => ConfigConstant::ALIYUN_VOD_REGION,
                 'value' => '',
             ],
             [
@@ -698,8 +699,38 @@ class AppConfigSeeder extends Seeder
                 'name' => '阿里云视频Host',
                 'field_type' => 'text',
                 'sort' => 40,
-                'key' => 'meedu.upload.video.aliyun.host',
+                'key' => ConfigConstant::ALIYUN_VOD_HOST,
                 'value' => '',
+                'is_show' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播回调鉴权密钥',
+                'field_type' => 'text',
+                'sort' => 50,
+                'key' => ConfigConstant::ALIYUN_VOD_CALLBACK_KEY,
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播播放域名',
+                'field_type' => 'text',
+                'sort' => 60,
+                'key' => ConfigConstant::ALIYUN_VOD_PLAY_DOMAIN,
+                'value' => '',
+                'is_private' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '阿里云点播播放密钥',
+                'field_type' => 'text',
+                'sort' => 70,
+                'key' => ConfigConstant::ALIYUN_VOD_PLAY_KEY,
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0,
             ],
 
             // 腾讯云视频
@@ -709,7 +740,7 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 100,
                 'default_value' => '',
-                'key' => 'tencent.vod.app_id',
+                'key' => ConfigConstant::TENCENT_VOD_APP_ID,
                 'value' => '',
             ],
             [
@@ -718,7 +749,7 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 110,
                 'default_value' => '',
-                'key' => 'tencent.vod.secret_id',
+                'key' => ConfigConstant::TENCENT_VOD_SECRET_ID,
                 'value' => '',
             ],
             [
@@ -727,19 +758,39 @@ class AppConfigSeeder extends Seeder
                 'field_type' => 'text',
                 'sort' => 120,
                 'default_value' => '',
-                'key' => 'tencent.vod.secret_key',
+                'key' => ConfigConstant::TENCENT_VOD_SECRET_KEY,
                 'value' => '',
                 'is_private' => 1,
             ],
             [
                 'group' => '视频',
-                'name' => '腾讯云播放key',
+                'name' => '腾讯云回调鉴权密钥',
                 'field_type' => 'text',
-                'sort' => 130,
-                'default_value' => '',
-                'key' => 'meedu.system.player.tencent_play_key',
+                'sort' => 140,
+                'key' => ConfigConstant::TENCENT_VOD_CALLBACK_KEY,
                 'value' => '',
                 'is_private' => 1,
+                'is_show' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云点播播放域名',
+                'field_type' => 'text',
+                'sort' => 150,
+                'key' => ConfigConstant::TENCENT_VOD_PLAY_DOMAIN,
+                'value' => '',
+                'is_private' => 0,
+            ],
+            [
+                'group' => '视频',
+                'name' => '腾讯云点播播放key',
+                'field_type' => 'text',
+                'sort' => 160,
+                'default_value' => '',
+                'key' => ConfigConstant::TENCENT_VOD_PLAY_KEY,
+                'value' => '',
+                'is_private' => 1,
+                'is_show' => 0
             ],
 
             // 会员配置
@@ -926,15 +977,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.system.player.bullet_secret.opacity',
                 'value' => 1,
             ],
-            [
-                'group' => '播放器配置',
-                'name' => '播放视频格式白名单',
-                'field_type' => 'text',
-                'sort' => 100,
-                'key' => 'meedu.system.player.video_format_whitelist',
-                'value' => '',
-                'help' => '设置视频格式后缀，多个请用英文逗号连接',
-            ],
 
             // 微信公众号
             [
@@ -1102,11 +1144,6 @@ class AppConfigSeeder extends Seeder
             ],
         ];
 
-        $localConfig = [];
-        if (file_exists(storage_path('meedu_config.json'))) {
-            $localConfig = json_decode(file_get_contents(storage_path('meedu_config.json')), true);
-        }
-
         foreach ($config as $item) {
             $configItem = \App\Services\Base\Model\AppConfig::query()->where('key', $item['key'])->first();
             if ($configItem) {
@@ -1116,18 +1153,19 @@ class AppConfigSeeder extends Seeder
                     $item['field_type'] !== $configItem['field_type'] ||
                     $item['sort'] !== $configItem['sort'] ||
                     (isset($item['option_value']) && $item['option_value'] !== $configItem['option_value'])
-                ) {//产生了变化->提交修改
-                    $configItem->fill([
-                        'group' => $item['group'],
-                        'name' => $item['name'],
-                        'field_type' => $item['field_type'],
-                        'sort' => $item['sort'],
-                        'option_value' => $item['option_value'] ?? null,
-                    ])->save();
+                ) {
+                    //产生了变化->提交修改
+                    $configItem
+                        ->fill([
+                            'group' => $item['group'],
+                            'name' => $item['name'],
+                            'field_type' => $item['field_type'],
+                            'sort' => $item['sort'],
+                            'option_value' => $item['option_value'] ?? null,
+                        ])
+                        ->save();
                 }
             } else {
-                $val = \Illuminate\Support\Arr::get($localConfig, $item['key']);
-                $item['value'] = $val ?: ($item['value'] ?? '');
                 \App\Services\Base\Model\AppConfig::create($item);
             }
         }

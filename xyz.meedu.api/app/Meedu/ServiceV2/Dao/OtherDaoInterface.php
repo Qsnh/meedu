@@ -23,4 +23,16 @@ interface OtherDaoInterface
     ): void;
 
     public function appConfigValueKey(): array;
+
+    public function updateValueByKey(string $key, string $value):void;
+
+    public function getChunksByKeys(array $array):array;
+
+    public function findMediaVideoByVideoId(string $service, string $videoId):array;
+
+    public function storeMediaVideo(array $data):void;
+
+    public function updateMediaVideo(int $id, array $updateData):void;
+
+    public function deleteMediaVideos(string $service, array $videoIds):void;
 }

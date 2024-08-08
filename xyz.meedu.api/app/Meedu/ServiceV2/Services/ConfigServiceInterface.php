@@ -37,4 +37,22 @@ interface ConfigServiceInterface
     public function allKeyValue(): array;
 
     public function getVipProtocol(): string;
+
+    public function getAliVodCallbackKey(): string;
+
+    public function updateAliyunVodCallbackKey(string $callbackKey): void;
+
+    public function getAliyunVodConfig(): array;
+
+    public function getChunksConfigValues(array $array): array;
+
+    public function getTencentVodConfig(): array;
+
+    public function updateTencentVodCallbackKey(string $callbackKey): void;
+
+    public function getTencentVodCallbackKey(): string;
+
+    public function updateAliyunVodPlayKey(string $playKey): void;
+
+    public function updateTencentVodPlayKey(string $playKey): void;
 }

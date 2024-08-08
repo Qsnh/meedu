@@ -33,7 +33,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     Route::group(['prefix' => 'media/videos'], function () {
         Route::get('/index', 'MediaVideoController@index');
-        Route::post('/create', 'MediaVideoController@store');
         Route::post('/delete/multi', 'MediaVideoController@deleteVideos');
     });
 

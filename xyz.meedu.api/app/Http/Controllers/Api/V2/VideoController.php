@@ -14,8 +14,10 @@ use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
+use App\Meedu\Cache\Impl\AliVodPlayCache;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Http\Requests\ApiV2\CommentRequest;
+use App\Meedu\Cache\Impl\TencentVodPlayCache;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
@@ -312,8 +314,6 @@ class VideoController extends BaseController
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
-     * @apiParam {Number} is_try 是否试看[1:是,0否]
-     *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      * @apiSuccess {String} data.url 播放URL
@@ -321,30 +321,35 @@ class VideoController extends BaseController
      * @apiSuccess {Number} data.duration 时长,单位:秒
      * @apiSuccess {String} data.name 清晰度
      */
-    public function playInfo(Request $request, $id)
+    public function playInfo($id)
     {
-        $isTry = (int)$request->has('is_try');
-
         $video = $this->videoService->find($id);
         $course = $this->courseService->find($video['course_id']);
-
-        // 如果视频未配置试看秒数那么是无法试看的
-        $video['free_seconds'] <= 0 && $isTry = false;
 
         // 当前用户是否可以观看视频
         $canSee = $this->businessState->canSeeVideo($this->user(), $course, $video);
 
-        // 如果用户可以观看视频就无需试看
-        $canSee && $isTry = false;
-
-        // 无法观看且也没有配置试看 => 将无法观看
-        if ($canSee === false && !$isTry) {
+        // 无法观看且也没有试看 => 无法观看
+        if (!$canSee && $video['free_seconds'] <= 0) {
             return $this->error(__('请购买后观看'));
         }
 
-        $urls = get_play_url($video, $isTry);
-        if (!$urls) {
-            return $this->error(__('错误'));
+        $previewSeconds = $canSee ? 0 : $video['free_seconds'];
+
+        $urls = [];
+        if ($video['aliyun_video_id']) {
+            $aliPlayCache = new AliVodPlayCache($video['id'], $video['aliyun_video_id'], $previewSeconds);
+            $urls = $aliPlayCache->get();
+        } elseif ($video['tencent_video_id']) {
+            $tencentCache = new TencentVodPlayCache($video['id'], $video['tencent_video_id'], $previewSeconds);
+            $urls = $tencentCache->get();
+        } elseif ($video['url']) {
+            $urls[] = [
+                'url' => $video['url'],
+                'format' => pathinfo($video['url'], PATHINFO_EXTENSION),
+                'name' => __('默认'),
+                'duration' => 0,
+            ];
         }
 
         return $this->data(compact('urls'));
@@ -396,21 +401,24 @@ class VideoController extends BaseController
         $fileId = $request->input('file_id');
         $service = $request->input('service');
 
-        if (!$fileId || !$service) {
+        if (
+            !$fileId ||
+            !$service ||
+            !in_array($service, [FrontendConstant::VOD_SERVICE_ALIYUN, FrontendConstant::VOD_SERVICE_TENCENT])
+        ) {
             return $this->error(__('参数错误'));
         }
 
         $mediaVideo = $this->videoService->findOpenVideo($fileId, $service);
         throw_if(!$mediaVideo, ModelNotFoundException::class);
 
-        $urls = get_play_url([
-            'aliyun_video_id' => $mediaVideo['storage_driver'] === FrontendConstant::VOD_SERVICE_ALIYUN ? $mediaVideo['storage_file_id'] : '',
-            'tencent_video_id' => $mediaVideo['storage_driver'] === FrontendConstant::VOD_SERVICE_TENCENT ? $mediaVideo['storage_file_id'] : '',
-            'url' => '',
-        ], false);
-
-        if (!$urls) {
-            return $this->error(__('错误'));
+        $urls = [];
+        if (FrontendConstant::VOD_SERVICE_ALIYUN === $mediaVideo['storage_driver']) {
+            $aliPlayCache = new AliVodPlayCache(0, $mediaVideo['storage_file_id'], 0);
+            $urls = $aliPlayCache->get();
+        } elseif (FrontendConstant::VOD_SERVICE_TENCENT === $mediaVideo['storage_driver']) {
+            $tencentCache = new TencentVodPlayCache(0, $mediaVideo['storage_file_id'], 0);
+            $urls = $tencentCache->get();
         }
 
         return $this->data(compact('urls'));

@@ -11,6 +11,9 @@ return [
         'app_id' => '',
         'secret_id' => '',
         'secret_key' => '',
+        'callback_key' => '',
+        'play_domain' => '',
+        'play_key' => '',
     ],
     'face' => [
         'rule_id' => '',

@@ -27,4 +27,50 @@ class OtherService implements OtherServiceInterface
 
         $this->otherDao->storeUserUploadImage($userId, $group, $disk, $path, $name, $visitUrl, $logApi, $logIp, $logUA);
     }
+
+    public function storeOrUpdateMediaVideo(string $service, string $videoId, array $data): void
+    {
+        $mediaVideo = $this->otherDao->findMediaVideoByVideoId($service, $videoId);
+        if ($mediaVideo) {
+            $updateData = [];
+            if (isset($data['title']) && $data['title'] && $mediaVideo['title'] !== $data['title']) {
+                $updateData['title'] = $data['title'];
+            }
+            if (isset($data['size']) && $data['size'] && $mediaVideo['size'] !== $data['size']) {
+                $updateData['size'] = $data['size'];
+            }
+            if (isset($data['duration']) && $data['duration'] && $mediaVideo['duration'] !== $data['duration']) {
+                $updateData['duration'] = $data['duration'];
+            }
+            if (isset($data['is_hidden']) && $mediaVideo['is_hidden'] !== $data['is_hidden']) {
+                $updateData['is_hidden'] = $data['is_hidden'];
+            }
+
+            $updateData && $this->otherDao->updateMediaVideo($mediaVideo['id'], $updateData);
+        } else {
+            $this->otherDao->storeMediaVideo(array_merge($data, [
+                'storage_driver' => $service,
+                'storage_file_id' => $videoId,
+            ]));
+        }
+    }
+
+    public function deleteMediaVideo(string $service, string $videoId): void
+    {
+        $this->otherDao->deleteMediaVideos($service, [$videoId]);
+    }
+
+    public function mediaVideoVisibilityToggle(string $service, string $videoId): void
+    {
+        $mediaVideo = $this->otherDao->findMediaVideoByVideoId($service, $videoId);
+        if ($mediaVideo && $mediaVideo['is_hidden'] !== 0) {
+            $this->otherDao->updateMediaVideo($mediaVideo['id'], ['is_hidden' => 0]);
+        }
+    }
+
+    public function deleteMediaVideos(string $service, array $videoIds): void
+    {
+        $this->otherDao->deleteMediaVideos($service, $videoIds);
+    }
+
 }

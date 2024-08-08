@@ -18,7 +18,7 @@ class MediaVideo extends Model
         'title', 'thumb', 'duration', 'size',
         'storage_driver', 'storage_file_id',
         'transcode_status', 'ref_count',
-        'is_open',
+        'is_open', 'is_hidden',
     ];
 
     protected $appends = [

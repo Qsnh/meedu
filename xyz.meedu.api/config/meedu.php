@@ -95,10 +95,13 @@ return [
         'video' => [
             'default_service' => '',
             'aliyun' => [
-                'region' => 'cn-shanghai',
+                'region' => '',
                 'host' => '',
                 'access_key_id' => '',
                 'access_key_secret' => '',
+                'callback_key' => '',
+                'play_domain' => '',
+                'play_key' => '',
             ],
         ],
         'attach' => [
@@ -185,10 +188,6 @@ return [
                 'color' => '', //默认red
                 'opacity' => 1, //默认1
             ],
-            // 腾讯云播放key
-            'tencent_play_key' => '',
-            // 播放格式
-            'video_format_whitelist' => '',
         ],
 
         // 缓存开关
