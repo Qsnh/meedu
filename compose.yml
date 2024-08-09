@@ -23,19 +23,19 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/meedu/light:4.9.10
     restart: always
     environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_DATABASE=meedu
-      - DB_USERNAME=root
-      - DB_PASSWORD=meeduxyz
-      - REDIS_HOST=redis
-      - REDIS_PASSWORD=F9nO2FzJ*%uDX58!
-      - REDIS_PORT=6379
-      - QUEUE_DRIVER=sync
-      - APP_KEY=base64:s9M5EmBWLWerXU/udZ8biH8GYGKBAEtatGNI2XnzEVM=
-      - JWT_SECRET=26tpIiNHtYE0YsXeDge837qfIXVmlOES8l9M2u9OTrCZ9NASZcqJdYXBaOSPeLsh
-      - MEILISEARCH_HOST=http://meilisearch:7700
-      - MEILISEARCH_KEY=null
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT}
+      - QUEUE_DRIVER=${QUEUE_DRIVER}
+      - APP_KEY=${APP_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - MEILISEARCH_HOST=${MEILISEARCH_HOST}
+      - MEILISEARCH_KEY=${MEILISEARCH_KEY}
     ports:
       - 8000:8000
       - 8100:8100
