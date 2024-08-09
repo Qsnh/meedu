@@ -7,12 +7,14 @@ import {
   Table,
   Empty,
   ConfigProvider,
+  Col,
+  Pagination,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { media } from "../../api";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
-import { DurationText, PerButton, UploadVideoItem } from "../../components";
+import { DurationText, UploadVideoItem } from "../../components";
 import { yearFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import emptyIcon from "../../assets/images/upload-video/empty.png";
@@ -143,24 +145,24 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       dataIndex: "created_at",
       render: (created_at: string) => <span>{yearFormat(created_at)}</span>,
     },
-    {
-      title: "操作",
-      width: 100,
-      fixed: "right",
-      render: (_, record: any) => (
-        <PerButton
-          type="link"
-          text="删除"
-          class="c-red"
-          icon={null}
-          p="media.video.delete.multi"
-          onClick={() => {
-            destory(record.id);
-          }}
-          disabled={null}
-        />
-      ),
-    },
+    // {
+    //   title: "操作",
+    //   width: 100,
+    //   fixed: "right",
+    //   render: (_, record: any) => (
+    //     <PerButton
+    //       type="link"
+    //       text="删除"
+    //       class="c-red"
+    //       icon={null}
+    //       p="media.video.delete.multi"
+    //       onClick={() => {
+    //         destory(record.id);
+    //       }}
+    //       disabled={null}
+    //     />
+    //   ),
+    // },
   ];
 
   const resetData = () => {
@@ -210,20 +212,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2);
     }
     return size;
-  };
-
-  const paginationProps = {
-    current: page, //当前页码
-    pageSize: size,
-    total: total, // 总条数
-    onChange: (page: number, pageSize: number) =>
-      handlePageChange(page, pageSize), //改变页码的函数
-    showSizeChanger: true,
-  };
-
-  const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
   };
 
   const rowSelection = {
@@ -332,19 +320,43 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
 
               {!isNoService ? (
                 <div className="float-left">
-                  <ConfigProvider renderEmpty={tableEmptyRender}>
-                    <Table
-                      rowSelection={{
-                        type: "radio",
-                        ...rowSelection,
+                  <div style={{ width: "100%", height: 460 }}>
+                    <ConfigProvider renderEmpty={tableEmptyRender}>
+                      <Table
+                        rowSelection={{
+                          type: "radio",
+                          ...rowSelection,
+                        }}
+                        scroll={{ y: 400 }}
+                        loading={loading}
+                        columns={columns2}
+                        dataSource={list}
+                        rowKey={(record) => record.id}
+                        pagination={false}
+                      />
+                    </ConfigProvider>
+                  </div>
+                  {list.length > 0 && (
+                    <Col
+                      span={24}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row-reverse",
+                        marginTop: 10,
+                        marginBottom: 10,
                       }}
-                      loading={loading}
-                      columns={columns2}
-                      dataSource={list}
-                      rowKey={(record) => record.id}
-                      pagination={paginationProps}
-                    />
-                  </ConfigProvider>
+                    >
+                      <Pagination
+                        onChange={(currentPage, currentSize) => {
+                          setPage(currentPage);
+                          setSize(currentSize);
+                        }}
+                        pageSize={size}
+                        defaultCurrent={page}
+                        total={total}
+                      />
+                    </Col>
+                  )}
                 </div>
               ) : null}
             </div>

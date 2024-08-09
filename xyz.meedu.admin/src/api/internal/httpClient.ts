@@ -51,6 +51,8 @@ export class HttpClient {
         } else if (status === 401 || code === 401) {
           message.error("请重新登录");
           GoLogin();
+        } else if (status === 1) {
+          message.error(response.data.message);
         } else {
           GoError(0, msg);
         }

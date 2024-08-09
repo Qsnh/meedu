@@ -19,7 +19,7 @@ const SystemVideoSaveConfigPage = () => {
   const [selects, setSelects] = useState<any>([]);
   const aliRegions = [
     {
-      label: "华东1（杭州）/ 华东2（上海）",
+      label: "华东2（上海）",
       value: "cn-shanghai",
       host: "vod.cn-shanghai.aliyuncs.com",
     },

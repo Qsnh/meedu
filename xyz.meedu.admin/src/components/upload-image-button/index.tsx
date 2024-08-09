@@ -124,7 +124,7 @@ export const UploadImageButton = (props: PropsInterface) => {
           }}
           centered
         >
-          <Row style={{ width: 830, minHeight: 520, marginTop: 24 }}>
+          <Row style={{ width: 830, height: 560, marginTop: 24 }}>
             <div
               style={{ position: "absolute", right: 30, top: 15, zIndex: 15 }}
             >
@@ -206,6 +206,7 @@ export const UploadImageButton = (props: PropsInterface) => {
                     }}
                     pageSize={size}
                     defaultCurrent={page}
+                    showSizeChanger={false}
                     total={total}
                   />
                 </Col>

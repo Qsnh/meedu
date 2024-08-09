@@ -63,6 +63,9 @@
         font-weight: 400;
         color: #999999;
         line-height: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       .vod-course-charge {
