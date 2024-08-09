@@ -35,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
         // 日志链路配置
         $this->logInit();
         // 强制route,url等函数在生成链接的时候使用 `app.url` 配置的域名
-        $this->app->make('url')->forceRootUrl(config('app.url'));
+        $appUrl = config('app.url');
+        $this->app->make('url')->forceRootUrl($appUrl);
+        $this->app->make('url')->forceScheme(Str::startsWith($appUrl, 'https://') ? 'https' : 'http');
     }
 
     /**
