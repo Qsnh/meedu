@@ -18,14 +18,14 @@ class EventServiceProvider extends ServiceProvider
         ],
         // 支付成功event
         'App\Events\PaymentSuccessEvent' => [
-            '\App\Listeners\PaymentSuccessEvent\OrderPaidDeliverListener',
-            '\App\Listeners\PaymentSuccessEvent\OrderPaidNotificationListener',
-            '\App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
-            '\App\Listeners\PaymentSuccessEvent\Credit1RewardListener',
+            'App\Listeners\PaymentSuccessEvent\OrderPaidDeliverListener',
+            'App\Listeners\PaymentSuccessEvent\OrderPaidNotificationListener',
+            'App\Listeners\PaymentSuccessEvent\OrderPaidStatusChangeListener',
+            'App\Listeners\PaymentSuccessEvent\Credit1RewardListener',
         ],
         // 订单取消
         'App\Events\OrderCancelEvent' => [
-            '\App\Listeners\OrderCancelEvent\PromoCodeResumeListener',
+            'App\Listeners\OrderCancelEvent\PromoCodeResumeListener',
         ],
         // 用户注册
         'App\Events\UserRegisterEvent' => [
@@ -81,10 +81,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
             'App\Listeners\VodVideoDestroyedEvent\UserWatchedRecordClear',
         ],
-        // todo - 删除此事件
-        'App\Events\VideoUploadedEvent' => [],
-        // 视频转码完成event
-        'App\Events\VideoTranscodeCompleteEvent' => [],
         // 退款已申请
         'App\Events\OrderRefundCreated' => [],
         // 退款已处理[不一定成功]
