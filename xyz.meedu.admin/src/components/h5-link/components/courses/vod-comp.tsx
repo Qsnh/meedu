@@ -104,11 +104,7 @@ export const VodComp = (props: PropsInterface) => {
       let row: any = selectedRows[0];
       if (row) {
         let link = "";
-        if (enabledAddonsCount === 0) {
-          link = "/course/" + row.id + "/" + row.id;
-        } else {
-          link = "/pages/course/show?id=" + row.id;
-        }
+        link = "/course/" + row.id;
         props.onChange(link);
       }
     },

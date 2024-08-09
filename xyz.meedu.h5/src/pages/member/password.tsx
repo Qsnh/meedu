@@ -152,6 +152,7 @@ const MemberPasswordPage = () => {
           scene="password_reset"
           status={confirmDialog}
           mobile={user.mobile}
+          reStatus={reCaptcha}
           change={(sms) => submit(sms)}
         />
       )}

@@ -127,15 +127,15 @@ const routes: RouteObject[] = [
             element: <LoginPage />,
           },
           {
-            path: "/vod",
+            path: "/courses",
             element: <CoursePage />,
           },
           {
-            path: "/vod/detail",
+            path: "/course/:courseId",
             element: <CourseDetailPage />,
           },
           {
-            path: "/vod/video",
+            path: "/course/video/:videoId",
             element: <PrivateRoute Component={<CoursePlayPage />} />,
           },
           {

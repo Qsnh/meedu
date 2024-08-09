@@ -76,10 +76,6 @@ const LoginPage = () => {
     setAgreeProtocol(bool);
   };
 
-  const loginCancel = () => {
-    setConfirmDialog(false);
-  };
-
   const cancelModel = () => {
     dispatch(logoutAction());
     setVisible(false);
@@ -104,12 +100,11 @@ const LoginPage = () => {
         msv: "",
       })
       .then((res: any) => {
-        setConfirmDialog(false);
         setLoading(false);
         handler(res.data.token);
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        setReCaptcha(!reCaptcha);
         setLoading(false);
       });
   };
@@ -126,6 +121,7 @@ const LoginPage = () => {
         setModelText("登录前请绑定手机号");
         setConfirmText("立即绑定");
         setVisible(true);
+        setConfirmDialog(false);
       } else if (
         res.data.is_face_verify === false &&
         config.member.enabled_face_verify === true
@@ -134,12 +130,17 @@ const LoginPage = () => {
         setModelText("登录前请完成实名认证");
         setConfirmText("立即认证");
         setVisible(true);
+        setConfirmDialog(false);
       } else {
         clearBizToken();
         clearRuleId();
         // 跳转到之前的页面
         setTimeout(() => {
-          navigate(-1);
+          if (redirect) {
+            window.location.href = getHost() + decodeURIComponent(redirect);
+          } else {
+            navigate(-1);
+          }
         }, 500);
       }
     } catch (e: any) {
@@ -338,6 +339,7 @@ const LoginPage = () => {
           text="登录/注册"
           scene="login"
           status={confirmDialog}
+          reStatus={reCaptcha}
           mobile={mobile}
           change={(sms) => loginHandler(sms)}
         />

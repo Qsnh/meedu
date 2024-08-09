@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import styles from "./detail.module.scss";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { course } from "../../api";
 import NavHeader from "../../components/nav-header";
 import TabsComponent from "./compenents/tabs";
@@ -17,20 +17,15 @@ interface CourseResponseInterface {
 }
 
 const CourseDetailPage = () => {
-  const result = new URLSearchParams(useLocation().search);
-  const [id, setId] = useState(Number(result.get("id") || 0));
+  const params = useParams();
   const [resDATA, setResDATA] = useState<CourseResponseInterface | null>(null);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
-
-  useEffect(() => {
     getDetail();
-  }, [id]);
+  }, [params.courseId]);
 
   const getDetail = () => {
-    course.Detail(id).then((res: any) => {
+    course.Detail(Number(params.courseId)).then((res: any) => {
       setResDATA(res.data);
       document.title = res.data.course.title;
     });
@@ -62,7 +57,7 @@ const CourseDetailPage = () => {
               </div>
             </div>
             <div className={styles["line"]}></div>
-            <TabsComponent id={id} data={resDATA} />
+            <TabsComponent id={Number(params.courseId)} data={resDATA} />
           </>
         ) : null}
       </div>

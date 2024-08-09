@@ -180,7 +180,7 @@ const StudyPage = () => {
   };
 
   const goDetail = (item: any) => {
-    navigate("/vod/detail?id=" + item.id);
+    navigate("/course/" + item.id);
   };
 
   const goLogin = () => {

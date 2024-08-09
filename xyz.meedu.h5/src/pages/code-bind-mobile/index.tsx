@@ -97,7 +97,7 @@ const CodeBindMobilePage = () => {
         getUser();
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        setReCaptcha(!reCaptcha);
         setLoading(false);
       });
   };
@@ -208,6 +208,7 @@ const CodeBindMobilePage = () => {
           scene="mobile_bind"
           status={confirmDialog}
           mobile={mobile}
+          reStatus={reCaptcha}
           change={(sms) => submit(sms)}
         />
       )}

@@ -58,6 +58,9 @@ const LoginPasswordPage = () => {
       .then((res: any) => {
         // 写入token
         handler(res.data.token);
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -70,7 +73,6 @@ const LoginPasswordPage = () => {
   const getUser = async () => {
     try {
       let res: any = await user.detail();
-      setLoading(false);
       dispatch(loginAction(res.data));
       if (
         config.member.enabled_mobile_bind_alert === 1 &&
@@ -93,9 +95,14 @@ const LoginPasswordPage = () => {
         clearRuleId();
         // 跳转到之前的页面
         setTimeout(() => {
-          navigate(-2);
+          if (redirect) {
+            window.location.href = getHost() + decodeURIComponent(redirect);
+          } else {
+            navigate(-2);
+          }
         }, 500);
       }
+      setLoading(false);
     } catch (e: any) {
       if (e.code === 401) {
         clearToken();

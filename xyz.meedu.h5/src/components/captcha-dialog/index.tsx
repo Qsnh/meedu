@@ -23,6 +23,7 @@ export const CaptchaDialog: React.FC<PropInterface> = ({
   useEffect(() => {
     setContent("");
     getCaptcha();
+    setLoading(false);
   }, [reStatus]);
 
   useEffect(() => {

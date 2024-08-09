@@ -72,7 +72,6 @@ const MemberMobilePage = () => {
         mobile_code: val,
       })
       .then((res: any) => {
-        setConfirmDialog(false);
         setLoading(false);
         Toast.show("成功");
         setTimeout(() => {
@@ -80,7 +79,7 @@ const MemberMobilePage = () => {
         }, 500);
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        setReCaptcha(!reCaptcha);
         setLoading(false);
       });
   };
@@ -141,6 +140,7 @@ const MemberMobilePage = () => {
           scene="mobile_bind"
           status={confirmDialog}
           mobile={mobile}
+          reStatus={reCaptcha}
           change={(sms) => submit(sms)}
         />
       )}

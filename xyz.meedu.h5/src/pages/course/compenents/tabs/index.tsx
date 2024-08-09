@@ -96,7 +96,7 @@ export default function TabsComponent(props: PropsInterafce) {
     } else {
       video = props.data.videos[props.data.chapters[0].id][0];
     }
-    navigate("/vod/video?id=" + video.id);
+    navigate("/course/video/" + video.id);
   };
 
   const likeHit = () => {
@@ -158,7 +158,7 @@ export default function TabsComponent(props: PropsInterafce) {
       goLogin();
       return;
     }
-    navigate("/vod/video?id=" + video.id);
+    navigate("/course/video/" + video.id);
   };
 
   return (

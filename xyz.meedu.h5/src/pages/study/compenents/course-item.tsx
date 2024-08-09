@@ -16,14 +16,14 @@ export const CoursesModel: React.FC<PropInterface> = ({
   const goPlay = (item: any) => {
     if (currenStatus === "study" && item.last_view_video.length !== 0) {
       let vid = item.last_view_video.video_id;
-      navigate("/vod/video?id=" + vid);
+      navigate("/course/video/" + vid);
     } else {
       goDetail(item.course_id);
     }
   };
 
   const goDetail = (id: number) => {
-    navigate("/vod/detail?id=" + id);
+    navigate("/course/" + id);
   };
 
   return (

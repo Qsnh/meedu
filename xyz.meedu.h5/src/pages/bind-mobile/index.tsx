@@ -89,7 +89,6 @@ const BindMobilePage = () => {
         token: getTmpToken(),
       })
       .then((res: any) => {
-        setConfirmDialog(false);
         setLoading(false);
         Toast.show("成功");
         setToken(getTmpToken());
@@ -97,7 +96,7 @@ const BindMobilePage = () => {
         getUser();
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        setReCaptcha(!reCaptcha);
         setLoading(false);
       });
   };
@@ -114,6 +113,7 @@ const BindMobilePage = () => {
         setModelText("登录前请完成实名认证");
         setConfirmText("立即认证");
         setVisible(true);
+        setConfirmDialog(false);
       } else {
         // 跳转到之前的页面
         setTimeout(() => {
@@ -207,6 +207,7 @@ const BindMobilePage = () => {
           text="绑定"
           scene="mobile_bind"
           status={confirmDialog}
+          reStatus={reCaptcha}
           mobile={mobile}
           change={(sms) => submit(sms)}
         />

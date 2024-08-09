@@ -21,7 +21,7 @@ export const VodCourseItem: React.FC<PropInterface> = ({
   const navigate = useNavigate();
 
   const goShow = () => {
-    navigate(`/vod/detail?id=${cid}`);
+    navigate(`/course/${cid}`);
   };
 
   return (

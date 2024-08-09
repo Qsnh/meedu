@@ -17,7 +17,7 @@ export const IndexVodV1: React.FC<PropInterface> = ({ render, name }) => {
           <div className={styles["index-section-title"]}>
             <div className={styles["index-section-title-text"]}>{name}</div>
             <div className={styles["more"]}>
-              <span onClick={() => navigate("/vod")}>查看全部</span>
+              <span onClick={() => navigate("/courses")}>查看全部</span>
             </div>
           </div>
           <div className={styles["index-section-body"]}>

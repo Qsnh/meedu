@@ -81,7 +81,7 @@ const MemberMobileVerifyPage = () => {
         }, 500);
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        setReCaptcha(!reCaptcha);
         setLoading(false);
       });
   };
@@ -135,6 +135,7 @@ const MemberMobileVerifyPage = () => {
           scene="mobile_bind"
           status={confirmDialog}
           mobile={user.mobile}
+          reStatus={reCaptcha}
           change={(sms) => submit(sms)}
         />
       )}

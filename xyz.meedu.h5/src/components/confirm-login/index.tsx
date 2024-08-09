@@ -8,6 +8,7 @@ import closeIcon from "../../assets/img/new/close.png";
 interface PropInterface {
   mobile: string;
   status: boolean;
+  reStatus: boolean;
   text: string;
   scene: string;
   change: (sms: string) => void;
@@ -18,6 +19,7 @@ var interval: any = null;
 export const ConfirmLogin: React.FC<PropInterface> = ({
   mobile,
   status,
+  reStatus,
   text,
   scene,
   change,
@@ -54,6 +56,10 @@ export const ConfirmLogin: React.FC<PropInterface> = ({
       setLoading(false);
     }
   }, [status]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [reStatus]);
 
   const openDialog = () => {
     if (smsLoading) {

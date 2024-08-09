@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./video.module.scss";
 import NavHeader from "../../components/nav-header";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { course as Course } from "../../api/index";
 import { changeTime } from "../../utils";
@@ -19,7 +19,7 @@ interface KeysInterafce {
 
 const CoursePlayPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
@@ -43,7 +43,6 @@ const CoursePlayPage = () => {
   const [comments, setComments] = useState<any>([]);
   const [commentUsers, setCommentUsers] = useState<any>({});
   const [content, setContent] = useState("");
-  const [id, setId] = useState(Number(result.get("id") || 0));
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -68,10 +67,6 @@ const CoursePlayPage = () => {
   ];
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
-
-  useEffect(() => {
     window.player && window.player.destroy();
     myRef.current = 0;
     setPlayDuration(0);
@@ -80,14 +75,14 @@ const CoursePlayPage = () => {
     setLoading(true);
     getVideo();
     getVideoComments();
-  }, [id]);
+  }, [params.videoId]);
 
   useEffect(() => {
     myRef.current = playDuration;
   }, [playDuration]);
 
   const getVideo = () => {
-    Course.Video(id)
+    Course.Video(Number(params.videoId))
       .then((res: any) => {
         setVideo(res.data.video);
         setCourse(res.data.course);
@@ -95,7 +90,7 @@ const CoursePlayPage = () => {
         setIsWatch(res.data.is_watch);
         setChapters(res.data.chapters);
         setVideoWatchedProgres(res.data.video_watched_progress);
-        document.title = res.data.course.title;
+        document.title = res.data.video.title;
         let chapteId = parseInt(res.data.video.chapter_id) || 0;
         let videoBox: any = [];
         for (let key in res.data.videos) {
@@ -125,12 +120,14 @@ const CoursePlayPage = () => {
         let last_see_value = null;
         if (
           res.data.video_watched_progress &&
-          res.data.video_watched_progress[id] &&
-          res.data.video_watched_progress[id].watch_seconds > 0
+          res.data.video_watched_progress[Number(params.videoId)] &&
+          res.data.video_watched_progress[Number(params.videoId)]
+            .watch_seconds > 0
         ) {
           last_see_value = {
             time: 5,
-            pos: res.data.video_watched_progress[id].watch_seconds,
+            pos: res.data.video_watched_progress[Number(params.videoId)]
+              .watch_seconds,
           };
           setLastSeeValue(last_see_value);
         }
@@ -166,27 +163,29 @@ const CoursePlayPage = () => {
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
     }
-    Course.PlayInfo(id, { is_try: isTrySee }).then((res: any) => {
-      if (res.data.urls.length === 0) {
-        Toast.show("无播放地址");
-        return;
-      }
+    Course.PlayInfo(Number(params.videoId), { is_try: isTrySee }).then(
+      (res: any) => {
+        if (res.data.urls.length === 0) {
+          Toast.show("无播放地址");
+          return;
+        }
 
-      let playUrls = res.data.urls;
-      let firstPlayUrl = playUrls[0].url;
+        let playUrls = res.data.urls;
+        let firstPlayUrl = playUrls[0].url;
 
-      if (firstPlayUrl.substr(1, 6) === "iframe") {
-        setIsIframe(true);
-        let playUrl = firstPlayUrl.replace(
-          ">",
-          ' style="width:100%;height:506px" >'
-        );
-        setPlayUrl(playUrl);
-        return;
+        if (firstPlayUrl.substr(1, 6) === "iframe") {
+          setIsIframe(true);
+          let playUrl = firstPlayUrl.replace(
+            ">",
+            ' style="width:100%;height:506px" >'
+          );
+          setPlayUrl(playUrl);
+          return;
+        }
+        setIsIframe(false);
+        initDPlayer(playUrls, isTrySee, ban_drag, last_see_value, course);
       }
-      setIsIframe(false);
-      initDPlayer(playUrls, isTrySee, ban_drag, last_see_value, course);
-    });
+    );
   };
 
   const initDPlayer = (
@@ -253,7 +252,7 @@ const CoursePlayPage = () => {
   const playTimeUpdate = (duration: number, isEnd: boolean) => {
     if (duration - myRef.current >= 10 || isEnd === true) {
       setPlayDuration(duration);
-      Course.VideoRecord(id, {
+      Course.VideoRecord(Number(params.videoId), {
         duration: duration,
       }).then((res: any) => {});
     }
@@ -268,7 +267,7 @@ const CoursePlayPage = () => {
   };
 
   const getVideoComments = () => {
-    Course.VideoComments(id).then((res: any) => {
+    Course.VideoComments(Number(params.videoId)).then((res: any) => {
       setComments(res.data.comments);
       setCommentUsers(res.data.users);
     });
@@ -282,12 +281,12 @@ const CoursePlayPage = () => {
 
   const goNextVideo = () => {
     setLastSeeValue(null);
-    navigate("/vod/video?id=" + lastVideoId, { replace: true });
+    navigate("/course/video/" + lastVideoId, { replace: true });
   };
 
   const goVideo = (item: any) => {
     setLastSeeValue(null);
-    navigate("/vod/video?id=" + item.id, { replace: true });
+    navigate("/course/video/" + item.id, { replace: true });
   };
 
   const goRole = () => {
@@ -302,7 +301,9 @@ const CoursePlayPage = () => {
       Toast.show("评论内容不能少于6个字");
       return;
     }
-    Course.SubmitVideoComment(id, { content: content }).then(() => {
+    Course.SubmitVideoComment(Number(params.videoId), {
+      content: content,
+    }).then(() => {
       Toast.show("成功");
       setContent("");
       getVideoComments();
@@ -312,7 +313,7 @@ const CoursePlayPage = () => {
   return (
     <>
       <div className={styles["box"]}>
-        <NavHeader text={video.title} />
+        <NavHeader text="" />
         <div className={styles["play-box"]}>
           {!playendedStatus && (isWatch || video.free_seconds > 0) ? (
             <div className={styles["playing"]} v-if="">

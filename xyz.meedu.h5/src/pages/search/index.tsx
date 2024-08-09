@@ -138,9 +138,9 @@ const SearchPage = () => {
 
   const goDetail = (val: string, id: number) => {
     if (val === "video") {
-      navigate("/vod/video?id=" + id);
+      navigate("/course/video/" + id);
     } else if (val === "vod") {
-      navigate("/vod/detail?id=" + id);
+      navigate("/course/video/" + id);
     } else {
       return;
     }
