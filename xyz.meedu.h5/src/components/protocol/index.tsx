@@ -45,14 +45,20 @@ export const Protocol: React.FC<PropInterface> = ({ type, agree }) => {
           勾选同意
           <span
             className={styles["href"]}
-            onClick={() => openPage(config.user_protocol)}
+            onClick={(e) => {
+              e.stopPropagation();
+              openPage(config.user_protocol);
+            }}
           >
             《用户协议》
           </span>
           和
           <span
             className={styles["href"]}
-            onClick={() => openPage(config.user_private_protocol)}
+            onClick={(e) => {
+              e.stopPropagation();
+              openPage(config.user_private_protocol);
+            }}
           >
             《隐私协议》
           </span>
