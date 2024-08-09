@@ -64,12 +64,11 @@ class AliVodBus
         return $this->vodLib;
     }
 
-    public function playKeySync(): void
+    public function playDomainConfigSync(): void
     {
         if (
             !$this->accessKeyId ||
             !$this->accessKeySecret ||
-            'cn-shanghai' !== $this->region || //目前阿里云点播仅开放上海区域
             !$this->host ||
             !$this->playDomain
         ) {
@@ -86,17 +85,30 @@ class AliVodBus
             $configService->updateAliyunVodPlayKey($this->playKey);
         }
 
+        if ('cn-shanghai' !== $this->region) {
+            $this->host = str_replace($this->region, 'cn-shanghai', $this->host);
+            $this->region = 'cn-shanghai';
+        }
+
         $vod = $this->getVodLib();
 
         try {
-            $authConfig = $vod->describeVodDomainAuthConfig($this->playDomain);
+            ['auth' => $authConfig, 'resp_header' => $respHeaderConfig] = $vod->describeVodDomainConfig($this->playDomain);
 
-            Log::info(__METHOD__ . '|阿里云playKey查询结果', $authConfig ? [
-                'auth_type' => $authConfig['auth_type'],
-                'auth_m3u8' => $authConfig['auth_m3u8'],
-                'ali_auth_delta' => $authConfig['ali_auth_delta'],
-                'auth_key1' => mb_substr($authConfig['auth_key1'], 0, 12) . '***' . mb_substr($authConfig['auth_key1'], -10, 10),
-            ] : $authConfig);
+            $logData = [
+                'authConfig' => $authConfig ? [
+                    'auth_type' => $authConfig['auth_type'],
+                    'auth_m3u8' => $authConfig['auth_m3u8'],
+                    'ali_auth_delta' => $authConfig['ali_auth_delta'],
+                    'auth_key1' => mb_substr($authConfig['auth_key1'], 0, 12) . '***' . mb_substr($authConfig['auth_key1'], -10, 10),
+                ] : $authConfig,
+                'respHeader' => $respHeaderConfig,
+            ];
+
+            Log::info(__METHOD__ . '|阿里云点播playDomainConfig查询结果', $logData);
+
+            $updateAuthKey = '';
+            $updateAccessControllerAllowOrigin = '';
 
             if (
                 !$authConfig ||
@@ -107,10 +119,27 @@ class AliVodBus
                     $this->playKey !== $authConfig['auth_key1']
                 )
             ) {
-                $vod->batchSetVodDomainAuthConfig($this->playDomain, $this->playKey);
+                $updateAuthKey = $this->playKey;
+            }
+
+            if (
+                !$respHeaderConfig ||
+                !isset($respHeaderConfig['Access-Control-Allow-Origin']) ||
+                '*' !== $respHeaderConfig['Access-Control-Allow-Origin']['value']
+            ) {
+                $updateAccessControllerAllowOrigin = '*';
+            }
+
+            Log::info(__METHOD__ . '|阿里云点播playDomainConfig更新状态', [
+                'auth_key' => $updateAuthKey ? mb_substr($updateAuthKey, 0, 12) . '***' . mb_substr($updateAuthKey, -10, 10) : $updateAuthKey,
+                'AccessControllerAllowOrigin' => $updateAccessControllerAllowOrigin,
+            ]);
+
+            if ($updateAuthKey || $updateAccessControllerAllowOrigin) {
+                $vod->batchSetVodDomainAuthConfig($this->playDomain, $updateAuthKey, $updateAccessControllerAllowOrigin);
             }
         } catch (\Exception $e) {
-            Log::error(__METHOD__ . '|阿里云点播播放域名配置的playKey设置失败.错误信息:' . $e->getMessage(), ['play_domain' => $this->playDomain]);
+            Log::error(__METHOD__ . '|阿里云点播playDomainConfig设置失败.错误信息:' . $e->getMessage(), ['play_domain' => $this->playDomain]);
         }
     }
 

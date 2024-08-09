@@ -15,7 +15,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
-class AliyunPlayKeySyncListener implements ShouldQueue
+class AliyunPlayDomainConfigSyncListener implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -48,6 +48,6 @@ class AliyunPlayKeySyncListener implements ShouldQueue
             $newConfig[str_replace(ConfigConstant::ALIYUN_VOD_PREFIX, '', $keyName)] = $keyValue;
         }
 
-        (new AliVodBus($newConfig))->playKeySync();
+        (new AliVodBus($newConfig))->playDomainConfigSync();
     }
 }

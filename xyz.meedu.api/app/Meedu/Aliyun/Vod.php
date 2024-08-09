@@ -39,7 +39,7 @@ class Vod
             ->regionId($this->region)
             ->connectTimeout(3)
             ->timeout(30)
-            ->asDefaultClient();
+            ->name('vodClient');
     }
 
     // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-deletevideo
@@ -47,6 +47,7 @@ class Vod
     {
         try {
             AlibabaCloud::rpc()
+                ->client('vodClient')
                 ->product('vod')
                 ->host($this->host)
                 ->version(self::API_VERSION)
@@ -62,6 +63,7 @@ class Vod
     public function getMessageCallback()
     {
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -84,6 +86,7 @@ class Vod
     public function setMessageCallback(string $callbackUrl)
     {
         AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -101,6 +104,7 @@ class Vod
     public function createUploadVideo(string $title, string $filename)
     {
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -123,6 +127,7 @@ class Vod
     public function refreshUploadVideo(string $videoId)
     {
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -155,6 +160,7 @@ class Vod
         }
 
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -190,7 +196,7 @@ class Vod
         if (!$this->playDomain) {
             throw new ServiceException(__('阿里云播放域名未配置'));
         }
-        
+
         $query = [
             'VideoId' => $videoId,
             'AuthTimeout' => 10800,//3个小时有效
@@ -208,6 +214,7 @@ class Vod
         $query['PlayConfig'] = json_encode($playConfig);
 
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
@@ -243,75 +250,109 @@ class Vod
     }
 
     // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-describevoddomainconfigs
-    public function describeVodDomainAuthConfig(string $domain)
+    public function describeVodDomainConfig(string $domain)
     {
         $response = AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
             ->action('DescribeVodDomainConfigs')
             ->options(['query' => [
                 'DomainName' => $domain,
-                'FunctionNames' => 'aliauth',
+                'FunctionNames' => 'aliauth,set_resp_header',
             ]])
             ->request();
 
-        $configData = [];
+        $authConfig = [];
+        $respHeaderConfig = [];
 
         foreach ($response['DomainConfigs']['DomainConfig'] as $configItem) {
-            if ('aliauth' !== $configItem['FunctionName']) {
-                continue;
-            }
-
-            foreach ($configItem['FunctionArgs']['FunctionArg'] as $tmpItem) {
-                $configData[$tmpItem['ArgName']] = $tmpItem['ArgValue'];
+            if ('aliauth' === $configItem['FunctionName']) {
+                foreach ($configItem['FunctionArgs']['FunctionArg'] as $tmpItem) {
+                    $authConfig[$tmpItem['ArgName']] = $tmpItem['ArgValue'];
+                }
+            } elseif ('set_resp_header' === $configItem['FunctionName']) {
+                $tmpConfig = [];
+                foreach ($configItem['FunctionArgs']['FunctionArg'] as $tmpValue) {
+                    $tmpConfig[$tmpValue['ArgName']] = $tmpValue['ArgValue'];
+                }
+                $respHeaderConfig[] = $tmpConfig;
             }
         }
 
-        return $configData;
+        return [
+            'auth' => $authConfig,
+            'resp_header' => array_column($respHeaderConfig, null, 'key'),
+        ];
     }
 
     // @see https://help.aliyun.com/zh/vod/developer-reference/api-vod-2017-03-21-batchsetvoddomainconfigs
-    public function batchSetVodDomainAuthConfig(string $domain, string $key): void
+    public function batchSetVodDomainAuthConfig(string $domain, string $playKey, string $accessControllerAllowOrigin): void
     {
+        $updateData = [];
+
+        if ($playKey) {
+            $updateData[] = [
+                'functionArgs' => [
+                    [
+                        'argName' => 'auth_type',
+                        'argValue' => 'type_a',
+                    ],
+                    [
+                        'argName' => 'auth_key1',
+                        'argValue' => $playKey,
+                    ],
+                    [
+                        'argName' => 'auth_key2',
+                        'argValue' => Str::reverse($playKey),
+                    ],
+                    [
+                        'argName' => 'auth_m3u8',
+                        'argValue' => 'on',
+                    ],
+                    [
+                        'argName' => 'ali_auth_delta',
+                        'argValue' => 7200,
+                    ],
+                    [
+                        'argName' => 'ali_auth_remote_desc',
+                        'argValue' => 'video_preview_arg=end auth_check_video_preview=on',
+                    ],
+                ],
+                'functionName' => 'aliauth',
+            ];
+        }
+
+        if ($accessControllerAllowOrigin) {
+            $updateData[] = [
+                'functionName' => 'set_resp_header',
+                'functionArgs' => [
+                    [
+                        'argName' => 'key',
+                        'argValue' => 'Access-Control-Allow-Origin',
+                    ],
+                    [
+                        'argName' => 'value',
+                        'argValue' => $accessControllerAllowOrigin,
+                    ],
+                ],
+            ];
+        }
+
+        if (!$updateData) {
+            return;
+        }
+
         AlibabaCloud::rpc()
+            ->client('vodClient')
             ->product('vod')
             ->host($this->host)
             ->version(self::API_VERSION)
             ->action('BatchSetVodDomainConfigs')
             ->options(['query' => [
                 'DomainNames' => $domain,
-                'Functions' => json_encode([
-                    [
-                        'functionArgs' => [
-                            [
-                                'argName' => 'auth_type',
-                                'argValue' => 'type_a',
-                            ],
-                            [
-                                'argName' => 'auth_key1',
-                                'argValue' => $key,
-                            ],
-                            [
-                                'argName' => 'auth_key2',
-                                'argValue' => Str::reverse($key),
-                            ],
-                            [
-                                'argName' => 'auth_m3u8',
-                                'argValue' => 'on',
-                            ],
-                            [
-                                'argName' => 'ali_auth_delta',
-                                'argValue' => 7200,
-                            ],
-                            [
-                                'argName' => 'ali_auth_remote_desc',
-                                'argValue' => 'video_preview_arg=end auth_check_video_preview=on',
-                            ],
-                        ],
-                        'functionName' => 'aliauth',
-                    ],
-                ]),
+                'Functions' => json_encode($updateData),
             ]])
             ->request();
     }
