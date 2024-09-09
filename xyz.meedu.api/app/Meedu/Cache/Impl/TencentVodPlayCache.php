@@ -22,7 +22,7 @@ class TencentVodPlayCache
     private $previewSeconds;
 
     public const CACHE_NAME_TPL = 'tencent:vod:play:%s:%d';
-    public const CACHE_EXPIRE = 10800;
+    public const CACHE_EXPIRE = 1800;
 
     public function __construct(int $id, string $videoId, int $previewSeconds = 0)
     {
