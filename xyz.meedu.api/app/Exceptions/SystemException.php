@@ -24,6 +24,6 @@ class SystemException extends \Exception
         if (request()->wantsJson()) {
             return $this->error(__('错误'));
         }
-        abort(500, $this->getMessage());
+        abort(500, __('错误'));
     }
 }
