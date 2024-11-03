@@ -142,5 +142,9 @@ class ConfigService implements ConfigServiceInterface
         $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_PLAY_KEY, $playKey);
     }
 
+    public function appName(): string
+    {
+        return config('meedu.system.app_name') ?? '';
+    }
 
 }

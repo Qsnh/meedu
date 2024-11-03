@@ -55,4 +55,6 @@ interface ConfigServiceInterface
     public function updateAliyunVodPlayKey(string $playKey): void;
 
     public function updateTencentVodPlayKey(string $playKey): void;
+
+    public function appName(): string;
 }
