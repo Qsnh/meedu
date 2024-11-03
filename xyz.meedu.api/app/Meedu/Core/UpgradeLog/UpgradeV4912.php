@@ -8,6 +8,7 @@
 
 namespace App\Meedu\Core\UpgradeLog;
 
+use App\Models\AdministratorPermission;
 use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4912
@@ -17,6 +18,22 @@ class UpgradeV4912
     {
         self::deleteSomeConfigItems();
         self::renameWechatLoginKeyName();
+        self::deleteSomePermissions();
+    }
+
+    private static function deleteSomePermissions()
+    {
+        AdministratorPermission::query()
+            ->whereIn('slug', [
+                'mpWechatMessageReply',
+                'mpWechatMessageReply.store',
+                'mpWechatMessageReply.update',
+                'mpWechatMessageReply.destroy',
+                'mpWechat.menu',
+                'mpWechat.menu.update',
+                'mpWechat.menu.empty',
+            ])
+            ->delete();
     }
 
     private static function deleteSomeConfigItems()

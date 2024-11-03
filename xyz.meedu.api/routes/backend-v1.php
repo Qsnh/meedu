@@ -307,25 +307,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/courseWatchDuration', 'StatisticController@courseWatchDuration');
     });
 
-    // 微信公众号消息回复
-    Route::group(['prefix' => 'mpWechatMessageReply'], function () {
-        Route::get('/', 'MpWechatMessageReplyController@index');
-        Route::get('/create', 'MpWechatMessageReplyController@create');
-        Route::post('/', 'MpWechatMessageReplyController@store');
-        Route::get('/{id}', 'MpWechatMessageReplyController@edit');
-        Route::put('/{id}', 'MpWechatMessageReplyController@update');
-        Route::delete('/{id}', 'MpWechatMessageReplyController@destroy');
-    });
-
-    // 微信公众号
-    Route::group(['prefix' => 'mpWechat'], function () {
-        Route::group(['prefix' => 'menu'], function () {
-            Route::get('/', 'MpWechatController@menu');
-            Route::put('/', 'MpWechatController@menuUpdate');
-            Route::delete('/', 'MpWechatController@menuEmpty');
-        });
-    });
-
     // 装修
     Route::group(['prefix' => 'viewBlock'], function () {
         Route::get('/index', 'ViewBlockController@index');
