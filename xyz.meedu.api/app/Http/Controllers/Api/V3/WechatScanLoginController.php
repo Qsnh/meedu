@@ -37,14 +37,15 @@ class WechatScanLoginController extends BaseController
         }
 
         $key = $request->input('key');
-        if (!$key) {
+        $action = $request->input('action');
+        if (!$key || !$action || !in_array($action, ['login', 'bind'])) {
             return $this->error(__('参数错误'));
         }
 
         $url = route('api.v3.wechat-scan-login.page') . '?' . http_build_query(['wechat_scan_key' => $key]);
 
         // 登录地址
-        $loginUrl = route('api.v3.login.wechat-oauth') . '?' . http_build_query(['s_url' => $url, 'f_url' => $url, 'action' => 'login']);
+        $loginUrl = route('api.v3.login.wechat-oauth') . '?' . http_build_query(['s_url' => $url, 'f_url' => $url, 'action' => $action]);
         // 网站名
         $appName = $configService->appName();
 
