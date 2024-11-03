@@ -1016,27 +1016,11 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '微信公众号',
-                'name' => '启用授权登录',
+                'name' => '启动微信登录',
                 'field_type' => 'switch',
                 'sort' => 6,
                 'key' => 'meedu.mp_wechat.enabled_oauth_login',
                 'value' => 0,
-            ],
-            [
-                'group' => '微信公众号',
-                'name' => '启用PC扫码登录',
-                'field_type' => 'switch',
-                'sort' => 7,
-                'key' => 'meedu.mp_wechat.enabled_scan_login',
-                'value' => 0,
-            ],
-            [
-                'group' => '微信公众号',
-                'name' => '扫码登录成功回复信息',
-                'field_type' => 'textarea',
-                'sort' => 7,
-                'key' => 'meedu.mp_wechat.scan_login_alert',
-                'value' => '',
             ],
             [
                 'group' => '微信公众号',

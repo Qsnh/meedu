@@ -23,7 +23,7 @@ class UpgradeToV4911
         self::hideSomeConfigItems();
     }
 
-    public static function deleteSomePermissions()
+    private static function deleteSomePermissions()
     {
         AdministratorPermission::query()
             ->whereIn('slug', [
@@ -32,7 +32,7 @@ class UpgradeToV4911
             ->delete();
     }
 
-    public static function deleteSomeConfigItems()
+    private static function deleteSomeConfigItems()
     {
         AppConfig::query()
             ->whereIn('key', [
@@ -53,7 +53,7 @@ class UpgradeToV4911
             ->delete();
     }
 
-    public static function upgradeImageDiskConfigItem()
+    private static function upgradeImageDiskConfigItem()
     {
         AppConfig::query()
             ->where('key', 'meedu.upload.image.disk')
@@ -75,7 +75,7 @@ class UpgradeToV4911
             ]);
     }
 
-    public static function hideSomeConfigItems()
+    private static function hideSomeConfigItems()
     {
         AppConfig::query()
             ->whereIn('key', [

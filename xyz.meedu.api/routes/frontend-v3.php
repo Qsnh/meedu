@@ -19,12 +19,8 @@ Route::get('/auth/login/wechat-scan/page', 'WechatScanLoginController@index')->n
 Route::post('/auth/login/wechat-scan/url', 'WechatScanLoginController@getLoginUrl');
 Route::get('/auth/login/wechat-scan/query', 'WechatScanLoginController@query');
 
-Route::get('/auth/login/wechat/scan', 'LoginController@wechatScan');
-Route::get('/auth/login/wechat/scan/query', 'LoginController@wechatScanQuery');
-
 Route::post('/auth/login/code', 'LoginController@loginByCode');
 Route::post('/auth/register/withSocialite', 'LoginController@registerWithSocialite');
-Route::post('/auth/register/withWechatScan', 'LoginController@registerWithWechatScan');
 
 Route::get('/course/attach-download', 'CourseController@attachDownloadDirect')->name('course.attach.download.direct');
 
