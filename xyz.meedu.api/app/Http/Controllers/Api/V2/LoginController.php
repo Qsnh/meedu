@@ -9,12 +9,8 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Bus\AuthBus;
-use App\Meedu\Wechat;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Constant\CacheConstant;
 use App\Events\UserLogoutEvent;
-use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Auth;
@@ -128,7 +124,7 @@ class LoginController extends BaseController
      * @return mixed
      * @throws ServiceException
      */
-    protected function token($user)
+    private function token($user)
     {
         if ((int)$user['is_lock'] === 1) {
             throw new ServiceException(__('账号已被锁定'));
@@ -140,64 +136,6 @@ class LoginController extends BaseController
         $authBus = app()->make(AuthBus::class);
 
         return $authBus->tokenLogin($user['id'], get_platform());
-    }
-
-    /**
-     * @api {get} /api/v2/login/wechat/oauth 微信公众号授权登录[重定向]
-     * @apiGroup Auth
-     * @apiName WechatOauth
-     * @apiVersion v2.0.0
-     * @apiDescription 登录成功之后会在success_redirect中携带token返回
-     *
-     * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlencode)
-     * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlencode)
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     */
-    public function wechatLogin(Request $request)
-    {
-        $successRedirect = $request->input('success_redirect');
-        $failedRedirect = $request->input('failed_redirect');
-
-        if (!$successRedirect || !$failedRedirect) {
-            return $this->error(__('参数错误'));
-        }
-
-        $redirectUrl = route('api.v2.login.wechat.callback');
-        $redirectUrl = url_append_query($redirectUrl, ['s_url' => urlencode($successRedirect), 'f_url' => urlencode($failedRedirect)]);
-
-        return Wechat::getInstance()->oauth->redirect($redirectUrl);
-    }
-
-    // 微信公众号授权登录[回调]
-    public function wechatLoginCallback(Request $request, AuthBus $authBus)
-    {
-        $successRedirectUrl = urldecode($request->input('s_url', ''));
-        $failedRedirectUrl = urldecode($request->input('f_url'));
-
-        $user = Wechat::getInstance()->oauth->user();
-
-        if (!$user) {
-            return redirect(url_append_query($failedRedirectUrl, ['msg' => __('错误')]));
-        }
-
-        $originalData = $user['original'];
-
-        $openid = $originalData['openid'];
-        $unionId = $originalData['unionid'] ?? '';
-
-        $userId = $authBus->wechatLogin($openid, $unionId, $originalData);
-
-        $user = $this->userService->find($userId);
-
-        try {
-            $token = $this->token($user);
-
-            return redirect(url_append_query($successRedirectUrl, ['token' => $token]));
-        } catch (ServiceException $e) {
-            return redirect(url_append_query($failedRedirectUrl, ['msg' => $e->getMessage()]));
-        }
     }
 
     /**
@@ -269,73 +207,6 @@ class LoginController extends BaseController
         } catch (ServiceException $e) {
             return redirect(url_append_query($failedRedirectUrl, ['msg' => $e->getMessage()]));
         }
-    }
-
-    /**
-     * @api {get} /api/v2/login/wechatScan 微信扫码登录[二维码]
-     * @apiGroup Auth
-     * @apiName LoginWechatScan
-     * @apiVersion v2.0.0
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.code 随机值
-     * @apiSuccess {String} data.image 图片内容
-     */
-    public function wechatScan(BusinessState $businessState)
-    {
-        if (!$businessState->enabledMpScanLogin()) {
-            throw new ServiceException(__('未开启微信公众号扫码登录'));
-        }
-
-        // 生成登录二维码
-        $code = Str::random(10);
-        $image = wechat_qrcode_image($code);
-
-        return $this->data([
-            'code' => $code,
-            'image' => $image,
-        ]);
-    }
-
-    /**
-     * @api {get} /api/v2/login/wechatScan/query 微信扫码登录[结果查询]
-     * @apiGroup Auth
-     * @apiName LoginWechatScanQuery
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} code 随机值
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {Number} data.status 结果[1:登录成功,0:失败]
-     * @apiSuccess {String} data.token token[登录成功返回]
-     */
-    public function wechatScanQuery(Request $request, AuthBus $authBus)
-    {
-        $code = $request->input('code');
-        if (!$code) {
-            return $this->error(__('参数错误'));
-        }
-
-        $cacheKey = get_cache_key(CacheConstant::WECHAT_SCAN_LOGIN['name'], $code);
-        $userId = (int)$this->cacheService->pull($cacheKey);
-
-        if (!$userId) {
-            return $this->data(['status' => 0]);
-        }
-
-        $user = $this->userService->find($userId);
-        if ((int)$user['is_lock'] === 1) {
-            return $this->error(__('账号已被锁定'));
-        }
-
-        $token = $authBus->tokenLogin($userId, FrontendConstant::LOGIN_PLATFORM_PC);
-
-        return $this->data([
-            'status' => 1,
-            'token' => $token,
-        ]);
     }
 
     /**
