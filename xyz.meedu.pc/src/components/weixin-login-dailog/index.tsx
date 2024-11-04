@@ -167,6 +167,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
           footer={null}
           onCancel={() => {
             timer && clearInterval(timer);
+            countTimer && clearInterval(countTimer);
             onCancel();
           }}
           maskClosable={false}
