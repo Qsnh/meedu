@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
 import { Modal, QRCode } from "antd";
 import { user, login } from "../../api/index";
@@ -24,7 +24,6 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   bindMobile,
 }) => {
   const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
@@ -38,7 +37,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     min: "00",
     sec: "00",
   });
-  const [redirect, setRedirect] = useState(result.get("redirect"));
+  const [redirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     if (open) {
@@ -181,28 +180,6 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
             </a>
           </div>
           <div className={styles["box"]}>
-            {!loading && !expired && qrode !== "" && (
-              <div className={styles["time"]}>
-                有效期：
-                {remainingTime.day !== 0 && (
-                  <span>
-                    {remainingTime.day}天{remainingTime.hr}时{remainingTime.min}
-                    分{remainingTime.sec}秒
-                  </span>
-                )}
-                {remainingTime.day === 0 && remainingTime.hr !== "00" && (
-                  <span>
-                    {remainingTime.hr}时{remainingTime.min}分{remainingTime.sec}
-                    秒
-                  </span>
-                )}
-                {remainingTime.day === 0 && remainingTime.hr === "00" && (
-                  <span>
-                    {remainingTime.min}分{remainingTime.sec}秒
-                  </span>
-                )}
-              </div>
-            )}
             {qrode !== "" && (
               <>
                 {expired ? (
@@ -230,6 +207,19 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
                 )}
               </>
             )}
+
+            {!loading &&
+            !expired &&
+            qrode !== "" &&
+            remainingTime.min !== "00" &&
+            remainingTime.sec !== "00" ? (
+              <div className={styles["time"]}>
+                有效期：
+                <span>
+                  {remainingTime.min}分{remainingTime.sec}秒
+                </span>
+              </div>
+            ) : null}
           </div>
         </Modal>
       ) : null}
