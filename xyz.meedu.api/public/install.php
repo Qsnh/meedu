@@ -396,7 +396,7 @@ if ($step === 0) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>XX安装程序 - 数据库配置</title>
+        <title>MeEdu安装程序 - 数据库配置</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -552,40 +552,122 @@ if ($step === 0) {
     // 安装成功
     file_put_contents('../storage/install.lock', time());
     ?>
-    <!doctype html>
-    <html lang="en">
+    <!DOCTYPE html>
+    <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <title>MeEdu安装程序</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MeEdu安装程序 - 安装完成</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+            .container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 600px;
+                overflow: hidden;
+            }
+            header {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .logo-title {
+                display: flex;
+                align-items: center;
+            }
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+            main {
+                padding: 20px 20px 20px 20px;
+            }
+            h2 {
+                font-size: 1.5rem;
+                color: #10b981;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            .success-message {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .admin-info {
+                background-color: #f3f4f6;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 2rem;
+            }
+            .admin-info h3 {
+                font-size: 1.125rem;
+                color: #374151;
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+            .admin-info p {
+                margin: 0.5rem 0;
+            }
+            .warning {
+                color: #ef4444;
+                font-weight: bold;
+            }
+            footer {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                text-align: right;
+            }
+            .finish-button {
+                background-color: #10b981;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+            .finish-button:hover {
+                background-color: #059669;
+            }
+            @media (max-width: 640px) {
+                header, main, footer {
+                    padding-right: 20px;
+                }
+            }
+        </style>
     </head>
     <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 my-5">
+        <header>
+            <div class="logo-title">
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
-            <div class="col-12 mb-5 text-center">
-                <h2>MeEdu安装程序</h2>
+        </header>
+        <main>
+            <h2>恭喜！安装成功</h2>
+            <div class="success-message">
+                <p>MeEdu程序已经成功安装到您的服务器上。您现在可以开始使用了。</p>
             </div>
-            <div class="col-4 text-center">
-                <div class="alert alert-warning">
-                    <p class="mb-0">请记得删除install.php文件</p>
-                    <p class="mb-0">后台账号：<code>meedu@meedu.meedu</code></p>
-                    <p class="mb-0">后台密码：<code>meedu123</code></p>
-                    <p class="mb-0">登录后台之后记得修改密码哦！</p>
-                </div>
-                <div class="pb-5">
-                    <h3 style="color: green" class="my-5">安装成功</h3>
-                    <a href="/" class="btn btn-success">网站首页</a>
-                </div>
+            <div class="admin-info">
+                <h3>管理员账号信息</h3>
+                <p><strong>用户名：</strong> meedu@meedu.meedu</p>
+                <p><strong>密码：</strong> meedu123</p>
+                <p class="warning">请立即登录并修改默认密码！</p>
             </div>
-        </div>
+        </main>
     </div>
     </body>
     </html>
