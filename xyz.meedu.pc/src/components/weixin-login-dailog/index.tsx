@@ -85,6 +85,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
             } else {
               if (res.data.action === "bind_mobile") {
                 timer && clearInterval(timer);
+                countTimer && clearInterval(countTimer);
                 saveLoginCode(res.data.code);
                 bindMobile();
               }
@@ -96,6 +97,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
 
   const redirectHandler = () => {
     timer && clearInterval(timer);
+    countTimer && clearInterval(countTimer);
     onCancel();
     if (pathname === "/login") {
       if (redirect) {
