@@ -110,14 +110,15 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     const today: any = new Date();
     const now = Date.parse(today);
     let remaining: number = timestamp - now / 1000;
-    if (remaining <= 0) {
+    if (remaining <= 2) {
+      timer && clearInterval(timer);
       countTimer && clearInterval(countTimer);
       setExpired(true);
       return;
     }
     countTimer = setInterval(() => {
       //防止出现负数
-      if (remaining > 0) {
+      if (remaining > 2) {
         remaining--;
         let day = Math.floor(remaining / 3600 / 24);
         let hour = Math.floor((remaining / 3600) % 24);
@@ -131,6 +132,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
           sec: second < 10 ? "0" + second : second,
         });
       } else {
+        timer && clearInterval(timer);
         countTimer && clearInterval(countTimer);
         setExpired(true);
       }
