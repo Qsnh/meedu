@@ -42,6 +42,8 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
 
   useEffect(() => {
     if (open) {
+      setRemainingTime({ day: 0, hr: 0, min: 0, sec: 0 });
+      setQrode("");
       getQrode();
     }
     return () => {
@@ -56,9 +58,9 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     }
     setLoading(true);
     user.wechatLogin({ action: "login" }).then((res: any) => {
+      setExpired(false);
       setQrode(res.data.url);
       setKey(res.data.key);
-      setExpired(false);
       countdown(res.data.expire);
       timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
@@ -120,37 +122,30 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
       //防止出现负数
       if (remaining > 2) {
         remaining--;
-        let day = Math.floor(remaining / 3600 / 24);
-        let hour = Math.floor((remaining / 3600) % 24);
-        let minute = Math.floor((remaining / 60) % 60);
-        let second = Math.floor(remaining % 60);
-
-        setRemainingTime({
-          day: day,
-          hr: hour < 10 ? "0" + hour : hour,
-          min: minute < 10 ? "0" + minute : minute,
-          sec: second < 10 ? "0" + second : second,
-        });
+        getRemainingTime(remaining);
       } else if (remaining <= 2 && remaining > 0) {
         timer && clearInterval(timer);
-        remaining--;
-        let day = Math.floor(remaining / 3600 / 24);
-        let hour = Math.floor((remaining / 3600) % 24);
-        let minute = Math.floor((remaining / 60) % 60);
-        let second = Math.floor(remaining % 60);
-
-        setRemainingTime({
-          day: day,
-          hr: hour < 10 ? "0" + hour : hour,
-          min: minute < 10 ? "0" + minute : minute,
-          sec: second < 10 ? "0" + second : second,
-        });
+        getRemainingTime(remaining);
       } else {
         timer && clearInterval(timer);
         countTimer && clearInterval(countTimer);
         setExpired(true);
       }
     }, 1000);
+  };
+
+  const getRemainingTime = (remaining: number) => {
+    const day = Math.floor(remaining / 3600 / 24);
+    const hour = Math.floor((remaining / 3600) % 24);
+    const minute = Math.floor((remaining / 60) % 60);
+    const second = Math.floor(remaining % 60);
+
+    setRemainingTime({
+      day: day,
+      hr: hour < 10 ? "0" + hour : hour,
+      min: minute < 10 ? "0" + minute : minute,
+      sec: second < 10 ? "0" + second : second,
+    });
   };
 
   return (
@@ -183,25 +178,28 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
             </a>
           </div>
           <div className={styles["box"]}>
-            <div className={styles["time"]}>
-              有效期：
-              {remainingTime.day !== 0 && (
-                <span>
-                  {remainingTime.day}天{remainingTime.hr}时{remainingTime.min}分
-                  {remainingTime.sec}秒
-                </span>
-              )}
-              {remainingTime.day === 0 && remainingTime.hr !== "00" && (
-                <span>
-                  {remainingTime.hr}时{remainingTime.min}分{remainingTime.sec}秒
-                </span>
-              )}
-              {remainingTime.day === 0 && remainingTime.hr === "00" && (
-                <span>
-                  {remainingTime.min}分{remainingTime.sec}秒
-                </span>
-              )}
-            </div>
+            {!loading && !expired && qrode !== "" && (
+              <div className={styles["time"]}>
+                有效期：
+                {remainingTime.day !== 0 && (
+                  <span>
+                    {remainingTime.day}天{remainingTime.hr}时{remainingTime.min}
+                    分{remainingTime.sec}秒
+                  </span>
+                )}
+                {remainingTime.day === 0 && remainingTime.hr !== "00" && (
+                  <span>
+                    {remainingTime.hr}时{remainingTime.min}分{remainingTime.sec}
+                    秒
+                  </span>
+                )}
+                {remainingTime.day === 0 && remainingTime.hr === "00" && (
+                  <span>
+                    {remainingTime.min}分{remainingTime.sec}秒
+                  </span>
+                )}
+              </div>
+            )}
             {qrode !== "" && (
               <>
                 {expired ? (
