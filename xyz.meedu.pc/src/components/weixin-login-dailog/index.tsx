@@ -15,6 +15,7 @@ interface PropInterface {
 }
 
 var timer: any = null;
+var countTimer: any = null;
 
 export const WeixinLoginDialog: React.FC<PropInterface> = ({
   open,
@@ -29,8 +30,14 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState(false);
   const [qrode, setQrode] = useState("");
-  const [code, setCode] = useState("");
   const [key, setKey] = useState("");
+  const [expired, setExpired] = useState(false);
+  const [remainingTime, setRemainingTime] = useState<any>({
+    day: 0,
+    hr: 0,
+    min: 0,
+    sec: 0,
+  });
   const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
@@ -39,6 +46,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     }
     return () => {
       timer && clearInterval(timer);
+      countTimer && clearInterval(countTimer);
     };
   }, [open]);
 
@@ -50,6 +58,8 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     user.wechatLogin({ action: "login" }).then((res: any) => {
       setQrode(res.data.url);
       setKey(res.data.key);
+      setExpired(false);
+      countdown(res.data.expire);
       timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
     });
@@ -96,6 +106,37 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     }
   };
 
+  const countdown = (timestamp: number) => {
+    const today: any = new Date();
+    const now = Date.parse(today);
+    let remaining: number = timestamp - now / 1000;
+    if (remaining <= 0) {
+      countTimer && clearInterval(countTimer);
+      setExpired(true);
+      return;
+    }
+    countTimer = setInterval(() => {
+      //防止出现负数
+      if (remaining > 0) {
+        remaining--;
+        let day = Math.floor(remaining / 3600 / 24);
+        let hour = Math.floor((remaining / 3600) % 24);
+        let minute = Math.floor((remaining / 60) % 60);
+        let second = Math.floor(remaining % 60);
+
+        setRemainingTime({
+          day: day,
+          hr: hour < 10 ? "0" + hour : hour,
+          min: minute < 10 ? "0" + minute : minute,
+          sec: second < 10 ? "0" + second : second,
+        });
+      } else {
+        countTimer && clearInterval(countTimer);
+        setExpired(true);
+      }
+    }, 1000);
+  };
+
   return (
     <>
       {open ? (
@@ -125,12 +166,44 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
             </a>
           </div>
           <div className={styles["box"]}>
+            <div className={styles["time"]}>
+              有效期：
+              {remainingTime.day !== 0 && (
+                <span>
+                  {remainingTime.day}天{remainingTime.hr}时{remainingTime.min}分
+                  {remainingTime.sec}秒
+                </span>
+              )}
+              {remainingTime.day === 0 && remainingTime.hr !== "00" && (
+                <span>
+                  {remainingTime.hr}时{remainingTime.min}分{remainingTime.sec}秒
+                </span>
+              )}
+              {remainingTime.day === 0 && remainingTime.hr === "00" && (
+                <span>
+                  {remainingTime.min}分{remainingTime.sec}秒
+                </span>
+              )}
+            </div>
             {qrode !== "" && (
-              <QRCode
-                value={qrode}
-                size={300}
-                status={loading ? "loading" : "active"}
-              />
+              <>
+                {expired ? (
+                  <QRCode
+                    value={qrode}
+                    size={300}
+                    status="expired"
+                    onRefresh={() => {
+                      getQrode();
+                    }}
+                  />
+                ) : (
+                  <QRCode
+                    value={qrode}
+                    size={300}
+                    status={loading ? "loading" : "active"}
+                  />
+                )}
+              </>
             )}
           </div>
         </Modal>
