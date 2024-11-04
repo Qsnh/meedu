@@ -129,7 +129,7 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
           closable={false}
         >
           <div className={styles["tabs"]}>
-            <div className={styles["tab-active-item"]}>绑定微信</div>
+            <div className={styles["tab-active-item"]}>绑定微信账号</div>
             <img
               className={styles["btn-close"]}
               onClick={() => {
@@ -140,34 +140,12 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
             />
           </div>
           <div className={styles["box"]}>
-            {!loading && !expired && qrode !== "" && (
-              <div className={styles["time"]}>
-                有效期：
-                {remainingTime.day !== 0 && (
-                  <span>
-                    {remainingTime.day}天{remainingTime.hr}时{remainingTime.min}
-                    分{remainingTime.sec}秒
-                  </span>
-                )}
-                {remainingTime.day === 0 && remainingTime.hr !== "00" && (
-                  <span>
-                    {remainingTime.hr}时{remainingTime.min}分{remainingTime.sec}
-                    秒
-                  </span>
-                )}
-                {remainingTime.day === 0 && remainingTime.hr === "00" && (
-                  <span>
-                    {remainingTime.min}分{remainingTime.sec}秒
-                  </span>
-                )}
-              </div>
-            )}
             {qrode !== "" && (
               <>
                 {expired ? (
                   <QRCode
                     value={qrode}
-                    size={300}
+                    size={200}
                     status="expired"
                     onRefresh={() => {
                       setRemainingTime({
@@ -183,12 +161,24 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
                 ) : (
                   <QRCode
                     value={qrode}
-                    size={300}
+                    size={200}
                     status={loading ? "loading" : "active"}
                   />
                 )}
               </>
             )}
+            {!loading &&
+            !expired &&
+            qrode !== "" &&
+            remainingTime.min != "00" &&
+            remainingTime.sec !== "00" ? (
+              <div className={styles["time"]}>
+                有效期：
+                <span>
+                  {remainingTime.min}分{remainingTime.sec}秒
+                </span>
+              </div>
+            ) : null}
           </div>
         </Modal>
       ) : null}

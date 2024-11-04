@@ -185,7 +185,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
                 {expired ? (
                   <QRCode
                     value={qrode}
-                    size={300}
+                    size={200}
                     status="expired"
                     onRefresh={() => {
                       setRemainingTime({
@@ -201,7 +201,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
                 ) : (
                   <QRCode
                     value={qrode}
-                    size={300}
+                    size={200}
                     status={loading ? "loading" : "active"}
                   />
                 )}
