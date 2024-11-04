@@ -34,15 +34,15 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   const [expired, setExpired] = useState(false);
   const [remainingTime, setRemainingTime] = useState<any>({
     day: 0,
-    hr: 0,
-    min: 0,
-    sec: 0,
+    hr: "00",
+    min: "00",
+    sec: "00",
   });
   const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     if (open) {
-      setRemainingTime({ day: 0, hr: 0, min: 0, sec: 0 });
+      setRemainingTime({ day: 0, hr: "00", min: "00", sec: "00" });
       setQrode("");
       getQrode();
     }
@@ -124,6 +124,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
         remaining--;
         getRemainingTime(remaining);
       } else if (remaining <= 2 && remaining > 0) {
+        remaining--;
         timer && clearInterval(timer);
         getRemainingTime(remaining);
       } else {
@@ -208,6 +209,13 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
                     size={300}
                     status="expired"
                     onRefresh={() => {
+                      setRemainingTime({
+                        day: 0,
+                        hr: "00",
+                        min: "00",
+                        sec: "00",
+                      });
+                      setQrode("");
                       getQrode();
                     }}
                   />
