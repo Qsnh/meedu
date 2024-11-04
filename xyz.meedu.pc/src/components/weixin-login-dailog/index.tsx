@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
-import { Modal, Image, QRCode } from "antd";
-import { user } from "../../api/index";
-import { setToken, saveLoginCode } from "../../utils/index";
+import { Modal, QRCode } from "antd";
+import { user, login } from "../../api/index";
+import { setToken, saveLoginCode, getMsv } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 
 interface PropInterface {
@@ -30,6 +30,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState(false);
   const [qrode, setQrode] = useState("");
   const [code, setCode] = useState("");
+  const [key, setKey] = useState("");
   const [redirect, setRedirect] = useState(result.get("redirect"));
 
   useEffect(() => {
@@ -46,32 +47,37 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    user.wechatLogin().then((res: any) => {
-      setQrode(res.data.image);
-      setCode(res.data.code);
-      timer = setInterval(() => checkWechatLogin(res.data.code), 1000);
+    user.wechatLogin({ action: "login" }).then((res: any) => {
+      setQrode(res.data.url);
+      setKey(res.data.key);
+      timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
     });
   };
 
   const checkWechatLogin = (value: any) => {
-    user.checkWechatLogin({ code: value }).then((res: any) => {
-      if (res.data.success === 1 && res.data.token) {
-        let token = res.data.token;
-        setToken(token);
-        user.detail().then((res: any) => {
-          let loginData = res.data;
-          dispatch(loginAction(loginData));
-          redirectHandler();
-        });
-      } else if (
-        res.data.success === 0 &&
-        res.data.code &&
-        res.data.action === "bind_mobile"
-      ) {
-        timer && clearInterval(timer);
-        saveLoginCode(res.data.code);
-        bindMobile();
+    user.checkWechatLogin({ key: value }).then((res: any) => {
+      if (res.data.code && res.data.code !== "0") {
+        login
+          .codeLogin({ code: res.data.code, msv: getMsv() })
+          .then((res: any) => {
+            if (res.data.success === 1) {
+              setToken(res.data.token);
+              user.detail().then((res: any) => {
+                let loginData = res.data;
+                // 将学员数据存储到store
+                dispatch(loginAction(loginData));
+                // 登录成功之后的跳转
+                redirectHandler();
+              });
+            } else {
+              if (res.data.action === "bind_mobile") {
+                timer && clearInterval(timer);
+                saveLoginCode(res.data.code);
+                bindMobile();
+              }
+            }
+          });
       }
     });
   };
@@ -119,10 +125,12 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
             </a>
           </div>
           <div className={styles["box"]}>
-            {loading ? (
-              <QRCode value="loading" size={300} status="loading" />
-            ) : (
-              <Image width={300} height={300} src={qrode} preview={false} />
+            {qrode !== "" && (
+              <QRCode
+                value={qrode}
+                size={300}
+                status={loading ? "loading" : "active"}
+              />
             )}
           </div>
         </Modal>

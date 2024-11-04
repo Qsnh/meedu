@@ -44,7 +44,6 @@ declare global {
     };
     socialites: {
       qq: number;
-      wechat_scan: number;
       wechat_oauth: number;
     };
     url: string;
