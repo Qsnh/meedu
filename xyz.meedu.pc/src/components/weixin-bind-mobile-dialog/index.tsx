@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
-import { user, system } from "../../api/index";
+import { user, system,login } from "../../api/index";
 import {
   getMsv,
   getLoginCode,
@@ -113,8 +113,8 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    user
-      .wechatCodeBindMobile({
+    login
+      .codeBindMobile({
         mobile: values.mobile,
         code: getLoginCode(),
         mobile_code: values.sms,
