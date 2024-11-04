@@ -155,53 +155,155 @@ foreach ($requires as $require) {
 
 if ($step === 0) {
     ?>
-    <!doctype html>
-    <html lang="en">
+    <!DOCTYPE html>
+    <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MeEdu安装程序</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 600px;
+                overflow: hidden;
+            }
+
+            header {
+                background-color: #f9fafb;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo-title {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.125rem;
+                color: #374151;
+                margin-bottom: 1rem;
+            }
+
+            .check-list {
+                list-style: none;
+                padding: 0;
+            }
+            .check-item {
+                border-bottom: 1px solid #e5e7eb;
+                padding: 10px 0;
+            }
+            .check-item:last-child {
+                border-bottom: none;
+            }
+            .check-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+            .check-name {
+                font-weight: bold;
+            }
+            .status {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+            }
+            .passed {
+                background-color: #10b981;
+            }
+            .failed {
+                background-color: #ef4444;
+            }
+            .check-description {
+                font-size: 0.875rem;
+                color: #6b7280;
+                margin-top: 5px;
+            }
+
+            footer {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: right;
+            }
+
+            .next-button {
+                background-color: #3b82f6;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+                text-decoration: none;
+                outline: none;
+            }
+
+            .next-button:hover {
+                opacity: 0.8;
+            }
+
+            .next-button:disabled {
+                background-color: #9ca3af;
+                cursor: not-allowed;
+            }
+        </style>
     </head>
     <body>
     <div class="container">
-        <div class="row">
-            <div class="col-12 my-5">
+        <header>
+            <div class="logo-title">
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
-            <div class="col-12 mb-5 text-center">
-                <h2>MeEdu 傻瓜安装程序</h2>
-            </div>
-            <div class="col-12">
-                <table class="table table-hover">
-                    <thead>
-                    <tr class="text-center">
-                        <th width="40%">要求</th>
-                        <th>状态</th>
-                        <th>说明</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($requires as $require) { ?>
-                        <tr class="text-center">
-                            <td><?php echo $require['item']; ?></td>
-                            <td><?php echo $require['status'] ? '通过' : '未通过'; ?></td>
-                            <td><?php echo $require['intro']; ?></td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-12 my-5 text-right">
-                <?php if ($ok) { ?>
-                    <a href="?step=1" class="btn btn-info">下一步</a>
+        </header>
+        <main>
+            <h2>环境检测</h2>
+            <ul class="check-list">
+                <?php foreach ($requires as $require) { ?>
+                    <li class="check-item">
+                        <div class="check-header">
+                            <span class="check-name"><?php echo $require['item']; ?></span>
+                            <span class="<?php echo $require['status'] ? 'status passed' : 'status failed'; ?>"></span>
+                        </div>
+                        <p class="check-description"><?php echo $require['intro'] ?></p>
+                    </li>
                 <?php } ?>
-            </div>
-        </div>
+            </ul>
+        </main>
+        <footer>
+            <?php if (!$ok) { ?>
+                <button class="next-button" disabled>下一步</button>
+            <?php } else { ?>
+                <a href="?step=1" class="next-button">下一步</a>
+            <?php } ?>
+        </footer>
     </div>
     </body>
     </html>
