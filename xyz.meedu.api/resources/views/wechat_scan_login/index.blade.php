@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微信公众号登录</title>
+    <title>微信账号授权登录</title>
     <style>
         * {
             box-sizing: border-box;
@@ -132,9 +132,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>微信公众号登录</h1>
+    <h1>微信账号授权登录</h1>
     <p>使用您的微信账号登录</p>
-    <button onclick="handleLogin()" class="btn-wechat">微信登录</button>
+    <button onclick="handleLogin()" class="btn-wechat">立即登录</button>
     <div class="terms">
         <input type="checkbox" id="agree" required>
         <label for="agree">
