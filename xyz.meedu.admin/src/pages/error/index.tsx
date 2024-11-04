@@ -10,7 +10,7 @@ const ErrorPage = () => {
 
   useEffect(() => {
     const code = result.get("code");
-    let errMsg = result.get("msg") || "系统错误";
+    let errMsg = result.get("msg") || "页面不存在";
     if (code === "403") {
       errMsg = "无权限操作";
     } else if (code === "404") {
