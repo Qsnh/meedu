@@ -663,7 +663,7 @@ if ($step === 0) {
             </div>
             <div class="admin-info">
                 <h3>管理员账号信息</h3>
-                <p><strong>用户名：</strong> meedu@meedu.meedu</p>
+                <p><strong>账号：</strong> meedu@meedu.meedu</p>
                 <p><strong>密码：</strong> meedu123</p>
                 <p class="warning">请立即登录并修改默认密码！</p>
             </div>
