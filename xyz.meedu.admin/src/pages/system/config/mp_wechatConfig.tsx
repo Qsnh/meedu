@@ -166,12 +166,7 @@ const SystemMpWechatConfigPage = () => {
           >
             <div className="from-title mt-30">基础配置</div>
             <Form.Item label="AppId" name="meedu.mp_wechat.app_id">
-              <Form.Item name="meedu.mp_wechat.app_id">
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-              <div className="form-helper-text">
-                <span>{webUrl}</span>
-              </div>
+              <Input style={{ width: 300 }} allowClear />
             </Form.Item>
             <Form.Item label="AppSecret" name="meedu.mp_wechat.app_secret">
               <Input style={{ width: 300 }} allowClear />
