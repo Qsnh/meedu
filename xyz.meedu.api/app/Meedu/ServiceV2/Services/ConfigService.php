@@ -139,7 +139,7 @@ class ConfigService implements ConfigServiceInterface
 
     public function appName(): string
     {
-        return config('meedu.system.app_name') ?? '';
+        return config('meedu.system.name') ?? '';
     }
 
 }
