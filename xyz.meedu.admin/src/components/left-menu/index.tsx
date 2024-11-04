@@ -99,14 +99,6 @@ const items = [
     [
       getItem("VIP会员", "/role", null, null, null, "role"),
       getItem("优惠码", "/promocode", null, null, null, "promoCode"),
-      getItem(
-        "公众号",
-        "/wechat/messagereply/index",
-        null,
-        null,
-        null,
-        "mpWechatMessageReply"
-      ),
     ],
     null,
     null
@@ -243,7 +235,7 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/member/") !== -1) {
       setSelectedKeys(["/member/index"]);
       setOpenKeys(openKeyMerge("/member"));
-    }else if (location.pathname.indexOf("/order/code-import") !== -1) {
+    } else if (location.pathname.indexOf("/order/code-import") !== -1) {
       setSelectedKeys(["/promocode"]);
       setOpenKeys(openKeyMerge("/promocode"));
     } else if (location.pathname.indexOf("/order/recharge") !== -1) {
