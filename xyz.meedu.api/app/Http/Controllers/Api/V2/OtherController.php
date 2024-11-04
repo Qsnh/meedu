@@ -125,7 +125,6 @@ class OtherController extends BaseController
             // 社交登录
             'socialites' => [
                 'qq' => $configService->getSocialiteQQLoginEnabled(),
-                'wechat_scan' => $configService->getSocialiteWechatScanLoginEnabled(),
                 'wechat_oauth' => $configService->getSocialiteWechatLoginEnabled(),
             ],
             // 积分奖励

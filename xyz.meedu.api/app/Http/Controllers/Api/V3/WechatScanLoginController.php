@@ -36,8 +36,8 @@ class WechatScanLoginController extends BaseController
             return view('wechat_scan_login.success', compact('appName'));
         }
 
-        $key = $request->input('key');
-        $action = $request->input('action');
+        $key = $request->get('key');
+        $action = $request->get('action');
         if (!$key || !$action || !in_array($action, ['login', 'bind'])) {
             return $this->error(__('参数错误'));
         }
@@ -52,19 +52,20 @@ class WechatScanLoginController extends BaseController
         return view('wechat_scan_login.index', compact('appName', 'loginUrl'));
     }
 
-    public function getLoginUrl(WechatScanBusV2 $bus)
+    public function getLoginUrl(Request $request, WechatScanBusV2 $bus)
     {
-        return $this->data($bus->getLoginUrl());
+        $action = $request->get('action');
+        if (!$action || !in_array($action, ['bind', 'login'])) {
+            return $this->error(__('参数错误'));
+        }
+
+        return $this->data($bus->getLoginUrl($action));
     }
 
     public function query(Request $request, WechatScanBusV2 $bus)
     {
         $key = $request->input('key');
-        if (!$key) {
-            return $this->error(__('参数错误'));
-        }
-
-        if ($bus->isValid($key)) {
+        if (!$key || !$bus->isValid($key)) {
             return $this->error(__('参数错误'));
         }
 

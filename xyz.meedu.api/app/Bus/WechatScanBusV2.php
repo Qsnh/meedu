@@ -16,13 +16,14 @@ class WechatScanBusV2
 
     public const TTL = 300;
 
-    public function getLoginUrl(): array
+    public function getLoginUrl(string $action): array
     {
         $key = Str::random(20);
         Cache::put($this->cacheKey($key), 0, self::TTL);
         return [
-            'url' => route('api.v3.wechat-scan-login.page', ['key' => $key]),
+            'url' => route('api.v3.wechat-scan-login.page') . '?' . http_build_query(['key' => $key, 'action' => $action]),
             'expire' => time() + self::TTL,
+            'key' => $key,
         ];
     }
 
