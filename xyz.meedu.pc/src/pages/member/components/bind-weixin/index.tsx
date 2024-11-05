@@ -167,11 +167,7 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
                 )}
               </>
             )}
-            {!loading &&
-            !expired &&
-            qrode !== "" &&
-            remainingTime.min != "00" &&
-            remainingTime.sec !== "00" ? (
+            {!loading && !expired && qrode !== "" ? (
               <div className={styles["time"]}>
                 有效期：
                 <span>

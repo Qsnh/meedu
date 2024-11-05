@@ -60,7 +60,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
       setExpired(false);
       setQrode(res.data.url);
       setKey(res.data.key);
-      countdown(res.data.expire);
+      countdown(res.data.expire - 290);
       timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
     });
@@ -179,6 +179,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
               其他方式登录&gt;&gt;
             </a>
           </div>
+
           <div className={styles["box"]}>
             {qrode !== "" && (
               <>
@@ -208,11 +209,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
               </>
             )}
 
-            {!loading &&
-            !expired &&
-            qrode !== "" &&
-            remainingTime.min !== "00" &&
-            remainingTime.sec !== "00" ? (
+            {!loading && !expired && qrode !== "" ? (
               <div className={styles["time"]}>
                 有效期：
                 <span>
