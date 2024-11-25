@@ -19,6 +19,7 @@ class UpgradeV4912
         self::deleteSomeConfigItems();
         self::renameWechatLoginKeyName();
         self::deleteSomePermissions();
+        self::updateSmsServiceValue();
     }
 
     private static function deleteSomePermissions()
@@ -42,6 +43,12 @@ class UpgradeV4912
             ->whereIn('key', [
                 'meedu.mp_wechat.enabled_scan_login',
                 'meedu.mp_wechat.scan_login_alert',
+
+                'sms.gateways.yunpian.api_key',
+                'sms.gateways.yunpian.template.password_reset',
+                'sms.gateways.yunpian.template.register',
+                'sms.gateways.yunpian.template.mobile_bind',
+                'sms.gateways.yunpian.template.login',
             ])
             ->delete();
     }
@@ -51,6 +58,28 @@ class UpgradeV4912
         AppConfig::query()
             ->where('key', 'meedu.mp_wechat.enabled_oauth_login')
             ->update(['name' => '启动微信登录']);
+    }
+
+    private static function updateSmsServiceValue()
+    {
+        AppConfig::query()
+            ->where('key', 'meedu.system.sms')
+            ->update(
+                [
+                    'option_value' => json_encode(
+                        [
+                            [
+                                'title' => '阿里云',
+                                'key' => 'aliyun',
+                            ],
+                            [
+                                'title' => '腾讯云',
+                                'key' => 'tencent',
+                            ],
+                        ]
+                    ),
+                ]
+            );
     }
 
 }
