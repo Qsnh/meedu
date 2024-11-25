@@ -89,13 +89,6 @@ const StatsMemberPage = lazy(() => import("../pages/stats/member"));
 const RolePage = lazy(() => import("../pages/role/index"));
 const RoleCreatePage = lazy(() => import("../pages/role/create"));
 const RoleUpdatePage = lazy(() => import("../pages/role/update"));
-//公众号
-const WechatPage = lazy(() => import("../pages/wechat/index"));
-const WechatCreatePage = lazy(() => import("../pages/wechat/create"));
-const WechatUpdatePage = lazy(() => import("../pages/wechat/update"));
-const WechatMenuPage = lazy(
-  () => import("../pages/wechat/mp-wechat-menu/index")
-);
 //优惠码
 const PromoCodePage = lazy(() => import("../pages/promocode/index"));
 const PromoCodeImportPage = lazy(() => import("../pages/promocode/import"));
@@ -263,22 +256,6 @@ const routes: RouteObject[] = [
           { path: "/order/code-import", element: <PromoCodeImportPage /> },
           { path: "/createcode", element: <PromoCodeCreatePage /> },
           { path: "/createmulticode", element: <PromoCodeCreateMultiPage /> },
-          {
-            path: "/wechat/messagereply/index",
-            element: <WechatPage />,
-          },
-          {
-            path: "/wechat/messagereply/create",
-            element: <WechatCreatePage />,
-          },
-          {
-            path: "/wechat/messagereply/update",
-            element: <WechatUpdatePage />,
-          },
-          {
-            path: "/wechat/mp-wechat-menu",
-            element: <WechatMenuPage />,
-          },
           {
             path: "/system/administrator",
             element: <SystemAdministratorPage />,

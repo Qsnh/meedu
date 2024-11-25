@@ -60,20 +60,6 @@ const SystemMpWechatConfigPage = () => {
               ),
             });
           } else if (
-            configData[index].key === "meedu.mp_wechat.enabled_scan_login"
-          ) {
-            form.setFieldsValue({
-              "meedu.mp_wechat.enabled_scan_login": Number(
-                configData[index].value
-              ),
-            });
-          } else if (
-            configData[index].key === "meedu.mp_wechat.scan_login_alert"
-          ) {
-            form.setFieldsValue({
-              "meedu.mp_wechat.scan_login_alert": configData[index].value,
-            });
-          } else if (
             configData[index].key === "meedu.mp_wechat.enabled_share"
           ) {
             form.setFieldsValue({
@@ -142,14 +128,6 @@ const SystemMpWechatConfigPage = () => {
     }
   };
 
-  const scanLoginChange = (checked: boolean) => {
-    if (checked) {
-      form.setFieldsValue({ "meedu.mp_wechat.enabled_scan_login": 1 });
-    } else {
-      form.setFieldsValue({ "meedu.mp_wechat.enabled_scan_login": 0 });
-    }
-  };
-
   const wechatShareChange = (checked: boolean) => {
     if (checked) {
       form.setFieldsValue({ "meedu.mp_wechat.enabled_share": 1 });
@@ -188,12 +166,7 @@ const SystemMpWechatConfigPage = () => {
           >
             <div className="from-title mt-30">基础配置</div>
             <Form.Item label="AppId" name="meedu.mp_wechat.app_id">
-              <Form.Item name="meedu.mp_wechat.app_id">
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-              <div className="form-helper-text">
-                <span>{webUrl}</span>
-              </div>
+              <Input style={{ width: 300 }} allowClear />
             </Form.Item>
             <Form.Item label="AppSecret" name="meedu.mp_wechat.app_secret">
               <Input style={{ width: 300 }} allowClear />
@@ -206,30 +179,11 @@ const SystemMpWechatConfigPage = () => {
             </Form.Item>
             <div className="from-title mt-30">登录配置</div>
             <Form.Item
-              label="启用授权登录"
+              label="启用微信登录"
               name="meedu.mp_wechat.enabled_oauth_login"
               valuePropName="checked"
             >
               <Switch onChange={oauthLoginChange} />
-            </Form.Item>
-            <Form.Item
-              label="启用PC扫码登录"
-              name="meedu.mp_wechat.enabled_scan_login"
-              valuePropName="checked"
-            >
-              <Switch onChange={scanLoginChange} />
-            </Form.Item>
-            <Form.Item
-              label="扫码登录成功回复信息"
-              name="meedu.mp_wechat.scan_login_alert"
-            >
-              <Input.TextArea
-                rows={6}
-                style={{ width: 400, resize: "none" }}
-                allowClear
-                showCount
-                maxLength={200}
-              />
             </Form.Item>
             <div className="from-title mt-30">手机端分享</div>
             <Form.Item

@@ -172,15 +172,6 @@ class BusinessStateTest extends TestCase
         $this->assertTrue($this->businessStatus->isEnabledMpOAuthLogin());
     }
 
-    public function test_enabledMpScanLogin()
-    {
-        //默认关闭
-        $this->assertFalse($this->businessStatus->enabledMpScanLogin());
-
-        config(['meedu.mp_wechat.enabled_scan_login' => 1]);
-        $this->assertTrue($this->businessStatus->enabledMpScanLogin());
-    }
-
     public function test_isBuyCourse_with_free_course()
     {
         $course = Course::factory()->create(['is_free' => 1]);

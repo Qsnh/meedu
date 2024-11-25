@@ -10,17 +10,17 @@ Route::get('/search', 'SearchController@index');
 
 Route::get('/status', 'SystemController@status');
 
-Route::get('/auth/login/wechat/oauth', 'LoginController@wechatOauthLogin');
+Route::get('/auth/login/wechat/oauth', 'LoginController@wechatOauthLogin')->name('api.v3.login.wechat-oauth');
 Route::get('/auth/login/wechat/callback', 'LoginController@wechatOauthCallback')->name('api.v3.login.wechat.callback');
 Route::get('/auth/login/socialite/{app}', 'LoginController@socialiteLogin');
 Route::get('/auth/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v3.login.socialite.callback');
 
-Route::get('/auth/login/wechat/scan', 'LoginController@wechatScan');
-Route::get('/auth/login/wechat/scan/query', 'LoginController@wechatScanQuery');
+Route::get('/auth/login/wechat-scan/page', 'WechatScanLoginController@index')->name('api.v3.wechat-scan-login.page');
+Route::post('/auth/login/wechat-scan/url', 'WechatScanLoginController@getLoginUrl');
+Route::get('/auth/login/wechat-scan/query', 'WechatScanLoginController@query');
 
 Route::post('/auth/login/code', 'LoginController@loginByCode');
 Route::post('/auth/register/withSocialite', 'LoginController@registerWithSocialite');
-Route::post('/auth/register/withWechatScan', 'LoginController@registerWithWechatScan');
 
 Route::get('/course/attach-download', 'CourseController@attachDownloadDirect')->name('course.attach.download.direct');
 

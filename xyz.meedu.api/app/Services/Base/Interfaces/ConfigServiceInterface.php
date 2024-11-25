@@ -98,11 +98,7 @@ interface ConfigServiceInterface
 
     public function getMemberRegisterSendVipConfig(): array;
 
-    public function getMpWechatScanLoginAlert(): string;
-
     public function getSocialiteQQLoginEnabled(): int;
-
-    public function getSocialiteWechatScanLoginEnabled(): int;
 
     public function getSocialiteWechatLoginEnabled(): int;
 

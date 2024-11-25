@@ -324,19 +324,9 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.member.register.vip') ?? [];
     }
 
-    public function getMpWechatScanLoginAlert(): string
-    {
-        return config('meedu.mp_wechat.scan_login_alert') ?? '';
-    }
-
     public function getSocialiteQQLoginEnabled(): int
     {
         return (int)config('meedu.member.socialite.qq.enabled');
-    }
-
-    public function getSocialiteWechatScanLoginEnabled(): int
-    {
-        return (int)config('meedu.mp_wechat.enabled_scan_login');
     }
 
     public function getSocialiteWechatLoginEnabled(): int

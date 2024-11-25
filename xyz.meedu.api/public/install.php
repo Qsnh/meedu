@@ -155,53 +155,163 @@ foreach ($requires as $require) {
 
 if ($step === 0) {
     ?>
-    <!doctype html>
-    <html lang="en">
+    <!DOCTYPE html>
+    <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MeEdu安装程序</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 700px;
+                overflow: hidden;
+            }
+
+            header {
+                background-color: #f9fafb;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo-title {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.125rem;
+                color: #374151;
+                margin-bottom: 1rem;
+            }
+
+            .check-list {
+                list-style: none;
+                padding: 0;
+            }
+
+            .check-item {
+                border-bottom: 1px solid #e5e7eb;
+                padding: 10px 0;
+            }
+
+            .check-item:last-child {
+                border-bottom: none;
+            }
+
+            .check-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+            .check-name {
+                font-weight: bold;
+            }
+
+            .status {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+            }
+
+            .passed {
+                background-color: #10b981;
+            }
+
+            .failed {
+                background-color: #ef4444;
+            }
+
+            .check-description {
+                font-size: 0.875rem;
+                color: #6b7280;
+                margin-top: 5px;
+            }
+
+            footer {
+                background-color: #f9fafb;
+                padding: 20px;
+                text-align: right;
+            }
+
+            .next-button {
+                background-color: #3b82f6;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+                text-decoration: none;
+                outline: none;
+            }
+
+            .next-button:hover {
+                opacity: 0.8;
+            }
+
+            .next-button:disabled {
+                background-color: #9ca3af;
+                cursor: not-allowed;
+            }
+        </style>
     </head>
     <body>
     <div class="container">
-        <div class="row">
-            <div class="col-12 my-5">
+        <header>
+            <div class="logo-title">
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
-            <div class="col-12 mb-5 text-center">
-                <h2>MeEdu 傻瓜安装程序</h2>
-            </div>
-            <div class="col-12">
-                <table class="table table-hover">
-                    <thead>
-                    <tr class="text-center">
-                        <th width="40%">要求</th>
-                        <th>状态</th>
-                        <th>说明</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($requires as $require) { ?>
-                        <tr class="text-center">
-                            <td><?php echo $require['item']; ?></td>
-                            <td><?php echo $require['status'] ? '通过' : '未通过'; ?></td>
-                            <td><?php echo $require['intro']; ?></td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-12 my-5 text-right">
-                <?php if ($ok) { ?>
-                    <a href="?step=1" class="btn btn-info">下一步</a>
+        </header>
+        <main>
+            <h2>环境检测</h2>
+            <ul class="check-list">
+                <?php foreach ($requires as $require) { ?>
+                    <li class="check-item">
+                        <div class="check-header">
+                            <span class="check-name"><?php echo $require['item']; ?></span>
+                            <span class="<?php echo $require['status'] ? 'status passed' : 'status failed'; ?>"></span>
+                        </div>
+                        <p class="check-description"><?php echo $require['intro'] ?></p>
+                    </li>
                 <?php } ?>
-            </div>
-        </div>
+            </ul>
+        </main>
+        <footer>
+            <?php if (!$ok) { ?>
+                <button class="next-button" disabled>下一步</button>
+            <?php } else { ?>
+                <a href="?step=1" class="next-button">下一步</a>
+            <?php } ?>
+        </footer>
     </div>
     </body>
     </html>
@@ -222,7 +332,8 @@ if ($step === 0) {
     if ($isSubmit) {
         // 测试数据库连接
         try {
-            new PDO('mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbDb, $dbUser, $dbPass);
+            $pdo = new PDO('mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbDb, $dbUser, $dbPass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $dbConnected = true;
         } catch (Exception $e) {
             $error = $e->getMessage();
@@ -281,71 +392,200 @@ if ($step === 0) {
         }
     }
     ?>
-    <!doctype html>
-    <html lang="en">
+    <!DOCTYPE html>
+    <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <title>MeEdu安装程序</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MeEdu安装程序 - 数据库配置</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 700px;
+                overflow: hidden;
+            }
+
+            header {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo-title {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            main {
+                padding: 20px 40px 20px 20px;
+            }
+
+            h2 {
+                font-size: 1.125rem;
+                color: #374151;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+                color: #374151;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 1rem;
+            }
+
+            .hint {
+                font-size: 0.875rem;
+                color: #6b7280;
+                margin-top: 0.25rem;
+            }
+
+            footer {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                text-align: right;
+            }
+
+            .next-button {
+                background-color: #3b82f6;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+
+            .next-button:hover {
+                background-color: #2563eb;
+            }
+
+            @media (max-width: 640px) {
+                header, main, footer {
+                    padding-right: 20px;
+                }
+            }
+
+            .error-message {
+                background-color: #fee2e2;
+                border: 1px solid #fecaca;
+                color: #dc2626;
+                padding: 1rem;
+                margin: 1rem 20px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                font-size: 1rem;
+                font-weight: 500;
+                box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+            }
+
+            .error-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 0.75rem;
+                flex-shrink: 0;
+                color: #dc2626;
+            }
+
+            .error-text {
+                flex: 1;
+                line-height: 1.5;
+            }
+        </style>
     </head>
     <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 my-5">
+        <header>
+            <div class="logo-title">
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
-            <div class="col-12 mb-5 text-center">
-                <h2>MeEdu安装程序</h2>
+        </header>
+        <?php
+        if ($error) {
+            ?>
+            <div class="error-message">
+                <svg class="error-icon" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clip-rule="evenodd"/>
+                </svg>
+                <span class="error-text">数据库连接失败：<?php echo htmlspecialchars($error); ?></span>
             </div>
-            <div class="col-4">
-                <?php if ($error) { ?>
-                    <div class="alert alert-danger">
-                        <p class="mb-0"><?php echo $error; ?></p>
-                    </div>
-                <?php } ?>
-                <form action="" method="post">
-                    <input type="hidden" name="submit" value="1">
-                    <div class="form-group">
-                        <label>网站地址</label>
-                        <input type="text" name="url" value="<?php echo $url; ?>" class="form-control"
-                               placeholder="例如：https://meeedu.vip" required>
-                    </div>
-                    <div class="form-group">
-                        <label>数据库地址</label>
-                        <input type="text" name="db_host" value="<?php echo $dbHost; ?>" class="form-control"
-                               placeholder="例如：127.0.0.1" required>
-                    </div>
-                    <div class="form-group">
-                        <label>数据库端口</label>
-                        <input type="text" name="db_port" value="<?php echo $dbPort; ?>" class="form-control"
-                               placeholder="例如：3306" required>
-                    </div>
-                    <div class="form-group">
-                        <label>数据库用户</label>
-                        <input type="text" name="db_user" value="<?php echo $dbUser; ?>" class="form-control"
-                               placeholder="例如：root" required>
-                    </div>
-                    <div class="form-group">
-                        <label>数据库密码</label>
-                        <input type="text" name="db_pass" value="<?php echo $dbPass; ?>" class="form-control"
-                               placeholder="为空可不填写">
-                    </div>
-                    <div class="form-group">
-                        <label>数据库</label>
-                        <input type="text" name="db_db" value="<?php echo $dbDb; ?>" class="form-control"
-                               placeholder="例如：meedu" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-info btn-block">下一步</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+            <?php
+        }
+        ?>
+        <form id="dbForm" action="" method="POST">
+            <input type="hidden" name="submit" value="1">
+            <main>
+                <h2>请输入数据库连接信息</h2>
+                <div class="form-group">
+                    <label for="config-url">访问地址：</label>
+                    <input type="text" id="config-url" name="url" value="<?php echo $url; ?>" required>
+                    <p class="hint">http://或者https://为前缀开头的URL地址</p>
+                </div>
+                <div class="form-group">
+                    <label for="dbHost">数据库主机：</label>
+                    <input type="text" id="dbHost" name="db_host" value="<?php echo $dbHost; ?>" required>
+                    <p class="hint">通常为localhost，除非您的数据库在远程服务器上</p>
+                </div>
+                <div class="form-group">
+                    <label for="dbPort">数据库端口：</label>
+                    <input type="text" id="dbPort" name="db_port" value="<?php echo $dbPort; ?>" required>
+                    <p class="hint">通常为3306端口</p>
+                </div>
+                <div class="form-group">
+                    <label for="dbName">数据库名称：</label>
+                    <input type="text" id="dbName" name="db_db" value="<?php echo $dbDb; ?>" required>
+                    <p class="hint">请确保该数据库已经创建</p>
+                </div>
+                <div class="form-group">
+                    <label for="dbUser">数据库用户名：</label>
+                    <input type="text" id="dbUser" name="db_user" value="<?php echo $dbUser; ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="dbPassword">数据库密码：</label>
+                    <input type="password" id="dbPassword" name="db_pass" value="<?php echo $dbPass; ?>" required>
+                </div>
+            </main>
+            <footer>
+                <button type="submit" form="dbForm" class="next-button">下一步</button>
+            </footer>
+        </form>
     </div>
     </body>
     </html>
@@ -354,40 +594,137 @@ if ($step === 0) {
     // 安装成功
     file_put_contents('../storage/install.lock', time());
     ?>
-    <!doctype html>
-    <html lang="en">
+    <!DOCTYPE html>
+    <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              href="https://lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <title>MeEdu安装程序</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MeEdu安装程序 - 安装完成</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f4f6;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 600px;
+                overflow: hidden;
+            }
+
+            header {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo-title {
+                display: flex;
+                align-items: center;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+
+            main {
+                padding: 20px 20px 20px 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                color: #10b981;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+
+            .success-message {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .admin-info {
+                background-color: #f3f4f6;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 2rem;
+            }
+
+            .admin-info h3 {
+                font-size: 1.125rem;
+                color: #374151;
+                margin-top: 0;
+                margin-bottom: 1rem;
+            }
+
+            .admin-info p {
+                margin: 0.5rem 0;
+            }
+
+            .warning {
+                color: #ef4444;
+                font-weight: bold;
+            }
+
+            footer {
+                background-color: #f9fafb;
+                padding: 20px 40px 20px 20px;
+                text-align: right;
+            }
+
+            .finish-button {
+                background-color: #10b981;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+
+            .finish-button:hover {
+                background-color: #059669;
+            }
+
+            @media (max-width: 640px) {
+                header, main, footer {
+                    padding-right: 20px;
+                }
+            }
+        </style>
     </head>
     <body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 my-5">
+        <header>
+            <div class="logo-title">
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
-            <div class="col-12 mb-5 text-center">
-                <h2>MeEdu安装程序</h2>
+        </header>
+        <main>
+            <h2>恭喜！安装成功</h2>
+            <div class="success-message">
+                <p>MeEdu程序已经成功安装到您的服务器上。您现在可以开始使用了。</p>
             </div>
-            <div class="col-4 text-center">
-                <div class="alert alert-warning">
-                    <p class="mb-0">请记得删除install.php文件</p>
-                    <p class="mb-0">后台账号：<code>meedu@meedu.meedu</code></p>
-                    <p class="mb-0">后台密码：<code>meedu123</code></p>
-                    <p class="mb-0">登录后台之后记得修改密码哦！</p>
-                </div>
-                <div class="pb-5">
-                    <h3 style="color: green" class="my-5">安装成功</h3>
-                    <a href="/" class="btn btn-success">网站首页</a>
-                </div>
+            <div class="admin-info">
+                <h3>管理员账号信息</h3>
+                <p><strong>账号：</strong> meedu@meedu.meedu</p>
+                <p><strong>密码：</strong> meedu123</p>
+                <p class="warning">请立即登录并修改默认密码！</p>
             </div>
-        </div>
+        </main>
     </div>
     </body>
     </html>

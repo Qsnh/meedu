@@ -681,57 +681,6 @@ class AdministratorPermissionSeeder extends Seeder
                 ],
             ],
 
-            // 微信公众号消息回复
-            [
-                'group_name' => '微信公众号',
-                'children' => [
-                    [
-                        'display_name' => '微信公众号-消息回复规则-列表',
-                        'slug' => 'mpWechatMessageReply',
-                        'method' => 'GET',
-                        'url' => 'mpWechatMessageReply',
-                    ],
-                    [
-                        'display_name' => '微信公众号-消息回复规则-添加',
-                        'slug' => 'mpWechatMessageReply.store',
-                        'method' => 'GET|POST',
-                        'url' => '(^mpWechatMessageReply$|^mpWechatMessageReply\/create$)',
-                    ],
-                    [
-                        'display_name' => '微信公众号-消息回复规则-编辑',
-                        'slug' => 'mpWechatMessageReply.update',
-                        'method' => 'GET|PUT',
-                        'url' => 'mpWechatMessageReply/\d+',
-                    ],
-                    [
-                        'display_name' => '微信公众号-消息回复规则-删除',
-                        'slug' => 'mpWechatMessageReply.destroy',
-                        'method' => 'DELETE',
-                        'url' => 'mpWechatMessageReply/\d+',
-                    ],
-
-                    // 公众号菜单
-                    [
-                        'display_name' => '微信公众号-菜单-查询',
-                        'slug' => 'mpWechat.menu',
-                        'method' => 'GET',
-                        'url' => 'mpWechat/menu',
-                    ],
-                    [
-                        'display_name' => '微信公众号-菜单-更新',
-                        'slug' => 'mpWechat.menu.update',
-                        'method' => 'PUT',
-                        'url' => 'mpWechat/menu',
-                    ],
-                    [
-                        'display_name' => '微信公众号-菜单-清空',
-                        'slug' => 'mpWechat.menu.empty',
-                        'method' => 'DELETE',
-                        'url' => 'mpWechat/menu',
-                    ],
-                ],
-            ],
-
             // 装修
             [
                 'group_name' => '装修',

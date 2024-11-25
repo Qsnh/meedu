@@ -144,27 +144,10 @@ class CacheConstant
         'expire' => -1,
     ];
 
-    // 微信公众号扫码登录
-    public const WECHAT_SCAN_LOGIN = [
-        'name' => self::PREFIX_C . 'wechat:s:l:%s',
-        'expire' => 3600, //1小时
-    ];
-
 
     // 社交登录
     public const USER_SOCIALITE_LOGIN = [
         'name' => self::PREFIX_C . 'socialite:login:%s',
         'expire' => 600, //10分钟
-    ];
-
-    // 微信公众号扫码登录/绑定
-    public const WECHAT_SCAN = [
-        'name' => self::PREFIX_C . 'wechat:scan:%s',
-        'expire' => 3600, //1小时
-    ];
-
-    public const WECHAT_SCAN_USER = [
-        'name' => self::PREFIX_C . 'wechat:scan:user:%s',
-        'expire' => 3600, //1小时
     ];
 }

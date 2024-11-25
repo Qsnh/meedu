@@ -9,8 +9,6 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Meedu\Verify;
-use App\Meedu\Wechat;
-use App\Bus\WechatBindBus;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
@@ -682,7 +680,7 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/verify 校验
+     * @api {post} /api/v2/member/verify 2FA校验
      * @apiGroup 用户
      * @apiName MemberVerify
      * @apiVersion v2.0.0
@@ -704,27 +702,6 @@ class MemberController extends BaseController
         }
 
         return $this->data(['sign' => $verify->gen()]);
-    }
-
-    /**
-     * @api {get} /api/v2/member/wechatScan/bind 微信扫码绑定[二维码]
-     * @apiGroup 用户
-     * @apiName MemberWechatBind
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {String} data.code 随机值
-     * @apiSuccess {String} data.image 图片内容
-     */
-    public function wechatScanBind(WechatBindBus $bus)
-    {
-        $data = $bus->qrcode($this->id());
-        return $this->data([
-            'code' => $data['code'],
-            'image' => $data['image'],
-        ]);
     }
 
     /**
@@ -826,70 +803,5 @@ class MemberController extends BaseController
             ->redirectUrl($redirectUrl)
             ->stateless()
             ->redirect();
-    }
-
-    /**
-     * @api {get} /api/v2/member/wechatBind 微信公众号授权绑定[302重定向]
-     * @apiGroup 用户
-     * @apiName MemberWechatBind
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} token 登录token
-     * @apiParam {String} redirect_url 绑定成功之后的跳转地址，需要urlEncode
-     */
-    public function wechatBind(Request $request)
-    {
-        $redirectUrl = urldecode($request->input('redirect_url'));
-        if (!$redirectUrl) {
-            return $this->error(__('参数错误'));
-        }
-
-        $callbackUrl = route('api.v2.wechatBind.callback');
-        $callbackUrl = url_append_query($callbackUrl, [
-            'redirect_url' => urlencode($redirectUrl),
-            'data' => encrypt([
-                // 有效期一个小时
-                'expired_at' => time() + 3600,
-                // 绑定的用户id
-                'user_id' => $this->id(),
-            ]),
-        ]);
-
-        return Wechat::getInstance()->oauth->redirect($callbackUrl);
-    }
-
-    public function wechatBindCallback(SocialiteServiceInterface $socialiteService, BusinessState $businessState, Request $request)
-    {
-        $app = FrontendConstant::WECHAT_LOGIN_SIGN;
-
-        $data = $request->input('data');
-        $redirectUrl = urldecode($request->input('redirect_url'));
-        if (!$data || !$redirectUrl) {
-            return $this->error(__('参数错误'));
-        }
-
-        $socialiteUser = Wechat::getInstance()->oauth->user();
-        if (!$socialiteUser) {
-            return redirect(url_append_query($redirectUrl, ['error' => __('系统错误')]));
-        }
-        $appId = $socialiteUser->getId();
-
-        try {
-            $data = decrypt($data);
-            if ($data['expired_at'] < time()) {
-                return redirect(url_append_query($redirectUrl, ['error' => __('已超时，请重新绑定')]));
-            }
-            $needBindUserId = (int)$data['user_id'];
-
-            $businessState->socialiteBindCheck($needBindUserId, $app, $appId);
-
-            $socialiteService->bindApp($needBindUserId, $app, $appId, $socialiteUser->toArray());
-
-            return redirect($redirectUrl);
-        } catch (ServiceException $e) {
-            return redirect(url_append_query($redirectUrl, ['error' => $e->getMessage()]));
-        } catch (\Exception $e) {
-            abort(500);
-        }
     }
 }

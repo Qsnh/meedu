@@ -413,7 +413,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
               </div>
             )}
             {(config.socialites.qq === 1 ||
-              config.socialites.wechat_scan === 1) && (
+              config.socialites.wechat_oauth === 1) && (
               <div className={styles["others"]}>
                 <div className={styles["tit"]}>第三方快捷登录</div>
                 <div className={styles["tab-icon"]}>
@@ -427,7 +427,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
                       src={iconQQ}
                     />
                   )}
-                  {config.socialites.wechat_scan === 1 && (
+                  {config.socialites.wechat_oauth === 1 && (
                     <img
                       onClick={() => {
                         interval && clearInterval(interval);

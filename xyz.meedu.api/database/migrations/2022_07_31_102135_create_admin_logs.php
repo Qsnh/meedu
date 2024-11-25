@@ -25,7 +25,7 @@ class CreateAdminLogs extends Migration
             $table->string('module', 32)->default('')->comment('模块');
             $table->string('opt', 32)->default('')->comment('操作指令');
             $table->mediumText('remark')->nullable(true)->default(null)->comment('备注');
-            $table->ipAddress('ip')->default('')->comment('操作ip');
+            $table->string('ip', 15)->default('')->comment('操作ip');
             $table->timestamp('created_at')->nullable(true)->default(null);
 
             $table->index(['admin_id', 'module', 'opt'], 'a_m_o');

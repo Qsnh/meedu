@@ -511,7 +511,7 @@ const MemberPage = () => {
                   </div>
                 )}
 
-                {systemConfig.socialites.wechat_scan === 1 && (
+                {systemConfig.socialites.wechat_oauth === 1 && (
                   <div className={styles["item-line"]}>
                     <div className={styles["item-left"]}>
                       <div className={styles["item-name"]}>

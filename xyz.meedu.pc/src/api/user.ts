@@ -20,13 +20,13 @@ export function courses(depId: number) {
 }
 
 //微信登录二维码获取
-export function wechatLogin() {
-  return client.get("/api/v3/auth/login/wechat/scan", {});
+export function wechatLogin(params: any) {
+  return client.post("/api/v3/auth/login/wechat-scan/url", params);
 }
 
 //检测微信二维码登录
 export function checkWechatLogin(params: any) {
-  return client.get("/api/v3/auth/login/wechat/scan/query", params);
+  return client.get("/api/v3/auth/login/wechat-scan/query", params);
 }
 
 //微信登登录后绑定手机号

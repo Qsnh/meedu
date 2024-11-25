@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
-import { Modal, Image, QRCode } from "antd";
-import { user } from "../../api/index";
-import { setToken, saveLoginCode } from "../../utils/index";
+import { Modal, QRCode } from "antd";
+import { user, login } from "../../api/index";
+import { setToken, saveLoginCode, getMsv } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 
 interface PropInterface {
@@ -15,6 +15,7 @@ interface PropInterface {
 }
 
 var timer: any = null;
+var countTimer: any = null;
 
 export const WeixinLoginDialog: React.FC<PropInterface> = ({
   open,
@@ -23,21 +24,30 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
   bindMobile,
 }) => {
   const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState(false);
   const [qrode, setQrode] = useState("");
-  const [code, setCode] = useState("");
-  const [redirect, setRedirect] = useState(result.get("redirect"));
+  const [key, setKey] = useState("");
+  const [expired, setExpired] = useState(false);
+  const [remainingTime, setRemainingTime] = useState<any>({
+    day: 0,
+    hr: "00",
+    min: "00",
+    sec: "00",
+  });
+  const [redirect] = useState(result.get("redirect"));
 
   useEffect(() => {
     if (open) {
+      setRemainingTime({ day: 0, hr: "00", min: "00", sec: "00" });
+      setQrode("");
       getQrode();
     }
     return () => {
       timer && clearInterval(timer);
+      countTimer && clearInterval(countTimer);
     };
   }, [open]);
 
@@ -46,38 +56,47 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    user.wechatLogin().then((res: any) => {
-      setQrode(res.data.image);
-      setCode(res.data.code);
-      timer = setInterval(() => checkWechatLogin(res.data.code), 1000);
+    user.wechatLogin({ action: "login" }).then((res: any) => {
+      setExpired(false);
+      setQrode(res.data.url);
+      setKey(res.data.key);
+      countdown(res.data.expire - 290);
+      timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
     });
   };
 
   const checkWechatLogin = (value: any) => {
-    user.checkWechatLogin({ code: value }).then((res: any) => {
-      if (res.data.success === 1 && res.data.token) {
-        let token = res.data.token;
-        setToken(token);
-        user.detail().then((res: any) => {
-          let loginData = res.data;
-          dispatch(loginAction(loginData));
-          redirectHandler();
-        });
-      } else if (
-        res.data.success === 0 &&
-        res.data.code &&
-        res.data.action === "bind_mobile"
-      ) {
-        timer && clearInterval(timer);
-        saveLoginCode(res.data.code);
-        bindMobile();
+    user.checkWechatLogin({ key: value }).then((res: any) => {
+      if (res.data.code && res.data.code !== "0") {
+        login
+          .codeLogin({ code: res.data.code, msv: getMsv() })
+          .then((res: any) => {
+            if (res.data.success === 1) {
+              setToken(res.data.token);
+              user.detail().then((res: any) => {
+                let loginData = res.data;
+                // 将学员数据存储到store
+                dispatch(loginAction(loginData));
+                // 登录成功之后的跳转
+                redirectHandler();
+              });
+            } else {
+              if (res.data.action === "bind_mobile") {
+                timer && clearInterval(timer);
+                countTimer && clearInterval(countTimer);
+                saveLoginCode(res.data.code);
+                bindMobile();
+              }
+            }
+          });
       }
     });
   };
 
   const redirectHandler = () => {
     timer && clearInterval(timer);
+    countTimer && clearInterval(countTimer);
     onCancel();
     if (pathname === "/login") {
       if (redirect) {
@@ -88,6 +107,47 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
     } else {
       location.reload();
     }
+  };
+
+  const countdown = (timestamp: number) => {
+    const today: any = new Date();
+    const now = Date.parse(today);
+    let remaining: number = timestamp - now / 1000;
+    if (remaining <= 0) {
+      timer && clearInterval(timer);
+      countTimer && clearInterval(countTimer);
+      setExpired(true);
+      return;
+    }
+    countTimer = setInterval(() => {
+      //防止出现负数
+      if (remaining > 2) {
+        remaining--;
+        getRemainingTime(remaining);
+      } else if (remaining <= 2 && remaining > 0) {
+        remaining--;
+        timer && clearInterval(timer);
+        getRemainingTime(remaining);
+      } else {
+        timer && clearInterval(timer);
+        countTimer && clearInterval(countTimer);
+        setExpired(true);
+      }
+    }, 1000);
+  };
+
+  const getRemainingTime = (remaining: number) => {
+    const day = Math.floor(remaining / 3600 / 24);
+    const hour = Math.floor((remaining / 3600) % 24);
+    const minute = Math.floor((remaining / 60) % 60);
+    const second = Math.floor(remaining % 60);
+
+    setRemainingTime({
+      day: day,
+      hr: hour < 10 ? "0" + hour : hour,
+      min: minute < 10 ? "0" + minute : minute,
+      sec: second < 10 ? "0" + second : second,
+    });
   };
 
   return (
@@ -102,6 +162,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
           footer={null}
           onCancel={() => {
             timer && clearInterval(timer);
+            countTimer && clearInterval(countTimer);
             onCancel();
           }}
           maskClosable={false}
@@ -118,12 +179,44 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
               其他方式登录&gt;&gt;
             </a>
           </div>
+
           <div className={styles["box"]}>
-            {loading ? (
-              <QRCode value="loading" size={300} status="loading" />
-            ) : (
-              <Image width={300} height={300} src={qrode} preview={false} />
+            {qrode !== "" && (
+              <>
+                {expired ? (
+                  <QRCode
+                    value={qrode}
+                    size={200}
+                    status="expired"
+                    onRefresh={() => {
+                      setRemainingTime({
+                        day: 0,
+                        hr: "00",
+                        min: "00",
+                        sec: "00",
+                      });
+                      setQrode("");
+                      getQrode();
+                    }}
+                  />
+                ) : (
+                  <QRCode
+                    value={qrode}
+                    size={200}
+                    status={loading ? "loading" : "active"}
+                  />
+                )}
+              </>
             )}
+
+            {!loading && !expired && qrode !== "" ? (
+              <div className={styles["time"]}>
+                有效期：
+                <span>
+                  {remainingTime.min}分{remainingTime.sec}秒
+                </span>
+              </div>
+            ) : null}
           </div>
         </Modal>
       ) : null}

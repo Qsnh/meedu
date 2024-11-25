@@ -48,11 +48,6 @@ class ConfigService implements ConfigServiceInterface
         return (bool)config('meedu.system.close_deprecated_api');
     }
 
-    public function getMpWechatScanLoginAlert(): string
-    {
-        return config('meedu.mp_wechat.scan_login_alert') ?? '';
-    }
-
     public function getTencentFaceConfig(): array
     {
         return config('tencent.face') ?? [];
@@ -142,5 +137,9 @@ class ConfigService implements ConfigServiceInterface
         $this->dao->updateValueByKey(ConfigConstant::TENCENT_VOD_PLAY_KEY, $playKey);
     }
 
+    public function appName(): string
+    {
+        return config('meedu.system.name') ?? '';
+    }
 
 }

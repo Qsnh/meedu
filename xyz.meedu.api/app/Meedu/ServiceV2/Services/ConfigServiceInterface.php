@@ -18,8 +18,6 @@ interface ConfigServiceInterface
 
     public function isCloseDeprecatedApi(): bool;
 
-    public function getMpWechatScanLoginAlert(): string;
-
     public function getTencentFaceConfig(): array;
 
     public function enabledFaceVerify(): bool;
@@ -55,4 +53,6 @@ interface ConfigServiceInterface
     public function updateAliyunVodPlayKey(string $playKey): void;
 
     public function updateTencentVodPlayKey(string $playKey): void;
+
+    public function appName(): string;
 }

@@ -20,7 +20,7 @@ class AddIpForVideoComment extends Migration
     public function up()
     {
         Schema::table(\App\Constant\TableConstant::TABLE_VIDEO_COMMENTS, function (Blueprint $table) {
-            $table->ipAddress('ip')->default('');
+            $table->string('ip', 15)->default('');
             $table->string('ip_province', 32)->default('');
         });
     }
