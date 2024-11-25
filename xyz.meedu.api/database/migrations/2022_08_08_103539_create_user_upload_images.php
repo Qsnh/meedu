@@ -30,7 +30,7 @@ class CreateUserUploadImages extends Migration
             $table->string('visit_url', 255)->default('')->comment('访问地址');
 
             $table->string('log_api', 255)->default('')->comment('上传的api');
-            $table->ipAddress('log_ip')->default('')->comment('上传者ip地址');
+            $table->string('log_ip', 15)->default('')->comment('上传者ip地址');
             $table->string('log_ua', 255)->default('')->comment('上传者的UA');
 
             $table->timestamp('created_at')->nullable(true)->default(null);
