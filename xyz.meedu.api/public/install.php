@@ -332,7 +332,8 @@ if ($step === 0) {
     if ($isSubmit) {
         // 测试数据库连接
         try {
-            new PDO('mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbDb, $dbUser, $dbPass);
+            $pdo = new PDO('mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbDb, $dbUser, $dbPass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $dbConnected = true;
         } catch (Exception $e) {
             $error = $e->getMessage();
@@ -498,6 +499,33 @@ if ($step === 0) {
                     padding-right: 20px;
                 }
             }
+
+            .error-message {
+                background-color: #fee2e2;
+                border: 1px solid #fecaca;
+                color: #dc2626;
+                padding: 1rem;
+                margin: 1rem 20px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                font-size: 1rem;
+                font-weight: 500;
+                box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+            }
+
+            .error-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 0.75rem;
+                flex-shrink: 0;
+                color: #dc2626;
+            }
+
+            .error-text {
+                flex: 1;
+                line-height: 1.5;
+            }
         </style>
     </head>
     <body>
@@ -507,7 +535,22 @@ if ($step === 0) {
                 <a href="https://meedu.vip/" target="_blank"><img src="/images/logo.png" height="40"></a>
             </div>
         </header>
+        <?php
+        if ($error) {
+            ?>
+            <div class="error-message">
+                <svg class="error-icon" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clip-rule="evenodd"/>
+                </svg>
+                <span class="error-text">数据库连接失败：<?php echo htmlspecialchars($error); ?></span>
+            </div>
+            <?php
+        }
+        ?>
         <form id="dbForm" action="" method="POST">
+            <input type="hidden" name="submit" value="1">
             <main>
                 <h2>请输入数据库连接信息</h2>
                 <div class="form-group">
@@ -538,7 +581,6 @@ if ($step === 0) {
                     <label for="dbPassword">数据库密码：</label>
                     <input type="password" id="dbPassword" name="db_pass" value="<?php echo $dbPass; ?>" required>
                 </div>
-
             </main>
             <footer>
                 <button type="submit" form="dbForm" class="next-button">下一步</button>
@@ -569,6 +611,7 @@ if ($step === 0) {
                 align-items: center;
                 min-height: 100vh;
             }
+
             .container {
                 background-color: white;
                 border-radius: 8px;
@@ -577,6 +620,7 @@ if ($step === 0) {
                 max-width: 600px;
                 overflow: hidden;
             }
+
             header {
                 background-color: #f9fafb;
                 padding: 20px 40px 20px 20px;
@@ -584,52 +628,63 @@ if ($step === 0) {
                 align-items: center;
                 justify-content: space-between;
             }
+
             .logo-title {
                 display: flex;
                 align-items: center;
             }
+
             .logo {
                 width: 40px;
                 height: 40px;
                 margin-right: 10px;
             }
+
             main {
                 padding: 20px 20px 20px 20px;
             }
+
             h2 {
                 font-size: 1.5rem;
                 color: #10b981;
                 margin-bottom: 1rem;
                 text-align: center;
             }
+
             .success-message {
                 text-align: center;
                 margin-bottom: 2rem;
             }
+
             .admin-info {
                 background-color: #f3f4f6;
                 border-radius: 8px;
                 padding: 20px;
                 margin-bottom: 2rem;
             }
+
             .admin-info h3 {
                 font-size: 1.125rem;
                 color: #374151;
                 margin-top: 0;
                 margin-bottom: 1rem;
             }
+
             .admin-info p {
                 margin: 0.5rem 0;
             }
+
             .warning {
                 color: #ef4444;
                 font-weight: bold;
             }
+
             footer {
                 background-color: #f9fafb;
                 padding: 20px 40px 20px 20px;
                 text-align: right;
             }
+
             .finish-button {
                 background-color: #10b981;
                 color: white;
@@ -639,9 +694,11 @@ if ($step === 0) {
                 cursor: pointer;
                 font-size: 1rem;
             }
+
             .finish-button:hover {
                 background-color: #059669;
             }
+
             @media (max-width: 640px) {
                 header, main, footer {
                     padding-right: 20px;
