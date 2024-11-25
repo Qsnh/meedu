@@ -208,14 +208,14 @@ class Vod
         $urlInfo = parse_url($url);
         $dir = pathinfo($urlInfo['path'], PATHINFO_DIRNAME) . '/';
         // 链接有效时间,默认三个小时
-        $t = dechex(time() + 3600 * 3);
+        $t = dechex(time() + 3600 * 12);
         // 试看时长[单位:秒]
         $exper = 0;
         if ($previewSeconds > 0) {
-            $exper = max($previewSeconds, 30);
+            $exper = max($previewSeconds, 45);
         };
         // ip限制[1个]
-        $rlimit = 1;
+        $rlimit = 5;
         // 标识符
         $us = Str::random(6);
 
