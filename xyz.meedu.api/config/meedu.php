@@ -87,11 +87,6 @@ return [
 
     // 上传
     'upload' => [
-        'image' => [
-            'disk' => 'public',
-            'path' => 'images',
-            'params' => '',
-        ],
         'video' => [
             'default_service' => '',
             'aliyun' => [
@@ -102,12 +97,6 @@ return [
                 'callback_key' => '',
                 'play_domain' => '',
                 'play_key' => '',
-            ],
-        ],
-        'attach' => [
-            'course' => [
-                'disk' => 'attach',
-                'path' => 'course',
             ],
         ],
     ],

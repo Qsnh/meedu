@@ -8,13 +8,20 @@
 
 namespace App\Models;
 
+use App\Constant\TableConstant;
 use Illuminate\Database\Eloquent\Model;
 
 class MediaImage extends Model
 {
-    protected $table = 'media_images';
+    protected $table = TableConstant::MEDIA_IMAGES;
 
     protected $fillable = [
-        'from', 'url', 'path', 'disk', 'name',
+        'url', 'path', 'disk', 'name', 'is_hide', 'scene', 'operator_id', 'operator',
+
+        // 待启用字段
+        'category_id',
+
+        // 废弃字段
+        'from',
     ];
 }

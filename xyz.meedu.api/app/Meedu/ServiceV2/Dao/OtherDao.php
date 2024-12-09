@@ -67,4 +67,9 @@ class OtherDao implements OtherDaoInterface
         MediaVideo::query()->whereIn('storage_file_id', $videoIds)->where('storage_driver', $service)->limit(count($videoIds))->delete();
     }
 
+    public function all(): array
+    {
+        return AppConfig::query()->orderBy('sort')->get()->toArray();
+    }
+
 }

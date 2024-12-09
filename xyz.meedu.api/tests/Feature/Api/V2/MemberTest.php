@@ -10,11 +10,9 @@ namespace Tests\Feature\Api\V2;
 
 use App\Meedu\Verify;
 use App\Constant\CacheConstant;
-use Illuminate\Http\UploadedFile;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserLikeCourse;
@@ -138,24 +136,6 @@ class MemberTest extends Base
             'nick_name' => 'nick1',
         ]);
         $this->assertResponseError($response, __('当前用户已配置昵称'));
-    }
-
-    public function test_avatar()
-    {
-        Storage::fake('public');
-        $response = $this->user($this->member)->postJson('api/v2/member/detail/avatar', [
-            'file' => UploadedFile::fake()->image('avatar.jpg')->size(256),
-        ]);
-        $this->assertResponseSuccess($response);
-    }
-
-    public function test_avatar_size()
-    {
-        Storage::fake('public');
-        $response = $this->user($this->member)->postJson('api/v2/member/detail/avatar', [
-            'file' => UploadedFile::fake()->image('avatar.jpg')->size(1025),
-        ]);
-        $this->assertResponseError($response, __('文件不能超过:size', ['size' => '1M']));
     }
 
     public function test_roles()

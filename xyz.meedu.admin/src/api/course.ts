@@ -156,6 +156,10 @@ export function attachList(params: any) {
   return client.get(`/backend/api/v1/course_attach`, params);
 }
 
+export function attachUploadSign(params: any) {
+  return client.get(`/backend/api/v1/course_attach/create`, params);
+}
+
 export function attachStore(params: any) {
   return client.post(`/backend/api/v1/course_attach`, params);
 }

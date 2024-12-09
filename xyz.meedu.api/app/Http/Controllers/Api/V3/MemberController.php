@@ -10,11 +10,11 @@ namespace App\Http\Controllers\Api\V3;
 
 use Carbon\Carbon;
 use App\Bus\MemberBus;
+use App\Bus\UploadBus;
 use App\Meedu\Tencent\Face;
 use Illuminate\Http\Request;
 use App\Constant\BusConstant;
 use App\Constant\CacheConstant;
-use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Cache;
 use App\Events\UserVerifyFaceSuccessEvent;
@@ -418,7 +418,7 @@ class MemberController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function queryTencentFaceVerify(Request $request, Face $face, UserServiceInterface $userService)
+    public function queryTencentFaceVerify(Request $request, Face $face, UserServiceInterface $userService, UploadBus $uploadBus)
     {
         $bizToken = $request->input('biz_token');
         $ruleId = $request->input('rule_id');
@@ -433,35 +433,29 @@ class MemberController extends BaseController
         $verifyImageUrl = '';
         $verifyVideoUrl = '';
 
+        $user = $this->user();
+
         if ($data['best_frame']) {
-            ['url' => $verifyImageUrl] = base64_save(
+            ['media_image_id' => $mediaImageId] = $uploadBus->uploadBase64Content2Private(
+                $user['nick_name'],
+                sprintf('u-%d', $user['id']),
                 $data['best_frame'],
-                FrontendConstant::USER_VERIFY_FACE_IMAGE_SAVE_PATH,
-                'user-' . $this->id(),
-                'png'
+                'user-verify/',
+                sprintf('user-%d.png', $user['id']),
+                'verify'
             );
+            $verifyImageUrl = sprintf('id:%d', $mediaImageId);
         }
         if ($data['video_data']) {
-            ['url' => $verifyVideoUrl] = base64_save(
+            ['media_image_id' => $mediaImageId] = $uploadBus->uploadBase64Content2Private(
+                $user['nick_name'],
+                sprintf('u-%d', $user['id']),
                 $data['video_data'],
-                FrontendConstant::USER_VERIFY_FACE_VIDEO_SAVE_PATH,
-                'user-' . $this->id(),
-                'mp4'
+                'user-verify/',
+                sprintf('user-%d.mp4', $user['id']),
+                'verify'
             );
-        }
-        if ($data['id_card']['front_image'] && $data['id_card']['back_image']) {
-            base64_save(
-                $data['video_data'],
-                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
-                'user-' . $this->id() . '-front',
-                'png'
-            );
-            base64_save(
-                $data['video_data'],
-                FrontendConstant::USER_VERIFY_FACE_ID_CARD_SAVE_PATH,
-                'user-' . $this->id() . '-back',
-                'png'
-            );
+            $verifyVideoUrl = sprintf('id:%d', $mediaImageId);
         }
 
         $userService->updateUserFaceVerifyTencentRecord(

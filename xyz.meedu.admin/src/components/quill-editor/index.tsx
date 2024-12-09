@@ -139,6 +139,7 @@ export const QuillEditor: React.FC<PropInterface> = (props) => {
       <SelectImage
         open={showUploadImage}
         from={1}
+        scene="editor"
         onCancel={() => setShowUploadImage(false)}
         onSelected={(url) => {
           let quill = refs?.current.getEditor();

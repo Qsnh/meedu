@@ -157,6 +157,7 @@ export const MemberUpdateDialog = (props: PropsInterface) => {
                   >
                     <UploadImageButton
                       text="上传头像"
+                      scene="avatar"
                       onSelected={(url) => {
                         form.setFieldsValue({ avatar: url });
                         setAvatar(url);

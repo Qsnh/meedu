@@ -114,7 +114,7 @@ const SystemVideoSaveConfigPage = lazy(
   () => import("../pages/system/config/videoSaveConfig")
 );
 const SystemImagesSaveConfigPage = lazy(
-  () => import("../pages/system/config/saveImagesConfig")
+  () => import("../pages/system/config/saveFilesConfig")
 );
 const SystemCreditSignConfigPage = lazy(
   () => import("../pages/system/config/creditSignConfig")
@@ -313,7 +313,7 @@ const routes: RouteObject[] = [
             element: <SystemVideoSaveConfigPage />,
           },
           {
-            path: "/system/saveImagesConfig",
+            path: "/system/saveFilesConfig",
             element: <SystemImagesSaveConfigPage />,
           },
           {

@@ -102,9 +102,9 @@ const ResourceImagesPage = () => {
         size: size,
       })
       .then((res: any) => {
-        setTotal(res.data.data.total);
-        setImageList(res.data.data.data);
-        let data: ImageItem[] = res.data.data.data;
+        setTotal(res.data.total);
+        setImageList(res.data.data);
+        let data: ImageItem[] = res.data.data;
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           arr.push(false);
@@ -173,7 +173,7 @@ const ResourceImagesPage = () => {
             <div className="j-b-flex">
               <div className="d-flex">
                 <UploadImageSub
-                  from={0}
+                  scene="other"
                   onUpdate={() => {
                     resetImageList();
                   }}

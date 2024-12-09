@@ -55,4 +55,10 @@ interface ConfigServiceInterface
     public function updateTencentVodPlayKey(string $playKey): void;
 
     public function appName(): string;
+
+    public function all(): array;
+
+    public function getS3PublicConfig(): array;
+
+    public function getS3PrivateConfig(): array;
 }

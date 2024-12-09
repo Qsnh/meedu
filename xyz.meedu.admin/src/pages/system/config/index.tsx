@@ -78,8 +78,8 @@ const SystemConfigPage = () => {
       sign: "",
     },
     {
-      name: "图片存储",
-      value: "图片存储",
+      name: "文件存储",
+      value: "文件存储",
       images: picIcon,
       sign: "",
     },
@@ -151,8 +151,8 @@ const SystemConfigPage = () => {
       navigate("/system/creditSignConfig");
     } else if (value === "短信") {
       navigate("/system/messageConfig");
-    } else if (value === "图片存储") {
-      navigate("/system/saveImagesConfig");
+    } else if (value === "文件存储") {
+      navigate("/system/saveFilesConfig");
     } else if (value === "微信公众号") {
       navigate("/system/mp_wechatConfig");
     } else if (value === "支付") {

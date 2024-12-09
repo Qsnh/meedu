@@ -180,6 +180,7 @@ export const SliderSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
       <SelectImage
         open={showSelectImageWin}
         from={0}
+        scene="decoration"
         onCancel={() => setShowSelectImageWin(false)}
         onSelected={(url) => {
           uploadImage(url);

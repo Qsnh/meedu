@@ -202,6 +202,7 @@ const SystemMpWechatConfigPage = () => {
             <Form.Item label="微信分享图片" name="meedu.mp_wechat.share.imgUrl">
               <UploadImageButton
                 text="微信分享图片"
+                scene="config"
                 onSelected={(url) => {
                   form.setFieldsValue({ "meedu.mp_wechat.share.imgUrl": url });
                   setThumb(url);

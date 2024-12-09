@@ -75,9 +75,22 @@ class FrontendConstant
     public const VOD_SERVICE_TENCENT = 'tencent';
     public const VOD_SERVICE_ALIYUN = 'aliyun';
 
-    // 实名认证最佳帧图片存储路径
-    public const USER_VERIFY_FACE_IMAGE_SAVE_PATH = 'meedu/userFaceVerify/images';
-    // 实名认证视频存储路径
-    public const USER_VERIFY_FACE_VIDEO_SAVE_PATH = 'meedu/userFaceVerify/videos';
-    public const USER_VERIFY_FACE_ID_CARD_SAVE_PATH = '/meedu/userFaceVerify/idCard';
+    public const VOD_COURSE_ATTACH_CONTENT_TYPE_LIST = [
+        'zip' => 'application/zip',
+        'pdf' => 'application/pdf',
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'md' => 'text/markdown',
+        'doc' => 'application/msword',
+        'txt' => 'text/plain',
+        'csv' => 'text/csv',
+        'ppt' => 'application/vnd.ms-powerpoint',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls' => 'application/vnd.ms-excel',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'rar' => 'application/x-rar-compressed',
+        'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    ];
 }

@@ -182,6 +182,7 @@ const SystemPlayerConfigPage = () => {
                 <Form.Item name="meedu.system.player_thumb">
                   <UploadImageButton
                     text="上传图片"
+                    scene="config"
                     onSelected={(url) => {
                       form.setFieldsValue({ "meedu.system.player_thumb": url });
                       setThumb(url);

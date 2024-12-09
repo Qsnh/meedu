@@ -234,7 +234,7 @@ class AdministratorPermissionSeeder extends Seeder
                         'display_name' => '录播课-附件-添加',
                         'slug' => 'course_attach.store',
                         'method' => 'POST',
-                        'url' => 'course_attach',
+                        'url' => '(^course_attach|^course_attach\/create$)',
                     ],
                     [
                         'display_name' => '录播课-附件-删除',

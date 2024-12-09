@@ -28,6 +28,6 @@ class AvatarChangeRequest extends BaseRequest
 
     public function filldata()
     {
-        return save_image($this->file('file'), 'member-avatar');
+        return save_image($this->file('file'), 'avatar');
     }
 }
