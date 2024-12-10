@@ -19,7 +19,7 @@ class CreateMediaImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('media_images', function (Blueprint $table) {
+        Schema::create(\App\Constant\TableConstant::MEDIA_IMAGES, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('from')->default(0)->comment('上传来源');
             $table->string('name', 255)->default('')->comment('文件名');
@@ -37,6 +37,6 @@ class CreateMediaImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media_images');
+        Schema::dropIfExists(\App\Constant\TableConstant::MEDIA_IMAGES);
     }
 }

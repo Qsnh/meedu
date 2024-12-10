@@ -199,46 +199,43 @@ if (!function_exists('get_cache_key')) {
 }
 
 if (!function_exists('save_image')) {
-    function save_image($file, $group = ''): array
+    function save_image($file, $scene = ''): array
     {
         /**
          * @var \Illuminate\Http\UploadedFile $file
          */
 
         /**
-         * @var \App\Services\Base\Interfaces\ConfigServiceInterface $configService
+         * @var \App\Bus\UploadBus $uploadBus
          */
-        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
+        $uploadBus = app()->make(\App\Bus\UploadBus::class);
+
+        $user = \Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->user();
+
+        if (!$scene) {
+            $scene = 'other';
+        }
+
+        $data = $uploadBus->uploadFile2Public(
+            $user['nick_name'],
+            sprintf('u-%d', $user['id']),
+            $file,
+            $scene,
+            $scene
+        );
 
         /**
          * @var \App\Meedu\ServiceV2\Services\OtherServiceInterface $otherService
          */
         $otherService = app()->make(\App\Meedu\ServiceV2\Services\OtherServiceInterface::class);
 
-        // 获取图片存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
-        $disk = $configService->getImageStorageDisk();
-        // 保存图片并返回存储的的路径
-        $path = $file->store($configService->getImageStoragePath() . ($group ? '/' . $group : ''), compact('disk'));
-        // 根据path获取对应磁盘的访问url
-        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
-
-        $name = mb_substr(strip_tags($file->getClientOriginalName()), 0, 254);
-        $data = compact('path', 'url', 'disk', 'name');
-        $data['expired_time'] = time() + 1800;
-        $data['encryptData'] = encrypt(json_encode($data));
-
-        $userId = 0;
-        if (\Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->check()) {
-            $userId = \Illuminate\Support\Facades\Auth::guard(\App\Constant\FrontendConstant::API_GUARD)->id();
-        }
-
         $otherService->storeUserUploadImage(
-            $userId,
-            $group,
-            $disk,
-            $path,
-            $name,
-            $url,
+            $user['id'],
+            $scene,
+            $data['disk'],
+            $data['path'],
+            $data['name'],
+            $data['url'],
             request()->path(),
             request()->getClientIp(),
             request_ua()
@@ -365,28 +362,6 @@ if (!function_exists('request_ua')) {
         $ua = request()->header('User-Agent', '');
         mb_strlen($ua) > $maxLength && $ua = mb_substr($ua, 0, $maxLength);
         return $ua;
-    }
-}
-
-if (!function_exists('base64_save')) {
-    function base64_save(string $base64Content, string $path, string $namePrefix, string $extension)
-    {
-        /**
-         * @var \App\Services\Base\Interfaces\ConfigServiceInterface $configService
-         */
-        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
-
-        $name = ($namePrefix ? $namePrefix . '-' : '') . \Illuminate\Support\Str::random(32) . '.' . $extension;
-        $path .= DIRECTORY_SEPARATOR . $name;
-
-        // 获取存储磁盘[public:本地,oss:阿里云,cos:腾讯云]
-        $disk = $configService->getImageStorageDisk();
-        // 保存图片并返回存储的的路径
-        $uploadResult = \Illuminate\Support\Facades\Storage::disk($disk)->put($path, base64_decode($base64Content));
-        // 根据path获取对应磁盘的访问url
-        $url = url(\Illuminate\Support\Facades\Storage::disk($disk)->url($path));
-
-        return compact('path', 'url', 'disk', 'name');
     }
 }
 

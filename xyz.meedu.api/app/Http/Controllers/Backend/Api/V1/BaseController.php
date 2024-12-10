@@ -18,6 +18,11 @@ class BaseController extends Controller
         return Auth::guard('administrator')->id();
     }
 
+    public function adminInfo()
+    {
+        return Auth::guard('administrator')->user();
+    }
+
     /**
      * @param string $message
      *

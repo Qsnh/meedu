@@ -169,6 +169,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
     // 课程
     Route::group(['prefix' => 'course_attach'], function () {
         Route::get('/', 'CourseAttachController@index');
+        Route::get('/create', 'CourseAttachController@create');
         Route::post('/', 'CourseAttachController@store');
         Route::delete('/{id}', 'CourseAttachController@destroy');
     });

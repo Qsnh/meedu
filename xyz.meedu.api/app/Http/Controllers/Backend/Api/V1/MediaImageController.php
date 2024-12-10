@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use App\Bus\UploadBus;
 use App\Models\MediaImage;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
@@ -19,68 +20,59 @@ class MediaImageController extends BaseController
 {
     public function index(Request $request)
     {
-        $from = (int)$request->input('from');
+        $name = $request->input('name');
+        $categoryId = max((int)$request->input('category_id'), 0);
+        $scene = $request->input('scene');
 
         $images = MediaImage::query()
-            ->select(['id', 'from', 'url', 'path', 'disk', 'name', 'created_at'])
-            ->when($from, function ($query) use ($from) {
-                $query->where('from', $from);
+            ->select(['id', 'url', 'path', 'disk', 'name', 'created_at', 'category_id', 'scene'])
+            ->when($name, function ($query) use ($name) {
+                return $query->where('name', 'like', '%' . $name . '%');
             })
+            ->when($categoryId, function ($query) use ($categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->when($scene, function ($query) use ($scene) {
+                return $query->where('scene', $scene);
+            })
+            ->where('is_hide', 0)
             ->orderByDesc('id')
             ->paginate($request->input('size'));
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_IMAGE,
             AdministratorLog::OPT_VIEW,
-            compact('from')
+            compact('name', 'categoryId')
         );
 
         return $this->successData([
-            'data' => [
-                'data' => $images->items(),
-                'total' => $images->total(),
-            ],
-            'from' => [
-                [
-                    'name' => __('全部'),
-                    'key' => 0,
-                ],
-                [
-                    'name' => __('编辑器'),
-                    'key' => 1,
-                ],
-                [
-                    'name' => __('直接上传'),
-                    'key' => 2,
-                ],
-            ],
+            'data' => $images->items(),
+            'total' => $images->total(),
         ]);
     }
 
-    public function upload(ImageUploadRequest $request)
+    public function upload(ImageUploadRequest $request, UploadBus $uploadBus)
     {
-        $file = $request->filldata();
-        $group = $request->input('group');
-        $from = (int)$request->input('from');
+        ['file' => $file, 'scene' => $scene] = $request->filldata();
 
-        $imageGroup = 'admin' . ($group ? '-' . $group : '');
+        if (!in_array($scene, UploadBus::SCENE_LIST)) {
+            return $this->error(__('参数 $scene 的可选值有 :scene', ['scene' => implode(',', UploadBus::SCENE_LIST)]));
+        }
 
-        $data = save_image($file, $imageGroup);
+        $administrator = $this->adminInfo();
 
-        $data = [
-            'from' => $from,
-            'name' => $data['name'],
-            'url' => $data['url'],
-            'path' => $data['path'],
-            'disk' => $data['disk'],
-        ];
-
-        MediaImage::create($data);
+        $data = $uploadBus->uploadFile2Public(
+            $administrator['name'],
+            sprintf('a-%d', $administrator['id']),
+            $file,
+            'meedu/images',
+            $scene
+        );
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_IMAGE,
             AdministratorLog::OPT_STORE,
-            $data
+            [$data['media_image_id']]
         );
 
         return $this->successData($data);

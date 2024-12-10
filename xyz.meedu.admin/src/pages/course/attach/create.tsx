@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Modal, Space, Form, Input, Upload, Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,9 +12,12 @@ const CourseAttachCreatePage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
+  const [key, setKey] = useState("");
   const [cid, setCid] = useState(Number(result.get("course_id")));
   const [fileName, setFileName] = useState<string>("");
   const [file, setFile] = useState<any>(null);
+  const percentComplete = useRef(0);
+  const [, forceUpdate] = useState({});
 
   useEffect(() => {
     document.title = "添加课程附件";
@@ -29,13 +32,17 @@ const CourseAttachCreatePage = () => {
     if (loading) {
       return;
     }
+    if (!key) {
+      message.error("请先上传附件！");
+      return;
+    }
     setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("name", values.name);
-    formData.append("course_id", String(cid));
     course
-      .attachStore(formData)
+      .attachStore({
+        key: key,
+        name: values.name,
+        course_id: String(cid),
+      })
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -52,24 +59,71 @@ const CourseAttachCreatePage = () => {
 
   const uploadProps = {
     accept:
-      "image/gif,image/jpeg,image/jpg,image/png,.csv,.doc,.txt,.pdf,.md,.zip,",
+      "image/gif,image/jpeg,image/jpg,image/png,.csv,.txt,.pdf,.md,.ppt,.pptx,.doc,.docx,.zip,.rar",
     beforeUpload: (file: any) => {
       if (loading) {
         return;
       }
-      setLoading(true);
+
       const f = file;
-      if (f.size > 10240000) {
-        message.error("上传附件大小不能超过10MB");
-        setLoading(false);
-        return;
-      }
-      setFileName(f.name);
-      form.setFieldsValue({
-        name: f.name,
-      });
-      setFile(f);
-      setLoading(false);
+      let fileName = f.name;
+      let lastName = fileName
+        .substring(fileName.lastIndexOf("."))
+        .toLowerCase();
+      setLoading(true);
+      course
+        .attachUploadSign({ extension: lastName.substr(1) })
+        .then((res: any) => {
+          let key = res.data.key;
+          let url = res.data.upload_url;
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", url, true);
+          xhr.setRequestHeader("Content-Type", f.type);
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              percentComplete.current = (event.loaded / event.total) * 100;
+              forceUpdate({}); // 强制重新渲染
+            }
+          };
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                percentComplete.current = 0;
+                forceUpdate({}); // 强制重新渲染
+                setLoading(false);
+                message.success("上传成功");
+                setKey(key);
+                setFileName(f.name);
+                form.setFieldsValue({
+                  name: f.name,
+                });
+              } else {
+                setKey("");
+                setFileName("");
+                form.setFieldsValue({
+                  name: "",
+                });
+                percentComplete.current = 0;
+                forceUpdate({}); // 强制重新渲染
+                setLoading(false);
+                message.error("上传失败");
+                console.error("File upload failed:", xhr.statusText);
+              }
+            }
+          };
+          xhr.send(f);
+        })
+        .catch((e) => {
+          setKey("");
+          setFileName("");
+          form.setFieldsValue({
+            name: "",
+          });
+          percentComplete.current = 0;
+          forceUpdate({}); // 强制重新渲染
+          setLoading(false);
+          message.error(e.message);
+        });
       return false;
     },
   };
@@ -98,15 +152,21 @@ const CourseAttachCreatePage = () => {
                 name="file"
                 rules={[{ required: true, message: "填上传附件!" }]}
               >
-                <Upload {...uploadProps} showUploadList={false}>
+                <Upload
+                  {...uploadProps}
+                  showUploadList={false}
+                  disabled={loading}
+                >
                   <Button loading={loading} type="primary">
-                    上传附件
+                    {loading
+                      ? `${percentComplete.current.toFixed(2)}%`
+                      : "上传附件"}
                   </Button>
                   {fileName && <span className="ml-10">{fileName}</span>}
                 </Upload>
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="支持zip,pdf,jpeg,jpg,gif,png,md,doc,txt,csv格式文件，上传附件大小不能超过10M"></HelperText>
+                <HelperText text="支持pdf,jpeg,jpg,gif,png,md,txt,csv,ppt,pptx,doc,docx,zip,rar格式文件"></HelperText>
               </div>
             </Space>
           </Form.Item>

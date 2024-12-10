@@ -201,16 +201,6 @@ class ConfigService implements ConfigServiceInterface
         return (int)config('meedu.system.cache.expire');
     }
 
-    public function getImageStorageDisk(): string
-    {
-        return config('meedu.upload.image.disk');
-    }
-
-    public function getImageStoragePath(): string
-    {
-        return config('meedu.upload.image.path');
-    }
-
     public function getRegisterSmsTemplateId(): string
     {
         return $this->getTemplateId('register');

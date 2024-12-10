@@ -29,6 +29,7 @@ class ImageUploadRequest extends BaseRequest
     {
         return [
             'file' => 'bail|required|image',
+            'scene' => 'required',
         ];
     }
 
@@ -37,14 +38,15 @@ class ImageUploadRequest extends BaseRequest
         return [
             'file.required' => __('请上传文件'),
             'file.image' => __('请上传图片文件'),
+            'scene.required' => __('参数scene不存在'),
         ];
     }
 
-    /**
-     * @return \Illuminate\Http\UploadedFile
-     */
-    public function filldata()
+    public function filldata(): array
     {
-        return $this->file('file');
+        return [
+            'file' => $this->file('file'),
+            'scene' => $this->input('scene'),
+        ];
     }
 }

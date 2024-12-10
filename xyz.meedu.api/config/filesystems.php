@@ -74,34 +74,26 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
-        'oss' => [
-            'driver' => 'oss',
-            'access_id' => env('ALI_OSS_ACCESS_ID'),
-            'access_key' => env('ALI_OSS_ACCESS_KEY'),
-            'bucket' => env('ALI_OSS_BUCKET'),
-            'endpoint' => env('ALI_OSS_ENDPOINT'),
-            'cdnDomain' => env('ALI_OSS_DOMAIN'),
-            'ssl' => true,
-            'isCName' => true,
-            'debug' => false,
+        // 公共文件存储
+        's3-public' => [
+            'driver' => 's3',
+            'key' => '',
+            'secret' => '',
+            'region' => '',
+            'bucket' => '',
+            'endpoint' => '',
+            'visibility' => 'public',
         ],
 
-        'cos' => [
-            'driver' => 'cos',
-            'region' => env('TENCENT_COS_REGION', 'ap-guangzhou'),
-            'credentials' => [
-                'appId' => env('TENCENT_COS_APP_ID'),
-                'secretId' => env('TENCENT_COS_SECRET_ID'),
-                'secretKey' => env('TENCENT_COS_SECRET_KEY'),
-            ],
-            'timeout' => 60,
-            'connect_timeout' => 5,
-            'bucket' => env('TENCENT_COS_BUCKET'),
-            'cdn' => env('TENCENT_COS_CDN'),
-            'scheme' => 'https',
-            'read_from_cdn' => env('TENCENT_COS_READ_FROM_CDN', false),
+        // 私有文件存储
+        's3-private' => [
+            'driver' => 's3',
+            'key' => '',
+            'secret' => '',
+            'region' => '',
+            'bucket' => '',
+            'endpoint' => '',
         ],
-
     ],
 
 ];

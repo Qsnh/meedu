@@ -6,7 +6,7 @@ import { getToken } from "../../../utils";
 import { InboxOutlined } from "@ant-design/icons";
 
 interface PropsInterface {
-  from: number;
+  scene: string;
   onUpdate: () => void;
 }
 
@@ -16,7 +16,7 @@ export const UploadImageSub = (props: PropsInterface) => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    action: config.url + "/backend/api/v1/media/image?from=" + props.from,
+    action: config.url + "/backend/api/v1/media/image?scene=" + props.scene,
     headers: {
       authorization: "Bearer " + getToken(),
     },
@@ -33,7 +33,6 @@ export const UploadImageSub = (props: PropsInterface) => {
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
       }
-      console.log(info);
     },
     showUploadList: {
       showRemoveIcon: false,

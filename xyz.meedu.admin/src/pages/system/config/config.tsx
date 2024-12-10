@@ -169,6 +169,7 @@ const SystemNormalConfigPage = () => {
                     <Form.Item name={c.key}>
                       <UploadImageButton
                         text={c.name}
+                        scene="config"
                         onSelected={(url) => {
                           let params: any = {};
                           params[c.key] = url;
@@ -182,6 +183,7 @@ const SystemNormalConfigPage = () => {
                     <Form.Item name={c.key}>
                       <UploadImageButton
                         text={c.name}
+                        scene="config"
                         onSelected={(url) => {
                           let params: any = {};
                           params[c.key] = url;
@@ -197,6 +199,7 @@ const SystemNormalConfigPage = () => {
                       <Form.Item name={c.key}>
                         <UploadImageButton
                           text={c.name}
+                          scene="config"
                           onSelected={(url) => {
                             let params: any = {};
                             params[c.key] = url;

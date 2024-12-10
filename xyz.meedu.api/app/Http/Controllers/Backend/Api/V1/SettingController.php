@@ -17,7 +17,7 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class SettingController extends BaseController
 {
-    public function index(Setting $setting)
+    public function index(ConfigServiceInterface $configService, Setting $setting)
     {
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_SYSTEM_CONFIG,
@@ -25,7 +25,7 @@ class SettingController extends BaseController
             []
         );
 
-        $config = $setting->getCanEditConfig();
+        $config = $configService->all();
         $syncWhitelistKeys = $setting->syncWhitelistKeys();
 
         foreach ($config as $key => $val) {

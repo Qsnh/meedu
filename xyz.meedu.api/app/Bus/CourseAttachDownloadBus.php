@@ -22,7 +22,7 @@ class CourseAttachDownloadBus
 
     private $businessState;
     private $courseService;
-
+    private $uploadBus;
     private $cache;
 
     private const LIMIT_TIMES_PER_HOURS = 60;
@@ -30,14 +30,16 @@ class CourseAttachDownloadBus
     public function __construct(
         BusinessState             $businessState,
         CourseServiceInterface    $courseService,
-        CourseAttachDownloadCache $cache
+        CourseAttachDownloadCache $cache,
+        UploadBus                 $uploadBus
     ) {
         $this->businessState = $businessState;
         $this->courseService = $courseService;
         $this->cache = $cache;
+        $this->uploadBus = $uploadBus;
     }
 
-    public function generateDownloadSignature(int $userId, int $attachId, int $courseId): string
+    public function generateDownloadSignature1(int $userId, int $attachId, int $courseId): string
     {
         if (!$this->businessState->isBuyCourse($userId, $courseId)) {
             throw new ServiceException(__('请购买课程'));
@@ -58,9 +60,45 @@ class CourseAttachDownloadBus
         $this->cache->put($id, ['user_id' => $userId, 'attach_id' => $attach['id']]);
 
         $extra = ['ip' => request()->getClientIp()];
+
         event(new CourseAttachDownloadEvent($userId, $courseId, $attach['id'], $extra));
 
         return $id;
+    }
+
+    public function generateDownloadSignature(int $userId, int $attachId, int $courseId): string
+    {
+        if (!$this->businessState->isBuyCourse($userId, $courseId)) {
+            throw new ServiceException(__('请购买课程'));
+        }
+
+        $attach = $this->courseService->findAttachByIdAndCourseId($attachId, $courseId);
+        if (!$attach) {
+            throw new ModelNotFoundException(__('附件不存在'));
+        }
+
+        if (!in_array($attach['disk'], ['attach', 's3-private'])) {
+            throw new ServiceException(__('当前附件不支持下载'));
+        }
+
+        if ($this->cache->getTimes($userId) >= self::LIMIT_TIMES_PER_HOURS) {
+            throw new ThrottleRequestsException();
+        }
+
+        $this->cache->incTimes($userId);
+
+        $extra = ['ip' => request()->getClientIp()];
+
+        event(new CourseAttachDownloadEvent($userId, $courseId, $attach['id'], $extra));
+
+        if ($attach['disk'] == 'attach') {
+            $id = Str::random(20);
+            $this->cache->put($id, ['user_id' => $userId, 'attach_id' => $attach['id']]);
+
+            return route('course.attach.download.direct', ['sign' => $id]);
+        }
+
+        return $this->uploadBus->generatePrivateUrl($attach['path']);
     }
 
     public function download(string $signature)

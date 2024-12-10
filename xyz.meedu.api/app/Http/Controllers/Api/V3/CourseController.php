@@ -28,10 +28,9 @@ class CourseController extends BaseController
      */
     public function attachDownloadUrl(CourseAttachDownloadBus $bus, $courseId, $id)
     {
-        $sign = $bus->generateDownloadSignature($this->id(), $id, $courseId);
-        return $this->data([
-            'download_url' => route('course.attach.download.direct', ['sign' => $sign]),
-        ]);
+        $url = $bus->generateDownloadSignature($this->id(), $id, $courseId);
+
+        return $this->data(['download_url' => $url]);
     }
 
     public function attachDownloadDirect(Request $request, CourseAttachDownloadBus $bus)

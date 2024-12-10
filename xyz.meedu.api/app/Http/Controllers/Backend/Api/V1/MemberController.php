@@ -9,6 +9,8 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use App\Bus\UploadBus;
+use App\Models\MediaImage;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Meedu\Hooks\HookRun;
@@ -218,7 +220,7 @@ class MemberController extends BaseController
         return $this->success();
     }
 
-    public function detail($id)
+    public function detail(UploadBus $uploadBus, $id)
     {
         $user = User::query()
             ->with([
@@ -235,6 +237,18 @@ class MemberController extends BaseController
             AdministratorLog::OPT_VIEW,
             compact('id')
         );
+
+        if ($user['profile'] && $user['profile']['verify_image_url']) {
+            if (Str::startsWith($user['profile']['verify_image_url'], 'id:')) {
+                $mediaImage = MediaImage::query()
+                    ->select(['id', 'path', 'disk'])
+                    ->where('id', str_replace('id:', '', $user['profile']['verify_image_url']))
+                    ->first();
+                if ($mediaImage) {
+                    $user['profile']['verify_image_url'] = $uploadBus->generatePrivateUrl($mediaImage['path']);
+                }
+            }
+        }
 
         return $this->successData([
             'data' => $user,

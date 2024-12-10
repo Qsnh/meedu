@@ -58,10 +58,6 @@ interface ConfigServiceInterface
 
     public function getCacheExpire(): int;
 
-    public function getImageStorageDisk(): string;
-
-    public function getImageStoragePath(): string;
-
     public function getRegisterSmsTemplateId(): string;
 
     public function getLoginSmsTemplateId(): string;

@@ -103,6 +103,7 @@ export const SlidersCreate: React.FC<PropInterface> = ({ open, onClose }) => {
                     >
                       <UploadImageButton
                         text="上传图片"
+                        scene="decoration"
                         onSelected={(url) => {
                           form.setFieldsValue({ thumb: url });
                           setThumb(url);

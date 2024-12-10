@@ -214,6 +214,7 @@ const CourseCreatePage = () => {
               >
                 <UploadImageButton
                   text="选择图片"
+                  scene="cover"
                   onSelected={(url) => {
                     form.setFieldsValue({ thumb: url });
                     setThumb(url);

@@ -142,4 +142,20 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.system.name') ?? '';
     }
 
+    public function all(): array
+    {
+        return $this->dao->all();
+    }
+
+    public function getS3PublicConfig(): array
+    {
+        return config('s3.public');
+    }
+
+    public function getS3PrivateConfig(): array
+    {
+        return config('s3.private');
+    }
+
+
 }

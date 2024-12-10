@@ -27,12 +27,13 @@ interface ImageItem {
 interface PropsInterface {
   open: boolean;
   from: number;
+  scene: string;
   onCancel: () => void;
   onSelected: (url: string) => void;
 }
 
 export const SelectImage = (props: PropsInterface) => {
-  const [from, setFrom] = useState(0);
+  const [scene, setScene] = useState("");
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -40,36 +41,44 @@ export const SelectImage = (props: PropsInterface) => {
   const [total, setTotal] = useState(0);
   const [selected, setSelected] = useState<string>("");
   const fromRows = [
-    { key: 0, name: "全部图片" },
+    { key: "", name: "全部图片" },
     {
-      key: 1,
-      name: "幻灯片",
-    },
-    {
-      key: 2,
+      key: "cover",
       name: "课程封面",
     },
     {
-      key: 3,
-      name: "课程详情页",
+      key: "avatar",
+      name: "学员头像",
     },
     {
-      key: 4,
-      name: "文章配图",
+      key: "config",
+      name: "系统配置",
+    },
+    {
+      key: "editor",
+      name: "文本编辑器",
+    },
+    {
+      key: "decoration",
+      name: "装修",
+    },
+    {
+      key: "other",
+      name: "其它",
     },
   ];
 
   useEffect(() => {
-    setFrom(props.from);
-  }, [props.from]);
+    setScene(props.scene);
+  }, [props.scene]);
 
   // 获取图片列表
   const getImageList = () => {
     media
-      .imageList({ page: page, size: size, from: from })
+      .imageList({ page: page, size: size, scene: scene })
       .then((res: any) => {
-        setTotal(res.data.data.total);
-        setImageList(res.data.data.data);
+        setTotal(res.data.total);
+        setImageList(res.data.data);
       })
       .catch((err) => {
         console.log("错误,", err);
@@ -87,7 +96,7 @@ export const SelectImage = (props: PropsInterface) => {
     if (props.open) {
       getImageList();
     }
-  }, [props.open, from, refresh, page, size]);
+  }, [props.open, scene, refresh, page, size]);
 
   return (
     <>
@@ -115,7 +124,7 @@ export const SelectImage = (props: PropsInterface) => {
               style={{ position: "absolute", right: 30, top: 15, zIndex: 15 }}
             >
               <UploadImageSub
-                from={from}
+                scene={props.scene}
                 onUpdate={() => {
                   resetImageList();
                 }}
@@ -127,11 +136,11 @@ export const SelectImage = (props: PropsInterface) => {
                   <div
                     key={item.key}
                     className={
-                      item.key === from
+                      item.key === scene
                         ? styles["category-act-item"]
                         : styles["category-item"]
                     }
-                    onClick={() => setFrom(item.key)}
+                    onClick={() => setScene(item.key)}
                   >
                     {item.name}
                   </div>
