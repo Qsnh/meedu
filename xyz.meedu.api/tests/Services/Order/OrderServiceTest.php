@@ -8,6 +8,7 @@
 
 namespace Tests\Services\Order;
 
+use App\Constant\BusConstant;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Exceptions\ServiceException;
@@ -168,6 +169,7 @@ class OrderServiceTest extends TestCase
 
         Order::factory()->count(10)->create([
             'user_id' => $user['id'],
+            'status' => BusConstant::ORDER_STATUS_SUCCESS,
         ]);
 
         $list = $this->service->userOrdersPaginate($user['id'], 2, 4);

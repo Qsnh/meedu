@@ -8,7 +8,9 @@
 
 namespace App\Meedu\ServiceV2\Services;
 
+use Illuminate\Support\Str;
 use App\Constant\ConfigConstant;
+use App\Exceptions\ServiceException;
 use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
 
 class ConfigService implements ConfigServiceInterface
@@ -155,6 +157,95 @@ class ConfigService implements ConfigServiceInterface
     public function getS3PrivateConfig(): array
     {
         return config('s3.private');
+    }
+
+    public function enabledWechatPayment(): bool
+    {
+        return (int)config('meedu.payment.alipay.enabled') === 1;
+    }
+
+    public function enabledAlipayPayment(): bool
+    {
+        return (int)config('meedu.payment.wechat.enabled') === 1;
+    }
+
+    public function enabledHandPayPayment(): bool
+    {
+        return (int)config('meedu.payment.handPay.enabled') === 1;
+    }
+
+    public function handPayInfo(): string
+    {
+        return config('meedu.payment.handPay.introduction') ?? '';
+    }
+
+    public function getWechatPayConfig(): array
+    {
+        $data = config('pay.wechat');
+
+        // 回调地址
+        $data['notify_url'] = route('payment.callback', ['wechat']);
+
+        // 证书
+        if (!$data['cert_client'] || !$data['cert_key']) {
+            throw new ServiceException(__('微信证书未配置'));
+        }
+
+        // 微信证书生成
+        $hash = md5($data['cert_client']);
+        $certClientPath = storage_path('private/wechat_pay_cert_client_' . $hash . '.pem');
+        if (!is_file($certClientPath)) {
+            file_put_contents($certClientPath, $data['cert_client']);
+        }
+        $data['cert_client'] = $certClientPath;
+
+        $hash = md5($data['cert_key']);
+        $certKeyPath = storage_path('private/wechat_pay_cert_key_' . $hash . '.pem');
+        if (!is_file($certKeyPath)) {
+            file_put_contents($certKeyPath, $data['cert_key']);
+        }
+        $data['cert_key'] = $certKeyPath;
+
+        return $data;
+    }
+
+    public function getAlipayConfig(): array
+    {
+        $data = config('pay.alipay');
+        if (!$data['app_cert_public_key'] || !$data['alipay_root_cert']) {
+            throw new ServiceException(__('支付宝证书未配置'));
+        }
+
+        // 支付宝回调地址
+        $data['notify_url'] = route('payment.callback', ['alipay']);
+
+        // 支付宝公钥证书
+        if (Str::startsWith($data['ali_public_key'], '-----BEGIN')) {
+            $hash = md5($data['ali_public_key']);
+            $aliPublicKeyPath = storage_path('private/ali_public_key_' . $hash . '.crt');
+            if (!is_file($aliPublicKeyPath)) {
+                file_put_contents($aliPublicKeyPath, $data['ali_public_key']);
+            }
+            $data['ali_public_key'] = $aliPublicKeyPath;
+        }
+
+        // 支付宝应用公钥证书
+        $hash = md5($data['app_cert_public_key']);
+        $appCertPublicKeyPath = storage_path('private/alipay_app_cert_public_key_' . $hash . '.crt');
+        if (!is_file($appCertPublicKeyPath)) {
+            file_put_contents($appCertPublicKeyPath, $data['app_cert_public_key']);
+        }
+        $data['app_cert_public_key'] = $appCertPublicKeyPath;
+
+        // 支付宝根证书
+        $hash = md5($data['alipay_root_cert']);
+        $rootCertPath = storage_path('private/alipay_root_cert_' . $hash . '.crt');
+        if (!is_file($rootCertPath)) {
+            file_put_contents($rootCertPath, $data['alipay_root_cert']);
+        }
+        $data['alipay_root_cert'] = $rootCertPath;
+
+        return $data;
     }
 
 

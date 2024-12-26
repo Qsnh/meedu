@@ -25,8 +25,8 @@ Route::post('/auth/register/withSocialite', 'LoginController@registerWithSociali
 Route::get('/course/attach-download', 'CourseController@attachDownloadDirect')->name('course.attach.download.direct');
 
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
-    // 手动打款
-    Route::post('/order/pay/handPay', 'PaymentController@handPay');
+    Route::post('/order', 'OrderController@store');
+
     // 获取课件的下载地址
     Route::get('/course/{courseId}/attach/{id}', 'CourseController@attachDownloadUrl');
 

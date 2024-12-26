@@ -21,4 +21,6 @@ interface CourseDaoInterface
     public function attachIncDownloadTimes(int $attachId): int;
 
     public function storeCourseAttachDownloadRecord(int $userId, int $courseId, int $attachId, array $extra): int;
+
+    public function findOrFail(int $id): array;
 }

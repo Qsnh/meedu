@@ -8,6 +8,7 @@
 
 namespace Tests\Feature\Api\V2;
 
+use App\Constant\BusConstant;
 use App\Meedu\Verify;
 use App\Constant\CacheConstant;
 use App\Services\Member\Models\User;
@@ -188,7 +189,7 @@ class MemberTest extends Base
 
     public function test_orders()
     {
-        Order::factory()->count(10)->create(['user_id' => $this->member->id]);
+        Order::factory()->count(10)->create(['user_id' => $this->member->id, 'status' => BusConstant::ORDER_STATUS_SUCCESS]);
         $response = $this->user($this->member)->getJson('api/v2/member/orders');
         $response = $this->assertResponseSuccess($response);
         $this->assertEquals(10, $response['data']['total']);

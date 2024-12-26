@@ -59,4 +59,6 @@ interface UserServiceInterface
     public function change2Verified(int $userId, string $name, string $idNumber, string $verifyImageUrl): int;
 
     public function getUserVideoWatchRecordsByChunkVideoIds(int $userId, array $videoIds): array;
+
+    public function findRoleOrFail(int $id): array;
 }

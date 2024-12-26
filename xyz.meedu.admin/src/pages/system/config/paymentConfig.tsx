@@ -106,14 +106,6 @@ const SystemPaymentConfigPage = () => {
             form.setFieldsValue({
               "pay.wechat.cert_client": configData[index].value,
             });
-          } else if (
-            configData[index].key === "meedu.payment.wechat-jsapi.enabled"
-          ) {
-            form.setFieldsValue({
-              "meedu.payment.wechat-jsapi.enabled": Number(
-                configData[index].value
-              ),
-            });
           }
         }
         setLoading(false);
@@ -160,14 +152,6 @@ const SystemPaymentConfigPage = () => {
       form.setFieldsValue({ "meedu.payment.wechat.enabled": 1 });
     } else {
       form.setFieldsValue({ "meedu.payment.wechat.enabled": 0 });
-    }
-  };
-
-  const wechatJsapiChange = (checked: boolean) => {
-    if (checked) {
-      form.setFieldsValue({ "meedu.payment.wechat-jsapi.enabled": 1 });
-    } else {
-      form.setFieldsValue({ "meedu.payment.wechat-jsapi.enabled": 0 });
     }
   };
 
@@ -412,18 +396,11 @@ const SystemPaymentConfigPage = () => {
 
             <div className="from-title mt-30">微信支付</div>
             <Form.Item
-              label="微信扫码支付"
+              label="微信支付"
               name="meedu.payment.wechat.enabled"
               valuePropName="checked"
             >
               <Switch onChange={wechatChange} />
-            </Form.Item>
-            <Form.Item
-              label="微信JSAPI支付"
-              name="meedu.payment.wechat-jsapi.enabled"
-              valuePropName="checked"
-            >
-              <Switch onChange={wechatJsapiChange} />
             </Form.Item>
             <Form.Item label="微信支付公众号AppId" name="pay.wechat.app_id">
               <Input style={{ width: 300 }} allowClear />

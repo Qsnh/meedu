@@ -16,5 +16,7 @@ Route::get('/face-verify-success', 'IndexController@faceVerifySuccess')->name('f
 
 // 支付回调
 Route::post('/payment/callback/{payment}', 'PaymentController@callback')->name('payment.callback');
-// 微信JSAPI支付
-Route::get('/member/order/pay/wechat/jsapi/page', 'OrderController@wechatJSAPI')->name('order.pay.wechat.jsapi');
+// 收银台
+Route::get('/payment/index', 'PaymentController@index')->name('payment.index');
+Route::post('/payment/index', 'PaymentController@index');
+Route::get('/payment/success', 'PaymentController@successPage')->name('payment.success');

@@ -21,4 +21,6 @@ interface CourseServiceInterface
     public function findAttachById(int $id): array;
 
     public function attachDownload(int $userId, int $courseId, int $attachId, array $data): void;
+
+    public function findOrFail(int $id): array;
 }

@@ -9,11 +9,6 @@ import { isWechatMini, getHost, getToken } from "../../utils";
 import closeIcon from "../../assets/img/close.png";
 import vipIcon from "../../assets/img/default-vip.png";
 import prevIcon from "../../assets/img/icon-prev.png";
-import aliIcon from "../../assets/img/payali.png";
-import wechatIcon from "../../assets/img/paywechat.png";
-import handIcon from "../../assets/img/payhand.png";
-import selIcon from "../../assets/img/selected.png";
-import unSelIcon from "../../assets/img/unselected.png";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -28,22 +23,12 @@ const OrderPage = () => {
   const [goods, setGoods] = useState<any>({});
   const [totalVal, setTotalVal] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [payments, setPayments] = useState<any>([]);
-  const [payment, setPayment] = useState("");
   const [paymentScene, setPaymentScene] = useState("h5");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
   const [openmask2, setOpenmask2] = useState(false);
 
   useEffect(() => {
     document.title = "收银台";
-    let value = "h5";
-    if (isWechatMini()) {
-      value = "wechat";
-      setPaymentScene("wechat");
-    } else {
-      setPaymentScene("h5");
-    }
-    params(value);
   }, []);
 
   useEffect(() => {
@@ -72,27 +57,6 @@ const OrderPage = () => {
     val = val < 0 ? 0 : val;
     setTotalVal(val);
   }, [total, discount]);
-
-  const params = (scene: string) => {
-    order
-      .Payments({
-        scene: scene,
-      })
-      .then((res: any) => {
-        let box: any = [];
-        let box2: any = [];
-        res.data.map((item: any) => {
-          if (item.sign === "wechat-jsapi") {
-            box.push(item);
-          } else {
-            box2.push(item);
-          }
-        });
-        box = box.concat(box2);
-        setPayments(box);
-        setPayment(box[0].sign);
-      });
-  };
 
   const cancel = () => {
     setPromoCode("");
@@ -140,10 +104,11 @@ const OrderPage = () => {
   const submitProtocol = () => {
     setLoading(true);
     order
-      .CreateRoleOrder({
-        role_id: goods.id,
+      .CreateOrder({
+        goods_type: "ROLE",
+        goods_id: goods.id,
         promo_code: promoCode,
-        agree: 1,
+        agree_protocol: 1,
       })
       .then((res: any) => {
         orderCreatedHandler(res.data);
@@ -154,10 +119,6 @@ const OrderPage = () => {
   };
 
   const payHandler = () => {
-    if (!payment) {
-      Toast.show("请选择支付方式");
-      return;
-    }
     if (loading) {
       return;
     }
@@ -169,8 +130,9 @@ const OrderPage = () => {
     if (goods.type === "vod") {
       // 点播课程
       order
-        .CreateCourseOrder({
-          course_id: goods.id,
+        .CreateOrder({
+          goods_type: "COURSE",
+          goods_id: goods.id,
           promo_code: promoCode,
         })
         .then((res: any) => {
@@ -182,8 +144,9 @@ const OrderPage = () => {
     } else if (goods.type === "video") {
       // 视频
       order
-        .CreateVideoOrder({
-          video_id: goods.id,
+        .CreateOrder({
+          goods_type: "COURSE",
+          goods_id: goods.id,
           promo_code: promoCode,
         })
         .then((res: any) => {
@@ -198,50 +161,17 @@ const OrderPage = () => {
   const orderCreatedHandler = (order: any) => {
     setLoading(false);
     // 判断是否继续走支付平台支付
-    if (order.status_text === "已支付") {
+    if (order.is_paid === true) {
       // 优惠全部抵扣
       Toast.show("支付成功");
       setTimeout(() => {
         navigate(-1);
       }, 1000);
     } else {
-      if (payment === "alipay" || payment === "wechat-jsapi") {
-        let host = getHost();
-        let sUrl = encodeURIComponent(host + "/order/success");
-
-        window.location.href =
-          config.url +
-          "/api/v2/order/pay/redirect?order_id=" +
-          order.order_id +
-          "&payment_scene=" +
-          paymentScene +
-          "&scene=" +
-          paymentScene +
-          "&payment=" +
-          payment +
-          "&token=" +
-          getToken() +
-          "&s_url=" +
-          sUrl +
-          "&f_url=" +
-          encodeURIComponent(host);
-      } else if (payment === "handPay") {
-        navigate(
-          "/order/pay?orderId=" +
-            order.order_id +
-            "&price=" +
-            totalVal +
-            "&payment=" +
-            payment +
-            "&type=" +
-            goods.type +
-            "&id=" +
-            goods.id,
-          { replace: true }
-        );
-      } else {
-        Toast.show("无法支付");
-      }
+      let host = getHost();
+      let sUrl = encodeURIComponent(host + "/order/success");
+      let fUrl = encodeURIComponent(host);
+      window.location.href = order.pay_url + `&s_url=${sUrl}&f_url=${fUrl}`;
     }
   };
 
@@ -323,37 +253,6 @@ const OrderPage = () => {
           <div className={styles["tip"]}>优惠码已抵扣10元{discount}元</div>
         )}
         <img src={prevIcon} />
-      </div>
-      <div className={styles["credit2-box"]}>
-        {payments.map((item: any) => (
-          <div
-            className={
-              item.sign === payment
-                ? `${styles["payment-item"]} ${styles["active"]}`
-                : styles["payment-item"]
-            }
-            key={item.sign}
-            onClick={() => setPayment(item.sign)}
-          >
-            {item.sign === "alipay" && (
-              <img className={styles["icon"]} src={aliIcon} />
-            )}
-            {(item.sign === "wechat-jsapi" || item.sign === "wechat_h5") && (
-              <img className={styles["icon"]} src={wechatIcon} />
-            )}
-            {item.sign === "handPay" && (
-              <img className={styles["icon"]} src={handIcon} />
-            )}
-            <span>{item.name}</span>
-            <div className={styles["sel"]}>
-              {item.sign === payment ? (
-                <img src={selIcon} />
-              ) : (
-                <img src={unSelIcon} />
-              )}
-            </div>
-          </div>
-        ))}
       </div>
       <div className={styles["box-footer"]}>
         <div className={styles["price-box"]}>

@@ -24,8 +24,6 @@ const CoursePlayPage = lazy(() => import("../pages/course/video"));
 const RolePage = lazy(() => import("../pages/role/index"));
 //收银台页面
 const OrderPage = lazy(() => import("../pages/order/index"));
-//支付页面
-const OrderPayPage = lazy(() => import("../pages/order/pay"));
 //支付成功页面
 const OrderSuccessPage = lazy(() => import("../pages/order/success"));
 //我的订单页面
@@ -145,10 +143,6 @@ const routes: RouteObject[] = [
           {
             path: "/order",
             element: <PrivateRoute Component={<OrderPage />} />,
-          },
-          {
-            path: "/order/pay",
-            element: <PrivateRoute Component={<OrderPayPage />} />,
           },
           {
             path: "/order/success",

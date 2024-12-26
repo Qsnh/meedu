@@ -10,6 +10,7 @@ namespace App\Meedu\ServiceV2\Services;
 
 use App\Events\UserDeletedEvent;
 use App\Exceptions\ServiceException;
+use App\Meedu\ServiceV2\Models\Role;
 use App\Events\UserDeleteCancelEvent;
 use App\Events\UserDeleteSubmitEvent;
 use App\Meedu\ServiceV2\Models\UserProfile;
@@ -298,4 +299,11 @@ class UserService implements UserServiceInterface
     {
         return $this->userDao->getUserVideoWatchRecordsByVideoIds($userId, $videoIds);
     }
+
+    public function findRoleOrFail(int $id): array
+    {
+        return Role::query()->where('id', $id)->firstOrFail()->toArray();
+    }
+
+
 }

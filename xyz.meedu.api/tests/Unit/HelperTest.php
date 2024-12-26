@@ -112,11 +112,6 @@ class HelperTest extends TestCase
         $this->assertEquals(1, (int)$cacheService->get($mobileCodeSafeKey));
     }
 
-    public function test_get_payments()
-    {
-        $this->assertTrue(get_payments('pc')->isEmpty());
-    }
-
     public function test_get_array_ids()
     {
         $arr = [

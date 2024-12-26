@@ -16,8 +16,10 @@ const OrderPayPage = () => {
   const [payment, setPayment] = useState(result.get("payment"));
   const [id, setId] = useState(Number(result.get("id")));
   const [price, setPrice] = useState(Number(result.get("price")));
-  const [orderId, setOrderId] = useState(Number(result.get("orderId")));
+  const [orderId, setOrderId] = useState(result.get("orderId"));
   const [goodsId, setGoodsId] = useState(Number(result.get("goods_id")));
+  const [discount, setDiscount] = useState(Number(result.get("discount")));
+  const [payUrl, setPayUrl] = useState(result.get("payUrl"));
   const [goodsType, setGoodsType] = useState(result.get("type"));
   const [courseId, setCourseId] = useState(Number(result.get("course_id")));
   const [courseType, setCourseType] = useState(result.get("course_type"));
@@ -27,62 +29,38 @@ const OrderPayPage = () => {
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
-    if (orderId && payment) {
+    if (result.get("orderId") && result.get("payUrl")) {
       initData();
     }
     return () => {
       timer && clearInterval(timer);
     };
-  }, [orderId, payment]);
+  }, [result.get("orderId"), result.get("payUrl")]);
 
   const initData = () => {
     timer = setInterval(checkOrder, 2000);
-    if (payment === "wechat") {
-      order
-        .payWechatScan({
-          order_id: orderId,
-        })
-        .then((res: any) => {
-          setQrode(res.data.code_url);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-          timer && clearInterval(timer);
-          navigate("/");
-        });
-    } else if (payment === "handPay") {
-      order
-        .handPay({
-          order_id: orderId,
-        })
-        .then((res: any) => {
-          setText(res.data.text);
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-          timer && clearInterval(timer);
-          navigate("/");
-        });
-    }
+    let url = decodeURIComponent(String(result.get("payUrl")));
+    setQrode(url);
+    setLoading(false);
   };
 
   const checkOrder = () => {
-    order.checkOrderStatus({ order_id: orderId }).then((res: any) => {
-      let status = res.data.status;
-      if (status === 9) {
-        message.success("已成功支付");
-        setTimeout(() => {
-          goBack();
-        }, 300);
-      } else if (status === 7) {
-        message.error("已取消");
-        setTimeout(() => {
-          goBack();
-        }, 300);
-      }
-    });
+    order
+      .checkOrderStatus({ order_id: result.get("orderId") })
+      .then((res: any) => {
+        let status = res.data.status;
+        if (status === 9) {
+          message.success("已成功支付");
+          setTimeout(() => {
+            goBack();
+          }, 300);
+        } else if (status === 7) {
+          message.error("已取消");
+          setTimeout(() => {
+            goBack();
+          }, 300);
+        }
+      });
   };
 
   const goBack = () => {
@@ -154,61 +132,30 @@ const OrderPayPage = () => {
 
   return (
     <div className={styles["content"]}>
-      {payment === "wechat" && (
-        <div className={styles["pay-box"]}>
-          <div className={styles["pay-info"]}>
-            <div className={styles["pay-top"]}>
-              <div className={styles["icon"]}>
-                <img src={wepayIcon} />
-                微信扫码支付
-              </div>
-              <div className={styles["close"]} onClick={() => goBack()}>
-                取消支付
-              </div>
+      <div className={styles["pay-box"]}>
+        <div className={styles["pay-info"]}>
+          <div className={styles["pay-top"]}>
+            <div className={styles["icon"]}>请使用支付宝或微信扫码支付</div>
+            <div className={styles["close"]} onClick={() => goBack()}>
+              取消支付
             </div>
-            <div className={styles["paycode"]}>
-              <QRCode
-                size={200}
-                value={qrode}
-                status={loading ? "loading" : "active"}
-              />
-              <div className={styles["info"]}>
-                <div className={styles["orderNum"]}>订单号：{orderId}</div>
-                <div className={styles["price"]}>
-                  <span>需支付</span>
+          </div>
+          <div className={styles["paycode"]}>
+            <QRCode
+              size={200}
+              value={qrode}
+              status={loading ? "loading" : "active"}
+            />
+            <div className={styles["info"]}>
+              <div className={styles["orderNum"]}>订单号：{orderId}</div>
+              {discount > 0 && (
+                <div className={styles["price"]} style={{ marginBottom: 16 }}>
+                  <span>已折扣</span>
                   <span className={styles["red"]}>
-                    ￥<strong>{price}</strong>
+                    ￥<strong>{discount}</strong>
                   </span>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles["btn-confirm"]} onClick={() => confirm()}>
-            已完成支付
-          </div>
-        </div>
-      )}
-      {payment === "handPay" && (
-        <div className={styles["pay-box"]}>
-          <div className={styles["pay-info"]}>
-            <div className={styles["pay-top"]}>
-              <div className={styles["icon"]}>
-                <img src={cradIcon} />
-                手动支付
-              </div>
-              <div className={styles["close"]} onClick={() => goBack()}>
-                取消支付
-              </div>
-            </div>
-            <div className={styles["paycode2"]}>
-              <div className={styles["hand-box"]}>
-                <div className={styles["tit"]}>收款信息及说明</div>
-                <div
-                  className={styles["text"]}
-                  dangerouslySetInnerHTML={{ __html: text }}
-                ></div>
-              </div>
-              <div className={styles["orderNum"]}>订单号：{orderId}</div>
+              )}
               <div className={styles["price"]}>
                 <span>需支付</span>
                 <span className={styles["red"]}>
@@ -217,11 +164,11 @@ const OrderPayPage = () => {
               </div>
             </div>
           </div>
-          <div className={styles["btn-confirm"]} onClick={() => confirm()}>
-            已完成支付
-          </div>
         </div>
-      )}
+        <div className={styles["btn-confirm"]} onClick={() => confirm()}>
+          已完成支付
+        </div>
+      </div>
     </div>
   );
 };

@@ -119,4 +119,10 @@ class CourseDao implements CourseDaoInterface
         return $record['id'];
     }
 
+    public function findOrFail(int $id): array
+    {
+        return Course::query()->where('id', $id)->firstOrFail()->toArray();
+    }
+
+
 }

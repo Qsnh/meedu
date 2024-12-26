@@ -61,4 +61,15 @@ interface ConfigServiceInterface
     public function getS3PublicConfig(): array;
 
     public function getS3PrivateConfig(): array;
+
+    public function enabledWechatPayment(): bool;
+
+    public function enabledAlipayPayment(): bool;
+
+    public function enabledHandPayPayment(): bool;
+
+    public function handPayInfo(): string;
+
+    public function getWechatPayConfig(): array;
+    public function getAlipayConfig(): array;
 }

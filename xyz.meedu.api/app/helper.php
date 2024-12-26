@@ -28,29 +28,6 @@ if (!function_exists('exception_record')) {
     }
 }
 
-if (!function_exists('get_payments')) {
-    /**
-     * @param $scene
-     * @return \Illuminate\Support\Collection
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    function get_payments($scene)
-    {
-        /**
-         * @var \App\Services\Base\Interfaces\ConfigServiceInterface $configService
-         */
-        $configService = app()->make(\App\Services\Base\Interfaces\ConfigServiceInterface::class);
-        $payments = collect($configService->getPayments())->filter(function ($payment) use ($scene) {
-            $enabled = (int)$payment['enabled'] === 1;
-            $isSet = $payment[$scene] ?? false;
-
-            return $enabled && $isSet;
-        });
-
-        return $payments;
-    }
-}
-
 if (!function_exists('array_compress')) {
     /**
      * @param array $arr

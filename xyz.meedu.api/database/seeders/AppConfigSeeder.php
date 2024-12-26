@@ -392,21 +392,12 @@ class AppConfigSeeder extends Seeder
             // 微信支付
             [
                 'group' => '支付',
-                'name' => '微信扫码支付',
+                'name' => '微信支付',
                 'field_type' => 'switch',
                 'sort' => 100,
                 'key' => 'meedu.payment.wechat.enabled',
                 'value' => 0,
                 'help' => 'PC端口使用',
-            ],
-            [
-                'group' => '支付',
-                'name' => '微信支付',
-                'field_type' => 'switch',
-                'sort' => 110,
-                'key' => 'meedu.payment.wechat-jsapi.enabled',
-                'value' => 0,
-                'help' => '微信内支付使用',
             ],
             [
                 'group' => '支付',

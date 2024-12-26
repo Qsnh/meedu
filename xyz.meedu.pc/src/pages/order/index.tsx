@@ -18,15 +18,9 @@ const OrderPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
-  const [payment, setPayment] = useState<string>("");
-  const [payments, setPayments] = useState<any>([]);
-  const [paymentScene] = useState<string>("pc");
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
   const [pcCheckLoading, setPcCheckLoading] = useState(false);
-  const [aliStatus, setAliStatus] = useState<boolean>(false);
-  const [weStatus, setWeStatus] = useState<boolean>(false);
-  const [handStatus, setHandStatus] = useState<boolean>(false);
   const [hasThumb, setHasThumb] = useState<boolean>(false);
   const [configTip, setConfigTip] = useState<number>(999);
   const [discount, setDiscount] = useState<number>(0);
@@ -57,29 +51,6 @@ const OrderPage = () => {
     setTotalVal(val);
   }, [total, discount]);
 
-  useEffect(() => {
-    let data = [];
-    if (aliStatus) {
-      data.push({
-        name: "支付宝",
-        sign: "alipay",
-      });
-    }
-    if (weStatus) {
-      data.push({
-        name: "微信支付",
-        sign: "wechat",
-      });
-    }
-    if (handStatus) {
-      data.push({
-        name: "手动打款",
-        sign: "handPay",
-      });
-    }
-    setPayments(data);
-  }, [aliStatus, weStatus, handStatus]);
-
   const onChange = (e: CheckboxChangeEvent) => {
     setAgreeProtocol(e.target.checked);
   };
@@ -94,27 +65,6 @@ const OrderPage = () => {
     } else if (goodsType === "video") {
       setHasThumb(true);
     }
-    params();
-  };
-
-  const params = () => {
-    order
-      .payments({
-        scene: "pc",
-      })
-      .then((res: any) => {
-        let payments = res.data;
-        for (let i = 0; i < payments.length; i++) {
-          setPayment(payments[0].sign);
-          if (payments[i].sign === "alipay") {
-            setAliStatus(true);
-          } else if (payments[i].sign === "wechat") {
-            setWeStatus(true);
-          } else if (payments[i].sign === "handPay") {
-            setHandStatus(true);
-          }
-        }
-      });
   };
 
   const checkPromoCode = () => {
@@ -156,10 +106,6 @@ const OrderPage = () => {
   };
 
   const payHandler = () => {
-    if (!payment) {
-      message.error("请选择支付方式");
-      return;
-    }
     if (goodsType === "role" && agreeProtocol !== true) {
       message.error("请同意《会员服务协议》");
       return;
@@ -171,8 +117,9 @@ const OrderPage = () => {
     if (goodsType === "vod") {
       // 点播课程
       order
-        .createCourseOrder({
-          course_id: goodsId,
+        .createOrder({
+          goods_type: "COURSE",
+          goods_id: goodsId,
           promo_code: promoCode,
         })
         .then((res: any) => {
@@ -184,8 +131,9 @@ const OrderPage = () => {
     } else if (goodsType === "video") {
       // 视频
       order
-        .createVideoOrder({
-          video_id: goodsId,
+        .createOrder({
+          goods_type: "COURSE",
+          goods_id: goodsId,
           promo_code: promoCode,
         })
         .then((res: any) => {
@@ -196,10 +144,11 @@ const OrderPage = () => {
         });
     } else if (goodsType === "role") {
       order
-        .createRoleOrder({
-          role_id: goodsId,
+        .createOrder({
+          goods_type: "ROLE",
+          goods_id: goodsId,
           promo_code: promoCode,
-          agree: 1,
+          agree_protocol: 1,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -213,54 +162,31 @@ const OrderPage = () => {
   const orderCreatedHandler = (data: any) => {
     setLoading(false);
     // 判断是否继续走支付平台支付
-    if (data.status_text === "已支付") {
+    if (data.is_paid === true) {
       // 优惠全部抵扣
       message.success("支付成功");
-
       setTimeout(() => {
         navigate(-1);
       }, 1000);
     } else {
-      if (payment === "alipay") {
-        let host = getAppUrl();
-        let redirect = encodeURIComponent(host + "/success");
-        let indexUrl = encodeURIComponent(host + "/");
-        window.location.href =
-          systemConfig.url +
-          "/api/v2/order/pay/redirect?order_id=" +
-          data.order_id +
-          "&payment_scene=" +
-          paymentScene +
-          "&scene=" +
-          paymentScene +
-          "&payment=" +
-          payment +
-          "&token=" +
-          getToken() +
-          "&redirect=" +
-          redirect +
-          "&cancel_redirect=" +
-          indexUrl;
-      } else if (payment === "handPay" || payment === "wechat") {
-        navigate(
-          "/order/pay?orderId=" +
-            data.order_id +
-            "&price=" +
-            totalVal +
-            "&payment=" +
-            payment +
-            "&type=" +
-            goodsType +
-            "&id=" +
-            goodsId +
-            "&course_id=" +
-            courseId +
-            "&course_type=" +
-            courseType
-        );
-      } else {
-        payFailure();
-      }
+      navigate(
+        "/order/pay?orderId=" +
+          data.order_no +
+          "&payUrl=" +
+          encodeURIComponent(data.pay_url) +
+          "&price=" +
+          data.total +
+          "&discount=" +
+          data.discount +
+          "&type=" +
+          goodsType +
+          "&id=" +
+          goodsId +
+          "&course_id=" +
+          courseId +
+          "&course_type=" +
+          courseType
+      );
     }
   };
 
@@ -346,24 +272,6 @@ const OrderPage = () => {
             </div>
           </>
         )}
-        <div className={styles["tit"]}>支付方式</div>
-        <div className={styles["credit2-box"]}>
-          {payments.map((item: any) => (
-            <div
-              key={item.sign}
-              className={
-                item.sign === payment
-                  ? styles["payment-active-item"]
-                  : styles["payment-item"]
-              }
-              onClick={() => setPayment(item.sign)}
-            >
-              {item.sign === "alipay" && <img src={zfbIcon} />}
-              {item.sign === "wechat" && <img src={wepayIcon} />}
-              {item.sign === "handPay" && <img src={cradIcon} />}
-            </div>
-          ))}
-        </div>
         <div className={styles["line"]}></div>
         {goodsType === "role" && (
           <div className={styles["price-box"]} style={{ marginTop: 50 }}>

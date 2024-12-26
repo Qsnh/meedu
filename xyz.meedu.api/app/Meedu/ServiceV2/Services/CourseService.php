@@ -51,5 +51,10 @@ class CourseService implements CourseServiceInterface
         $this->courseDao->attachIncDownloadTimes($attachId);
     }
 
+    public function findOrFail(int $id): array
+    {
+        return $this->courseDao->findOrFail($id);
+    }
+
 
 }
