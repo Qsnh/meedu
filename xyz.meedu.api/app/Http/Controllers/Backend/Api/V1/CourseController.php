@@ -337,29 +337,38 @@ class CourseController extends BaseController
             compact('userId', 'courseId')
         );
 
-        $existsIds = UserCourse::query()
-            ->whereIn('user_id', $userId)
-            ->where('course_id', $courseId)
-            ->select(['user_id'])
-            ->get()
-            ->pluck('user_id')
-            ->toArray();
+        DB::transaction(function () use ($userId, $courseId) {
+            $existsIds = UserCourse::query()
+                ->whereIn('user_id', $userId)
+                ->where('course_id', $courseId)
+                ->select(['user_id'])
+                ->get()
+                ->pluck('user_id')
+                ->toArray();
 
-        $userId = array_diff($userId, $existsIds);
+            $userIds = array_diff($userId, $existsIds);
 
-        foreach ($userId as $id) {
-            UserCourse::create([
-                'course_id' => $courseId,
-                'user_id' => $id,
-                'charge' => 0,
-                'created_at' => Carbon::now(),
-            ]);
-        }
+            if ($userIds) {
+                $insertList = [];
+                $now = Carbon::now()->toDateTimeString();
+                foreach ($userIds as $tmpUserId) {
+                    $insertList[] = [
+                        'course_id' => $courseId,
+                        'user_id' => $tmpUserId,
+                        'charge' => 0,
+                        'created_at' => $now,
+                    ];
+                }
 
-        // 课程订阅数量更新
-        Course::query()
-            ->where('id', $courseId)
-            ->update(['user_count' => UserCourse::query()->where('course_id', $courseId)->count()]);
+                UserCourse::query()->insert($insertList);
+
+                Course::query()
+                    ->where('id', $courseId)
+                    ->update([
+                        'user_count' => UserCourse::query()->where('course_id', $courseId)->count(),
+                    ]);
+            }
+        });
 
         return $this->success();
     }
@@ -467,9 +476,18 @@ class CourseController extends BaseController
         }
 
         // 重复手机号检测
-        $uniqueMobiles = array_flip(array_flip($mobiles));
-        if (count($mobiles) !== count($uniqueMobiles)) {
-            return $this->error(__('手机号重复'));
+        $tmpMobiles = [];
+        $repeatedMobiles = [];
+        foreach ($mobiles as $tmpItem) {
+            if (!in_array($tmpItem, $tmpMobiles)) {
+                $tmpMobiles[] = $tmpItem;
+            } else {
+                $repeatedMobiles[] = $tmpItem;
+            }
+        }
+
+        if ($repeatedMobiles) {
+            return $this->error(__('手机号[:mobiles]存在多条记录', ['mobiles' => implode(',', $repeatedMobiles)]));
         }
 
         AdministratorLog::storeLog(
@@ -514,7 +532,8 @@ class CourseController extends BaseController
         }
 
         DB::transaction(function () use ($id, $userIds) {
-            $now = date('Y-m-d H:i:s');
+            $now = Carbon::now()->toDateTimeString();
+
             foreach (array_chunk($userIds, 150) as $userIdsChunk) {
                 $insertData = [];
                 foreach ($userIdsChunk as $userId) {
@@ -527,6 +546,13 @@ class CourseController extends BaseController
                 }
                 $insertData && UserCourse::insert($insertData);
             }
+
+            // 课程订阅数量更新
+            Course::query()
+                ->where('id', $id)
+                ->update([
+                    'user_count' => UserCourse::query()->where('course_id', $id)->count(),
+                ]);
         });
 
         return $this->success();

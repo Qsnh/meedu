@@ -8,8 +8,8 @@
 
 namespace Tests\Feature\Api\V2;
 
-use App\Constant\BusConstant;
 use App\Meedu\Verify;
+use App\Constant\BusConstant;
 use App\Constant\CacheConstant;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
