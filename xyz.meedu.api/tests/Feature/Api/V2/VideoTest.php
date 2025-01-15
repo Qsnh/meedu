@@ -146,6 +146,7 @@ class VideoTest extends Base
         $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -160,6 +161,7 @@ class VideoTest extends Base
         $video = Video::factory()->create([
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -179,6 +181,7 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
             'content' => 'hello meedu',
@@ -194,6 +197,7 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 1,
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
 
         UserVideo::create([
@@ -215,6 +219,7 @@ class VideoTest extends Base
             'is_show' => Video::IS_SHOW_YES,
             'charge' => 0,
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
 
         UserCourse::create(['course_id' => $video->course_id, 'user_id' => $user->id]);

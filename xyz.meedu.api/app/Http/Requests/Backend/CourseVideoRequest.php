@@ -72,6 +72,7 @@ class CourseVideoRequest extends BaseRequest
             'is_ban_sell' => (int)$this->input('is_ban_sell', 0),
             'free_seconds' => (int)$this->input('free_seconds'),
             'ban_drag' => (int)$this->input('ban_drag', 0),
+            'is_allow_comment' => (int)$this->input('is_allow_comment', 0),
         ];
     }
 }

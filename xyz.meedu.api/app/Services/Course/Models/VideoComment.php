@@ -19,7 +19,7 @@ class VideoComment extends Base
     protected $table = TableConstant::TABLE_VIDEO_COMMENTS;
 
     protected $fillable = [
-        'user_id', 'video_id', 'original_content', 'render_content', 'ip', 'ip_province',
+        'user_id', 'video_id', 'original_content', 'render_content', 'ip', 'ip_province', 'is_check',
     ];
 
     protected $hidden = [

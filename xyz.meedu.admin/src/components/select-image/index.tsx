@@ -124,7 +124,7 @@ export const SelectImage = (props: PropsInterface) => {
               style={{ position: "absolute", right: 30, top: 15, zIndex: 15 }}
             >
               <UploadImageSub
-                scene={props.scene}
+                scene={scene}
                 onUpdate={() => {
                   resetImageList();
                 }}

@@ -71,5 +71,8 @@ interface ConfigServiceInterface
     public function handPayInfo(): string;
 
     public function getWechatPayConfig(): array;
+
     public function getAlipayConfig(): array;
+
+    public function getMemberDefaultAvatar(): string;
 }

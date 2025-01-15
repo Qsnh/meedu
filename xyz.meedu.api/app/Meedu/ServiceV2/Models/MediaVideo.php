@@ -18,8 +18,11 @@ class MediaVideo extends Model
     protected $fillable = [
         'title', 'thumb', 'duration', 'size',
         'storage_driver', 'storage_file_id',
-        'transcode_status', 'ref_count',
-        'is_open', 'is_hidden',
+        'transcode_status',
+        'is_open', 'is_hidden', 'category_id',
+
+        // 废弃字段
+        'ref_count',
     ];
 
     protected $appends = [

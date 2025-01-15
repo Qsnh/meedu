@@ -555,14 +555,22 @@ const CoursePlayPage = () => {
                         </div>
                         <div className={styles["time"]}>
                           {changeTime(comment.created_at)}
+                          {comment.ip_province
+                            ? " | " + comment.ip_province
+                            : ""}
                         </div>
-                        <div className={styles["text"]}>
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: comment.render_content,
-                            }}
-                          ></div>
-                        </div>
+
+                        {comment.is_check === 0 ? (
+                          <div className={styles["text-sp"]}>评论审核中</div>
+                        ) : (
+                          <div className={styles["text"]}>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: comment.render_content,
+                              }}
+                            ></div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -603,28 +611,32 @@ const CoursePlayPage = () => {
             )}
           </div>
         )}
-        {!loading && currentTab === 1 && isWatch && (
-          <div className={styles["bottom-bar"]}>
-            <Input
-              className={styles["input"]}
-              placeholder="请输入评论内容"
-              value={content}
-              onChange={(e: any) => {
-                setContent(e);
-              }}
-            />
-            <div
-              className={
-                content.length > 0
-                  ? `${styles["comment-button"]} ${styles["active"]}`
-                  : styles["comment-button"]
-              }
-              onClick={() => submitComment()}
-            >
-              发布
+        {!loading &&
+          currentTab === 1 &&
+          isWatch &&
+          video &&
+          video.is_allow_comment === 1 && (
+            <div className={styles["bottom-bar"]}>
+              <Input
+                className={styles["input"]}
+                placeholder="请输入评论内容"
+                value={content}
+                onChange={(e: any) => {
+                  setContent(e);
+                }}
+              />
+              <div
+                className={
+                  content.length > 0
+                    ? `${styles["comment-button"]} ${styles["active"]}`
+                    : styles["comment-button"]
+                }
+                onClick={() => submitComment()}
+              >
+                发布
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </>
   );

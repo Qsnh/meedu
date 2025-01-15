@@ -9,6 +9,7 @@
 namespace App\Listeners\AliyunVodCallbackFileUploadCompleteEvent;
 
 use App\Constant\FrontendConstant;
+use App\Bus\MediaVideoCategoryBindBus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Meedu\ServiceV2\Services\OtherServiceInterface;
@@ -19,15 +20,17 @@ class UpdateMediaVideoListener implements ShouldQueue
     use InteractsWithQueue;
 
     private $otherService;
+    private $mediaVideoCategoryBindBus;
 
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(OtherServiceInterface $otherService)
+    public function __construct(OtherServiceInterface $otherService, MediaVideoCategoryBindBus $mediaVideoCategoryBindBus)
     {
         $this->otherService = $otherService;
+        $this->mediaVideoCategoryBindBus = $mediaVideoCategoryBindBus;
     }
 
     /**
@@ -38,10 +41,14 @@ class UpdateMediaVideoListener implements ShouldQueue
      */
     public function handle(AliyunVodCallbackFileUploadCompleteEvent $event)
     {
+        $data = ['size' => $event->size];
+        $categoryId =  $this->mediaVideoCategoryBindBus->pull($event->videoId);
+        $categoryId && $data['category_id'] = $categoryId;
+
         $this->otherService->storeOrUpdateMediaVideo(
             FrontendConstant::VOD_SERVICE_ALIYUN,
             $event->videoId,
-            ['size' => $event->size]
+            $data
         );
     }
 }

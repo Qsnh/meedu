@@ -12,12 +12,14 @@ interface PropInterface {
   comments: any[];
   commentUsers: any;
   isBuy: boolean;
+  isAllowComment: number;
   success: () => void;
 }
 
 export const CourseComments: React.FC<PropInterface> = ({
   cid,
   isBuy,
+  isAllowComment,
   comments,
   commentUsers,
   success,
@@ -54,7 +56,7 @@ export const CourseComments: React.FC<PropInterface> = ({
       <div className={styles["comment-divider"]}>全部评论</div>
       <div className={styles["line"]}></div>
 
-      {isLogin && isBuy && (
+      {isLogin && isBuy && isAllowComment === 1 && (
         <div className={styles["replybox"]}>
           <div className={styles["reply"]}>
             <img className={styles["user-avatar"]} src={user.avatar} />
@@ -87,31 +89,38 @@ export const CourseComments: React.FC<PropInterface> = ({
           </div>
         </div>
       )}
-      <div className={styles["comment-top"]}>
-        {comments.length === 0 && <Empty></Empty>}
-        {comments.length > 0 &&
-          comments.map((item: any) => (
-            <div key={item.id} className={styles["comment-item"]}>
-              <div className={styles["user-avatar"]}>
-                <img src={commentUsers[item.user_id].avatar} />
-              </div>
-              <div className={styles["comment-content"]}>
-                <div className={styles["comment-info"]}>
-                  <div className={styles["nickname"]}>
-                    {commentUsers[item.user_id].nick_name}
-                  </div>
-                  <div className={styles["comment-time"]}>
-                    {getCommentTime(item.created_at)}
-                  </div>
+      {isLogin && (
+        <div className={styles["comment-top"]}>
+          {comments.length === 0 && <Empty></Empty>}
+          {comments.length > 0 &&
+            comments.map((item: any) => (
+              <div key={item.id} className={styles["comment-item"]}>
+                <div className={styles["user-avatar"]}>
+                  <img src={commentUsers[item.user_id].avatar} />
                 </div>
-                <div
-                  className={styles["comment-text"]}
-                  dangerouslySetInnerHTML={{ __html: item.render_content }}
-                ></div>
+                <div className={styles["comment-content"]}>
+                  <div className={styles["comment-info"]}>
+                    <div className={styles["nickname"]}>
+                      {commentUsers[item.user_id].nick_name}
+                    </div>
+                    <div className={styles["comment-time"]}>
+                      {getCommentTime(item.created_at)}
+                      {item.ip_province ? " | " + item.ip_province : ""}
+                    </div>
+                  </div>
+                  {item.is_check === 0 ? (
+                    <div className={styles["comment-text-sp"]}>评论审核中</div>
+                  ) : (
+                    <div
+                      className={styles["comment-text"]}
+                      dangerouslySetInnerHTML={{ __html: item.render_content }}
+                    ></div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

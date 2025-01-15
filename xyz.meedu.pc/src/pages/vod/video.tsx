@@ -637,6 +637,7 @@ const VodPlayPage = () => {
             fresh={loading}
             vid={vid}
             isBuy={isBuy}
+            isAllowComment={video.is_allow_comment}
             comments={comments}
             commentUsers={commentUsers}
             success={() => {

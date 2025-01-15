@@ -286,6 +286,19 @@
   color: #333;
 }
 
+.course-comments-box > .comment-item > .content > .text-sp {
+  width: 76px;
+  height: 16px;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border-radius: 2px;
+  font-weight: 400;
+  color: #333333;
+}
+
 .course-chapter-box {
   padding: 10px 15px 15px 15px;
 }

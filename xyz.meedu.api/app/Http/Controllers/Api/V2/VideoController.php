@@ -136,6 +136,7 @@ class VideoController extends BaseController
      * @apiSuccess {String} data.video.seo_description SEO描述
      * @apiSuccess {Number} data.video.is_ban_sell 禁止出售[1:是,0否]
      * @apiSuccess {Number} data.video.ban_drag 禁止拖拽播放[1:是,0否]
+     * @apiSuccess {Number} data.video.is_allow_comment 是否允许评论[1:是,0:否]
      * @apiSuccess {Number} data.video.chapter_id 章节ID
      * @apiSuccess {Object[]} data.videos
      * @apiSuccess {Number} data.videos.id 视频ID
@@ -295,9 +296,16 @@ class VideoController extends BaseController
     public function comments($id)
     {
         $comments = $this->videoCommentService->videoComments($id);
-        $comments = arr2_clear($comments, ApiV2Constant::MODEL_VIDEO_COMMENT_FIELD);
-        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
+        if ($comments) {
+            foreach ($comments as $key => $tmpItem) {
+                if (0 === $tmpItem['is_check']) {
+                    $comments[$key]['render_content'] = __('评论审核中');
+                }
+            }
+            $comments = arr2_clear($comments, ApiV2Constant::MODEL_VIDEO_COMMENT_FIELD);
+        }
 
+        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role']);
         $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_SIMPLE);
         $commentUsers = array_column($commentUsers, null, 'id');
 

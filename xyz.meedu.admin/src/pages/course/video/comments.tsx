@@ -76,6 +76,7 @@ const CourseVideoCommentsPage = () => {
         user_id: user_id,
         video_id: null,
         created_at: time,
+        is_check: -1,
       })
       .then((res: any) => {
         setList(res.data.data.data);
@@ -203,6 +204,19 @@ const CourseVideoCommentsPage = () => {
       ),
     },
     {
+      title: "审核值",
+      width: 100,
+      render: (_, record: any) => (
+        <>
+          {record.is_check === 1 ? (
+            <span className="c-green">通过</span>
+          ) : (
+            <span className="c-red">等待</span>
+          )}
+        </>
+      ),
+    },
+    {
       title: "课时",
       width: 300,
       render: (_, record: any) => (
@@ -246,6 +260,67 @@ const CourseVideoCommentsPage = () => {
     return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
+  const applyMulti = () => {
+    if (selectedRowKeys.length === 0) {
+      message.error("请选择需要操作的数据");
+      return;
+    }
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    course
+      .videoCommentApplyMulti({
+        ids: selectedRowKeys,
+        is_check: 1,
+      })
+      .then(() => {
+        setLoading(false);
+        message.success("成功");
+        resetData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const rejectMulti = () => {
+    if (selectedRowKeys.length === 0) {
+      message.error("请选择需要操作的数据");
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "拒绝的评论将自动删除，是否确认",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        course
+          .videoCommentApplyMulti({
+            ids: selectedRowKeys,
+            is_check: 0,
+          })
+          .then(() => {
+            setLoading(false);
+            message.success("成功");
+            resetData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="课时评论" />
@@ -258,6 +333,24 @@ const CourseVideoCommentsPage = () => {
             icon={null}
             p="video_comment.destroy"
             onClick={() => delMulti()}
+            disabled={null}
+          />
+          <PerButton
+            type="primary"
+            text="审核通过"
+            class="ml-10"
+            icon={null}
+            p="video_comment.check"
+            onClick={() => applyMulti()}
+            disabled={null}
+          />
+          <PerButton
+            type="danger"
+            text="审核拒绝"
+            class="ml-10"
+            icon={null}
+            p="video_comment.check"
+            onClick={() => rejectMulti()}
             disabled={null}
           />
         </div>

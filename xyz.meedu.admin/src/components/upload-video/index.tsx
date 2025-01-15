@@ -7,6 +7,7 @@ import {
   Table,
   Empty,
   ConfigProvider,
+  Row,
   Col,
   Pagination,
 } from "antd";
@@ -14,7 +15,7 @@ import type { ColumnsType } from "antd/es/table";
 import { media } from "../../api";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
-import { DurationText, UploadVideoItem } from "../../components";
+import { DurationText, UploadVideoItem, TreeCategory } from "../../components";
 import { yearFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import emptyIcon from "../../assets/images/upload-video/empty.png";
@@ -50,6 +51,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
   const [isTenService, setIsTenService] = useState(false);
   const [isAliService, setIsAliService] = useState(false);
   const [openUploadItem, setOpenUploadItem] = useState(false);
+  const [category_ids, setCategoryIds] = useState<any>([]);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const service = useSelector(
     (state: any) => state.systemConfig.value.video.default_service
@@ -59,7 +61,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
     if (open) {
       getData();
     }
-  }, [open, page, size, refresh]);
+  }, [open, category_ids, page, size, refresh]);
 
   useEffect(() => {
     resetList();
@@ -86,6 +88,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
     if (loading) {
       return;
     }
+    let categoryId = category_ids.join(",");
     setLoading(true);
     media
       .newVideoList({
@@ -94,11 +97,11 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
         sort: "id",
         order: "desc",
         keywords: keywords,
+        category_id: categoryId === "" ? -1 : categoryId,
       })
       .then((res: any) => {
         setList(res.data.data);
         setTotal(res.data.total);
-
         setLoading(false);
       })
       .catch((e) => {
@@ -252,7 +255,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
           centered
           forceRender
           open={true}
-          width={800}
+          width={1000}
           onCancel={() => {
             onCancel();
           }}
@@ -268,97 +271,120 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
               </div>
             )}
             <div className="float-left">
-              {isAliService ||
-              isTenService ||
-              (isLocalService &&
-                checkPermission("addons.LocalUpload.video.index")) ? (
-                <>
-                  <div className="float-left j-b-flex mb-15">
-                    <div className="d-flex">
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          if (isNoService) {
-                            message.warning(
-                              "请先在系统配置的视频存储中完成参数配置"
-                            );
-                            return;
-                          }
-                          setOpenUploadItem(true);
-                        }}
-                      >
-                        上传视频
-                      </Button>
-                    </div>
-                    <div className="d-flex">
-                      <Input
-                        value={keywords}
-                        style={{ width: 150 }}
-                        onChange={(e) => {
-                          setKeywords(e.target.value);
-                        }}
-                        allowClear
-                        placeholder="视频名称关键词"
-                      />
-                      <Button className="ml-10" onClick={resetList}>
-                        清空
-                      </Button>
-                      <Button
-                        className="ml-10"
-                        type="primary"
-                        onClick={() => {
-                          setPage(1);
-                          setRefresh(!refresh);
-                        }}
-                      >
-                        筛选
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              ) : null}
-
-              {!isNoService ? (
-                <div className="float-left">
-                  <div style={{ width: "100%", height: 460 }}>
-                    <ConfigProvider renderEmpty={tableEmptyRender}>
-                      <Table
-                        rowSelection={{
-                          type: "radio",
-                          ...rowSelection,
-                        }}
-                        scroll={{ y: 400 }}
-                        loading={loading}
-                        columns={columns2}
-                        dataSource={list}
-                        rowKey={(record) => record.id}
-                        pagination={false}
-                      />
-                    </ConfigProvider>
-                  </div>
-                  {list.length > 0 && (
-                    <Col
-                      span={24}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row-reverse",
-                        marginTop: 10,
-                        marginBottom: 10,
+              <Row>
+                <Col
+                  span={5}
+                  style={{
+                    paddingRight: 16,
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <div className="float-left">
+                    <TreeCategory
+                      selected={category_ids}
+                      type="select"
+                      text="分类"
+                      refresh={refresh}
+                      onUpdate={(keys: any) => {
+                        setCategoryIds(keys);
                       }}
-                    >
-                      <Pagination
-                        onChange={(currentPage, currentSize) => {
-                          setPage(currentPage);
-                          setSize(currentSize);
-                        }}
-                        pageSize={size}
-                        defaultCurrent={page}
-                        total={total}
-                      />
-                    </Col>
-                  )}
-                </div>
-              ) : null}
+                    />
+                  </div>
+                </Col>
+                <Col span={19}>
+                  {isAliService ||
+                  isTenService ||
+                  (isLocalService &&
+                    checkPermission("addons.LocalUpload.video.index")) ? (
+                    <>
+                      <div className="float-left j-b-flex mb-15">
+                        <div className="d-flex">
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              if (isNoService) {
+                                message.warning(
+                                  "请先在系统配置的视频存储中完成参数配置"
+                                );
+                                return;
+                              }
+                              setOpenUploadItem(true);
+                            }}
+                          >
+                            上传视频
+                          </Button>
+                        </div>
+                        <div className="d-flex">
+                          <Input
+                            value={keywords}
+                            style={{ width: 150 }}
+                            onChange={(e) => {
+                              setKeywords(e.target.value);
+                            }}
+                            allowClear
+                            placeholder="视频名称关键词"
+                          />
+                          <Button className="ml-10" onClick={resetList}>
+                            清空
+                          </Button>
+                          <Button
+                            className="ml-10"
+                            type="primary"
+                            onClick={() => {
+                              setPage(1);
+                              setRefresh(!refresh);
+                            }}
+                          >
+                            筛选
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+
+                  {!isNoService ? (
+                    <div className="float-left">
+                      <div style={{ width: "100%", height: 460 }}>
+                        <ConfigProvider renderEmpty={tableEmptyRender}>
+                          <Table
+                            rowSelection={{
+                              type: "radio",
+                              ...rowSelection,
+                            }}
+                            scroll={{ y: 400 }}
+                            loading={loading}
+                            columns={columns2}
+                            dataSource={list}
+                            rowKey={(record) => record.id}
+                            pagination={false}
+                          />
+                        </ConfigProvider>
+                      </div>
+                      {list.length > 0 && (
+                        <Col
+                          span={24}
+                          style={{
+                            display: "flex",
+                            flexDirection: "row-reverse",
+                            marginTop: 10,
+                            marginBottom: 10,
+                          }}
+                        >
+                          <Pagination
+                            onChange={(currentPage, currentSize) => {
+                              setPage(currentPage);
+                              setSize(currentSize);
+                            }}
+                            pageSize={size}
+                            defaultCurrent={page}
+                            total={total}
+                          />
+                        </Col>
+                      )}
+                    </div>
+                  ) : null}
+                </Col>
+              </Row>
             </div>
           </div>
         </Modal>
@@ -366,6 +392,9 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
 
       <UploadVideoItem
         open={openUploadItem}
+        categoryId={
+          category_ids.join(",") === "" ? 0 : Number(category_ids.join(","))
+        }
         onCancel={() => setOpenUploadItem(false)}
         onSuccess={() => {
           completeUpload();

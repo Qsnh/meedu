@@ -248,5 +248,10 @@ class ConfigService implements ConfigServiceInterface
         return $data;
     }
 
+    public function getMemberDefaultAvatar(): string
+    {
+        return url(config('meedu.member.default_avatar'));
+    }
+
 
 }

@@ -38,7 +38,7 @@ const CourseCreatePage = () => {
   useEffect(() => {
     document.title = "新建录播课程";
     dispatch(titleAction("新建录播课程"));
-    form.setFieldsValue({ is_show: 1, is_free: 0 });
+    form.setFieldsValue({ is_show: 1, is_free: 0, is_allow_comment: 0 });
     setIsFree(0);
     setVisiable(false);
     getParams();
@@ -143,6 +143,14 @@ const CourseCreatePage = () => {
           { replace: true }
         );
       });
+  };
+
+  const isAllowCommentChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_allow_comment: 1 });
+    } else {
+      form.setFieldsValue({ is_allow_comment: 0 });
+    }
   };
 
   return (
@@ -295,6 +303,13 @@ const CourseCreatePage = () => {
                 <HelperText text="关闭后此课程在前台隐藏显示"></HelperText>
               </div>
             </Space>
+          </Form.Item>
+          <Form.Item
+            label="允许评论"
+            name="is_allow_comment"
+            valuePropName="checked"
+          >
+            <Switch onChange={isAllowCommentChange} />
           </Form.Item>
           <Form.Item
             label="简短介绍"

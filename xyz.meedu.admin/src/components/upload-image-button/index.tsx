@@ -13,6 +13,7 @@ import { media } from "../../api";
 import styles from "./index.module.scss";
 import { UploadImageSub } from "./upload-image-sub";
 import selectedIcon from "../../assets/home/selected.png";
+import { PerButton } from "../permission-button";
 
 interface Option {
   id: string | number;
@@ -109,13 +110,15 @@ export const UploadImageButton = (props: PropsInterface) => {
 
   return (
     <>
-      <Button
-        onClick={() => {
-          setShowModal(true);
-        }}
-      >
-        {props.text ? props.text : "上传图片"}
-      </Button>
+      <PerButton
+        type="primary"
+        text={props.text ? props.text : "上传图片"}
+        class=""
+        icon={null}
+        p="media.image.store"
+        onClick={() => setShowModal(true)}
+        disabled={null}
+      />
 
       {showModal ? (
         <Modal
@@ -142,7 +145,7 @@ export const UploadImageButton = (props: PropsInterface) => {
               style={{ position: "absolute", right: 30, top: 15, zIndex: 15 }}
             >
               <UploadImageSub
-                scene={props.scene}
+                scene={scene}
                 onUpdate={() => {
                   resetImageList();
                 }}

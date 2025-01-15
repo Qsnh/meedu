@@ -12,6 +12,7 @@ import config from "../../js/config";
 
 interface PropInterface {
   open: boolean;
+  categoryId: number;
   onCancel: () => void;
   onSuccess: () => void;
 }
@@ -29,6 +30,7 @@ declare const window: any;
 
 export const UploadVideoItem: React.FC<PropInterface> = ({
   open,
+  categoryId,
   onCancel,
   onSuccess,
 }) => {
@@ -96,7 +98,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         Authorization: "Bearer " + getToken(),
         accept: "application/json",
       },
-      url: url + "backend/addons/LocalUpload/upload",
+      url: url + "backend/addons/LocalUpload/upload?category_id=" + categoryId,
       filters: {
         max_file_size: "5120mb",
         prevent_duplicates: true, //不允许选取重复文件
@@ -105,22 +107,30 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         PostInit: () => {},
         FilesAdded: (up, files) => {
           plupload.each(files, (file: any) => {
-            upRef.current++;
-            let item: any = {
-              id: file.id,
-              file: file,
-              size: file.size,
-              result: {
-                fileId: file.id,
-                up: null,
-              },
-              progress: 0,
-              status: 1,
-            };
-            localFileList.current.push(item);
-            setFileList([...localFileList.current]);
+            let extension: any = file.name.split(".");
+            extension = extension[extension.length - 1];
+            if (extension.toLowerCase() === "mp4") {
+              upRef.current++;
+              let item: any = {
+                id: file.id,
+                file: file,
+                size: file.size,
+                result: {
+                  fileId: file.id,
+                  up: null,
+                },
+                progress: 0,
+                status: 1,
+              };
+              localFileList.current.push(item);
+              setFileList([...localFileList.current]);
+            } else {
+              message.error(`${file.name} 并不是可上传视频文件`);
+            }
           });
-          setUploadParam(uploader, false);
+          if (upRef.current > 0) {
+            setUploadParam(uploader, false);
+          }
         },
         BeforeUpload: (up, file) => {
           var url = URL.createObjectURL(file.getNative());
@@ -200,6 +210,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
             .videoAliyunTokenCreate({
               title: uploadInfo.file.name,
               filename: uploadInfo.file.name,
+              category_id: categoryId,
             })
             .then((res: any) => {
               aliRef.current.setUploadAuthAndAddress(
@@ -269,7 +280,9 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   const uploadProps = {
     multiple: true,
     beforeUpload: async (file: File) => {
-      if (file.type === "video/mp4") {
+      let extension: any = file.name.split(".");
+      extension = extension[extension.length - 1];
+      if (extension.toLowerCase() === "mp4") {
         let obj = { ...upload };
         obj.loading = true;
         setUpload(obj);
@@ -363,10 +376,26 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     uploader
       .done()
       .then((doneResult) => {
-        let obj = { ...upload };
-        obj.fileId = doneResult.fileId;
-        setUpload(obj);
-        uploadSuccess(doneResult.fileId, "", fileId);
+        let key = doneResult.fileId;
+        media
+          .tencentRecordCateId({
+            video_id: key,
+            category_id: categoryId,
+          })
+          .then((res: any) => {
+            let obj = { ...upload };
+            obj.fileId = doneResult.fileId;
+            setUpload(obj);
+            uploadSuccess(doneResult.fileId, "", fileId);
+          })
+          .catch((err) => {
+            upRef.current--;
+            let it = localFileList.current.find((o: any) => o.id === fileId);
+            it.status = 5;
+            it.result = err.message;
+            setFileList([...localFileList.current]);
+            uploadFailHandle(err.message);
+          });
       })
       .catch((err) => {
         upRef.current--;

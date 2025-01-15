@@ -149,6 +149,7 @@ class CourseController extends BaseController
      * @apiSuccess {Number} data.course.is_rec 推荐[1:是,0否][已弃用]
      * @apiSuccess {Number} data.course.user_count 订阅人数
      * @apiSuccess {Number} data.course.videos_count 视频数
+     * @apiSuccess {Number} data.course.is_allow_comment 是否允许评论[1:是,0:否]
      * @apiSuccess {Object} data.course.category 分类
      * @apiSuccess {Number} data.course.category.id 分类ID
      * @apiSuccess {String} data.course.category.name 分类名
@@ -295,7 +296,14 @@ class CourseController extends BaseController
     public function comments($id)
     {
         $comments = $this->courseCommentService->courseComments($id);
-        $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
+        if ($comments) {
+            foreach ($comments as $key => $tmpItem) {
+                if (0 === $tmpItem['is_check']) {
+                    $comments[$key]['render_content'] = __('评论审核中');
+                }
+            }
+            $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
+        }
 
         $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role:id,name']);
         $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_SIMPLE);

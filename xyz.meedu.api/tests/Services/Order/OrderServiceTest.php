@@ -8,9 +8,9 @@
 
 namespace Tests\Services\Order;
 
-use App\Constant\BusConstant;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Constant\BusConstant;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;

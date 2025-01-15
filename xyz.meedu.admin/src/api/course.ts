@@ -74,6 +74,10 @@ export function commentDestroy(params: any) {
   return client.post(`/backend/api/v1/course_comment/delete`, params);
 }
 
+export function commentApplyMulti(params: any) {
+  return client.post(`/backend/api/v1/course_comment/check`, params);
+}
+
 export function videoList(params: any) {
   return client.get(`/backend/api/v1/video`, params);
 }
@@ -120,6 +124,10 @@ export function videoCommentList(params: any) {
 
 export function videoCommentDestroy(params: any) {
   return client.post(`/backend/api/v1/video_comment/delete`, params);
+}
+
+export function videoCommentApplyMulti(params: any) {
+  return client.post(`/backend/api/v1/video_comment/check`, params);
 }
 
 export function recordsList(id: number, params: any) {

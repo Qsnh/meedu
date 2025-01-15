@@ -30,22 +30,15 @@ class AdministratorLog extends Model
     public const MODULE_VOD_CATEGORY = 'vod-category';
     public const MODULE_VOD_CHAPTER = 'vod-chapter';
     public const MODULE_VOD_COMMENT = 'vod-comment';
-
     public const MODULE_ADMIN_DASHBOARD = 'admin-dashboard';
     public const MODULE_ADMIN_LOGIN = 'admin-login';
     public const MODULE_ADMIN_MEDIA_IMAGE = 'admin-media-image';
     public const MODULE_ADMIN_MEDIA_VIDEO = 'admin-media-video';
-
     public const MODULE_SYSTEM_CONFIG = 'system-config';
     public const MODULE_STATS = 'stats';
     public const MODULE_STATUS_V2 = 'stats-v2';
-
     public const MODULE_MEMBER = 'member';
     public const MODULE_MEMBER_TAG = 'member-tag';
-
-    public const MODULE_MP_MENU = 'mp-menu';
-    public const MODULE_MP_MESSAGE = 'mp-message';
-
     public const MODULE_VIP = 'vip';
     public const MODULE_ADDONS = 'addons';
     public const MODULE_AD_FROM = 'ad-from';
@@ -56,9 +49,9 @@ class AdministratorLog extends Model
     public const MODULE_VIEW_BLOCK = 'view-block';
     public const MODULE_PROMO_CODE = 'promo-code';
     public const MODULE_ANNOUNCEMENT = 'announcement';
-
     public const MODULE_ADMINISTRATOR = 'administrator';
     public const MODULE_ADMINISTRATOR_ROLE = 'administrator-role';
+    public const MODULE_SYSTEM_LOG = 'system-log';
 
     protected $table = 'administrator_logs';
 

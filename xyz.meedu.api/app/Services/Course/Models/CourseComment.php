@@ -19,7 +19,7 @@ class CourseComment extends Base
     protected $table = TableConstant::TABLE_COURSE_COMMENTS;
 
     protected $fillable = [
-        'user_id', 'course_id', 'original_content', 'render_content', 'ip', 'ip_province',
+        'user_id', 'course_id', 'original_content', 'render_content', 'ip', 'ip_province', 'is_check',
     ];
 
     protected $hidden = [

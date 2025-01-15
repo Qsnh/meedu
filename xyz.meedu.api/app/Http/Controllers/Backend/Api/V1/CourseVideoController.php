@@ -48,7 +48,7 @@ class CourseVideoController extends BaseController
                 'id', 'user_id', 'course_id', 'title', 'slug', 'url', 'view_num', 'short_description',
                 'seo_keywords', 'seo_description', 'published_at', 'is_show', 'charge', 'aliyun_video_id',
                 'chapter_id', 'duration', 'tencent_video_id', 'is_ban_sell',
-                'free_seconds', 'ban_drag', 'created_at', 'updated_at',
+                'free_seconds', 'ban_drag', 'created_at', 'updated_at', 'is_allow_comment',
             ])
             ->with([
                 'chapter:id,title', 'course:id,title,thumb,charge',
@@ -92,7 +92,7 @@ class CourseVideoController extends BaseController
                 'seo_keywords', 'seo_description', 'published_at',
                 'is_show', 'charge', 'aliyun_video_id',
                 'chapter_id', 'duration', 'tencent_video_id',
-                'is_ban_sell', 'free_seconds', 'ban_drag',
+                'is_ban_sell', 'free_seconds', 'ban_drag', 'is_allow_comment',
             ])
         );
 
@@ -137,7 +137,7 @@ class CourseVideoController extends BaseController
                 'seo_keywords', 'seo_description', 'published_at',
                 'is_show', 'charge', 'aliyun_video_id',
                 'chapter_id', 'duration', 'tencent_video_id',
-                'is_ban_sell', 'free_seconds', 'ban_drag',
+                'is_ban_sell', 'free_seconds', 'ban_drag', 'is_allow_comment',
             ]),
             Arr::only($video->toArray(), [
                 'course_id', 'title', 'slug',
@@ -145,7 +145,7 @@ class CourseVideoController extends BaseController
                 'seo_keywords', 'seo_description', 'published_at',
                 'is_show', 'charge', 'aliyun_video_id',
                 'chapter_id', 'duration', 'tencent_video_id',
-                'is_ban_sell', 'free_seconds', 'ban_drag',
+                'is_ban_sell', 'free_seconds', 'ban_drag', 'is_allow_comment',
             ]),
         );
 

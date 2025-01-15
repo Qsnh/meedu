@@ -14,3 +14,4 @@ export * as order from "./order";
 export * as member from "./member";
 export * as viewBlock from "./viewBlock";
 export * as pre from "./pre";
+export * as videoCategory from "./video-category";

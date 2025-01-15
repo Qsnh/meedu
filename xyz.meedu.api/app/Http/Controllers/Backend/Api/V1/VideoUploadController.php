@@ -13,6 +13,7 @@ use App\Bus\AliVodBus;
 use App\Bus\TencentVodBus;
 use Illuminate\Http\Request;
 use App\Models\AdministratorLog;
+use App\Bus\MediaVideoCategoryBindBus;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class VideoUploadController extends BaseController
@@ -40,10 +41,11 @@ class VideoUploadController extends BaseController
         return $this->successData(compact('signature'));
     }
 
-    public function aliyunCreateVideoToken(Request $request, ConfigServiceInterface $configService)
+    public function aliyunCreateVideoToken(Request $request, ConfigServiceInterface $configService, MediaVideoCategoryBindBus $mediaVideoCategoryBindBus)
     {
         $title = $request->input('title');
         $filename = $request->input('filename');
+        $categoryId = (int)$request->input('category_id');
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMIN_MEDIA_VIDEO,
@@ -71,7 +73,11 @@ class VideoUploadController extends BaseController
 
             $aliVodBus->callbackKeySync(true);
 
-            return $this->successData($aliVodBus->getVodLib()->createUploadVideo($title, $filename));
+            $data = $aliVodBus->getVodLib()->createUploadVideo($title, $filename);
+
+            $categoryId && $mediaVideoCategoryBindBus->setCache($data['video_id'], $categoryId);
+
+            return $this->successData($data);
         } catch (Exception $exception) {
             return $this->error($exception->getMessage());
         }

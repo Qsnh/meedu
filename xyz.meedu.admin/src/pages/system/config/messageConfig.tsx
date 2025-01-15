@@ -22,10 +22,6 @@ const SystemMessageConfigPage = () => {
       value: "tencent",
       label: "腾讯云",
     },
-    {
-      value: "yunpian",
-      label: "云片",
-    },
   ];
 
   const regions = [
@@ -160,38 +156,6 @@ const SystemMessageConfigPage = () => {
           ) {
             form.setFieldsValue({
               "sms.gateways.tencent.template.login": configData[index].value,
-            });
-          } else if (configData[index].key === "sms.gateways.yunpian.api_key") {
-            form.setFieldsValue({
-              "sms.gateways.yunpian.api_key": configData[index].value,
-            });
-          } else if (
-            configData[index].key ===
-            "sms.gateways.yunpian.template.password_reset"
-          ) {
-            form.setFieldsValue({
-              "sms.gateways.yunpian.template.password_reset":
-                configData[index].value,
-            });
-          } else if (
-            configData[index].key === "sms.gateways.yunpian.template.register"
-          ) {
-            form.setFieldsValue({
-              "sms.gateways.yunpian.template.register": configData[index].value,
-            });
-          } else if (
-            configData[index].key ===
-            "sms.gateways.yunpian.template.mobile_bind"
-          ) {
-            form.setFieldsValue({
-              "sms.gateways.yunpian.template.mobile_bind":
-                configData[index].value,
-            });
-          } else if (
-            configData[index].key === "sms.gateways.yunpian.template.login"
-          ) {
-            form.setFieldsValue({
-              "sms.gateways.yunpian.template.login": configData[index].value,
             });
           }
         }
@@ -366,61 +330,6 @@ const SystemMessageConfigPage = () => {
                   name="sms.gateways.tencent.template.login"
                 >
                   <Input style={{ width: 300 }} allowClear />
-                </Form.Item>
-              </>
-            )}
-            {sms === "yunpian" && (
-              <>
-                <Form.Item
-                  label="云片ApiKey"
-                  name="sms.gateways.yunpian.api_key"
-                >
-                  <Input style={{ width: 300 }} allowClear />
-                </Form.Item>
-                <Form.Item
-                  label="云片密码重置模板"
-                  name="sms.gateways.yunpian.template.password_reset"
-                >
-                  <Form.Item name="sms.gateways.yunpian.template.password_reset">
-                    <Input.TextArea
-                      rows={3}
-                      style={{ width: 300, resize: "none" }}
-                      allowClear
-                    />
-                  </Form.Item>
-                  <div className="form-helper-text">
-                    <span>注意：云片短信不是填写模板ID，而是填写模板内容</span>
-                  </div>
-                </Form.Item>
-                <Form.Item
-                  label="云片注册模板"
-                  name="sms.gateways.yunpian.template.register"
-                >
-                  <Input.TextArea
-                    rows={3}
-                    style={{ width: 300, resize: "none" }}
-                    allowClear
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="云片手机号绑定模板"
-                  name="sms.gateways.yunpian.template.mobile_bind"
-                >
-                  <Input.TextArea
-                    rows={3}
-                    style={{ width: 300, resize: "none" }}
-                    allowClear
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="云片手机号登陆模板"
-                  name="sms.gateways.yunpian.template.login"
-                >
-                  <Input.TextArea
-                    rows={3}
-                    style={{ width: 300, resize: "none" }}
-                    allowClear
-                  />
                 </Form.Item>
               </>
             )}

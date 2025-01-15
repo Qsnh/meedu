@@ -53,7 +53,6 @@ const MemberImportPage = () => {
         //空行
         continue;
       }
-      tmpItem.splice(4, 0, 0);
       data.push(tmpItem);
     }
 
@@ -62,7 +61,7 @@ const MemberImportPage = () => {
 
   const storeBatchTableCertData = (data: any) => {
     member
-      .userImport({ users: data })
+      .userImport({ users: data, line: 3 })
       .then(() => {
         setLoading(false);
         message.success("导入成功！");

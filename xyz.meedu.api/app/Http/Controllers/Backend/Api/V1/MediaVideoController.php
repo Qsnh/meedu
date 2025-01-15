@@ -13,8 +13,10 @@ use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
 use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
+use App\Models\MediaVideoCategory;
 use Illuminate\Support\Facades\DB;
-use App\Services\Course\Models\MediaVideo;
+use App\Bus\MediaVideoCategoryBindBus;
+use App\Meedu\ServiceV2\Models\MediaVideo;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class MediaVideoController extends BaseController
@@ -23,6 +25,7 @@ class MediaVideoController extends BaseController
     {
         $keywords = $request->input('keywords');
         $isOpen = (int)$request->input('is_open');
+        $categoryId = (int)$request->input('category_id');
 
         $sort = strtolower($request->input('sort', 'id'));
         $order = strtolower($request->input('order', 'desc'));
@@ -47,6 +50,19 @@ class MediaVideoController extends BaseController
             })
             ->when(in_array($isOpen, [0, 1]), function ($query) use ($isOpen) {
                 $query->where('is_open', $isOpen);
+            })
+            ->when($categoryId !== -1, function ($query) use ($categoryId) {
+                if (0 === $categoryId) {
+                    $query->where('category_id', $categoryId);
+                } else {
+                    $category = MediaVideoCategory::query()->where('id', $categoryId)->first();
+                    if ($category) {
+                        $tmpChain = $category['parent_chain'] ? $category['parent_chain'] . ',' . $category['id'] : $category['id'];
+                        $childrenIds = MediaVideoCategory::query()->where('parent_chain', 'like', $tmpChain)->get()->pluck('id')->toArray();
+                        $childrenIds[] = $category['id'];
+                        $query->whereIn('category_id', $childrenIds);
+                    }
+                }
             })
             ->where('is_hidden', 0)
             ->orderByDesc('id')
@@ -102,5 +118,41 @@ class MediaVideoController extends BaseController
         });
 
         return $this->successData();
+    }
+
+    public function changeCategory(Request $request)
+    {
+        $ids = $request->input('ids');
+        $categoryId = max((int)$request->input('category_id'), 0);
+        if (!$ids || !is_array($ids) || !$categoryId) {
+            return $this->error(__('参数错误'));
+        }
+
+        MediaVideo::query()
+            ->whereIn('id', $ids)
+            ->update(['category_id' => $categoryId]);
+
+        return $this->success();
+    }
+
+    public function recordCategoryId(Request $request, MediaVideoCategoryBindBus $mediaVideoCategoryBindBus)
+    {
+        $videoId = $request->input('video_id');
+        $categoryId = (int)$request->input('category_id');
+        if (!$videoId || !$categoryId) {
+            return $this->error(__('参数错误'));
+        }
+
+        $mediaVideoCategoryBindBus->setCache($videoId, $categoryId);
+
+        // 如果本地存在记录的话，那么直接修改所属分类
+        $record = MediaVideo::query()->where('storage_file_id')->first();
+        if ($record) {
+            $record->fill(['category_id' => $categoryId])->save();
+            // 删除缓存
+            $mediaVideoCategoryBindBus->remove($videoId);
+        }
+
+        return $this->success();
     }
 }

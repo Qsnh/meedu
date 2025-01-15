@@ -37,6 +37,7 @@ use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
 use App\Services\Member\Models\UserJoinRoleRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
+use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class MemberController extends BaseController
@@ -127,16 +128,26 @@ class MemberController extends BaseController
         return $this->successData($member);
     }
 
-    public function store(MemberRequest $request)
+    public function store(MemberRequest $request, ConfigServiceInterface $configService)
     {
         $data = $request->filldata();
+
+        if (!$data['nick_name']) {
+            $data['nick_name'] = __('用户') . '_' . Str::random(5);
+        }
+        if (!$data['avatar']) {
+            $data['avatar'] = $configService->getMemberDefaultAvatar();
+        }
 
         $user = User::create($data);
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_MEMBER,
             AdministratorLog::OPT_STORE,
-            ['id' => $user['id'], 'nick_name' => $user['nick_name']]
+            [
+                'id' => $user['id'],
+                'nick_name' => $user['nick_name'],
+            ]
         );
 
         return $this->success();
@@ -145,6 +156,7 @@ class MemberController extends BaseController
     public function update(Request $request, $id)
     {
         $user = User::query()->where('id', $id)->firstOrFail();
+
         // 只可白名单的字段更新
         $data = $request->only([
             'avatar', 'nick_name', 'mobile', 'password',
@@ -582,8 +594,9 @@ class MemberController extends BaseController
 
     public function import(Request $request)
     {
-        // ([0] => mobile, [1] => password, [2] => role_id, [3] => role_expired_at, [4] => is_lock, [5] => tag)
+        // ([0] => 昵称, [1] => mobile, [2] => password, [3] => role_id, [4] => role_expired_at, [5] => is_lock, [6] => tag标签)
         $users = $request->input('users');
+        $line = (int)$request->input('line');
         if (!$users || !is_array($users)) {
             return $this->error(__('请导入数据'));
         }
@@ -591,52 +604,79 @@ class MemberController extends BaseController
             return $this->error(__('一次最多导入1000条数据'));
         }
 
-        // 手机号重复检测
-        $mobiles = array_column($users, 0);
-        if (count(array_flip(array_flip($mobiles))) !== count($mobiles)) {
-            return $this->error('手机号重复');
-        }
-
-        // VIP规范检测
         $roles = Role::query()->select(['id'])->get()->pluck('id')->toArray();
-        $nowTime = time();
-        foreach ($users as $userItem) {
-            $roleId = (int)($userItem[2] ?? 0);
-            $roleExpiredAt = $userItem[3] ?? null;
-            // case1: 配置VIP-ID但是未配置VIP的过期时间
-            if ($roleId && !$roleExpiredAt) {
-                return $this->error(__('手机号[:mobile]配置了VIP但未配置过期时间', ['mobile' => $userItem[0] ?? '']));
+
+        $transformedUserList = [];
+        $tmpMobileList = [];
+        $tmpNicknameList = [];
+        foreach ($users as $index => $tmpItem) {
+            $tmpCurLineNumber = $line + $index;
+
+            $tmpNickname = $tmpItem[0] ?? '';
+            $tmpMobile = $tmpItem[1] ?? '';
+            $tmpPassword = $tmpItem[2] ?? '';
+            $tmpRoleId = max((int)($tmpItem[3] ?? ''), 0);
+            $tmpRoleExpiredAt = $tmpItem[4] ?? '';
+            $tmpTag = $tmpItem[5] ?? '';
+
+            if (!$tmpMobile) {
+                return $this->error(__('第 :line 行的手机号为空', ['line' => $tmpCurLineNumber]));
             }
-            // case2: 配置了VIP过期时间但是未配置VIP-ID
-            if (!$roleId && $roleExpiredAt) {
-                return $this->error(__('手机号[:mobile]配置了VIP过期时间但未配置VIP', ['mobile' => $userItem[0] ?? '']));
+
+            if (in_array($tmpMobile, $tmpMobileList)) {
+                return $this->error(__('第 :line 行的手机号 :mobile 已存在', ['line' => $tmpCurLineNumber, 'mobile' => $tmpMobile]));
             }
-            // case3: VIP-ID和VIP过期时间都配置了，但是过期时间小于当前时间
-            if ($roleId && $roleExpiredAt && strtotime($roleExpiredAt) < $nowTime) {
-                return $this->error(__('手机号[:mobile]的VIP过期时间小于当前时间', ['mobile' => $userItem[0] ?? '']));
+
+            if ($tmpNickname && in_array($tmpNickname, $tmpNicknameList)) {
+                return $this->error(__('第 :line 行的昵称 :nickname 已存在', ['line' => $tmpCurLineNumber, 'nickname' => $tmpNickname]));
             }
-            // case4: VIP不存在
-            if ($roleId && !in_array($roleId, $roles)) {
-                return $this->error(__('手机号[:mobile]配置的VIP不存在', ['mobile' => $userItem[0] ?? '']));
+
+            if ($tmpRoleId) {
+                if (!isset($roles[$tmpRoleId])) {
+                    return $this->error(__('第 :line 行配置的VIP会员不存在', ['line' => $tmpCurLineNumber]));
+                }
+                if (!$tmpRoleExpiredAt) {
+                    return $this->error(__('第 :line 行的会员到期时间不能为空', ['line' => $tmpCurLineNumber]));
+                }
+                if (Carbon::now()->gte($tmpRoleExpiredAt)) {
+                    return $this->error(__('第 :line 行的会员到期时间应为未来某个时间', ['line' => $tmpCurLineNumber]));
+                }
             }
+
+            if (!$tmpRoleId && $tmpRoleExpiredAt) {
+                return $this->error(__('第 :line 行的会员到期时间应留空', ['line' => $tmpCurLineNumber]));
+            }
+
+            $tmpMobileList[] = $tmpMobile;
+            $tmpNickname && $tmpNicknameList[] = $tmpNickname;
+            $transformedUserList [] = [
+                'nick_name' => $tmpNickname ?: __('用户') . '_' . Str::random(5),
+                'mobile' => $tmpMobile,
+                'password' => $tmpPassword ?: $tmpMobile, //如果密码为空的话则默认等于手机号
+                'role_id' => $tmpRoleId,
+                'role_expired_at' => $tmpRoleExpiredAt ? Carbon::parse($tmpRoleExpiredAt)->toDateTimeLocalString() : null,
+                'tag' => $tmpTag,
+            ];
         }
 
         // 手机号存在检测
-        foreach (array_chunk($mobiles, 500) as $item) {
-            $exists = User::query()->whereIn('mobile', $item)->select(['mobile'])->get();
-            if ($exists->isNotEmpty()) {
-                return $this->error(sprintf(__('手机号%s已存在'), implode(',', $exists->pluck('mobile')->toArray())));
-            }
+        $exists = User::query()->whereIn('mobile', array_column($transformedUserList, 'mobile'))->select(['mobile'])->get();
+        if ($exists->isNotEmpty()) {
+            return $this->error(__(
+                '手机号 :mobiles 已经注册为本站用户!请勿重复导入!',
+                [
+                    'mobiles' => implode(',', $exists->pluck('mobile')->toArray()),
+                ]
+            ));
         }
 
         // 标签处理
         $tags = [];
-        foreach ($users as $userItem) {
-            $tmpTagName = $userItem[5] ?? null;
-            if (!$tmpTagName) {
+        foreach ($transformedUserList as $tmpItem) {
+            if (!$tmpItem['tag']) {
                 continue;
             }
-            $tags = array_merge($tags, explode(',', $tmpTagName));
+            $tags = array_merge($tags, explode(',', $tmpItem['tag']));
         }
         // 去重
         $tags = array_flip(array_flip($tags));
@@ -651,80 +691,77 @@ class MemberController extends BaseController
             foreach ($notExistsTags as $tagName) {
                 $insertList[] = ['name' => $tagName, 'created_at' => $now, 'updated_at' => $now];
             }
-            UserTag::insert($insertList);
+            UserTag::query()->insert($insertList);
             // 读取新创建的tag
             $newTags = UserTag::query()->whereIn('name', $notExistsTags)->select(['id', 'name'])->get();
             $existsTags = $existsTags->merge($newTags);
         }
         $existsTags = $existsTags->keyBy('name')->toArray();
-        foreach ($users as $key => $userItem) {
-            $tmpTag = $userItem[5] ?? null;
-            if (!$tmpTag) {
-                $users[$key]['tag_ids'] = [];
+        // 将tag写入到$transformedUserList
+        foreach ($transformedUserList as $key => $tmpItem) {
+            if (!$tmpItem['tag']) {
+                $transformedUserList[$key]['tag_ids'] = [];
                 continue;
             }
-            $tmpTags = explode(',', $tmpTag);
+            $tmpTags = explode(',', $tmpItem['tag']);
             $syncTagIds = [];
             foreach ($tmpTags as $tagName) {
                 $syncTagIds[] = $existsTags[$tagName]['id'];
             }
-            $users[$key]['tag_ids'] = $syncTagIds;
+            $transformedUserList[$key]['tag_ids'] = $syncTagIds;
         }
 
-        DB::transaction(function () use ($users) {
+        DB::transaction(function () use ($transformedUserList) {
             $now = Carbon::now()->toDateTimeLocalString();
-            foreach (array_chunk($users, 500) as $usersItem) {
+            $defaultAvatar = url(config('meedu.member.default_avatar'));
+            $defaultActiveStatus = (int)config('meedu.member.is_active_default');
+            $defaultIsLockStatus = (int)config('meedu.member.is_lock_default');
+
+            foreach (array_chunk($transformedUserList, 500) as $tmpUsers) {
                 $data = [];
-                if (!$usersItem) {
+                if (!$tmpUsers) {
                     break;
                 }
 
                 AdministratorLog::storeLog(
                     AdministratorLog::MODULE_MEMBER,
                     AdministratorLog::OPT_IMPORT,
-                    ['mobiles' => array_column($usersItem, 0)]
+                    ['mobiles' => array_column($tmpUsers, 0)]
                 );
 
                 // 批量插入用户
-                foreach ($usersItem as $item) {
-                    $tmpMobile = $item[0];
-                    // 密码
-                    $tmpPassword = $item[1];
-                    // VIP处理l
-                    $tmpRoleId = (int)($item[2] ?? 0);
-                    $tmpRoleExpiredAt = null;
-                    if (isset($item[3]) && $item[3]) {
-                        $tmpRoleExpiredAt = Carbon::parse($item[3])->toDateTimeLocalString();
-                    }
-                    // 是否锁定
-                    $tmpIsLock = (int)($item[4] ?? 0);
-
+                foreach ($tmpUsers as $tmpItem) {
                     $data[] = [
-                        'mobile' => $tmpMobile,
-                        'avatar' => url(config('meedu.member.default_avatar')),
-                        'nick_name' => mb_substr($tmpMobile, 0, 8) . '_' . Str::random(5),
-                        'is_active' => (int)config('meedu.member.is_active_default'),
-                        'is_lock' => $tmpIsLock,
-                        'password' => Hash::make($tmpPassword),
+                        'mobile' => $tmpItem['mobile'],
+                        'avatar' => $defaultAvatar,
+                        'nick_name' => $tmpItem['nick_name'],
+                        'is_active' => $defaultActiveStatus,
+                        'is_lock' => $defaultIsLockStatus,
+                        'password' => Hash::make($tmpItem['password']),
                         'is_password_set' => 0,
                         'is_set_nickname' => 0,
-                        'role_id' => $tmpRoleId,
-                        'role_expired_at' => $tmpRoleExpiredAt,
+                        'role_id' => $tmpItem['role_id'],
+                        'role_expired_at' => $tmpItem['role_expired_at'],
                         'created_at' => $now,
                         'updated_at' => $now,
                     ];
                 }
-                User::insert($data);
+                User::query()->insert($data);
 
                 // 标签关联数据缓存
                 $tagInsertList = [];
-                $mobile2idMap = User::query()->whereIn('mobile', array_column($data, 'mobile'))->select(['id', 'mobile'])->get()->keyBy('mobile');
-                foreach ($usersItem as $item) {
-                    if (!$item['tag_ids']) {
+                $mobile2idMap = User::query()
+                    ->whereIn('mobile', array_column($data, 'mobile'))
+                    ->select(['id', 'mobile'])
+                    ->get()
+                    ->keyBy('mobile')
+                    ->toArray();
+                foreach ($tmpUsers as $tmpItem) {
+                    if (!$tmpItem['tag_ids']) {
                         continue;
                     }
-                    $userId = $mobile2idMap[$item[0]]['id'];
-                    foreach ($item['tag_ids'] as $tagId) {
+                    $userId = $mobile2idMap[$tmpItem['mobile']]['id'];
+                    foreach ($tmpItem['tag_ids'] as $tagId) {
                         $tagInsertList[] = [
                             'user_id' => $userId,
                             'tag_id' => $tagId,

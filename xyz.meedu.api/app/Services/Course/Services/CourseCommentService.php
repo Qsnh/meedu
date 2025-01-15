@@ -31,6 +31,7 @@ class CourseCommentService implements CourseCommentServiceInterface
             'render_content' => $originalContent,
             'ip' => $ip,
             'ip_province' => IP::queryProvince($ip),
+            'is_check' => 0,
         ]);
 
         event(new CourseCommentEvent($courseId, $comment['id']));

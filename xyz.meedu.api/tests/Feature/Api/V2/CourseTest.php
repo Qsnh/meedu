@@ -115,6 +115,7 @@ class CourseTest extends Base
 
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
@@ -132,6 +133,7 @@ class CourseTest extends Base
 
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
             'content' => 'hello meedu',
@@ -144,6 +146,7 @@ class CourseTest extends Base
         $user = User::factory()->create();
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
 
         UserCourse::create([
@@ -161,6 +164,7 @@ class CourseTest extends Base
     {
         $course = Course::factory()->create([
             'published_at' => Carbon::now()->subDays(1),
+            'is_allow_comment' => 1,
         ]);
         CourseComment::factory()->count(10)->create(['course_id' => $course->id]);
 

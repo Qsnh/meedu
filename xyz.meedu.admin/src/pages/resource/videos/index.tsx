@@ -1,13 +1,31 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Input, Button } from "antd";
+import {
+  Table,
+  Modal,
+  message,
+  Input,
+  Button,
+  Space,
+  Row,
+  Col,
+  Spin,
+} from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
-import { media } from "../../../api/index";
+import { media, videoCategory } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { PerButton, DurationText, UploadVideoItem } from "../../../components";
+import {
+  PerButton,
+  DurationText,
+  UploadVideoItem,
+  TreeCategory,
+} from "../../../components";
 import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ResourceCategoryCreate } from "./compenents/create";
+import { ResourceCategoryUpdate } from "./compenents/update";
+import { VideoCategoryUpdate } from "./compenents/video-update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -22,6 +40,7 @@ interface LocalSearchParamsInterface {
   page?: number;
   size?: number;
   keywords?: string;
+  category_ids?: any;
 }
 
 const ResourceVideosPage = () => {
@@ -31,10 +50,14 @@ const ResourceVideosPage = () => {
     page: "1",
     size: "10",
     keywords: "",
+    category_ids: "[]",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
   const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [category_ids, setCategoryIds] = useState(
+    JSON.parse(searchParams.get("category_ids") || "[]")
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -50,6 +73,10 @@ const ResourceVideosPage = () => {
   const [isAliService, setIsAliService] = useState(false);
   const [records, setRecords] = useState<any>({});
   const [tenRecords, setTenRecords] = useState<any>({});
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [cid, setCid] = useState<number>(0);
+  const [rUpdateVisible, setRUpdateVisible] = useState(false);
   const service = useSelector(
     (state: any) => state.systemConfig.value.video.default_service
   );
@@ -81,7 +108,7 @@ const ResourceVideosPage = () => {
 
   useEffect(() => {
     getData();
-  }, [page, size, refresh]);
+  }, [category_ids, page, size, refresh]);
 
   useEffect(() => {
     if (list.length === 0) {
@@ -103,12 +130,14 @@ const ResourceVideosPage = () => {
     if (loading) {
       return;
     }
+    let categoryId = category_ids.join(",");
     setLoading(true);
     media
       .newVideoList({
         page: page,
         size: size,
         keywords: keywords,
+        category_id: categoryId === "" ? -1 : categoryId,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -131,6 +160,9 @@ const ResourceVideosPage = () => {
         }
         if (typeof params.size !== "undefined") {
           prev.set("size", params.size + "");
+        }
+        if (typeof params.category_ids !== "undefined") {
+          prev.set("category_ids", JSON.stringify(params.category_ids));
         }
         return prev;
       },
@@ -207,6 +239,27 @@ const ResourceVideosPage = () => {
     },
   ];
 
+  const editMulti = () => {
+    if (selectedRowKeys.length === 0) {
+      message.warning("请选择需要操作的数据");
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认修改选中的视频所属分类？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        setRUpdateVisible(true);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   const checkTrans = (val: string) => {
     return typeof records[val] !== "undefined";
   };
@@ -235,7 +288,7 @@ const ResourceVideosPage = () => {
 
   const destorymulti = () => {
     if (selectedRowKeys.length === 0) {
-      message.error("请选择需要操作的数据");
+      message.warning("请选择需要操作的数据");
       return;
     }
     confirm({
@@ -286,80 +339,213 @@ const ResourceVideosPage = () => {
     resetData();
   };
 
+  const delUser = (id: any) => {
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此分类？",
+      centered: true,
+      okText: "确定",
+      cancelText: "取消",
+      onOk() {
+        videoCategory.destroy(id).then((res: any) => {
+          message.success("成功");
+          resetLocalSearchParams({
+            page: 1,
+            category_ids: [],
+          });
+          setRefresh(!refresh);
+          setCategoryIds([]);
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <div className="meedu-main-body">
-      <div className="float-left j-b-flex mb-30">
-        <div className="d-flex">
-          <Button
-            type="primary"
-            onClick={() => {
-              if (isNoService) {
-                message.warning("请先在系统配置的视频存储中完成参数配置");
-                return;
-              }
-              setOpenUploadItem(true);
-            }}
-          >
-            上传视频
-          </Button>
-          <PerButton
-            type="danger"
-            text="批量删除"
-            class="ml-10"
-            icon={null}
-            p="media.video.delete.multi"
-            onClick={() => destorymulti()}
-            disabled={null}
-          />
-        </div>
-        <div className="d-flex">
-          <Input
-            value={keywords || ""}
-            onChange={(e) => {
-              setKeywords(e.target.value);
-            }}
-            allowClear
-            style={{ width: 150 }}
-            placeholder="关键字"
-          />
-          <Button className="ml-10" onClick={resetList}>
-            清空
-          </Button>
-          <Button
-            className="ml-10"
-            type="primary"
-            onClick={() => {
-              resetLocalSearchParams({
-                page: 1,
-                keywords: keywords,
-              });
-              setRefresh(!refresh);
-            }}
-          >
-            筛选
-          </Button>
-        </div>
-      </div>
-      <div className="float-left">
-        <Table
-          rowSelection={{
-            type: "checkbox",
-            ...rowSelection,
+      <Row>
+        <Col
+          span={3}
+          style={{
+            borderRight: "1px solid #f6f6f6",
+            paddingRight: 16,
+            boxSizing: "border-box",
           }}
-          loading={loading}
-          columns={columns}
-          dataSource={list}
-          rowKey={(record) => record.id}
-          pagination={paginationProps}
-        />
-      </div>
+        >
+          <div className="float-left">
+            <TreeCategory
+              selected={category_ids}
+              refresh={refresh}
+              type="cate"
+              text="分类"
+              onUpdate={(keys: any) => {
+                setCategoryIds(keys);
+                resetLocalSearchParams({
+                  page: 1,
+                  category_ids: typeof keys !== "undefined" ? keys : [],
+                });
+              }}
+            />
+          </div>
+        </Col>
+        <Col
+          span={21}
+          style={{
+            paddingLeft: 16,
+            boxSizing: "border-box",
+          }}
+        >
+          <div className="float-left j-b-flex mb-30">
+            <div className="d-flex">
+              <PerButton
+                type="default"
+                text="添加分类"
+                class=""
+                icon={null}
+                p="media.video-category.store"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
+              />
+              {Number(category_ids.join(",")) > 0 && (
+                <>
+                  <PerButton
+                    type="default"
+                    text="编辑分类"
+                    class="ml-10"
+                    icon={null}
+                    p="media.video-category.delete"
+                    onClick={() => {
+                      setCid(Number(category_ids.join(",")));
+                      setUpdateVisible(true);
+                    }}
+                    disabled={null}
+                  />
+                  <PerButton
+                    type="default"
+                    text="删除分类"
+                    class="ml-10"
+                    icon={null}
+                    p="media.video.delete.multi"
+                    onClick={() => delUser(Number(category_ids.join(",")))}
+                    disabled={null}
+                  />
+                </>
+              )}
+              <div className="column-line ml-10"></div>
+              <Button
+                type="primary"
+                className="ml-10"
+                onClick={() => {
+                  if (isNoService) {
+                    message.warning("请先在系统配置的视频存储中完成参数配置");
+                    return;
+                  }
+                  setOpenUploadItem(true);
+                }}
+              >
+                上传视频
+              </Button>
+              <PerButton
+                type="primary"
+                text="修改视频分类"
+                class="ml-10"
+                icon={null}
+                p="media.video.change-category"
+                onClick={() => {
+                  editMulti();
+                }}
+                disabled={null}
+              />
+              <PerButton
+                type="danger"
+                text="删除视频"
+                class="ml-10"
+                icon={null}
+                p="media.video.delete.multi"
+                onClick={() => destorymulti()}
+                disabled={null}
+              />
+            </div>
+            <div className="d-flex">
+              <Input
+                value={keywords || ""}
+                onChange={(e) => {
+                  setKeywords(e.target.value);
+                }}
+                allowClear
+                style={{ width: 150 }}
+                placeholder="关键字"
+              />
+              <Button className="ml-10" onClick={resetList}>
+                清空
+              </Button>
+              <Button
+                className="ml-10"
+                type="primary"
+                onClick={() => {
+                  resetLocalSearchParams({
+                    page: 1,
+                    keywords: keywords,
+                  });
+                  setRefresh(!refresh);
+                }}
+              >
+                筛选
+              </Button>
+            </div>
+          </div>
+          <div className="float-left">
+            <Table
+              rowSelection={{
+                type: "checkbox",
+                ...rowSelection,
+              }}
+              loading={loading}
+              columns={columns}
+              dataSource={list}
+              rowKey={(record) => record.id}
+              pagination={paginationProps}
+            />
+          </div>
+        </Col>
+      </Row>
+      <ResourceCategoryCreate
+        open={createVisible}
+        onCancel={() => {
+          setCreateVisible(false);
+          setRefresh(!refresh);
+        }}
+      />
+      <ResourceCategoryUpdate
+        id={cid}
+        open={updateVisible}
+        onCancel={() => {
+          setUpdateVisible(false);
+          setRefresh(!refresh);
+        }}
+      />
+      <VideoCategoryUpdate
+        cid={category_ids.join(",") === "" ? 0 : Number(category_ids.join(","))}
+        ids={selectedRowKeys}
+        open={rUpdateVisible}
+        onCancel={() => {
+          setRUpdateVisible(false);
+          resetData();
+        }}
+      />
       <UploadVideoItem
         open={openUploadItem}
+        categoryId={
+          category_ids.join(",") === "" ? 0 : Number(category_ids.join(","))
+        }
         onCancel={() => setOpenUploadItem(false)}
         onSuccess={() => {
           completeUpload();
         }}
-      />
+      ></UploadVideoItem>
     </div>
   );
 };

@@ -45,6 +45,34 @@ const ResourceImagesPage = () => {
   const [hoverArr, setHoverArr] = useState<boolean[]>([]);
   const [loading, setLoading] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
+  const [scene, setScene] = useState("");
+  const fromRows = [
+    { key: "", name: "全部图片" },
+    {
+      key: "cover",
+      name: "课程封面",
+    },
+    {
+      key: "avatar",
+      name: "学员头像",
+    },
+    {
+      key: "config",
+      name: "系统配置",
+    },
+    {
+      key: "editor",
+      name: "文本编辑器",
+    },
+    {
+      key: "decoration",
+      name: "装修",
+    },
+    {
+      key: "other",
+      name: "其它",
+    },
+  ];
 
   useEffect(() => {
     document.title = "图片库";
@@ -54,7 +82,7 @@ const ResourceImagesPage = () => {
   // 加载图片列表
   useEffect(() => {
     getImageList();
-  }, [refresh, page, size]);
+  }, [refresh, page, size, scene]);
 
   // 删除图片
   const removeResource = () => {
@@ -100,6 +128,7 @@ const ResourceImagesPage = () => {
       .imagesList({
         page: page,
         size: size,
+        scene: scene,
       })
       .then((res: any) => {
         setTotal(res.data.total);
@@ -173,7 +202,7 @@ const ResourceImagesPage = () => {
             <div className="j-b-flex">
               <div className="d-flex">
                 <UploadImageSub
-                  scene="other"
+                  scene={scene}
                   onUpdate={() => {
                     resetImageList();
                   }}
@@ -193,78 +222,99 @@ const ResourceImagesPage = () => {
             </div>
           </Col>
         </Row>
-        {loading && (
-          <div className="float-left d-j-flex mt-24">
-            <Spin size="large" />
-          </div>
-        )}
-        {!loading && imageList.length === 0 && (
-          <div className="d-flex">
-            <Col span={24}>
-              <Empty description="暂无图片" />
-            </Col>
-          </div>
-        )}
-        <div className={styles["images-box"]}>
-          {!loading &&
-            imageList.map((item: any, index: number) => (
-              <div
-                key={item.id}
-                className={`${styles.imageItem} ref-image-item`}
-                style={{ backgroundImage: `url(${item.url})` }}
-                onClick={() => showImage(index, true)}
-                onMouseOver={() => showHover(index, true)}
-                onMouseOut={() => showHover(index, false)}
-              >
-                {hoverArr[index] && (
-                  <i
-                    className={styles.checkbox}
-                    onClick={(e) => onChange(e, item.id)}
-                  ></i>
-                )}
-                {selectKey.indexOf(item.id) !== -1 && (
-                  <i
-                    className={styles.checked}
-                    onClick={(e) => onChange(e, item.id)}
-                  >
-                    <CheckOutlined />
-                  </i>
-                )}
-                <Image
-                  width={200}
-                  style={{ display: "none" }}
-                  src={item.url}
-                  preview={{
-                    visible: visibleArr[index],
-                    src: item.url,
-                    onVisibleChange: (value) => {
-                      showImage(index, value);
-                    },
-                  }}
-                />
-              </div>
-            ))}
-        </div>
-        {!loading && imageList.length > 0 && (
-          <Col
-            span={24}
-            style={{
-              display: "flex",
-              flexDirection: "row-reverse",
-              marginTop: 24,
-            }}
-          >
-            <Pagination
-              onChange={(currentPage, currentSize) => {
-                setPage(currentPage);
-                setSize(currentSize);
-              }}
-              defaultCurrent={page}
-              total={total}
-              pageSize={size}
-            />
+        <Row>
+          <Col span={3}>
+            <div className={styles["category-box"]}>
+              {fromRows.map((item: any) => (
+                <div
+                  key={item.key}
+                  className={
+                    item.key === scene
+                      ? styles["category-act-item"]
+                      : styles["category-item"]
+                  }
+                  onClick={() => setScene(item.key)}
+                >
+                  {item.name}
+                </div>
+              ))}
+            </div>
           </Col>
-        )}
+          <Col span={21}>
+            {loading && (
+              <div className="float-left d-j-flex mt-24">
+                <Spin size="large" />
+              </div>
+            )}
+            {!loading && imageList.length === 0 && (
+              <div className="d-flex">
+                <Col span={24}>
+                  <Empty description="暂无图片" />
+                </Col>
+              </div>
+            )}
+            <div className={styles["images-box"]}>
+              {!loading &&
+                imageList.map((item: any, index: number) => (
+                  <div
+                    key={item.id}
+                    className={`${styles.imageItem} ref-image-item`}
+                    style={{ backgroundImage: `url(${item.url})` }}
+                    onClick={() => showImage(index, true)}
+                    onMouseOver={() => showHover(index, true)}
+                    onMouseOut={() => showHover(index, false)}
+                  >
+                    {hoverArr[index] && (
+                      <i
+                        className={styles.checkbox}
+                        onClick={(e) => onChange(e, item.id)}
+                      ></i>
+                    )}
+                    {selectKey.indexOf(item.id) !== -1 && (
+                      <i
+                        className={styles.checked}
+                        onClick={(e) => onChange(e, item.id)}
+                      >
+                        <CheckOutlined />
+                      </i>
+                    )}
+                    <Image
+                      width={200}
+                      style={{ display: "none" }}
+                      src={item.url}
+                      preview={{
+                        visible: visibleArr[index],
+                        src: item.url,
+                        onVisibleChange: (value) => {
+                          showImage(index, value);
+                        },
+                      }}
+                    />
+                  </div>
+                ))}
+            </div>
+            {!loading && imageList.length > 0 && (
+              <Col
+                span={24}
+                style={{
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  marginTop: 24,
+                }}
+              >
+                <Pagination
+                  onChange={(currentPage, currentSize) => {
+                    setPage(currentPage);
+                    setSize(currentSize);
+                  }}
+                  defaultCurrent={page}
+                  total={total}
+                  pageSize={size}
+                />
+              </Col>
+            )}
+          </Col>
+        </Row>
       </div>
     </>
   );

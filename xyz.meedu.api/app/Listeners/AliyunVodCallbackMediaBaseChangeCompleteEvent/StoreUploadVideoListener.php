@@ -9,6 +9,7 @@
 namespace App\Listeners\AliyunVodCallbackMediaBaseChangeCompleteEvent;
 
 use App\Constant\FrontendConstant;
+use App\Bus\MediaVideoCategoryBindBus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Meedu\ServiceV2\Services\OtherServiceInterface;
@@ -19,15 +20,17 @@ class StoreUploadVideoListener implements ShouldQueue
     use InteractsWithQueue;
 
     private $otherService;
+    private $mediaVideoCategoryBindBus;
 
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(OtherServiceInterface $otherService)
+    public function __construct(OtherServiceInterface $otherService, MediaVideoCategoryBindBus $mediaVideoCategoryBindBus)
     {
         $this->otherService = $otherService;
+        $this->mediaVideoCategoryBindBus = $mediaVideoCategoryBindBus;
     }
 
     /**
@@ -38,13 +41,17 @@ class StoreUploadVideoListener implements ShouldQueue
      */
     public function handle(AliyunVodCallbackMediaBaseChangeCompleteEvent $event)
     {
+        $categoryId = $this->mediaVideoCategoryBindBus->pull($event->videoId);
+        $data = [
+            'title' => $event->videoName,
+            'is_hidden' => 1,
+        ];
+        $categoryId && $data['category_id'] = $categoryId;
+
         $this->otherService->storeOrUpdateMediaVideo(
             FrontendConstant::VOD_SERVICE_ALIYUN,
             $event->videoId,
-            [
-                'title' => $event->videoName,
-                'is_hidden' => 1,
-            ]
+            $data
         );
     }
 }

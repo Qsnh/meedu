@@ -6,7 +6,7 @@
  * (c) 杭州白书科技有限公司
  */
 
-namespace App\Http\Controllers\Backend\Api\V1\Traits;
+namespace App\Http\Controllers\Backend\Api\V1;
 
 use App\Services\Course\Models\CourseCategory;
 

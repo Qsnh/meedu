@@ -30,7 +30,7 @@ class Course extends Base
         'user_id', 'title', 'slug', 'thumb', 'charge',
         'short_description', 'original_desc', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_show', 'category_id',
-        'is_rec', 'user_count', 'is_free',
+        'is_rec', 'user_count', 'is_free', 'is_allow_comment',
     ];
 
     protected $hidden = [

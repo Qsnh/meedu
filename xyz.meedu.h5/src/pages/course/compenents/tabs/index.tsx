@@ -323,14 +323,19 @@ export default function TabsComponent(props: PropsInterafce) {
                       </div>
                       <div className={styles["time"]}>
                         {changeTime(comment.created_at)}
+                        {comment.ip_province ? " | " + comment.ip_province : ""}
                       </div>
-                      <div className={styles["text"]}>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: comment.render_content,
-                          }}
-                        ></div>
-                      </div>
+                      {comment.is_check === 0 ? (
+                        <div className={styles["text-sp"]}>评论审核中</div>
+                      ) : (
+                        <div className={styles["text"]}>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: comment.render_content,
+                            }}
+                          ></div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -419,7 +424,7 @@ export default function TabsComponent(props: PropsInterafce) {
                 </>
               )}
             </>
-          ) : (
+          ) : props.data.course.is_allow_comment === 1 ? (
             <>
               <Input
                 className={styles["input"]}
@@ -440,7 +445,7 @@ export default function TabsComponent(props: PropsInterafce) {
                 发布
               </div>
             </>
-          )}
+          ) : null}
         </div>
       )}
     </>

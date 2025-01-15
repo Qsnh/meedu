@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function imageList(params: any) {
-  return client.get("/backend/api/v1/media/images", params);
+  return client.get("/backend/api/v1/media/image/index", params);
 }
 
 export function videoAliyunTokenRefresh(params: any) {
@@ -29,9 +29,13 @@ export function newDestroyVideo(params: any) {
 }
 
 export function imagesList(params: any) {
-  return client.get("/backend/api/v1/media/images", params);
+  return client.get("/backend/api/v1/media/image/index", params);
 }
 
 export function destroyImages(params: any) {
   return client.post(`/backend/api/v1/media/image/delete/multi`, params);
+}
+
+export function tencentRecordCateId(params: any) {
+  return client.post(`/backend/api/v1/media/videos/record-category-id`, params);
 }
