@@ -173,11 +173,18 @@ class BusinessState
 
     public function courseCanComment(array $user, array $course): bool
     {
+        if (1 !== $course['is_allow_comment']) {
+            return false;
+        }
         return $this->isBuyCourse($user['id'], $course['id']);
     }
 
     public function videoCanComment(array $user, array $video): bool
     {
+        if (1 !== $video['is_allow_comment']) {
+            return false;
+        }
+
         /**
          * @var CourseServiceInterface $courseService
          */

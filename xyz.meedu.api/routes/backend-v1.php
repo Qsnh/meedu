@@ -6,17 +6,14 @@
  * (c) 杭州白书科技有限公司
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::post('/login', 'LoginController@login');
 
 Route::get('/captcha/image', 'CaptchaController@image');
 
 Route::group(['middleware' => ['auth:administrator']], function () {
-    Route::get('/media/images', 'MediaImageController@index');
-    Route::post('/media/image', 'MediaImageController@upload');
-
     Route::get('/addons', 'AddonsController@index');
-
-    // 安全退出
     Route::post('/logout', 'LoginController@logout');
 });
 
@@ -28,12 +25,28 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
     Route::get('/dashboard/system/info', 'DashboardController@systemInfo');
     Route::get('/dashboard/graph', 'DashboardController@graph');
 
-    // 素材库-图片-批量删除
-    Route::post('/media/image/delete/multi', 'MediaImageController@destroy');
+    Route::group(['prefix' => '/media/image'], function () {
+        Route::get('/index', 'MediaImageController@index');
+        Route::post('/create', 'MediaImageController@upload');
+        Route::post('/delete/multi', 'MediaImageController@destroy');
+    });
 
     Route::group(['prefix' => 'media/videos'], function () {
         Route::get('/index', 'MediaVideoController@index');
         Route::post('/delete/multi', 'MediaVideoController@deleteVideos');
+        Route::post('/change-category', 'MediaVideoController@changeCategory');
+        Route::post('/record-category-id', 'MediaVideoController@recordCategoryId');
+    });
+
+    Route::group(['prefix' => 'media/video-category'], function () {
+        Route::get('/index', 'MediaVideoCategoryController@index');
+        Route::get('/create', 'MediaVideoCategoryController@create');
+        Route::post('/create', 'MediaVideoCategoryController@store');
+        Route::get('/{id}', 'MediaVideoCategoryController@edit');
+        Route::put('/{id}', 'MediaVideoCategoryController@update');
+        Route::delete('/{id}', 'MediaVideoCategoryController@destroy');
+        Route::put('/change-sort', 'MediaVideoCategoryController@changeSort');
+        Route::put('/change-parent', 'MediaVideoCategoryController@changeParent');
     });
 
     Route::group(['prefix' => 'video/token'], function () {
@@ -83,6 +96,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
     Route::group(['prefix' => 'course_comment'], function () {
         Route::get('/', 'CourseCommentController@index');
         Route::post('/delete', 'CourseCommentController@destroy');
+        Route::post('/check', 'CourseCommentController@check');
     });
 
     // Nav
@@ -109,6 +123,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
     Route::group(['prefix' => 'video_comment'], function () {
         Route::get('/', 'VideoCommentController@index');
         Route::post('/delete', 'VideoCommentController@destroy');
+        Route::post('/check', 'VideoCommentController@check');
     });
 
     // 管理员
@@ -323,5 +338,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/userLogin', 'LogController@userLogin');
         Route::get('/uploadImages', 'LogController@uploadImages');
         Route::get('/runtime', 'LogController@runtime');
+        Route::delete('/{sign}', 'LogController@destroy');
     });
 });

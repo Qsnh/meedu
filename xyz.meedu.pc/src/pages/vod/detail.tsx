@@ -388,6 +388,7 @@ const VodDetailPage = () => {
           <CourseComments
             cid={cid}
             isBuy={isBuy}
+            isAllowComment={course.is_allow_comment}
             comments={comments}
             commentUsers={commentUsers}
             success={() => {

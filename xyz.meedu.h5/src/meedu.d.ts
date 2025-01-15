@@ -83,6 +83,7 @@ declare global {
     thumb: string;
     title: string;
     user_count: number;
+    is_allow_comment: number;
   }
 
   interface CourseDetailChapterInterface {

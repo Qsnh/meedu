@@ -158,6 +158,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'POST',
                         'url' => 'course_comment/delete',
                     ],
+                    [
+                        'display_name' => '录播课-评论-审核',
+                        'slug' => 'course_comment.check',
+                        'method' => 'POST',
+                        'url' => 'course_comment/check',
+                    ],
 
                     // 课时
                     [
@@ -221,6 +227,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'video_comment.destroy',
                         'method' => 'POST',
                         'url' => 'video_comment/delete',
+                    ],
+                    [
+                        'display_name' => '录播课-课时-评论-审核',
+                        'slug' => 'video_comment.check',
+                        'method' => 'POST',
+                        'url' => 'video_comment/check',
                     ],
 
                     // 课程附件
@@ -537,6 +549,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'method' => 'GET',
                         'url' => 'log/uploadImages',
                     ],
+                    [
+                        'display_name' => '系统-日志-清空',
+                        'slug' => 'system.log.delete',
+                        'method' => 'DELETE',
+                        'url' => 'log/\s+',
+                    ],
                 ],
             ],
 
@@ -833,22 +851,58 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'media/videos/delete/multi',
                     ],
                     [
-                        'display_name' => '素材库-视频-腾讯云视频上传',
-                        'slug' => 'video.upload.tencent.token',
-                        'method' => 'POST',
-                        'url' => 'video/token/tencent',
-                    ],
-                    [
-                        'display_name' => '素材库-视频-阿里云视频上传',
+                        'display_name' => '素材库-视频-上传',
                         'slug' => 'video.upload.aliyun.token',
                         'method' => 'POST',
-                        'url' => '(^video\/token\/aliyun\/refresh$|^video\/token\/aliyun\/create$)',
+                        'url' => '(^video\/token\/aliyun\/refresh$|^video\/token\/aliyun\/create$|^video\/token\/tencent$|^media\/videos\/record-category-id$)',
+                    ],
+                    [
+                        'display_name' => '素材库-视频-更换分类',
+                        'slug' => 'media.video.change-category',
+                        'method' => 'POST',
+                        'url' => 'media/videos/change-category',
                     ],
                     [
                         'display_name' => '素材库-图片-删除',
                         'slug' => 'media.image.delete.multi',
                         'method' => 'POST',
                         'url' => 'media/image/delete/multi',
+                    ],
+                    [
+                        'display_name' => '素材库-图片-列表',
+                        'slug' => 'media.image.index',
+                        'method' => 'GET',
+                        'url' => 'media/image/index',
+                    ],
+                    [
+                        'display_name' => '素材库-图片-上传',
+                        'slug' => 'media.image.store',
+                        'method' => 'POST',
+                        'url' => 'media/image/create',
+                    ],
+                    [
+                        'display_name' => '素材库-视频分类-列表',
+                        'slug' => 'media.video-category.index',
+                        'method' => 'GET',
+                        'url' => 'media/video-category/index',
+                    ],
+                    [
+                        'display_name' => '素材库-视频分类-添加',
+                        'slug' => 'media.video-category.store',
+                        'method' => 'POST',
+                        'url' => 'media/video-category/create',
+                    ],
+                    [
+                        'display_name' => '素材库-视频分类-编辑',
+                        'slug' => 'media.video-category.update',
+                        'method' => 'GET|PUT',
+                        'url' => '(^media/video-category/\d+$|^media/video-category/change-sort$|^media/video-category/change-parent$)',
+                    ],
+                    [
+                        'display_name' => '素材库-视频分类-删除',
+                        'slug' => 'media.video-category.delete',
+                        'method' => 'DELETE',
+                        'url' => 'media/video-category/\d+',
                     ],
                 ],
             ],

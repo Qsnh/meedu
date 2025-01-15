@@ -17,7 +17,11 @@ interface LocalSearchParamsInterface {
   size?: number;
 }
 
-export const UserLoginLogComp = () => {
+interface PropsInterface {
+  refresh: boolean;
+}
+
+export const UserLoginLogComp = (props: PropsInterface) => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
@@ -33,6 +37,13 @@ export const UserLoginLogComp = () => {
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
+
+  useEffect(() => {
+    resetLocalSearchParams({
+      page: 1,
+    });
+    getData();
+  }, [props.refresh]);
 
   const getData = () => {
     if (loading) {

@@ -13,6 +13,7 @@ class ApiV2Constant
     public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_rec', 'is_show', 'user_count', 'category_id', 'is_free',
+        'is_allow_comment',
 
         // 额外字段
         'videos_count', 'category',
@@ -21,7 +22,7 @@ class ApiV2Constant
     public const MODEL_VIDEO_FIELD = [
         'id', 'course_id', 'title', 'slug', 'view_num', 'seo_keywords', 'seo_description',
         'published_at', 'charge', 'chapter_id', 'duration', 'is_ban_sell', 'free_seconds',
-        'ban_drag',
+        'ban_drag', 'is_allow_comment',
     ];
 
     public const MODEL_MEMBER_FIELD = [
@@ -47,11 +48,11 @@ class ApiV2Constant
     ];
 
     public const MODEL_COURSE_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province',
+        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province', 'is_check',
     ];
 
     public const MODEL_VIDEO_COMMENT_FIELD = [
-        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province',
+        'id', 'user_id', 'render_content', 'created_at', 'ip', 'ip_province', 'is_check',
     ];
 
     public const MODEL_ORDER_FIELD = [

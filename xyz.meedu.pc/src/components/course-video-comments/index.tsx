@@ -13,6 +13,7 @@ interface PropInterface {
   commentUsers: any;
   isBuy: boolean;
   fresh: boolean;
+  isAllowComment: number;
   success: () => void;
 }
 
@@ -22,6 +23,7 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
   comments,
   commentUsers,
   fresh,
+  isAllowComment,
   success,
 }) => {
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
       <div className={styles["comment-divider"]}>全部评论</div>
       <div className={styles["line"]}></div>
 
-      {!fresh && isLogin && isBuy && (
+      {!fresh && isLogin && isBuy && isAllowComment === 1 && (
         <div className={styles["replybox"]}>
           <div className={styles["reply"]}>
             <img className={styles["user-avatar"]} src={user.avatar} />
@@ -162,12 +164,17 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
                   </div>
                   <div className={styles["comment-time"]}>
                     {getCommentTime(item.created_at)}
+                    {item.ip_province ? " | " + item.ip_province : ""}
                   </div>
                 </div>
-                <div
-                  className={styles["comment-text"]}
-                  dangerouslySetInnerHTML={{ __html: item.render_content }}
-                ></div>
+                {item.is_check === 0 ? (
+                  <div className={styles["comment-text-sp"]}>评论审核中</div>
+                ) : (
+                  <div
+                    className={styles["comment-text"]}
+                    dangerouslySetInnerHTML={{ __html: item.render_content }}
+                  ></div>
+                )}
               </div>
             </div>
           ))}

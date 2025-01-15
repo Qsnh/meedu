@@ -156,3 +156,7 @@ export function linksUpdate(id: number, params: any) {
 export function runTimeLog() {
   return client.get(`/backend/api/v1/log/runtime`, {});
 }
+
+export function adminLogDestory(sign: any) {
+  return client.destroy(`/backend/api/v1/log/${sign}`);
+}

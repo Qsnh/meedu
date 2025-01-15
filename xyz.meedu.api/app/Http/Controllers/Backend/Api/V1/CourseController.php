@@ -27,7 +27,6 @@ use App\Services\Course\Models\CourseChapter;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserVideoWatchRecord;
-use App\Http\Controllers\Backend\Api\V1\Traits\CourseCategoryTrait;
 
 class CourseController extends BaseController
 {
@@ -66,7 +65,7 @@ class CourseController extends BaseController
             ->select([
                 'id', 'user_id', 'title', 'slug', 'thumb', 'charge', 'short_description',
                 'published_at', 'is_show', 'category_id', 'is_rec', 'user_count', 'is_free',
-                'created_at', 'updated_at',
+                'created_at', 'updated_at', 'is_allow_comment',
             ])
             ->with(['category:id,name'])
             ->withCount(['videos', 'chapters', 'comments'])
@@ -155,13 +154,13 @@ class CourseController extends BaseController
                 'user_id', 'title', 'slug', 'thumb', 'charge',
                 'short_description', 'original_desc', 'render_desc', 'seo_keywords',
                 'seo_description', 'published_at', 'is_show', 'category_id',
-                'is_rec', 'user_count', 'is_free',
+                'is_rec', 'user_count', 'is_free', 'is_allow_comment',
             ]),
             Arr::only($course->toArray(), [
                 'user_id', 'title', 'slug', 'thumb', 'charge',
                 'short_description', 'original_desc', 'render_desc', 'seo_keywords',
                 'seo_description', 'published_at', 'is_show', 'category_id',
-                'is_rec', 'user_count', 'is_free',
+                'is_rec', 'user_count', 'is_free', 'is_allow_comment',
             ])
         );
 

@@ -102,26 +102,38 @@ export const MemberCreateDialog = (props: PropsInterface) => {
               autoComplete="off"
             >
               <Form.Item
-                label="学员昵称"
-                name="nick_name"
-                rules={[{ required: true, message: "请输入学员昵称!" }]}
+                label="手机号码"
+                name="mobile"
+                rules={[{ required: true, message: "请输入手机号码!" }]}
               >
+                <Input
+                  type="number"
+                  style={{ width: 300 }}
+                  placeholder="填输入学员登录手机号码"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item
+                label="登录密码"
+                name="password"
+                rules={[{ required: true, message: "请输入登录密码!" }]}
+              >
+                <Input.Password
+                  style={{ width: 300 }}
+                  placeholder="填输入登录密码"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item label="学员昵称" name="nick_name">
                 <Input
                   style={{ width: 300 }}
                   placeholder="请输入学员昵称"
                   allowClear
                 />
               </Form.Item>
-              <Form.Item
-                label="学员头像"
-                name="avatar"
-                rules={[{ required: true, message: "请上传学员头像!" }]}
-              >
+              <Form.Item label="学员头像" name="avatar">
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item
-                    name="avatar"
-                    rules={[{ required: true, message: "请上传学员头像!" }]}
-                  >
+                  <Form.Item name="avatar">
                     <UploadImageButton
                       text="上传头像"
                       scene="avatar"
@@ -151,29 +163,6 @@ export const MemberCreateDialog = (props: PropsInterface) => {
                   </Col>
                 </Row>
               )}
-              <Form.Item
-                label="手机号码"
-                name="mobile"
-                rules={[{ required: true, message: "请输入手机号码!" }]}
-              >
-                <Input
-                  type="number"
-                  style={{ width: 300 }}
-                  placeholder="填输入学员登录手机号码"
-                  allowClear
-                />
-              </Form.Item>
-              <Form.Item
-                label="登录密码"
-                name="password"
-                rules={[{ required: true, message: "请输入登录密码!" }]}
-              >
-                <Input.Password
-                  style={{ width: 300 }}
-                  placeholder="填输入登录密码"
-                  allowClear
-                />
-              </Form.Item>
               <Form.Item label="设置会员" name="role_id">
                 <Select
                   style={{ width: 300 }}

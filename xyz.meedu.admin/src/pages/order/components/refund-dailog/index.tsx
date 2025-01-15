@@ -125,17 +125,18 @@ export const RefundDialog = (props: PropsInterface) => {
             <HelperText text="退款成功不会自动取消课程/会员绑定关系，需手动操作。"></HelperText>
           </div>
           <div className="float-left mb-30 mt-30 ">
-            订单支付总额：¥{props.order.charge}
-            ，优惠码支付金额：¥{getRecharge(props.order)}，已退金额： ¥
+            订单支付总额：¥{props.order.charge.toFixed(2)}
+            ，优惠码支付金额：¥{getRecharge(props.order).toFixed(2)}，已退金额：
+            ¥
             {props.order.is_refund === 0
-              ? 0
-              : props.order.refund
-              ? showRefund(props.order.refund)
-              : 0}
+              ? "0.00"
+              : props.order.refund.toFixed(2)
+              ? showRefund(props.order.refund).toFixed(2)
+              : "0.00"}
             ，
             <span className="c-red">
               可退金额：¥
-              {value}
+              {value.toFixed(2)}
             </span>
           </div>
           <div className="float-left">

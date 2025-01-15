@@ -27,7 +27,7 @@ class Video extends Base
         'seo_keywords', 'seo_description', 'published_at',
         'is_show', 'charge', 'aliyun_video_id',
         'chapter_id', 'duration', 'tencent_video_id',
-        'is_ban_sell', 'free_seconds', 'ban_drag',
+        'is_ban_sell', 'free_seconds', 'ban_drag', 'is_allow_comment',
     ];
 
     /**

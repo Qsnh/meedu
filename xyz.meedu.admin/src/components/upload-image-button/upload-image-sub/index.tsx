@@ -4,6 +4,7 @@ import { useState } from "react";
 import config from "../../../js/config";
 import { getToken } from "../../../utils";
 import { InboxOutlined } from "@ant-design/icons";
+import { PerButton } from "../../permission-button";
 
 interface PropsInterface {
   scene: string;
@@ -16,7 +17,7 @@ export const UploadImageSub = (props: PropsInterface) => {
   const uploadProps = {
     name: "file",
     multiple: true,
-    action: config.url + "/backend/api/v1/media/image?scene=" + props.scene,
+    action: config.url + "/backend/api/v1/media/image/create?scene=" + props.scene,
     headers: {
       authorization: "Bearer " + getToken(),
     },
@@ -42,14 +43,15 @@ export const UploadImageSub = (props: PropsInterface) => {
 
   return (
     <>
-      <Button
+      <PerButton
         type="primary"
-        onClick={() => {
-          setShowModal(true);
-        }}
-      >
-        上传图片
-      </Button>
+        text="上传图片"
+        class=""
+        icon={null}
+        p="media.image.store"
+        onClick={() => setShowModal(true)}
+        disabled={null}
+      />
 
       {showModal ? (
         <Modal

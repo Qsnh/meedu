@@ -56,6 +56,7 @@ const CourseVideoCreatePage = () => {
     form.setFieldsValue({
       ban_drag: 0,
       is_show: 0,
+      is_allow_comment: 0,
     });
     getParams();
     getCourse();
@@ -153,6 +154,14 @@ const CourseVideoCreatePage = () => {
       form.setFieldsValue({ is_show: 1 });
     } else {
       form.setFieldsValue({ is_show: 0 });
+    }
+  };
+
+  const isAllowCommentChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_allow_comment: 1 });
+    } else {
+      form.setFieldsValue({ is_allow_comment: 0 });
     }
   };
 
@@ -301,6 +310,13 @@ const CourseVideoCreatePage = () => {
                   <HelperText text="打开后课时在前台将隐藏显示"></HelperText>
                 </div>
               </Space>
+            </Form.Item>
+            <Form.Item
+              label="允许评论"
+              name="is_allow_comment"
+              valuePropName="checked"
+            >
+              <Switch onChange={isAllowCommentChange} />
             </Form.Item>
             <Form.Item label="阿里云视频文件ID" name="aliyun_video_id">
               <Input

@@ -19,10 +19,21 @@ class VideoCommentController extends BaseController
 {
     public function index(Request $request)
     {
-        $courseId = $request->input('course_id');
-        $videoId = $request->input('video_id');
-        $userId = $request->input('user_id');
+        $courseId = (int)$request->input('course_id');
+        $videoId = (int)$request->input('video_id');
+        $userId = (int)$request->input('user_id');
         $createdAt = $request->input('created_at');
+        $isCheck = (int)$request->input('is_check');
+
+        if ($createdAt && !is_array($createdAt)) {
+            return $this->error(__('参数错误'));
+        }
+
+        AdministratorLog::storeLog(
+            AdministratorLog::MODULE_VOD_VIDEO_COMMENT,
+            AdministratorLog::OPT_VIEW,
+            compact('courseId', 'videoId', 'userId', 'createdAt')
+        );
 
         $comments = VideoComment::query()
             ->with(['video:id,course_id,title,charge,duration', 'video.course:id,title,thumb,charge'])
@@ -36,8 +47,14 @@ class VideoCommentController extends BaseController
             ->when($userId, function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
-            ->when($createdAt && is_array($createdAt), function ($query) use ($createdAt) {
-                $query->whereBetween('created_at', [Carbon::parse($createdAt[0]), Carbon::parse($createdAt[1])]);
+            ->when(in_array($isCheck, [0, 1]), function ($query) use ($isCheck) {
+                $query->where('is_check', $isCheck);
+            })
+            ->when($createdAt, function ($query) use ($createdAt) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($createdAt[0])->toDateTimeLocalString(),
+                    Carbon::parse($createdAt[1])->toDateTimeLocalString(),
+                ]);
             })
             ->orderByDesc('id')
             ->paginate($request->input('size', 10));
@@ -46,31 +63,57 @@ class VideoCommentController extends BaseController
             ->whereIn('id', array_column($comments->items(), 'user_id'))
             ->select(['id', 'nick_name', 'avatar', 'mobile'])
             ->get()
-            ->keyBy('id');
+            ->keyBy('id')
+            ->toArray();
+
+        return $this->successData([
+            'data' => [
+                'data' => $comments->items(),
+                'total' => $comments->total(),
+            ],
+            'users' => $users,
+        ]);
+    }
+
+    public function check(Request $request)
+    {
+        $ids = $request->input('ids');
+        $status = $request->input('is_check');
+
+        if (!$ids || !is_array($ids) || !in_array($status, [0, 1])) {
+            return $this->error(__('参数错误'));
+        }
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD_VIDEO_COMMENT,
-            AdministratorLog::OPT_VIEW,
-            compact('courseId', 'videoId', 'userId', 'createdAt')
+            AdministratorLog::OPT_UPDATE,
+            compact('ids', 'status')
         );
 
-        return $this->successData([
-            'data' => $comments,
-            'users' => $users,
-        ]);
+        if (0 === $status) {
+            VideoComment::query()->whereIn('id', $ids)->delete();
+        } else {
+            VideoComment::query()->whereIn('id', $ids)->update(['is_check' => 1]);
+        }
+
+        return $this->success();
     }
 
     public function destroy(Request $request)
     {
         $ids = $request->input('ids');
 
-        VideoComment::destroy($ids);
+        if (!$ids || !is_array($ids)) {
+            return $this->error(__('参数错误'));
+        }
 
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_VOD_VIDEO_COMMENT,
             AdministratorLog::OPT_DESTROY,
             compact('ids')
         );
+
+        VideoComment::destroy($ids);
 
         return $this->success();
     }

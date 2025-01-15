@@ -18,7 +18,11 @@ interface LocalSearchParamsInterface {
   size?: number;
 }
 
-export const UploadImagesComp = () => {
+interface PropsInterface {
+  refresh: boolean;
+}
+
+export const UploadImagesComp = (props: PropsInterface) => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
@@ -34,6 +38,13 @@ export const UploadImagesComp = () => {
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
+
+  useEffect(() => {
+    resetLocalSearchParams({
+      page: 1,
+    });
+    getData();
+  }, [props.refresh]);
 
   const getData = () => {
     if (loading) {

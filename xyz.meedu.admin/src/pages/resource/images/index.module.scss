@@ -78,3 +78,41 @@
     }
   }
 }
+
+.category-box {
+  width: 176px;
+  float: left;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #d8d8d8;
+  border-radius: 3px;
+  .category-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 15px;
+    color: #333333;
+  }
+  .category-act-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 15px;
+    background-color: rgba(60, 167, 250, 0.1);
+    color: #333333;
+  }
+}

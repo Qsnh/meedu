@@ -71,6 +71,7 @@ const CourseUpdatePage = () => {
       original_desc: data.original_desc,
       charge: data.charge,
       published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
+      is_allow_comment: data.is_allow_comment,
     });
     setIsFree(data.is_free);
     setDefautValue(data.original_desc);
@@ -156,6 +157,14 @@ const CourseUpdatePage = () => {
     } else {
       form.setFieldsValue({ is_free: 0 });
       setIsFree(0);
+    }
+  };
+
+  const isAllowCommentChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_allow_comment: 1 });
+    } else {
+      form.setFieldsValue({ is_allow_comment: 0 });
     }
   };
 
@@ -317,6 +326,13 @@ const CourseUpdatePage = () => {
                 <HelperText text="关闭后此课程在前台隐藏显示"></HelperText>
               </div>
             </Space>
+          </Form.Item>
+          <Form.Item
+            label="允许评论"
+            name="is_allow_comment"
+            valuePropName="checked"
+          >
+            <Switch onChange={isAllowCommentChange} />
           </Form.Item>
           <Form.Item
             label="简短介绍"

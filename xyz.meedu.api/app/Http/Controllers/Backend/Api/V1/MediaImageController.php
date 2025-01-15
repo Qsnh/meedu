@@ -55,7 +55,7 @@ class MediaImageController extends BaseController
     {
         ['file' => $file, 'scene' => $scene] = $request->filldata();
 
-        if (!in_array($scene, UploadBus::SCENE_LIST)) {
+        if ($scene && !in_array($scene, UploadBus::SCENE_LIST)) {
             return $this->error(__('参数 $scene 的可选值有 :scene', ['scene' => implode(',', UploadBus::SCENE_LIST)]));
         }
 

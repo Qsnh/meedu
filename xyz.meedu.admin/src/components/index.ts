@@ -27,3 +27,4 @@ export * from "./pc-link";
 export * from "./h5-link";
 export * from "./upload-video-item";
 export * from "./user-single-add";
+export * from "./tree-category";

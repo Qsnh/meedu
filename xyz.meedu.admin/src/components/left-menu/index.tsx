@@ -54,7 +54,7 @@ const items = [
         null,
         null,
         null,
-        "dashboard"
+        "media.image.index"
       ),
       getItem(
         "视频库",

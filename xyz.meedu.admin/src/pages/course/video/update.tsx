@@ -87,6 +87,7 @@ const CourseVideoUpdatePage = () => {
       url: data.url,
       tencent_video_id: data.tencent_video_id,
       published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
+      is_allow_comment: data.is_allow_comment,
     });
     setDuration(data.duration);
     setFreeSeconds(data.free_seconds);
@@ -178,6 +179,14 @@ const CourseVideoUpdatePage = () => {
       form.setFieldsValue({ is_show: 1 });
     } else {
       form.setFieldsValue({ is_show: 0 });
+    }
+  };
+
+  const isAllowCommentChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_allow_comment: 1 });
+    } else {
+      form.setFieldsValue({ is_allow_comment: 0 });
     }
   };
 
@@ -337,6 +346,14 @@ const CourseVideoUpdatePage = () => {
                   <HelperText text="打开后课时在前台将隐藏显示"></HelperText>
                 </div>
               </Space>
+            </Form.Item>
+
+            <Form.Item
+              label="允许评论"
+              name="is_allow_comment"
+              valuePropName="checked"
+            >
+              <Switch onChange={isAllowCommentChange} />
             </Form.Item>
 
             <Form.Item label="阿里云视频文件ID" name="aliyun_video_id">

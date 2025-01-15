@@ -45,6 +45,9 @@ class OtherService implements OtherServiceInterface
             if (isset($data['is_hidden']) && $mediaVideo['is_hidden'] !== $data['is_hidden']) {
                 $updateData['is_hidden'] = $data['is_hidden'];
             }
+            if (isset($data['category_id']) && $mediaVideo['category_id'] !== $data['category_id']) {
+                $updateData['category_id'] = $data['category_id'];
+            }
 
             $updateData && $this->otherDao->updateMediaVideo($mediaVideo['id'], $updateData);
         } else {

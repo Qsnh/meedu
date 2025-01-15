@@ -41,7 +41,7 @@ class UploadBus
             throw new \Exception('参数 $dirPrefix 必须指定值');
         }
 
-        if (!in_array($scene, self::SCENE_LIST)) {
+        if ($scene && !in_array($scene, self::SCENE_LIST)) {
             throw new \Exception(__('参数 $scene 的可选值有 :scene', ['scene' => implode(',', self::SCENE_LIST)]));
         }
 
