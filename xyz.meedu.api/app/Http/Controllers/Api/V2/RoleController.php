@@ -41,10 +41,9 @@ class RoleController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/roles VIP会员列表
+     * @api {get} /api/v2/roles [V2]VIP会员-列表
      * @apiGroup VIP
      * @apiName Roles
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据
@@ -62,10 +61,9 @@ class RoleController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/role/{id} VIP会员详情
+     * @api {get} /api/v2/role/{id} [V2]VIP会员-详情
      * @apiGroup VIP
      * @apiName RoleDetail
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据

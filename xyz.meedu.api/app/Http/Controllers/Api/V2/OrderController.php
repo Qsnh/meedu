@@ -14,12 +14,10 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 class OrderController extends BaseController
 {
 
-
     /**
-     * @api {get} /api/v2/order/status 订单状态查询
-     * @apiGroup 订单
+     * @api {get} /api/v2/order/status [V2]订单-状态查询
+     * @apiGroup 订单支付模块
      * @apiName OrderStatusQuery
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} order_id 订单编号

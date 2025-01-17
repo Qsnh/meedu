@@ -26,14 +26,13 @@ class MemberController extends BaseController
 {
 
     /**
-     * @api {get} /api/v3/member/courses 已购录播课
-     * @apiGroup 用户-V3
+     * @api {get} /api/v3/member/courses [V3]学员-录播课-已购-列表
+     * @apiGroup 学员
      * @apiName MemberCoursesV3
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} size size
+     * @apiParam {Number} page 页码
+     * @apiParam {Number} size 每页数量
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -117,14 +116,13 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v3/member/courses/learned 已学习录播课
-     * @apiGroup 用户-V3
+     * @api {get} /api/v3/member/courses/learned [V3]学员-录播课-已学-列表
+     * @apiGroup 学员
      * @apiName MemberCoursesLearnedV3
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} size size
+     * @apiParam {Number} page 页码
+     * @apiParam {Number} size 每页数量
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -205,14 +203,13 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v3/member/courses/like 收藏课程
-     * @apiGroup 用户-V3
+     * @api {get} /api/v3/member/courses/like [V3]学员-录播课-收藏-列表
+     * @apiGroup 学员
      * @apiName  MemberCoursesLike
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
-     * @apiParam {Number} page page
-     * @apiParam {Number} size size
+     * @apiParam {Number} page 页码
+     * @apiParam {Number} size 每页数量
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -290,10 +287,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {POST} /api/v3/member/destroy 注销账户
-     * @apiGroup 用户-V3
+     * @api {POST} /api/v3/member/destroy [V3]学员-账号注销
+     * @apiGroup 学员
      * @apiName  MemberDestroy
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription v4.8新增
      *
@@ -311,10 +307,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {POST} /api/v3/member/socialite/bindWithCode 社交账号绑定
-     * @apiGroup 用户-V3
+     * @api {POST} /api/v3/member/socialite/bindWithCode [V3]第三方账号-code绑定
+     * @apiGroup 用户认证
      * @apiName  MemberSocialiteBindWithCode
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription v4.8新增
      *
@@ -356,10 +351,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {POST} /api/v3/member/tencent/faceVerify 微信实人认证
-     * @apiGroup 用户-V3
+     * @api {POST} /api/v3/member/tencent/faceVerify [V3]学员-实人认证
+     * @apiGroup 用户认证
      * @apiName  MemberTencentFaceVerify
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription v4.9新增
      *
@@ -406,10 +400,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {GET} /api/v3/member/tencent/faceVerify 微信实人认证结果查询
-     * @apiGroup 用户-V3
+     * @api {GET} /api/v3/member/tencent/faceVerify [V3]学员-实人认证-结果查询
+     * @apiGroup 用户认证
      * @apiName  MemberTencentFaceVerifyQuery
-     * @apiVersion v3.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription v4.9新增
      *
@@ -482,6 +475,22 @@ class MemberController extends BaseController
         ]);
     }
 
+    /**
+     * @api {GET} /api/v3/member/tencent/faceVerify [V3]学员-课程-学习明细
+     * @apiGroup 学员
+     * @apiName  MemberLearnedCourseDetail
+     * @apiHeader Authorization Bearer+空格+token
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object[]} data 数据
+     * @apiSuccess {Number} data.id 课时ID
+     * @apiSuccess {String} data.title 课时标题
+     * @apiSuccess {String} data.published_at 课时发布时间
+     * @apiSuccess {Number} data.duration 课时总时长,单位:秒
+     * @apiSuccess {Number} data.watch_seconds 已学习时长
+     * @apiSuccess {String} data.watched_at 课时看完结束时间
+     * @apiSuccess {String} data.created_at 课时开始学习时间
+     */
     public function learnedCourseDetail(
         Request                $request,
         UserServiceInterface   $userService,

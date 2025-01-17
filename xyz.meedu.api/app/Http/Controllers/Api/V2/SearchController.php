@@ -17,10 +17,9 @@ class SearchController extends BaseController
 {
 
     /**
-     * @api {get} /api/v2/search 录播课程搜索
-     * @apiGroup 搜索
+     * @api {get} /api/v2/search [V2]录播课-标题搜索
+     * @apiGroup 录播课模块
      * @apiName SearchV2
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} keywords 搜索关键字
      * @apiParam {Number} size 每页数量

@@ -53,10 +53,9 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/login/password 密码登录
-     * @apiGroup Auth
+     * @api {post} /api/v2/login/password [V2]登录-密码登录
+     * @apiGroup 用户认证
      * @apiName LoginPassword
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} password 密码
@@ -86,10 +85,9 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/login/mobile 短信登录
-     * @apiGroup Auth
+     * @api {post} /api/v2/login/mobile [V2]登录-短信登录
+     * @apiGroup 用户认证
      * @apiName LoginMobile
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码
@@ -139,11 +137,10 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/login/socialite/{app} 社交APP登录[重定向]
-     * @apiGroup Auth
+     * @api {get} /api/v2/login/socialite/qq [V2]登录-QQ登录
+     * @apiGroup 用户认证
      * @apiName LoginSocialites
-     * @apiVersion v2.0.0
-     * @apiDescription app可选值:[qq]. 登录成功之后会在success_redirect中携带token返回
+     * @apiDescription 登录成功之后会在success_redirect中携带token返回
      *
      * @apiParam {String} success_redirect 成功之后的跳转URL(需要urlEncode)
      * @apiParam {String} failed_redirect 失败之后跳转的URL(需要urlEncode)
@@ -210,10 +207,9 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/logout 安全退出
-     * @apiGroup Auth
+     * @api {post} /api/v2/logout [V2]安全退出
+     * @apiGroup 用户认证
      * @apiName LoginLogout
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      */

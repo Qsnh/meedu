@@ -20,10 +20,9 @@ use App\Services\Base\Interfaces\ConfigServiceInterface;
 class OtherController extends BaseController
 {
     /**
-     * @api {get} /api/v2/other/config 系统配置
-     * @apiGroup 其它
+     * @api {get} /api/v2/other/config [V2]应用配置
+     * @apiGroup 系统模块
      * @apiName OtherSystemConfig
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据

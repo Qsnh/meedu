@@ -16,8 +16,8 @@ class PasswordController extends BaseController
 {
 
     /**
-     * @api {post} /api/v2/password/reset 重置密码
-     * @apiGroup Auth
+     * @api {post} /api/v2/password/reset [V2]密码重置
+     * @apiGroup 用户认证
      * @apiName PasswordReset
      * @apiVersion v2.0.0
      *

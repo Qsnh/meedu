@@ -14,10 +14,9 @@ class LinkController extends BaseController
 {
 
     /**
-     * @api {get} /api/v2/links 友情链接
-     * @apiGroup 其它
+     * @api {get} /api/v2/links [V2]友情链接
+     * @apiGroup 其它模块
      * @apiName OtherLinks
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据

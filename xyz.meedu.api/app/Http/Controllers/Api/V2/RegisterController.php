@@ -16,10 +16,9 @@ class RegisterController extends BaseController
 {
 
     /**
-     * @api {post} /api/v2/register/sms 短信注册
-     * @apiGroup Auth
+     * @api {post} /api/v2/register/sms [V2]注册-短信
+     * @apiGroup 用户认证
      * @apiName RegisterSMS
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} mobile_code 短信验证码

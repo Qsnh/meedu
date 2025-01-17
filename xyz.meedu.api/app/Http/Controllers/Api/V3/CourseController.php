@@ -16,10 +16,9 @@ class CourseController extends BaseController
 {
 
     /**
-     * @api {GET} /api/v3/course/{courseId}/attach/{id} 获取课程附件下载地址
-     * @apiGroup Course-V3
+     * @api {GET} /api/v3/course/{courseId}/attach/{id} [V3]录播课-附件-获取下载地址
+     * @apiGroup 录播课模块
      * @apiName  GetCourseAttachDownloadUrl
-     * @apiVersion v3.0.0
      * @apiDescription v4.9.11新增
      *
      * @apiSuccess {Number} code 0成功,非0失败

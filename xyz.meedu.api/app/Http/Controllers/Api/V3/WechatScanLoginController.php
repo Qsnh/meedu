@@ -52,6 +52,19 @@ class WechatScanLoginController extends BaseController
         return view('wechat_scan_login.index', compact('appName', 'loginUrl'));
     }
 
+    /**
+     * @api {post} /api/v3/auth/login/wechat-scan/url [V3]获取微信扫码[登录|绑定]的URL
+     * @apiGroup 用户认证
+     * @apiName WechatScanUrlV3
+     *
+     * @apiParam {String=bind:绑定,login:登录} action 搜索关键字
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {String} data.url URL值
+     * @apiSuccess {String} data.key 随机码(用于查询登录结果)
+     * @apiSuccess {Number} data.expire 到期的时间戳(到期需要重新获取URL)
+     */
     public function getLoginUrl(Request $request, WechatScanBusV2 $bus)
     {
         $action = $request->get('action');
@@ -62,6 +75,17 @@ class WechatScanLoginController extends BaseController
         return $this->data($bus->getLoginUrl($action));
     }
 
+    /**
+     * @api {get} /api/v3/auth/login/wechat-scan/query [V3]微信扫码[登录|绑定]结果查询
+     * @apiGroup 用户认证
+     * @apiName WechatScanQueryV3
+     *
+     * @apiParam {String} key 随机码
+     *
+     * @apiSuccess {Number} code 0成功,非0失败
+     * @apiSuccess {Object} data
+     * @apiSuccess {Object} data.code 登录码
+     */
     public function query(Request $request, WechatScanBusV2 $bus)
     {
         $key = $request->input('key');

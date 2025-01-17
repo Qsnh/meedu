@@ -15,10 +15,9 @@ class AnnouncementController extends BaseController
 {
 
     /**
-     * @api {get} /api/v2/announcement/latest 最新公告
-     * @apiGroup 其它
+     * @api {get} /api/v2/announcement/latest [V2]公告-最新一条
+     * @apiGroup 其它模块
      * @apiName AnnouncementLatest
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -34,10 +33,9 @@ class AnnouncementController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/announcement/{id} 公告详情
-     * @apiGroup 其它
+     * @api {get} /api/v2/announcement/{id} [V2]公告-详情
+     * @apiGroup 其它模块
      * @apiName AnnouncementDetail
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -53,10 +51,9 @@ class AnnouncementController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/announcements 公告列表
-     * @apiGroup 其它
+     * @api {get} /api/v2/announcements [V2]公告-列表
+     * @apiGroup 其它模块
      * @apiName Announcements
-     * @apiVersion v2.0.0
      *
      * @apiParam {Number=1} [page] page
      * @apiParam {Number=10} [size] size

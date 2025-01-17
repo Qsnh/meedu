@@ -80,10 +80,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/videos 录播视频列表
-     * @apiGroup 录播课
+     * @api {get} /api/v2/videos [V2]录播课-课时-列表
+     * @apiGroup 录播课模块
      * @apiName Videos
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -117,10 +116,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2//video/{id} 录播视频详情
-     * @apiGroup 录播课
+     * @api {get} /api/v2//video/{id} [V2]录播课-课时-详情
+     * @apiGroup 录播课模块
      * @apiName VideoDetail
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data
@@ -243,10 +241,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/video/{id}/comment 录播视频评论
-     * @apiGroup 录播课
+     * @api {post} /api/v2/video/{id}/comment [V2]录播课-课时-评论-提交
+     * @apiGroup 录播课模块
      * @apiName VideoCommentAction
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
@@ -272,10 +269,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/video/{video_id}/comments 录播视频评论列表
-     * @apiGroup 录播课
+     * @api {get} /api/v2/video/{video_id}/comments [V2]录播课-课时-评论-列表
+     * @apiGroup 录播课模块
      * @apiName VideoComments
-     * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] 页码
      * @apiParam {Number} [page_size] 每页条数
@@ -316,10 +312,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/video/{id}/playinfo 录播视频播放地址
-     * @apiGroup 录播课
+     * @api {get} /api/v2/video/{id}/playinfo [V2]录播课-课时-播放地址
+     * @apiGroup 录播课模块
      * @apiName VideoPlay
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -364,10 +359,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/video/{id}/record 视频观看时长记录
-     * @apiGroup 录播课
+     * @api {post} /api/v2/video/{id}/record [V2]录播课-课时-学习进度记录
+     * @apiGroup 录播课模块
      * @apiName VideoRecordAction
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} duration 已观看时长,单位：秒
@@ -389,10 +383,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/video/open/play 公共视频播放
-     * @apiGroup 录播课
+     * @api {get} /api/v2/video/open/play [V2]公共视频-播放地址
+     * @apiGroup 其它模块
      * @apiName VideoOpenPlay
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} file_id 视频文件ID
      * @apiParam {String} service 视频文件存储服务

@@ -79,10 +79,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/detail 用户详情
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/detail [V2]学员-详情
+     * @apiGroup 用户认证
      * @apiName MemberDetail
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -146,10 +145,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/password 修改密码
-     * @apiGroup 用户
+     * @api {post} /api/v2/member/detail/password [V2]学员-密码-更改
+     * @apiGroup 学员
      * @apiName MemberPasswordChange
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
@@ -173,8 +171,8 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/mobile 手机号绑定
-     * @apiGroup 用户
+     * @api {post} /api/v2/member/detail/mobile [V2]学员-手机号-绑定
+     * @apiGroup 学员
      * @apiName MemberMobileBind
      * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
@@ -200,10 +198,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {put} /api/v2/member/mobile 手机号更换
-     * @apiGroup 用户
+     * @api {put} /api/v2/member/mobile [V2]学员-手机号-换绑
+     * @apiGroup 学员
      * @apiName MemberMobileChange
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
@@ -229,10 +226,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/nickname 修改昵称
-     * @apiGroup 用户
+     * @api {post} /api/v2/member/detail/nickname [V2]学员-昵称-更改
+     * @apiGroup 学员
      * @apiName MemberNicknameChange
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} nick_name 新昵称
@@ -248,10 +244,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/detail/avatar 修改头像
-     * @apiGroup 用户
+     * @api {post} /api/v2/member/detail/avatar [V2]学员-头像-更改
+     * @apiGroup 学员
      * @apiName MemberAvatarChange
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {File} file 头像文件
@@ -268,10 +263,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/roles VIP订购记录
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/roles [V2]学员-VIP-订购记录-列表
+     * @apiGroup 学员
      * @apiName MemberRoles
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -302,10 +296,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/messages 站内消息
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/messages [V2]学员-站内消息-列表
+     * @apiGroup 学员
      * @apiName MemberMessages
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -336,10 +329,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/courses 已购录播课程
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/courses [V2]学员-录播课-已购-列表
+     * @apiGroup 学员
      * @apiName MemberCoursesV2
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -387,10 +379,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/courses/like 已收藏录播课程
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/courses/like [V2]学员-录播课-收藏-列表
+     * @apiGroup 学员
      * @apiName MemberCoursesLikeV2
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -438,11 +429,11 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/courses/history 已学习录播课程
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/courses/history [V2]学员-录播课-学习-列表
+     * @apiGroup 学员
      * @apiName MemberCoursesHistory
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
+     * @apiDescription 只要学习超过10s的都会返回，不管课程是否收费
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] size
@@ -488,33 +479,6 @@ class MemberController extends BaseController
         ]);
     }
 
-    /**
-     * @api {get} /api/v2/member/videos 已购视频
-     * @apiGroup 用户
-     * @apiName MemberVideos
-     * @apiVersion v2.0.0
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 视频ID
-     * @apiSuccess {String} data.data.title 视频名
-     * @apiSuccess {Number} data.data.charge 视频价格
-     * @apiSuccess {Number} data.data.view_num 观看数[已废弃]
-     * @apiSuccess {String} data.data.short_description 简短介绍
-     * @apiSuccess {String} data.data.render_desc 详细介绍[已废弃]
-     * @apiSuccess {String} data.data.published_at 上架时间
-     * @apiSuccess {Number} data.data.duration 时长[单位：秒]
-     * @apiSuccess {String} data.data.seo_keywords SEO关键字
-     * @apiSuccess {String} data.data.seo_description SEO描述
-     * @apiSuccess {Number} data.data.is_ban_sell 禁止出售[1:是,0否]
-     * @apiSuccess {Number} data.data.chapter_id 章节ID
-     */
     public function videos(Request $request)
     {
         $page = $request->input('page', 1);
@@ -538,10 +502,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/orders 订单列表
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/orders [V2]学员-订单-列表
+     * @apiGroup 学员
      * @apiName MemberOrders
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -591,10 +554,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} 消息标记已读
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/notificationMarkAsRead/{notificationId} [V2]学员-站内消息-标记已读-单条
+     * @apiGroup 学员
      * @apiName MemberMessageMarkReadAction
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -608,10 +570,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/unreadNotificationCount 未读消息数量
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/unreadNotificationCount [V2]学员-站内消息-未读数量
+     * @apiGroup 学员
      * @apiName MemberUnreadMessageCount
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -624,10 +585,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/notificationMarkAllAsRead 消息全部标记已读
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/notificationMarkAllAsRead [V2]学员-站内消息-标记已读-全部
+     * @apiGroup 学员
      * @apiName MemberMarkAllMessages
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiSuccess {Number} code 0成功,非0失败
@@ -641,10 +601,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/credit1Records 积分明细
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/credit1Records [V2]学员-积分明细-列表
+     * @apiGroup 学员
      * @apiName MemberCredit1Records
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {Number} [page] page
@@ -680,10 +639,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/member/verify 2FA校验
-     * @apiGroup 用户
+     * @api {post} /api/v2/member/verify [V3]学员-2FA校验
+     * @apiGroup 用户认证
      * @apiName MemberVerify
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} mobile 手机号
@@ -705,10 +663,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {delete} /api/v2/member/socialite/{app} 社交登录解绑
-     * @apiGroup 用户
+     * @api {delete} /api/v2/member/socialite/{app} [V2]第三方账号-解绑
+     * @apiGroup 用户认证
      * @apiName MemberSocialiteUnbind
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      * @apiDescription app={qq:QQ登录,wechat:微信}
      *
@@ -764,11 +721,9 @@ class MemberController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/member/socialite/{app} 社交账号绑定[302重定向]
-     * @apiGroup 用户
+     * @api {get} /api/v2/member/socialite/qq [V2]第三方账号-QQ账号-绑定
+     * @apiGroup 用户认证
      * @apiName MemberSocialiteBind
-     * @apiVersion v2.0.0
-     * @apiDescription app={qq:QQ登录}
      *
      * @apiParam {String} token 登录token
      * @apiParam {String} redirect_url 绑定成功之后的跳转地址，需要urlEncode

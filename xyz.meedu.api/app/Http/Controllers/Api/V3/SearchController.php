@@ -18,10 +18,9 @@ class SearchController extends BaseController
 {
 
     /**
-     * @api {get} /api/v3/search 全站搜索
-     * @apiGroup 搜索-V3
+     * @api {get} /api/v3/search [V3]全站搜索
+     * @apiGroup 其它模块
      * @apiName SearchV3
-     * @apiVersion v3.0.0
      *
      * @apiParam {String} keywords 搜索关键字
      * @apiParam {String=vod:录播课,video:录播视频,live:直播课,book:电子书,topic:图文,paper:试卷,practice:练习,mock_paper:模拟卷} type 课程类型

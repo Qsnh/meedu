@@ -28,22 +28,6 @@ class PromoCodeController extends BaseController
         $this->businessState = $businessState;
     }
 
-    /**
-     * @api {get} /api/v2/promoCode/{code} 优惠码详情
-     * @apiGroup 订单
-     * @apiName PromoCodeDetail
-     * @apiVersion v2.0.0
-     *
-     * @apiParam {String} code 优惠码/邀请码
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {Number} data.id
-     * @apiSuccess {String} data.code 优惠码/邀请码
-     * @apiSuccess {String} data.expired_at 过期时间
-     * @apiSuccess {Number} data.invited_user_reward 被邀请用户奖励
-     * @apiSuccess {Number} data.invite_user_reward 邀请用户奖励
-     */
     public function detail($code)
     {
         $code = $this->promoCodeService->findCode($code);
@@ -52,10 +36,9 @@ class PromoCodeController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/promoCode/{code}/check 优惠码检测
-     * @apiGroup 订单
+     * @api {get} /api/v2/promoCode/{code}/check [V2]优惠码-检测
+     * @apiGroup 订单支付模块
      * @apiName PromoCodeCheck
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} code 优惠码/邀请码
      *

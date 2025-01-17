@@ -37,10 +37,9 @@ class CaptchaController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/captcha/image 图形验证码
-     * @apiGroup 其它
+     * @api {get} /api/v2/captcha/image [V2]图形验证码
+     * @apiGroup 系统模块
      * @apiName CaptchaImage
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
@@ -56,10 +55,9 @@ class CaptchaController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/captcha/sms 发送短信
-     * @apiGroup 其它
+     * @api {post} /api/v2/captcha/sms [V2]短信发送
+     * @apiGroup 系统模块
      * @apiName CaptchaSMS
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} mobile 手机号
      * @apiParam {String} image_captcha 图形验证码

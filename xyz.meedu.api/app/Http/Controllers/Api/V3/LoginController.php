@@ -27,10 +27,9 @@ class LoginController extends BaseController
 {
 
     /**
-     * @api {GET} /api/v3/auth/login/wechat/oauth 微信公众号授权登录
-     * @apiGroup Auth-V3
+     * @api {get} /api/v3/auth/login/wechat/oauth [V3]第三方账号-微信登录|绑定
+     * @apiGroup 用户认证
      * @apiName  AuthLoginWechatOauth
-     * @apiVersion v3.0.0
      * @apiDescription v4.8新增
      *
      * @apiParam {String} s_url 登录成功跳转地址
@@ -108,10 +107,9 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {GET} /api/v3/auth/login/socialite/{app} 社交账号登录
-     * @apiGroup Auth-V3
+     * @api {get} /api/v3/auth/login/socialite/qq [V3]第三方账号-QQ登录|绑定
+     * @apiGroup 用户认证
      * @apiName  AuthLoginSocialite
-     * @apiVersion v3.0.0
      * @apiDescription v4.8新增
      *
      * @apiParam {String} s_url 登录成功跳转地址
@@ -201,10 +199,9 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {POST} /api/v3/auth/login/code 三方账号登录
-     * @apiGroup Auth-V3
+     * @api {post} /api/v3/auth/login/code [V3]第三方账号-code登录
+     * @apiGroup 用户认证
      * @apiName  AuthLoginWithCode
-     * @apiVersion v3.0.0
      * @apiDescription v4.8新增
      *
      * @apiParam {String} code 社交的登录返回的code
@@ -276,11 +273,10 @@ class LoginController extends BaseController
     }
 
     /**
-     * @api {POST} /api/v3/auth/register/withSocialite 社交账号注册[绑定手机号]
-     * @apiGroup Auth-V3
+     * @api {POST} /api/v3/auth/register/withSocialite [V3]第三方账号-手机号绑定
+     * @apiGroup 用户认证
      * @apiName  AuthRegisterWithCode
-     * @apiVersion v3.0.0
-     * @apiDescription v4.8新增
+     * @apiDescription v4.8新增 => 用于开启手机号强制绑定下的三方账号第一次登录
      *
      * @apiParam {String} code 社交的登录返回的code
      * @apiParam {String} mobile 手机号

@@ -16,10 +16,9 @@ use App\Meedu\Cache\Impl\SliderCache;
 class SliderController extends BaseController
 {
     /**
-     * @api {get} /api/v2/sliders 幻灯片
-     * @apiGroup 其它
+     * @api {get} /api/v2/sliders [V2]幻灯片
+     * @apiGroup 其它模块
      * @apiName OtherSliders
-     * @apiVersion v2.0.0
      *
      * @apiParam {String="PC"} [platform] 平台
      *

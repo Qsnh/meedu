@@ -44,8 +44,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::post('/destroy', 'MemberController@destroy');
         // 社交登录绑定
         Route::post('/socialite/bindWithCode', 'MemberController@socialiteBindByCode');
-        // 微信账号扫码绑定
-        Route::get('/wechatScanBind', 'MemberController@wechatScanBind');
 
         // 微信实人认证结果查询
         Route::get('/tencent/faceVerify', 'MemberController@queryTencentFaceVerify');

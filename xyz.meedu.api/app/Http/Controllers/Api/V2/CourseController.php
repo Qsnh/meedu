@@ -60,7 +60,8 @@ class CourseController extends BaseController
         VideoServiceInterface         $videoService,
         OrderServiceInterface         $orderService,
         BusinessState                 $businessState
-    ) {
+    )
+    {
         $this->courseService = $courseService;
         $this->configService = $configService;
         $this->courseCommentService = $courseCommentService;
@@ -71,10 +72,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/courses 录播课程列表
-     * @apiGroup 录播课
+     * @api {get} /api/v2/courses [V2]录播课-列表
+     * @apiGroup 录播课模块
      * @apiName Courses
-     * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] page_size
@@ -129,10 +129,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/course/{id} 录播课程详情
-     * @apiGroup 录播课
+     * @api {get} /api/v2/course/{id} [V2]录播课-详情
+     * @apiGroup 录播课模块
      * @apiName CourseDetail
-     * @apiVersion v2.0.0
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据
@@ -243,10 +242,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {post} /api/v2/course/{course_id}/comment 录播课程评论[提交]
-     * @apiGroup 录播课
+     * @api {post} /api/v2/course/{courseId}/comment [V2]录播课-评论-提交
+     * @apiGroup 录播课模块
      * @apiName CourseCommentAction
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
@@ -272,10 +270,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/course/{course_id}/comments 录播课程评论列表
-     * @apiGroup 录播课
+     * @api {get} /api/v2/course/{courseId}/comments [V2]录播课-评论-列表
+     * @apiGroup 录播课模块
      * @apiName CourseComments
-     * @apiVersion v2.0.0
      *
      * @apiParam {Number} [page] 页码
      * @apiParam {Number} [page_size] 每页条数
@@ -316,10 +313,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/course/{course_id}/like 收藏课程
-     * @apiGroup 录播课
+     * @api {get} /api/v2/course/{courseId}/like [V2]录播课-收藏
+     * @apiGroup 录播课模块
      * @apiName CourseLikeAction
-     * @apiVersion v2.0.0
      * @apiHeader Authorization Bearer+空格+token
      *
      * @apiParam {String} content 评论内容
@@ -335,10 +331,9 @@ class CourseController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/course/attach/{attach_id}/download 附件下载
-     * @apiGroup 录播课
+     * @api {get} /api/v2/course/attach/{attach_id}/download [V2]录播课-附件-下载
+     * @apiGroup 录播课模块
      * @apiName CourseAttachDownload
-     * @apiVersion v2.0.0
      *
      * @apiParam {String} token 登录token
      *
