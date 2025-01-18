@@ -37,6 +37,8 @@ RUN composer install --optimize-autoloader --no-dev
 # laravel框架的一些操作
 RUN php artisan route:cache && php artisan storage:link && php artisan install:lock
 
+RUN rm -rf /var/www/api/storage/logs/laravel.log
+
 EXPOSE 8000
 EXPOSE 8100
 EXPOSE 8200
