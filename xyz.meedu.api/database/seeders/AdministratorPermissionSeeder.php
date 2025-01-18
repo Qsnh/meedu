@@ -852,7 +852,7 @@ class AdministratorPermissionSeeder extends Seeder
                     ],
                     [
                         'display_name' => '素材库-视频-上传',
-                        'slug' => 'video.upload.aliyun.token',
+                        'slug' => 'media.video.upload',
                         'method' => 'POST',
                         'url' => '(^video\/token\/aliyun\/refresh$|^video\/token\/aliyun\/create$|^video\/token\/tencent$|^media\/videos\/record-category-id$)',
                     ],
