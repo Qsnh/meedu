@@ -143,7 +143,7 @@ const CourseAttachCreatePage = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="排序"
+            label="附件"
             name="file"
             rules={[{ required: true, message: "填上传附件!" }]}
           >
