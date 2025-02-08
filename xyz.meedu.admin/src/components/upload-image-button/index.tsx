@@ -115,7 +115,7 @@ export const UploadImageButton = (props: PropsInterface) => {
         text={props.text ? props.text : "上传图片"}
         class=""
         icon={null}
-        p="media.image.store"
+        p="media.image.index"
         onClick={() => setShowModal(true)}
         disabled={null}
       />
