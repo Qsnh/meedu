@@ -148,19 +148,6 @@ class HelperTest extends TestCase
         $this->assertEquals('https://meedu.vip?name=meedu&params1=1&params2=2', url_append_query($url1, $data));
     }
 
-    public function test_wechat_qrcode_image()
-    {
-        config([
-            'meedu.mp_wechat.app_id' => env('WECHAT_MP_APP_ID', ''),
-            'meedu.mp_wechat.app_secret' => env('WECHAT_MP_APP_SECRET', ''),
-            'meedu.mp_wechat.token' => env('WECHAT_MP_TOKEN', ''),
-        ]);
-
-        $code = 'hello,meedu';
-        wechat_qrcode_image($code);
-        $this->assertTrue(true);
-    }
-
     public function test_id_mask()
     {
         $this->assertEquals('', id_mask(''));

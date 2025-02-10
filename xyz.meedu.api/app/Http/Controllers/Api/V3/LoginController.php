@@ -13,6 +13,7 @@ use App\Meedu\Wechat;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
+use App\Meedu\Tencent\WechatMp;
 use App\Meedu\Utils\AppRedirect;
 use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
@@ -39,7 +40,7 @@ class LoginController extends BaseController
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object} data 数据
      */
-    public function wechatOauthLogin(SocialiteLoginRequest $request)
+    public function wechatOauthLogin(SocialiteLoginRequest $request, WechatMp $wechatMp)
     {
         $sUrl = $request->input('s_url');//登录成功之后跳转的地址
         $fUrl = $request->input('f_url');//登录失败跳转的地址-失败的话会在fUrl中携带msg参数
@@ -50,13 +51,14 @@ class LoginController extends BaseController
             ['s_url' => $sUrl, 'f_url' => $fUrl, 'action' => $action]
         );
 
-        return Wechat::getInstance()->oauth->redirect($appRedirect->getRedirectUrl());
+        return redirect($wechatMp->getUserInfoAuthUrl($appRedirect->getRedirectUrl()));
     }
 
-    public function wechatOauthCallback(Request $request)
+    public function wechatOauthCallback(Request $request, WechatMp $wechatMp)
     {
+        $code = $request->input('code');
         $data = $request->input('data');
-        if (!$data) {
+        if (!$code || !$data) {
             return $this->error(__('参数错误'));
         }
 
@@ -75,12 +77,8 @@ class LoginController extends BaseController
             $fUrl = $data['f_url'] ?: $baseUrl;
             $action = $data['action'] ?? '';
 
-            $appUser = Wechat::getInstance()->oauth->user();
-            if (!$appUser) {
-                throw new ServiceException(__('系统错误'));
-            }
-
-            $appUserData = $appUser->getOriginal();
+            $mpAccessToken = $wechatMp->getAccessToken($code);
+            $appUserData = $wechatMp->getUserInfo($mpAccessToken['access_token'], $mpAccessToken['openid']);
 
             // 写入缓存
             $code = Str::random(32);
@@ -90,11 +88,11 @@ class LoginController extends BaseController
                     'type' => 'socialite',
                     'app' => FrontendConstant::WECHAT_LOGIN_SIGN,
                     'data' => [
-                        'openid' => $appUser->getId(),
+                        'openid' => $appUserData['openid'],
                         'unionid' => $appUserData['unionid'] ?? '',
-                        'nickname' => $appUser->getName() ?: $appUser->getNickname(),
-                        'avatar' => $appUser->getAvatar(),
-                        'original' => $appUser->toArray(),
+                        'nickname' => $appUserData['nickname'],
+                        'avatar' => $appUserData['headimgurl'],
+                        'original' => $appUserData,
                     ],
                 ]),
                 CacheConstant::USER_SOCIALITE_LOGIN['expire']

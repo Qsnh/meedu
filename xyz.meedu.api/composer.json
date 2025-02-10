@@ -28,7 +28,6 @@
         "mews/captcha": "^3.0",
         "mews/purifier": "^3.0",
         "nelexa/zip": "^3.3",
-        "overtrue/wechat": "~4.0",
         "pion/laravel-chunk-upload": "^1.5",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",

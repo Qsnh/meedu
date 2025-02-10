@@ -47,10 +47,6 @@ const SystemMpWechatConfigPage = () => {
             form.setFieldsValue({
               "meedu.mp_wechat.token": configData[index].value,
             });
-          } else if (configData[index].key === "meedu.mp_wechat.aes_key") {
-            form.setFieldsValue({
-              "meedu.mp_wechat.aes_key": configData[index].value,
-            });
           } else if (
             configData[index].key === "meedu.mp_wechat.enabled_oauth_login"
           ) {
@@ -60,10 +56,10 @@ const SystemMpWechatConfigPage = () => {
               ),
             });
           } else if (
-            configData[index].key === "meedu.mp_wechat.enabled_share"
+            configData[index].key === "meedu.mp_wechat.share.enabled"
           ) {
             form.setFieldsValue({
-              "meedu.mp_wechat.enabled_share": Number(configData[index].value),
+              "meedu.mp_wechat.share.enabled": Number(configData[index].value),
             });
           } else if (configData[index].key === "meedu.mp_wechat.share.title") {
             form.setFieldsValue({
@@ -130,9 +126,9 @@ const SystemMpWechatConfigPage = () => {
 
   const wechatShareChange = (checked: boolean) => {
     if (checked) {
-      form.setFieldsValue({ "meedu.mp_wechat.enabled_share": 1 });
+      form.setFieldsValue({ "meedu.mp_wechat.share.enabled": 1 });
     } else {
-      form.setFieldsValue({ "meedu.mp_wechat.enabled_share": 0 });
+      form.setFieldsValue({ "meedu.mp_wechat.share.enabled": 0 });
     }
   };
 
@@ -174,9 +170,6 @@ const SystemMpWechatConfigPage = () => {
             <Form.Item label="Token" name="meedu.mp_wechat.token">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
-            <Form.Item label="AesKey" name="meedu.mp_wechat.aes_key">
-              <Input style={{ width: 300 }} allowClear />
-            </Form.Item>
             <div className="from-title mt-30">登录配置</div>
             <Form.Item
               label="启用微信登录"
@@ -188,7 +181,7 @@ const SystemMpWechatConfigPage = () => {
             <div className="from-title mt-30">手机端分享</div>
             <Form.Item
               label="启用微信分享"
-              name="meedu.mp_wechat.enabled_share"
+              name="meedu.mp_wechat.share.enabled"
               valuePropName="checked"
             >
               <Switch onChange={wechatShareChange} />

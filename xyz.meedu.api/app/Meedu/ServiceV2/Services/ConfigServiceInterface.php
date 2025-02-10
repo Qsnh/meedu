@@ -75,4 +75,6 @@ interface ConfigServiceInterface
     public function getAlipayConfig(): array;
 
     public function getMemberDefaultAvatar(): string;
+
+    public function getWechatMpConfig(): array;
 }

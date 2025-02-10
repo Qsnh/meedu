@@ -9,12 +9,14 @@ import { IndexImageGroup } from "./compenents/image-group";
 import { IndexGzhV1 } from "./compenents/gzh-v1";
 import { IndexVodV1 } from "./compenents/vod-v1";
 import { SearchBox, TechSupport } from "../../components";
+import wechatShare from "../../js/wechat-share";
 
 const IndexPage = () => {
   const [loading, setLoading] = useState(true);
   const [blocks, setBlocks] = useState<BlocksInterface[]>([]);
   const systemConfig = useSelector((state: any) => state.systemConfig.value);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const user = useSelector((state: any) => state.loginUser.value);
 
   useEffect(() => {
     document.title = systemConfig.name || "首页";
@@ -23,7 +25,9 @@ const IndexPage = () => {
   useEffect(() => {
     setLoading(true);
     getData();
-  }, []);
+    // 微信H5分享
+    wechatShare.methods.wechatH5Share(null, null, null, isLogin ? user.id : 0);
+  }, [isLogin, user]);
 
   const getData = () => {
     viewBlock

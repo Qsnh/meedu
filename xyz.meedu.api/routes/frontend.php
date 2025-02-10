@@ -8,7 +8,7 @@
 
 Route::group(['namespace' => 'Wechat', 'prefix' => '/wechat'], function () {
     // 微信公众号回调
-    Route::any('/serve', 'MpWechatController@serve');
+    Route::any('/serve', 'ServerController@index');
     // 微信支付回调
     Route::any('/refund/notify', 'RefundController@notify')->name('wechat.pay.refund.notify');
 });

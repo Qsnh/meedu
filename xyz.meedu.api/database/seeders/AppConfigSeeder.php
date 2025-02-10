@@ -819,15 +819,6 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '微信公众号',
-                'name' => 'AesKey',
-                'field_type' => 'text',
-                'sort' => 3,
-                'key' => 'meedu.mp_wechat.aes_key',
-                'value' => '',
-                'is_private' => 1,
-            ],
-            [
-                'group' => '微信公众号',
                 'name' => '启动微信登录',
                 'field_type' => 'switch',
                 'sort' => 6,
@@ -839,7 +830,7 @@ class AppConfigSeeder extends Seeder
                 'name' => '启用微信分享',
                 'field_type' => 'switch',
                 'sort' => 8,
-                'key' => 'meedu.mp_wechat.enabled_share',
+                'key' => 'meedu.mp_wechat.share.enabled',
                 'value' => 0,
             ],
             [

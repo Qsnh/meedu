@@ -10,6 +10,7 @@ import { DurationText, None } from "../../components";
 import AttachBox from "./compenents/attach-box";
 import backIcon from "../../assets/img/icon-back.png";
 import playIcon from "../../assets/img/play.gif";
+import wechatShare from "../../js/wechat-share";
 
 declare const window: any;
 
@@ -75,7 +76,7 @@ const CoursePlayPage = () => {
     setLoading(true);
     getVideo();
     getVideoComments();
-  }, [params.videoId]);
+  }, [params.videoId, isLogin, user]);
 
   useEffect(() => {
     myRef.current = playDuration;
@@ -145,6 +146,13 @@ const CoursePlayPage = () => {
         //获取附件
         getAttach(res.data.course.id);
         setLoading(false);
+        // 微信H5分享
+        wechatShare.methods.wechatH5Share(
+          res.data.course.title,
+          res.data.course.short_description,
+          res.data.course.thumb,
+          isLogin ? user.id : 0
+        );
       })
       .catch((e) => {
         setLoading(false);

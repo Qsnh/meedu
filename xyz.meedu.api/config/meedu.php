@@ -193,17 +193,12 @@ return [
         'app_id' => '',
         'app_secret' => '',
         'token' => '',
-        'aes_key' => '',
         // 开启授权登录
         'enabled_oauth_login' => 0,
-        // 开启PC扫码登录
-        'enabled_scan_login' => 0,
-        // 扫码登录后的提示语
-        'scan_login_alert' => '',
-        // 开启微信浏览器的分享
-        'enabled_share' => 0,
         // 微信H5分享自定义内容
         'share' => [
+            // 是否开启
+            'enabled' => 0,
             // 分享标题
             'title' => '',
             // 分享描述

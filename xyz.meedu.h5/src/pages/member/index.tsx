@@ -12,6 +12,7 @@ import mesIcon from "../../assets/img/new/message.png";
 import orderIcon from "../../assets/img/new/order.png";
 import vipIcon from "../../assets/img/new/VIP.png";
 import bannerIcon from "../../assets/img/new/banner.png";
+import wechatShare from "../../js/wechat-share";
 
 const MemberPage = () => {
   const navigate = useNavigate();
@@ -31,7 +32,9 @@ const MemberPage = () => {
     if (isLogin) {
       getUnread();
     }
-  }, [isLogin]);
+    // 微信H5分享
+    wechatShare.methods.wechatH5Share(null, null, null, isLogin ? user.id : 0);
+  }, [isLogin, user]);
 
   const getUnread = () => {
     member.UnReadNum().then((res: any) => {
