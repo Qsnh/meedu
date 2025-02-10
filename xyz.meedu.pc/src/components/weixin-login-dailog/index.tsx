@@ -60,7 +60,7 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
       setExpired(false);
       setQrode(res.data.url);
       setKey(res.data.key);
-      countdown(res.data.expire - 290);
+      countdown(res.data.expire);
       timer = setInterval(() => checkWechatLogin(res.data.key), 1000);
       setLoading(false);
     });
@@ -89,6 +89,11 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
                 bindMobile();
               }
             }
+          })
+          .catch((e) => {
+            timer && clearInterval(timer);
+            countTimer && clearInterval(countTimer);
+            setExpired(true);
           });
       }
     });

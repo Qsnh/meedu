@@ -253,5 +253,10 @@ class ConfigService implements ConfigServiceInterface
         return url(config('meedu.member.default_avatar'));
     }
 
+    public function getWechatMpConfig(): array
+    {
+        return config('meedu.mp_wechat');
+    }
+
 
 }

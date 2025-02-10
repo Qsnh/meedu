@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import styles from "./detail.module.scss";
 import { useParams } from "react-router-dom";
 import { course } from "../../api";
+import { useSelector } from "react-redux";
 import NavHeader from "../../components/nav-header";
 import TabsComponent from "./compenents/tabs";
+import wechatShare from "../../js/wechat-share";
 
 interface CourseResponseInterface {
   attach: any[];
@@ -19,15 +21,24 @@ interface CourseResponseInterface {
 const CourseDetailPage = () => {
   const params = useParams();
   const [resDATA, setResDATA] = useState<CourseResponseInterface | null>(null);
+  const user = useSelector((state: any) => state.loginUser.value.user);
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
     getDetail();
-  }, [params.courseId]);
+  }, [params.courseId, isLogin, user]);
 
   const getDetail = () => {
     course.Detail(Number(params.courseId)).then((res: any) => {
       setResDATA(res.data);
       document.title = res.data.course.title;
+      // 微信H5分享
+      wechatShare.methods.wechatH5Share(
+        res.data.title,
+        res.data.short_description,
+        res.data.thumb,
+        isLogin ? user.id : 0
+      );
     });
   };
 

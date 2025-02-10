@@ -428,7 +428,7 @@ class CourseController extends BaseController
         } else {
             $videos = $videos->groupBy('chapter_id')->toArray();
             foreach ($chapters as $chapter) {
-                $list = $videos[$chapter['id']];
+                $list = $videos[$chapter['id']] ?? [];
                 if (!$list) {
                     continue;
                 }

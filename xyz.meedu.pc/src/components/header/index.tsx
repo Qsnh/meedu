@@ -45,31 +45,7 @@ export const Header = () => {
   const [hasMessage, setHasMessage] = useState<boolean>(false);
   const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [current, setCurrent] = useState(pathname);
-
-  useEffect(() => {
-    if (pathname.indexOf("/courses/") !== -1) {
-      setCurrent("/courses");
-    } else if (pathname.indexOf("/live/") !== -1) {
-      setCurrent("/live");
-    } else if (pathname.indexOf("/topic/") !== -1) {
-      setCurrent("/topic");
-    } else if (pathname.indexOf("/book/") !== -1) {
-      setCurrent("/book");
-    } else if (pathname.indexOf("/learnPath/") !== -1) {
-      setCurrent("/learnPath");
-    } else if (pathname.indexOf("/wenda/") !== -1) {
-      setCurrent("/wenda");
-    } else if (pathname.indexOf("/exam/papers/") !== -1) {
-      setCurrent("/exam/papers");
-    } else if (pathname.indexOf("/exam/mockpaper/") !== -1) {
-      setCurrent("/exam/mockpaper");
-    } else if (pathname.indexOf("/exam/practice/") !== -1) {
-      setCurrent("/exam/practice");
-    } else {
-      setCurrent(pathname);
-    }
-  }, [pathname]);
+  const [current, setCurrent] = useState(`menu-0`);
 
   useEffect(() => {
     if (isLogin && freshUnread) {
@@ -79,30 +55,32 @@ export const Header = () => {
 
   useEffect(() => {
     const arr: any = [];
-    navs.map((item: any) => {
+    navs.map((item: any, index: number) => {
       if (
         item.url !== "/" &&
         pathname !== "/" &&
         pathname.indexOf(item.url) !== -1
       ) {
-        setCurrent(item.url);
+        setCurrent(`menu-${index}`);
       }
 
       if (item.children.length > 0) {
         arr.push({
           label: (
-            <span onClick={() => onMenuClick(item.url, item.blank)}>
+            <span onClick={() => onMenuClick(item.url, index, item.blank)}>
               {item.name}
             </span>
           ),
-          key: item.url,
+          key: `menu-${index}`,
           blank: item.blank,
+          url: item.url,
           children: checkArr(item.children),
         });
       } else {
         arr.push({
           label: item.name,
-          key: item.url,
+          key: `menu-${index}`,
+          url: item.url,
           blank: item.blank,
         });
       }
@@ -113,10 +91,11 @@ export const Header = () => {
 
   const checkArr = (children: any) => {
     const arr: any = [];
-    children.map((item: any) => {
+    children.map((item: any, index: number) => {
       arr.push({
         label: item.name,
-        key: item.url,
+        key: `child-${index}`,
+        url: item.url,
         blank: item.blank,
       });
     });
@@ -212,19 +191,19 @@ export const Header = () => {
 
   const checkNav: MenuProps["onClick"] = (e: any) => {
     let blank = e.item.props.blank;
-    if (e.key.match("https:") || e.key.match("http:")) {
+    if (e.item.props.url.match("https:") || e.item.props.url.match("http:")) {
       if (blank === 0) {
-        window.location.href = e.key;
+        window.location.href = e.item.props.url;
       } else {
-        window.open(e.key);
+        window.open(e.item.props.url);
       }
       return;
     }
     setCurrent(e.key);
-    navigate(e.key);
+    navigate(e.item.props.url);
   };
 
-  const onMenuClick = (e: any, blank: number) => {
+  const onMenuClick = (e: any, index: number, blank: number) => {
     if (e.match("https:") || e.match("http:")) {
       if (blank === 0) {
         window.location.href = e;
@@ -233,7 +212,7 @@ export const Header = () => {
       }
       return;
     }
-    setCurrent(e);
+    setCurrent(`menu-${index}`);
     navigate(e);
   };
 

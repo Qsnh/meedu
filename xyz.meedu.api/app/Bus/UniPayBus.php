@@ -8,10 +8,10 @@
 
 namespace App\Bus;
 
-use App\Meedu\Wechat;
 use Yansongda\Pay\Pay;
 use Illuminate\Support\Str;
 use App\Constant\BusConstant;
+use App\Meedu\Tencent\WechatMp;
 use Illuminate\Support\Facades\Cache;
 use App\Meedu\ServiceV2\Services\OrderServiceInterface;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
@@ -59,9 +59,14 @@ class UniPayBus
         if ($openid) {
             return $openid;
         }
-        if (request()->has('meedu_scene') && request()->input('meedu_scene') === 'callback') {
-            $user = Wechat::getInstance()->oauth->user();
-            $openid = $user->getId();
+        if (request()->has('meedu_scene') && 'callback' === request()->input('meedu_scene')) {
+            /**
+             * @var WechatMp $wechatMp
+             */
+            $wechatMp = app()->make(WechatMp::class);
+            $mpAccessToken = $wechatMp->getAccessToken(request()->input('code'));
+            $openid = $mpAccessToken['openid'];
+            // 缓存-避免重复的授权登录
             session(['wechat_jsapi_openid' => $openid]);
             return $openid;
         }
@@ -70,8 +75,12 @@ class UniPayBus
 
     public function redirectWechatOAuth(string $url)
     {
+        /**
+         * @var WechatMp $wechatMp
+         */
+        $wechatMp = app()->make(WechatMp::class);
         $redirect = url_append_query($url, ['meedu_scene' => 'callback']);
-        return Wechat::getInstance()->oauth->redirect($redirect);
+        return redirect($wechatMp->getBaseAuthUrl($redirect));
     }
 
     public function createWechatH5OrderWithCache(string $outTradeNo, string $totalFee, string $body): string

@@ -59,12 +59,19 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
   const checkWechatBind = (value: any) => {
     user.checkWechatLogin({ key: value }).then((res: any) => {
       if (res.data.code && res.data.code !== "0") {
-        login.codeBind({ code: res.data.code }).then((res: any) => {
-          message.success("绑定成功");
-          timer && clearInterval(timer);
-          countTimer && clearInterval(countTimer);
-          success();
-        });
+        login
+          .codeBind({ code: res.data.code })
+          .then((res: any) => {
+            message.success("绑定成功");
+            timer && clearInterval(timer);
+            countTimer && clearInterval(countTimer);
+            success();
+          })
+          .catch((e) => {
+            timer && clearInterval(timer);
+            countTimer && clearInterval(countTimer);
+            setExpired(true);
+          });
       }
     });
   };
