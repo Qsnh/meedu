@@ -20,20 +20,8 @@ export function addonsList() {
   return client.get(`/backend/api/v1/addons`, {});
 }
 
-export function repository(params: any) {
-  return client.get(`/backend/api/v1/addons/repository`, params);
-}
-
 export function switchAction(params: any) {
   return client.post(`/backend/api/v1/addons/switch`, params);
-}
-
-export function upgrade(params: any) {
-  return client.get(`/backend/api/v1/addons/repository/upgrade`, params);
-}
-
-export function install(params: any) {
-  return client.get(`/backend/api/v1/addons/repository/install`, params);
 }
 
 export function adminLog(params: any) {

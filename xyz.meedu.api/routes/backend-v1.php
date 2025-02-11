@@ -296,11 +296,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 插件
     Route::group(['prefix' => 'addons'], function () {
-        Route::get('/repository', 'AddonsController@repository');
-        Route::get('/repository/user', 'AddonsController@user');
-        Route::get('/repository/buy', 'AddonsController@buyAddons');
-        Route::get('/repository/install', 'AddonsController@installAddons');
-        Route::get('/repository/upgrade', 'AddonsController@upgradeAddons');
         Route::post('/switch', 'AddonsController@switchHandler');
     });
 

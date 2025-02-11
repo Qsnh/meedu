@@ -24,6 +24,9 @@ class UpgradeV4917
             ->whereIn('key', [
                 'meedu.mp_wechat.aes_key',
                 'meedu.mp_wechat.enabled_share',
+                'meedu.meeducloud.domain',
+                'meedu.meeducloud.user_id',
+                'meedu.meeducloud.password',
             ])
             ->delete();
     }

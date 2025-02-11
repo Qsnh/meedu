@@ -90,12 +90,6 @@ const SystemConfigPage = () => {
       sign: "",
     },
     {
-      name: "插件配置",
-      value: "插件配置",
-      images: importIcon,
-      sign: "",
-    },
-    {
       name: "实名认证",
       value: "微信实名认证",
       images: roleIcon,

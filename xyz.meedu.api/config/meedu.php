@@ -181,13 +181,6 @@ return [
         'close_deprecated_api' => env('CLOSE_DEPRECATED_API', false),
     ],
 
-    // MeEduCloud
-    'meeducloud' => [
-        'domain' => env('MEEDUCLOUD_DOMAIN', 'https://meedu.vip'),
-        'user_id' => env('MEEDUCLOUD_USER_ID'),
-        'password' => env('MEEDUCLOUD_PASSWORD'),
-    ],
-
     // 微信公众号配置
     'mp_wechat' => [
         'app_id' => '',

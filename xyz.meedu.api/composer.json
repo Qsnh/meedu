@@ -27,7 +27,6 @@
         "meilisearch/meilisearch-php": "^0.19.0",
         "mews/captcha": "^3.0",
         "mews/purifier": "^3.0",
-        "nelexa/zip": "^3.3",
         "pion/laravel-chunk-upload": "^1.5",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0",

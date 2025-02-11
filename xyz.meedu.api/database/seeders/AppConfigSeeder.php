@@ -708,36 +708,6 @@ class AppConfigSeeder extends Seeder
                 'help' => '注意，支付订单的积分奖励与上面不同，它是根据订单金额*百分比奖励的，所以这里应该填写百分比。举个例子：订单支付金额100元，这里填写0.1，则用户奖励10积分。',
             ],
 
-            // 插件配置
-            [
-                'group' => '插件配置',
-                'name' => '服务地址',
-                'field_type' => 'text',
-                'sort' => 0,
-                'default_value' => '',
-                'key' => 'meedu.meeducloud.domain',
-                'value' => '',
-            ],
-            [
-                'group' => '插件配置',
-                'name' => 'UserID',
-                'field_type' => 'text',
-                'sort' => 1,
-                'default_value' => '',
-                'key' => 'meedu.meeducloud.user_id',
-                'value' => '',
-            ],
-            [
-                'group' => '插件配置',
-                'name' => '密码',
-                'field_type' => 'text',
-                'sort' => 2,
-                'default_value' => '',
-                'key' => 'meedu.meeducloud.password',
-                'value' => '',
-                'is_private' => 1,
-            ],
-
             // 播放器配置
             [
                 'group' => '播放器配置',
