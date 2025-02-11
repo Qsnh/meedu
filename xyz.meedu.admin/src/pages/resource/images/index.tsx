@@ -240,7 +240,13 @@ const ResourceImagesPage = () => {
               ))}
             </div>
           </Col>
-          <Col span={21}>
+          <Col
+            span={21}
+            style={{
+              paddingLeft: 24,
+              boxSizing: "border-box",
+            }}
+          >
             {loading && (
               <div className="float-left d-j-flex mt-24">
                 <Spin size="large" />

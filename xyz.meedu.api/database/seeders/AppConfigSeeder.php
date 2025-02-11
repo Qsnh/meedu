@@ -179,7 +179,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 AccessKeyId',
+                'name' => 'AccessKeyId',
                 'field_type' => 'text',
                 'sort' => 1,
                 'default_value' => '',
@@ -188,7 +188,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 AccessKeySecret',
+                'name' => 'AccessKeySecret',
                 'field_type' => 'text',
                 'sort' => 2,
                 'default_value' => '',
@@ -198,7 +198,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 短信签名',
+                'name' => '短信签名',
                 'field_type' => 'text',
                 'sort' => 3,
                 'default_value' => '',
@@ -207,7 +207,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 密码重置模板ID',
+                'name' => '密码重置模板ID',
                 'field_type' => 'text',
                 'sort' => 4,
                 'default_value' => '',
@@ -216,7 +216,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 注册模板ID',
+                'name' => '注册模板ID',
                 'field_type' => 'text',
                 'sort' => 5,
                 'default_value' => '',
@@ -225,7 +225,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 手机号绑定模板ID',
+                'name' => '手机号绑定模板ID',
                 'field_type' => 'text',
                 'sort' => 6,
                 'default_value' => '',
@@ -234,7 +234,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '阿里云 手机号登录模板ID',
+                'name' => '手机号登录模板ID',
                 'field_type' => 'text',
                 'sort' => 7,
                 'default_value' => '',
@@ -245,7 +245,7 @@ class AppConfigSeeder extends Seeder
             // 腾讯云短信配置
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 SdkAppId',
+                'name' => 'SdkAppId',
                 'field_type' => 'text',
                 'sort' => 20,
                 'default_value' => '',
@@ -254,7 +254,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 Region',
+                'name' => 'Region',
                 'field_type' => 'text',
                 'sort' => 21,
                 'default_value' => '',
@@ -263,7 +263,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 SecretId',
+                'name' => 'SecretId',
                 'field_type' => 'text',
                 'sort' => 22,
                 'default_value' => '',
@@ -272,7 +272,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 SecretKey',
+                'name' => 'SecretKey',
                 'field_type' => 'text',
                 'sort' => 23,
                 'default_value' => '',
@@ -282,7 +282,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 SignName',
+                'name' => 'SignName',
                 'field_type' => 'text',
                 'sort' => 23,
                 'default_value' => '',
@@ -291,16 +291,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云短信 SecretId',
-                'field_type' => 'text',
-                'sort' => 22,
-                'default_value' => '',
-                'key' => 'sms.gateways.tencent.secret_id',
-                'value' => '',
-            ],
-            [
-                'group' => '短信',
-                'name' => '腾讯云 密码重置模板ID',
+                'name' => '密码重置模板ID',
                 'field_type' => 'text',
                 'sort' => 23,
                 'default_value' => '',
@@ -309,7 +300,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云 注册模板ID',
+                'name' => '注册模板ID',
                 'field_type' => 'text',
                 'sort' => 24,
                 'default_value' => '',
@@ -318,7 +309,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云 手机号绑定模板ID',
+                'name' => '手机号绑定模板ID',
                 'field_type' => 'text',
                 'sort' => 25,
                 'default_value' => '',
@@ -327,7 +318,7 @@ class AppConfigSeeder extends Seeder
             ],
             [
                 'group' => '短信',
-                'name' => '腾讯云 手机号登录模板ID',
+                'name' => '手机号登录模板ID',
                 'field_type' => 'text',
                 'sort' => 26,
                 'default_value' => '',
