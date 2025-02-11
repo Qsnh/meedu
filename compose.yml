@@ -20,7 +20,7 @@ volumes:
 
 services:
   meedu:
-    image: registry.cn-hangzhou.aliyuncs.com/meedu/light:4.9.16
+    image: registry.cn-hangzhou.aliyuncs.com/meedu/light:4.9.17
     restart: always
     environment:
       - DB_HOST=${DB_HOST}
