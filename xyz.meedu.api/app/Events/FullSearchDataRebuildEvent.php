@@ -11,19 +11,11 @@ namespace App\Events;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class VodCourseCreatedEvent
+class FullSearchDataRebuildEvent
 {
     use Dispatchable, SerializesModels;
 
-    public $id;
-
-    /**
-     * @param $courseId
-     *
-     * @codeCoverageIgnore
-     */
-    public function __construct($courseId)
+    public function __construct()
     {
-        $this->id = $courseId;
     }
 }

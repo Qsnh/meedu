@@ -8,23 +8,25 @@
 
 namespace App\Listeners\VodVideoCreatedEvent;
 
+use Carbon\Carbon;
+use App\Constant\BusConstant;
 use App\Events\VodVideoCreatedEvent;
-use App\Meedu\Search\VideoSearchNotify;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Meedu\ServiceV2\Services\CourseServiceInterface;
+use App\Meedu\ServiceV2\Services\FullSearchServiceInterface;
 
 class SearchRecordNotify implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $fullSearchService;
+    private $courseService;
+
+    public function __construct(FullSearchServiceInterface $fullSearchService, CourseServiceInterface $courseService)
     {
-        //
+        $this->fullSearchService = $fullSearchService;
+        $this->courseService = $courseService;
     }
 
     /**
@@ -35,6 +37,21 @@ class SearchRecordNotify implements ShouldQueue
      */
     public function handle(VodVideoCreatedEvent $event)
     {
-        app()->make(VideoSearchNotify::class)->create($event->id, $event->data);
+        $video = $this->courseService->findVideo($event->id);
+        if (!$video) {
+            return;
+        }
+
+        if (Carbon::parse($video['published_at'])->isPast() && 1 === $video['is_show']) {
+            $this->fullSearchService->storeOrUpdate(
+                BusConstant::FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE_VIDEO,
+                $video['id'],
+                $video['title'],
+                '',
+                0,
+                '',
+                ''
+            );
+        }
     }
 }

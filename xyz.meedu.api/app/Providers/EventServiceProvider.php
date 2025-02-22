@@ -154,5 +154,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TencentVodCallbackTranscodeCompleteEvent' => [],
         // 腾讯云视频回调事件之任务流状态变更
         'App\Events\TencentVodCallbackProcedureStateChangedEvent' => [],
+        // 全文搜索数据重建
+        'App\Events\FullSearchDataRebuildEvent' => [
+            'App\Listeners\FullSearchDataRebuildEvent\VodRebuildListener',
+            'App\Listeners\FullSearchDataRebuildEvent\VodVideoRebuildListener',
+        ],
+        // 全文搜索之自动上架课程的索引建立
+        'App\Events\PublishedCoursesSearchIndexBuildEvent' => [
+            'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseListener',
+            'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseVideoListener',
+        ]
     ];
 }

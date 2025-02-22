@@ -16,6 +16,7 @@ use App\Constant\HookConstant;
 use App\Models\AdministratorLog;
 use Illuminate\Support\Facades\DB;
 use App\Events\VodVideoCreatedEvent;
+use App\Events\VodVideoUpdatedEvent;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Events\VodVideoDestroyedEvent;
@@ -100,7 +101,7 @@ class CourseVideoController extends BaseController
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_STORE_SUCCESS, $video->toArray());
 
-        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+        event(new VodVideoCreatedEvent($video['id']));
 
         return $this->success();
     }
@@ -153,7 +154,7 @@ class CourseVideoController extends BaseController
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_VIDEO_CONTROLLER_UPDATE_SUCCESS, $video->toArray());
 
-        event(new VodVideoCreatedEvent($video['id'], $video['title'], $video['charge'], '', '', ''));
+        event(new VodVideoUpdatedEvent($video['id']));
 
         return $this->success();
     }

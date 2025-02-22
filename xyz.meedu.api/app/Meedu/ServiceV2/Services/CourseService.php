@@ -56,5 +56,39 @@ class CourseService implements CourseServiceInterface
         return $this->courseDao->findOrFail($id);
     }
 
+    public function find(int $id): array
+    {
+        return $this->courseDao->find($id);
+    }
 
+
+    public function videoPaginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array
+    {
+        return $this->courseDao->videoPaginate($page, $size, $fields, $orderBy, $params, $with, $withCount);
+    }
+
+    public function paginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array
+    {
+        return $this->courseDao->paginate($page, $size, $fields, $orderBy, $params, $with, $withCount);
+    }
+
+    public function findVideo($id): array
+    {
+        return $this->courseDao->findVideo($id);
+    }
+
+    public function getCourseVideos($id, array $fields): array
+    {
+        return $this->courseDao->getVideosByCourseId($id, $fields);
+    }
+
+    public function getPublishedUnIndexedCourses(array $fields): array
+    {
+        return $this->courseDao->getPublishedUnIndexedCourses($fields);
+    }
+
+    public function getPublishedUnIndexedVideos(array $fields): array
+    {
+        return $this->courseDao->getPublishedUnIndexedVideos($fields);
+    }
 }

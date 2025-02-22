@@ -15,14 +15,12 @@ use App\Services\Other\Services\LinkService;
 use App\Services\Other\Services\SliderService;
 use App\Services\Other\Services\ViewBlockService;
 use App\Services\Other\Services\AnnouncementService;
-use App\Services\Other\Services\SearchRecordService;
 use App\Services\Other\Interfaces\NavServiceInterface;
 use App\Services\Other\Interfaces\SmsServiceInterface;
 use App\Services\Other\Interfaces\LinkServiceInterface;
 use App\Services\Other\Interfaces\SliderServiceInterface;
 use App\Services\Other\Interfaces\ViewBlockServiceInterface;
 use App\Services\Other\Interfaces\AnnouncementServiceInterface;
-use App\Services\Other\Interfaces\SearchRecordServiceInterface;
 
 class OtherServiceRegisterProvider extends ServiceProvider
 {
@@ -34,6 +32,5 @@ class OtherServiceRegisterProvider extends ServiceProvider
         $this->app->instance(SmsServiceInterface::class, $this->app->make(SmsService::class));
         $this->app->instance(SliderServiceInterface::class, $this->app->make(SliderService::class));
         $this->app->instance(ViewBlockServiceInterface::class, $this->app->make(ViewBlockService::class));
-        $this->app->instance(SearchRecordServiceInterface::class, $this->app->make(SearchRecordService::class));
     }
 }

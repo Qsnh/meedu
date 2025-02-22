@@ -21,11 +21,13 @@ use App\Meedu\ServiceV2\Services\OtherService;
 use App\Meedu\ServiceV2\Dao\CourseDaoInterface;
 use App\Meedu\ServiceV2\Services\ConfigService;
 use App\Meedu\ServiceV2\Services\CourseService;
+use App\Meedu\ServiceV2\Services\FullSearchService;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 use App\Meedu\ServiceV2\Services\OrderServiceInterface;
 use App\Meedu\ServiceV2\Services\OtherServiceInterface;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
+use App\Meedu\ServiceV2\Services\FullSearchServiceInterface;
 
 class ServiceInit
 {
@@ -42,6 +44,7 @@ class ServiceInit
         UserServiceInterface::class => UserService::class,
         CourseServiceInterface::class => CourseService::class,
         OrderServiceInterface::class => OrderService::class,
+        FullSearchServiceInterface::class => FullSearchService::class,
     ];
 
     public function run()

@@ -77,4 +77,6 @@ interface ConfigServiceInterface
     public function getMemberDefaultAvatar(): string;
 
     public function getWechatMpConfig(): array;
+
+    public function enabledFullSearch(): bool;
 }

@@ -28,4 +28,7 @@ class BusConstant
     public const PAYMENT_ALIPAY = 'alipay';
     public const PAYMENT_WECHAT = 'wechat';
     public const PAYMENT_HAND_PAY = 'handPay';
+
+    public const FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE = 'vod';
+    public const FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE_VIDEO = 'video';
 }

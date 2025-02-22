@@ -8,23 +8,21 @@
 
 namespace App\Listeners\VodCourseDestroyedEvent;
 
-use App\Meedu\Search\VodSearchNotify;
+use App\Constant\BusConstant;
 use App\Events\VodCourseDestroyedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Meedu\ServiceV2\Services\FullSearchServiceInterface;
 
 class SearchRecordNotify implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $fullSearchService;
+
+    public function __construct(FullSearchServiceInterface $fullSearchService)
     {
-        //
+        $this->fullSearchService = $fullSearchService;
     }
 
     /**
@@ -35,6 +33,6 @@ class SearchRecordNotify implements ShouldQueue
      */
     public function handle(VodCourseDestroyedEvent $event)
     {
-        app()->make(VodSearchNotify::class)->delete($event->id);
+        $this->fullSearchService->delete(BusConstant::FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE, $event->id);
     }
 }

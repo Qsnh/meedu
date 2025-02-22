@@ -112,14 +112,7 @@ class CourseController extends BaseController
 
         $course->fill($data)->save();
 
-        event(new VodCourseCreatedEvent(
-            $course['id'],
-            $course['title'],
-            $course['charge'],
-            $course['thumb'],
-            $course['short_description'],
-            $course['original_desc']
-        ));
+        event(new VodCourseCreatedEvent($course['id']));
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_STORE_SUCCESS, $course->toArray());
 
@@ -166,14 +159,7 @@ class CourseController extends BaseController
 
         $course->fill($data)->save();
 
-        event(new VodCourseUpdatedEvent(
-            $course['id'],
-            $course['title'],
-            $course['charge'],
-            $course['thumb'],
-            $course['short_description'],
-            $course['original_desc']
-        ));
+        event(new VodCourseUpdatedEvent($course['id']));
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS, $course->toArray());
 

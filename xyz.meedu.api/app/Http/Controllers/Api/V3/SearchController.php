@@ -11,8 +11,7 @@ namespace App\Http\Controllers\Api\V3;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Services\Course\Services\CourseService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
-use App\Services\Other\Interfaces\SearchRecordServiceInterface;
+use App\Meedu\ServiceV2\Services\FullSearchServiceInterface;
 
 class SearchController extends BaseController
 {
@@ -39,11 +38,11 @@ class SearchController extends BaseController
      * @apiSuccess {String} data.data.thumb 封面
      * @apiSuccess {Number} data.data.charge 价格
      */
-    public function index(Request $request, ConfigServiceInterface $configService, SearchRecordServiceInterface $searchService)
+    public function index(Request $request, FullSearchServiceInterface $fullSearchService)
     {
-        $type = $request->input('type', '');
-        $page = abs((int)$request->input('page'));
-        $size = abs((int)$request->input('size', 10));
+        $type = $request->input('type');
+        $page = max(1, (int)$request->input('page'));
+        $size = min(100, max(1, (int)$request->input('size', 10)));
 
         /**
          * @var CourseService $courseService
@@ -53,11 +52,7 @@ class SearchController extends BaseController
             return $this->error(__('请输入关键字'));
         }
 
-        if (!$configService->enabledFullSearch()) {
-            return $this->error(__('搜索服务未配置'));
-        }
-
-        $data = $searchService->search($keywords, $page, $size, $type);
+        $data = $fullSearchService->search($keywords, $page, $size, $type);
 
         if ($data['data']) {
             foreach ($data['data'] as $key => $item) {

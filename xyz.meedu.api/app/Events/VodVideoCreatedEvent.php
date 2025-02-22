@@ -17,27 +17,13 @@ class VodVideoCreatedEvent
 
     public $id;
 
-    public $data = [];
-
     /**
      * @param $id
-     * @param $title
-     * @param $charge
-     * @param $thumb
-     * @param $shortDesc
-     * @param $desc
      *
      * @codeCoverageIgnore
      */
-    public function __construct($id, $title, $charge, $thumb, $shortDesc, $desc)
+    public function __construct($id)
     {
         $this->id = $id;
-        $this->data = [
-            'title' => $title,
-            'charge' => $charge,
-            'thumb' => $thumb,
-            'short_desc' => $shortDesc,
-            'desc' => $desc,
-        ];
     }
 }
