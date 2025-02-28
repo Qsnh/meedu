@@ -83,6 +83,7 @@ return [
             'bucket' => '',
             'endpoint' => '',
             'visibility' => 'public',
+            'use_path_style_endpoint' => false,
         ],
 
         // 私有文件存储
@@ -93,6 +94,7 @@ return [
             'region' => '',
             'bucket' => '',
             'endpoint' => '',
+            'use_path_style_endpoint' => false,
         ],
     ],
 

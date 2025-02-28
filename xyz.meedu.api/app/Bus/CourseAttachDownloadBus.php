@@ -9,6 +9,7 @@
 namespace App\Bus;
 
 use Illuminate\Support\Str;
+use App\Constant\SystemConstant;
 use App\Businesses\BusinessState;
 use App\Exceptions\ServiceException;
 use App\Events\CourseAttachDownloadEvent;
@@ -39,33 +40,6 @@ class CourseAttachDownloadBus
         $this->uploadBus = $uploadBus;
     }
 
-    public function generateDownloadSignature1(int $userId, int $attachId, int $courseId): string
-    {
-        if (!$this->businessState->isBuyCourse($userId, $courseId)) {
-            throw new ServiceException(__('请购买课程'));
-        }
-
-        $attach = $this->courseService->findAttachByIdAndCourseId($attachId, $courseId);
-        if (!$attach) {
-            throw new ModelNotFoundException(__('附件不存在'));
-        }
-
-        if ($this->cache->getTimes($userId) >= self::LIMIT_TIMES_PER_HOURS) {
-            throw new ThrottleRequestsException();
-        }
-
-        $this->cache->incTimes($userId);
-
-        $id = Str::random(20);
-        $this->cache->put($id, ['user_id' => $userId, 'attach_id' => $attach['id']]);
-
-        $extra = ['ip' => request()->getClientIp()];
-
-        event(new CourseAttachDownloadEvent($userId, $courseId, $attach['id'], $extra));
-
-        return $id;
-    }
-
     public function generateDownloadSignature(int $userId, int $attachId, int $courseId): string
     {
         if (!$this->businessState->isBuyCourse($userId, $courseId)) {
@@ -77,7 +51,7 @@ class CourseAttachDownloadBus
             throw new ModelNotFoundException(__('附件不存在'));
         }
 
-        if (!in_array($attach['disk'], ['attach', 's3-private'])) {
+        if (!in_array($attach['disk'], ['attach', SystemConstant::STORAGE_DISK_PRIVATE])) {
             throw new ServiceException(__('当前附件不支持下载'));
         }
 
@@ -91,7 +65,7 @@ class CourseAttachDownloadBus
 
         event(new CourseAttachDownloadEvent($userId, $courseId, $attach['id'], $extra));
 
-        if ($attach['disk'] == 'attach') {
+        if ('attach' === $attach['disk']) {
             $id = Str::random(20);
             $this->cache->put($id, ['user_id' => $userId, 'attach_id' => $attach['id']]);
 

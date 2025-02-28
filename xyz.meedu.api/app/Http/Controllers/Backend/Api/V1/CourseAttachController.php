@@ -8,9 +8,10 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use Aws\S3\S3Client;
+use App\Meedu\Factory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Constant\SystemConstant;
 use App\Models\AdministratorLog;
 use App\Constant\FrontendConstant;
 use Illuminate\Support\Facades\Cache;
@@ -18,7 +19,6 @@ use App\Services\Course\Models\Course;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Course\Models\CourseAttach;
 use App\Http\Requests\Backend\CourseAttachRequest;
-use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class CourseAttachController extends BaseController
 {
@@ -40,7 +40,7 @@ class CourseAttachController extends BaseController
         ]);
     }
 
-    public function create(Request $request, ConfigServiceInterface $configService)
+    public function create(Request $request)
     {
         $extension = strtolower($request->input('extension', ''));
         if (!$extension) {
@@ -52,22 +52,12 @@ class CourseAttachController extends BaseController
         }
         $filename = Str::random(32) . '.' . $extension;
 
-        $s3Config = $configService->getS3PrivateConfig();
-
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region' => $s3Config['region'],
-            'credentials' => [
-                'key' => $s3Config['key_id'],
-                'secret' => $s3Config['key_secret'],
-            ],
-            'endpoint' => $s3Config['endpoint']['external'],
-        ]);
-
         try {
+            ['bucket' => $bucket, 'client' => $s3Client] = Factory::s3PrivateClient();
+
             $savePath = 'course-vod/' . $filename;
             $cmd = $s3Client->getCommand('PutObject', [
-                'Bucket' => $s3Config['bucket'],
+                'Bucket' => $bucket,
                 'Key' => $savePath,
                 'ContentType' => $contentType,
             ]);
@@ -97,9 +87,9 @@ class CourseAttachController extends BaseController
         }
 
         ['savePath' => $savePath, 'extension' => $extension] = $cacheValue;
-        $disk = 's3-private';
+        $disk = SystemConstant::STORAGE_DISK_PRIVATE;
         if (!Storage::disk($disk)->exists($savePath)) {
-            return $this->error(__('未查询到上传的文件'));
+            return $this->error(__('请重新上传文件'));
         }
 
         $attach = CourseAttach::create([
@@ -109,7 +99,7 @@ class CourseAttachController extends BaseController
             'only_buyer' => 0,
             'download_times' => 0,
             'extension' => $extension,
-            'disk' => 's3-private',
+            'disk' => $disk,
             'size' => Storage::disk($disk)->size($savePath),
         ]);
 
