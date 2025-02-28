@@ -8,9 +8,10 @@
 
 namespace App\Bus;
 
-use Aws\S3\S3Client;
+use App\Meedu\Factory;
 use App\Models\MediaImage;
 use Illuminate\Support\Str;
+use App\Constant\SystemConstant;
 use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\Storage;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
@@ -55,7 +56,7 @@ class UploadBus
         $s3Config = $this->configService->getS3PublicConfig();
 
         // 存储的磁盘
-        $disk = 's3-public';
+        $disk = SystemConstant::STORAGE_DISK_PUBLIC;
         // 上传文件并返回存储路径
         $path = $file->store($dirPrefix, compact('disk'));
         // 上传文件的原始文件名
@@ -86,23 +87,29 @@ class UploadBus
 
     private function generatePublicUrl(string $path, array $config): string
     {
-        $path = '/' . $path;
+        $path = ltrim($path, '/');
 
-        // 配置了CDN服务
         if ($config['cdn']['domain']) {
-            return rtrim($config['cdn']['domain'], '/') . $path;
+            return rtrim($config['cdn']['domain'], '/') . '/' . $path;
         }
 
-        $endpoint = rtrim(strtolower($config['endpoint']['external']));
-        if (Str::startsWith($endpoint, 'http://')) {
-            $endpoint = str_replace('http://', 'http://' . $config['bucket'] . '.', $endpoint);
-        } elseif (Str::startsWith($endpoint, 'https://')) {
-            $endpoint = str_replace('https://', 'https://' . $config['bucket'] . '.', $endpoint);
+        $endpoint = rtrim(rtrim(strtolower($config['endpoint']['external'])), '/');
+
+        ['host' => $host] = parse_url($endpoint);
+
+        if ($config['use_path_style_endpoint'] || filter_var($host, FILTER_VALIDATE_IP)) {
+            $endpoint = $endpoint . '/' . $config['bucket'];
         } else {
-            $endpoint = 'https://' . $config['bucket'] . '.' . $endpoint;
+            if (Str::startsWith($endpoint, 'http://')) {
+                $endpoint = str_replace('http://', 'http://' . $config['bucket'] . '.', $endpoint);
+            } elseif (Str::startsWith($endpoint, 'https://')) {
+                $endpoint = str_replace('https://', 'https://' . $config['bucket'] . '.', $endpoint);
+            } else {
+                $endpoint = 'https://' . $config['bucket'] . '.' . $endpoint;
+            }
         }
 
-        return $endpoint . $path;
+        return $endpoint . '/' . $path;
     }
 
     public function uploadBase64Content2Private(string $username, string $userId, string $content, string $dirPrefix, string $filename, string $scene): array
@@ -115,7 +122,7 @@ class UploadBus
             throw new \Exception('参数 $dirPrefix 必须指定值');
         }
 
-        $disk = 's3-private';
+        $disk = SystemConstant::STORAGE_DISK_PRIVATE;
         $path = rtrim($dirPrefix, '/') . '/' . $filename;
         $isSuc = Storage::disk($disk)->put($path, base64_decode($content));
         if (!$isSuc) {
@@ -141,24 +148,14 @@ class UploadBus
 
     public function generatePrivateUrl(string $path): string
     {
-        $s3Config = $this->configService->getS3PrivateConfig();
-
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region' => $s3Config['region'],
-            'credentials' => [
-                'key' => $s3Config['key_id'],
-                'secret' => $s3Config['key_secret'],
-            ],
-            'endpoint' => $s3Config['endpoint']['external'],
-        ]);
+        ['client' => $s3Client, 'bucket' => $bucket] = Factory::s3PrivateClient();
 
         $cmd = $s3Client->getCommand('GetObject', [
-            'Bucket' => $s3Config['bucket'],
+            'Bucket' => $bucket,
             'Key' => $path,
         ]);
 
-        $request = $s3Client->createPresignedRequest($cmd, '+60 minutes');
+        $request = $s3Client->createPresignedRequest($cmd, '+120 minutes');
 
         return (string)$request->getUri();
     }

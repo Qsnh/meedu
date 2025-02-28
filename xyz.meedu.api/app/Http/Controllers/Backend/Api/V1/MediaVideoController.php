@@ -138,8 +138,8 @@ class MediaVideoController extends BaseController
     public function recordCategoryId(Request $request, MediaVideoCategoryBindBus $mediaVideoCategoryBindBus)
     {
         $videoId = $request->input('video_id');
-        $categoryId = (int)$request->input('category_id');
-        if (!$videoId || !$categoryId) {
+        $categoryId = max(0, (int)$request->input('category_id'));
+        if (!$videoId) {
             return $this->error(__('参数错误'));
         }
 

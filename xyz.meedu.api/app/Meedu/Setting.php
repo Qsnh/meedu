@@ -101,6 +101,9 @@ class Setting
                 config([$frameworkKey => $config[$diyKey]]);
             }
         }
+
+        config(['filesystems.disks.s3-public.use_path_style_endpoint' => config('s3.public.use_path_style_endpoint')]);
+        config(['filesystems.disks.s3-private.use_path_style_endpoint' => config('s3.private.use_path_style_endpoint')]);
     }
 
     public function syncWhitelistKeys(): array
