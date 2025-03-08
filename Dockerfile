@@ -32,12 +32,12 @@ COPY --from=node-base --chown=www-data:www-data /app/h5/dist /var/www/h5
 WORKDIR /var/www/api
 
 # 安装依赖
-RUN composer install --optimize-autoloader --no-dev
-
-# laravel框架的一些操作
-RUN php artisan route:cache && php artisan storage:link && php artisan install:lock
-
-RUN rm -rf /var/www/api/storage/logs/laravel.log
+RUN touch /var/www/api/storage/logs/laravel.log &&\
+  chown www-data:www-data /var/www/api/storage/logs/laravel.log &&\
+  composer install --optimize-autoloader --no-dev &&\
+  php artisan route:cache &&\
+  php artisan storage:link &&\
+  php artisan install:lock
 
 EXPOSE 8000
 EXPOSE 8100

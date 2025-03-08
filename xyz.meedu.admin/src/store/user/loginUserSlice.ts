@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { clearToken } from "../../utils/index";
 
 type UserStoreInterface = {
-  user: any;
+  user: MIAdministrator | null;
   isLogin: boolean;
   title: string;
 };
 
-let defaultValue: UserStoreInterface = {
+const defaultValue: UserStoreInterface = {
   user: null,
   isLogin: false,
   title: "MeEdu后台管理",

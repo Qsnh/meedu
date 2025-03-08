@@ -11,17 +11,19 @@ import {
   SystemConfigStoreInterface,
 } from "../../store/system/systemConfigSlice";
 import { setToken, getToken, clearToken, setPreToken } from "../../utils/index";
+import { PermissionUtil } from "../../utils/permissionUtil";
+import { MIAdministrator } from "../../types/permission";
 
 const LoginPage = () => {
   document.title = "登录";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [captchaVal, setCaptchaVal] = useState<string>("");
-  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [captchaVal, setCaptchaVal] = useState("");
+  const [captchaKey, setCaptchaKey] = useState("");
   const [captchaLoading, setCaptchaLoading] = useState(true);
 
   useEffect(() => {
@@ -67,24 +69,36 @@ const LoginPage = () => {
     }
     setLoading(true);
     try {
-      let res: any = await loginApi.login({
+      // 尝试登录
+      const resData: IApiResponse<{ token: string }> = (await loginApi.login({
         username: email,
         password: password,
         image_key: captchaKey,
         image_captcha: captchaVal,
-      });
-      setToken(res.data.token); //将token写入本地
-      getSystemConfig(); //获取系统配置并写入store
+      })) as IApiResponse<{ token: string }>;
+      // 登录成功=>保存token
+      setToken(resData.data.token);
+      // 登录成功后的一系列行文
+      loginSuccessHandler();
     } catch (e) {
       console.error("错误信息", e);
       setLoading(false);
-      fetchImageCaptcha(); //刷新图形验证码
+      fetchImageCaptcha();
     }
   };
 
   const getUser = async () => {
-    let res: any = await loginApi.getUser();
-    dispatch(loginAction(res.data));
+    const resData: IApiResponse<MIAdministrator> =
+      (await loginApi.getUser()) as IApiResponse<MIAdministrator>;
+
+    // 检查用户是否有任何可用权限
+    if (!PermissionUtil.hasAnyPermission(resData.data.permissions)) {
+      clearToken();
+      throw new Error("计算跳转路径为空,无法继续登录!");
+    }
+
+    dispatch(loginAction(resData.data));
+    return resData.data;
   };
 
   const getAddons = async () => {
@@ -100,37 +114,66 @@ const LoginPage = () => {
     dispatch(setEnabledAddonsAction({ addons: enabledAddons, count: count }));
   };
 
-  const getSystemConfig = async () => {
-    let res: any = await system.getSystemConfig();
-    let config: SystemConfigStoreInterface = {
-      system: {
-        logo: res.data.system.logo,
-        url: {
-          api: res.data.system.url.api,
-          h5: res.data.system.url.h5,
-          pc: res.data.system.url.pc,
+  const loginSuccessHandler = async () => {
+    try {
+      // 获取系统配置
+      const resData: IApiResponse<SystemConfigStoreInterface> =
+        (await system.getSystemConfig()) as IApiResponse<SystemConfigStoreInterface>;
+      let config: SystemConfigStoreInterface = {
+        system: {
+          logo: resData.data.system.logo,
+          url: {
+            api: resData.data.system.url.api,
+            h5: resData.data.system.url.h5,
+            pc: resData.data.system.url.pc,
+          },
         },
-      },
-      video: {
-        default_service: res.data.video.default_service,
-      },
-    };
-    dispatch(saveConfigAction(config));
-    if (
-      !res.data.system.url.api ||
-      !res.data.system.url.h5 ||
-      !res.data.system.url.pc
-    ) {
-      let token = getToken();
-      setPreToken(token);
-      clearToken();
-      navigate("/edit-config");
-      return;
-    }
-    await getUser(); //获取登录用户的信息并写入store
-    await getAddons(); //获取权限
+        video: {
+          default_service: resData.data.video.default_service,
+        },
+      };
+      dispatch(saveConfigAction(config));
 
-    navigate("/", { replace: true });
+      // 如果系统配置不完整，则跳转至编辑配置页面 => 也就是第一次使用系统
+      if (
+        !resData.data.system.url.api ||
+        !resData.data.system.url.h5 ||
+        !resData.data.system.url.pc
+      ) {
+        let token = getToken();
+        setPreToken(token);
+        clearToken();
+        navigate("/edit-config");
+        return;
+      }
+
+      // 获取系统已启用的插件模块
+      await getAddons();
+
+      // 获取当前登录管理员信息
+      const userData = await getUser();
+
+      // 根据当前管理员的权限计算登录成功后的跳转路径
+      const targetPath = PermissionUtil.getFirstAvailablePath(
+        userData.permissions
+      );
+
+      if (!targetPath) {
+        throw new Error("无法确定跳转路径");
+      }
+
+      message.success("登录成功");
+      navigate(targetPath, { replace: true });
+    } catch (error) {
+      clearToken(); // 清除token
+      setLoading(false);
+      if (error instanceof Error) {
+        message.error(error.message);
+      } else {
+        message.error("登录失败，请重试");
+      }
+      console.error("Login error:", error);
+    }
   };
 
   return (

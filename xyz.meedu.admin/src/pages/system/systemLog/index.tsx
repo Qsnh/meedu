@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Radio, Modal, message } from "antd";
 import { useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { system } from "../../../api";
 import { AdminLogComp } from "./components/admin-log";
 import { UserLoginLogComp } from "./components/user-login-log";
@@ -29,48 +29,30 @@ const SystemLogPage = () => {
   const tabActive = searchParams.get("tabActive") || "admin";
 
   const [loading, setLoading] = useState(false);
-  const [tabTypes, setTabTypes] = useState<any>([]);
+  const [tabTypes] = useState([
+    {
+      name: "管理后台日志",
+      key: "admin",
+    },
+    {
+      name: "学员登录日志",
+      key: "user-login",
+    },
+    {
+      name: "图片上传日志",
+      key: "upload-image",
+    },
+    {
+      name: "运行日志",
+      key: "runtime",
+    },
+  ]);
   const [refresh, setRefresh] = useState(false);
-  const user = useSelector((state: any) => state.loginUser.value.user);
 
   useEffect(() => {
     document.title = "系统日志";
     dispatch(titleAction("系统日志"));
   }, []);
-
-  useEffect(() => {
-    let types = [];
-
-    if (checkPermission("system.log.admin")) {
-      types.push({
-        name: "管理后台日志",
-        key: "admin",
-      });
-    }
-    if (checkPermission("system.log.userLogin")) {
-      types.push({
-        name: "学员登录日志",
-        key: "user-login",
-      });
-    }
-    if (checkPermission("system.log.uploadImages")) {
-      types.push({
-        name: "图片上传日志",
-        key: "upload-image",
-      });
-    }
-    if (checkPermission("system.log.runtime")) {
-      types.push({
-        name: "运行日志",
-        key: "runtime",
-      });
-    }
-    setTabTypes(types);
-  }, [user]);
-
-  const checkPermission = (val: string) => {
-    return typeof user.permissions[val] !== "undefined";
-  };
 
   const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
     setSearchParams(
@@ -148,19 +130,19 @@ const SystemLogPage = () => {
         </Radio.Group>
       </div>
       <div className="float-left">
-        {tabActive !== "runtime" && (
+        {tabActive !== "runtime" ? (
           <PerButton
             type="danger"
             text="清空日志"
             class="mt-30"
             icon={null}
-            p="system.log.delete"
+            p="system.audit.log.clear"
             onClick={() => {
               destorymulti();
             }}
             disabled={null}
           />
-        )}
+        ) : null}
       </div>
       <div className="float-left mt-30">
         {tabActive === "admin" && <AdminLogComp refresh={refresh} />}

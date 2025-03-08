@@ -1,8 +1,4 @@
-<p align="center">
-  <a href="https://www.meedu.vip" target="_blank">
-    <img src="https://meedu.cloud.oss.meedu.vip/github/banner.png">
-  </a>
-</p>
+<h1 align="center">MeEdu - 数据安全的网校系统</h1>
 
 <h4 align="center">
   <a href="https://www.meedu.vip">官网</a> |
