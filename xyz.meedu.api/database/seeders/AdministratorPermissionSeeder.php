@@ -524,34 +524,16 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'administrator_role/\d+',
                     ],
 
-                    // 日志
+                    // 审计日志
                     [
-                        'display_name' => '系统-日志-后台日志',
-                        'slug' => 'system.log.admin',
+                        'display_name' => '系统-审计日志-查看',
+                        'slug' => 'system.audit.log',
                         'method' => 'GET',
-                        'url' => 'log/admin',
+                        'url' => '(^log/admin$|^log/userLogin$|^log/uploadImages$|^log/runtime$)',
                     ],
                     [
-                        'display_name' => '系统-日志-学员登录日志',
-                        'slug' => 'system.log.userLogin',
-                        'method' => 'GET',
-                        'url' => 'log/userLogin',
-                    ],
-                    [
-                        'display_name' => '系统-日志-图片上传日志',
-                        'slug' => 'system.log.uploadImages',
-                        'method' => 'GET',
-                        'url' => 'log/uploadImages',
-                    ],
-                    [
-                        'display_name' => '系统-日志-程序运行日志',
-                        'slug' => 'system.log.runtime',
-                        'method' => 'GET',
-                        'url' => 'log/uploadImages',
-                    ],
-                    [
-                        'display_name' => '系统-日志-清空',
-                        'slug' => 'system.log.delete',
+                        'display_name' => '系统-审计日志-清空',
+                        'slug' => 'system.audit.log.clear',
                         'method' => 'DELETE',
                         'url' => 'log/\s+',
                     ],
@@ -640,61 +622,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'promoCode.generator',
                         'method' => 'POST',
                         'url' => 'promoCode/generator',
-                    ],
-                ],
-            ],
-
-            // 统计
-            [
-                'group_name' => '数据统计',
-                'children' => [
-                    [
-                        'display_name' => '数据统计-每日注册数量统计',
-                        'slug' => 'statistic.userRegister',
-                        'method' => 'GET',
-                        'url' => 'statistic/userRegister',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单创建数量统计',
-                        'slug' => 'statistic.orderCreated',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderCreated',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单支付数量统计',
-                        'slug' => 'statistic.orderPaidCount',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderPaidCount',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日订单已支付总额统计',
-                        'slug' => 'statistic.orderPaidSum',
-                        'method' => 'GET',
-                        'url' => 'statistic/orderPaidSum',
-                    ],
-                    [
-                        'display_name' => '数据统计-课程每日销售数量统计',
-                        'slug' => 'statistic.courseSell',
-                        'method' => 'GET',
-                        'url' => 'statistic/courseSell',
-                    ],
-                    [
-                        'display_name' => '数据统计-会员每日销售数量统计',
-                        'slug' => 'statistic.roleSell',
-                        'method' => 'GET',
-                        'url' => 'statistic/roleSell',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日视频观看时长统计',
-                        'slug' => 'statistic.videoWatchDuration',
-                        'method' => 'GET',
-                        'url' => 'statistic/videoWatchDuration',
-                    ],
-                    [
-                        'display_name' => '数据统计-每日课程观看时长统计',
-                        'slug' => 'statistic.courseWatchDuration',
-                        'method' => 'GET',
-                        'url' => 'statistic/courseWatchDuration',
                     ],
                 ],
             ],
@@ -842,7 +769,7 @@ class AdministratorPermissionSeeder extends Seeder
                         'display_name' => '素材库-视频-列表',
                         'slug' => 'media.video.list',
                         'method' => 'GET',
-                        'url' => 'media/videos/index',
+                        'url' => '(^media/videos/index$|^media/video-category/index$)',
                     ],
                     [
                         'display_name' => '素材库-视频-删除',
@@ -881,12 +808,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'media/image/create',
                     ],
                     [
-                        'display_name' => '素材库-视频分类-列表',
-                        'slug' => 'media.video-category.index',
-                        'method' => 'GET',
-                        'url' => 'media/video-category/index',
-                    ],
-                    [
                         'display_name' => '素材库-视频分类-添加',
                         'slug' => 'media.video-category.store',
                         'method' => 'POST',
@@ -912,19 +833,19 @@ class AdministratorPermissionSeeder extends Seeder
                 'group_name' => '数据',
                 'children' => [
                     [
-                        'display_name' => '数据-交易分析',
+                        'display_name' => '数据-交易数据',
                         'slug' => 'stats.transaction',
                         'method' => 'GET',
                         'url' => '(^stats/transaction$|^stats/transaction-top$|^stats/transaction-graph$)',
                     ],
                     [
-                        'display_name' => '数据-内容分析',
+                        'display_name' => '数据-商品数据',
                         'slug' => 'stats.course',
                         'method' => 'GET',
                         'url' => '(^stats/transaction-top$)',
                     ],
                     [
-                        'display_name' => '数据-学员分析',
+                        'display_name' => '数据-学员数据',
                         'slug' => 'stats.user',
                         'method' => 'GET',
                         'url' => '(^stats/user$|^stats/user-top$|^stats/user-paid-top$|^stats/user-graph$)',
@@ -934,28 +855,28 @@ class AdministratorPermissionSeeder extends Seeder
 
             // 敏感数据权限
             [
-                'group_name' => '敏感数据',
+                'group_name' => '字段权限',
                 'children' => [
                     [
-                        'display_name' => '敏感数据-学员-手机号',
+                        'display_name' => '字段权限-学员-手机号',
                         'slug' => BackendApiConstant::P_DATA_USER_MOBILE,
                         'method' => 'DATA',
                         'url' => '',
                     ],
                     [
-                        'display_name' => '敏感数据-学员-真实姓名',
+                        'display_name' => '字段权限-学员-真实姓名',
                         'slug' => BackendApiConstant::P_DATA_USER_REAL_NAME,
                         'method' => 'DATA',
                         'url' => '',
                     ],
                     [
-                        'display_name' => '敏感数据-学员-身份证号',
+                        'display_name' => '字段权限-学员-身份证号',
                         'slug' => BackendApiConstant::P_DATA_USER_ID_NUMBER,
                         'method' => 'DATA',
                         'url' => '',
                     ],
                     [
-                        'display_name' => '敏感数据-管理员-注册邮箱',
+                        'display_name' => '字段权限-管理员-邮箱',
                         'slug' => BackendApiConstant::P_DATA_ADMINISTRATOR_EMAIL,
                         'method' => 'DATA',
                         'url' => '',

@@ -150,7 +150,14 @@ const items = [
         "administrator"
       ),
       getItem("系统配置", "/system/index", null, null, null, "setting"),
-      getItem("系统日志", "/systemLog/index", null, null, null, "system-log"),
+      getItem(
+        "系统日志",
+        "/systemLog/index",
+        null,
+        null,
+        null,
+        "system.audit.log"
+      ),
       getItem(
         "功能模块",
         "/system/application",
@@ -322,18 +329,6 @@ export const LeftMenu: React.FC = () => {
         if (childrenItem.permission === "super-slug") {
           // 超管判断
           if (user.is_super) {
-            children.push(childrenItem);
-          }
-          continue;
-        }
-
-        if (childrenItem.permission === "system-log") {
-          if (
-            typeof user.permissions["system.log.admin"] !== "undefined" ||
-            typeof user.permissions["system.log.userLogin"] !== "undefined" ||
-            typeof user.permissions["system.log.uploadImages"] !== "undefined"
-          ) {
-            // 存在权限
             children.push(childrenItem);
           }
           continue;

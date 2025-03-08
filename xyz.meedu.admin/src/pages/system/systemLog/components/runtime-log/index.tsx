@@ -94,7 +94,7 @@ export const RunTimeLogComp = () => {
         text="清空日志"
         class="ml-10"
         icon={null}
-        p="system.log.delete"
+        p="system.audit.log.clear"
         onClick={() => {
           destorymulti();
         }}
