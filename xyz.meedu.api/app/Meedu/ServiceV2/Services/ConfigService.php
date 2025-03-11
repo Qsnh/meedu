@@ -161,12 +161,12 @@ class ConfigService implements ConfigServiceInterface
 
     public function enabledWechatPayment(): bool
     {
-        return (int)config('meedu.payment.alipay.enabled') === 1;
+        return (int)config('meedu.payment.wechat.enabled') === 1;
     }
 
     public function enabledAlipayPayment(): bool
     {
-        return (int)config('meedu.payment.wechat.enabled') === 1;
+        return (int)config('meedu.payment.alipay.enabled') === 1;
     }
 
     public function enabledHandPayPayment(): bool
