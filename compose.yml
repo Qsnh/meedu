@@ -7,20 +7,15 @@ x-logging: &default-logging
 networks:
   meedu-network:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.11.10.0/24
 
 volumes:
   data_mysql:
   data_redis:
   data_meilisearch:
-  conf_mysql:
 
 services:
   meedu:
-    image: registry.cn-hangzhou.aliyuncs.com/meedu/light:4.9.21
+    image: registry.cn-hangzhou.aliyuncs.com/meedu/light:4.9.22
     restart: always
     environment:
       - DB_HOST=${DB_HOST}
@@ -67,7 +62,6 @@ services:
       - MYSQL_ROOT_PASSWORD=meeduxyz
     volumes:
       - data_mysql:/var/lib/mysql
-      - conf_mysql:/etc/mysql/conf.d
     # ports:
     #   - 3306:3306
     networks:
