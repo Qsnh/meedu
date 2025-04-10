@@ -64,7 +64,7 @@ const CourseDetailPage = () => {
                 ) : null}
               </div>
               <div className={`${styles["user-count"]} ${styles["item"]}`}>
-                <span>{resDATA.course.user_count}人已订阅</span>
+                <span>{resDATA.course.user_count}人已购买</span>
               </div>
             </div>
             <div className={styles["line"]}></div>

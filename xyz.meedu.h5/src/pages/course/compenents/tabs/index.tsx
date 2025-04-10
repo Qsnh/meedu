@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { course } from "../../../../api";
 import { useSelector } from "react-redux";
-import { Input, Toast } from "antd-mobile";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
-import { DurationText, None } from "../../../../components";
+import { DurationText, CourseComments } from "../../../../components";
 import AttachBox from "../attach-box";
-import { changeTime } from "../../../../utils";
 import backIcon from "../../../../assets/img/icon-back.png";
 import collectActive from "../../../../assets/img/collect-active.png";
 import collect from "../../../../assets/img/collect.png";
@@ -34,9 +32,7 @@ interface KeysInterafce {
 export default function TabsComponent(props: PropsInterafce) {
   const navigate = useNavigate();
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
-  const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>({});
-  const [content, setContent] = useState("");
+
   const [configkey, setConfigkey] = useState<KeysInterafce>({});
   const [currentTab, setCurrentTab] = useState(0);
   const [isCollect, setIsCollect] = useState(props.data.isCollect);
@@ -71,12 +67,6 @@ export default function TabsComponent(props: PropsInterafce) {
     }
     setConfigkey(sel);
   }, [props.data]);
-
-  useEffect(() => {
-    if (props.id) {
-      getCourseComments();
-    }
-  }, [props.id]);
 
   const goLogin = () => {
     navigate(
@@ -125,32 +115,6 @@ export default function TabsComponent(props: PropsInterafce) {
     navigate(
       `/order?goods_id=${props.data.course.id}&goods_name=${props.data.course.title}&goods_label=点播课程&goods_charge=${props.data.course.charge}&goods_type=vod&goods_thumb=${props.data.course.thumb}`
     );
-  };
-
-  const submitComment = () => {
-    if (!isLogin) {
-      goLogin();
-      return;
-    }
-    if (content === "") {
-      return;
-    }
-    if (content.length < 6) {
-      Toast.show("评论内容不能少于6个字");
-      return;
-    }
-    course.SubmitComment(props.id, { content: content }).then(() => {
-      Toast.show("成功");
-      setContent("");
-      getCourseComments();
-    });
-  };
-
-  const getCourseComments = () => {
-    course.Comments(props.id).then((res: any) => {
-      setComments(res.data.comments);
-      setCommentUsers(res.data.users);
-    });
   };
 
   const goVideo = (video: any) => {
@@ -305,45 +269,12 @@ export default function TabsComponent(props: PropsInterafce) {
           </div>
         )}
         {currentTab === 2 && (
-          <div className={styles["course-comments-box"]}>
-            {comments.length > 0 ? (
-              <>
-                {comments.map((comment: any) => (
-                  <div className={styles["comment-item"]} key={comment.id}>
-                    <div className={styles["avatar"]}>
-                      <img
-                        src={commentUsers[comment.user_id].avatar}
-                        width="32"
-                        height="32"
-                      />
-                    </div>
-                    <div className={styles["content"]}>
-                      <div className={styles["nickname"]}>
-                        {commentUsers[comment.user_id].nick_name}
-                      </div>
-                      <div className={styles["time"]}>
-                        {changeTime(comment.created_at)}
-                        {comment.ip_province ? " | " + comment.ip_province : ""}
-                      </div>
-                      {comment.is_check === 0 ? (
-                        <div className={styles["text-sp"]}>评论审核中</div>
-                      ) : (
-                        <div className={styles["text"]}>
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: comment.render_content,
-                            }}
-                          ></div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <None type="white" />
-            )}
-          </div>
+          <CourseComments
+            rid={props.id}
+            isBuy={props.data.isBuy}
+            isAllowComment={props.data.course.is_allow_comment}
+            rt={1}
+          />
         )}
         {currentTab === 3 && (
           <AttachBox
@@ -353,99 +284,74 @@ export default function TabsComponent(props: PropsInterafce) {
           />
         )}
       </div>
-      {currentTab !== 3 && (
+      {(currentTab === 0 || currentTab === 1) && (
         <div className={styles["bottom-bar"]}>
-          {currentTab === 0 || currentTab === 1 ? (
-            <>
-              <div
-                className={
-                  isCollect
-                    ? `${styles["collect-button"]} ${styles["active"]}`
-                    : styles["collect-button"]
-                }
-              >
-                <div className={styles["icon"]}>
-                  {isCollect ? (
-                    <img
-                      className={styles["like-icon"]}
-                      onClick={() => {
-                        likeHit();
-                      }}
-                      width="24"
-                      height="24"
-                      src={collectActive}
-                    />
-                  ) : (
-                    <img
-                      className={styles["like-icon"]}
-                      onClick={() => {
-                        likeHit();
-                      }}
-                      width="24"
-                      height="24"
-                      src={collect}
-                    />
-                  )}
-                </div>
-                <div className={styles["text"]}>收藏</div>
-              </div>
-              {props.data.isBuy || props.data.course.is_free === 1 ? (
-                <div
-                  className={`${styles["button-item"]} ${styles["see-button"]}`}
-                  onClick={() => startLearn()}
-                >
-                  <span>开始学习</span>
-                </div>
+          <div
+            className={
+              isCollect
+                ? `${styles["collect-button"]} ${styles["active"]}`
+                : styles["collect-button"]
+            }
+          >
+            <div className={styles["icon"]}>
+              {isCollect ? (
+                <img
+                  className={styles["like-icon"]}
+                  onClick={() => {
+                    likeHit();
+                  }}
+                  width="24"
+                  height="24"
+                  src={collectActive}
+                />
               ) : (
+                <img
+                  className={styles["like-icon"]}
+                  onClick={() => {
+                    likeHit();
+                  }}
+                  width="24"
+                  height="24"
+                  src={collect}
+                />
+              )}
+            </div>
+            <div className={styles["text"]}>收藏</div>
+          </div>
+          {props.data.isBuy || props.data.course.is_free === 1 ? (
+            <div
+              className={`${styles["button-item"]} ${styles["see-button"]}`}
+              onClick={() => startLearn()}
+            >
+              <span>开始学习</span>
+            </div>
+          ) : (
+            <>
+              {props.data.course.charge > 0 ? (
                 <>
-                  {props.data.course.charge > 0 ? (
-                    <>
-                      <div
-                        className={`${styles["button-item"]} ${styles["role-button"]}`}
-                        onClick={() => goRole()}
-                      >
-                        <span>VIP会员免费看</span>
-                      </div>
-                      <div
-                        className={`${styles["button-item"]} ${styles["buy-button"]}`}
-                        onClick={() => buyCourse()}
-                      >
-                        <span>订阅课程</span>
-                      </div>
-                    </>
-                  ) : (
-                    <div
-                      className={`${styles["button-item"]} ${styles["role-button2"]}`}
-                      onClick={() => goRole()}
-                    >
-                      <span>VIP会员免费看</span>
-                    </div>
-                  )}
+                  <div
+                    className={`${styles["button-item"]} ${styles["role-button"]}`}
+                    onClick={() => goRole()}
+                  >
+                    <span>VIP会员免费看</span>
+                  </div>
+                  <div
+                    className={`${styles["button-item"]} ${styles["buy-button"]}`}
+                    onClick={() => buyCourse()}
+                  >
+                    <span>购买课程</span>
+                  </div>
                 </>
+              ) : (
+                <div
+                  className={`${styles["button-item"]} ${styles["role-button2"]}`}
+                  onClick={() => goRole()}
+                >
+                  <span>VIP会员免费看</span>
+                </div>
               )}
             </>
-          ) : props.data.course.is_allow_comment === 1 ? (
-            <>
-              <Input
-                className={styles["input"]}
-                placeholder="请输入评论内容"
-                value={content}
-                onChange={(e: any) => {
-                  setContent(e);
-                }}
-              />
-              <div
-                className={
-                  content.length > 0
-                    ? `${styles["comment-button"]} ${styles["active"]}`
-                    : styles["comment-button"]
-                }
-                onClick={() => submitComment()}
-              >
-                发布
-              </div>
-            </>
-          ) : null}
+          )}
         </div>
       )}
     </>

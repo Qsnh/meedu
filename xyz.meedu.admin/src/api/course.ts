@@ -66,18 +66,6 @@ export function categoryUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/courseCategory/${id}`, params);
 }
 
-export function commentList(params: any) {
-  return client.get(`/backend/api/v1/course_comment`, params);
-}
-
-export function commentDestroy(params: any) {
-  return client.post(`/backend/api/v1/course_comment/delete`, params);
-}
-
-export function commentApplyMulti(params: any) {
-  return client.post(`/backend/api/v1/course_comment/check`, params);
-}
-
 export function videoList(params: any) {
   return client.get(`/backend/api/v1/video`, params);
 }
@@ -116,18 +104,6 @@ export function videoWatchRecords(id: number, params: any) {
 
 export function videoImportAct(params: any) {
   return client.post("/backend/api/v1/video/import", params);
-}
-
-export function videoCommentList(params: any) {
-  return client.get(`/backend/api/v1/video_comment`, params);
-}
-
-export function videoCommentDestroy(params: any) {
-  return client.post(`/backend/api/v1/video_comment/delete`, params);
-}
-
-export function videoCommentApplyMulti(params: any) {
-  return client.post(`/backend/api/v1/video_comment/check`, params);
 }
 
 export function recordsList(id: number, params: any) {

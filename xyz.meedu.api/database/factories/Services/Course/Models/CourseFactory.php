@@ -36,6 +36,7 @@ class CourseFactory extends Factory
             'published_at' => Carbon::now(),
             'is_show' => $this->faker->randomElement([Course::SHOW_NO, Course::SHOW_YES]),
             'is_rec' => $this->faker->randomElement([Course::REC_YES, Course::REC_NO]),
+            'is_allow_comment' => $this->faker->randomElement([0, 1]),
         ];
     }
 }

@@ -11,17 +11,12 @@ namespace App\Http\Controllers\Api\V2;
 use Illuminate\Http\Request;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
-use App\Http\Requests\ApiV2\CommentRequest;
 use App\Services\Member\Services\UserService;
-use App\Services\Order\Services\OrderService;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
-use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
-use App\Services\Course\Interfaces\CourseCommentServiceInterface;
 
 class CourseController extends BaseController
 {
@@ -31,9 +26,6 @@ class CourseController extends BaseController
      */
     protected $courseService;
 
-    protected $configService;
-
-    protected $courseCommentService;
     /**
      * @var UserService
      */
@@ -42,10 +34,6 @@ class CourseController extends BaseController
      * @var VideoService
      */
     protected $videoService;
-    /**
-     * @var OrderService
-     */
-    protected $orderService;
 
     /**
      * @var BusinessState
@@ -54,19 +42,13 @@ class CourseController extends BaseController
 
     public function __construct(
         CourseServiceInterface        $courseService,
-        ConfigServiceInterface        $configService,
-        CourseCommentServiceInterface $courseCommentService,
         UserServiceInterface          $userService,
         VideoServiceInterface         $videoService,
-        OrderServiceInterface         $orderService,
         BusinessState                 $businessState
     ) {
         $this->courseService = $courseService;
-        $this->configService = $configService;
-        $this->courseCommentService = $courseCommentService;
         $this->userService = $userService;
         $this->videoService = $videoService;
-        $this->orderService = $orderService;
         $this->businessState = $businessState;
     }
 
@@ -78,7 +60,7 @@ class CourseController extends BaseController
      * @apiParam {Number} [page] page
      * @apiParam {Number} [page_size] page_size
      * @apiParam {Number} [category_id] 分类ID
-     * @apiParam {String=sub,free} [scene] 场景[sub:订阅最多,free:免费课程]
+     * @apiParam {String=sub,free} [scene] 场景[sub:购买最多,free:免费课程]
      *
      * @apiSuccess {Number} code 0成功,非0失败
      * @apiSuccess {Object[]} data 数据
@@ -93,7 +75,7 @@ class CourseController extends BaseController
      * @apiSuccess {String} data.published_at 上架时间
      * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
      * @apiSuccess {Number} data.is_free 免费课程[1:是,0否]
-     * @apiSuccess {Number} data.user_count 订阅人数
+     * @apiSuccess {Number} data.user_count 购买人数
      * @apiSuccess {Number} data.videos_count 视频数
      * @apiSuccess {Object} data.category 分类
      * @apiSuccess {Number} data.category.id 分类ID
@@ -145,7 +127,7 @@ class CourseController extends BaseController
      * @apiSuccess {String} data.course.seo_description SEO描述
      * @apiSuccess {String} data.course.published_at 上架时间
      * @apiSuccess {Number} data.course.is_rec 推荐[1:是,0否][已弃用]
-     * @apiSuccess {Number} data.course.user_count 订阅人数
+     * @apiSuccess {Number} data.course.user_count 购买人数
      * @apiSuccess {Number} data.course.videos_count 视频数
      * @apiSuccess {Number} data.course.is_allow_comment 是否允许评论[1:是,0:否]
      * @apiSuccess {Object} data.course.category 分类
@@ -238,77 +220,6 @@ class CourseController extends BaseController
             'attach',
             'buyVideos',
         ));
-    }
-
-    /**
-     * @api {post} /api/v2/course/{courseId}/comment [V2]录播课-评论-提交
-     * @apiGroup 录播课模块
-     * @apiName CourseCommentAction
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {String} content 评论内容
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     */
-    public function createComment(CommentRequest $request, $id)
-    {
-        $course = $this->courseService->find($id);
-        if (!$this->businessState->courseCanComment($this->user(), $course)) {
-            return $this->error(__('无权限'));
-        }
-
-        ['content' => $content] = $request->filldata();
-        if (!$content) {
-            return $this->error(__('参数错误'));
-        }
-
-        $this->courseCommentService->create($this->id(), $id, $content);
-
-        return $this->success();
-    }
-
-    /**
-     * @api {get} /api/v2/course/{courseId}/comments [V2]录播课-评论-列表
-     * @apiGroup 录播课模块
-     * @apiName CourseComments
-     *
-     * @apiParam {Number} [page] 页码
-     * @apiParam {Number} [page_size] 每页条数
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data 数据
-     * @apiSuccess {Object[]} data.comments 评论
-     * @apiSuccess {Number} data.comments.id 评论ID
-     * @apiSuccess {Number} data.comments.id 评论ID
-     * @apiSuccess {Number} data.comments.user_id 用户ID
-     * @apiSuccess {String} data.comments.render_content 评论内容
-     * @apiSuccess {String} data.comments.created_at 时间
-     * @apiSuccess {Object[]} data.users 用户
-     * @apiSuccess {Number} data.users.id 用户ID
-     * @apiSuccess {String} data.users.nick_name 用户昵称
-     * @apiSuccess {String} data.users.avatar 用户头像
-     */
-    public function comments($id)
-    {
-        $comments = $this->courseCommentService->courseComments($id);
-        if ($comments) {
-            foreach ($comments as $key => $tmpItem) {
-                if (0 === $tmpItem['is_check']) {
-                    $comments[$key]['render_content'] = __('评论审核中');
-                }
-            }
-            $comments = arr2_clear($comments, ApiV2Constant::MODEL_COURSE_COMMENT_FIELD);
-        }
-
-        $commentUsers = $this->userService->getList(array_column($comments, 'user_id'), ['role:id,name']);
-        $commentUsers = arr2_clear($commentUsers, ApiV2Constant::MODEL_MEMBER_SIMPLE);
-        $commentUsers = array_column($commentUsers, null, 'id');
-
-        return $this->data([
-            'comments' => $comments,
-            'users' => $commentUsers,
-        ]);
     }
 
     /**

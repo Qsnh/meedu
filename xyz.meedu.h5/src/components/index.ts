@@ -13,3 +13,4 @@ export * from "./captcha-dialog";
 export * from "./confirm-login";
 export * from "./show-model";
 export * from "./protocol";
+export * from "./course-comments";

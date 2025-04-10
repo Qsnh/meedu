@@ -130,7 +130,7 @@ const StudyCenterPage = () => {
                   在学
                 </Radio>
                 <Radio value={2} style={{ marginRight: 40 }}>
-                  订阅
+                  购买
                 </Radio>
                 <Radio value={3}>收藏</Radio>
               </Radio.Group>

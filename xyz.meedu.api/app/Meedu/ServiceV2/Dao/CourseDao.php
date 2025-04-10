@@ -10,6 +10,7 @@ namespace App\Meedu\ServiceV2\Dao;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use App\Constant\BusConstant;
 use App\Meedu\ServiceV2\Models\Course;
 use App\Meedu\ServiceV2\Models\CourseVideo;
 use App\Meedu\ServiceV2\Models\CourseAttach;
@@ -124,5 +125,109 @@ class CourseDao implements CourseDaoInterface
         return Course::query()->where('id', $id)->firstOrFail()->toArray();
     }
 
+    public function find(int $id): array
+    {
+        $record = Course::query()->where('id', $id)->first();
+        return $record ? $record->toArray() : [];
+    }
 
+
+    public function videoPaginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array
+    {
+        $filterBlacklist = Arr::except($params, ['lte_published_at', 'is_show']);
+        if ($filterBlacklist) {
+            throw new \Exception(__('不支持参数 :params 过滤', ['params' => implode(',', array_keys($filterBlacklist))]));
+        }
+
+        $query = CourseVideo::query()
+            ->select($fields)
+            ->when(isset($params['is_show']), function ($query) use ($params) {
+                $query->where('is_show', $params['is_show']);
+            })
+            ->when(isset($params['lte_published_at']), function ($query) use ($params) {
+                $query->where('published_at', '<=', $params['lte_published_at']);
+            });
+
+        $total = $query->count();
+        $data = $query
+            ->with($with)
+            ->withCount($withCount)
+            ->orderBy($orderBy[0], $orderBy[1])
+            ->forPage($page, $size)
+            ->get()
+            ->toArray();
+
+        return compact('total', 'data');
+    }
+
+    public function paginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array
+    {
+        $filterBlacklist = Arr::except($params, ['lte_published_at', 'is_show']);
+        if ($filterBlacklist) {
+            throw new \Exception(__('不支持参数 :params 过滤', ['params' => implode(',', array_keys($filterBlacklist))]));
+        }
+
+        $query = Course::query()
+            ->select($fields)
+            ->when(isset($params['is_show']), function ($query) use ($params) {
+                $query->where('is_show', $params['is_show']);
+            })
+            ->when(isset($params['lte_published_at']), function ($query) use ($params) {
+                $query->where('published_at', '<=', $params['lte_published_at']);
+            });
+
+        $total = $query->count();
+        $data = $query
+            ->with($with)
+            ->withCount($withCount)
+            ->orderBy($orderBy[0], $orderBy[1])
+            ->forPage($page, $size)
+            ->get()
+            ->toArray();
+
+        return compact('total', 'data');
+    }
+
+    public function findVideo(int $id): array
+    {
+        $record = CourseVideo::query()->where('id', $id)->first();
+        return $record ? $record->toArray() : [];
+    }
+
+    public function getVideosByCourseId(int $id, array $fields): array
+    {
+        return CourseVideo::query()->select($fields)->where('course_id', $id)->get()->toArray();
+    }
+
+    public function getPublishedUnIndexedCourses(array $fields): array
+    {
+        return Course::query()
+            ->select($fields)
+            ->where('published_at', '<=', Carbon::now()->toDateTimeLocalString())
+            ->where('is_show', 1)
+            ->whereNotExists(function ($query) {
+                $query->select('id')
+                    ->from('search_records')
+                    ->whereColumn('resource_id', 'courses.id')
+                    ->where('resource_type', BusConstant::FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE);
+            })
+            ->get()
+            ->toArray();
+    }
+
+    public function getPublishedUnIndexedVideos(array $fields): array
+    {
+        return CourseVideo::query()
+            ->select($fields)
+            ->where('published_at', '<=', Carbon::now()->toDateTimeLocalString())
+            ->where('is_show', 1)
+            ->whereNotExists(function ($query) {
+                $query->select('id')
+                    ->from('search_records')
+                    ->whereColumn('resource_id', 'videos.id')
+                    ->where('resource_type', BusConstant::FULL_SEARCH_RESOURCE_TYPE_VOD_COURSE_VIDEO);
+            })
+            ->get()
+            ->toArray();
+    }
 }

@@ -23,4 +23,18 @@ interface CourseDaoInterface
     public function storeCourseAttachDownloadRecord(int $userId, int $courseId, int $attachId, array $extra): int;
 
     public function findOrFail(int $id): array;
+
+    public function videoPaginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array;
+
+    public function paginate(int $page, int $size, array $fields, array $orderBy, array $params, array $with, array $withCount): array;
+
+    public function find(int $id): array;
+
+    public function findVideo(int $id): array;
+
+    public function getVideosByCourseId(int $id, array $fields): array;
+
+    public function getPublishedUnIndexedCourses(array $fields): array;
+
+    public function getPublishedUnIndexedVideos(array $fields): array;
 }

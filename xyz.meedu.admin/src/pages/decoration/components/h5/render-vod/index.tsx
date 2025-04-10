@@ -47,7 +47,7 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
                 <div className={styles["course-title"]}>{item.title}</div>
                 <div className={styles["course-info"]}>
                   <div className={styles["sub"]}>
-                    <span>{item.user_count || 0}人已订阅</span>
+                    <span>{item.user_count || 0}人已购买</span>
                   </div>
                   <div className={styles["price"]}>
                     {!item.charge && (

@@ -3,7 +3,7 @@
   height: auto;
   float: left;
   box-sizing: border-box;
-  padding-bottom: 53px;
+  padding-bottom: calc(53px + env(safe-area-inset-bottom, 0px));
   text-align: left;
 }
 
@@ -229,74 +229,6 @@
 
 .comment-button.active {
   color: #1784ed;
-}
-
-.course-comments-box > .comment-item {
-  width: 100%;
-  height: auto;
-  float: left;
-  margin-top: 0px;
-  margin-bottom: 30px;
-  display: flex;
-  text-align: left;
-}
-
-.course-comments-box > .comment-item > .avatar {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-
-.course-comments-box > .comment-item > .avatar > img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.course-comments-box > .comment-item > .content {
-  flex: 1;
-  position: relative;
-}
-
-.course-comments-box > .comment-item > .content > .nickname {
-  width: 100%;
-  height: auto;
-  float: left;
-  font-size: 12px;
-  box-sizing: border-box;
-  color: #999999;
-  margin-top: 5px;
-  margin-bottom: 13px;
-}
-
-.course-comments-box > .comment-item > .content > .time {
-  position: absolute;
-  font-size: 10px;
-  color: #999999;
-  right: 15px;
-  top: 6px;
-}
-
-.course-comments-box > .comment-item > .content > .text {
-  width: 100%;
-  height: auto;
-  float: left;
-  font-size: 14px;
-  line-height: 1.2;
-  color: #333;
-}
-
-.course-comments-box > .comment-item > .content > .text-sp {
-  width: 76px;
-  height: 16px;
-  background-color: rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  border-radius: 2px;
-  font-weight: 400;
-  color: #333333;
 }
 
 .course-chapter-box {

@@ -13,25 +13,24 @@ import { latexRender, codeRender } from "../../utils/index";
 import appConfig from "../../js/config";
 
 const VodDetailPage = () => {
-  const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [cid, setCid] = useState(Number(params.courseId));
-  const [course, setCourse] = useState<any>({});
-  const [attach, setAttach] = useState<any>([]);
-  const [chapters, setChapters] = useState<any>([]);
-  const [isBuy, setIsBuy] = useState<boolean>(false);
-  const [isCollect, setIsCollect] = useState<boolean>(false);
-  const [videos, setVideos] = useState<any>({});
-  const [buyVideos, setBuyVideos] = useState<any>([]);
-  const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>({});
-  const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
-  const [isfixTab, setIsfixTab] = useState<boolean>(false);
-  const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const result = new URLSearchParams(useLocation().search);
+  const [currentTab, setCurrentTab] = useState(Number(result.get("tab")) || 2);
+
+  const [loading, setLoading] = useState(false);
+  const [cid] = useState(Number(params.courseId));
+  const [course, setCourse] = useState<any>({});
+  const [attach, setAttach] = useState<any[]>([]);
+  const [chapters, setChapters] = useState<any[]>([]);
+  const [isBuy, setIsBuy] = useState(false);
+  const [isCollect, setIsCollect] = useState(false);
+  const [videos, setVideos] = useState<any>({});
+  const [buyVideos, setBuyVideos] = useState<any[]>([]);
+  const [isfixTab, setIsfixTab] = useState(false);
+
   const tabs = [
     {
       name: "课程详情",
@@ -53,7 +52,7 @@ const VodDetailPage = () => {
 
   useEffect(() => {
     getDetail();
-    getComments();
+
     window.addEventListener("scroll", handleTabFix, true);
     return () => {
       window.removeEventListener("scroll", handleTabFix, true);
@@ -61,7 +60,7 @@ const VodDetailPage = () => {
   }, [cid]);
 
   useEffect(() => {
-    let dom = document ? document.getElementById("desc") : null;
+    const dom = document ? document.getElementById("desc") : null;
     if (dom) {
       latexRender(dom);
       codeRender(dom);
@@ -74,13 +73,13 @@ const VodDetailPage = () => {
   };
 
   const handleTabFix = () => {
-    let scrollTop =
+    const scrollTop =
       window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop;
-    let navbar = document.querySelector("#NavBar") as HTMLElement;
+    const navbar = document.querySelector("#NavBar") as HTMLElement;
     if (navbar) {
-      let offsetTop = navbar.offsetTop;
+      const offsetTop = navbar.offsetTop;
       scrollTop > offsetTop ? setIsfixTab(true) : setIsfixTab(false);
     }
   };
@@ -102,24 +101,6 @@ const VodDetailPage = () => {
 
       setLoading(false);
     });
-  };
-
-  const getComments = () => {
-    if (commentLoading) {
-      return;
-    }
-    setCommentLoading(true);
-    vod.comments(cid).then((res: any) => {
-      setComments(res.data.comments);
-      setCommentUsers(res.data.users);
-      setCommentLoading(false);
-    });
-  };
-
-  const resetComments = () => {
-    setCommentLoading(false);
-    setComments([]);
-    setCommentUsers({});
   };
 
   const collectCourse = () => {
@@ -315,7 +296,7 @@ const VodDetailPage = () => {
                         className={styles["buy-button"]}
                         onClick={() => buyCourse()}
                       >
-                        订阅课程￥{course.charge}
+                        购买课程￥{course.charge}
                       </div>
                     )}
                     {course.vip_can_view === 1 && !appConfig.disable_vip && (
@@ -386,15 +367,10 @@ const VodDetailPage = () => {
         )}
         {currentTab === 4 && (
           <CourseComments
-            cid={cid}
+            rid={cid}
             isBuy={isBuy}
             isAllowComment={course.is_allow_comment}
-            comments={comments}
-            commentUsers={commentUsers}
-            success={() => {
-              resetComments();
-              getComments();
-            }}
+            rt={1}
           />
         )}
         {currentTab === 5 && (

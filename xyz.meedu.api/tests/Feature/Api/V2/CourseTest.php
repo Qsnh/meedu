@@ -9,11 +9,9 @@
 namespace Tests\Feature\Api\V2;
 
 use Carbon\Carbon;
-use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserCourse;
-use App\Services\Course\Models\CourseComment;
 use App\Services\Course\Models\CourseCategory;
 use App\Services\Member\Models\UserLikeCourse;
 
@@ -107,70 +105,6 @@ class CourseTest extends Base
         ]);
         $response = $this->getJson('/api/v2/course/' . $course->id);
         $this->assertResponseError($response, __('资源不存在'));
-    }
-
-    public function test_course_comment_un_vip()
-    {
-        $user = User::factory()->create();
-
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseError($response, __('无权限'));
-    }
-
-    public function test_course_comment_vip()
-    {
-        $user = User::factory()->create();
-        $role = Role::factory()->create();
-        $user->role_id = $role->id;
-        $user->role_expired_at = Carbon::now()->addDays(1);
-        $user->save();
-
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($response);
-    }
-
-    public function test_course_comment_paid()
-    {
-        $user = User::factory()->create();
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-
-        UserCourse::create([
-            'user_id' => $user->id,
-            'course_id' => $course->id,
-        ]);
-
-        $response = $this->user($user)->postJson('api/v2/course/' . $course->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($response);
-    }
-
-    public function test_course_comments()
-    {
-        $course = Course::factory()->create([
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        CourseComment::factory()->count(10)->create(['course_id' => $course->id]);
-
-        $response = $this->getJson('api/v2/course/' . $course->id . '/comments');
-        $r = $this->assertResponseSuccess($response);
-        $this->assertEquals(10, count($r['data']['comments']));
     }
 
     public function test_course_like()

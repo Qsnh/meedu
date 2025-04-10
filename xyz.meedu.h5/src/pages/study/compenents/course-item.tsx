@@ -38,7 +38,7 @@ export const CoursesModel: React.FC<PropInterface> = ({
             <div className={styles["course-thumb"]}>
               <img src={item.course.thumb} />
               {(item.is_subscribe === 1 || currenStatus === "course") && (
-                <div className={styles["icon"]}>已订阅</div>
+                <div className={styles["icon"]}>已购买</div>
               )}
             </div>
             <div className={styles["course-body"]}>

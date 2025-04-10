@@ -4,7 +4,7 @@ import { Skeleton, message } from "antd";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
-import { CourseVideoComments, Empty } from "../../components";
+import { CourseComments, Empty } from "../../components";
 import { VideoListComp } from "./components/video/video-list";
 import { VideoChapterListComp } from "./components/video/video-chapter-list";
 import { getToken, getPlayId, savePlayId } from "../../utils/index";
@@ -28,9 +28,6 @@ const VodPlayPage = () => {
   const [videoWatchedProgress, setVideoWatchedProgres] = useState<any>([]);
   const [isLastpage, setIsLastpage] = useState<boolean>(false);
   const [lastVideoId, setLastVideoId] = useState(0);
-  const [comments, setComments] = useState<any>([]);
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [commentUsers, setCommentUsers] = useState<any>({});
   const [attach, setAttach] = useState<any>([]);
   const [showTry, setShowTry] = useState<boolean>(false);
   const [isBuy, setIsBuy] = useState<boolean>(false);
@@ -77,7 +74,6 @@ const VodPlayPage = () => {
 
   useEffect(() => {
     getDetail();
-    getComments();
     window.addEventListener("scroll", handleTabFix, true);
     return () => {
       clock && clearInterval(clock);
@@ -372,24 +368,6 @@ const VodPlayPage = () => {
     }
   };
 
-  const getComments = () => {
-    if (commentLoading) {
-      return;
-    }
-    setCommentLoading(true);
-    vod.videoComments(vid).then((res: any) => {
-      setComments(res.data.comments);
-      setCommentUsers(res.data.users);
-      setCommentLoading(false);
-    });
-  };
-
-  const resetComments = () => {
-    setCommentLoading(false);
-    setComments([]);
-    setCommentUsers({});
-  };
-
   const goLogin = () => {
     let url = encodeURIComponent(
       window.location.pathname + window.location.search
@@ -554,7 +532,7 @@ const VodPlayPage = () => {
                           className={styles["subscribe-button"]}
                           onClick={() => paySelect(1)}
                         >
-                          <span>订阅课程 ￥{course.charge}</span>
+                          <span>购买课程 ￥{course.charge}</span>
                         </div>
                       )}
                     </div>
@@ -633,17 +611,11 @@ const VodPlayPage = () => {
           </div>
         </div>
         {currentTab === 4 && (
-          <CourseVideoComments
-            fresh={loading}
-            vid={vid}
-            isBuy={isBuy}
+          <CourseComments
+            rid={vid}
+            isBuy={isWatch && isBuy}
             isAllowComment={video.is_allow_comment}
-            comments={comments}
-            commentUsers={commentUsers}
-            success={() => {
-              resetComments();
-              getComments();
-            }}
+            rt={2}
           />
         )}
         {currentTab === 5 && (

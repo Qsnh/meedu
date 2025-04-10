@@ -198,7 +198,7 @@ const OrderPage = () => {
   return (
     <div className="container">
       <div className={styles["box"]}>
-        <div className={styles["tit"]}>订阅信息</div>
+        <div className={styles["tit"]}>购买信息</div>
         <div className={styles["goods-box"]}>
           {hasThumb && (
             <div className={styles["goods-thumb"]}>

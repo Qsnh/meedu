@@ -71,6 +71,12 @@ class Kernel extends ConsoleKernel
             ->everyThirtyMinutes()
             ->appendOutputTo(storage_path('logs/user-delete-job.log'));
 
+        // 全文搜索课程索引任务=>定时同步课程上架时间已到的课程
+        $schedule->command('meedu:full-search:published-courses-index')
+            ->onOneServer()
+            ->everyMinute()
+            ->appendOutputTo(storage_path('logs/full_search_published_course_index.log'));
+
         // 预留定时任务钩子
         ScheduleContainer::instance()->exec($schedule);
     }

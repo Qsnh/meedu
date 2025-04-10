@@ -92,13 +92,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::delete('/{id}', 'AnnouncementController@destroy');
     });
 
-    // 课程评论
-    Route::group(['prefix' => 'course_comment'], function () {
-        Route::get('/', 'CourseCommentController@index');
-        Route::post('/delete', 'CourseCommentController@destroy');
-        Route::post('/check', 'CourseCommentController@check');
-    });
-
     // Nav
     Route::group(['prefix' => 'nav'], function () {
         Route::get('/', 'NavController@index');
@@ -117,13 +110,6 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/{id}', 'RoleController@edit');
         Route::put('/{id}', 'RoleController@update');
         Route::delete('/{id}', 'RoleController@destroy');
-    });
-
-    // 视频评论
-    Route::group(['prefix' => 'video_comment'], function () {
-        Route::get('/', 'VideoCommentController@index');
-        Route::post('/delete', 'VideoCommentController@destroy');
-        Route::post('/check', 'VideoCommentController@check');
     });
 
     // 管理员
@@ -198,7 +184,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
         Route::post('/delete/multi', 'CourseVideoController@multiDestroy');
-        // 订阅关系
+        // 购买管理
         Route::get('/{id}/subscribes', 'CourseVideoController@subscribes');
         Route::post('/{id}/subscribe/create', 'CourseVideoController@subscribeCreate');
         Route::get('/{id}/subscribe/delete', 'CourseVideoController@subscribeDelete');
@@ -315,5 +301,12 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/uploadImages', 'LogController@uploadImages');
         Route::get('/runtime', 'LogController@runtime');
         Route::delete('/{sign}', 'LogController@destroy');
+    });
+
+    // 评论
+    Route::group(['prefix' => 'comment'], function () {
+        Route::get('/index', 'CommentController@index');
+        Route::post('/delete', 'CommentController@destroy');
+        Route::post('/check', 'CommentController@check');
     });
 });

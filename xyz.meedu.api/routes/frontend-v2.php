@@ -29,8 +29,6 @@ Route::get('/search', 'SearchController@index')->middleware(['deprecated.api']);
 // 课程
 Route::get('/courses', 'CourseController@paginate');
 Route::get('/course/{id}', 'CourseController@detail');
-Route::get('/course/{id}/comments', 'CourseController@comments');
-Route::post('/course/{id}/comment', 'CourseController@createComment')->middleware(['auth:apiv2']);
 Route::get('/course/{id}/like', 'CourseController@like')->middleware(['auth:apiv2']);
 Route::get('/course/attach/{id}/download', 'CourseController@attachDownload')->middleware(['auth:apiv2', 'deprecated.api']);
 // 全部课程分类
@@ -41,8 +39,6 @@ Route::get('/videos', 'VideoController@paginate');
 Route::get('/video/{id}', 'VideoController@detail');
 Route::get('/video/{id}/playinfo', 'VideoController@playInfo')->middleware(['auth:apiv2']);
 Route::get('/video/open/play', 'VideoController@openPlay');
-Route::get('/video/{id}/comments', 'VideoController@comments');
-Route::post('/video/{id}/comment', 'VideoController@createComment')->middleware(['auth:apiv2']);
 Route::post('/video/{id}/record', 'VideoController@recordVideo')->middleware(['auth:apiv2']);
 
 // 套餐

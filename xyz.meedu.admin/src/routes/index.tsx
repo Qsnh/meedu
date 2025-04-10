@@ -22,10 +22,6 @@ const CoursePage = lazy(() => import("../pages/course/index"));
 const CourseCreatePage = lazy(() => import("../pages/course/create"));
 const CourseUpdatePage = lazy(() => import("../pages/course/update"));
 const CourseCategoryPage = lazy(() => import("../pages/course/category/index"));
-const CourseCommentsPage = lazy(() => import("../pages/course/comments"));
-const CourseVideoCommentsPage = lazy(
-  () => import("../pages/course/video/comments")
-);
 const CourseVideoImportPage = lazy(
   () => import("../pages/course/video/import")
 );
@@ -128,6 +124,8 @@ const NoServicePage = lazy(() => import("../pages/error/no-sevice"));
 //装修
 const DecorationPCPage = lazy(() => import("../pages/decoration/pc"));
 const DecorationH5Page = lazy(() => import("../pages/decoration/h5"));
+//课程评论
+const CommentsPage = lazy(() => import("../pages/comments/index"));
 
 let RootPage: any = null;
 if (getToken() && window.location.pathname !== "/error") {
@@ -190,20 +188,13 @@ const routes: RouteObject[] = [
           },
           { path: "/resource/videos/index", element: <ResourceVideosPage /> },
           { path: "/resource/images/index", element: <ResourceImagesPage /> },
+          { path: "/comments/index", element: <CommentsPage /> },
           { path: "/course/vod/index", element: <CoursePage /> },
           { path: "/course/vod/create", element: <CourseCreatePage /> },
           { path: "/course/vod/update", element: <CourseUpdatePage /> },
           {
             path: "/course/vod/category/index",
             element: <CourseCategoryPage />,
-          },
-          {
-            path: "/course/vod/components/vod-comments",
-            element: <CourseCommentsPage />,
-          },
-          {
-            path: "/course/vod/video/comments",
-            element: <CourseVideoCommentsPage />,
           },
           { path: "/course/vod/:courseId/view", element: <CourseUsersPage /> },
           {

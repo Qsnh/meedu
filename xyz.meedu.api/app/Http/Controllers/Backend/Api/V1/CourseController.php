@@ -112,14 +112,7 @@ class CourseController extends BaseController
 
         $course->fill($data)->save();
 
-        event(new VodCourseCreatedEvent(
-            $course['id'],
-            $course['title'],
-            $course['charge'],
-            $course['thumb'],
-            $course['short_description'],
-            $course['original_desc']
-        ));
+        event(new VodCourseCreatedEvent($course['id']));
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_STORE_SUCCESS, $course->toArray());
 
@@ -166,14 +159,7 @@ class CourseController extends BaseController
 
         $course->fill($data)->save();
 
-        event(new VodCourseUpdatedEvent(
-            $course['id'],
-            $course['title'],
-            $course['charge'],
-            $course['thumb'],
-            $course['short_description'],
-            $course['original_desc']
-        ));
+        event(new VodCourseUpdatedEvent($course['id']));
 
         HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS, $course->toArray());
 
@@ -238,7 +224,7 @@ class CourseController extends BaseController
             ->get()
             ->keyBy('id');
 
-        // 订阅记录
+        // 购买记录
         $subscribeRecords = UserCourse::query()
             ->whereIn('user_id', array_column($data->items(), 'user_id'))
             ->where('course_id', $courseId)
@@ -283,7 +269,7 @@ class CourseController extends BaseController
         return $this->success();
     }
 
-    // 订阅记录
+    // 购买记录
     public function subscribes(Request $request, $courseId)
     {
         $userId = $request->input('user_id');
@@ -384,7 +370,7 @@ class CourseController extends BaseController
 
         UserCourse::query()->where('course_id', $courseId)->where('user_id', $userId)->delete();
 
-        // 课程订阅数量更新
+        // 课程购买数量更新
         Course::query()
             ->where('id', $courseId)
             ->decrement('user_count');
@@ -546,7 +532,7 @@ class CourseController extends BaseController
                 $insertData && UserCourse::insert($insertData);
             }
 
-            // 课程订阅数量更新
+            // 课程购买数量更新
             Course::query()
                 ->where('id', $id)
                 ->update([

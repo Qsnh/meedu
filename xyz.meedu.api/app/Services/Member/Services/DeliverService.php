@@ -52,7 +52,7 @@ class DeliverService implements DeliverServiceInterface
             'created_at' => Carbon::now(),
         ]);
 
-        // 课程订阅数目统计
+        // 课程购买数统计
         /**
          * @var CourseService $courseService
          */

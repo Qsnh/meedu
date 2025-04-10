@@ -269,7 +269,7 @@ const CourseVideoSubscribePage = () => {
         return;
       }
 
-      let filename = "课时订阅学员.xlsx";
+      let filename = "课时购买学员.xlsx";
       let sheetName = "sheet1";
 
       let data = [["学员ID", "学员", "手机号", "价格", "时间"]];
@@ -316,7 +316,7 @@ const CourseVideoSubscribePage = () => {
             setWatchedAts(date);
             setWatchedAt(dateString);
           }}
-          placeholder={["订阅时间-开始", "订阅时间-结束"]}
+          placeholder={["购买时间-开始", "购买时间-结束"]}
         />
         <Button className="ml-10" onClick={resetList}>
           清空

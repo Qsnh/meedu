@@ -15,3 +15,4 @@ export * as member from "./member";
 export * as viewBlock from "./viewBlock";
 export * as pre from "./pre";
 export * as videoCategory from "./video-category";
+export * as comment from "./comment";

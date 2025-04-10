@@ -23,7 +23,7 @@ const StudyPage = () => {
       key: "study",
     },
     {
-      name: "订阅",
+      name: "购买",
       key: "course",
     },
     {

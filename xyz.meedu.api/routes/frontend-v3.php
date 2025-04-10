@@ -26,6 +26,9 @@ Route::post('/auth/register/withSocialite', 'LoginController@registerWithSociali
 
 Route::get('/course/attach-download', 'CourseController@attachDownloadDirect')->name('course.attach.download.direct');
 
+Route::get('/comments', 'CommentController@index');
+Route::get('/comments/replies', 'CommentController@replies');
+
 Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], function () {
     Route::post('/order', 'OrderController@store');
 
@@ -52,4 +55,7 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         // 请求发起微信实人认证
         Route::post('/tencent/faceVerify', 'MemberController@tencentFaceVerify');
     });
+
+    // 提交评论
+    Route::post('/comment/store', 'CommentController@store');
 });

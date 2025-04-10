@@ -4,9 +4,8 @@ import NavHeader from "../../components/nav-header";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { course as Course } from "../../api/index";
-import { changeTime } from "../../utils";
-import { Input, Toast } from "antd-mobile";
-import { DurationText, None } from "../../components";
+import { Toast } from "antd-mobile";
+import { DurationText, CourseComments } from "../../components";
 import AttachBox from "./compenents/attach-box";
 import backIcon from "../../assets/img/icon-back.png";
 import playIcon from "../../assets/img/play.gif";
@@ -27,7 +26,6 @@ const CoursePlayPage = () => {
   const [videos, setVideos] = useState<any>([]);
   const [chapters, setChapters] = useState<any>([]);
   const [isWatch, setIsWatch] = useState<boolean>(false);
-  const [videoWatchedProgress, setVideoWatchedProgres] = useState<any>([]);
   const [isLastpage, setIsLastpage] = useState<boolean>(false);
   const [lastVideoId, setLastVideoId] = useState(0);
   const [configkey, setConfigkey] = useState<KeysInterafce>({});
@@ -41,9 +39,6 @@ const CoursePlayPage = () => {
   const [playendedStatus, setPlayendedStatus] = useState<boolean>(false);
   const [playDuration, setPlayDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
-  const [comments, setComments] = useState<any>([]);
-  const [commentUsers, setCommentUsers] = useState<any>({});
-  const [content, setContent] = useState("");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -75,7 +70,6 @@ const CoursePlayPage = () => {
     setPlayendedStatus(false);
     setLoading(true);
     getVideo();
-    getVideoComments();
   }, [params.videoId, isLogin, user]);
 
   useEffect(() => {
@@ -90,7 +84,6 @@ const CoursePlayPage = () => {
         setVideos(res.data.videos);
         setIsWatch(res.data.is_watch);
         setChapters(res.data.chapters);
-        setVideoWatchedProgres(res.data.video_watched_progress);
         document.title = res.data.video.title;
         let chapteId = parseInt(res.data.video.chapter_id) || 0;
         let videoBox: any = [];
@@ -274,13 +267,6 @@ const CoursePlayPage = () => {
     });
   };
 
-  const getVideoComments = () => {
-    Course.VideoComments(Number(params.videoId)).then((res: any) => {
-      setComments(res.data.comments);
-      setCommentUsers(res.data.users);
-    });
-  };
-
   const buyCourse = () => {
     navigate(
       `/order?goods_id=${course.id}&goods_name=${course.title}&goods_label=点播课程&goods_charge=${course.charge}&goods_type=vod&goods_thumb=${course.thumb}`
@@ -299,23 +285,6 @@ const CoursePlayPage = () => {
 
   const goRole = () => {
     navigate("/role");
-  };
-
-  const submitComment = () => {
-    if (content === "") {
-      return;
-    }
-    if (content.length < 6) {
-      Toast.show("评论内容不能少于6个字");
-      return;
-    }
-    Course.SubmitVideoComment(Number(params.videoId), {
-      content: content,
-    }).then(() => {
-      Toast.show("成功");
-      setContent("");
-      getVideoComments();
-    });
   };
 
   return (
@@ -368,7 +337,7 @@ const CoursePlayPage = () => {
                       className={styles["subscribe-button"]}
                       onClick={() => buyCourse()}
                     >
-                      <span>订阅课程 ￥{course.charge}</span>
+                      <span>购买课程 ￥{course.charge}</span>
                     </div>
                   )}
                 </div>
@@ -544,49 +513,13 @@ const CoursePlayPage = () => {
               )}
             </div>
           )}
-          {currentTab === 1 && (
-            <div className={styles["course-comments-box"]}>
-              {comments.length > 0 ? (
-                <>
-                  {comments.map((comment: any) => (
-                    <div className={styles["comment-item"]} key={comment.id}>
-                      <div className={styles["avatar"]}>
-                        <img
-                          src={commentUsers[comment.user_id].avatar}
-                          width="32"
-                          height="32"
-                        />
-                      </div>
-                      <div className={styles["content"]}>
-                        <div className={styles["nickname"]}>
-                          {commentUsers[comment.user_id].nick_name}
-                        </div>
-                        <div className={styles["time"]}>
-                          {changeTime(comment.created_at)}
-                          {comment.ip_province
-                            ? " | " + comment.ip_province
-                            : ""}
-                        </div>
-
-                        {comment.is_check === 0 ? (
-                          <div className={styles["text-sp"]}>评论审核中</div>
-                        ) : (
-                          <div className={styles["text"]}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: comment.render_content,
-                              }}
-                            ></div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <None type="white" />
-              )}
-            </div>
+          {currentTab === 1 && video && (
+            <CourseComments
+              rid={video.id}
+              isBuy={isWatch && isBuy}
+              isAllowComment={video.is_allow_comment}
+              rt={2}
+            />
           )}
           {currentTab === 3 && (
             <AttachBox cid={course.id} list={attach} isBuy={isBuy} />
@@ -606,7 +539,7 @@ const CoursePlayPage = () => {
                   className={`${styles["button-item"]} ${styles["buy-button"]}`}
                   onClick={() => buyCourse()}
                 >
-                  <span>订阅课程</span>
+                  <span>购买课程</span>
                 </div>
               </>
             ) : (
@@ -619,32 +552,6 @@ const CoursePlayPage = () => {
             )}
           </div>
         )}
-        {!loading &&
-          currentTab === 1 &&
-          isWatch &&
-          video &&
-          video.is_allow_comment === 1 && (
-            <div className={styles["bottom-bar"]}>
-              <Input
-                className={styles["input"]}
-                placeholder="请输入评论内容"
-                value={content}
-                onChange={(e: any) => {
-                  setContent(e);
-                }}
-              />
-              <div
-                className={
-                  content.length > 0
-                    ? `${styles["comment-button"]} ${styles["active"]}`
-                    : styles["comment-button"]
-                }
-                onClick={() => submitComment()}
-              >
-                发布
-              </div>
-            </div>
-          )}
       </div>
     </>
   );

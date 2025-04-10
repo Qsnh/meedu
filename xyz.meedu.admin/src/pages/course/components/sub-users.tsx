@@ -168,7 +168,7 @@ export const SubUsers = (props: PropsInterface) => {
       ),
     },
     {
-      title: "订阅时间",
+      title: "购买时间",
       width: 200,
       dataIndex: "created_at",
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
@@ -210,7 +210,7 @@ export const SubUsers = (props: PropsInterface) => {
         return;
       }
       let users = res.data.users;
-      let filename = "录播课程订阅学员.xlsx";
+      let filename = "录播课程购买学员.xlsx";
       let sheetName = "sheet1";
 
       let data = [["学员ID", "学员", "手机号", "价格", "时间"]];
@@ -294,7 +294,7 @@ export const SubUsers = (props: PropsInterface) => {
               setWatchedAt(dateString);
               setWatchedAts(date);
             }}
-            placeholder={["订阅时间-开始", "订阅时间-结束"]}
+            placeholder={["购买时间-开始", "购买时间-结束"]}
           />
           <Button className="ml-10" onClick={resetList}>
             清空

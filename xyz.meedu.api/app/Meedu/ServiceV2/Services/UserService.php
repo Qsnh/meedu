@@ -76,7 +76,7 @@ class UserService implements UserServiceInterface
             $learnedVideoRecords = $this->userDao->getPerUserLearnedCourseLastVideo($userId, $courseIds);
             $learnedVideoRecords && $learnedVideoRecords = array_column($learnedVideoRecords, null, 'course_id');
 
-            // 是否订阅
+            // 是否购买课程
             $userCourse = $this->userDao->getUserCourses($userId, $courseIds);
             $userCourse && $userCourse = array_column($userCourse, null, 'course_id');
 
@@ -84,7 +84,7 @@ class UserService implements UserServiceInterface
                 $tmpLearnedCount = $learnedCount[$item['course_id']] ?? [];
                 // 已学课时
                 $data[$key]['learned_count'] = $tmpLearnedCount['learned_count'] ?? 0;
-                // 是否订阅
+                // 是否购买
                 $data[$key]['is_subscribe'] = isset($userCourse[$item['course_id']]) ? 1 : 0;
                 // 最后一次观看视频记录
                 $data[$key]['last_view_video'] = $learnedVideoRecords[$item['course_id']] ?? [];
@@ -305,5 +305,8 @@ class UserService implements UserServiceInterface
         return Role::query()->where('id', $id)->firstOrFail()->toArray();
     }
 
-
+    public function getUsersBasicInfo(array $userIds): array
+    {
+        return $this->userDao->getUsers($userIds, ['id', 'avatar', 'nick_name']);
+    }
 }

@@ -97,6 +97,7 @@ const items = [
     "operate",
     <i className="iconfont icon-icon-operate" />,
     [
+      getItem("课程评论", "/comments/index", null, null, null, "comment.index"),
       getItem("VIP会员", "/role", null, null, null, "role"),
       getItem("优惠码", "/promocode", null, null, null, "promoCode"),
     ],
@@ -188,6 +189,7 @@ export const LeftMenu: React.FC = () => {
     "^/system": ["system"],
     "^/systemLog": ["system"],
     "^/resource": ["resource"],
+    "^/comments": ["comments"],
   };
 
   const hit = (pathname: string): string[] => {
@@ -236,6 +238,9 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/system/topicConfig") !== -1) {
       setSelectedKeys(["/system/index"]);
       setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/comments/index") !== -1) {
+      setSelectedKeys(["/comments/index"]);
+      setOpenKeys(openKeyMerge("/comments"));
     } else if (location.pathname.indexOf("/stats/member/index") !== -1) {
       setSelectedKeys(["/stats/member/index"]);
       setOpenKeys(openKeyMerge("/stats"));

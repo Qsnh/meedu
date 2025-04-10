@@ -37,4 +37,20 @@ interface OtherDaoInterface
     public function deleteMediaVideos(string $service, array $videoIds): void;
 
     public function all(): array;
+
+    public function existSearchRecord(string $resourceType, int $resourceId): bool;
+
+    public function storeSearchRecord(string $resourceType, int $resourceId, array $data): void;
+
+    public function updateSearchRecord(string $resourceType, int $resourceId, array $data): void;
+
+    public function deleteSearchRecord(string $resourceType, int $resourceId): void;
+
+    public function deleteMultiSearchRecord(string $resourceType, array $resourceIds = []): void;
+
+    public function deleteAllSearchRecord(): void;
+
+    public function takeSearchRecord(string $keywords, int $limit): array;
+
+    public function storeMultiSearchRecord(array $insectData): void;
 }

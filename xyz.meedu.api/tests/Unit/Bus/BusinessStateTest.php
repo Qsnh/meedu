@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
-use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -177,69 +176,5 @@ class BusinessStateTest extends TestCase
         $course = Course::factory()->create(['is_free' => 1]);
         $user = User::factory()->create();
         $this->assertTrue($this->businessStatus->isBuyCourse($user['id'], $course['id']));
-    }
-
-    public function test_courseCanComment_with_free_course()
-    {
-        $course = Course::factory()->create(['is_free' => 1, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
-    }
-
-    public function test_courseCanComment_with_charge_course()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        $this->assertFalse($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
-    }
-
-    public function test_courseCanComment_with_charge_course_and_paid()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        UserCourse::create(['user_id' => $user['id'], 'course_id' => $course['id']]);
-        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
-    }
-
-    public function test_courseCanComment_with_charge_course_and_role()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100, 'is_allow_comment' => 1]);
-        $role = Role::factory()->create();
-        $user = User::factory()->create(['role_id' => $role['id'], 'role_expired_at' => Carbon::now()->addDays(1)->toDateTimeLocalString()]);
-        $this->assertTrue($this->businessStatus->courseCanComment($user->toArray(), $course->toArray()));
-    }
-
-    public function test_videoCanComment_with_free_course()
-    {
-        $course = Course::factory()->create(['is_free' => 1, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100, 'is_allow_comment' => 1]);
-        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
-    }
-
-    public function test_videoCanComment_with_charge_course_and_paid()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100, 'is_allow_comment' => 1]);
-        UserCourse::create(['user_id' => $user['id'], 'course_id' => $course['id']]);
-        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
-    }
-
-    public function test_videoCanComment_with_charge_course_and_with_role()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
-        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100, 'is_allow_comment' => 1]);
-        $role = Role::factory()->create();
-        $user = User::factory()->create(['role_id' => $role['id'], 'role_expired_at' => Carbon::now()->addDays(1)->toDateTimeLocalString()]);
-        $this->assertTrue($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
-    }
-
-    public function test_videoCanComment_with_charge()
-    {
-        $course = Course::factory()->create(['is_free' => 0, 'charge' => 100]);
-        $video = Video::factory()->create(['course_id' => $course['id'], 'charge' => 100, 'is_allow_comment' => 1]);
-        $user = User::factory()->create();
-        $this->assertFalse($this->businessStatus->videoCanComment($user->toArray(), $video->toArray()));
     }
 }

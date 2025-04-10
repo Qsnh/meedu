@@ -54,7 +54,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                       height={120}
                     ></ThumbBar>
                     {item.is_subscribe === 1 && (
-                      <div className={styles["icon"]}>已订阅</div>
+                      <div className={styles["icon"]}>已购买</div>
                     )}
                   </div>
                   <div className={styles["right-item"]}>
@@ -113,7 +113,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
                       width={160}
                       height={120}
                     ></ThumbBar>
-                    <div className={styles["icon"]}>已订阅</div>
+                    <div className={styles["icon"]}>已购买</div>
                   </div>
                   <div className={styles["right-item"]}>
                     <div className={styles["item-title"]}>

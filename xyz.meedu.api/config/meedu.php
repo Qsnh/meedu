@@ -200,4 +200,18 @@ return [
             'imgUrl' => '',
         ],
     ],
+
+    // HOOK
+    'hook' => [
+        'comment' => [
+            'rt' => [
+                [
+                    'id' => \App\Constant\BusConstant::COMMENT_RT_VOD_COURSE,
+                ],
+                [
+                    'id' => \App\Constant\BusConstant::COMMENT_RT_VOD_COURSE_VIDEO,
+                ],
+            ],
+        ],
+    ],
 ];

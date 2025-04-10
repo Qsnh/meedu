@@ -305,4 +305,13 @@ SQL;
     {
         return UserVideoWatchRecord::query()->where('user_id', $userId)->whereIn('video_id', $videoIds)->get()->toArray();
     }
+
+    public function getUsers(array $userIds, array $fields): array
+    {
+        return User::query()
+            ->select($fields)
+            ->whereIn('id', $userIds)
+            ->get()
+            ->toArray();
+    }
 }

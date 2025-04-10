@@ -258,5 +258,15 @@ class ConfigService implements ConfigServiceInterface
         return config('meedu.mp_wechat');
     }
 
+    public function enabledFullSearch(): bool
+    {
+        return (bool)config('scout.meilisearch.host');
+    }
+
+    public function getCommentRTWhiteList(): array
+    {
+        return array_column(config('meedu.hook.comment.rt'), 'id');
+    }
+
 
 }

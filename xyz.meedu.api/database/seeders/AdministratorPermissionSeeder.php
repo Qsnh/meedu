@@ -145,25 +145,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'url' => 'course_chapter/\d+/\d+',
                     ],
 
-                    // 录播课评论
-                    [
-                        'display_name' => '录播课-评论-列表',
-                        'slug' => 'course_comment',
-                        'method' => 'GET',
-                        'url' => 'course_comment',
-                    ],
-                    [
-                        'display_name' => '录播课-评论-删除',
-                        'slug' => 'course_comment.destroy',
-                        'method' => 'POST',
-                        'url' => 'course_comment/delete',
-                    ],
-                    [
-                        'display_name' => '录播课-评论-审核',
-                        'slug' => 'course_comment.check',
-                        'method' => 'POST',
-                        'url' => 'course_comment/check',
-                    ],
 
                     // 课时
                     [
@@ -213,26 +194,6 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'video.watch.records',
                         'method' => 'GET',
                         'url' => 'video/\d+/watch/records',
-                    ],
-
-                    // 课时评论
-                    [
-                        'display_name' => '录播课-课时-评论-列表',
-                        'slug' => 'video_comment',
-                        'method' => 'GET',
-                        'url' => 'video_comment',
-                    ],
-                    [
-                        'display_name' => '录播课-课时-评论-删除',
-                        'slug' => 'video_comment.destroy',
-                        'method' => 'POST',
-                        'url' => 'video_comment/delete',
-                    ],
-                    [
-                        'display_name' => '录播课-课时-评论-审核',
-                        'slug' => 'video_comment.check',
-                        'method' => 'POST',
-                        'url' => 'video_comment/check',
                     ],
 
                     // 课程附件
@@ -849,6 +810,31 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => 'stats.user',
                         'method' => 'GET',
                         'url' => '(^stats/user$|^stats/user-top$|^stats/user-paid-top$|^stats/user-graph$)',
+                    ],
+                ],
+            ],
+
+            // 评论
+            [
+                'group_name' => '评论',
+                'children' => [
+                    [
+                        'display_name' => '评论-列表',
+                        'slug' => 'comment.index',
+                        'method' => 'GET',
+                        'url' => 'comment/index',
+                    ],
+                    [
+                        'display_name' => '评论-删除',
+                        'slug' => 'comment.delete',
+                        'method' => 'POST',
+                        'url' => 'comment/delete',
+                    ],
+                    [
+                        'display_name' => '评论-审核',
+                        'slug' => 'comment.check',
+                        'method' => 'POST',
+                        'url' => 'comment/check',
                     ],
                 ],
             ],

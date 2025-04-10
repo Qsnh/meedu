@@ -37,7 +37,7 @@ class SearchController extends BaseController
      * @apiSuccess {String} data.seo_description SEO描述
      * @apiSuccess {String} data.published_at 上架时间
      * @apiSuccess {Number} data.is_rec 推荐[1:是,0否][已弃用]
-     * @apiSuccess {Number} data.user_count 订阅人数
+     * @apiSuccess {Number} data.user_count 购买人数
      * @apiSuccess {Number} data.videos_count 视频数
      * @apiSuccess {Object} data.category 分类
      * @apiSuccess {Number} data.category.id 分类ID

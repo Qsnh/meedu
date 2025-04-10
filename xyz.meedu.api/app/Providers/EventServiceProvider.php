@@ -69,6 +69,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\VodCourseDestroyedEvent' => [
             'App\Listeners\VodCourseDestroyedEvent\SearchRecordNotify',
+            'App\Listeners\VodCourseDestroyedEvent\ClearCommentListener',
         ],
         // 录播视频的增改删
         'App\Events\VodVideoCreatedEvent' => [
@@ -80,6 +81,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\VodVideoDestroyedEvent' => [
             'App\Listeners\VodVideoDestroyedEvent\SearchRecordNotify',
             'App\Listeners\VodVideoDestroyedEvent\UserWatchedRecordClear',
+            'App\Listeners\VodVideoDestroyedEvent\ClearCommentListener',
         ],
         // 退款已申请
         'App\Events\OrderRefundCreated' => [],
@@ -95,7 +97,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserDeleteCancelEvent\UserNotify',
         ],
         // 用户已删除事件
-        'App\Events\UserDeletedEvent' => [],
+        'App\Events\UserDeletedEvent' => [
+            'App\Listeners\UserDeletedEvent\ClearCommentListener',
+        ],
         // 用户实名认证通过事件
         'App\Events\UserVerifyFaceSuccessEvent' => [
             'App\Listeners\UserVerifyFaceSuccessEvent\UserNotifyListener',
@@ -154,5 +158,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TencentVodCallbackTranscodeCompleteEvent' => [],
         // 腾讯云视频回调事件之任务流状态变更
         'App\Events\TencentVodCallbackProcedureStateChangedEvent' => [],
+        // 全文搜索数据重建
+        'App\Events\FullSearchDataRebuildEvent' => [
+            'App\Listeners\FullSearchDataRebuildEvent\VodRebuildListener',
+            'App\Listeners\FullSearchDataRebuildEvent\VodVideoRebuildListener',
+        ],
+        // 全文搜索之自动上架课程的索引建立
+        'App\Events\PublishedCoursesSearchIndexBuildEvent' => [
+            'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseListener',
+            'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseVideoListener',
+        ]
     ];
 }

@@ -16,4 +16,6 @@ class PositionConstant
     public const SYSTEM_APP_CONFIG_SYNC_WHITELIST = 'system_app_config_sync_whitelist';
 
     public const ORDER_STORE_INFO_PARSE = 'order_store_info_parse';
+
+    public const COMMENT_STORE_CHECK = 'comment_store_check';
 }

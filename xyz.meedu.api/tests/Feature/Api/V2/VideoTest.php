@@ -10,14 +10,12 @@ namespace Tests\Feature\Api\V2;
 
 use Carbon\Carbon;
 use App\Constant\CacheConstant;
-use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
-use App\Services\Course\Models\VideoComment;
 use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserVideoWatchRecord;
 
@@ -137,111 +135,6 @@ class VideoTest extends Base
         ]);
         $r = $this->getJson('api/v2/video/' . $video->id);
         $this->assertResponseError($r, __('资源不存在'));
-    }
-
-    public function test_video_comment_close()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        $response = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseError($response, __('无权限'));
-    }
-
-    public function test_video_comment_only_paid()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseError($r, __('无权限'));
-    }
-
-    public function test_video_comment_only_paid_for_vip()
-    {
-        $user = User::factory()->create();
-        $role = Role::factory()->create();
-        $user->role_id = $role->id;
-        $user->role_expired_at = Carbon::now()->addDays(1);
-        $user->save();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'charge' => 1,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($r);
-    }
-
-    public function test_video_comment_only_paid_for_buy()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'charge' => 1,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-
-        UserVideo::create([
-            'video_id' => $video->id,
-            'user_id' => $user->id,
-        ]);
-
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($r);
-    }
-
-    public function test_video_comment_only_paid_for_buy_course()
-    {
-        $user = User::factory()->create();
-
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'charge' => 0,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_allow_comment' => 1,
-        ]);
-
-        UserCourse::create(['course_id' => $video->course_id, 'user_id' => $user->id]);
-
-        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/comment', [
-            'content' => 'hello meedu',
-        ]);
-        $this->assertResponseSuccess($r);
-    }
-
-    public function test_video_comments()
-    {
-        $video = Video::factory()->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        VideoComment::factory()->count(12)->create([
-            'video_id' => $video->id,
-        ]);
-        $r = $this->getJson('api/v2/video/' . $video->id . '/comments');
-        $r = $this->assertResponseSuccess($r);
-        $this->assertEquals(12, count($r['data']['comments']));
     }
 
     public function test_video_record()

@@ -61,4 +61,6 @@ interface UserServiceInterface
     public function getUserVideoWatchRecordsByChunkVideoIds(int $userId, array $videoIds): array;
 
     public function findRoleOrFail(int $id): array;
+
+    public function getUsersBasicInfo(array $userIds): array;
 }

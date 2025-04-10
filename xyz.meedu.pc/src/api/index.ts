@@ -8,3 +8,4 @@ export * as order from "./order";
 export * as search from "./search";
 export * as viewBlock from "./viewBlock";
 export * as study from "./study";
+export * as comment from "./comment";

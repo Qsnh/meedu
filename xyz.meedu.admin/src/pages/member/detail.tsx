@@ -63,7 +63,7 @@ const MemberDetailPage = () => {
     }
     // if (checkPermission("v2.member.videos")) {
     //   types.push({
-    //     name: "单独订阅课时",
+    //     name: "单独购买课时",
     //     key: "video-watch-records",
     //   });
     // }

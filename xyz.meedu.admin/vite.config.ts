@@ -5,7 +5,8 @@ import gzipPlugin from "rollup-plugin-gzip";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 8001,
+    host: '0.0.0.0',
+    port: 8300,
   },
   plugins: [react()],
   build: {

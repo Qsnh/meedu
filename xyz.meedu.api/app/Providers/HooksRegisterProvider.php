@@ -14,6 +14,8 @@ use App\Hooks\ViewBlock\Data\VodV1DataHook;
 use App\Hooks\OrderStore\OrderStoreRoleHook;
 use App\Hooks\OrderStore\OrderStoreCourseHook;
 use App\Meedu\Hooks\Constant\PositionConstant;
+use App\Hooks\CommentStoreCheck\VodCourseCommentHook;
+use App\Hooks\CommentStoreCheck\VodCourseVideoCommentHook;
 
 class HooksRegisterProvider extends ServiceProvider
 {
@@ -24,6 +26,10 @@ class HooksRegisterProvider extends ServiceProvider
         PositionConstant::ORDER_STORE_INFO_PARSE => [
             OrderStoreCourseHook::class,
             OrderStoreRoleHook::class,
+        ],
+        PositionConstant::COMMENT_STORE_CHECK => [
+            VodCourseCommentHook::class,
+            VodCourseVideoCommentHook::class,
         ],
     ];
 

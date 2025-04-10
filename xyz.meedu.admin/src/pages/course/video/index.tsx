@@ -210,7 +210,7 @@ const CourseVideoPage = () => {
             label: (
               <PerButton
                 type="link"
-                text="单独订阅"
+                text="单独购买"
                 class="c-primary"
                 icon={null}
                 p="video.subscribes"

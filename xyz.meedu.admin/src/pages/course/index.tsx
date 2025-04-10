@@ -412,24 +412,6 @@ const CoursePage = () => {
           />
           <PerButton
             type="primary"
-            text="课程评论"
-            class="ml-10"
-            icon={null}
-            p="course_comment"
-            onClick={() => navigate("/course/vod/components/vod-comments")}
-            disabled={null}
-          />
-          <PerButton
-            type="primary"
-            text="课时评论"
-            class="ml-10"
-            icon={null}
-            p="video_comment"
-            onClick={() => navigate("/course/vod/video/comments")}
-            disabled={null}
-          />
-          <PerButton
-            type="primary"
             text="课时批量导入"
             class="ml-10"
             icon={null}
