@@ -61,3 +61,116 @@
   align-items: center;
   justify-content: center;
 }
+
+// 添加动画效果
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// 模态框遮罩层
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+// 模态框内容容器
+.modal-content {
+  width: 80%;
+  max-width: 320px;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.3s ease;
+}
+
+// 模态框头部
+.modal-header {
+  padding: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+// 模态框主体
+.modal-body {
+  padding: 20px 16px;
+}
+
+// URL显示区域
+.url-display {
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  word-break: break-all;
+  font-size: 14px;
+  color: #333;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+// 提示文本
+.modal-tip {
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+// 模态框底部
+.modal-footer {
+  display: flex;
+  border-top: 1px solid #f0f0f0;
+}
+
+// 按钮共享样式
+.cancel-btn, .copy-btn {
+  flex: 1;
+  padding: 14px 0;
+  text-align: center;
+  border: none;
+  background: none;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+// 取消按钮
+.cancel-btn {
+  color: #666;
+  border-right: 1px solid #f0f0f0;
+}
+
+// 复制按钮
+.copy-btn {
+  color: #3ca7fa;
+  font-weight: 500;
+}
+
+// 按钮点击效果
+.cancel-btn:active, .copy-btn:active {
+  background-color: #f5f5f5;
+}

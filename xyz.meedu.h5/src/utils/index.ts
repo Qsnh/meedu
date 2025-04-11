@@ -228,8 +228,39 @@ export function isWechatMini() {
 }
 
 export function isWechat() {
+  if (typeof window === "undefined") {
+    return false;
+  }
   let ua = window.navigator.userAgent.toLowerCase();
-  return /micromessenger/.test(ua);
+  return /micromessenger/.test(ua) ? true : false;
+}
+
+export function isQQ() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /qqbrowser/.test(userAgent) || /mqqbrowser/.test(userAgent);
+}
+
+export function isWechatWork() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /micromessenger/.test(userAgent) && /wxwork/.test(userAgent);
+}
+
+export function isSafari() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /^((?!chrome|android).)*safari/i.test(userAgent);
+}
+
+export function isIPhone() {
+  return window.navigator.userAgent.indexOf("iPhone") !== -1;
 }
 
 export function SPAUrlAppend(baseUrl: string, queryParams: any) {

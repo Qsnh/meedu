@@ -388,7 +388,6 @@ const VodPlayPage = () => {
   };
 
   const download = (id: number) => {
-    let token = getToken();
     if (!isLogin) {
       goLogin();
       return;
@@ -397,9 +396,9 @@ const VodPlayPage = () => {
       message.error("请购买课程后下载");
       return;
     }
-    window.open(
-      `${config.url}/api/v2/course/attach/${id}/download?token=${token}`
-    );
+    vod.downloadAttachment(course.id, id).then((res: any) => {
+      window.open(res.data.download_url);
+    });
   };
 
   const tabChange = (id: number) => {
