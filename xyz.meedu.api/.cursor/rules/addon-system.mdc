@@ -1,0 +1,72 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Addon System Guide
+
+The MeEdu API project includes a custom addon/plugin system for extending functionality.
+
+## Addon Directory Structure
+
+- [addons/](mdc:addons) - Root directory for all addons/plugins
+- [addons/.gitignore](mdc:addons/.gitignore) - Git ignore rules for addon directory
+
+## Autoloading Configuration
+
+Addons use PSR-4 autoloading with the `Addons\` namespace:
+```php
+"autoload": {
+    "psr-4": {
+        "Addons\\": "addons/"
+    }
+}
+```
+
+## Addon Development
+
+### Directory Structure
+Each addon should follow this structure:
+```
+addons/
+├── YourAddonName/
+│   ├── Controllers/
+|   ├── Models/
+│   ├── Services/
+│   ├── AddonServiceProvider.php
+│   ├── routes/
+│   │   ├── frontend.php
+│   │   ├── backend.php
+│   ├── config/
+│   ├── resources/
+│   └── composer.json
+```
+
+### Namespace Convention
+Addons should use the namespace pattern: `Addons\YourAddonName\`
+
+### Integration Points
+Addons can integrate with the main application through:
+- Service Providers
+- Route definitions
+- Event listeners
+- Hook system (see [app/Hooks/](mdc:app/Hooks))
+
+## Hook System
+
+The project includes a hook system located in [app/Hooks/](mdc:app/Hooks) that allows addons to:
+- Extend existing functionality
+- Add custom business logic
+- Modify application behavior without core changes
+
+## Best Practices
+
+1. **Namespace**: Always use the `Addons\` namespace prefix
+2. **Service Providers**: Register addon services through Laravel service providers
+3. **Configuration**: Keep addon-specific configuration in the addon directory
+4. **Dependencies**: Manage addon dependencies separately from core dependencies
+5. **Hooks**: Use the hook system for loose coupling with core functionality
+
+## File Permissions
+
+Ensure the [addons/](mdc:addons) directory has proper write permissions (0777) for addon installation and management.

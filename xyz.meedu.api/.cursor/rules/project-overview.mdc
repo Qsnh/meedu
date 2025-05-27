@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# MeEdu API Project Overview
+
+This is a Laravel 8 based API for MeEdu, an online education platform. The project uses PHP 7.4+ with MySQL, Redis, and Meilisearch.
+
+## Key Project Files
+
+- [composer.json](mdc:composer.json) - Project dependencies and autoload configuration
+- [README.md](mdc:README.md) - Installation and setup instructions
+- [artisan](mdc:artisan) - Laravel command-line interface
+- [server.php](mdc:server.php) - Development server entry point
+
+## Core Directories
+
+- [app/](mdc:app) - Main application code
+- [routes/](mdc:routes) - API route definitions
+- [config/](mdc:config) - Configuration files
+- [database/](mdc:database) - Migrations, seeders, and factories
+- [tests/](mdc:tests) - Test suite
+- [addons/](mdc:addons) - Plugin/addon system
+- [storage/](mdc:storage) - File storage and logs
+- [public/](mdc:public) - Public web assets
+
+## Technology Stack
+
+- **Framework**: Laravel 8
+- **PHP Version**: 7.4+
+- **Database**: MySQL 5.6+
+- **Cache**: Redis 5.0+
+- **Search**: Meilisearch 0.24.0
+- **Authentication**: JWT (tymon/jwt-auth)
+- **Payment**: Laravel Pay (yansongda/laravel-pay)
+
+## Key Features
+
+- Multi-version API support (v1, v2, v3)
+- Frontend and Backend API endpoints
+- JWT authentication
+- File upload with chunking
+- Payment integration
+- Social login (QQ, etc.)
+- SMS and live streaming (Tencent Cloud)
+- Image processing
+- QR code generation

@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Key Dependencies and Integrations
+
+This document outlines the major dependencies and third-party integrations used in the MeEdu API project as defined in [composer.json](mdc:composer.json).
+
+## Core Framework
+- **Laravel Framework 8.x** - Main PHP framework
+- **Laravel Helpers** - Additional helper functions
+- **Laravel Scout** - Full-text search
+- **Laravel Socialite** - Social authentication
+
+## Authentication & Security
+- **tymon/jwt-auth** - JWT authentication for API
+- **mews/captcha** - CAPTCHA generation
+- **mews/purifier** - HTML purification
+
+## Database & Search
+- **doctrine/dbal** - Database abstraction layer
+- **meilisearch/meilisearch-php** - Meilisearch integration for search
+- **predis/predis** - Redis client
+
+## File Storage & Processing
+- **league/flysystem-aws-s3-v3** - AWS S3 file storage
+- **intervention/image** - Image processing and manipulation
+- **pion/laravel-chunk-upload** - Chunked file uploads
+
+## Payment Integration
+- **yansongda/laravel-pay** - Payment gateway integration (Alipay, WeChat Pay, etc.)
+
+## Cloud Services (Tencent Cloud)
+- **tencentcloud/faceid** - Face recognition services
+- **tencentcloud/live** - Live streaming services
+- **tencentcloud/sms** - SMS services
+- **tencentcloud/vod** - Video on demand services
+
+## Social Login
+- **socialiteproviders/qq** - QQ social login integration
+
+## Utilities
+- **hashids/hashids** - Generate short unique IDs
+- **simplesoftwareio/simple-qrcode** - QR code generation
+- **zoujingli/ip2region** - IP geolocation
+- **guzzlehttp/guzzle** - HTTP client
+
+## Development Tools
+- **filp/whoops** - Error handling for development
+- **fzaninotto/faker** - Generate fake data for testing
+- **mockery/mockery** - Mocking framework for tests
+- **phpunit/phpunit** - Testing framework
+
+## Package Repository
+The project uses Alibaba Cloud's Composer mirror for faster package downloads in China:
+```json
+"repositories": {
+    "packagist": {
+        "type": "composer",
+        "url": "https://mirrors.aliyun.com/composer/"
+    }
+}
+```

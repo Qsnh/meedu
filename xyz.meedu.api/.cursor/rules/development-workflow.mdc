@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Development Workflow Guide
+
+This guide covers the development workflow, commands, and best practices for the MeEdu API project.
+
+## Environment Setup
+
+### Required Files
+- Copy [.env.example](mdc:.env.example) to `.env` and configure database/Redis connections
+- Run installation commands as documented in [README.md](mdc:README.md)
+
+### Key Configuration
+- Database: MySQL 5.6+
+- Cache: Redis 5.0+
+- Search: Meilisearch 0.24.0
+- PHP: 7.4+ with required extensions
+
+## Development Commands
+
+### Composer Scripts (from [composer.json](mdc:composer.json))
+
+```bash
+# Run tests
+composer test
+
+# Clear caches
+composer clean
+
+# Rebuild caches
+composer rebuild
+
+# Restart supervisor processes
+composer restart-sp
+```
+
+### Laravel Artisan Commands
+
+```bash
+# Generate application key
+php artisan key:generate
+
+# Generate JWT secret
+php artisan jwt:secret
+
+# Run migrations
+php artisan migrate
+
+# Install default data
+php artisan install role
+php artisan install config
+php artisan install administrator
+
+# Create installation lock
+php artisan install:lock
+
+# Create storage symlink
+php artisan storage:link
+```
+
+## Code Organization
+
+### PSR-4 Autoloading
+- `App\` → [app/](mdc:app)
+- `Addons\` → [addons/](mdc:addons)
+- `Tests\` → [tests/](mdc:tests)
+
+### Helper Functions
+Global helper functions are defined in [app/helper.php](mdc:app/helper.php) and auto-loaded.
+
+## Testing
+
+- Test files: [tests/](mdc:tests)
+- PHPUnit configuration: [phpunit.xml](mdc:phpunit.xml)
+- Run tests: `./vendor/bin/phpunit` or `composer test`
+
+## Code Style
+
+- PHP CS Fixer configuration: [.php-cs-fixer.php](mdc:.php-cs-fixer.php)
+- Follow PSR-12 coding standards
+
+## File Permissions
+
+Ensure proper permissions for:
+- `storage/` directory (0777)
+- `addons/` directory (0777)
+
+## Deployment
+
+1. Run `composer install --no-dev`
+2. Configure environment variables
+3. Run database migrations
+4. Set up cron job for `php artisan schedule:run`
+5. Configure Nginx with proper rewrite rules

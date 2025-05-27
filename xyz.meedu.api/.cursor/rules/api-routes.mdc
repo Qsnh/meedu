@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Routes Structure
+
+The [routes/](mdc:routes) directory contains all API route definitions with support for multiple versions and different client types.
+
+## Route Files
+
+### Frontend API Routes
+- [routes/frontend.php](mdc:routes/frontend.php) - Base frontend routes
+- [routes/frontend-v2.php](mdc:routes/frontend-v2.php) - Frontend API v2
+- [routes/frontend-v3.php](mdc:routes/frontend-v3.php) - Frontend API v3
+
+### Backend/Admin API Routes
+- [routes/backend-v1.php](mdc:routes/backend-v1.php) - Backend API v1 (main admin API)
+- [routes/backend-v2.php](mdc:routes/backend-v2.php) - Backend API v2
+
+### Other Routes
+- [routes/web.php](mdc:routes/web.php) - Web routes (non-API)
+- [routes/channels.php](mdc:routes/channels.php) - Broadcast channels
+
+## API Versioning Strategy
+
+The project uses URL-based versioning:
+- Frontend APIs: `/api/v2/`, `/api/v3/`
+- Backend APIs: `/backend/api/v1/`, `/backend/api/v2/`
+
+## Route Organization
+
+Routes are organized by:
+1. **Client Type**: Frontend (student/user) vs Backend (admin)
+2. **Version**: v1, v2, v3 for different API versions
+3. **Functionality**: Grouped by feature areas within each route file
+
+## Authentication
+
+Most API routes use JWT authentication middleware. Check individual route files for specific middleware configurations.
+
+## Route Naming
+
+Routes follow Laravel conventions with prefixes:
+- Frontend routes: `api.v2.*`, `api.v3.*`
+- Backend routes: `backend.api.v1.*`, `backend.api.v2.*`

@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Application Structure Guide
+
+The [app/](mdc:app) directory contains the core application logic following Laravel conventions with some custom additions.
+
+## Core Application Directories
+
+### Controllers
+- [app/Http/Controllers/](mdc:app/Http/Controllers) - Base controller classes
+- [app/Http/Controllers/Api/](mdc:app/Http/Controllers/Api) - API controllers
+- [app/Http/Controllers/Frontend/](mdc:app/Http/Controllers/Frontend) - Frontend API controllers
+- [app/Http/Controllers/Backend/](mdc:app/Http/Controllers/Backend) - Admin/Backend controllers
+- [app/Http/Controllers/BaseController.php](mdc:app/Http/Controllers/BaseController.php) - Base controller with common functionality
+
+### Models and Data
+- [app/Models/](mdc:app/Models) - Eloquent models
+- [app/Http/Requests/](mdc:app/Http/Requests) - Form request validation classes
+
+### Business Logic
+- [app/Services/](mdc:app/Services) - Service layer for business logic
+- [app/Businesses/](mdc:app/Businesses) - Business logic classes
+- [app/Meedu/](mdc:app/Meedu) - Core MeEdu specific functionality
+
+### System Components
+- [app/Providers/](mdc:app/Providers) - Service providers
+- [app/Http/Middleware/](mdc:app/Http/Middleware) - HTTP middleware
+- [app/Http/Kernel.php](mdc:app/Http/Kernel.php) - HTTP kernel configuration
+- [app/Console/](mdc:app/Console) - Artisan commands
+- [app/Exceptions/](mdc:app/Exceptions) - Exception handling
+
+### Events and Messaging
+- [app/Events/](mdc:app/Events) - Event classes
+- [app/Listeners/](mdc:app/Listeners) - Event listeners
+- [app/Bus/](mdc:app/Bus) - Command bus and jobs
+
+### Utilities
+- [app/Hooks/](mdc:app/Hooks) - Hook system for extensibility
+- [app/Constant/](mdc:app/Constant) - Application constants
+- [app/helper.php](mdc:app/helper.php) - Global helper functions
+
+## Autoloading Configuration
+
+The project uses PSR-4 autoloading:
+- `App\` namespace maps to [app/](mdc:app)
+- `Addons\` namespace maps to [addons/](mdc:addons)
+- Helper functions are loaded from [app/helper.php](mdc:app/helper.php)
