@@ -11,7 +11,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 
-class UserDeleteJobRunCommand extends Command
+class
+UserDeleteJobRunCommand extends Command
 {
     /**
      * The name and signature of the console command.

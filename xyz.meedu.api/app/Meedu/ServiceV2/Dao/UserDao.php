@@ -172,6 +172,7 @@ SQL;
     {
         return UserDeleteJob::query()
             ->where('is_handle', 0)
+            ->where('expired_at', '<=', Carbon::now()->toDateTimeLocalString())
             ->orderBy('id')
             ->limit($limit)
             ->get()
