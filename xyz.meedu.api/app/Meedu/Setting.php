@@ -9,7 +9,6 @@
 namespace App\Meedu;
 
 use App\Meedu\Hooks\HookRun;
-use App\Meedu\Hooks\HookParams;
 use App\Meedu\Sms\SmsInterface;
 use App\Constant\ConfigConstant;
 use Illuminate\Support\Facades\Log;
@@ -114,6 +113,6 @@ class Setting
             'scout.meilisearch.host',
             'scout.meilisearch.key',
         ];
-        return HookRun::run(PositionConstant::SYSTEM_APP_CONFIG_SYNC_WHITELIST, new HookParams($syncWhitelistKeys));
+        return HookRun::mount(PositionConstant::SYSTEM_APP_CONFIG_SYNC_WHITELIST, $syncWhitelistKeys);
     }
 }

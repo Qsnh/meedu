@@ -10,7 +10,9 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Bus\VideoBus;
 use App\Meedu\Cache\Inc\Inc;
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
@@ -18,6 +20,7 @@ use App\Meedu\Cache\Impl\AliVodPlayCache;
 use App\Meedu\Cache\Inc\VideoViewIncItem;
 use App\Meedu\Cache\Impl\TencentVodPlayCache;
 use App\Services\Member\Services\UserService;
+use App\Meedu\Hooks\Constant\PositionConstant;
 use App\Services\Course\Services\VideoService;
 use App\Services\Course\Services\CourseService;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -47,10 +50,10 @@ class VideoController extends BaseController
     protected $businessState;
 
     public function __construct(
-        VideoServiceInterface        $videoService,
-        UserServiceInterface         $userService,
-        CourseServiceInterface       $courseService,
-        BusinessState                $businessState
+        VideoServiceInterface  $videoService,
+        UserServiceInterface   $userService,
+        CourseServiceInterface $courseService,
+        BusinessState          $businessState
     ) {
         $this->videoService = $videoService;
         $this->userService = $userService;
@@ -208,15 +211,21 @@ class VideoController extends BaseController
         $course = arr1_clear($course, ApiV2Constant::MODEL_COURSE_FIELD);
         $video = arr1_clear($video, ApiV2Constant::MODEL_VIDEO_FIELD);
 
-        return $this->data([
-            'video' => $video,
-            'videos' => $videos,
-            'chapters' => $chapters,
-            'course' => $course,
-            'is_watch' => $isWatch,
-            'video_watched_progress' => $videoWatchedProgress,
-            'buy_videos' => $buyVideos,
-        ]);
+
+        $data = HookRun::mount(
+            HookConstant::FRONTEND_VIDEO_CONTROLLER_DETAIL_RETURN_DATA,
+            [
+                'video' => $video,
+                'videos' => $videos,
+                'chapters' => $chapters,
+                'course' => $course,
+                'is_watch' => $isWatch,
+                'video_watched_progress' => $videoWatchedProgress,
+                'buy_videos' => $buyVideos,
+            ]
+        );
+
+        return $this->data($data);
     }
 
     /**
@@ -279,13 +288,17 @@ class VideoController extends BaseController
      */
     public function recordVideo(Request $request, VideoBus $videoBus, $id)
     {
-        // 视频已观看时长
-        $duration = (int)$request->post('duration', 0);
+        $duration = max(0, (int)$request->post('duration', 0));
         if (!$duration) {
             return $this->error(__('参数错误'));
         }
 
-        $videoBus->userVideoWatchDurationRecord($this->id(), (int)$id, $duration);
+        $videoId = (int)$id;
+        $userId = $this->id();
+
+        HookRun::subscribe(PositionConstant::VIDEO_RECORD_BEFORE, compact('duration', 'userId', 'videoId'));
+
+        $videoBus->userVideoWatchDurationRecord($userId, $videoId, $duration);
 
         return $this->success();
     }

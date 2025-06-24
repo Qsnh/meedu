@@ -32,4 +32,7 @@ class HookConstant
     public const BACKEND_MEDIA_VIDEO_CONTROLLER_INDEX_RETURN_DATA = 'backend_media_video_controller_index_return_data';
 
     public const FRONTEND_OTHER_CONTROLLER_CONFIG_RETURN_DATA = 'frontend_other_controller_config_return_data';
+
+    public const FRONTEND_COURSE_CONTROLLER_DETAIL_RETURN_DATA = 'frontend_course_controller_detail_return_data';
+    public const FRONTEND_VIDEO_CONTROLLER_DETAIL_RETURN_DATA = 'frontend_video_controller_detail_return_data';
 }

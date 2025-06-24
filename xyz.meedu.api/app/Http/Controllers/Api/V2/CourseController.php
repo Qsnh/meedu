@@ -8,7 +8,9 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
+use App\Constant\HookConstant;
 use App\Constant\ApiV2Constant;
 use App\Businesses\BusinessState;
 use App\Services\Member\Services\UserService;
@@ -41,10 +43,10 @@ class CourseController extends BaseController
     protected $businessState;
 
     public function __construct(
-        CourseServiceInterface        $courseService,
-        UserServiceInterface          $userService,
-        VideoServiceInterface         $videoService,
-        BusinessState                 $businessState
+        CourseServiceInterface $courseService,
+        UserServiceInterface   $userService,
+        VideoServiceInterface  $videoService,
+        BusinessState          $businessState
     ) {
         $this->courseService = $courseService;
         $this->userService = $userService;
@@ -210,16 +212,21 @@ class CourseController extends BaseController
             }
         }
 
-        return $this->data(compact(
-            'course',
-            'chapters',
-            'videos',
-            'isBuy',
-            'isCollect',
-            'videoWatchedProgress',
-            'attach',
-            'buyVideos',
-        ));
+        $data = HookRun::mount(
+            HookConstant::FRONTEND_COURSE_CONTROLLER_DETAIL_RETURN_DATA,
+            compact(
+                'course',
+                'chapters',
+                'videos',
+                'isBuy',
+                'isCollect',
+                'videoWatchedProgress',
+                'attach',
+                'buyVideos',
+            )
+        );
+
+        return $this->data($data);
     }
 
     /**

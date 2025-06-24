@@ -32,7 +32,7 @@ class CourseController extends BaseController
 {
     use CourseCategoryTrait;
 
-    public function all(Request $request)
+    public function all()
     {
         $courses = Course::query()->select(['id', 'title'])->get();
 
@@ -84,7 +84,10 @@ class CourseController extends BaseController
         $categories = CourseCategory::query()->select(['id', 'name'])->orderBy('sort')->get()->toArray();
 
         $data = HookRun::mount(HookConstant::BACKEND_COURSE_CONTROLLER_INDEX_RETURN_DATA, [
-            'courses' => $courses,
+            'courses' => [
+                'data' => $courses->items(),
+                'total' => $courses->total(),
+            ],
             'categories' => $categories,
         ]);
 
@@ -95,7 +98,10 @@ class CourseController extends BaseController
     {
         $categories = $this->getCourseCategoriesAndChildren();
 
-        $data = HookRun::mount(HookConstant::BACKEND_COURSE_CONTROLLER_CREATE_RETURN_DATA, compact('categories'));
+        $data = HookRun::mount(
+            HookConstant::BACKEND_COURSE_CONTROLLER_CREATE_RETURN_DATA,
+            compact('categories')
+        );
 
         return $this->successData($data);
     }
@@ -114,7 +120,13 @@ class CourseController extends BaseController
 
         event(new VodCourseCreatedEvent($course['id']));
 
-        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_STORE_SUCCESS, $course->toArray());
+        HookRun::subscribe(
+            HookConstant::BACKEND_COURSE_CONTROLLER_STORE_SUCCESS,
+            [
+                'course' => $course->toArray(),
+                'request_data' => $request->all(),
+            ]
+        );
 
         return $this->success();
     }
@@ -140,6 +152,8 @@ class CourseController extends BaseController
 
         $course = Course::query()->where('id', $id)->firstOrFail();
 
+        $oldCourseDATA = $course->toArray();
+
         AdministratorLog::storeLogDiff(
             AdministratorLog::MODULE_VOD,
             AdministratorLog::OPT_UPDATE,
@@ -161,7 +175,14 @@ class CourseController extends BaseController
 
         event(new VodCourseUpdatedEvent($course['id']));
 
-        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS, $course->toArray());
+        HookRun::subscribe(
+            HookConstant::BACKEND_COURSE_CONTROLLER_UPDATE_SUCCESS,
+            [
+                'old_course' => $oldCourseDATA,
+                'new_course' => $course->toArray(),
+                'request_data' => $request->all(),
+            ]
+        );
 
         return $this->success();
     }
@@ -184,7 +205,10 @@ class CourseController extends BaseController
 
         event(new VodCourseDestroyedEvent($id));
 
-        HookRun::subscribe(HookConstant::BACKEND_COURSE_CONTROLLER_DESTROY_SUCCESS, ['id' => $id]);
+        HookRun::subscribe(
+            HookConstant::BACKEND_COURSE_CONTROLLER_DESTROY_SUCCESS,
+            ['id' => $id]
+        );
 
         return $this->success();
     }

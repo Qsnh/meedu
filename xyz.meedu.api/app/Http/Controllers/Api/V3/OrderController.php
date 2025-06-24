@@ -12,7 +12,6 @@ use App\Bus\UniPayBus;
 use App\Meedu\Hooks\HookRun;
 use Illuminate\Http\Request;
 use App\Constant\BusConstant;
-use App\Meedu\Hooks\HookParams;
 use App\Meedu\Hooks\Constant\PositionConstant;
 use App\Http\Controllers\Api\V2\BaseController;
 use App\Meedu\ServiceV2\Services\OrderServiceInterface;
@@ -47,12 +46,12 @@ class OrderController extends BaseController
             return $this->error(__('参数错误'));
         }
 
-        $orderGoodsInfo = HookRun::run(
+        $orderGoodsInfo = HookRun::mount(
             PositionConstant::ORDER_STORE_INFO_PARSE,
-            new HookParams([
+            [
                 'goods_type' => $orderGoodsType,
                 'goods_id' => $orderGoodsId,
-            ])
+            ]
         );
 
         if (!$orderGoodsInfo) {

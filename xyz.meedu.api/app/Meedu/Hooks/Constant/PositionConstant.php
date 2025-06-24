@@ -18,4 +18,6 @@ class PositionConstant
     public const ORDER_STORE_INFO_PARSE = 'order_store_info_parse';
 
     public const COMMENT_STORE_CHECK = 'comment_store_check';
+
+    public const VIDEO_RECORD_BEFORE = 'video_record_before';
 }

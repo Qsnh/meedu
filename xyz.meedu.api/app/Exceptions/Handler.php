@@ -31,6 +31,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         ServiceException::class,
         ValidateException::class,
+        InterruptionException::class,
     ];
 
     /**

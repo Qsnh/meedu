@@ -9,7 +9,6 @@
 namespace App\Meedu\ViewBlock;
 
 use App\Meedu\Hooks\HookRun;
-use App\Meedu\Hooks\HookParams;
 use App\Meedu\Hooks\Constant\PositionConstant;
 
 class Render
@@ -21,7 +20,7 @@ class Render
                 continue;
             }
 
-            $tmpData = HookRun::run(PositionConstant::VIEW_BLOCK_DATA_RENDER, new HookParams(['block' => $blockItem]));
+            $tmpData = HookRun::mount(PositionConstant::VIEW_BLOCK_DATA_RENDER, ['block' => $blockItem]);
 
             if ($tmpData) {
                 // 如果渲染返回了数据则覆盖已有的数据
