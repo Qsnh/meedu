@@ -128,7 +128,9 @@ class CourseController extends BaseController
             ]
         );
 
-        return $this->success();
+        return $this->successData([
+            'id' => $course['id'],
+        ]);
     }
 
     public function edit($id)
@@ -161,13 +163,13 @@ class CourseController extends BaseController
                 'user_id', 'title', 'slug', 'thumb', 'charge',
                 'short_description', 'original_desc', 'render_desc', 'seo_keywords',
                 'seo_description', 'published_at', 'is_show', 'category_id',
-                'is_rec', 'user_count', 'is_free', 'is_allow_comment',
+                'is_rec', 'user_count', 'is_free', 'is_allow_comment', 'is_vip_free',
             ]),
             Arr::only($course->toArray(), [
                 'user_id', 'title', 'slug', 'thumb', 'charge',
                 'short_description', 'original_desc', 'render_desc', 'seo_keywords',
                 'seo_description', 'published_at', 'is_show', 'category_id',
-                'is_rec', 'user_count', 'is_free', 'is_allow_comment',
+                'is_rec', 'user_count', 'is_free', 'is_allow_comment', 'is_vip_free',
             ])
         );
 
@@ -197,7 +199,7 @@ class CourseController extends BaseController
 
         $course = Course::query()->where('id', $id)->firstOrFail();
 
-        if ($course->videos()->exists()) {
+        if (Video::query()->where('course_id', $course['id'])->exists()) {
             return $this->error(__('当前课程下存在视频无法删除'));
         }
 

@@ -11,7 +11,6 @@ namespace Tests\Unit\Bus;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Businesses\BusinessState;
-use App\Constant\FrontendConstant;
 use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Services\Course\Models\Course;
@@ -154,21 +153,6 @@ class BusinessStateTest extends TestCase
             'paid_type_id' => $promoCode->id,
         ]);
         $this->assertFalse($this->businessStatus->promoCodeCanUse($user['id'], $promoCode->toArray()));
-    }
-
-    public function test_orderIsPaid()
-    {
-        $this->assertTrue($this->businessStatus->orderIsPaid(['status' => FrontendConstant::ORDER_PAID]));
-        $this->assertFalse($this->businessStatus->orderIsPaid(['status' => FrontendConstant::ORDER_UN_PAY]));
-    }
-
-    public function test_isEnabledMpOAuthLogin()
-    {
-        //默认关闭
-        $this->assertFalse($this->businessStatus->isEnabledMpOAuthLogin());
-
-        config(['meedu.mp_wechat.enabled_oauth_login' => 1]);
-        $this->assertTrue($this->businessStatus->isEnabledMpOAuthLogin());
     }
 
     public function test_isBuyCourse_with_free_course()

@@ -9,13 +9,10 @@
 namespace App\Businesses;
 
 use Carbon\Carbon;
-use App\Constant\FrontendConstant;
 use App\Exceptions\ServiceException;
-use App\Services\Course\Models\Course;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
 use App\Services\Order\Services\PromoCodeService;
-use App\Services\Base\Interfaces\ConfigServiceInterface;
 use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
@@ -32,39 +29,38 @@ class BusinessState
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($course['id']);
+
         // 录播课设置免费的话可以直接看该录播课下所有视频
-        if ((int)$course['is_free'] === 1) {
+        if (1 === (int)$course['is_free']) {
             return true;
         }
+
+        // 新增：如果课程设置为VIP免费且用户是有效VIP会员，可以直接观看
+        if (1 === (int)$course['is_vip_free'] && $this->isRole($user)) {
+            return true;
+        }
+
         /**
          * @var UserService $userService
          */
         $userService = app()->make(UserServiceInterface::class);
+
         // 如果用户买了课程可以直接观看
         if ($userService->hasCourse($user['id'], $course['id'])) {
             return true;
         }
-        // 如果用户买了会员可以直接观看
+
+        // 如果用户买了会员可以直接观看（保留原有逻辑）
         if ($this->isRole($user)) {
             return true;
         }
+
         // 如果用户买了当前视频可以直接观看
         if ($userService->hasVideo($user['id'], $video['id'])) {
             return true;
         }
-        return false;
-    }
 
-    /**
-     * 订单是否支付.
-     *
-     * @param array $order
-     *
-     * @return bool
-     */
-    public function orderIsPaid(array $order): bool
-    {
-        return $order['status'] === FrontendConstant::ORDER_PAID;
+        return false;
     }
 
     /**
@@ -87,10 +83,7 @@ class BusinessState
         if (!$user['role_id'] || !$user['role_expired_at']) {
             return false;
         }
-        if (Carbon::now()->gt($user['role_expired_at'])) {
-            return false;
-        }
-        return true;
+        return Carbon::now()->lt($user['role_expired_at']);
     }
 
     /**
@@ -154,46 +147,28 @@ class BusinessState
          */
         $courseService = app()->make(CourseServiceInterface::class);
         $course = $courseService->find($courseId);
-        if ($course['is_free'] === Course::IS_FREE_YES) {
+
+        // 课程设置为免费
+        if (1 === $course['is_free']) {
             return true;
         }
+
         /**
          * @var $userService UserService
          */
         $userService = app()->make(UserServiceInterface::class);
         $user = $userService->find($userId, ['role']);
-        if ($this->isRole($user)) {
+
+        if (1 === $course['is_vip_free'] && $this->isRole($user)) {
             return true;
         }
+
+        // 用户购买了课程
         if ($userService->hasCourse($user['id'], $courseId)) {
             return true;
         }
+
         return false;
-    }
-
-    public function isEnabledMpOAuthLogin(): bool
-    {
-        /**
-         * @var ConfigServiceInterface $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-        $mpWechatConfig = $configService->getMpWechatConfig();
-        $enabledOAuthLogin = (int)($mpWechatConfig['enabled_oauth_login'] ?? 0);
-        return $enabledOAuthLogin === 1;
-    }
-
-    public function enabledMpScanLogin(): bool
-    {
-        /**
-         * @var ConfigServiceInterface $configService
-         */
-        $configService = app()->make(ConfigServiceInterface::class);
-
-        $mpWechatConfig = $configService->getMpWechatConfig();
-
-        $enabledOAuthLogin = (int)($mpWechatConfig['enabled_scan_login'] ?? 0);
-
-        return $enabledOAuthLogin === 1;
     }
 
     public function socialiteBindCheck(int $userId, string $app, string $appId): void

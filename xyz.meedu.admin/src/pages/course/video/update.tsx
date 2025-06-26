@@ -109,7 +109,7 @@ const CourseVideoUpdatePage = () => {
   };
 
   const getCourse = async () => {
-    const res: any = await course.detail(cid);
+    const res: CourseDetailResponse = await course.detail(cid);
     let data = res.data;
     setIsFree(data.is_free);
     if (data.is_free === 1) {

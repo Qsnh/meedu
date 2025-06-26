@@ -84,7 +84,7 @@ const CourseVideoCreatePage = () => {
   };
 
   const getCourse = () => {
-    course.detail(cid).then((res: any) => {
+    course.detail(cid).then((res: CourseDetailResponse) => {
       let course = res.data;
       setIsFree(course.is_free);
       if (course.is_free === 1) {

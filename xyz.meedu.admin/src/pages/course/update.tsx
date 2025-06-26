@@ -31,11 +31,12 @@ const CourseUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [init, setInit] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [categories, setCategories] = useState<any>([]);
+  const [init, setInit] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
   const [isFree, setIsFree] = useState(0);
-  const [thumb, setThumb] = useState<string>("");
+  const [, setIsVipFree] = useState(0);
+  const [thumb, setThumb] = useState("");
   const [defautValue, setDefautValue] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
 
@@ -59,14 +60,15 @@ const CourseUpdatePage = () => {
     if (id === 0) {
       return;
     }
-    const res: any = await course.detail(id);
-    var data = res.data;
+    const res: CourseDetailResponse = await course.detail(id);
+    const data = res.data;
     form.setFieldsValue({
       category_id: data.category_id,
       title: data.title,
       thumb: data.thumb,
       is_show: data.is_show,
       is_free: data.is_free,
+      is_vip_free: data.is_vip_free,
       short_description: data.short_description,
       original_desc: data.original_desc,
       charge: data.charge,
@@ -74,39 +76,47 @@ const CourseUpdatePage = () => {
       is_allow_comment: data.is_allow_comment,
     });
     setIsFree(data.is_free);
+    setIsVipFree(data.is_vip_free);
     setDefautValue(data.original_desc);
     setThumb(data.thumb);
   };
 
   const getParams = async () => {
-    const res: any = await course.create();
-    let categories = res.data.categories;
-    const box: any = [];
-    for (let i = 0; i < categories.length; i++) {
-      if (categories[i].children.length > 0) {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
-        let children = categories[i].children;
-        for (let j = 0; j < children.length; j++) {
-          children[j].name = "|----" + children[j].name;
-          box.push({
-            label: children[j].name,
-            value: children[j].id,
-          });
+    try {
+      const res: CourseCreateResponse = await course.create();
+      const { categories: categoryData } = res.data;
+
+      const formattedCategories: CategoryOption[] = categoryData.flatMap(
+        (category) => {
+          // Add parent category
+          const result: CategoryOption[] = [
+            {
+              label: category.name,
+              value: category.id,
+            },
+          ];
+
+          // Add children categories with proper indentation if they exist
+          if (category.children && category.children.length > 0) {
+            const formattedChildren = category.children.map((child) => ({
+              label: `|----${child.name}`,
+              value: child.id,
+            }));
+            result.push(...formattedChildren);
+          }
+
+          return result;
         }
-      } else {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
-      }
+      );
+
+      setCategories(formattedCategories);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
     }
-    setCategories(box);
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: CourseFormData) => {
+    console.log(values);
     if (loading) {
       return;
     }
@@ -128,12 +138,12 @@ const CourseUpdatePage = () => {
     setLoading(true);
     course
       .update(id, values)
-      .then((res: any) => {
+      .then(() => {
         setLoading(false);
         message.success("保存成功！");
         navigate(-1);
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -152,8 +162,9 @@ const CourseUpdatePage = () => {
 
   const isVChange = (checked: boolean) => {
     if (checked) {
-      form.setFieldsValue({ is_free: 1 });
+      form.setFieldsValue({ is_free: 1, is_vip_free: 0 });
       setIsFree(1);
+      setIsVipFree(0);
     } else {
       form.setFieldsValue({ is_free: 0 });
       setIsFree(0);
@@ -168,12 +179,22 @@ const CourseUpdatePage = () => {
     }
   };
 
+  const isVipFreeChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_vip_free: 1 });
+      setIsVipFree(1);
+    } else {
+      form.setFieldsValue({ is_vip_free: 0 });
+      setIsVipFree(0);
+    }
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑录播课程" />
       {init && (
         <div className="float-left text-center mt-30">
-          <Spin></Spin>
+          <Spin />
         </div>
       )}
       <div
@@ -250,10 +271,10 @@ const CourseUpdatePage = () => {
                     form.setFieldsValue({ thumb: url });
                     setThumb(url);
                   }}
-                ></UploadImageButton>
+                />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="长宽比4:3，建议尺寸：400x300像素"></HelperText>
+                <HelperText text="长宽比4:3，建议尺寸：400x300像素" />
               </div>
             </Space>
           </Form.Item>
@@ -277,6 +298,15 @@ const CourseUpdatePage = () => {
           </Form.Item>
           {isFree === 0 && (
             <Form.Item
+              label="VIP免费"
+              name="is_vip_free"
+              valuePropName="checked"
+            >
+              <Switch onChange={isVipFreeChange} />
+            </Form.Item>
+          )}
+          {isFree === 0 && (
+            <Form.Item
               label="价格"
               name="charge"
               rules={[{ required: true, message: "请输入价格!" }]}
@@ -294,7 +324,7 @@ const CourseUpdatePage = () => {
                   />
                 </Form.Item>
                 <div className="ml-10">
-                  <HelperText text="最小单位“元”，不支持小数"></HelperText>
+                  <HelperText text="最小单位：元，不支持小数" />
                 </div>
               </Space>
             </Form.Item>
@@ -313,7 +343,7 @@ const CourseUpdatePage = () => {
                 />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="上架时间越晚，排序越靠前"></HelperText>
+                <HelperText text="上架时间越晚，排序越靠前" />
               </div>
             </Space>
           </Form.Item>
@@ -323,7 +353,7 @@ const CourseUpdatePage = () => {
                 <Switch onChange={onSwitch} />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="关闭后此课程在前台隐藏显示"></HelperText>
+                <HelperText text="关闭后此课程在前台隐藏显示" />
               </div>
             </Space>
           </Form.Item>

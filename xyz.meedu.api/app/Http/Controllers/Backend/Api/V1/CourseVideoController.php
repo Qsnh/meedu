@@ -103,7 +103,9 @@ class CourseVideoController extends BaseController
 
         event(new VodVideoCreatedEvent($video['id']));
 
-        return $this->success();
+        return $this->successData([
+            'id' => $video['id'],
+        ]);
     }
 
     public function edit($id)

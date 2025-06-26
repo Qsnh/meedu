@@ -13,7 +13,7 @@ class ApiV2Constant
     public const MODEL_COURSE_FIELD = [
         'id', 'title', 'slug', 'thumb', 'charge', 'short_description', 'render_desc', 'seo_keywords',
         'seo_description', 'published_at', 'is_rec', 'is_show', 'user_count', 'category_id', 'is_free',
-        'is_allow_comment',
+        'is_allow_comment', 'is_vip_free',
 
         // 额外字段
         'videos_count', 'category',

@@ -13,7 +13,7 @@ import {
   Col,
   Modal,
 } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { course } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
@@ -30,24 +30,32 @@ const CourseCreatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [categories, setCategories] = useState<any>([]);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
   const [isFree, setIsFree] = useState(0);
+  const [isVipFree, setIsVipFree] = useState(0);
   const [thumb, setThumb] = useState<string>("");
   const [visiable, setVisiable] = useState<boolean>(false);
+  const [createdCourseId, setCreatedCourseId] = useState<number>(0);
 
   useEffect(() => {
     document.title = "新建录播课程";
     dispatch(titleAction("新建录播课程"));
-    form.setFieldsValue({ is_show: 1, is_free: 0, is_allow_comment: 0 });
+    form.setFieldsValue({
+      is_show: 1,
+      is_free: 0,
+      is_allow_comment: 0,
+      is_vip_free: 0,
+    });
     setIsFree(0);
+    setIsVipFree(0);
     setVisiable(false);
     getParams();
   }, []);
 
   const getParams = () => {
-    course.create().then((res: any) => {
+    course.create().then((res: CourseCreateResponse) => {
       let categories = res.data.categories;
-      const box: any = [];
+      const box: CategoryOption[] = [];
       for (let i = 0; i < categories.length; i++) {
         if (categories[i].children.length > 0) {
           box.push({
@@ -73,7 +81,7 @@ const CourseCreatePage = () => {
     });
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: CourseFormData) => {
     if (loading) {
       return;
     }
@@ -95,8 +103,11 @@ const CourseCreatePage = () => {
     setLoading(true);
     course
       .store(values)
-      .then((res: any) => {
+      .then((res: IApiResponse<any>) => {
         setLoading(false);
+        if (res.data && res.data.id) {
+          setCreatedCourseId(res.data.id);
+        }
         setVisiable(true);
       })
       .catch((e) => {
@@ -118,8 +129,9 @@ const CourseCreatePage = () => {
 
   const isVChange = (checked: boolean) => {
     if (checked) {
-      form.setFieldsValue({ is_free: 1 });
+      form.setFieldsValue({ is_free: 1, is_vip_free: 0 });
       setIsFree(1);
+      setIsVipFree(0);
     } else {
       form.setFieldsValue({ is_free: 0 });
       setIsFree(0);
@@ -127,22 +139,10 @@ const CourseCreatePage = () => {
   };
 
   const goVideo = () => {
-    course
-      .list({
-        page: 1,
-        size: 1,
-        sort: "id",
-        order: "desc",
-      })
-      .then((res: any) => {
-        navigate(
-          "/course/vod/video/index?course_id=" +
-            res.data.courses.data[0].id +
-            "&title=" +
-            res.data.courses.data[0].title,
-          { replace: true }
-        );
-      });
+    const courseTitle = form.getFieldValue('title') || '';
+    navigate(`/course/vod/video/index?course_id=${createdCourseId}&title=${encodeURIComponent(courseTitle)}`, {
+      replace: true,
+    });
   };
 
   const isAllowCommentChange = (checked: boolean) => {
@@ -150,6 +150,16 @@ const CourseCreatePage = () => {
       form.setFieldsValue({ is_allow_comment: 1 });
     } else {
       form.setFieldsValue({ is_allow_comment: 0 });
+    }
+  };
+
+  const isVipFreeChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_vip_free: 1 });
+      setIsVipFree(1);
+    } else {
+      form.setFieldsValue({ is_vip_free: 0 });
+      setIsVipFree(0);
     }
   };
 
@@ -254,6 +264,20 @@ const CourseCreatePage = () => {
           </Form.Item>
           {isFree === 0 && (
             <Form.Item
+              label="VIP免费"
+              name="is_vip_free"
+              valuePropName="checked"
+            >
+              <Space align="baseline" style={{ height: 32 }}>
+                <Switch onChange={isVipFreeChange} />
+                <div className="ml-10">
+                  <HelperText text="开启后VIP用户可免费学习此课程" />
+                </div>
+              </Space>
+            </Form.Item>
+          )}
+          {isFree === 0 && (
+            <Form.Item
               label="价格"
               name="charge"
               rules={[{ required: true, message: "请输入价格!" }]}
@@ -271,7 +295,7 @@ const CourseCreatePage = () => {
                   />
                 </Form.Item>
                 <div className="ml-10">
-                  <HelperText text="最小单位“元”，不支持小数"></HelperText>
+                  <HelperText text="最小单位：元，不支持小数"></HelperText>
                 </div>
               </Space>
             </Form.Item>

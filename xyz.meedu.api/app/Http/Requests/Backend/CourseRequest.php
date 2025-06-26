@@ -71,6 +71,7 @@ class CourseRequest extends BaseRequest
             'is_free' => (int)$this->input('is_free'),
             'user_count' => (int)$this->input('user_count'),
             'is_allow_comment' => (int)$this->input('is_allow_comment'),
+            'is_vip_free' => (int)$this->input('is_vip_free', 0),
         ];
     }
 }

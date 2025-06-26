@@ -14,8 +14,8 @@ export function store(params: any) {
   return client.post("/backend/api/v1/course", params);
 }
 
-export function detail(id: number) {
-  return client.get(`/backend/api/v1/course/${id}`, {});
+export function detail(id: number): Promise<CourseDetailResponse> {
+  return client.get<CourseDetailResponse>(`/backend/api/v1/course/${id}`, {});
 }
 
 export function destroy(id: number) {

@@ -72,7 +72,7 @@ export class HttpClient {
     );
   }
 
-  get(url: string, params: object) {
+  get<T = any>(url: string, params: object): Promise<T> {
     return new Promise((resolve, reject) => {
       this.axios
         .get(url, {
@@ -87,7 +87,7 @@ export class HttpClient {
     });
   }
 
-  destroy(url: string) {
+  destroy<T = any>(url: string): Promise<T> {
     return new Promise((resolve, reject) => {
       this.axios
         .delete(url)
@@ -100,7 +100,7 @@ export class HttpClient {
     });
   }
 
-  post(url: string, params: object) {
+  post<T = any>(url: string, params: object): Promise<T> {
     return new Promise((resolve, reject) => {
       this.axios
         .post(url, params)
@@ -113,7 +113,7 @@ export class HttpClient {
     });
   }
 
-  put(url: string, params: object) {
+  put<T = any>(url: string, params: object): Promise<T> {
     return new Promise((resolve, reject) => {
       this.axios
         .put(url, params)
