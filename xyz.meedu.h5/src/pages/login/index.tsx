@@ -28,6 +28,8 @@ import { saveConfigAction } from "../../store/system/systemConfigSlice";
 import closeIcon from "../../assets/img/new/close.png";
 import qqIcon from "../../assets/img/icon-qq.png";
 import wechatIcon from "../../assets/img/wechat.png";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -46,7 +48,9 @@ const LoginPage = () => {
   const [modelText, setModelText] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [redirect, setRedirect] = useState(result.get("redirect") || "");
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   useEffect(() => {
     document.title = "快捷登录/注册";

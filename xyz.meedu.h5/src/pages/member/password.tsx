@@ -84,8 +84,10 @@ const MemberPasswordPage = () => {
         }, 500);
       })
       .catch((e) => {
-        setConfirmDialog(false);
+        // 验证码错误时不关闭对话框，让用户可以重新输入
+        // 触发reStatus变化，让ConfirmLogin组件重置内部loading状态
         setLoading(false);
+        setReCaptcha(!reCaptcha);
       });
   };
 

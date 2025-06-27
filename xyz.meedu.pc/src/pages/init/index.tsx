@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import type { SystemConfig, NavItem } from "../../store/system/systemConfigSlice";
 import { useNavigate, Outlet, useSearchParams } from "react-router-dom";
 import { loginAction } from "../../store/user/loginUserSlice";
 import {
@@ -28,9 +30,29 @@ import {
 import { Spin } from "antd";
 
 interface Props {
-  config: any;
-  configFunc: any;
-  navsData: any;
+  config: SystemConfig;
+  configFunc: {
+    vip: boolean;
+    live: boolean;
+    book: boolean;
+    topic: boolean;
+    paper: boolean;
+    practice: boolean;
+    mockPaper: boolean;
+    wrongBook: boolean;
+    wenda: boolean;
+    share: boolean;
+    codeExchanger: boolean;
+    snapshort: boolean;
+    ke: boolean;
+    promoCode: boolean;
+    daySignIn: boolean;
+    credit1Mall: boolean;
+    tuangou: boolean;
+    miaosha: boolean;
+    cert: boolean;
+  };
+  navsData: NavItem[];
 }
 
 export const InitPage = (props: Props) => {
@@ -38,7 +60,7 @@ export const InitPage = (props: Props) => {
   const dispatch = useDispatch();
 
   // ------ store变量 ------
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const isLogin = useSelector((state: RootState) => state.loginUser.value.isLogin);
 
   // ------ URL变量 ------
   const [searchParams] = useSearchParams();

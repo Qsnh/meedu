@@ -1,7 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type LinksInterface = {
+  id: number;
+  sort: number;
+  name: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type NavsInterface = {
+  id: number;
+  sort: number;
+  name: string;
+  url: string;
+  active_routes: string;
+  platform: string;
+  parent_id: number;
+  blank: number;
+  children: NavsInterface[];
+};
+
 type AppConfigInterface = {
   aboutus: string;
+  course_purchase_notice: string;
   credit1_reward: {
     paid_order: string;
     register: number;
@@ -38,28 +60,28 @@ type AppConfigInterface = {
     cover: string;
     enabled_bullet_secret: string;
   };
-  sliders: SlidersInterface[];
+  sliders: any[];
   socialites: {
     qq: number;
     wechat_oauth: number;
-    wechat_scan: number;
   };
   url: string;
   user_private_protocol: string;
   user_protocol: string;
   vip_protocol: string;
-  webname: string;
+  webname?: string;
 };
 
 let defaultValue: AppConfigInterface = {
   aboutus: "",
+  course_purchase_notice: "",
   credit1_reward: {
     paid_order: "",
     register: 0,
     watched_video: 0,
     watched_vod_course: 0,
   },
-  enabled_addons: {},
+  enabled_addons: [],
   h5_url: "",
   icp: "",
   icp2: "",
@@ -91,13 +113,11 @@ let defaultValue: AppConfigInterface = {
   socialites: {
     qq: 0,
     wechat_oauth: 0,
-    wechat_scan: 0,
   },
   url: "",
   user_private_protocol: "",
   user_protocol: "",
   vip_protocol: "",
-  webname: "",
 };
 
 const systemConfigSlice = createSlice({
@@ -115,4 +135,4 @@ const systemConfigSlice = createSlice({
 export default systemConfigSlice.reducer;
 export const { saveConfigAction } = systemConfigSlice.actions;
 
-export type { AppConfigInterface };
+export type { AppConfigInterface, LinksInterface, NavsInterface };

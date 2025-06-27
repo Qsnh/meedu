@@ -4,12 +4,14 @@ import NavHeader from "../../components/nav-header";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { course as Course } from "../../api/index";
-import { Toast } from "antd-mobile";
+import { Toast, SpinLoading } from "antd-mobile";
 import { DurationText, CourseComments } from "../../components";
 import AttachBox from "./compenents/attach-box";
 import backIcon from "../../assets/img/icon-back.png";
 import playIcon from "../../assets/img/play.gif";
 import wechatShare from "../../js/wechat-share";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 declare const window: any;
 
@@ -19,18 +21,18 @@ interface KeysInterafce {
 
 const CoursePlayPage = () => {
   const navigate = useNavigate();
-  const params = useParams();
-  const [loading, setLoading] = useState(true);
-  const [course, setCourse] = useState<any>({});
-  const [video, setVideo] = useState<any>({});
+  const params: any = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [course, setCourse] = useState<any>(null);
+  const [video, setVideo] = useState<any>(null);
   const [videos, setVideos] = useState<any>([]);
   const [chapters, setChapters] = useState<any>([]);
   const [isWatch, setIsWatch] = useState<boolean>(false);
   const [isLastpage, setIsLastpage] = useState<boolean>(false);
-  const [lastVideoId, setLastVideoId] = useState(0);
+  const [lastVideoId, setLastVideoId] = useState<number>(0);
   const [configkey, setConfigkey] = useState<KeysInterafce>({});
-  const [nowChapter, setNowChapter] = useState<any>({});
-  const [attach, setAttach] = useState<any>([]);
+  const [nowChapter, setNowChapter] = useState<any>(null);
+  const [attachs, setAttachs] = useState<any>([]);
   const [showTry, setShowTry] = useState<boolean>(false);
   const [isBuy, setIsBuy] = useState<boolean>(false);
   const [lastSeeValue, setLastSeeValue] = useState<any>(null);
@@ -39,9 +41,13 @@ const CoursePlayPage = () => {
   const [playendedStatus, setPlayendedStatus] = useState<boolean>(false);
   const [playDuration, setPlayDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
-  const user = useSelector((state: any) => state.loginUser.value.user);
-  const config = useSelector((state: any) => state.systemConfig.value);
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const user = useSelector((state: RootState) => state.loginUser.value.user);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
+  const isLogin = useSelector(
+    (state: RootState) => state.loginUser.value.isLogin
+  );
   const myRef = useRef(0);
 
   const tabs = [
@@ -144,7 +150,7 @@ const CoursePlayPage = () => {
           res.data.course.title,
           res.data.course.short_description,
           res.data.course.thumb,
-          isLogin ? user.id : 0
+          isLogin ? user?.id || 0 : 0
         );
       })
       .catch((e) => {
@@ -219,9 +225,9 @@ const CoursePlayPage = () => {
       bulletSecret: {
         enabled: parseInt(config.player.enabled_bullet_secret) === 1,
         text: config.player.bullet_secret.text
-          .replace("${user.mobile}", user.mobile)
-          .replace("${mobile}", user.mobile)
-          .replace("${user.id}", user.id),
+          .replace("${user.mobile}", user?.mobile || "")
+          .replace("${mobile}", user?.mobile || "")
+          .replace("${user.id}", user?.id?.toString() || ""),
         size: bulletSecretFontSize + "px",
         color: !config.player.bullet_secret.color
           ? "red"
@@ -261,7 +267,7 @@ const CoursePlayPage = () => {
 
   const getAttach = (cid: number) => {
     Course.Detail(cid).then((res: any) => {
-      setAttach(res.data.attach);
+      setAttachs(res.data.attach);
       setIsBuy(res.data.isBuy);
       setShowTry(!res.data.isBuy);
     });
@@ -286,6 +292,23 @@ const CoursePlayPage = () => {
   const goRole = () => {
     navigate("/role");
   };
+
+  // 如果 video 没有值则显示loading
+  if (!video) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <SpinLoading color="primary" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -522,7 +545,7 @@ const CoursePlayPage = () => {
             />
           )}
           {currentTab === 3 && (
-            <AttachBox cid={course.id} list={attach} isBuy={isBuy} />
+            <AttachBox cid={course.id} list={attachs} isBuy={isBuy} />
           )}
         </div>
         {!loading && currentTab === 0 && !isWatch && (

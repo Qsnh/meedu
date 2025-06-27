@@ -16,6 +16,8 @@ import {
 import { Input, Toast } from "antd-mobile";
 import arrIcon from "../../assets/img/new/back@2x.png";
 import closeIcon from "../../assets/img/close.png";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const MemberProfilePage = () => {
   document.title = "个人资料";
@@ -32,7 +34,9 @@ const MemberProfilePage = () => {
   const [content, setContent] = useState("");
   const [verifyLoading, setVerifyLoading] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   useEffect(() => {
     getData();

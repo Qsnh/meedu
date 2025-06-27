@@ -105,6 +105,15 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.aboutus',
                 'value' => '',
             ],
+            [
+                'group' => '系统',
+                'name' => '课程购买须知',
+                'field_type' => 'longtext',
+                'sort' => 200,
+                'default_value' => '',
+                'key' => 'meedu.course_purchase_notice',
+                'value' => '',
+            ],
 
             // 登录
             [

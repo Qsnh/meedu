@@ -366,30 +366,26 @@ export const CourseComments: React.FC<PropInterface> = ({
           <None type="white" />
         )}
       </div>
-      {isLogin && (
+      {isLogin && isBuy && isAllowComment === 1 && (
         <div className={`${styles["bottom-bar"]} safe-area-bottom`}>
-          {isBuy && isAllowComment === 1 && (
-            <>
-              <Input
-                className={styles["input"]}
-                placeholder={placeholder}
-                value={content}
-                onChange={(e: any) => {
-                  setContent(e);
-                }}
-              />
-              <div
-                className={
-                  content.length > 0
-                    ? `${styles["comment-button"]} ${styles["active"]}`
-                    : styles["comment-button"]
-                }
-                onClick={() => submitComment()}
-              >
-                发布
-              </div>
-            </>
-          )}
+          <Input
+            className={styles["input"]}
+            placeholder={placeholder}
+            value={content}
+            onChange={(e: any) => {
+              setContent(e);
+            }}
+          />
+          <div
+            className={
+              content.length > 0
+                ? `${styles["comment-button"]} ${styles["active"]}`
+                : styles["comment-button"]
+            }
+            onClick={() => submitComment()}
+          >
+            发布
+          </div>
         </div>
       )}
     </>

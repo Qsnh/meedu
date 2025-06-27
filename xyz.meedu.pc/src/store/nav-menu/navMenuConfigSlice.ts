@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { NavItem } from "../system/systemConfigSlice";
 
 type NavMenuConfigStoreInterface = {
-  navs: any;
+  navs: NavItem[];
 };
 
 let defaultValue: NavMenuConfigStoreInterface = {

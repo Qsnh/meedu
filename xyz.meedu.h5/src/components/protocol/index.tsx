@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 import icon from "../../assets/img/new/agree.png";
 
 interface PropInterface {
@@ -10,7 +12,9 @@ interface PropInterface {
 
 export const Protocol: React.FC<PropInterface> = ({ type, agree }) => {
   const [isAgree, setIsAgree] = useState(false);
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   useEffect(() => {
     agree(isAgree);

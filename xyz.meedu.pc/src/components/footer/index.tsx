@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { system } from "../../api/index";
 import footlink from "../../assets/img/commen/footlink.png";
+import type { RootState } from "../../store";
 
 interface Props {
   status: boolean;
 }
 
 export const Footer = (props: Props) => {
-  const config = useSelector((state: any) => state.systemConfig.value.config);
+  const config = useSelector((state: RootState) => state.systemConfig.value.config);
   const pathname = useLocation().pathname;
   const [list, setList] = useState<any>([]);
   let footerStatus = true;
@@ -68,13 +69,13 @@ export const Footer = (props: Props) => {
           </a>
         </div>
         <div className={styles["info1"]}>
-          © 2021 {config.webname}
-          {config.icp && (
+          © 2021 {config?.webname || config?.name}
+          {config?.icp && (
             <a href={config.icp_link} target="_blank">
               •{config.icp}
             </a>
           )}
-          {config.icp2 && (
+          {config?.icp2 && (
             <a href={config.icp2_link} target="_blank">
               •{config.icp2}
             </a>

@@ -7,9 +7,51 @@ declare global {
 
   interface AppFeatureInterface {
     vip: boolean;
+    live: boolean;
+    book: boolean;
+    topic: boolean;
+    paper: boolean;
+    practice: boolean;
+    mockPaper: boolean;
+    wrongBook: boolean;
+    wenda: boolean;
+    share: boolean;
+    codeExchanger: boolean;
+    snapshort: boolean;
+    ke: boolean;
+    promoCode: boolean;
+    daySignIn: boolean;
+    credit1Mall: boolean;
+    tuangou: boolean;
+    miaosha: boolean;
+    cert: boolean;
   }
 
   interface AppConfigInterface {
+    name: string;
+    webname?: string;
+    vip_protocol: string;
+    course_purchase_notice: string;
+    sliders: any[];
+    navs: Array<{
+      id: number;
+      sort: number;
+      name: string;
+      url: string;
+      active_routes: string;
+      platform: string;
+      parent_id: number;
+      blank: number;
+      children: any[];
+    }>;
+    links: Array<{
+      id: number;
+      sort: number;
+      name: string;
+      url: string;
+      created_at: string;
+      updated_at: string;
+    }>;
     aboutus: string;
     credit1_reward: {
       register: number;
@@ -25,7 +67,7 @@ declare global {
     icp_link: string;
     logo: {
       logo: string;
-      white_logo?: string;
+      white_logo: Record<string, any>;
     };
     member: {
       enabled_mobile_bind_alert: number;
@@ -49,7 +91,6 @@ declare global {
     url: string;
     user_private_protocol: string;
     user_protocol: string;
-    webname: string;
   }
 
   interface UserDetailInterface {

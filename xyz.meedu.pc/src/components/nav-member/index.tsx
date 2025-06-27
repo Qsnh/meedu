@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
 import { saveUnread } from "../../store/user/loginUserSlice";
 import { user as member } from "../../api/index";
 
@@ -17,11 +18,11 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
   const [menus, setMenus] = useState<any>([]);
   const [hasMessage, setHasMessage] = useState<boolean>(false);
   const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
+    (state: RootState) => state.systemConfig.value.configFunc
   );
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const isLogin = useSelector((state: RootState) => state.loginUser.value.isLogin);
   const freshUnread = useSelector(
-    (state: any) => state.loginUser.value.freshUnread
+    (state: RootState) => state.loginUser.value.freshUnread
   );
 
   useEffect(() => {

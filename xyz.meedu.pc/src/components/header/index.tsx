@@ -4,6 +4,8 @@ import { Skeleton, Input, Button, Dropdown, message, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import type { NavItem } from "../../store/system/systemConfigSlice";
 import { saveUnread } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
@@ -22,18 +24,18 @@ export const Header = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   // 全局状态的user
-  const user = useSelector((state: any) => state.loginUser.value.user);
+  const user = useSelector((state: RootState) => state.loginUser.value.user);
   // 全局状态-是否登录
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const isLogin = useSelector((state: RootState) => state.loginUser.value.isLogin);
   // 刷新-未读消息数量
   const freshUnread = useSelector(
-    (state: any) => state.loginUser.value.freshUnread
+    (state: RootState) => state.loginUser.value.freshUnread
   );
-  const config = useSelector((state: any) => state.systemConfig.value.config);
+  const config = useSelector((state: RootState) => state.systemConfig.value.config);
   const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
+    (state: RootState) => state.systemConfig.value.configFunc
   );
-  const navs = useSelector((state: any) => state.navsConfig.value.navs);
+  const navs = useSelector((state: RootState) => state.navsConfig.value.navs);
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [navLoading, setNavLoading] = useState<boolean>(true);
@@ -55,7 +57,7 @@ export const Header = () => {
 
   useEffect(() => {
     const arr: any = [];
-    navs.map((item: any, index: number) => {
+    navs.map((item: NavItem, index: number) => {
       if (
         item.url !== "/" &&
         pathname !== "/" &&
@@ -89,9 +91,9 @@ export const Header = () => {
     setNavLoading(false);
   }, [navs]);
 
-  const checkArr = (children: any) => {
+  const checkArr = (children: NavItem[]) => {
     const arr: any = [];
-    children.map((item: any, index: number) => {
+    children.map((item: NavItem, index: number) => {
       arr.push({
         label: item.name,
         key: `child-${index}`,
@@ -279,7 +281,7 @@ export const Header = () => {
       <div className={styles["main-header"]}>
         <div className={styles["top-header"]}>
           <Link to="/" className={styles["App-logo"]}>
-            <img src={config.logo.logo} />
+            <img src={config?.logo?.logo || ''} />
           </Link>
           <div className={styles["content-box"]}>
             <div className={styles["search-box"]}>

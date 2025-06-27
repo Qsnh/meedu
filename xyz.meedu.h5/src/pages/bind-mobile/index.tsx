@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,8 @@ import NavHeader from "../../components/nav-header";
 import { Input, Toast } from "antd-mobile";
 import closeIcon from "../../assets/img/new/close.png";
 import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const BindMobilePage = () => {
   document.title = "绑定手机号";
@@ -33,7 +35,7 @@ const BindMobilePage = () => {
   const [modelTitle, setModelTitle] = useState("");
   const [modelText, setModelText] = useState("");
   const [confirmText, setConfirmText] = useState("");
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector((state: RootState) => state.systemConfig.value);
 
   const openDialog = () => {
     if (!mobile) {

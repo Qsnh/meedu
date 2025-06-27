@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./setting.module.scss";
 import { useSelector } from "react-redux";
 import NavHeader from "../../components/nav-header";
 import { Copyright } from "../../components";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const MemberSettingPage = () => {
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   useEffect(() => {
     document.title = "关于平台";
