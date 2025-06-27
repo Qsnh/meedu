@@ -19,6 +19,8 @@ import NavHeader from "../../components/nav-header";
 import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
 import { saveConfigAction } from "../../store/system/systemConfigSlice";
 import closeIcon from "../../assets/img/new/close.png";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const LoginPasswordPage = () => {
   const dispatch = useDispatch();
@@ -32,7 +34,9 @@ const LoginPasswordPage = () => {
   const [confirmText, setConfirmText] = useState("");
   const [visible, setVisible] = useState(false);
   const [redirect, setRedirect] = useState(result.get("redirect") || "");
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   useEffect(() => {
     document.title = "密码登录";

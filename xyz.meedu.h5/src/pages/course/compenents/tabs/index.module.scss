@@ -317,3 +317,43 @@
   margin-left: 10px;
   color: #999999;
 }
+
+.purchase-notice {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.notice-title {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.notice-content {
+  width: 100%;
+  height: auto;
+  float: left;
+  font-size: 14px;
+  color: #666666;
+  line-height: 20px;
+}
+
+.notice-content > p {
+  width: 100%;
+  height: auto;
+  float: left;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.notice-content > p:last-child {
+  margin-bottom: 0;
+}

@@ -102,6 +102,8 @@ class OtherController extends BaseController
             'vip_protocol' => route('user.vip_protocol'),
             // 关于我们URL
             'aboutus' => route('aboutus'),
+            // 课程购买须知
+            'course_purchase_notice' => $configService->getCoursePurchaseNotice(),
             // 播放器配置
             'player' => [
                 // 播放器封面

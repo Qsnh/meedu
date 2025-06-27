@@ -8,6 +8,7 @@ import AttachBox from "../attach-box";
 import backIcon from "../../../../assets/img/icon-back.png";
 import collectActive from "../../../../assets/img/collect-active.png";
 import collect from "../../../../assets/img/collect.png";
+import type { RootState } from "../../../../store";
 
 interface PropsInterafce {
   id: number;
@@ -31,7 +32,12 @@ interface KeysInterafce {
 
 export default function TabsComponent(props: PropsInterafce) {
   const navigate = useNavigate();
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const isLogin = useSelector(
+    (state: RootState) => state.loginUser.value.isLogin
+  );
+  const systemConfig = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   const [configkey, setConfigkey] = useState<KeysInterafce>({});
   const [currentTab, setCurrentTab] = useState(0);
@@ -158,6 +164,20 @@ export default function TabsComponent(props: PropsInterafce) {
                 ),
               }}
             ></div>
+            {systemConfig.course_purchase_notice && (
+              <div className={styles["purchase-notice"]}>
+                <div className={styles["notice-title"]}>购买须知</div>
+                <div
+                  className={styles["notice-content"]}
+                  dangerouslySetInnerHTML={{
+                    __html: systemConfig.course_purchase_notice.replace(
+                      /<img/g,
+                      "<img style='width:100%;height:auto;'"
+                    ),
+                  }}
+                ></div>
+              </div>
+            )}
           </div>
         )}
         {currentTab === 1 && (

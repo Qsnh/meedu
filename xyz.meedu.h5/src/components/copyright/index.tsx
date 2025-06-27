@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 export const Copyright: React.FC = () => {
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
 
   return (
     <>

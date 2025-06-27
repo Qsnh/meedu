@@ -367,4 +367,11 @@ class ConfigService implements ConfigServiceInterface
     {
         return 'redis' === config('cache.default');
     }
+
+    public function getCoursePurchaseNotice(): string
+    {
+        return config('meedu.course_purchase_notice') ?? '';
+    }
+
+
 }

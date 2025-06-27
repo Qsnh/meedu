@@ -5,26 +5,29 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import NavHeader from "../../components/nav-header";
 import { order } from "../../api/index";
-import { isWechatMini, getHost, getToken } from "../../utils";
+import { getHost } from "../../utils";
 import closeIcon from "../../assets/img/close.png";
 import vipIcon from "../../assets/img/default-vip.png";
 import prevIcon from "../../assets/img/icon-prev.png";
+import { RootState } from "../../store";
+import { AppConfigInterface } from "../../store/system/systemConfigSlice";
 
 const OrderPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const config = useSelector((state: any) => state.systemConfig.value);
+  const config: AppConfigInterface = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
   const [loading, setLoading] = useState(false);
   const [openmask, setOpenmask] = useState(false);
-  const [isUsed, setIsUsed] = useState(false);
+  const [isUsed] = useState(false);
   const [promoCode, setPromoCode] = useState<any>("");
   const [configTip, setConfigTip] = useState(2);
-  const [total, setTotal] = useState(Number(result.get("goods_charge")));
+  const [total] = useState(Number(result.get("goods_charge")));
   const [goods, setGoods] = useState<any>({});
   const [totalVal, setTotalVal] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [paymentScene, setPaymentScene] = useState("h5");
-  const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
+  const [, setPromoCodeModel] = useState<any>(null);
   const [openmask2, setOpenmask2] = useState(false);
 
   useEffect(() => {

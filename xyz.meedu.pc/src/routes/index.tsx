@@ -48,6 +48,24 @@ let RootPage: any = null;
 
 let configFunc: AppFeatureInterface = {
   vip: true,
+  live: false,
+  book: false,
+  topic: false,
+  paper: false,
+  practice: false,
+  mockPaper: false,
+  wrongBook: false,
+  wenda: false,
+  share: false,
+  codeExchanger: false,
+  snapshort: false,
+  ke: false,
+  promoCode: false,
+  daySignIn: false,
+  credit1Mall: false,
+  tuangou: false,
+  miaosha: false,
+  cert: false,
 };
 
 RootPage = lazy(async () => {

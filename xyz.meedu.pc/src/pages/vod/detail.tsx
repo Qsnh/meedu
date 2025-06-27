@@ -14,6 +14,7 @@ import appConfig from "../../js/config";
 
 const VodDetailPage = () => {
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const systemConfig = useSelector((state: any) => state.systemConfig.value.config);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -340,6 +341,15 @@ const VodDetailPage = () => {
               id="desc"
               dangerouslySetInnerHTML={{ __html: course.render_desc }}
             ></div>
+            {systemConfig?.course_purchase_notice && (
+              <div className={styles["purchase-notice"]}>
+                <h3>购买须知</h3>
+                <div
+                  className="u-content md-content"
+                  dangerouslySetInnerHTML={{ __html: systemConfig.course_purchase_notice }}
+                ></div>
+              </div>
+            )}
           </div>
         )}
         {currentTab === 3 && (

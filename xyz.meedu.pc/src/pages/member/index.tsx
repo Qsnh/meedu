@@ -3,6 +3,7 @@ import styles from "./index.module.scss";
 import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store";
 import { useSearchParams } from "react-router-dom";
 import { system, login, user as member } from "../../api/index";
 import { NavMember } from "../../components";
@@ -33,14 +34,14 @@ const MemberPage = () => {
 
   // --------- store变量 ---------
   // 当前登录学员
-  const user = useSelector((state: any) => state.loginUser.value.user);
+  const user = useSelector((state: RootState) => state.loginUser.value.user);
   // 系统配置
   const systemConfig = useSelector(
-    (state: any) => state.systemConfig.value.config
+    (state: RootState) => state.systemConfig.value.config
   );
   // 系统启用的功能
   const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
+    (state: RootState) => state.systemConfig.value.configFunc
   );
 
   // --------- URL变量 ---------
@@ -215,7 +216,7 @@ const MemberPage = () => {
     let token = getToken();
     let redirect = encodeURIComponent(host);
     window.location.href =
-      systemConfig.url +
+      (systemConfig?.url || '') +
       "/api/v3/auth/login/socialite/qq?s_url=" +
       redirect +
       "&f_url=" +
@@ -479,7 +480,7 @@ const MemberPage = () => {
                   </div>
                 </div>
 
-                {systemConfig.socialites.qq === 1 && (
+                {systemConfig?.socialites?.qq === 1 && (
                   <div className={styles["item-line"]}>
                     <div className={styles["item-left"]}>
                       <div className={styles["item-name"]}>
@@ -511,7 +512,7 @@ const MemberPage = () => {
                   </div>
                 )}
 
-                {systemConfig.socialites.wechat_oauth === 1 && (
+                {systemConfig?.socialites?.wechat_oauth === 1 && (
                   <div className={styles["item-line"]}>
                     <div className={styles["item-left"]}>
                       <div className={styles["item-name"]}>

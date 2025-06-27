@@ -38,8 +38,6 @@ export const InitPage = (props: Props) => {
   const [confirmText, setConfirmText] = useState("");
   const [verifyLoading, setVerifyLoading] = useState(false);
   const result = new URLSearchParams(useLocation().search);
-  const [login_code, setLoginCode] = useState(result.get("login_code") || "");
-  const [action, setAction] = useState(result.get("action") || "");
 
   useEffect(() => {
     if (props.loginData && props.configData) {

@@ -1,7 +1,78 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// 完善系统配置数据结构类型
+interface SystemConfig {
+  name: string;
+  webname?: string; // 网站名称，可选字段
+  logo: {
+    logo: string;
+    white_logo: Record<string, any>;
+  };
+  url: string;
+  pc_url: string;
+  h5_url: string;
+  icp: string;
+  icp_link: string;
+  icp2: string;
+  icp2_link: string;
+  user_protocol: string;
+  user_private_protocol: string;
+  vip_protocol: string;
+  aboutus: string;
+  course_purchase_notice: string;
+  player: {
+    cover: string;
+    enabled_bullet_secret: string;
+    bullet_secret: {
+      size: string;
+      color: string;
+      opacity: string;
+      text: string;
+    };
+  };
+  member: {
+    enabled_mobile_bind_alert: number;
+    enabled_face_verify: boolean;
+  };
+  socialites: {
+    qq: number;
+    wechat_oauth: number;
+  };
+  credit1_reward: {
+    register: number;
+    watched_vod_course: number;
+    watched_video: number;
+    paid_order: string;
+  };
+  enabled_addons: any[];
+  sliders: any[];
+  navs: NavItem[];
+  links: LinkItem[];
+}
+
+interface NavItem {
+  id: number;
+  sort: number;
+  name: string;
+  url: string;
+  active_routes: string;
+  platform: string;
+  parent_id: number;
+  blank: number;
+  children: NavItem[];
+}
+
+interface LinkItem {
+  id: number;
+  sort: number;
+  name: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+}
+
 type SystemConfigStoreInterface = {
-  config: any;
+  config: SystemConfig | null;
   configFunc: {
     vip: boolean;
     live: boolean;
@@ -69,4 +140,4 @@ export default systemConfigSlice.reducer;
 export const { saveConfigAction, saveConfigFuncAction } =
   systemConfigSlice.actions;
 
-export type { SystemConfigStoreInterface };
+export type { SystemConfigStoreInterface, SystemConfig, NavItem, LinkItem };
