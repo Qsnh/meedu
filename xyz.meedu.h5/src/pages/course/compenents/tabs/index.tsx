@@ -347,29 +347,20 @@ export default function TabsComponent(props: PropsInterafce) {
             </div>
           ) : (
             <>
-              {props.data.course.charge > 0 ? (
-                <>
-                  <div
-                    className={`${styles["button-item"]} ${styles["role-button"]}`}
-                    onClick={() => goRole()}
-                  >
-                    <span>VIP会员免费看</span>
-                  </div>
-                  <div
-                    className={`${styles["button-item"]} ${styles["buy-button"]}`}
-                    onClick={() => buyCourse()}
-                  >
-                    <span>购买课程</span>
-                  </div>
-                </>
-              ) : (
+              {props.data.course.is_vip_free === 1 ? (
                 <div
-                  className={`${styles["button-item"]} ${styles["role-button2"]}`}
+                  className={`${styles["button-item"]} ${styles["role-button"]}`}
                   onClick={() => goRole()}
                 >
                   <span>VIP会员免费看</span>
                 </div>
-              )}
+              ) : null}
+              <div
+                className={`${styles["button-item"]} ${styles["buy-button"]}`}
+                onClick={() => buyCourse()}
+              >
+                <span>购买课程</span>
+              </div>
             </>
           )}
         </div>

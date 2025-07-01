@@ -84,6 +84,7 @@ declare global {
     title: string;
     user_count: number;
     is_allow_comment: number;
+    is_vip_free: number;
   }
 
   interface CourseDetailChapterInterface {

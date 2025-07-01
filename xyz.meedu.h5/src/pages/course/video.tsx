@@ -550,29 +550,22 @@ const CoursePlayPage = () => {
         </div>
         {!loading && currentTab === 0 && !isWatch && (
           <div className={styles["bottom-bar"]}>
-            {course.charge > 0 ? (
-              <>
+            <>
+              {course.is_vip_free === 1 ? (
                 <div
                   className={`${styles["button-item"]} ${styles["role-button"]}`}
                   onClick={() => goRole()}
                 >
                   <span>VIP会员免费看</span>
                 </div>
-                <div
-                  className={`${styles["button-item"]} ${styles["buy-button"]}`}
-                  onClick={() => buyCourse()}
-                >
-                  <span>购买课程</span>
-                </div>
-              </>
-            ) : (
+              ) : null}
               <div
-                className={`${styles["button-item"]} ${styles["role-button2"]}`}
-                onClick={() => goRole()}
+                className={`${styles["button-item"]} ${styles["buy-button"]}`}
+                onClick={() => buyCourse()}
               >
-                <span>VIP会员免费看</span>
+                <span>购买课程</span>
               </div>
-            )}
+            </>
           </div>
         )}
       </div>
