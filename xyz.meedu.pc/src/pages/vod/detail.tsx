@@ -300,7 +300,7 @@ const VodDetailPage = () => {
                         购买课程￥{course.charge}
                       </div>
                     )}
-                    {course.vip_can_view === 1 && !appConfig.disable_vip && (
+                    {course.is_vip_free === 1 && !appConfig.disable_vip && (
                       <div
                         className={styles["role-button"]}
                         onClick={() => goRole()}
