@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { DurationText, CourseComments } from "../../../../components";
+import { Toast } from "antd-mobile";
 import AttachBox from "../attach-box";
 import backIcon from "../../../../assets/img/icon-back.png";
 import collectActive from "../../../../assets/img/collect-active.png";
@@ -88,10 +89,26 @@ export default function TabsComponent(props: PropsInterafce) {
     }
     let video = null;
     if (props.data.chapters.length === 0) {
-      video = props.data.videos[0][0];
+      // 检查无章节内容是否存在
+      if (props.data.videos[0] && props.data.videos[0].length > 0) {
+        video = props.data.videos[0][0];
+      }
     } else {
-      video = props.data.videos[props.data.chapters[0].id][0];
+      // 检查第一个章节的视频是否存在
+      const firstChapterId = props.data.chapters[0].id;
+      if (
+        props.data.videos[firstChapterId] &&
+        props.data.videos[firstChapterId].length > 0
+      ) {
+        video = props.data.videos[firstChapterId][0];
+      }
     }
+
+    if (!video) {
+      Toast.show("暂无可学习课时！");
+      return;
+    }
+
     navigate("/course/video/" + video.id);
   };
 
