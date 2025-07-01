@@ -119,7 +119,7 @@ export default function TabsComponent(props: PropsInterafce) {
       return;
     }
     navigate(
-      `/order?goods_id=${props.data.course.id}&goods_name=${props.data.course.title}&goods_label=点播课程&goods_charge=${props.data.course.charge}&goods_type=vod&goods_thumb=${props.data.course.thumb}`
+      `/order?goods_id=${props.data.course.id}&goods_name=${props.data.course.title}&goods_label=录播课程&goods_charge=${props.data.course.charge}&goods_type=vod&goods_thumb=${props.data.course.thumb}`
     );
   };
 

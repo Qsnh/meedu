@@ -131,7 +131,6 @@ const OrderPage = () => {
     }
     setLoading(true);
     if (goods.type === "vod") {
-      // 点播课程
       order
         .CreateOrder({
           goods_type: "COURSE",

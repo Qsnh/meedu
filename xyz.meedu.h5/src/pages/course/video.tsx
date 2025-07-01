@@ -248,7 +248,7 @@ const CoursePlayPage = () => {
     });
     window.player.on("sub_course", () => {
       navigate(
-        `/order?goods_id=${course.id}&goods_name=${course.title}&goods_label=点播课程&goods_charge=${course.charge}&goods_type=vod&goods_thumb=${course.thumb}`
+        `/order?goods_id=${course.id}&goods_name=${course.title}&goods_label=录播课程&goods_charge=${course.charge}&goods_type=vod&goods_thumb=${course.thumb}`
       );
     });
     window.player.on("play_error", (e: any) => {
@@ -275,7 +275,7 @@ const CoursePlayPage = () => {
 
   const buyCourse = () => {
     navigate(
-      `/order?goods_id=${course.id}&goods_name=${course.title}&goods_label=点播课程&goods_charge=${course.charge}&goods_type=vod&goods_thumb=${course.thumb}`
+      `/order?goods_id=${course.id}&goods_name=${course.title}&goods_label=录播课程&goods_charge=${course.charge}&goods_type=vod&goods_thumb=${course.thumb}`
     );
   };
 
