@@ -32,9 +32,6 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
-  react-ga:
-    specifier: ^3.3.1
-    version: 3.3.1(prop-types@15.8.1)(react@18.2.0)
   react-redux:
     specifier: ^8.0.5
     version: 8.1.3(@types/react-dom@18.2.22)(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -2505,16 +2502,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: false
-
-  /react-ga@3.3.1(prop-types@15.8.1)(react@18.2.0):
-    resolution: {integrity: sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==}
-    peerDependencies:
-      prop-types: ^15.6.0
-      react: ^15.6.2 || ^16.0 || ^17 || ^18
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:

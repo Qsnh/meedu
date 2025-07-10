@@ -96,12 +96,14 @@ class VideoTest extends Base
         $user = User::factory()->create();
 
         $course = Course::factory()->create([
-            'is_show' => Course::SHOW_YES,
+            'is_show' => 1,
             'published_at' => Carbon::now()->subDays(1),
+            'charge' => 1,
+            'is_vip_free' => 0,
         ]);
         $video = Video::factory()->create([
-            'course_id' => $course->id,
-            'is_show' => Video::IS_SHOW_YES,
+            'course_id' => $course['id'],
+            'is_show' => 1,
             'published_at' => Carbon::now()->subDays(1),
             'charge' => 100,
         ]);

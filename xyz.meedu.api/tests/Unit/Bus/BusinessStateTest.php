@@ -61,14 +61,38 @@ class BusinessStateTest extends TestCase
         $this->assertFalse($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
     }
 
-    public function test_canSeeVideo_with_role()
+    public function test_canSeeVideo_with_vip_ban_with_role()
     {
         $user = User::factory()->create([
             'role_id' => 1,
             'role_expired_at' => Carbon::now()->addDays(1),
         ]);
-        $course = Course::factory()->create();
-        $video = Video::factory()->create(['charge' => 1]);
+        $course = Course::factory()->create([
+            'is_free' => 0,
+            'charge' => 100,
+            'is_vip_free' => 0,
+        ]);
+        $video = Video::factory()->create([
+            'charge' => 1,
+        ]);
+
+        $this->assertFalse($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
+    }
+
+    public function test_canSeeVideo_with_vip_allow_with_role()
+    {
+        $user = User::factory()->create([
+            'role_id' => 1,
+            'role_expired_at' => Carbon::now()->addDays(1),
+        ]);
+        $course = Course::factory()->create([
+            'is_free' => 0,
+            'charge' => 100,
+            'is_vip_free' => 1,
+        ]);
+        $video = Video::factory()->create([
+            'charge' => 1,
+        ]);
 
         $this->assertTrue($this->businessStatus->canSeeVideo($user->toArray(), $course->toArray(), $video->toArray()));
     }

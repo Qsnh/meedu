@@ -35,4 +35,8 @@ class HookConstant
 
     public const FRONTEND_COURSE_CONTROLLER_DETAIL_RETURN_DATA = 'frontend_course_controller_detail_return_data';
     public const FRONTEND_VIDEO_CONTROLLER_DETAIL_RETURN_DATA = 'frontend_video_controller_detail_return_data';
+
+    public const BUSINESS_STATE_CAN_SEE_VIDEO = 'business_state_can_see_video';
+
+    public const BUSINESS_STATE_IS_BUY_COURSE = 'business_state_is_buy_course';
 }

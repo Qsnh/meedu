@@ -9,6 +9,8 @@
 namespace App\Businesses;
 
 use Carbon\Carbon;
+use App\Meedu\Hooks\HookRun;
+use App\Constant\HookConstant;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Services\UserService;
 use App\Services\Order\Services\OrderService;
@@ -50,34 +52,20 @@ class BusinessState
             return true;
         }
 
-        // 如果用户买了会员可以直接观看（保留原有逻辑）
-        if ($this->isRole($user)) {
-            return true;
-        }
-
         // 如果用户买了当前视频可以直接观看
         if ($userService->hasVideo($user['id'], $video['id'])) {
             return true;
         }
 
-        return false;
+        return (bool)HookRun::mount(HookConstant::BUSINESS_STATE_CAN_SEE_VIDEO, compact('user', 'course', 'video'), false);
     }
 
-    /**
-     * 是否需要绑定手机号
-     *
-     * @param array $user
-     * @return bool
-     */
+
     public function isNeedBindMobile(array $user): bool
     {
         return substr($user['mobile'], 0, 1) != 1 || mb_strlen($user['mobile']) !== 11;
     }
 
-    /**
-     * @param array $user
-     * @return bool
-     */
     public function isRole(array $user): bool
     {
         if (!$user['role_id'] || !$user['role_expired_at']) {
@@ -86,12 +74,7 @@ class BusinessState
         return Carbon::now()->lt($user['role_expired_at']);
     }
 
-    /**
-     * @param int $loginUserId
-     * @param array $promoCode
-     * @return bool
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
+
     public function promoCodeCanUse(int $loginUserId, array $promoCode): bool
     {
         // 自己不能使用自己的优惠码
@@ -118,11 +101,6 @@ class BusinessState
         return true;
     }
 
-    /**
-     * @param array $order
-     * @return int
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function calculateOrderNeedPaidSum(array $order): int
     {
         /**
@@ -133,13 +111,6 @@ class BusinessState
         return max($sum, 0);
     }
 
-    /**
-     * 是否购买了课程
-     *
-     * @param integer $userId
-     * @param integer $courseId
-     * @return boolean
-     */
     public function isBuyCourse(int $userId, int $courseId): bool
     {
         /**
@@ -168,7 +139,7 @@ class BusinessState
             return true;
         }
 
-        return false;
+        return (bool)HookRun::mount(HookConstant::BUSINESS_STATE_IS_BUY_COURSE, compact('userId', 'courseId'), false);
     }
 
     public function socialiteBindCheck(int $userId, string $app, string $appId): void

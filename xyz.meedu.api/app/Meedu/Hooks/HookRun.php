@@ -13,9 +13,9 @@ use Illuminate\Pipeline\Pipeline;
 class HookRun
 {
 
-    public static function mount(string $hookName, $data)
+    public static function mount(string $hookName, $data, $defaultValue = null)
     {
-        return self::run($hookName, new HookParams($data));
+        return self::run($hookName, new HookParams($data), $defaultValue);
     }
 
     public static function subscribe(string $hookName, $data = [])
@@ -23,17 +23,15 @@ class HookRun
         return self::pack($hookName, new HookParams($data));
     }
 
-    /**
-     * 运行得到response
-     * @param $hook
-     * @param HookParams $params
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public static function run($hook, HookParams $params)
+    public static function run($hook, HookParams $params, $defaultValue = null)
     {
         $hooks = HookContainer::getInstance()->get($hook);
         if (!$hooks) {
+            // 如果指定默认返回值的话则返回默认值
+            if (!is_null($defaultValue)) {
+                return $defaultValue;
+            }
+            // 如果没有指定默认值则返回原样传递的参数
             return $params->getParams();
         }
 
@@ -48,13 +46,6 @@ class HookRun
             });
     }
 
-    /**
-     * 不关注response,仅关注走完pipeline之后的传入的参数变化
-     * @param $hook
-     * @param HookParams $hookParams
-     * @return mixed
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public static function pack($hook, HookParams $hookParams)
     {
         $hooks = HookContainer::getInstance()->get($hook);
