@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { saveConfigAction } from "../../store/system/systemConfigSlice";
 import { loginAction } from "../../store/user/loginUserSlice";
+import { RootState } from "../../store";
 import { ShowModel } from "../../components";
 import {
   isMobile,
@@ -22,29 +22,54 @@ import {
 import { user, login } from "../../api/index";
 import { logoutAction } from "../../store/user/loginUserSlice";
 
-interface Props {
-  loginData?: any;
-  configData?: any;
-}
-
-export const InitPage = (props: Props) => {
+export const InitPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [init, setInit] = useState<boolean>(false);
+
+  const configData = useSelector(
+    (state: RootState) => state.systemConfig.value
+  );
+
+  const [loginData, setLoginData] = useState<any>(null);
+  const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
+
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [modelTitle, setModelTitle] = useState("");
   const [modelText, setModelText] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [verifyLoading, setVerifyLoading] = useState(false);
-  const result = new URLSearchParams(useLocation().search);
+  const urlSearchParams = new URLSearchParams(useLocation().search);
 
   useEffect(() => {
-    if (props.loginData && props.configData) {
+    const fetchUserData = async () => {
+      const token = getToken();
+      if (token) {
+        try {
+          const userRes: any = await user.detail();
+          setLoginData(userRes.data);
+        } catch (error) {
+          console.error("用户信息获取失败", error);
+          // 可选：清除无效的 token
+          clearToken();
+        }
+      }
+      setUserDataLoaded(true);
+    };
+
+    fetchUserData();
+  }, []);
+
+  // 修改现有的 useEffect
+  useEffect(() => {
+    if (!userDataLoaded) return;
+
+    if (loginData && configData) {
       //检测是否开启强制绑定手机号
       if (
-        props.loginData.is_bind_mobile === 0 && //未绑定手机号
-        props.configData.member.enabled_mobile_bind_alert === 1 //已开启强制绑定手机号
+        loginData.is_bind_mobile === 0 && //未绑定手机号
+        configData.member.enabled_mobile_bind_alert === 1 //已开启强制绑定手机号
       ) {
         setModelTitle("绑定手机号");
         setModelText("登录前请绑定手机号");
@@ -52,13 +77,13 @@ export const InitPage = (props: Props) => {
         setVisible(true);
         return;
       }
-      dispatch(loginAction(props.loginData));
+      dispatch(loginAction(loginData));
       //检测是否开启强制实名认证+未进行实名认证
       let pathname = window.location.pathname;
       if (
         pathname !== "/auth/faceSuccess" && //非实名认证结果查询页面
-        props.loginData.is_face_verify === false && //未完成实名认证
-        props.configData.member.enabled_face_verify === true //已开启强制实名认证
+        loginData.is_face_verify === false && //未完成实名认证
+        configData.member.enabled_face_verify === true //已开启强制实名认证
       ) {
         setModelTitle("实名认证");
         setModelText("登录前请完成实名认证");
@@ -69,22 +94,22 @@ export const InitPage = (props: Props) => {
         clearRuleId();
       }
     }
-    if (props.configData) {
-      dispatch(saveConfigAction(props.configData));
-      if (!isMobile()) {
-        if (props.configData.pc_url !== "") {
-          window.location.href = props.configData.pc_url;
-        }
+
+    // 检查是否需要重定向到 PC 端
+    if (configData && !isMobile()) {
+      if (configData.pc_url !== "") {
+        window.location.href = configData.pc_url;
       }
     }
+
     setInit(true);
-  }, [props]);
+  }, [loginData, configData, userDataLoaded, dispatch]);
 
   useEffect(() => {
-    if (result.get("login_code") && result.get("action") === "login") {
-      CodeLogin(String(result.get("login_code")));
+    if (urlSearchParams.get("login_code") && urlSearchParams.get("action") === "login") {
+      CodeLogin(String(urlSearchParams.get("login_code")));
     }
-  }, [result.get("action"), result.get("login_code")]);
+  }, [urlSearchParams.get("action"), urlSearchParams.get("login_code")]);
 
   const cancelModel = () => {
     dispatch(logoutAction());

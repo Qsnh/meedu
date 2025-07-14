@@ -20,3 +20,4 @@ export * from "./back-top";
 export * from "./image-preview";
 export * from "./code-login-bind-mobile";
 export * from "./forget-password-dialog";
+export * from "./config-loader";

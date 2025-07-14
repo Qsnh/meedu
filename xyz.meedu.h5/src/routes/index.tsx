@@ -1,12 +1,11 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import { system, user } from "../api";
-import { getToken } from "../utils";
 // 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
 import WithFooter from "../pages/layouts/with-footer";
 import WithoutFooter from "../pages/layouts/without-footer";
+import { ConfigLoader } from "../components/config-loader";
 
 //用户中心页面
 const MemberPage = lazy(() => import("../pages/member/index"));
@@ -61,42 +60,14 @@ const ErrorPage = lazy(() => import("../pages/error/index"));
 
 import PrivateRoute from "../components/private-route";
 
-let RootPage: any = null;
-if (getToken()) {
-  RootPage = lazy(async () => {
-    return new Promise<any>(async (resolve) => {
-      try {
-        let configRes: any = await system.config();
-        let userRes: any = await user.detail();
-        resolve({
-          default: (
-            <InitPage configData={configRes.data} loginData={userRes.data} />
-          ),
-        });
-      } catch (e) {
-        console.error("系统初始化失败", e);
-      }
-    });
-  });
-} else {
-  RootPage = lazy(async () => {
-    return new Promise<any>(async (resolve) => {
-      try {
-        let configRes: any = await system.config();
-        resolve({
-          default: <InitPage configData={configRes.data} />,
-        });
-      } catch (e) {
-        console.error("系统初始化失败", e);
-      }
-    });
-  });
-}
-
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: RootPage,
+    element: (
+      <ConfigLoader>
+        <InitPage />
+      </ConfigLoader>
+    ),
     children: [
       {
         path: "/",

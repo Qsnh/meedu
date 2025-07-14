@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import { system, home } from "../api";
 
 // 页面加载
 import { InitPage } from "../pages/init";
@@ -9,6 +8,7 @@ import PrivateRoute from "../components/private-route";
 import WithHeaderWithFooter from "../pages/layouts/with-header-with-footer";
 import WithHeaderWithoutFooter from "../pages/layouts/with-header-without-footer";
 import WithoutHeaderWithoutFooter from "../pages/layouts/without-header-without-footer";
+import { ConfigLoader } from "../components";
 
 const IndexPage = lazy(() => import("../pages/index"));
 // 录播相关页面
@@ -44,60 +44,14 @@ const AuthLoadingPage = lazy(() => import("../pages/auth/loading"));
 const ErrorPage = lazy(() => import("../pages/error/index"));
 const Error404 = lazy(() => import("../pages/error/404"));
 
-let RootPage: any = null;
-
-let configFunc: AppFeatureInterface = {
-  vip: true,
-  live: false,
-  book: false,
-  topic: false,
-  paper: false,
-  practice: false,
-  mockPaper: false,
-  wrongBook: false,
-  wenda: false,
-  share: false,
-  codeExchanger: false,
-  snapshort: false,
-  ke: false,
-  promoCode: false,
-  daySignIn: false,
-  credit1Mall: false,
-  tuangou: false,
-  miaosha: false,
-  cert: false,
-};
-
-RootPage = lazy(async () => {
-  return new Promise<any>(async (resolve) => {
-    try {
-      // 获取系统配置
-      const configRes: AppConfigInterface = (
-        (await system.config()) as ResponseInterface
-      ).data as AppConfigInterface;
-
-      // 获取导航栏
-      const navsRes: any = await home.headerNav();
-
-      resolve({
-        default: (
-          <InitPage
-            config={configRes}
-            configFunc={configFunc}
-            navsData={navsRes.data}
-          />
-        ),
-      });
-    } catch (e) {
-      console.error("系统初始化失败", e);
-    }
-  });
-});
-
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: RootPage,
+    element: (
+      <ConfigLoader>
+        <InitPage />
+      </ConfigLoader>
+    ),
     children: [
       {
         path: "/",

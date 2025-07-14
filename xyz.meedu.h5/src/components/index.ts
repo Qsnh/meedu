@@ -14,3 +14,4 @@ export * from "./confirm-login";
 export * from "./show-model";
 export * from "./protocol";
 export * from "./course-comments";
+export { default as ConfigLoader } from "./config-loader";
