@@ -26,6 +26,8 @@ const LoginPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const redirect = result.get("redirect") || "";
+  
   const [loading, setLoading] = useState(false);
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +35,6 @@ const LoginPasswordPage = () => {
   const [modelText, setModelText] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [visible, setVisible] = useState(false);
-  const [redirect, setRedirect] = useState(result.get("redirect") || "");
   const config: AppConfigInterface = useSelector(
     (state: RootState) => state.systemConfig.value
   );
@@ -76,7 +77,7 @@ const LoginPasswordPage = () => {
 
   const getUser = async () => {
     try {
-      let res: any = await user.detail();
+      const res: any = await user.detail();
       dispatch(loginAction(res.data));
       if (
         config.member.enabled_mobile_bind_alert === 1 &&

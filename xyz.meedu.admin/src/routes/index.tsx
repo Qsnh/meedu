@@ -126,6 +126,11 @@ const DecorationPCPage = lazy(() => import("../pages/decoration/pc"));
 const DecorationH5Page = lazy(() => import("../pages/decoration/h5"));
 //课程评论
 const CommentsPage = lazy(() => import("../pages/comments/index"));
+//协议管理
+const AgreementPage = lazy(() => import("../pages/agreement/index"));
+const AgreementRecordsPage = lazy(() => import("../pages/agreement/records"));
+const AgreementCreatePage = lazy(() => import("../pages/agreement/create"));
+const AgreementEditPage = lazy(() => import("../pages/agreement/edit"));
 
 let RootPage: any = null;
 if (getToken() && window.location.pathname !== "/error") {
@@ -247,6 +252,10 @@ const routes: RouteObject[] = [
           { path: "/order/code-import", element: <PromoCodeImportPage /> },
           { path: "/createcode", element: <PromoCodeCreatePage /> },
           { path: "/createmulticode", element: <PromoCodeCreateMultiPage /> },
+          { path: "/agreement/index", element: <AgreementPage /> },
+          { path: "/agreement/create", element: <AgreementCreatePage /> },
+          { path: "/agreement/:id/edit", element: <AgreementEditPage /> },
+          { path: "/agreement/:id/records", element: <AgreementRecordsPage /> },
           {
             path: "/system/administrator",
             element: <SystemAdministratorPage />,

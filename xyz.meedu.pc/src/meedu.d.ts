@@ -31,6 +31,7 @@ declare global {
     name: string;
     webname?: string;
     vip_protocol: string;
+    paid_content_purchase_protocol: string;
     course_purchase_notice: string;
     sliders: any[];
     navs: Array<{
@@ -121,6 +122,10 @@ declare global {
     };
     role_expired_at: null;
     role_id: number;
+    agreement_status?: {
+      user_agreement_agreed: boolean;
+      privacy_policy_agreed: boolean;
+    };
   }
 }
 

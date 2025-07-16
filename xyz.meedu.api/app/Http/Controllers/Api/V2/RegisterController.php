@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Meedu\Visitor;
 use App\Services\Member\Services\UserService;
 use App\Http\Requests\ApiV2\RegisterSmsRequest;
 use App\Services\Member\Interfaces\UserServiceInterface;
@@ -41,7 +42,7 @@ class RegisterController extends BaseController
             return $this->error(__('手机号已存在'));
         }
 
-        $userService->createWithMobile($mobile, $password, '');
+        $userService->createWithMobile($mobile, $password, '', '', Visitor::data());
 
         return $this->success();
     }

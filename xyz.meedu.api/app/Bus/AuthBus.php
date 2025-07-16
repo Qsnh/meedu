@@ -8,6 +8,7 @@
 
 namespace App\Bus;
 
+use App\Meedu\Visitor;
 use App\Events\UserLoginEvent;
 use App\Businesses\BusinessState;
 use App\Constant\FrontendConstant;
@@ -73,7 +74,7 @@ class AuthBus
             'avatar' => $data['headimgurl'] ?? '',
         ];
 
-        return $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_LOGIN_SIGN, $openId, $data, $unionId);
+        return $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_LOGIN_SIGN, $openId, $data, $unionId, Visitor::data());
     }
 
     public function socialiteLogin(string $app, string $id, array $data)
@@ -86,7 +87,7 @@ class AuthBus
             return self::ERROR_CODE_BIND_MOBILE;
         }
         // 自动创建新用户
-        return $this->socialiteService->bindAppWithNewUser($app, $id, $data);
+        return $this->socialiteService->bindAppWithNewUser($app, $id, $data, '', Visitor::data());
     }
 
     public function registerWithSocialite(
@@ -111,7 +112,7 @@ class AuthBus
             $bus->socialiteBindCheck(0, $app, $appId);
 
             // 创建用户
-            $user = $this->userService->createWithMobile($mobile, '', $nickname, $avatar);
+            $user = $this->userService->createWithMobile($mobile, '', $nickname, $avatar, Visitor::data());
 
             $this->socialiteService->bindApp($user['id'], $app, $appId, $data, $unionId);
 

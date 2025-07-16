@@ -6,6 +6,8 @@
  * (c) 杭州白书科技有限公司
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['namespace' => 'Wechat', 'prefix' => '/wechat'], function () {
     // 微信公众号回调
     Route::any('/serve', 'ServerController@index');

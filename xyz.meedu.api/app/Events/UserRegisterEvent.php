@@ -16,14 +16,17 @@ class UserRegisterEvent
     use Dispatchable, SerializesModels;
 
     public $userId;
+    public $extra;
 
     /**
      * @param int $userId
+     * @param array $extra
      *
      * @codeCoverageIgnore
      */
-    public function __construct(int $userId)
+    public function __construct(int $userId, array $extra = [])
     {
         $this->userId = $userId;
+        $this->extra = $extra;
     }
 }

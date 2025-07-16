@@ -6,6 +6,8 @@
  * (c) 杭州白书科技有限公司
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
 Route::post('/captcha/sms', 'CaptchaController@sentSms');
@@ -82,6 +84,8 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
     Route::post('/upload/image', 'UploadController@image');
 
     Route::group(['prefix' => 'member'], function () {
+        // 同意协议
+        Route::post('/agreement/agree', 'AgreementController@agree');
         // 用户详情
         Route::get('detail', 'MemberController@detail');
         // 密码修改

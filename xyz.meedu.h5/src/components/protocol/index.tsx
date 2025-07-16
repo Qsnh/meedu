@@ -64,7 +64,7 @@ export const Protocol: React.FC<PropInterface> = ({ type, agree }) => {
               openPage(config.user_private_protocol);
             }}
           >
-            《隐私协议》
+            《隐私政策》
           </span>
         </div>
       </div>

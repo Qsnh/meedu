@@ -1,0 +1,46 @@
+# Project Structure Guide
+
+This is a React/TypeScript project for Meedu PC interface using Vite as the build tool.
+
+## Core Architecture
+
+- **Entry Point**: [main.tsx](mdc:src/main.tsx) - Application bootstrap with Redux Provider, Router, and Ant Design ConfigProvider
+- **Main App**: [App.tsx](mdc:src/App.tsx) - Main application component with routing
+- **Configuration**: [vite.config.ts](mdc:vite.config.ts) - Vite build configuration with `@` alias pointing to `src/`
+
+## Directory Structure
+
+### `/src/api/` - API Layer
+- [index.ts](mdc:src/api/index.ts) - Central API exports
+- Domain-specific API modules (e.g., `login.ts`, `user.ts`, `course.ts`)
+- [internal/httpClient.ts](mdc:src/api/internal/httpClient.ts) - HTTP client configuration
+
+### `/src/components/` - Reusable Components
+- Each component in its own directory with `index.tsx` and `index.module.scss`
+- [index.ts](mdc:src/components/index.ts) - Component exports
+
+### `/src/pages/` - Page Components
+- Organized by feature/domain (e.g., `auth/`, `member/`, `vod/`)
+- Each page has its own styling file
+
+### `/src/store/` - Redux Store
+- [index.ts](mdc:src/store/index.ts) - Store configuration
+- Feature-based slices in subdirectories
+
+### `/src/routes/` - Routing Configuration
+- [index.tsx](mdc:src/routes/index.tsx) - Main routing configuration
+
+### `/src/assets/` - Static Assets
+- Images, icons, and fonts organized by type
+
+### `/src/utils/` - Utility Functions
+- [index.ts](mdc:src/utils/index.ts) - Utility functions
+
+## Key Dependencies
+
+- **React 18** with TypeScript
+- **Redux Toolkit** for state management
+- **Ant Design** for UI components
+- **React Router** for navigation
+- **Axios** for HTTP requests
+- **SCSS** for styling with CSS modules

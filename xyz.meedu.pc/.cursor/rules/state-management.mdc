@@ -1,0 +1,71 @@
+# State Management with Redux Toolkit
+
+## Store Structure
+
+- Store configured in [src/store/index.ts](mdc:src/store/index.ts)
+- Feature-based slices in subdirectories
+- Export `RootState` and `AppDispatch` types
+
+```typescript
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+```
+
+## Slice Structure
+
+- Use `createSlice` from Redux Toolkit
+- Follow naming convention: `featureSlice.ts`
+- Export actions and reducer
+
+```typescript
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface StateType {
+  value: any;
+}
+
+const initialState: StateType = {
+  value: initialValue,
+};
+
+const featureSlice = createSlice({
+  name: "feature",
+  initialState,
+  reducers: {
+    actionName: (state, action: PayloadAction<any>) => {
+      state.value = action.payload;
+    },
+  },
+});
+
+export const { actionName } = featureSlice.actions;
+export default featureSlice.reducer;
+```
+
+## Usage in Components
+
+```typescript
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../store";
+import { actionName } from "../../store/feature/featureSlice";
+
+// Reading state
+const value = useSelector((state: RootState) => state.feature.value);
+
+// Dispatching actions
+const dispatch = useDispatch();
+dispatch(actionName(payload));
+```
+
+## Current Slices
+
+- `loginUser`: User authentication state
+- `systemConfig`: System configuration
+- `navsConfig`: Navigation menu configuration
+
+## Best Practices
+
+- Use TypeScript for type safety
+- Keep state normalized
+- Use immer (included in Redux Toolkit) for immutable updates
+- Handle async operations with createAsyncThunk when needed

@@ -1,0 +1,43 @@
+---
+description: Meedu platform specific patterns and conventions
+---
+
+# Meedu Platform Guidelines
+
+## Application Context
+This is the Meedu H5 (mobile web) application for the Meedu online education platform. It provides course viewing, user management, and educational content delivery.
+
+## Domain-Specific Features
+- **Course Management**: Video courses, course details, progress tracking
+- **User System**: Authentication, profiles, member management
+- **Payment System**: Order processing, payment integration
+- **Learning Features**: Study progress, comments, search functionality
+- **Role System**: Different user roles and permissions
+
+## WeChat Integration
+- WeChat share functionality in [src/js/wechat-share.ts](mdc:src/js/wechat-share.ts)
+- WeChat JS SDK integration for sharing and other WeChat features
+- Mobile-first design optimized for WeChat browser
+
+## Configuration
+- System configuration loaded through [src/components/config-loader/index.tsx](mdc:src/components/config-loader/index.tsx)
+- Environment-specific settings in [src/js/config.ts](mdc:src/js/config.ts)
+
+## Mobile Optimization
+- Touch-friendly interfaces for mobile devices
+- Responsive design for various screen sizes
+- Optimized for mobile network conditions
+- Consider mobile-specific UX patterns
+
+## Educational Content
+- Video player integration (DPlayer)
+- Course content organization
+- Progress tracking and completion states
+- Comment and discussion systems
+- Search functionality for educational content
+
+## User Experience
+- Loading states for content fetching
+- Error handling for network issues
+- Offline-friendly where possible
+- Accessibility considerations for educational content

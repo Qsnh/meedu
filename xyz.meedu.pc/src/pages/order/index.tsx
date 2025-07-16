@@ -8,10 +8,6 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import defaultPaperIcon from "../../assets/img/commen/default-paper.png";
 import defaultVipIcon from "../../assets/img/commen/default-vip.png";
-import zfbIcon from "../../assets/img/commen/icon-zfb.png";
-import wepayIcon from "../../assets/img/commen/icon-wepay.png";
-import cradIcon from "../../assets/img/commen/icon-crad.png";
-import { getAppUrl, getToken } from "../../utils/index";
 
 const OrderPage = () => {
   document.title = "收银台";
@@ -34,6 +30,8 @@ const OrderPage = () => {
   const [total] = useState<number>(Number(result.get("goods_charge")));
   const [totalVal, setTotalVal] = useState<number>(0);
   const [agreeProtocol, setAgreeProtocol] = useState<boolean>(false);
+  const [agreePaidContentProtocol, setAgreePaidContentProtocol] =
+    useState<boolean>(false);
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
@@ -53,6 +51,10 @@ const OrderPage = () => {
 
   const onChange = (e: CheckboxChangeEvent) => {
     setAgreeProtocol(e.target.checked);
+  };
+
+  const onPaidContentProtocolChange = (e: CheckboxChangeEvent) => {
+    setAgreePaidContentProtocol(e.target.checked);
   };
 
   const initData = () => {
@@ -110,6 +112,13 @@ const OrderPage = () => {
       message.error("请同意《会员服务协议》");
       return;
     }
+    if (
+      (goodsType === "vod" || goodsType === "video") &&
+      agreePaidContentProtocol !== true
+    ) {
+      message.error("请同意《付费内容购买协议》");
+      return;
+    }
     if (loading) {
       return;
     }
@@ -121,20 +130,7 @@ const OrderPage = () => {
           goods_type: "COURSE",
           goods_id: goodsId,
           promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goodsType === "video") {
-      // 视频
-      order
-        .createOrder({
-          goods_type: "COURSE",
-          goods_id: goodsId,
-          promo_code: promoCode,
+          agree_protocol: 1,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -227,7 +223,7 @@ const OrderPage = () => {
                   width={160}
                   height={120}
                   border={4}
-                ></ThumbBar>
+                />
               )}
             </div>
           )}
@@ -292,9 +288,39 @@ const OrderPage = () => {
             </div>
           </div>
         )}
+        {(goodsType === "vod" || goodsType === "video") &&
+          systemConfig?.paid_content_purchase_protocol && (
+            <div className={styles["price-box"]} style={{ marginTop: 50 }}>
+              <div className="flex items-center h-5">
+                <Checkbox
+                  onChange={onPaidContentProtocolChange}
+                  defaultChecked={agreePaidContentProtocol}
+                />
+              </div>
+              <div className="ml-10 text-sm" style={{ fontSize: 16 }}>
+                <label className="text-gray-normal">
+                  我已阅读并同意
+                  <a
+                    className="text-blue"
+                    href={systemConfig.paid_content_purchase_protocol}
+                    target="_blank"
+                  >
+                    《付费内容购买协议》
+                  </a>
+                </label>
+              </div>
+            </div>
+          )}
         <div
           className={styles["price-box"]}
-          style={{ marginTop: goodsType === "role" ? 30 : 50 }}
+          style={{
+            marginTop:
+              goodsType === "role" ||
+              goodsType === "vod" ||
+              goodsType === "video"
+                ? 30
+                : 50,
+          }}
         >
           {goodsType !== "ms" && goodsType !== "tg" && (
             <>

@@ -55,4 +55,8 @@ class TableConstant
     public const TABLE_ORDER_GOODS = 'order_goods';
 
     public const MEDIA_IMAGES = 'media_images';
+
+    public const TABLE_AGREEMENTS = 'agreements';
+
+    public const TABLE_USER_AGREEMENT_RECORDS = 'user_agreement_records';
 }

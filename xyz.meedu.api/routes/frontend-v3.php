@@ -6,6 +6,8 @@
  * (c) 杭州白书科技有限公司
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/search', 'SearchController@index');
 
 Route::get('/status', 'SystemController@status');

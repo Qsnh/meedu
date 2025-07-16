@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api\V3;
 
 use App\Bus\AuthBus;
 use App\Meedu\Wechat;
+use App\Meedu\Visitor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Constant\CacheConstant;
@@ -318,7 +319,7 @@ class LoginController extends BaseController
             // 头像
             $avatar = $data['avatar'];
 
-            $userId = $authBus->registerWithSocialite($mobile, $app, $openid, $unionId, $nickname, $avatar, $data);
+            $userId = $authBus->registerWithSocialite($mobile, $app, $openid, $unionId, $nickname, $avatar, $data, Visitor::data());
 
             // 注册默认锁定判断
             $user = $userService->findUserById($userId);

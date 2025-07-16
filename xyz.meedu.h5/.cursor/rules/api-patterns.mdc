@@ -1,0 +1,38 @@
+---
+description: API patterns and usage guidelines
+---
+
+# API Development Guidelines
+
+## API Structure
+- All API services are located in [src/api/](mdc:src/api/)
+- Each domain has its own API file (e.g., [src/api/course.ts](mdc:src/api/course.ts), [src/api/user.ts](mdc:src/api/user.ts))
+- Common HTTP client logic is in [src/api/internal/httpClient.ts](mdc:src/api/internal/httpClient.ts)
+
+## API Service Pattern
+- Export functions that return promises
+- Use proper TypeScript interfaces for request/response types
+- Handle errors appropriately with try/catch blocks
+- Follow RESTful conventions where applicable
+
+## Available API Services
+- [src/api/course.ts](mdc:src/api/course.ts) - Course-related API calls
+- [src/api/user.ts](mdc:src/api/user.ts) - User management API calls
+- [src/api/login.ts](mdc:src/api/login.ts) - Authentication API calls
+- [src/api/order.ts](mdc:src/api/order.ts) - Order processing API calls
+- [src/api/comment.ts](mdc:src/api/comment.ts) - Comment system API calls
+- [src/api/search.ts](mdc:src/api/search.ts) - Search functionality API calls
+- [src/api/system.ts](mdc:src/api/system.ts) - System configuration API calls
+- [src/api/role.ts](mdc:src/api/role.ts) - Role management API calls
+- [src/api/viewBlock.ts](mdc:src/api/viewBlock.ts) - View block API calls
+
+## HTTP Client Usage
+- Use the configured HTTP client from [src/api/internal/httpClient.ts](mdc:src/api/internal/httpClient.ts)
+- Don't create new HTTP clients, use the existing one for consistency
+- Follow the established patterns for authentication headers and error handling
+
+## Error Handling
+- Handle network errors gracefully
+- Provide user-friendly error messages
+- Log errors appropriately for debugging
+- Use loading states in components when making API calls

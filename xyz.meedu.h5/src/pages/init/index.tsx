@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { loginAction } from "../../store/user/loginUserSlice";
 import { RootState } from "../../store";
-import { ShowModel } from "../../components";
+import { ShowModel, AgreementDialog } from "../../components";
 import {
   isMobile,
   getHost,
@@ -40,6 +40,7 @@ export const InitPage = () => {
   const [modelText, setModelText] = useState("");
   const [confirmText, setConfirmText] = useState("");
   const [verifyLoading, setVerifyLoading] = useState(false);
+  const [agreementVisible, setAgreementVisible] = useState(false);
   const urlSearchParams = new URLSearchParams(useLocation().search);
 
   useEffect(() => {
@@ -66,6 +67,22 @@ export const InitPage = () => {
     if (!userDataLoaded) return;
 
     if (loginData && configData) {
+      // 获取当前路径
+      const currentPath = window.location.pathname;
+      
+      // 检查用户协议同意状态 - 最高优先级
+      // 但在登录页面不弹出协议弹窗
+      if (
+        loginData.agreement_status && 
+        (!loginData.agreement_status.user_agreement_agreed || 
+         !loginData.agreement_status.privacy_policy_agreed) &&
+        currentPath !== "/login" &&
+        currentPath !== "/login-password"
+      ) {
+        setAgreementVisible(true);
+        return;
+      }
+
       //检测是否开启强制绑定手机号
       if (
         loginData.is_bind_mobile === 0 && //未绑定手机号
@@ -177,9 +194,39 @@ export const InitPage = () => {
     navigate("/code-bind-mobile");
   };
 
+  const cancelAgreement = () => {
+    dispatch(logoutAction());
+    setAgreementVisible(false);
+    setInit(true);
+    navigate("/member", { replace: true });
+  };
+
+  const confirmAgreement = () => {
+    setAgreementVisible(false);
+    // 重新获取用户数据以更新协议状态
+    const fetchUserData = async () => {
+      try {
+        const userRes: any = await user.detail();
+        setLoginData(userRes.data);
+      } catch (error) {
+        console.error("用户信息获取失败", error);
+      }
+    };
+    fetchUserData();
+  };
+
   return (
     <>
       {init && <Outlet />}
+      {agreementVisible && (
+        <AgreementDialog
+          title="用户协议与隐私政策提示"
+          confirmText="同意"
+          cancel={cancelAgreement}
+          change={confirmAgreement}
+          agreementStatus={loginData.agreement_status}
+        />
+      )}
       {visible && (
         <ShowModel
           title={modelTitle}

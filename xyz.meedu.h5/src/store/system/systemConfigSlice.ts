@@ -69,6 +69,7 @@ type AppConfigInterface = {
   user_private_protocol: string;
   user_protocol: string;
   vip_protocol: string;
+  paid_content_purchase_protocol: string;
   webname?: string;
 };
 
@@ -118,6 +119,7 @@ let defaultValue: AppConfigInterface = {
   user_private_protocol: "",
   user_protocol: "",
   vip_protocol: "",
+  paid_content_purchase_protocol: "",
 };
 
 const systemConfigSlice = createSlice({

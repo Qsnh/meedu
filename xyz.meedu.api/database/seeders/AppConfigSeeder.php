@@ -641,33 +641,6 @@ class AppConfigSeeder extends Seeder
                 'key' => 'meedu.member.default_avatar',
                 'value' => '/images/default_avatar.jpg',
             ],
-            [
-                'group' => '会员',
-                'name' => '注册协议',
-                'field_type' => 'textarea',
-                'sort' => 4,
-                'default_value' => '',
-                'key' => 'meedu.member.protocol',
-                'value' => '',
-            ],
-            [
-                'group' => '会员',
-                'name' => '隐私政策',
-                'field_type' => 'textarea',
-                'sort' => 5,
-                'default_value' => '',
-                'key' => 'meedu.member.private_protocol',
-                'value' => '',
-            ],
-            [
-                'group' => '会员',
-                'name' => '会员服务协议',
-                'field_type' => 'textarea',
-                'sort' => 10,
-                'default_value' => '',
-                'key' => 'meedu.member.vip_protocol',
-                'value' => '',
-            ],
 
             // 积分
             [

@@ -29,6 +29,7 @@ const OrderPage = () => {
   const [discount, setDiscount] = useState(0);
   const [, setPromoCodeModel] = useState<any>(null);
   const [openmask2, setOpenmask2] = useState(false);
+  const [openVodProtocolMask, setOpenVodProtocolMask] = useState(false);
 
   useEffect(() => {
     document.title = "收银台";
@@ -121,6 +122,24 @@ const OrderPage = () => {
       });
   };
 
+  // 录播课协议确认后创建订单
+  const submitVodProtocol = () => {
+    setLoading(true);
+    order
+      .CreateOrder({
+        goods_type: "COURSE",
+        goods_id: goods.id,
+        promo_code: promoCode,
+        agree_protocol: 1, // 添加协议同意标识
+      })
+      .then((res: any) => {
+        orderCreatedHandler(res.data);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
   const payHandler = () => {
     if (loading) {
       return;
@@ -129,35 +148,16 @@ const OrderPage = () => {
       setOpenmask2(true);
       return;
     }
-    setLoading(true);
-    if (goods.type === "vod") {
-      order
-        .CreateOrder({
-          goods_type: "COURSE",
-          goods_id: goods.id,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (goods.type === "video") {
-      // 视频
-      order
-        .CreateOrder({
-          goods_type: "COURSE",
-          goods_id: goods.id,
-          promo_code: promoCode,
-        })
-        .then((res: any) => {
-          orderCreatedHandler(res.data);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
+    
+    // 录播课和视频都需要协议确认
+    if (goods.type === "vod" || goods.type === "video") {
+      setOpenVodProtocolMask(true);
+      return;
     }
+    
+    // 其他类型商品的处理逻辑（如果有）
+    setLoading(true);
+    // ... 其他商品类型的处理
   };
 
   const orderCreatedHandler = (order: any) => {
@@ -226,6 +226,35 @@ const OrderPage = () => {
               <div
                 className={styles["button"]}
                 onClick={() => submitProtocol()}
+              >
+                阅读并同意
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* 付费内容购买协议确认弹窗 */}
+      {openVodProtocolMask && (
+        <div className={styles["mask"]}>
+          <div className={styles["dialog-box"]}>
+            <div className={styles["dialog-header"]}>协议确认</div>
+            <div className={styles["dialog-content"]}>
+              购买付费内容前，请仔细阅读并同意
+              <span onClick={() => openPage(config.paid_content_purchase_protocol)}>
+                《付费内容购买协议》
+              </span>
+              ，了解您的权利和义务。
+            </div>
+            <div className={styles["dialog-bottom"]}>
+              <div
+                className={styles["button2"]}
+                onClick={() => setOpenVodProtocolMask(false)}
+              >
+                取消
+              </div>
+              <div
+                className={styles["button"]}
+                onClick={() => submitVodProtocol()}
               >
                 阅读并同意
               </div>

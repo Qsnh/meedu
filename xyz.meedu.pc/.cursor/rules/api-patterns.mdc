@@ -1,0 +1,55 @@
+# API Patterns & HTTP Client
+
+## API Structure
+
+- All API functions are organized in [src/api/](mdc:src/api/) directory
+- Domain-specific modules (e.g., `login.ts`, `user.ts`, `course.ts`)
+- Central exports through [index.ts](mdc:src/api/index.ts)
+- HTTP client configuration in [internal/httpClient.ts](mdc:src/api/internal/httpClient.ts)
+
+## Function Patterns
+
+```typescript
+import client from "./internal/httpClient";
+
+export function functionName(params: any) {
+  return client.post("/api/v2/endpoint", params);
+}
+
+export function getFunction() {
+  return client.get("/api/v2/endpoint");
+}
+```
+
+## Usage in Components
+
+```typescript
+import { login, user } from "../../api/index";
+
+// In component
+const handleLogin = async () => {
+  try {
+    const response = await login.passwordLogin(params);
+    // Handle success
+  } catch (error) {
+    // Handle error with message.error()
+  }
+};
+```
+
+## API Versioning
+
+- Use versioned endpoints: `/api/v2/`, `/api/v3/`
+- Newer endpoints may use v3, existing ones use v2
+
+## Error Handling
+
+- API functions return promises
+- Handle errors in components using try-catch
+- Use Ant Design's `message.error()` for user feedback
+
+## HTTP Client
+
+- Uses Axios internally
+- Configured in [internal/httpClient.ts](mdc:src/api/internal/httpClient.ts)
+- Includes authentication headers and request/response interceptors

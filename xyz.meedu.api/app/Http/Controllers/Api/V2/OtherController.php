@@ -33,6 +33,7 @@ class OtherController extends BaseController
      * @apiSuccess {String} data.icp ICP备案号
      * @apiSuccess {String} data.user_protocol 用户协议URL
      * @apiSuccess {String} data.user_private_protocol 用户隐私协议URL
+     * @apiSuccess {String} data.paid_content_purchase_protocol 付费内容购买协议URL
      * @apiSuccess {String} data.aboutus 关于我们
      * @apiSuccess {String} data.logo LOGO的URL
      * @apiSuccess {Object} data.player 播放器
@@ -100,6 +101,8 @@ class OtherController extends BaseController
             'user_private_protocol' => route('user.private_protocol'),
             // VIP协议
             'vip_protocol' => route('user.vip_protocol'),
+            // 付费内容购买协议URL
+            'paid_content_purchase_protocol' => route('user.paid_content_purchase_protocol'),
             // 关于我们URL
             'aboutus' => route('aboutus'),
             // 课程购买须知

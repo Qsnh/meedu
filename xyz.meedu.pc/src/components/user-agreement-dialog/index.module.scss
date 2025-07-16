@@ -1,0 +1,33 @@
+.user-agreement-dialog {
+  .content {
+    padding: 20px 0;
+    
+    .text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      text-align: justify;
+      
+      .link {
+        color: #3ca7fa;
+        text-decoration: none;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 10px;
+    
+    button {
+      min-width: 100px;
+      height: 40px;
+    }
+  }
+} 

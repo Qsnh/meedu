@@ -69,12 +69,20 @@ class OrderService implements OrderServiceInterface
                 $orderStatus = BusConstant::ORDER_STATUS_SUCCESS;
             }
 
-            $order = $this->orderDao->store([
+            // 创建订单时包含协议版本
+            $orderData = [
                 'user_id' => $userId,
                 'charge' => $total,
                 'status' => $orderStatus,
                 'order_id' => date('YmdHis') . mt_rand(1000, 9999),
-            ]);
+            ];
+
+            // 服务协议
+            if (isset($orderGoodsInfo['agreement_id'])) {
+                $orderData['agreement_id'] = $orderGoodsInfo['agreement_id'];
+            }
+
+            $order = $this->orderDao->store($orderData);
 
             $this->orderDao->storeOrderGoodsItem([
                 'user_id' => $userId,
@@ -117,6 +125,5 @@ class OrderService implements OrderServiceInterface
     {
         return $this->orderDao->findByOrderNo($orderNo);
     }
-
 
 }

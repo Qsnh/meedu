@@ -33,6 +33,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
             'App\Listeners\UserRegisterEvent\RegisterCredit1RewardListener',
             'App\Listeners\UserRegisterEvent\RegisterSendVipListener',
+            'App\Listeners\UserRegisterEvent\AgreementSyncListener',
         ],
         // 用户登录
         'App\Events\UserLoginEvent' => [
@@ -167,6 +168,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PublishedCoursesSearchIndexBuildEvent' => [
             'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseListener',
             'App\Listeners\PublishedCoursesSearchIndexBuildEvent\VodCourseVideoListener',
-        ]
+        ],
+        // 协议更新
+        'App\Events\AgreementChangeEvent' => [
+            'App\Listeners\AgreementChangeEvent\CacheClearListener',
+        ],
     ];
 }

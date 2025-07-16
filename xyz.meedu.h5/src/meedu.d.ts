@@ -65,6 +65,10 @@ declare global {
     role: any;
     role_expired_at: any;
     role_id: number;
+    agreement_status: {
+      user_agreement_agreed: boolean;
+      privacy_policy_agreed: boolean;
+    };
   }
 
   interface CourseDetailInterface {

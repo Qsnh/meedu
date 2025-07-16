@@ -60,9 +60,9 @@ class SocialiteService implements SocialiteServiceInterface
         ]);
     }
 
-    public function bindAppWithNewUser(string $app, string $appId, array $data, string $unionId = ''): int
+    public function bindAppWithNewUser(string $app, string $appId, array $data, string $unionId = '', array $extra = []): int
     {
-        return DB::transaction(function () use ($app, $appId, $data, $unionId) {
+        return DB::transaction(function () use ($app, $appId, $data, $unionId, $extra) {
             $avatar = $data['avatar'] ?? '';
 
             $nickname = ($data['nickname'] ?? '') ?: Str::random(6);
@@ -72,15 +72,16 @@ class SocialiteService implements SocialiteServiceInterface
             }
             $nickname .= '_' . Str::random(3);
 
-            $user = $this->userService->createWithoutMobile($avatar, $nickname);
+            $user = $this->userService->createWithoutMobile($avatar, $nickname, $extra);
 
-            Socialite::create([
-                'user_id' => $user['id'],
-                'app' => $app,
-                'app_user_id' => $appId,
-                'data' => serialize($data),
-                'union_id' => $unionId,
-            ]);
+            Socialite::query()
+                ->create([
+                    'user_id' => $user['id'],
+                    'app' => $app,
+                    'app_user_id' => $appId,
+                    'data' => serialize($data),
+                    'union_id' => $unionId,
+                ]);
 
             return $user['id'];
         });

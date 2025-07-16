@@ -1,0 +1,55 @@
+# Component Organization
+
+## Directory Structure
+
+### `/src/components/` - Reusable Components
+- Each component in its own directory
+- Structure: `component-name/index.tsx` and `component-name/index.module.scss`
+- Export through [components/index.ts](mdc:src/components/index.ts)
+
+### `/src/pages/` - Page Components
+- Organized by feature/domain
+- Each page has its own directory with styling
+- May contain sub-components in nested directories
+
+## Component Naming
+
+- Directory names: `kebab-case` (e.g., `login-dialog`)
+- Component names: `PascalCase` (e.g., `LoginDialog`)
+- Export as named exports: `export const LoginDialog = () => {}`
+
+## File Structure Pattern
+
+```
+component-name/
+├── index.tsx          # Main component
+├── index.module.scss  # Styling
+└── components/        # Sub-components (if needed)
+    └── sub-component/
+        ├── index.tsx
+        └── index.module.scss
+```
+
+## Component Types
+
+### Dialog Components
+- Named with `Dialog` suffix (e.g., `LoginDialog`, `RegisterDialog`)
+- Handle modal/popup functionality
+- Located in `/src/components/`
+
+### Layout Components
+- Located in `/src/pages/layouts/`
+- Handle different page layouts (with/without header/footer)
+
+### Feature Components
+- Located in `/src/pages/[feature]/components/`
+- Feature-specific components
+
+## Best Practices
+
+- Keep components small and focused
+- Use composition over inheritance
+- Prefer named exports over default exports
+- Co-locate related components in the same feature directory
+- Use TypeScript interfaces for props
+- Follow single responsibility principle

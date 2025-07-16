@@ -1,0 +1,57 @@
+# SCSS Styling Guidelines
+
+## CSS Modules
+
+- Use CSS modules for component-specific styles
+- File naming: `index.module.scss`
+- Import as: `import styles from "./index.module.scss"`
+
+## Class Naming
+
+- Use kebab-case for class names
+- Use descriptive names that reflect component structure
+- Follow BEM methodology when appropriate
+
+```scss
+.app-header {
+  width: 100%;
+  background: #ffffff;
+  
+  .main-header {
+    width: 1200px;
+    margin: 0 auto;
+    
+    .top-header {
+      display: flex;
+      align-items: center;
+      height: 74px;
+    }
+  }
+}
+```
+
+## Layout Patterns
+
+- Use flexbox for layout: `display: flex`
+- Common container width: `1200px` with `margin: 0 auto`
+- Standard spacing units based on design system
+
+## Colors
+
+- Primary color: `#3ca7fa` (theme color)
+- Background: `#ffffff`
+- Borders: `#f1f2fa`
+- Text colors follow design system
+
+## Responsive Design
+
+- Use media queries for responsive behavior
+- Follow mobile-first approach when needed
+- Consider standard breakpoints
+
+## File Organization
+
+- One component per SCSS file
+- Global styles in [index.scss](mdc:src/index.scss)
+- Component styles in `index.module.scss`
+- Import global styles in [main.tsx](mdc:src/main.tsx)

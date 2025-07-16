@@ -1,0 +1,40 @@
+---
+globs: *.scss,*.css
+---
+
+# Styling Guidelines
+
+## CSS Modules
+- Use CSS modules (`.module.scss`) for component-specific styles
+- Import styles as `import styles from './index.module.scss'`
+- Use `className={styles.className}` for applying styles
+- Avoid global CSS classes in component modules
+
+## Global Styles
+- Global styles should go in [src/main.scss](mdc:src/main.scss)
+- App-level styles should go in [src/App.scss](mdc:src/App.scss)
+- Use global styles sparingly, prefer CSS modules
+
+## SCSS Features
+- Use SCSS variables and mixins for consistency
+- Leverage nesting appropriately (max 3 levels deep)
+- Use BEM methodology for class naming in modules
+- Organize styles logically within files
+
+## Responsive Design
+- Use mobile-first approach for responsive design
+- Test on various screen sizes
+- Use relative units (rem, em, %) where appropriate
+- Consider touch targets for mobile devices
+
+## Image Assets
+- Image assets are located in [src/assets/img/](mdc:src/assets/img/)
+- Use appropriate image formats (WebP, PNG, SVG)
+- Consider image optimization for performance
+- Use CSS for simple graphics when possible
+
+## Style Organization
+- Keep styles close to their components
+- Use consistent naming conventions
+- Group related styles together
+- Comment complex styling logic

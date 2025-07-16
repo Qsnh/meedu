@@ -1,0 +1,46 @@
+---
+alwaysApply: true
+---
+
+# Project Structure Guide
+
+This is a React/TypeScript application built with Vite for the Meedu H5 platform.
+
+## Main Entry Points
+- [main.tsx](mdc:src/main.tsx) - Application entry point
+- [App.tsx](mdc:src/App.tsx) - Main app component
+- [routes/index.tsx](mdc:src/routes/index.tsx) - Route configuration
+
+## Key Directories
+
+### API Layer
+- [src/api/](mdc:src/api/) - API service modules organized by domain
+- [src/api/internal/httpClient.ts](mdc:src/api/internal/httpClient.ts) - HTTP client configuration
+
+### Components
+- [src/components/](mdc:src/components/) - Reusable UI components
+- Each component has its own directory with `index.tsx` and `index.module.scss`
+
+### Pages
+- [src/pages/](mdc:src/pages/) - Page components organized by feature
+- [src/pages/layouts/](mdc:src/pages/layouts/) - Layout components
+
+### State Management
+- [src/store/](mdc:src/store/) - Redux store configuration
+- [src/store/user/loginUserSlice.ts](mdc:src/store/user/loginUserSlice.ts) - User state
+- [src/store/system/systemConfigSlice.ts](mdc:src/store/system/systemConfigSlice.ts) - System config
+
+### Styling
+- [src/main.scss](mdc:src/main.scss) - Global styles
+- [src/App.scss](mdc:src/App.scss) - App-level styles
+- Component-specific styles use `.module.scss` files
+
+### Assets
+- [src/assets/img/](mdc:src/assets/img/) - Image assets
+- [public/](mdc:public/) - Static assets
+
+## Naming Conventions
+- Components: PascalCase directories with `index.tsx` and `index.module.scss`
+- Pages: kebab-case directories following the same pattern
+- API modules: camelCase `.ts` files
+- Store slices: camelCase with `Slice` suffix

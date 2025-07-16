@@ -1,0 +1,58 @@
+# React & TypeScript Guidelines
+
+## Import Patterns
+
+```typescript
+// React imports first
+import { useState, useEffect } from "react";
+
+// Third-party imports
+import { Button, Input, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+// Internal imports
+import styles from "./index.module.scss";
+import type { RootState } from "../../store";
+import { someAction } from "../../store/user/loginUserSlice";
+```
+
+## Component Structure
+
+- Use functional components with hooks
+- Export components as named exports, not default
+- Use TypeScript interfaces for props
+- Import styles as `styles` from `index.module.scss`
+
+```typescript
+interface ComponentProps {
+  title: string;
+  onAction?: () => void;
+}
+
+export const ComponentName = ({ title, onAction }: ComponentProps) => {
+  return (
+    <div className={styles.container}>
+      <h1>{title}</h1>
+    </div>
+  );
+};
+```
+
+## Redux Usage
+
+- Use `useSelector` for reading state: `useSelector((state: RootState) => state.loginUser.value)`
+- Use `useDispatch` for dispatching actions
+- Import types from store: `import type { RootState } from "../../store"`
+
+## File Naming
+
+- Components: `PascalCase` (e.g., `ComponentName`)
+- Files: `camelCase.tsx` or `kebab-case.tsx`
+- Styles: `index.module.scss`
+
+## Error Handling
+
+- Use Ant Design's `message` for user feedback
+- Handle async operations with try-catch blocks
+- Provide loading states for async operations

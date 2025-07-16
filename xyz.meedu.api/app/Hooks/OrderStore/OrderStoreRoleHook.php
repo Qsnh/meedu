@@ -10,8 +10,10 @@ namespace App\Hooks\OrderStore;
 
 use App\Constant\BusConstant;
 use App\Meedu\Hooks\HookParams;
+use App\Constant\AgreementConstant;
 use App\Exceptions\ServiceException;
 use App\Meedu\Hooks\HookRuntimeInterface;
+use App\Meedu\Cache\Impl\ActiveAgreementCache;
 use App\Meedu\ServiceV2\Services\UserServiceInterface;
 
 class OrderStoreRoleHook implements HookRuntimeInterface
@@ -35,7 +37,7 @@ class OrderStoreRoleHook implements HookRuntimeInterface
         if (1 !== (int)request()->input('agree_protocol')) {
             throw new ServiceException(__('请同意会员服务协议'));
         }
-
+        
         $params->setResponse([
             'id' => $goodsId,
             'type' => $goodsType,
@@ -43,6 +45,7 @@ class OrderStoreRoleHook implements HookRuntimeInterface
             'charge' => $role['charge'],
             'ori_charge' => $role['charge'],
             'thumb' => '',
+            'agreement_id' => ActiveAgreementCache::getActiveId(AgreementConstant::TYPE_VIP_SERVICE_AGREEMENT),
         ]);
 
         return $closure($params);

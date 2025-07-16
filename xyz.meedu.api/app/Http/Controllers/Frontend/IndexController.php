@@ -8,7 +8,8 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
+use App\Constant\AgreementConstant;
+use App\Meedu\Cache\Impl\ActiveAgreementCache;
 
 class IndexController extends FrontendController
 {
@@ -19,13 +20,15 @@ class IndexController extends FrontendController
 
     public function userProtocol()
     {
-        $protocol = $this->configService->getMemberProtocol();
+        $agreement = ActiveAgreementCache::getActiveAgreement(AgreementConstant::TYPE_USER_AGREEMENT);
+        $protocol = $agreement['content'] ?? '';
         return view('index.user_protocol', compact('protocol'));
     }
 
     public function userPrivateProtocol()
     {
-        $protocol = $this->configService->getMemberPrivateProtocol();
+        $agreement = ActiveAgreementCache::getActiveAgreement(AgreementConstant::TYPE_PRIVACY_POLICY);
+        $protocol = $agreement['content'] ?? '';
         return view('index.user_private_protocol', compact('protocol'));
     }
 
@@ -40,9 +43,17 @@ class IndexController extends FrontendController
         return view('index.face_verify_success');
     }
 
-    public function vipProtocol(ConfigServiceInterface  $configService)
+    public function vipProtocol()
     {
-        $content = $configService->getVipProtocol();
+        $agreement = ActiveAgreementCache::getActiveAgreement(AgreementConstant::TYPE_VIP_SERVICE_AGREEMENT);
+        $content = $agreement['content'] ?? '';
         return view('index.vip_protocol', compact('content'));
+    }
+
+    public function paidContentPurchaseProtocol()
+    {
+        $agreement = ActiveAgreementCache::getActiveAgreement(AgreementConstant::TYPE_PAID_CONTENT_PURCHASE_AGREEMENT);
+        $content = $agreement['content'] ?? '';
+        return view('index.paid_content_purchase_protocol', compact('content'));
     }
 }

@@ -105,3 +105,7 @@ export function credit1Records(params: any) {
 export function collects(params: any) {
   return client.get("/api/v3/member/courses/like", params);
 }
+
+export function updateAgreementStatus(params: any) {
+  return client.post("/api/v2/member/agreement/agree", params);
+}

@@ -1,0 +1,62 @@
+# Routing & Navigation
+
+## Router Configuration
+
+- Main routing configuration in [src/routes/index.tsx](mdc:src/routes/index.tsx)
+- Uses React Router v6
+- Configured with `BrowserRouter` in [main.tsx](mdc:src/main.tsx)
+
+## Navigation Hooks
+
+```typescript
+import { useNavigate, useLocation, Link } from "react-router-dom";
+
+// Programmatic navigation
+const navigate = useNavigate();
+navigate("/path");
+
+// Get current location
+const location = useLocation();
+
+// Declarative navigation
+<Link to="/path">Link Text</Link>
+```
+
+## Route Structure
+
+- Pages organized by feature
+- Nested routes for complex features
+- Layout components for different page structures
+
+## Layout Components
+
+Located in `/src/pages/layouts/`:
+- `with-header-with-footer`: Full layout
+- `with-header-without-footer`: Header only
+- `without-header-with-footer`: Footer only
+- `without-header-without-footer`: No header/footer
+
+## Protected Routes
+
+- Use `PrivateRoute` component for authentication
+- Located in [src/components/private-route/](mdc:src/components/private-route/)
+
+## URL Patterns
+
+- Use kebab-case for URLs
+- Meaningful route names that reflect content
+- RESTful patterns where appropriate
+
+## Navigation State
+
+- Current user state affects navigation options
+- Use Redux state to control navigation visibility
+- Header component handles main navigation
+
+## Best Practices
+
+- Use `useNavigate` for programmatic navigation
+- Use `Link` for declarative navigation
+- Handle authentication redirects properly
+- Implement proper error boundaries for routes
+- Use lazy loading for code splitting when needed

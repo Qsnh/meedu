@@ -18,6 +18,7 @@ interface SystemConfig {
   user_protocol: string;
   user_private_protocol: string;
   vip_protocol: string;
+  paid_content_purchase_protocol: string;
   aboutus: string;
   course_purchase_notice: string;
   player: {

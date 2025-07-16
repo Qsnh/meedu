@@ -839,6 +839,25 @@ class AdministratorPermissionSeeder extends Seeder
                 ],
             ],
 
+            // 用户协议|用户隐私协议|会员服务协议
+            [
+                'group_name' => '协议管理',
+                'children' => [
+                    [
+                        'display_name' => '协议管理',
+                        'slug' => 'agreements',
+                        'method' => 'GET|POST|PUT|DELETE',
+                        'url' => '(^agreement/index$|^agreement/create$|^agreement/\d+$)',
+                    ],
+                    [
+                        'display_name' => '协议同意记录',
+                        'slug' => 'agreements.records',
+                        'method' => 'GET',
+                        'url' => 'agreement/\d+/records',
+                    ]
+                ],
+            ],
+
             // 敏感数据权限
             [
                 'group_name' => '字段权限',

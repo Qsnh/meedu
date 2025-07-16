@@ -33,7 +33,7 @@ const MemberSettingPage = () => {
           className={styles["group-item"]}
           onClick={() => openPage(config.user_private_protocol)}
         >
-          <div className={styles["name"]}>隐私协议</div>
+          <div className={styles["name"]}>隐私政策</div>
         </div>
         <div
           className={styles["group-item"]}

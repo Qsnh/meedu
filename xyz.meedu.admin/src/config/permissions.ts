@@ -48,6 +48,11 @@ export const PERMISSION_CONFIG: PermissionPath[] = [
     title: "优惠码",
   },
   {
+    permission: "agreements",
+    path: "/agreement/index",
+    title: "协议管理",
+  },
+  {
     permission: "stats.transaction",
     path: "/stats/transaction/index",
     title: "交易数据",

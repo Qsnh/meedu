@@ -50,6 +50,7 @@ class AdministratorLog extends Model
     public const MODULE_ADMINISTRATOR_ROLE = 'administrator-role';
     public const MODULE_SYSTEM_LOG = 'system-log';
     public const MODULE_COMMENT = 'comment';
+    public const MODULE_AGREEMENT = 'agreement';
 
     protected $table = 'administrator_logs';
 

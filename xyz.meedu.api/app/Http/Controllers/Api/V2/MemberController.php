@@ -33,6 +33,7 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 use App\Services\Course\Interfaces\VideoServiceInterface;
 use App\Services\Course\Interfaces\CourseServiceInterface;
 use App\Services\Member\Interfaces\CreditServiceInterface;
+use App\Meedu\ServiceV2\Services\AgreementServiceInterface;
 use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class MemberController extends BaseController
@@ -111,14 +112,16 @@ class MemberController extends BaseController
      * @apiSuccess {Boolean} data.profile_real_name 真实姓名
      * @apiSuccess {Boolean} data.profile_id_number 身份证号
      */
-    public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService)
+    public function detail(BusinessState $businessState, SocialiteServiceInterface $socialiteService, AgreementServiceInterface $agreementService)
     {
-        $user = $this->userService->find($this->id(), ['role:id,name', 'profile:user_id,real_name,id_number,is_verify']);
+        $userId = $this->id();
+
+        $user = $this->userService->find($userId, ['role:id,name', 'profile:user_id,real_name,id_number,is_verify']);
         $userProfile = $user['profile'] ?? [];
         // user信息返回字段过滤
         $user = arr1_clear($user, ApiV2Constant::MODEL_MEMBER_FIELD);
 
-        $socialites = $socialiteService->userSocialites($this->id());
+        $socialites = $socialiteService->userSocialites($userId);
         $socialites = array_column($socialites, null, 'app');
 
         // 是否绑定QQ
@@ -129,7 +132,7 @@ class MemberController extends BaseController
         $user['is_bind_mobile'] = $businessState->isNeedBindMobile($user) ? 0 : 1;
 
         // 邀请人数
-        $user['invite_people_count'] = $this->userService->inviteCount($this->id());
+        $user['invite_people_count'] = $this->userService->inviteCount($userId);
 
         // 是否实名认证
         $user['is_face_verify'] = false;
@@ -140,6 +143,9 @@ class MemberController extends BaseController
             $user['profile_real_name'] = name_mask($userProfile['real_name']);
             $user['profile_id_number'] = id_mask($userProfile['id_number']);
         }
+
+        // 添加协议同意状态
+        $user['agreement_status'] = $agreementService->getUserAgreementStatus($userId);
 
         return $this->data($user);
     }

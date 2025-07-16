@@ -1,0 +1,42 @@
+---
+description: Testing patterns and best practices
+---
+
+# Testing Guidelines
+
+## Testing Strategy
+- Write tests for critical business logic
+- Test components with user interactions
+- Test API integration points
+- Focus on behavior, not implementation details
+
+## Test File Organization
+- Co-locate test files with source files when possible
+- Use descriptive test names that explain the behavior
+- Group related tests using `describe` blocks
+- Keep tests focused and isolated
+
+## Component Testing
+- Test component rendering and props
+- Test user interactions (clicks, form submissions)
+- Test conditional rendering
+- Mock external dependencies appropriately
+
+## API Testing
+- Mock API calls in component tests
+- Test error handling scenarios
+- Test loading states
+- Verify correct API parameters are sent
+
+## Best Practices
+- Keep tests simple and readable
+- Use meaningful assertions
+- Clean up after tests (timers, event listeners)
+- Test edge cases and error scenarios
+- Maintain test coverage for critical paths
+
+## Common Testing Patterns
+- Use React Testing Library for component tests
+- Mock external services and APIs
+- Test accessibility features
+- Verify responsive behavior when applicable

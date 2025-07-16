@@ -128,54 +128,43 @@ class UserService implements UserServiceInterface
         ]);
     }
 
-    /**
-     * @param string $avatar
-     * @param string $name
-     * @return array
-     * @throws \Exception
-     */
-    public function createWithoutMobile(string $avatar = '', string $name = ''): array
+    public function createWithoutMobile(string $avatar = '', string $name = '', array $extra = []): array
     {
-        $user = User::create([
-            'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
-            'nick_name' => $name ?? Str::random(16),
-            'mobile' => random_int(2, 9) . random_int(1000, 9999) . random_int(1000, 9999),
-            'password' => Hash::make(Str::random(16)),
-            'is_lock' => $this->configService->getMemberLockStatus(),
-            'is_active' => $this->configService->getMemberActiveStatus(),
-            'role_id' => 0,
-            'role_expired_at' => Carbon::now(),
-            'is_set_nickname' => 0,
-        ]);
+        $user = User::query()
+            ->create([
+                'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
+                'nick_name' => $name ?? Str::random(16),
+                'mobile' => random_int(2, 9) . random_int(1000, 9999) . random_int(1000, 9999),
+                'password' => Hash::make(Str::random(16)),
+                'is_lock' => $this->configService->getMemberLockStatus(),
+                'is_active' => $this->configService->getMemberActiveStatus(),
+                'role_id' => 0,
+                'role_expired_at' => Carbon::now(),
+                'is_set_nickname' => 0,
+            ]);
 
-        event(new UserRegisterEvent($user->id));
+        event(new UserRegisterEvent($user['id'], $extra));
 
         return $user->toArray();
     }
 
-    /**
-     * @param string $mobile
-     * @param string $password
-     * @param string $nickname
-     * @param string $avatar
-     * @return array
-     */
-    public function createWithMobile(string $mobile, string $password, string $nickname, string $avatar = ''): array
+    public function createWithMobile(string $mobile, string $password, string $nickname, string $avatar = '', array $extra = []): array
     {
-        $user = User::create([
-            'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
-            'nick_name' => $nickname ?: Str::random(12),
-            'mobile' => $mobile,
-            'password' => Hash::make($password ?: Str::random(10)),
-            'is_lock' => $this->configService->getMemberLockStatus(),
-            'is_active' => $this->configService->getMemberActiveStatus(),
-            'role_id' => 0,
-            'role_expired_at' => Carbon::now(),
-            'is_set_nickname' => $nickname ? 1 : 0,
-            'is_password_set' => $password ? 1 : 0,
-        ]);
+        $user = User::query()
+            ->create([
+                'avatar' => $avatar ?: $this->configService->getMemberDefaultAvatar(),
+                'nick_name' => $nickname ?: Str::random(12),
+                'mobile' => $mobile,
+                'password' => Hash::make($password ?: Str::random(10)),
+                'is_lock' => $this->configService->getMemberLockStatus(),
+                'is_active' => $this->configService->getMemberActiveStatus(),
+                'role_id' => 0,
+                'role_expired_at' => Carbon::now(),
+                'is_set_nickname' => $nickname ? 1 : 0,
+                'is_password_set' => $password ? 1 : 0,
+            ]);
 
-        event(new UserRegisterEvent($user->id));
+        event(new UserRegisterEvent($user['id'], $extra));
 
         return $user->toArray();
     }
@@ -609,13 +598,14 @@ class UserService implements UserServiceInterface
                 ->where('seconds', $record['seconds'])
                 ->update(['seconds' => $record['seconds'] + $seconds]);
         } else {
-            UserWatchStat::create([
-                'user_id' => $userId,
-                'year' => $year,
-                'month' => $month,
-                'day' => $day,
-                'seconds' => $seconds,
-            ]);
+            UserWatchStat::query()
+                ->create([
+                    'user_id' => $userId,
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'seconds' => $seconds,
+                ]);
         }
     }
 

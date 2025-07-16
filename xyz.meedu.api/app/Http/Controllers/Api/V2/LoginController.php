@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Bus\AuthBus;
+use App\Meedu\Visitor;
 use Illuminate\Http\Request;
 use App\Events\UserLogoutEvent;
 use App\Constant\FrontendConstant;
@@ -105,7 +106,7 @@ class LoginController extends BaseController
         $user = $this->userService->findMobile($mobile);
         if (!$user) {
             // 直接注册
-            $user = $this->userService->createWithMobile($mobile, '', '');
+            $user = $this->userService->createWithMobile($mobile, '', '', '', Visitor::data());
         }
 
         try {
@@ -191,7 +192,7 @@ class LoginController extends BaseController
         $userId = $this->socialiteService->getBindUserId($app, $appId);
 
         if (!$userId) {
-            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user);
+            $userId = $this->socialiteService->bindAppWithNewUser($app, $appId, (array)$user, '', Visitor::data());
         }
 
         // 用户是否锁定检测

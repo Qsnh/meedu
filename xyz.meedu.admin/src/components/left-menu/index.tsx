@@ -100,6 +100,7 @@ const items = [
       getItem("课程评论", "/comments/index", null, null, null, "comment.index"),
       getItem("VIP会员", "/role", null, null, null, "role"),
       getItem("优惠码", "/promocode", null, null, null, "promoCode"),
+      getItem("协议管理", "/agreement/index", null, null, null, "agreements"),
     ],
     null,
     null
@@ -180,6 +181,7 @@ export const LeftMenu: React.FC = () => {
   const children2Parent: any = {
     "^/role": ["operate"],
     "^/promocode": ["operate"],
+    "^/agreement": ["operate"],
     "^/wechat": ["operate"],
     "^/stats": ["stats"],
     "^/member": ["user"],
@@ -277,6 +279,9 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/createmulticode") !== -1) {
       setSelectedKeys(["/promocode"]);
       setOpenKeys(openKeyMerge("/promocode"));
+    } else if (location.pathname.indexOf("/agreement") !== -1) {
+      setSelectedKeys(["/agreement/index"]);
+      setOpenKeys(openKeyMerge("/agreement"));
     } else if (location.pathname.indexOf("/wechat/messagereply") !== -1) {
       setSelectedKeys(["/wechat/messagereply/index"]);
       setOpenKeys(openKeyMerge("/wechat"));

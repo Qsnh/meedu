@@ -10,7 +10,10 @@ namespace App\Hooks\OrderStore;
 
 use App\Constant\BusConstant;
 use App\Meedu\Hooks\HookParams;
+use App\Constant\AgreementConstant;
+use App\Exceptions\ServiceException;
 use App\Meedu\Hooks\HookRuntimeInterface;
+use App\Meedu\Cache\Impl\ActiveAgreementCache;
 use App\Meedu\ServiceV2\Services\CourseServiceInterface;
 
 class OrderStoreCourseHook implements HookRuntimeInterface
@@ -30,6 +33,11 @@ class OrderStoreCourseHook implements HookRuntimeInterface
 
         $course = $courseService->findOrFail($goodsId);
 
+        // 检查付费内容购买协议同意情况
+        if (1 !== (int)request()->input('agree_protocol')) {
+            throw new ServiceException(__('请同意付费内容购买协议'));
+        }
+
         $params->setResponse([
             'id' => $goodsId,
             'type' => $goodsType,
@@ -37,10 +45,9 @@ class OrderStoreCourseHook implements HookRuntimeInterface
             'charge' => $course['charge'],
             'ori_charge' => $course['charge'],
             'thumb' => $course['thumb'],
+            'agreement_id' => ActiveAgreementCache::getActiveId(AgreementConstant::TYPE_PAID_CONTENT_PURCHASE_AGREEMENT),
         ]);
 
         return $closure($params);
     }
-
-
 }

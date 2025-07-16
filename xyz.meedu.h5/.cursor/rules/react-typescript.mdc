@@ -1,0 +1,39 @@
+---
+globs: *.tsx,*.ts
+---
+
+# React/TypeScript Development Guidelines
+
+## Component Structure
+- All components should be in their own directories with `index.tsx` and `index.module.scss`
+- Use functional components with hooks, not class components
+- Export components as default exports from `index.tsx`
+
+## TypeScript Usage
+- Use proper TypeScript types, avoid `any`
+- Interface definitions should be declared inline or in separate type files
+- Use proper typing for props and state
+
+## Styling
+- Use CSS modules (`.module.scss`) for component-specific styles
+- Import styles as `import styles from './index.module.scss'`
+- Use `className={styles.className}` for applying styles
+- Global styles should go in [src/main.scss](mdc:src/main.scss)
+
+## State Management
+- Use Redux with [src/store/](mdc:src/store/) for global state
+- Use React hooks (`useState`, `useEffect`) for local component state
+- Follow the existing slice pattern for Redux state
+
+## API Integration
+- Use the existing API services in [src/api/](mdc:src/api/)
+- Follow the existing patterns for API calls
+- Handle loading states and errors appropriately
+
+## Routing
+- Use React Router with the configuration in [src/routes/index.tsx](mdc:src/routes/index.tsx)
+- Follow the existing route structure and naming conventions
+
+## Component Imports
+- Import components from [src/components/index.ts](mdc:src/components/index.ts) barrel file
+- Use absolute imports from `src/` when possible

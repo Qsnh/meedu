@@ -309,4 +309,15 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::post('/delete', 'CommentController@destroy');
         Route::post('/check', 'CommentController@check');
     });
+
+    // 协议管理
+    Route::group(['prefix' => 'agreement'], function () {
+        Route::get('/index', 'AgreementController@index');
+        Route::get('/create', 'AgreementController@create');
+        Route::post('/create', 'AgreementController@store');
+        Route::get('/{id}', 'AgreementController@edit');
+        Route::put('/{id}', 'AgreementController@update');
+        Route::delete('/{id}', 'AgreementController@destroy');
+        Route::get('/{id}/records', 'AgreementController@records');
+    });
 });

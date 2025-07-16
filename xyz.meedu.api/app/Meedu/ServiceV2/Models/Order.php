@@ -21,5 +21,6 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'charge', 'status', 'order_id', 'payment',
         'payment_method', 'is_refund', 'last_refund_at',
+        'agreement_id',
     ];
 }

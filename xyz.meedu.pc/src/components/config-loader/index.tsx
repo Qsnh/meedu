@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 import type { RootState } from "../../store";
-import { system, home, user, login } from "../../api";
-import { loginAction } from "../../store/user/loginUserSlice";
+import { system, home, user as userApi, login } from "../../api";
+import { loginAction, closeAgreementDialog } from "../../store/user/loginUserSlice";
 import {
   saveConfigAction,
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
 import { saveNavsAction } from "../../store/nav-menu/navMenuConfigSlice";
-import { CodeLoginBindMobileDialog } from "../index";
+import { CodeLoginBindMobileDialog, UserAgreementDialog } from "../index";
 import {
   saveMsv,
   getMsv,
@@ -61,8 +61,14 @@ export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ children }) => {
   const isLogin = useSelector(
     (state: RootState) => state.loginUser.value.isLogin
   );
+  const user = useSelector(
+    (state: RootState) => state.loginUser.value.user
+  );
   const systemConfig = useSelector(
     (state: RootState) => state.systemConfig.value.config
+  );
+  const showAgreementDialog = useSelector(
+    (state: RootState) => state.loginUser.value.showAgreementDialog
   );
 
   // URL参数
@@ -120,6 +126,20 @@ export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ children }) => {
     }
   };
 
+  const handleAgreementAgree = async () => {
+    try {
+      // 关闭弹窗
+      dispatch(closeAgreementDialog());
+      
+      // 重新获取用户信息
+      const res = await userApi.detail();
+      let resUser = (res as ResponseInterface).data as UserDetailInterface;
+      dispatch(loginAction(resUser));
+    } catch (error) {
+      console.error("更新协议状态失败", error);
+    }
+  };
+
   const codeLogin = (code: string, redirectUrl: string) => {
     // 防止code重复请求登录
     if (getSessionLoginCode(code)) {
@@ -131,7 +151,7 @@ export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ children }) => {
     login.codeLogin({ code: code, msv: getMsv() }).then((res: any) => {
       if (res.data.success === 1) {
         setToken(res.data.token);
-        user.detail().then((res: any) => {
+        userApi.detail().then((res: any) => {
           let loginData = res.data;
           dispatch(loginAction(loginData));
 
@@ -156,7 +176,7 @@ export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ children }) => {
     if (!loginToken || !systemConfig) return;
 
     try {
-      const res = await user.detail();
+      const res = await userApi.detail();
       let resUser = (res as ResponseInterface).data as UserDetailInterface;
 
       // 强制绑定手机号
@@ -265,6 +285,15 @@ export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ children }) => {
           setCodebindmobileVisible(false);
         }}
       />
+      
+      {/* 用户协议弹窗 */}
+      <UserAgreementDialog
+        open={showAgreementDialog}
+        onAgree={handleAgreementAgree}
+        userAgreementAgreed={user?.agreement_status?.user_agreement_agreed || false}
+        privacyPolicyAgreed={user?.agreement_status?.privacy_policy_agreed || false}
+      />
+      
       {children}
     </>
   );

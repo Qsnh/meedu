@@ -1,0 +1,59 @@
+# Development & Build Process
+
+## Development Server
+
+- Run with: `pnpm dev`
+- Runs on `http://localhost:8100`
+- Hot reload enabled via Vite
+
+## Build Process
+
+- Build command: `pnpm build`
+- TypeScript compilation + Vite build
+- Outputs to `dist/` directory
+- Gzip compression enabled
+
+## Package Manager
+
+- Use `pnpm` (not npm or yarn)
+- Dependencies defined in [package.json](mdc:package.json)
+- Lockfile: [pnpm-lock.yaml](mdc:pnpm-lock.yaml)
+
+## TypeScript Configuration
+
+- Main config: [tsconfig.json](mdc:tsconfig.json)
+- Build config: [tsconfig.node.json](mdc:tsconfig.node.json)
+- Path alias: `@` points to `src/`
+
+## Asset Handling
+
+- Static assets in [public/](mdc:public/) directory
+- Images, fonts, and external libraries
+- Imported assets go in [src/assets/](mdc:src/assets/)
+
+## Environment Configuration
+
+- Vite handles environment variables
+- Use `VITE_` prefix for client-side variables
+- Configuration in [vite.config.ts](mdc:vite.config.ts)
+
+## Code Quality
+
+- TypeScript for type safety
+- SCSS for styling
+- ESLint and Prettier (if configured)
+- Follow established patterns in codebase
+
+## Performance Optimization
+
+- Bundle splitting with Vite
+- Lazy loading for routes
+- Image optimization
+- Gzip compression in production
+
+## Debugging
+
+- Use browser DevTools
+- React DevTools for component inspection
+- Redux DevTools for state management
+- Source maps enabled in development
