@@ -15,10 +15,10 @@ class UpgradeV4927
 
     public static function handle()
     {
-        self::deleteSomeConfigItems();
+        self::hideSomeConfigItems();
     }
 
-    private static function deleteSomeConfigItems()
+    private static function hideSomeConfigItems()
     {
         AppConfig::query()
             ->whereIn('key', [
@@ -26,7 +26,7 @@ class UpgradeV4927
                 'meedu.member.private_protocol',
                 'meedu.member.vip_protocol',
             ])
-            ->delete();
+            ->update(['is_show' => 0]);
     }
 
 }
