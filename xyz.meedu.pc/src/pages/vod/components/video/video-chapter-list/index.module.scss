@@ -209,11 +209,25 @@
     overflow: hidden;
     word-break: break-all;
     text-align: left;
-    &:first-child {
-      margin-bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    
+    .expand-icon {
+      font-size: 18px;
+      font-weight: bold;
+      color: #666;
+      transition: transform 0.3s ease;
+      user-select: none;
+      
+      &:hover {
+        color: #3ca7fa;
+      }
     }
-    &:last-child {
-      margin-bottom: 0px;
+    
+    &:hover {
+      color: #3ca7fa;
     }
   }
   .chapter-videos-box {

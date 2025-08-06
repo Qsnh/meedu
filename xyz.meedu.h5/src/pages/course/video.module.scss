@@ -143,6 +143,23 @@
         -ms-transform: rotate(270deg);
         transform: rotate(270deg);
       }
+
+      .expand-icon {
+        font-size: 18px;
+        font-weight: bold;
+        color: #666;
+        margin-left: 10px;
+        transition: transform 0.3s ease;
+        user-select: none;
+        
+        &:hover {
+          color: #3ca7fa;
+        }
+      }
+      
+      &:hover {
+        color: #3ca7fa;
+      }
     }
 
     .chapter-videos-box {

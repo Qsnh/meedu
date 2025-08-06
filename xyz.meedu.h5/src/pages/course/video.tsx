@@ -31,6 +31,7 @@ const CoursePlayPage = () => {
   const [isLastpage, setIsLastpage] = useState<boolean>(false);
   const [lastVideoId, setLastVideoId] = useState<number>(0);
   const [configkey, setConfigkey] = useState<KeysInterafce>({});
+  const [expandedChapters, setExpandedChapters] = useState<{[key: number]: boolean}>({});
   const [nowChapter, setNowChapter] = useState<any>(null);
   const [attachs, setAttachs] = useState<any>([]);
   const [showTry, setShowTry] = useState<boolean>(false);
@@ -109,13 +110,17 @@ const CoursePlayPage = () => {
 
         let box = res.data.chapters;
         var sel: any = {};
+        const newExpandedChapters: {[key: number]: boolean} = {};
+        
         for (var i = 0; i < box.length; i++) {
           if (chapteId == box[i].id) {
             setNowChapter(box[i]);
             sel[i] = true;
+            newExpandedChapters[box[i].id] = true;
           }
         }
         setConfigkey(sel);
+        setExpandedChapters(prev => ({...prev, ...newExpandedChapters}));
         //播放记录跳转
         let last_see_value = null;
         if (
@@ -289,8 +294,19 @@ const CoursePlayPage = () => {
     navigate("/course/video/" + item.id, { replace: true });
   };
 
-  const goRole = () => {
+    const goRole = () => {
     navigate("/role");
+  };
+
+  const toggleChapter = (chapterId: number) => {
+    setExpandedChapters(prev => ({
+      ...prev,
+      [chapterId]: !prev[chapterId]
+    }));
+  };
+
+  const isChapterExpanded = (chapterId: number) => {
+    return expandedChapters[chapterId] || false;
   };
 
   // 如果 video 没有值则显示loading
@@ -397,26 +413,15 @@ const CoursePlayPage = () => {
                     <div className={styles["chapter-item"]} key={chapter.id}>
                       <div
                         className={styles["chapter-name"]}
-                        onClick={() => {
-                          let box = { ...configkey };
-                          box[index] = !box[index];
-                          setConfigkey(box);
-                        }}
+                        onClick={() => toggleChapter(chapter.id)}
+                        style={{ cursor: "pointer" }}
                       >
                         {chapter.title}
-                        <img
-                          width="15"
-                          height="15"
-                          style={{ float: "right" }}
-                          className={
-                            configkey[index] === true
-                              ? `${styles["normaltran"]} ${styles["trans"]}`
-                              : styles["normaltran"]
-                          }
-                          src={backIcon}
-                        />
+                        <span className={styles["expand-icon"]}>
+                          {isChapterExpanded(chapter.id) ? "-" : "+"}
+                        </span>
                       </div>
-                      {configkey[index] && (
+                      {isChapterExpanded(chapter.id) && (
                         <div className={styles["chapter-videos-box"]}>
                           {videos[chapter.id] &&
                             videos[chapter.id].map((videoItem: any) => (
@@ -460,8 +465,18 @@ const CoursePlayPage = () => {
                   ))}
                   {videos[0] && videos[0].length > 0 && (
                     <div className={styles["chapter-item"]}>
-                      <div className={styles["chapter-name"]}>无章节内容</div>
-                      <div className={styles["chapter-videos-box"]}>
+                      <div 
+                        className={styles["chapter-name"]}
+                        onClick={() => toggleChapter(0)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        无章节内容
+                        <span className={styles["expand-icon"]}>
+                          {isChapterExpanded(0) ? "-" : "+"}
+                        </span>
+                      </div>
+                      {isChapterExpanded(0) && (
+                        <div className={styles["chapter-videos-box"]}>
                         {videos[0].map((videoItem: any) => (
                           <div
                             className={styles["video-item"]}
@@ -499,39 +514,55 @@ const CoursePlayPage = () => {
                 </>
               ) : (
                 <>
-                  {videos[0] &&
-                    videos[0].length > 0 &&
-                    videos[0].map((videoItem: any) => (
-                      <div
-                        className={styles["video-item"]}
-                        key={videoItem.id}
-                        onClick={() => goVideo(videoItem)}
+                  {videos[0] && videos[0].length > 0 && (
+                    <div className={styles["chapter-item"]}>
+                      <div 
+                        className={styles["chapter-name"]}
+                        onClick={() => toggleChapter(0)}
+                        style={{ cursor: "pointer" }}
                       >
-                        <div className={styles["video-title"]}>
-                          {course.is_free !== 1 &&
-                            videoItem.free_seconds > 0 && (
-                              <span className={styles["free"]}>试看</span>
-                            )}
-                          <span className={styles["text"]}>
-                            {videoItem.title}
-                          </span>
-                        </div>
-                        {video.id === videoItem.id ? (
-                          <div className={styles["video-duration"]}>
-                            <img
-                              width="24"
-                              height="24"
-                              className={styles["play-icon"]}
-                              src={playIcon}
-                            />
-                          </div>
-                        ) : (
-                          <div className={styles["video-duration"]}>
-                            <DurationText seconds={videoItem.duration} />
-                          </div>
-                        )}
+                        无章节内容
+                        <span className={styles["expand-icon"]}>
+                          {isChapterExpanded(0) ? "-" : "+"}
+                        </span>
                       </div>
-                    ))}
+                      {isChapterExpanded(0) && (
+                        <div className={styles["chapter-videos-box"]}>
+                        {videos[0].map((videoItem: any) => (
+                          <div
+                            className={styles["video-item"]}
+                            key={videoItem.id}
+                            onClick={() => goVideo(videoItem)}
+                          >
+                            <div className={styles["video-title"]}>
+                              {course.is_free !== 1 &&
+                                videoItem.free_seconds > 0 && (
+                                  <span className={styles["free"]}>试看</span>
+                                )}
+                              <span className={styles["text"]}>
+                                {videoItem.title}
+                              </span>
+                            </div>
+                            {video.id === videoItem.id ? (
+                              <div className={styles["video-duration"]}>
+                                <img
+                                  width="24"
+                                  height="24"
+                                  className={styles["play-icon"]}
+                                  src={playIcon}
+                                />
+                              </div>
+                            ) : (
+                              <div className={styles["video-duration"]}>
+                                <DurationText seconds={videoItem.duration} />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
                 </>
               )}
             </div>
