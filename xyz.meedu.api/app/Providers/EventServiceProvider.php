@@ -27,6 +27,13 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderCancelEvent' => [
             'App\Listeners\OrderCancelEvent\PromoCodeResumeListener',
         ],
+        // 用户注册
+        'App\Events\UserRegisterEvent' => [
+            'App\Listeners\UserRegisterEvent\WelcomeMessageListener',
+            'App\Listeners\UserRegisterEvent\RegisterIpRecordListener',
+            'App\Listeners\UserRegisterEvent\RegisterCredit1RewardListener',
+            'App\Listeners\UserRegisterEvent\RegisterSendVipListener',
+        ],
         // 用户登录
         'App\Events\UserLoginEvent' => [
             'App\Listeners\UserLoginEvent\LoginRecordListener',
