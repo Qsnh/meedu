@@ -10,7 +10,6 @@ import { saveUnread } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { LoginDialog } from "../login-dailog";
-import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { ForgetPasswordDialog } from "../forget-password-dialog";
@@ -40,7 +39,6 @@ export const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [navLoading, setNavLoading] = useState<boolean>(true);
   const [visiale, setVisiale] = useState<boolean>(false);
-  const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
   const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
     useState<boolean>(false);
@@ -175,9 +173,6 @@ export const Header = () => {
     setVisiale(true);
   };
 
-  const goRegister = () => {
-    setRegisterVisiale(true);
-  };
 
   const goForget = () => {
     setForgetVisiale(true);
@@ -225,10 +220,6 @@ export const Header = () => {
         onCancel={() => {
           setVisiale(false);
         }}
-        changeRegister={() => {
-          setVisiale(false);
-          goRegister();
-        }}
         changeForget={() => {
           setVisiale(false);
           goForget();
@@ -236,16 +227,6 @@ export const Header = () => {
         changeWeixin={() => {
           setVisiale(false);
           goWeixinLogin();
-        }}
-      />
-      <RegisterDialog
-        open={registerVisiale}
-        onCancel={() => {
-          setRegisterVisiale(false);
-        }}
-        changeLogin={() => {
-          setRegisterVisiale(false);
-          setVisiale(true);
         }}
       />
       <WeixinLoginDialog
@@ -331,12 +312,6 @@ export const Header = () => {
                   登录
                 </a>
                 <span className="text-gray-300 mx-2">|</span>
-                <a
-                  onClick={() => goRegister()}
-                  className="text-sm py-2 text-gray-500 hover:text-blue-600"
-                >
-                  注册
-                </a>
               </>
             )}
             {isLogin && user ? (

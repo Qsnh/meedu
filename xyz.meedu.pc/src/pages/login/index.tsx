@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Button, Image } from "antd";
 import {
-  RegisterDialog,
   LoginDialog,
   WeixinLoginDialog,
   WexinBindMobileDialog,
@@ -13,16 +12,12 @@ import banner from "../../assets/img/commen/login-banner.png";
 
 const LoginPage = () => {
   const [visiale, setVisiale] = useState<boolean>(false);
-  const [registerVisiale, setRegisterVisiale] = useState<boolean>(false);
   const [weixinVisiale, setWeixinVisiale] = useState<boolean>(false);
   const [weixinBindMobileVisiale, setWeixinBindMobileVisiale] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
 
-  const goRegister = () => {
-    setRegisterVisiale(true);
-  };
 
   const goForget = () => {
     setForgetVisiale(true);
@@ -43,10 +38,6 @@ const LoginPage = () => {
         onCancel={() => {
           setVisiale(false);
         }}
-        changeRegister={() => {
-          setVisiale(false);
-          goRegister();
-        }}
         changeForget={() => {
           setVisiale(false);
           goForget();
@@ -54,16 +45,6 @@ const LoginPage = () => {
         changeWeixin={() => {
           setVisiale(false);
           goWeixinLogin();
-        }}
-      />
-      <RegisterDialog
-        open={registerVisiale}
-        onCancel={() => {
-          setRegisterVisiale(false);
-        }}
-        changeLogin={() => {
-          setRegisterVisiale(false);
-          setVisiale(true);
         }}
       />
       <WeixinLoginDialog

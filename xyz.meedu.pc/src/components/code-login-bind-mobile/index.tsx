@@ -119,7 +119,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
     }
     setLoading(true);
     login
-      .codeBindMobile({
+      .codeBind({
         mobile: values.mobile,
         mobile_code: values.sms,
         code: getLoginCode(),

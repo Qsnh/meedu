@@ -114,7 +114,7 @@ export const WexinBindMobileDialog: React.FC<PropInterface> = ({
     }
     setLoading(true);
     login
-      .codeBindMobile({
+      .codeBind({
         mobile: values.mobile,
         code: getLoginCode(),
         mobile_code: values.sms,

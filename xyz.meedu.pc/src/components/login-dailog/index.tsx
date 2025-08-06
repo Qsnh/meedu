@@ -19,7 +19,6 @@ import closeIcon from "../../assets/img/commen/icon-close.png";
 interface PropInterface {
   open: boolean;
   onCancel: () => void;
-  changeRegister: () => void;
   changeForget: () => void;
   changeWeixin: () => void;
 }
@@ -29,7 +28,6 @@ var interval: any = null;
 export const LoginDialog: React.FC<PropInterface> = ({
   open,
   onCancel,
-  changeRegister,
   changeForget,
   changeWeixin,
 }) => {
@@ -261,15 +259,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
                 )}
               </div>
             ))}
-            <a
-              className={styles["linkTab"]}
-              onClick={() => {
-                interval && clearInterval(interval);
-                changeRegister();
-              }}
-            >
-              新用户注册&gt;&gt;
-            </a>
             <img
               className={styles["btn-close"]}
               onClick={() => {

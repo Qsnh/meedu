@@ -22,7 +22,6 @@ Route::post('/auth/login/wechat-scan/url', 'WechatScanLoginController@getLoginUr
 Route::get('/auth/login/wechat-scan/query', 'WechatScanLoginController@query');
 
 Route::post('/auth/login/code', 'LoginController@loginByCode');
-Route::post('/auth/register/withSocialite', 'LoginController@registerWithSocialite');
 
 Route::get('/course/attach-download', 'CourseController@attachDownloadDirect')->name('course.attach.download.direct');
 

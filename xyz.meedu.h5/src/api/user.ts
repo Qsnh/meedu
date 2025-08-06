@@ -76,6 +76,3 @@ export function NewMobile(params: any) {
   return client.post("/api/v2/member/detail/mobile", params);
 }
 
-export function CodeBindMobile(params: any) {
-  return client.post("/api/v3/auth/register/withSocialite", params);
-}

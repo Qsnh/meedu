@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CaptchaDialog, ConfirmLogin, ShowModel } from "../../components";
-import { user as member, system } from "../../api/index";
+import { user as member, system, login } from "../../api/index";
 import {
   isChinaMobilePhone,
   getHost,
@@ -75,7 +75,7 @@ const CodeBindMobilePage = () => {
         setOpenmask(false);
         setConfirmDialog(true);
       })
-      .catch((e) => {
+      .catch((e: any) => {
         setLoading(false);
         setReCaptcha(!reCaptcha);
       });
@@ -86,8 +86,8 @@ const CodeBindMobilePage = () => {
       return;
     }
     setLoading(true);
-    member
-      .CodeBindMobile({
+    login
+      .CodeBind({
         mobile: mobile,
         mobile_code: val,
         code: getLoginCode(),
