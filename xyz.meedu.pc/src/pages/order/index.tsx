@@ -18,12 +18,7 @@ const OrderPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
-  const [promoCode, setPromoCode] = useState<string>("");
-  const [promoCodeModel, setPromoCodeModel] = useState<any>(null);
-  const [pcCheckLoading, setPcCheckLoading] = useState(false);
   const [hasThumb, setHasThumb] = useState<boolean>(false);
-  const [configTip, setConfigTip] = useState<number>(999);
-  const [discount, setDiscount] = useState<number>(0);
   const [goodsType] = useState(result.get("goods_type"));
   const [goodsId] = useState(Number(result.get("goods_id")));
   const [goodsThumb] = useState<string>(String(result.get("goods_thumb")));
@@ -46,10 +41,8 @@ const OrderPage = () => {
   }, [goodsType]);
 
   useEffect(() => {
-    let val = total - discount;
-    val = val < 0 ? 0 : val;
-    setTotalVal(val);
-  }, [total, discount]);
+    setTotalVal(total);
+  }, [total]);
 
   const onChange = (e: CheckboxChangeEvent) => {
     setAgreeProtocol(e.target.checked);
@@ -67,43 +60,6 @@ const OrderPage = () => {
     }
   };
 
-  const checkPromoCode = () => {
-    if (loading) {
-      return;
-    }
-    if (!promoCode) {
-      return;
-    }
-    setPcCheckLoading(true);
-    if (
-      configFunc.share &&
-      (promoCode.substr(0, 1) === "u" || promoCode.substr(0, 1) === "U")
-    ) {
-      setConfigTip(0);
-      return;
-    }
-    setConfigTip(999);
-    setLoading(true);
-    order
-      .promoCodeCheck(promoCode)
-      .then((res: any) => {
-        if (res.data.can_use !== 1) {
-          setConfigTip(0);
-        } else {
-          setConfigTip(1);
-          setPromoCodeModel(res.data.promo_code);
-          let value = parseInt(res.data.promo_code.invited_user_reward);
-          setDiscount(value);
-        }
-        setLoading(false);
-        setPcCheckLoading(false);
-      })
-      .catch((e) => {
-        setLoading(false);
-        setConfigTip(999);
-        setPcCheckLoading(false);
-      });
-  };
 
   const payHandler = () => {
     if (goodsType === "role" && agreeProtocol !== true) {
@@ -120,7 +76,6 @@ const OrderPage = () => {
         .createOrder({
           goods_type: "COURSE",
           goods_id: goodsId,
-          promo_code: promoCode,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -134,7 +89,6 @@ const OrderPage = () => {
         .createOrder({
           goods_type: "COURSE",
           goods_id: goodsId,
-          promo_code: promoCode,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -147,7 +101,6 @@ const OrderPage = () => {
         .createOrder({
           goods_type: "ROLE",
           goods_id: goodsId,
-          promo_code: promoCode,
           agree_protocol: 1,
         })
         .then((res: any) => {
@@ -240,38 +193,6 @@ const OrderPage = () => {
             {total}
           </div>
         </div>
-        {goodsType !== "ms" && goodsType !== "tg" && (
-          <>
-            <div className={styles["tit"]}>优惠码</div>
-            <div className={styles["promocode-box"]}>
-              <Input
-                className={styles["input"]}
-                value={promoCode}
-                placeholder="请输入优惠码"
-                onChange={(e) => {
-                  setPromoCode(e.target.value);
-                }}
-                disabled={pcCheckLoading}
-              ></Input>
-              <div
-                className={styles["btn-confirm"]}
-                onClick={() => checkPromoCode()}
-              >
-                验证
-              </div>
-              {configTip === 0 && (
-                <div className={styles["tip"]}>
-                  此优惠码无效，请重新输入验证
-                </div>
-              )}
-              {configTip === 1 && (
-                <div className={styles["tip"]}>
-                  此优惠码有效，已减免{discount <= total ? discount : total}元
-                </div>
-              )}
-            </div>
-          </>
-        )}
         <div className={styles["line"]}></div>
         {goodsType === "role" && (
           <div className={styles["price-box"]} style={{ marginTop: 50 }}>
@@ -296,15 +217,6 @@ const OrderPage = () => {
           className={styles["price-box"]}
           style={{ marginTop: goodsType === "role" ? 30 : 50 }}
         >
-          {goodsType !== "ms" && goodsType !== "tg" && (
-            <>
-              <span>优惠码已减</span>
-              <span className={styles["red"]}>
-                {discount <= total ? discount : total}
-              </span>
-              <span>元，</span>
-            </>
-          )}
           <span>需支付</span>
           <span className={styles["red"]}>
             ￥<span className={styles["big"]}>{totalVal}</span>

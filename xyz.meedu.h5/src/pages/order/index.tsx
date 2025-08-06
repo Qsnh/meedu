@@ -19,15 +19,9 @@ const OrderPage = () => {
     (state: RootState) => state.systemConfig.value
   );
   const [loading, setLoading] = useState(false);
-  const [openmask, setOpenmask] = useState(false);
-  const [isUsed] = useState(false);
-  const [promoCode, setPromoCode] = useState<any>("");
-  const [configTip, setConfigTip] = useState(2);
   const [total] = useState(Number(result.get("goods_charge")));
   const [goods, setGoods] = useState<any>({});
   const [totalVal, setTotalVal] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [, setPromoCodeModel] = useState<any>(null);
   const [openmask2, setOpenmask2] = useState(false);
 
   useEffect(() => {
@@ -56,53 +50,8 @@ const OrderPage = () => {
   ]);
 
   useEffect(() => {
-    let val = total - discount;
-    val = val < 0 ? 0 : val;
-    setTotalVal(val);
-  }, [total, discount]);
-
-  const cancel = () => {
-    setPromoCode("");
-    setOpenmask(false);
-  };
-
-  const openPromo = () => {
-    setPromoCode("");
-    setOpenmask(true);
-  };
-
-  const checkPromoCode = () => {
-    if (loading) {
-      return;
-    }
-    if (!promoCode) {
-      return;
-    }
-    setLoading(true);
-    order
-      .PromoCodeCheck(promoCode)
-      .then((res: any) => {
-        setLoading(false);
-        if (res.data.can_use !== 1) {
-          setConfigTip(0);
-          Toast.show("优惠码无效");
-          cancel();
-        } else {
-          setConfigTip(1);
-          let obj = res.data.promo_code;
-          setPromoCodeModel(obj);
-          let value = parseInt(obj.invited_user_reward);
-          setDiscount(value);
-          Toast.show("优惠码有效，抵扣" + value + "元");
-          setOpenmask(false);
-        }
-      })
-      .catch((e) => {
-        setLoading(false);
-        setConfigTip(2);
-        cancel();
-      });
-  };
+    setTotalVal(total);
+  }, [total]);
 
   const submitProtocol = () => {
     setLoading(true);
@@ -110,7 +59,6 @@ const OrderPage = () => {
       .CreateOrder({
         goods_type: "ROLE",
         goods_id: goods.id,
-        promo_code: promoCode,
         agree_protocol: 1,
       })
       .then((res: any) => {
@@ -135,7 +83,6 @@ const OrderPage = () => {
         .CreateOrder({
           goods_type: "COURSE",
           goods_id: goods.id,
-          promo_code: promoCode,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -149,7 +96,6 @@ const OrderPage = () => {
         .CreateOrder({
           goods_type: "COURSE",
           goods_id: goods.id,
-          promo_code: promoCode,
         })
         .then((res: any) => {
           orderCreatedHandler(res.data);
@@ -184,28 +130,6 @@ const OrderPage = () => {
   return (
     <div className={styles["container"]}>
       <NavHeader text="收银台" />
-      {openmask && (
-        <div className={styles["mask"]}>
-          <div className={styles["popup"]}>
-            <div className={styles["cancel"]} onClick={() => cancel()}>
-              <img src={closeIcon} />
-            </div>
-            <div className={styles["input-box"]}>
-              <Input
-                className={styles["input-item"]}
-                placeholder="请输入优惠码"
-                value={promoCode}
-                onChange={(e: any) => {
-                  setPromoCode(e);
-                }}
-              />
-            </div>
-            <div className={styles["confirm"]} onClick={() => checkPromoCode()}>
-              验证
-            </div>
-          </div>
-        </div>
-      )}
       {openmask2 && (
         <div className={styles["mask"]}>
           <div className={styles["dialog-box"]}>
@@ -245,16 +169,6 @@ const OrderPage = () => {
             <div className={styles["goods-charge"]}>￥{total}</div>
           </div>
         </div>
-      </div>
-      <div className={styles["promocode-box"]} onClick={() => openPromo()}>
-        {!isUsed && <div className={styles["info"]}>使用优惠码</div>}
-        {isUsed && configTip === 0 && (
-          <div className={styles["tip"]}>此优惠码无效，请重新输入验证</div>
-        )}
-        {isUsed && configTip === 1 && (
-          <div className={styles["tip"]}>优惠码已抵扣10元{discount}元</div>
-        )}
-        <img src={prevIcon} />
       </div>
       <div className={styles["box-footer"]}>
         <div className={styles["price-box"]}>
