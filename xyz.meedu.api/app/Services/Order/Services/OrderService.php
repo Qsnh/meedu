@@ -216,11 +216,28 @@ class OrderService implements OrderServiceInterface
         $query = Order::query()->where('user_id', $userId)->where('status', Order::STATUS_PAID);
         $total = $query->count();
         $list = $query
-            ->with(['goods:id,oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge,num,charge'])
+            ->with([
+                'goods:id,oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge,num,charge',
+                'refund' => function($query) {
+                    $query->where('status', \App\Services\Order\Models\OrderRefund::STATUS_SUCCESS)
+                          ->select(['order_id', 'amount']);
+                }
+            ])
             ->latest()
             ->forPage($page, $pageSize)
             ->get()
             ->toArray();
+
+        foreach ($list as $key => $order) {
+            $refundAmount = 0;
+            if (!empty($order['refund'])) {
+                $refundAmount = array_sum(array_column($order['refund'], 'amount'));
+            }
+            // 将分转换为元（数据库存储单位为分，需要除以100转换为元）
+            $list[$key]['refund_amount'] = (float)($refundAmount / 100);
+            // 移除refund关系数据，避免返回给前端
+            unset($list[$key]['refund']);
+        }
 
         return compact('total', 'list');
     }

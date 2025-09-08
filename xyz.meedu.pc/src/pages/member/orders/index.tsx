@@ -172,6 +172,11 @@ const MemberOrdersPage = () => {
                       {item.status_text === "已支付" && (
                         <div className={styles["item-price"]}>
                           实付款：￥{item.charge}
+                          {item.refund_amount > 0 && (
+                            <span style={{ marginLeft: 10, color: "#FF6B6B" }}>
+                              已退金额：￥{item.refund_amount.toFixed(2)}
+                            </span>
+                          )}
                         </div>
                       )}
                       <div

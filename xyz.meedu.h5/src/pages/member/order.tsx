@@ -96,6 +96,11 @@ const MemberOrdersPage = () => {
                     {item.goods[0].goods_name}
                   </div>
                   <div className={styles["payment"]}>{item.payment_text}</div>
+                  {item.refund_amount > 0 && (
+                    <div style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }}>
+                      已退金额：￥{item.refund_amount.toFixed(2)}
+                    </div>
+                  )}
                 </div>
                 <div className={styles["charge"]}>
                   <span className={styles["unit"]}>￥</span>

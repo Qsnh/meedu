@@ -57,7 +57,7 @@ class ApiV2Constant
 
     public const MODEL_ORDER_FIELD = [
         'id', 'user_id', 'charge', 'order_id', 'payment_method', 'status_text', 'payment_text', 'continue_pay',
-        'goods', 'created_at',
+        'goods', 'created_at', 'refund_amount',
     ];
 
     public const MODEL_ORDER_GOODS_FIELD = [

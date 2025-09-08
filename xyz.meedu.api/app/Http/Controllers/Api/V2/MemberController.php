@@ -553,6 +553,7 @@ class MemberController extends BaseController
 
         foreach ($list as $key => $val) {
             $list[$key]['goods'] = arr2_clear($val['goods'], ApiV2Constant::MODEL_ORDER_GOODS_FIELD);
+            $list[$key]['refund_amount'] = (float)($val['refund_amount'] ?? 0);
         }
         $orders = $this->paginator($list, $total, $page, $pageSize);
 
