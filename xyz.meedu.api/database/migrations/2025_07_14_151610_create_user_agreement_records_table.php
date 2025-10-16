@@ -25,7 +25,7 @@ class CreateUserAgreementRecordsTable extends Migration
             $table->bigInteger('agreement_id')->comment('协议ID');
             $table->string('agreement_type', 50)->comment('协议类型');
             $table->string('agreement_version', 50)->comment('协议版本');
-            $table->timestamp('agreed_at')->comment('同意时间');
+            $table->timestamp('agreed_at')->nullable()->comment('同意时间');
             $table->string('ip', 64)->default('')->comment('IP地址');
             $table->text('user_agent')->nullable()->comment('User-Agent信息');
             $table->string('platform', 20)->default('')->comment('平台：PC,H5,iOS,Android,Mini');
