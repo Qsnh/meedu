@@ -296,6 +296,23 @@ class VideoController extends BaseController
         $videoId = (int)$id;
         $userId = $this->id();
 
+        // 安全验证：检查用户是否有权限观看该视频
+        $video = $this->videoService->find($videoId);
+        $course = $this->courseService->find($video['course_id']);
+
+        // 验证用户是否有权限观看该视频
+        $canSee = $this->businessState->canSeeVideo($this->user(), $course, $video);
+
+        // 如果无法观看且没有试看权限,拒绝记录
+        if (!$canSee && $video['free_seconds'] <= 0) {
+            return $this->error(__('无权限观看此视频'));
+        }
+
+        // 如果只能试看,限制记录的时长不能超过试看时长
+        if (!$canSee && $video['free_seconds'] > 0) {
+            $duration = min($duration, $video['free_seconds']);
+        }
+
         HookRun::subscribe(PositionConstant::VIDEO_RECORD_BEFORE, compact('duration', 'userId', 'videoId'));
 
         $videoBus->userVideoWatchDurationRecord($userId, $videoId, $duration);

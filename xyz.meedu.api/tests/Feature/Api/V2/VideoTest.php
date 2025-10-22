@@ -143,7 +143,14 @@ class VideoTest extends Base
     {
         $user = User::factory()->create();
 
+        $course = Course::factory()->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_free' => 1, // 免费课程
+        ]);
+
         $video = Video::factory()->create([
+            'course_id' => $course->id,
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'duration' => 100,
@@ -175,10 +182,82 @@ class VideoTest extends Base
         $this->assertNotNull($record->watched_at);
     }
 
+    public function test_video_record_without_permission()
+    {
+        $user = User::factory()->create();
+
+        $course = Course::factory()->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'charge' => 100, // 付费课程
+            'is_free' => 0,
+        ]);
+
+        $video = Video::factory()->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 100,
+            'charge' => 50,
+            'free_seconds' => 0, // 无试看
+        ]);
+
+        // 未购买的用户尝试记录学习进度应该失败
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 10,
+        ]);
+        $this->assertResponseError($r, __('无权限观看此视频'));
+
+        // 验证没有创建观看记录
+        $record = UserVideoWatchRecord::query()->where('user_id', $user->id)->where('video_id', $video->id)->first();
+        $this->assertNull($record);
+    }
+
+    public function test_video_record_with_free_seconds()
+    {
+        $user = User::factory()->create();
+
+        $course = Course::factory()->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'charge' => 100,
+            'is_free' => 0,
+        ]);
+
+        $video = Video::factory()->create([
+            'course_id' => $course->id,
+            'is_show' => Video::IS_SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'duration' => 1000,
+            'charge' => 50,
+            'free_seconds' => 60, // 可试看60秒
+        ]);
+
+        // 未购买的用户记录学习进度,但时长超过试看时长
+        $r = $this->user($user)->postJson('api/v2/video/' . $video->id . '/record', [
+            'duration' => 100, // 尝试记录100秒
+        ]);
+        $r = $this->assertResponseSuccess($r);
+
+        // 验证只记录了试看时长
+        $record = UserVideoWatchRecord::query()->where('user_id', $user->id)->where('video_id', $video->id)->first();
+        $this->assertNotNull($record);
+        $this->assertEquals(60, $record->watch_seconds); // 应该被限制为60秒
+        $this->assertNull($record->watched_at); // 未看完
+    }
+
     public function test_video_record_after_user_watch_stat()
     {
         $user = User::factory()->create();
+
+        $course = Course::factory()->create([
+            'is_show' => Course::SHOW_YES,
+            'published_at' => Carbon::now()->subDays(1),
+            'is_free' => 1, // 免费课程
+        ]);
+
         $video = Video::factory()->create([
+            'course_id' => $course['id'],
             'is_show' => Video::IS_SHOW_YES,
             'published_at' => Carbon::now()->subDays(1),
             'duration' => 100,
