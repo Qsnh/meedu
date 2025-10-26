@@ -1,6 +1,7 @@
 export * from "./count-down";
 export * from "./duration";
 export * from "./footer-bar";
+export * from "./announcement-banner";
 export * from "./nav-header";
 export * from "./none";
 export * from "./search-box";

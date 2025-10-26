@@ -1,0 +1,56 @@
+.announcement-banner {
+  width: 100%;
+  background: linear-gradient(90deg, #fff9e6 0%, #fffbf0 100%);
+  border-bottom: 1px solid #ffe8a3;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:active {
+    background: linear-gradient(90deg, #fff5d6 0%, #fff9e0 100%);
+  }
+
+  .icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .arrow {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}

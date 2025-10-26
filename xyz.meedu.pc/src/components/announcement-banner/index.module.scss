@@ -1,0 +1,68 @@
+.announcement-banner {
+  width: 100%;
+  background: linear-gradient(90deg, #fff9e6 0%, #fffbf0 100%);
+  border-bottom: 1px solid #ffe8a3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(90deg, #fff5d6 0%, #fff9e0 100%);
+  }
+
+  .banner-content {
+    width: 1200px;
+    height: 45px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0 40px;
+
+    .icon {
+      font-size: 18px;
+      color: #fa8c16;
+      margin-right: 12px;
+      flex-shrink: 0;
+      animation: shake 1s ease infinite;
+    }
+
+    .text {
+      max-width: 800px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 22px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .close-btn {
+      font-size: 14px;
+      color: #999999;
+      margin-left: 20px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      position: absolute;
+      right: 40px;
+
+      &:hover {
+        color: #333333;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(-5deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(5deg);
+  }
+}

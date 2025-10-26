@@ -5,6 +5,7 @@
   right: 0;
   bottom: 0;
   background-color: #f1f2f9;
+
   .top-box {
     position: absolute;
     top: 0;
@@ -116,50 +117,10 @@
   }
 }
 
-.navs-box {
-  position: fixed;
-  top: 56px;
-  left: 210px;
-  width: calc(100% - 210px);
-  height: 56px;
-  background: #ffffff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 8px 30px;
-  .nav-item {
-    width: 96px;
-    height: 40px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 30px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #3ca7fa;
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-    img {
-      margin-left: 5px;
-    }
-  }
-  .tip {
-    height: 12px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #999999;
-    line-height: 12px;
-  }
-}
-
 .config-box {
   position: absolute;
   z-index: 50;
-  top: 112px;
+  top: 56px;
   right: 0;
   bottom: 0;
   width: 400px;

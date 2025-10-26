@@ -13,7 +13,6 @@ import { TagsDialog } from "./components/tags-dialog";
 import { RemarkDialog } from "./components/remark-dailog";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
-import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
 import { UserCredit1Comp } from "./detail/credit1";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { MyProfileDialog } from "./components/my-profile";
@@ -61,12 +60,6 @@ const MemberDetailPage = () => {
         key: "vod-watch-records",
       });
     }
-    // if (checkPermission("v2.member.videos")) {
-    //   types.push({
-    //     name: "单独购买课时",
-    //     key: "video-watch-records",
-    //   });
-    // }
     types.push(
       ...[
         {
@@ -366,11 +359,6 @@ const MemberDetailPage = () => {
             <UserVodWatchRecordsComp
               id={Number(params.memberId)}
             ></UserVodWatchRecordsComp>
-          )}
-          {courseTabActive === "video-watch-records" && (
-            <UserVideoWatchRecordsComp
-              id={Number(params.memberId)}
-            ></UserVideoWatchRecordsComp>
           )}
           {courseTabActive === "credit1" && (
             <UserCredit1Comp id={Number(params.memberId)}></UserCredit1Comp>

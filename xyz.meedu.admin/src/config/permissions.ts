@@ -8,8 +8,8 @@ export const PERMISSION_CONFIG: PermissionPath[] = [
     title: "主页",
   },
   {
-    permission: "viewBlock",
-    path: "/decoration/pc",
+    permission: ["decorationPage", "nav", "link"],
+    path: "/decoration",
     title: "装修",
   },
   {
@@ -51,6 +51,11 @@ export const PERMISSION_CONFIG: PermissionPath[] = [
     permission: "agreements",
     path: "/agreement/index",
     title: "协议管理",
+  },
+  {
+    permission: "announcement",
+    path: "/announcement/index",
+    title: "公告管理",
   },
   {
     permission: "stats.transaction",

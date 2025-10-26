@@ -94,7 +94,7 @@ const CourseVideoUpdatePage = () => {
   };
 
   const getParams = async () => {
-    const res: any = await course.videoCreate(cid);
+    const res: any = await course.chaptersList(cid, {});
     let chapters = res.data.chapters;
     if (chapters.length > 0) {
       const box: any = [];

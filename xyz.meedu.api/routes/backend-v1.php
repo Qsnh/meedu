@@ -57,20 +57,11 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 友情链接
     Route::group(['prefix' => 'link'], function () {
-        Route::get('/', 'LinkController@index');
-        Route::post('/', 'LinkController@store');
+        Route::get('/index', 'LinkController@index');
+        Route::post('/create', 'LinkController@store');
         Route::get('/{id}', 'LinkController@edit');
         Route::put('/{id}', 'LinkController@update');
         Route::delete('/{id}', 'LinkController@destroy');
-    });
-
-    // 幻灯片
-    Route::group(['prefix' => 'slider'], function () {
-        Route::get('/', 'SliderController@index');
-        Route::post('/', 'SliderController@store');
-        Route::get('/{id}', 'SliderController@edit');
-        Route::put('/{id}', 'SliderController@update');
-        Route::delete('/{id}', 'SliderController@destroy');
     });
 
     // 广告推广
@@ -85,8 +76,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 公告
     Route::group(['prefix' => 'announcement'], function () {
-        Route::get('/', 'AnnouncementController@index');
-        Route::post('/', 'AnnouncementController@store');
+        Route::get('/index', 'AnnouncementController@index');
+        Route::post('/create', 'AnnouncementController@store');
         Route::get('/{id}', 'AnnouncementController@edit');
         Route::put('/{id}', 'AnnouncementController@update');
         Route::delete('/{id}', 'AnnouncementController@destroy');
@@ -94,9 +85,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // Nav
     Route::group(['prefix' => 'nav'], function () {
-        Route::get('/', 'NavController@index');
+        Route::get('/index', 'NavController@index');
         Route::get('/create', 'NavController@create');
-        Route::post('/', 'NavController@store');
+        Route::post('/create', 'NavController@store');
         Route::get('/{id}', 'NavController@edit');
         Route::put('/{id}', 'NavController@update');
         Route::delete('/{id}', 'NavController@destroy');
@@ -104,9 +95,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // Role
     Route::group(['prefix' => 'role'], function () {
-        Route::get('/', 'RoleController@index');
+        Route::get('/index', 'RoleController@index');
         Route::get('/all', 'RoleController@all');
-        Route::post('/', 'RoleController@store');
+        Route::post('/create', 'RoleController@store');
         Route::get('/{id}', 'RoleController@edit');
         Route::put('/{id}', 'RoleController@update');
         Route::delete('/{id}', 'RoleController@destroy');
@@ -114,10 +105,12 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 管理员
     Route::group(['prefix' => 'administrator'], function () {
+        // 修改密码
         Route::put('/password', 'AdministratorController@editPasswordHandle');
-        Route::get('/', 'AdministratorController@index');
+
+        Route::get('/index', 'AdministratorController@index');
         Route::get('/create', 'AdministratorController@create');
-        Route::post('/', 'AdministratorController@store');
+        Route::post('/create', 'AdministratorController@store');
         Route::get('/{id}', 'AdministratorController@edit');
         Route::put('/{id}', 'AdministratorController@update');
         Route::delete('/{id}', 'AdministratorController@destroy');
@@ -130,9 +123,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 角色
     Route::group(['prefix' => 'administrator_role'], function () {
-        Route::get('/', 'AdministratorRoleController@index');
+        Route::get('/index', 'AdministratorRoleController@index');
         Route::get('/create', 'AdministratorRoleController@create');
-        Route::post('/', 'AdministratorRoleController@store');
+        Route::post('/create', 'AdministratorRoleController@store');
         Route::get('/{id}', 'AdministratorRoleController@edit');
         Route::put('/{id}', 'AdministratorRoleController@update');
         Route::delete('/{id}', 'AdministratorRoleController@destroy');
@@ -140,8 +133,8 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 课程章节
     Route::group(['prefix' => 'course_chapter'], function () {
-        Route::get('/{course_id}', 'CourseChapterController@index');
-        Route::post('/{course_id}', 'CourseChapterController@store');
+        Route::get('/{course_id}/index', 'CourseChapterController@index');
+        Route::post('/{course_id}/create', 'CourseChapterController@store');
         Route::get('/{course_id}/{id}', 'CourseChapterController@edit');
         Route::put('/{course_id}/{id}', 'CourseChapterController@update');
         Route::delete('/{course_id}/{id}', 'CourseChapterController@destroy');
@@ -149,10 +142,10 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 课程
     Route::group(['prefix' => 'course'], function () {
-        Route::get('/', 'CourseController@index');
+        Route::get('/index', 'CourseController@index');
         Route::get('/all', 'CourseController@all');
         Route::get('/create', 'CourseController@create');
-        Route::post('/', 'CourseController@store');
+        Route::post('/create', 'CourseController@store');
         Route::get('/{id}', 'CourseController@edit');
         Route::put('/{id}', 'CourseController@update');
         Route::delete('/{id}', 'CourseController@destroy');
@@ -169,25 +162,21 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
     // 课程
     Route::group(['prefix' => 'course_attach'], function () {
-        Route::get('/', 'CourseAttachController@index');
+        Route::get('/index', 'CourseAttachController@index');
         Route::get('/create', 'CourseAttachController@create');
-        Route::post('/', 'CourseAttachController@store');
+        Route::post('/create', 'CourseAttachController@store');
         Route::delete('/{id}', 'CourseAttachController@destroy');
     });
 
     // 视频
     Route::group(['prefix' => 'video'], function () {
-        Route::get('/', 'CourseVideoController@index');
+        Route::get('/index', 'CourseVideoController@index');
         Route::get('/create', 'CourseVideoController@create');
-        Route::post('/', 'CourseVideoController@store');
+        Route::post('/create', 'CourseVideoController@store');
         Route::get('/{id}', 'CourseVideoController@edit');
         Route::put('/{id}', 'CourseVideoController@update');
         Route::delete('/{id}', 'CourseVideoController@destroy');
         Route::post('/delete/multi', 'CourseVideoController@multiDestroy');
-        // 购买管理
-        Route::get('/{id}/subscribes', 'CourseVideoController@subscribes');
-        Route::post('/{id}/subscribe/create', 'CourseVideoController@subscribeCreate');
-        Route::get('/{id}/subscribe/delete', 'CourseVideoController@subscribeDelete');
         // 观看记录
         Route::get('/{id}/watch/records', 'CourseVideoController@watchRecords');
         // 批量导入
@@ -199,13 +188,15 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         // 批量导入
         Route::post('/import', 'MemberController@import');
 
-        Route::get('/', 'MemberController@index');
+        Route::get('/index', 'MemberController@index');
         Route::get('/create', 'MemberController@create');
+        Route::post('/create', 'MemberController@store');
         Route::get('/{id}', 'MemberController@edit');
-        Route::post('/', 'MemberController@store');
         Route::put('/{id}', 'MemberController@update');
         Route::delete('/{id}/profile', 'MemberController@deleteUserProfile');
         Route::put('/field/multi', 'MemberController@updateFieldMulti');
+
+        // todo - 权限继续优化
 
         // 更新用户标签
         Route::put('/{id}/tags', 'MemberController@tagUpdate');
@@ -215,15 +206,9 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
 
         // 用户详情
         Route::get('/{id}/detail', 'MemberController@detail');
-        Route::get('/{id}/detail/userCourses', 'MemberController@userCourses');
-        Route::get('/{id}/detail/userVideos', 'MemberController@userVideos');
-        Route::get('/{id}/detail/userRoles', 'MemberController@userRoles');
-        Route::get('/{id}/detail/userCollect', 'MemberController@userCollect');
-        Route::get('/{id}/detail/userHistory', 'MemberController@userHistory');
         Route::get('/{id}/detail/userOrders', 'MemberController@userOrders');
         Route::get('/{id}/detail/userInvite', 'MemberController@userInvite');
         Route::get('/{id}/detail/credit1Records', 'MemberController@credit1Records');
-        Route::get('/{id}/detail/videoWatchRecords', 'MemberController@userVideoWatchRecords');
 
         // 积分变更
         Route::post('/credit1/change', 'MemberController@credit1Change');
@@ -293,6 +278,17 @@ Route::group(['middleware' => ['auth:administrator', 'backend.permission', 'back
         Route::get('/{id}', 'ViewBlockController@edit');
         Route::put('/{id}', 'ViewBlockController@update');
         Route::delete('/{id}', 'ViewBlockController@destroy');
+    });
+
+    // 装修页面管理
+    Route::group(['prefix' => 'decoration-page'], function () {
+        Route::get('/', 'DecorationPageController@index');
+        Route::post('/', 'DecorationPageController@store');
+        Route::get('/{id}', 'DecorationPageController@show');
+        Route::put('/{id}', 'DecorationPageController@update');
+        Route::delete('/{id}', 'DecorationPageController@destroy');
+        Route::post('/{id}/set-default', 'DecorationPageController@setDefault');
+        Route::post('/{id}/copy', 'DecorationPageController@copy');
     });
 
     Route::group(['prefix' => 'log'], function () {

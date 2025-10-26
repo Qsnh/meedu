@@ -15,6 +15,7 @@ class LinkCache
 {
 
     public const KEY_NAME = 'links';
+    public const CACHE_EXPIRE = 1296000; // 15天
 
     private $linkService;
 
@@ -25,7 +26,7 @@ class LinkCache
 
     public function get()
     {
-        return Cache::get(self::KEY_NAME, function () {
+        return Cache::remember(self::KEY_NAME, self::CACHE_EXPIRE, function () {
             return $this->linkService->all();
         });
     }

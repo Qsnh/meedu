@@ -52,7 +52,7 @@ export const IndexImageGroup: React.FC<PropInterface> = ({ render, v }) => {
             <div onClick={() => go(render[1])} className={styles["box"]}>
               <img className={styles["image"]} src={render[1].src} />
             </div>
-            <div onClick={() => go(render[2])} className="box">
+            <div onClick={() => go(render[2])} className={styles["box"]}>
               <img className={styles["image"]} src={render[2].src} />
             </div>
           </div>

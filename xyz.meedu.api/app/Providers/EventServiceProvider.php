@@ -106,10 +106,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UserVerifyFaceSuccessEvent\UserNotifyListener',
             'App\Listeners\UserVerifyFaceSuccessEvent\UserProfileUpdateListener',
         ],
-        // 幻灯片更新事件
-        'App\Events\SliderUpdateEvent' => [
-            'App\Listeners\SliderUpdateEvent\CacheClearListener',
-        ],
         // 友情链接更新事件
         'App\Events\LinkUpdateEvent' => [
             'App\Listeners\LinkUpdateEvent\CacheClearListener',
@@ -172,6 +168,10 @@ class EventServiceProvider extends ServiceProvider
         // 协议更新
         'App\Events\AgreementChangeEvent' => [
             'App\Listeners\AgreementChangeEvent\CacheClearListener',
+        ],
+        // 装修页面更新事件
+        'App\Events\DecorationPageUpdateEvent' => [
+            'App\Listeners\DecorationPageUpdateEvent\CacheClearListener',
         ],
     ];
 }

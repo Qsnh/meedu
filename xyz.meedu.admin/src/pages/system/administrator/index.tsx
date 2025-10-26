@@ -8,6 +8,8 @@ import { titleAction } from "../../../store/user/loginUserSlice";
 import { dateWholeFormat } from "../../../utils/index";
 import { PerButton } from "../../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { AdministratorCreateDialog } from "./components/create";
+import { AdministratorUpdateDialog } from "./components/update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -35,6 +37,10 @@ const SystemAdministratorPage = () => {
   const [list, setList] = useState<any>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [roles, setRoles] = useState<any>([]);
+  const [showCreateWin, setShowCreateWin] = useState<boolean>(false);
+  const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [adminId, setAdminId] = useState<number>(0);
   const user = useSelector((state: any) => state.loginUser.value.user);
 
   useEffect(() => {
@@ -57,10 +63,25 @@ const SystemAdministratorPage = () => {
         setList(res.data.data);
         setTotal(res.data.total);
         setLoading(false);
+        getRoles();
       })
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const getRoles = () => {
+    system.administratorCreate().then((res: any) => {
+      const arr = [];
+      let roles = res.data.roles;
+      for (let i = 0; i < roles.length; i++) {
+        arr.push({
+          label: roles[i].display_name,
+          value: roles[i].id,
+        });
+      }
+      setRoles(arr);
+    });
   };
 
   const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
@@ -152,7 +173,8 @@ const SystemAdministratorPage = () => {
             icon={null}
             p="administrator.update"
             onClick={() => {
-              navigate("/system/administrator/update?id=" + record.id);
+              setAdminId(record.id);
+              setShowUpdateWin(true);
             }}
             disabled={null}
           />
@@ -208,15 +230,26 @@ const SystemAdministratorPage = () => {
   return (
     <div className="meedu-main-body">
       <div className="float-left">
-        <PerButton
-          type="primary"
-          text="新建管理员"
-          class=""
-          icon={null}
-          p="administrator.store"
-          onClick={() => navigate("/system/administrator/create")}
-          disabled={null}
-        />
+        <div className="d-flex">
+          <PerButton
+            type="primary"
+            text="新建管理员"
+            class=""
+            icon={null}
+            p="administrator.store"
+            onClick={() => setShowCreateWin(true)}
+            disabled={null}
+          />
+          <PerButton
+            type="primary"
+            text="角色管理"
+            class="ml-10"
+            icon={null}
+            p="administrator_role"
+            onClick={() => navigate("/system/adminroles")}
+            disabled={null}
+          />
+        </div>
       </div>
       <div className="float-left mt-30">
         <Table
@@ -227,6 +260,26 @@ const SystemAdministratorPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <AdministratorCreateDialog
+        open={showCreateWin}
+        roles={roles}
+        onCancel={() => setShowCreateWin(false)}
+        onSuccess={() => {
+          setShowCreateWin(false);
+          resetData();
+        }}
+      />
+      <AdministratorUpdateDialog
+        id={adminId}
+        open={showUpdateWin}
+        roles={roles}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          setShowUpdateWin(false);
+          setAdminId(0);
+          resetData();
+        }}
+      />
     </div>
   );
 };

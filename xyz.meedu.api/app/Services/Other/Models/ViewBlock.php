@@ -15,7 +15,7 @@ class ViewBlock extends Model
     protected $table = 'view_blocks';
 
     protected $fillable = [
-        'platform', 'page', 'sign', 'sort', 'config',
+        'platform', 'page', 'decoration_page_id', 'sign', 'sort', 'config',
     ];
 
     protected $appends = [
@@ -28,5 +28,13 @@ class ViewBlock extends Model
             return [];
         }
         return json_decode($this->config, true);
+    }
+
+    /**
+     * 关联的装修页面
+     */
+    public function decorationPage()
+    {
+        return $this->belongsTo(DecorationPage::class, 'decoration_page_id', 'id');
     }
 }

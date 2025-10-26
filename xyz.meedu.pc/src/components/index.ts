@@ -1,5 +1,6 @@
 export * from "./header";
 export * from "./footer";
+export * from "./announcement-banner";
 export * from "./login-dailog";
 export * from "./register-dialog";
 export * from "./weixin-login-dailog";

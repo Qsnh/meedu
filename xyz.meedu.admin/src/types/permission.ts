@@ -5,9 +5,9 @@ export interface Permission {
 
 // 权限路径配置类型
 export interface PermissionPath {
-  permission: string;  // 权限标识
-  path: string;       // 路由路径
-  title: string;      // 页面标题
+  permission: string | string[];  // 权限标识（支持字符串或数组形式，数组表示OR逻辑）
+  path: string;                   // 路由路径
+  title: string;                  // 页面标题
 }
 
 // 用户信息类型补充

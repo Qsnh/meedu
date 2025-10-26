@@ -14,7 +14,6 @@ use App\Constant\HookConstant;
 use App\Constant\FrontendConstant;
 use App\Meedu\Cache\Impl\NavCache;
 use App\Meedu\Cache\Impl\LinkCache;
-use App\Meedu\Cache\Impl\SliderCache;
 use App\Services\Base\Interfaces\ConfigServiceInterface;
 
 class OtherController extends BaseController
@@ -59,14 +58,11 @@ class OtherController extends BaseController
      * @apiSuccess {Object[]} data.links 友情链接
      * @apiSuccess {String} data.links.name 链接名
      * @apiSuccess {String} data.links.url 链接地址
-     * @apiSuccess {Object[]} data.sliders PC的幻灯片
-     * @apiSuccess {String} data.sliders.thumb 幻灯片地址
-     * @apiSuccess {String} data.sliders.url 链接地址
      * @apiSuccess {Object[]} data.navs PC的导航栏
      * @apiSuccess {String} data.navs.name 导航名
      * @apiSuccess {String} data.navs.url 导航地址
      */
-    public function config(Addons $addons, ConfigServiceInterface $configService, LinkCache $linkCache, SliderCache $sliderCache, NavCache $navCache)
+    public function config(Addons $addons, ConfigServiceInterface $configService, LinkCache $linkCache, NavCache $navCache)
     {
         // 跑马灯的配置
         $playerConfig = $configService->getPlayer();
@@ -146,8 +142,6 @@ class OtherController extends BaseController
             'enabled_addons' => $enabledAddons,
         ];
 
-        // PC幻灯片
-        $data['sliders'] = $sliderCache->get(FrontendConstant::SLIDER_PLATFORM_PC);
         // PC导航栏
         $data['navs'] = $navCache->get(FrontendConstant::NAV_PLATFORM_PC);
         // PC首页友情链接

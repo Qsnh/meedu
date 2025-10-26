@@ -23,20 +23,12 @@ use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
 use App\Services\Order\Models\Order;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Course\Models\Video;
-use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserTag;
-use App\Services\Member\Models\UserVideo;
-use App\Services\Member\Models\UserCourse;
 use App\Services\Member\Models\UserRemark;
 use App\Services\Member\Models\UserProfile;
 use App\Http\Requests\Backend\MemberRequest;
-use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserTagRelation;
-use App\Services\Course\Models\CourseUserRecord;
 use App\Services\Member\Models\UserCreditRecord;
-use App\Services\Member\Models\UserJoinRoleRecord;
-use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 use App\Services\Member\Notifications\SimpleMessageNotification;
 
@@ -267,97 +259,6 @@ class MemberController extends BaseController
         ]);
     }
 
-    public function userCourses(Request $request, $id)
-    {
-        $data = UserCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
-        $courseIds = get_array_ids($data->items(), 'course_id');
-        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $data,
-            'courses' => $courses,
-        ]);
-    }
-
-    public function userVideos(Request $request, $id)
-    {
-        $data = UserVideo::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
-        $videoIds = get_array_ids($data->items(), 'video_id');
-        $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title', 'charge'])->get()->keyBy('id');
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $data,
-            'videos' => $videos,
-        ]);
-    }
-
-    public function userRoles(Request $request, $id)
-    {
-        $data = UserJoinRoleRecord::query()
-            ->with(['role:id,name'])
-            ->where('user_id', $id)
-            ->orderByDesc('created_at')
-            ->paginate($request->input('size', 20));
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $data,
-        ]);
-    }
-
-    public function userCollect(Request $request, $id)
-    {
-        $data = UserLikeCourse::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
-        $courseIds = get_array_ids($data->items(), 'course_id');
-        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $data,
-            'courses' => $courses,
-        ]);
-    }
-
-    public function userHistory(Request $request, $id)
-    {
-        $data = CourseUserRecord::query()->where('user_id', $id)->orderByDesc('created_at')->paginate($request->input('size', 20));
-        $courseIds = get_array_ids($data->items(), 'course_id');
-        $courses = Course::query()->whereIn('id', $courseIds)->select(['id', 'title', 'thumb', 'charge'])->get()->keyBy('id');
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $data,
-            'courses' => $courses,
-        ]);
-    }
-
     public function userOrders(Request $request, $id)
     {
         $status = (int)$request->input('status');
@@ -562,34 +463,6 @@ class MemberController extends BaseController
         $user->notify(new SimpleMessageNotification($message));
 
         return $this->success();
-    }
-
-    public function userVideoWatchRecords(Request $request, $id)
-    {
-        $records = UserVideoWatchRecord::query()
-            ->select([
-                'id', 'user_id', 'course_id', 'video_id', 'watch_seconds', 'watched_at', 'created_at',
-            ])
-            ->where('user_id', $id)
-            ->orderByDesc('id')
-            ->paginate($request->input('size', 10));
-
-        $videos = [];
-        $videoIds = array_column($records->items(), 'video_id');
-        if ($videoIds) {
-            $videos = Video::query()->whereIn('id', $videoIds)->select(['id', 'title'])->get()->keyBy('id');
-        }
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_MEMBER,
-            AdministratorLog::OPT_VIEW,
-            compact('id')
-        );
-
-        return $this->successData([
-            'data' => $records,
-            'videos' => $videos,
-        ]);
     }
 
     public function import(Request $request)

@@ -3,7 +3,7 @@ import client from "./internal/httpClient";
 // 线上课详情
 
 export function list(params: any) {
-  return client.get(`/backend/api/v1/course`, params);
+  return client.get(`/backend/api/v1/course/index`, params);
 }
 
 export function create() {
@@ -11,7 +11,7 @@ export function create() {
 }
 
 export function store(params: any) {
-  return client.post("/backend/api/v1/course", params);
+  return client.post("/backend/api/v1/course/create", params);
 }
 
 export function detail(id: number): Promise<CourseDetailResponse> {
@@ -67,19 +67,15 @@ export function categoryUpdate(id: number, params: any) {
 }
 
 export function videoList(params: any) {
-  return client.get(`/backend/api/v1/video`, params);
+  return client.get(`/backend/api/v1/video/index`, params);
 }
 
 export function videoDestoryMulti(params: any) {
   return client.post(`/backend/api/v1/video/delete/multi`, params);
 }
 
-export function videoCreate(id: number) {
-  return client.get(`/backend/api/v1/course_chapter/${id}`, {});
-}
-
 export function videoStore(params: any) {
-  return client.post("/backend/api/v1/video", params);
+  return client.post("/backend/api/v1/video/create", params);
 }
 
 export function videoDetail(id: number) {
@@ -137,7 +133,7 @@ export function subUsersDel(id: number, params: any) {
 }
 
 export function attachList(params: any) {
-  return client.get(`/backend/api/v1/course_attach`, params);
+  return client.get(`/backend/api/v1/course_attach/index`, params);
 }
 
 export function attachUploadSign(params: any) {
@@ -145,7 +141,7 @@ export function attachUploadSign(params: any) {
 }
 
 export function attachStore(params: any) {
-  return client.post(`/backend/api/v1/course_attach`, params);
+  return client.post(`/backend/api/v1/course_attach/create`, params);
 }
 
 export function attachDestory(id: number) {
@@ -153,7 +149,7 @@ export function attachDestory(id: number) {
 }
 
 export function chaptersList(id: number, params: any) {
-  return client.get(`/backend/api/v1/course_chapter/${id}`, params);
+  return client.get(`/backend/api/v1/course_chapter/${id}/index`, params);
 }
 
 export function chaptersDestroy(id: number, ids: any) {
@@ -161,7 +157,7 @@ export function chaptersDestroy(id: number, ids: any) {
 }
 
 export function chaptersStore(id: number, params: any) {
-  return client.post(`/backend/api/v1/course_chapter/${id}`, params);
+  return client.post(`/backend/api/v1/course_chapter/${id}/create`, params);
 }
 
 export function chaptersDetail(id: number, ids: any) {

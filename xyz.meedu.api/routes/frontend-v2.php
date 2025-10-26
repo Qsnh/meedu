@@ -47,9 +47,6 @@ Route::post('/video/{id}/record', 'VideoController@recordVideo')->middleware(['a
 Route::get('/roles', 'RoleController@roles');
 Route::get('/role/{id}', 'RoleController@detail');
 
-// 幻灯片
-Route::get('/sliders', 'SliderController@all');
-
 // 友情链接
 Route::get('/links', 'LinkController@all');
 
@@ -69,8 +66,8 @@ Route::group(['prefix' => 'other'], function () {
     Route::get('/config', 'OtherController@config');
 });
 
-// ViewBlock装修模块
-Route::get('/viewBlock/page/blocks', 'ViewBlockController@pageBlocks');
+// 装修页面模块
+Route::get('/decorationPage/blocks', 'DecorationPageController@blocks');
 
 // 社交账号绑定回调
 Route::get('socialite/{app}/bind/callback', 'MemberController@socialiteBindCallback')->name('api.v2.socialite.bind.callback')->middleware(['deprecated.api']);

@@ -1,5 +1,4 @@
 import { Button } from "antd";
-import { useState } from "react";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
@@ -9,7 +8,6 @@ interface PropInterface {
 }
 
 export const BackBartment = (props: PropInterface) => {
-  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   return (
     <div className={styles["back-bar-box"]}>

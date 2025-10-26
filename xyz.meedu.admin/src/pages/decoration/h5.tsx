@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Modal, message, Tooltip } from "antd";
 import styles from "./h5.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { viewBlock } from "../../api/index";
+import { viewBlock, decorationPage } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
   UpOutlined,
@@ -34,16 +34,16 @@ const { confirm } = Modal;
 const DecorationH5Page = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const pageId = parseInt(searchParams.get("page_id") || "0");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [platform] = useState("h5");
-  const [page] = useState("h5-page-index");
+  const [page, setPage] = useState<string>("");
+  const [pageName, setPageName] = useState<string>("");
   const [blocks, setBlocks] = useState<any>([]);
   const [curBlock, setCurBlock] = useState<any>(null);
   const [lastSort, setLastSort] = useState(0);
-
-  const enabledAddons = useSelector(
-    (state: any) => state.enabledAddonsConfig.value.enabledAddons
-  );
 
   useEffect(() => {
     document.title = "移动端装修";
@@ -51,8 +51,29 @@ const DecorationH5Page = () => {
   }, []);
 
   useEffect(() => {
-    getData();
+    if (pageId > 0) {
+      getPageInfo();
+    }
+  }, [pageId]);
+
+  useEffect(() => {
+    if (page) {
+      getData();
+    }
   }, [page, platform]);
+
+  const getPageInfo = () => {
+    decorationPage
+      .detail(pageId)
+      .then((res: any) => {
+        setPage(res.data.page_key);
+        setPageName(res.data.name);
+      })
+      .catch((e) => {
+        message.error("页面不存在");
+        navigate("/decoration/h5/pages");
+      });
+  };
 
   useEffect(() => {
     let sort = 0;
@@ -69,8 +90,7 @@ const DecorationH5Page = () => {
     setLoading(true);
     viewBlock
       .list({
-        platform: platform,
-        page: page,
+        page_id: pageId,
       })
       .then((res: any) => {
         setBlocks(res.data);
@@ -146,77 +166,6 @@ const DecorationH5Page = () => {
           },
         ],
       };
-    } else if (sign === "h5-live-v1") {
-      defaultConfig = {
-        title: "直播课程",
-        items: [
-          {
-            id: null,
-            title: "直播课程一",
-            thumb: null,
-          },
-          {
-            id: null,
-            title: "直播课程二",
-            thumb: null,
-          },
-        ],
-      };
-    } else if (sign === "h5-book-v1") {
-      defaultConfig = {
-        title: "电子书",
-        items: [
-          {
-            id: null,
-            name: "电子书一",
-            thumb: null,
-          },
-        ],
-      };
-    } else if (sign === "h5-topic-v1") {
-      defaultConfig = {
-        title: "图文",
-        items: [
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-          },
-        ],
-      };
-    } else if (sign === "h5-learnPath-v1") {
-      defaultConfig = {
-        title: "学习路径",
-        items: [
-          {
-            id: null,
-            name: "路径一",
-            thumb: null,
-          },
-        ],
-      };
-    } else if (sign === "h5-tg-v1") {
-      defaultConfig = {
-        title: "团购",
-        items: [
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-          },
-        ],
-      };
-    } else if (sign === "h5-ms-v1") {
-      defaultConfig = {
-        title: "秒杀",
-        items: [
-          {
-            id: null,
-            goods_title: "秒杀一",
-            goods_thumb: null,
-          },
-        ],
-      };
     } else if (sign === "blank") {
       defaultConfig = {
         height: 10,
@@ -263,11 +212,12 @@ const DecorationH5Page = () => {
       .store({
         platform: platform,
         page: page,
+        page_id: pageId,
         sign: sign,
         sort: lastSort,
         config: defaultConfig,
       })
-      .then((res: any) => {
+      .then(() => {
         setLoading(false);
         getData(true);
         message.success("添加成功");
@@ -317,6 +267,7 @@ const DecorationH5Page = () => {
       .store({
         platform: item.platform,
         page: item.page,
+        page_id: pageId,
         sign: item.sign,
         sort: blocks[blocks.length - 1].sort + 1,
         config: item.config_render,
@@ -374,10 +325,10 @@ const DecorationH5Page = () => {
       <div className={styles["top-box"]}>
         <div className={styles["btn-back"]} onClick={() => navigate(-1)}>
           <LeftOutlined style={{ marginRight: 4 }} />
-          返回
+          返回页面管理
         </div>
         <div className={styles["line"]}></div>
-        <div className={styles["name"]}>移动端首页</div>
+        <div className={styles["name"]}>{pageName || "移动端装修"}</div>
       </div>
       <div className="main-body">
         <div className={styles["blocks-box"]}>

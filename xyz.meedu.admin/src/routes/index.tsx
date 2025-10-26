@@ -62,12 +62,6 @@ const SystemLogPage = lazy(() => import("../pages/system/systemLog/index"));
 const SystemAdministratorPage = lazy(
   () => import("../pages/system/administrator/index")
 );
-const SystemAdministratorCreatePage = lazy(
-  () => import("../pages/system/administrator/create")
-);
-const SystemAdministratorUpdatePage = lazy(
-  () => import("../pages/system/administrator/update")
-);
 const SystemAdminrolesPage = lazy(
   () => import("../pages/system/adminroles/index")
 );
@@ -122,8 +116,13 @@ const EditConfigPage = lazy(() => import("../pages/edit-config/index"));
 const ErrorPage = lazy(() => import("../pages/error"));
 const NoServicePage = lazy(() => import("../pages/error/no-sevice"));
 //装修
+const DecorationIndexPage = lazy(() => import("../pages/decoration/index"));
 const DecorationPCPage = lazy(() => import("../pages/decoration/pc"));
 const DecorationH5Page = lazy(() => import("../pages/decoration/h5"));
+const DecorationPcPagesPage = lazy(() => import("../pages/decoration/pc-pages"));
+const DecorationH5PagesPage = lazy(() => import("../pages/decoration/h5-pages"));
+const DecorationNavPage = lazy(() => import("../pages/decoration/nav"));
+const DecorationLinksPage = lazy(() => import("../pages/decoration/links"));
 //课程评论
 const CommentsPage = lazy(() => import("../pages/comments/index"));
 //协议管理
@@ -131,6 +130,8 @@ const AgreementPage = lazy(() => import("../pages/agreement/index"));
 const AgreementRecordsPage = lazy(() => import("../pages/agreement/records"));
 const AgreementCreatePage = lazy(() => import("../pages/agreement/create"));
 const AgreementEditPage = lazy(() => import("../pages/agreement/edit"));
+//公告管理
+const AnnouncementPage = lazy(() => import("../pages/announcement/index"));
 
 let RootPage: any = null;
 if (getToken() && window.location.pathname !== "/error") {
@@ -256,17 +257,10 @@ const routes: RouteObject[] = [
           { path: "/agreement/create", element: <AgreementCreatePage /> },
           { path: "/agreement/:id/edit", element: <AgreementEditPage /> },
           { path: "/agreement/:id/records", element: <AgreementRecordsPage /> },
+          { path: "/announcement/index", element: <AnnouncementPage /> },
           {
             path: "/system/administrator",
             element: <SystemAdministratorPage />,
-          },
-          {
-            path: "/system/administrator/create",
-            element: <SystemAdministratorCreatePage />,
-          },
-          {
-            path: "/system/administrator/update",
-            element: <SystemAdministratorUpdatePage />,
           },
           {
             path: "/system/adminroles",
@@ -321,6 +315,11 @@ const routes: RouteObject[] = [
             element: <SystemCreditSignConfigPage />,
           },
           { path: "/system/config", element: <SystemNormalConfigPage /> },
+          { path: "/decoration", element: <DecorationIndexPage /> },
+          { path: "/decoration/pc/pages", element: <DecorationPcPagesPage /> },
+          { path: "/decoration/h5/pages", element: <DecorationH5PagesPage /> },
+          { path: "/decoration/nav", element: <DecorationNavPage /> },
+          { path: "/decoration/links", element: <DecorationLinksPage /> },
         ],
       },
       {
@@ -332,7 +331,9 @@ const routes: RouteObject[] = [
             element: <LoginPage />,
           },
           { path: "/decoration/pc", element: <DecorationPCPage /> },
+          { path: "/decoration/pc/editor", element: <DecorationPCPage /> },
           { path: "/decoration/h5", element: <DecorationH5Page /> },
+          { path: "/decoration/h5/editor", element: <DecorationH5Page /> },
           { path: "/edit-config", element: <EditConfigPage /> },
           {
             path: "*",

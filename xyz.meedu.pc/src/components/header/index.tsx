@@ -14,6 +14,7 @@ import { RegisterDialog } from "../register-dialog";
 import { WeixinLoginDialog } from "../weixin-login-dailog";
 import { WexinBindMobileDialog } from "../weixin-bind-mobile-dialog";
 import { ForgetPasswordDialog } from "../forget-password-dialog";
+import { AnnouncementBanner } from "../announcement-banner";
 import { login, user as member } from "../../api/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
 import appConfig from "../../js/config";
@@ -220,6 +221,7 @@ export const Header = () => {
 
   return (
     <div className={styles["app-header"]}>
+      <AnnouncementBanner />
       <LoginDialog
         open={visiale}
         onCancel={() => {

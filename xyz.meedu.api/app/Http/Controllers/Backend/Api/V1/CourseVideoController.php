@@ -21,7 +21,6 @@ use App\Services\Member\Models\User;
 use App\Services\Course\Models\Video;
 use App\Events\VodVideoDestroyedEvent;
 use App\Services\Course\Models\Course;
-use App\Services\Member\Models\UserVideo;
 use App\Services\Course\Models\CourseChapter;
 use App\Http\Requests\Backend\CourseVideoRequest;
 use App\Services\Member\Models\UserVideoWatchRecord;
@@ -212,92 +211,6 @@ class CourseVideoController extends BaseController
             }
         });
 
-        return $this->success();
-    }
-
-    public function subscribes(Request $request, $videoId)
-    {
-        $userId = $request->input('user_id');
-        $subscribeStartAt = $request->input('subscribe_start_at');
-        $subscribeEndAt = $request->input('subscribe_end_at');
-
-        $data = UserVideo::query()
-            ->where('video_id', $videoId)
-            ->when($userId, function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
-            ->when($subscribeStartAt && $subscribeEndAt, function ($query) use ($subscribeStartAt, $subscribeEndAt) {
-                $query->whereBetween('created_at', [$subscribeStartAt, $subscribeEndAt]);
-            })
-            ->orderByDesc('created_at')
-            ->paginate($request->input('size', 10));
-
-        $users = User::query()
-            ->select(['id', 'nick_name', 'mobile', 'avatar'])
-            ->whereIn('id', array_column($data->items(), 'user_id'))
-            ->get()
-            ->keyBy('id');
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD_VIDEO,
-            AdministratorLog::OPT_VIEW,
-            []
-        );
-
-        return $this->successData([
-            'data' => $data,
-            'users' => $users,
-        ]);
-    }
-
-    public function subscribeCreate(Request $request, $videoId)
-    {
-        $userId = $request->input('user_id');
-        if (!$userId) {
-            return $this->error(__('参数错误'));
-        }
-
-        if (!is_array($userId)) {
-            $userId = [$userId];
-        }
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD_VIDEO,
-            AdministratorLog::OPT_STORE,
-            compact('userId')
-        );
-
-        $existsIds = UserVideo::query()
-            ->whereIn('user_id', $userId)
-            ->where('video_id', $videoId)
-            ->select(['user_id'])
-            ->get()
-            ->pluck('user_id')
-            ->toArray();
-
-        $userId = array_diff($userId, $existsIds);
-
-        foreach ($userId as $id) {
-            UserVideo::create([
-                'user_id' => $id,
-                'video_id' => $videoId,
-                'charge' => 0,
-                'created_at' => Carbon::now(),
-            ]);
-        }
-
-        return $this->success();
-    }
-
-    public function subscribeDelete(Request $request, $videoId)
-    {
-        $userId = $request->input('user_id');
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD_VIDEO,
-            AdministratorLog::OPT_DESTROY,
-            compact('userId')
-        );
-        UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->delete();
         return $this->success();
     }
 

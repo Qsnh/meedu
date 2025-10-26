@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function list(params: any) {
-  return client.get("/backend/api/v1/member", params);
+  return client.get("/backend/api/v1/member/index", params);
 }
 
 export function create(params: any) {
@@ -9,7 +9,7 @@ export function create(params: any) {
 }
 
 export function store(params: any) {
-  return client.post("/backend/api/v1/member", params);
+  return client.post("/backend/api/v1/member/create", params);
 }
 
 export function edit(id: number) {
@@ -54,10 +54,6 @@ export function userVodWatchRecords(params: any) {
 
 export function userVideoWatchRecords(params: any) {
   return client.get(`/backend/api/v2/member/course/progress`, params);
-}
-
-export function userVideos(params: any) {
-  return client.get(`/backend/api/v2/member/videos`, params);
 }
 
 export function userInviteRecords(id: number, params: any) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Select, Input, Button, Space, message, Switch } from "antd";
+import { Form, Select, Input, Button, Space, message, Switch, Modal } from "antd";
 import { system } from "../../../../../api";
 import { HelperText, PCLink } from "../../../../../components";
 
@@ -112,122 +112,119 @@ export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
 
   return (
     <>
-      {open && (
-        <div className="meedu-dialog-mask">
-          <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">编辑导航</div>
-            <div className="meedu-dialog-body">
-              <Form
-                form={form}
-                name="navs-update"
-                labelCol={{ span: 3 }}
-                wrapperCol={{ span: 21 }}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
+      {open ? (
+        <Modal
+          title="编辑导航"
+          onCancel={() => {
+            onClose();
+          }}
+          open={true}
+          width={800}
+          maskClosable={false}
+          onOk={() => {
+            form.submit();
+          }}
+          centered
+        >
+          <div className="float-left mt-30">
+            <Form
+              form={form}
+              name="navs-update"
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 21 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item label="父导航" name="parent_id">
+                <Select
+                  style={{ width: 300 }}
+                  placeholder="请选择"
+                  allowClear
+                  options={navs}
+                />
+              </Form.Item>
+              <Form.Item
+                label="排序值"
+                name="sort"
+                rules={[{ required: true, message: "填输入排序!" }]}
               >
-                <Form.Item label="父导航" name="parent_id">
-                  <Select
-                    style={{ width: 300 }}
-                    placeholder="请选择"
-                    allowClear
-                    options={navs}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="排序值"
-                  name="sort"
-                  rules={[{ required: true, message: "填输入排序!" }]}
-                >
-                  <Space align="baseline" style={{ height: 32 }}>
-                    <Form.Item
-                      name="sort"
-                      rules={[{ required: true, message: "填输入排序!" }]}
-                    >
-                      <Input
-                        type="number"
-                        style={{ width: 300 }}
-                        placeholder="填输入排序"
-                        allowClear
-                      />
-                    </Form.Item>
-                    <div className="ml-10">
-                      <HelperText text="填写整数，数字越小排序越靠前"></HelperText>
-                    </div>
-                  </Space>
-                </Form.Item>
-                <Form.Item
-                  label="导航名"
-                  name="name"
-                  rules={[{ required: true, message: "请输入导航名!" }]}
-                >
-                  <Input
-                    style={{ width: 300 }}
-                    placeholder="请输入导航名"
-                    allowClear
-                  />
-                </Form.Item>
-                <Form.Item
-                  label="链接地址"
-                  name="url"
-                  rules={[{ required: true, message: "填输入链接地址!" }]}
-                >
-                  <Space align="baseline" style={{ height: 32 }}>
-                    <Form.Item
-                      name="url"
-                      rules={[{ required: true, message: "填输入链接地址!" }]}
-                    >
-                      <Input
-                        style={{ width: 300 }}
-                        placeholder="填输入链接地址"
-                        allowClear
-                        onChange={(e) => {
-                          if (
-                            e.target.value.match("https://") ||
-                            e.target.value.match("http://")
-                          ) {
-                            setLinkStatus(true);
-                          } else {
-                            setLinkStatus(false);
-                          }
-                        }}
-                      />
-                    </Form.Item>
-                    <div className="ml-10">
-                      <Button
-                        type="link"
-                        className="c-primary"
-                        onClick={() => setShowLinkWin(true)}
-                      >
-                        选择链接
-                      </Button>
-                    </div>
-                  </Space>
-                </Form.Item>
-                {linkStatus && (
+                <Space align="baseline" style={{ height: 32 }}>
                   <Form.Item
-                    label="新窗口打开"
-                    name="blank"
-                    valuePropName="checked"
+                    name="sort"
+                    rules={[{ required: true, message: "填输入排序!" }]}
                   >
-                    <Switch onChange={onSwitch} />
+                    <Input
+                      type="number"
+                      style={{ width: 300 }}
+                      placeholder="填输入排序"
+                      allowClear
+                    />
                   </Form.Item>
-                )}
-              </Form>
-            </div>
-            <div className="meedu-dialog-footer">
-              <Button
-                loading={loading}
-                type="primary"
-                onClick={() => form.submit()}
+                  <div className="ml-10">
+                    <HelperText text="填写整数，数字越小排序越靠前"></HelperText>
+                  </div>
+                </Space>
+              </Form.Item>
+              <Form.Item
+                label="导航名"
+                name="name"
+                rules={[{ required: true, message: "请输入导航名!" }]}
               >
-                确定
-              </Button>
-              <Button className="ml-10" onClick={() => onClose()}>
-                取消
-              </Button>
-            </div>
+                <Input
+                  style={{ width: 300 }}
+                  placeholder="请输入导航名"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item
+                label="链接地址"
+                name="url"
+                rules={[{ required: true, message: "填输入链接地址!" }]}
+              >
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item
+                    name="url"
+                    rules={[{ required: true, message: "填输入链接地址!" }]}
+                  >
+                    <Input
+                      style={{ width: 300 }}
+                      placeholder="填输入链接地址"
+                      allowClear
+                      onChange={(e) => {
+                        if (
+                          e.target.value.match("https://") ||
+                          e.target.value.match("http://")
+                        ) {
+                          setLinkStatus(true);
+                        } else {
+                          setLinkStatus(false);
+                        }
+                      }}
+                    />
+                  </Form.Item>
+                  <div className="ml-10">
+                    <Button
+                      type="link"
+                      className="c-primary"
+                      onClick={() => setShowLinkWin(true)}
+                    >
+                      选择链接
+                    </Button>
+                  </div>
+                </Space>
+              </Form.Item>
+              {linkStatus && (
+                <Form.Item
+                  label="新窗口打开"
+                  name="blank"
+                  valuePropName="checked"
+                >
+                  <Switch onChange={onSwitch} />
+                </Form.Item>
+              )}
+            </Form>
           </div>
           <PCLink
             defautValue={value}
@@ -240,8 +237,8 @@ export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
               setShowLinkWin(false);
             }}
           ></PCLink>
-        </div>
-      )}
+        </Modal>
+      ) : null}
     </>
   );
 };

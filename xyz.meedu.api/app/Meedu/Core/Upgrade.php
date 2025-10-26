@@ -26,6 +26,8 @@ use App\Meedu\Core\UpgradeLog\UpgradeV4917;
 use App\Meedu\Core\UpgradeLog\UpgradeV4920;
 use App\Meedu\Core\UpgradeLog\UpgradeV4922;
 use App\Meedu\Core\UpgradeLog\UpgradeV4927;
+use App\Meedu\Core\UpgradeLog\UpgradeV4928;
+use App\Meedu\Core\UpgradeLog\UpgradeV4929;
 
 class Upgrade
 {
@@ -50,5 +52,7 @@ class Upgrade
         UpgradeV4920::handle();
         UpgradeV4922::handle();
         UpgradeV4927::handle();
+        UpgradeV4928::handle();
+        UpgradeV4929::handle();
     }
 }

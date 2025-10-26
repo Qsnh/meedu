@@ -33,8 +33,9 @@ export function userLoginLog(params: any) {
 export function uploadImagesLog(params: any) {
   return client.get(`/backend/api/v1/log/uploadImages`, params);
 }
+
 export function administratorList(params: any) {
-  return client.get(`/backend/api/v1/administrator`, params);
+  return client.get(`/backend/api/v1/administrator/index`, params);
 }
 
 export function administratorDestory(id: number) {
@@ -46,7 +47,7 @@ export function administratorCreate() {
 }
 
 export function administratorStore(params: any) {
-  return client.post(`/backend/api/v1/administrator`, params);
+  return client.post(`/backend/api/v1/administrator/create`, params);
 }
 
 export function administratorDetail(id: number) {
@@ -58,7 +59,7 @@ export function administratorUpdate(id: number, params: any) {
 }
 
 export function navsList(params: any) {
-  return client.get(`/backend/api/v1/nav`, params);
+  return client.get(`/backend/api/v1/nav/index`, params);
 }
 
 export function navsCreate() {
@@ -66,7 +67,7 @@ export function navsCreate() {
 }
 
 export function navsStore(params: any) {
-  return client.post(`/backend/api/v1/nav`, params);
+  return client.post(`/backend/api/v1/nav/create`, params);
 }
 
 export function navsDestroy(id: number) {
@@ -81,32 +82,12 @@ export function navsUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/nav/${id}`, params);
 }
 
-export function slidersList(params: any) {
-  return client.get(`/backend/api/v1/slider`, params);
-}
-
-export function slidersStore(params: any) {
-  return client.post(`/backend/api/v1/slider`, params);
-}
-
-export function slidersDestroy(id: number) {
-  return client.destroy(`/backend/api/v1/slider/${id}`);
-}
-
-export function slidersDetail(id: number) {
-  return client.get(`/backend/api/v1/slider/${id}`, {});
-}
-
-export function slidersUpdate(id: number, params: any) {
-  return client.put(`/backend/api/v1/slider/${id}`, params);
-}
-
 export function announcementList(params: any) {
-  return client.get(`/backend/api/v1/announcement`, params);
+  return client.get(`/backend/api/v1/announcement/index`, params);
 }
 
 export function announcementStore(params: any) {
-  return client.post(`/backend/api/v1/announcement`, params);
+  return client.post(`/backend/api/v1/announcement/create`, params);
 }
 
 export function announcementDestroy(id: number) {
@@ -122,11 +103,11 @@ export function announcementUpdate(id: number, params: any) {
 }
 
 export function linksList(params: any) {
-  return client.get(`/backend/api/v1/link`, params);
+  return client.get(`/backend/api/v1/link/index`, params);
 }
 
 export function linksStore(params: any) {
-  return client.post(`/backend/api/v1/link`, params);
+  return client.post(`/backend/api/v1/link/create`, params);
 }
 
 export function linksDestroy(id: number) {

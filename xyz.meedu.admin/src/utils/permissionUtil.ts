@@ -11,6 +11,13 @@ export class PermissionUtil {
     if (!permissions) return null;
 
     const availablePath = PERMISSION_CONFIG.find((item) => {
+      // 如果permission是数组，检查是否有任意一个权限存在（OR逻辑）
+      if (Array.isArray(item.permission)) {
+        return item.permission.some(
+          (perm) => typeof permissions[perm] !== "undefined"
+        );
+      }
+      // 如果是字符串，直接检查
       return typeof permissions[item.permission] !== "undefined";
     });
 
@@ -24,9 +31,16 @@ export class PermissionUtil {
    */
   static hasAnyPermission(permissions: Permission): boolean {
     if (!permissions) return false;
-    return PERMISSION_CONFIG.some(
-      (item) => typeof permissions[item.permission] !== "undefined"
-    );
+    return PERMISSION_CONFIG.some((item) => {
+      // 如果permission是数组，检查是否有任意一个权限存在（OR逻辑）
+      if (Array.isArray(item.permission)) {
+        return item.permission.some(
+          (perm) => typeof permissions[perm] !== "undefined"
+        );
+      }
+      // 如果是字符串，直接检查
+      return typeof permissions[item.permission] !== "undefined";
+    });
   }
 
   /**

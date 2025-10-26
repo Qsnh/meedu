@@ -1,11 +1,11 @@
 import client from "./internal/httpClient";
 
 export function list() {
-  return client.get("/backend/api/v1/role", {});
+  return client.get("/backend/api/v1/role/index", {});
 }
 
 export function store(params: any) {
-  return client.post("/backend/api/v1/role", params);
+  return client.post("/backend/api/v1/role/create", params);
 }
 
 export function detail(id: number) {

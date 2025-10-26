@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Modal, message, Button, Tooltip } from "antd";
 import styles from "./pc.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { viewBlock } from "../../api/index";
+import { viewBlock, decorationPage } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
   CloseOutlined,
@@ -14,47 +14,34 @@ import {
   LeftOutlined,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
-import { RenderNavs } from "./components/pc/render-navs";
-import { RenderSliders } from "./components/pc/render-sliders";
-import { RenderNotice } from "./components/pc/render-notice";
-import { RenderLinks } from "./components/pc/render-links";
 import { RenderVod } from "./components/pc/render-vod";
 import { RenderCode } from "./components/pc/render-code";
-import { NavsList } from "./components/pc/render-navs/list";
-import { SlidersList } from "./components/pc/render-sliders/list";
-import { NoticeList } from "./components/pc/render-notice/list";
-import { LinksList } from "./components/pc/render-links/list";
-import { ConfigSetting } from "./components/h5/config/index";
-import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
-import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
-import bannerIcon from "../../assets/images/decoration/h5/icon-banner.png";
-import linkIcon from "../../assets/images/decoration/h5/icon-link.png";
+import { RenderSliderBlock } from "./components/pc/render-slider-block";
+import { PCConfigSetting } from "./components/pc/config/index";
 import vodIcon from "../../assets/images/decoration/h5/h5-vod-v1.png";
 import codeIocn from "../../assets/images/decoration/h5/code.png";
+import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 const { confirm } = Modal;
 
 const DecorationPCPage = () => {
-  const enabledAddons = useSelector(
-    (state: any) => state.enabledAddonsConfig.value.enabledAddons
-  );
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const pageId = parseInt(searchParams.get("page_id") || "0");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [platform] = useState("pc");
-  const [page] = useState("pc-page-index");
+  const [page, setPage] = useState<string>("");
+  const [pageName, setPageName] = useState<string>("");
   const [blocks, setBlocks] = useState<any>([]);
   const [curBlockIndex, setCurBlockIndex] = useState<any>(null);
-  const [showNavWin, setShowNavWin] = useState<boolean>(false);
-  const [showListWin, setShowListWin] = useState<boolean>(false);
-  const [showNoticeWin, setShowNoticeWin] = useState<boolean>(false);
-  const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
   const [previewWidth, setPreviewWidth] = useState(1200);
   const [lastSort, setLastSort] = useState(0);
 
   useEffect(() => {
     document.title = "电脑端装修";
     dispatch(titleAction("电脑端装修"));
+
     let screenWidth = document.body.clientWidth;
     if (screenWidth > 1500) {
       setPreviewWidth(1200);
@@ -64,12 +51,33 @@ const DecorationPCPage = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("resize", getScreenWidth, false);
-    getData();
-    return () => {
-      window.removeEventListener("resize", getScreenWidth, false);
-    };
+    if (pageId > 0) {
+      getPageInfo();
+    }
+  }, [pageId]);
+
+  useEffect(() => {
+    if (page) {
+      window.addEventListener("resize", getScreenWidth, false);
+      getData();
+      return () => {
+        window.removeEventListener("resize", getScreenWidth, false);
+      };
+    }
   }, [page, platform]);
+
+  const getPageInfo = () => {
+    decorationPage
+      .detail(pageId)
+      .then((res: any) => {
+        setPage(res.data.page_key);
+        setPageName(res.data.name);
+      })
+      .catch((e) => {
+        message.error("页面不存在");
+        navigate("/decoration/pc/pages");
+      });
+  };
 
   useEffect(() => {
     let sort = 0;
@@ -86,8 +94,7 @@ const DecorationPCPage = () => {
     setLoading(true);
     viewBlock
       .list({
-        platform: platform,
-        page: page,
+        page_id: pageId,
       })
       .then((res: any) => {
         setBlocks(res.data);
@@ -110,13 +117,6 @@ const DecorationPCPage = () => {
     } else {
       setPreviewWidth(1000);
     }
-  };
-
-  const close = () => {
-    setShowListWin(false);
-    setShowLinkWin(false);
-    setShowNavWin(false);
-    setShowNoticeWin(false);
   };
 
   const dragChange = (e: any, sign: string) => {
@@ -164,226 +164,24 @@ const DecorationPCPage = () => {
           },
         ],
       };
-    } else if (sign === "pc-live-v1") {
-      defaultConfig = {
-        title: "直播课程",
-        items: [
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-        ],
-      };
-    } else if (sign === "pc-book-v1") {
-      defaultConfig = {
-        title: "电子书",
-        items: [
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-        ],
-      };
-    } else if (sign === "pc-topic-v1") {
-      defaultConfig = {
-        title: "图文",
-        items: [
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-        ],
-      };
-    } else if (sign === "pc-learnPath-v1") {
-      defaultConfig = {
-        title: "学习路径",
-        items: [
-          {
-            id: null,
-            name: "路径一",
-            thumb: null,
-            charge: 0,
-            steps_count: 0,
-            courses_count: 0,
-            desc: "简单介绍",
-          },
-          {
-            id: null,
-            name: "路径一",
-            thumb: null,
-            charge: 0,
-            steps_count: 0,
-            courses_count: 0,
-            desc: "简单介绍",
-          },
-        ],
-      };
-    } else if (sign === "pc-tg-v1") {
-      defaultConfig = {
-        title: "团购",
-        items: [
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-        ],
-      };
-    } else if (sign === "pc-ms-v1") {
-      defaultConfig = {
-        title: "秒杀",
-        items: [
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-        ],
-      };
     } else if (sign === "code") {
       defaultConfig = {
         html: null,
       };
+    } else if (sign === "pc-slider") {
+      defaultConfig = [
+        {
+          src: null,
+          href: null,
+        },
+      ];
     }
 
     viewBlock
       .store({
         platform: platform,
         page: page,
+        page_id: pageId,
         sign: sign,
         sort: lastSort,
         config: defaultConfig,
@@ -438,6 +236,7 @@ const DecorationPCPage = () => {
       .store({
         platform: item.platform,
         page: item.page,
+        page_id: pageId,
         sign: item.sign,
         sort: blocks[blocks.length - 1].sort + 1,
         config: item.config_render,
@@ -497,8 +296,7 @@ const DecorationPCPage = () => {
     setLoading(true);
     viewBlock
       .list({
-        platform: platform,
-        page: page,
+        page_id: pageId,
       })
       .then((res: any) => {
         setBlocks(res.data);
@@ -519,15 +317,34 @@ const DecorationPCPage = () => {
       <div className={styles["top-box"]}>
         <div className={styles["btn-back"]} onClick={() => navigate(-1)}>
           <LeftOutlined style={{ marginRight: 4 }} />
-          返回
+          返回页面管理
         </div>
         <div className={styles["line"]}></div>
-        <div className={styles["name"]}>电脑端首页</div>
+        <div className={styles["name"]}>{pageName || "电脑端装修"}</div>
       </div>
       <div className={styles["blocks-box"]}>
         <div className={styles["title"]}>拖动添加板块</div>
         <div className={styles["tip"]}>拖动下列图标到右侧预览区</div>
         <div className={styles["blocks"]}>
+          <div
+            className={styles["block-item"]}
+            draggable
+            onDragEnd={(e: any) => {
+              dragChange(e, "pc-slider");
+            }}
+          >
+            <div className={styles["btn"]}>
+              <div className={styles["icon"]}>
+                <img
+                  draggable={false}
+                  src={sliderIcon}
+                  width={44}
+                  height={44}
+                />
+              </div>
+              <div className={styles["name"]}>幻灯片</div>
+            </div>
+          </div>
           <div
             className={styles["block-item"]}
             draggable
@@ -559,31 +376,6 @@ const DecorationPCPage = () => {
         </div>
       </div>
       <div className={styles["navs-box"]}>
-        <div className={styles["nav-item"]} onClick={() => setShowNavWin(true)}>
-          <img src={navIcon} width={30} height={30} />
-          导航管理
-        </div>
-        <div
-          className={styles["nav-item"]}
-          onClick={() => setShowNoticeWin(true)}
-        >
-          <img src={announceIcon} width={30} height={30} />
-          公告管理
-        </div>
-        <div
-          className={styles["nav-item"]}
-          onClick={() => setShowListWin(true)}
-        >
-          <img src={bannerIcon} width={30} height={30} />
-          轮播图片
-        </div>
-        <div
-          className={styles["nav-item"]}
-          onClick={() => setShowLinkWin(true)}
-        >
-          <img src={linkIcon} width={30} height={30} />
-          友情链接
-        </div>
         <div className={styles["tip"]}>点击预览区直接编辑板块</div>
       </div>
       <div
@@ -597,15 +389,6 @@ const DecorationPCPage = () => {
         }}
       >
         <div className="pc-box" style={{ width: previewWidth }}>
-          {/* 导航栏 */}
-          <RenderNavs reload={showNavWin} />
-
-          {/* 幻灯片 */}
-          <RenderSliders reload={showListWin} width={previewWidth} />
-
-          {/* 公告  */}
-          <RenderNotice reload={showNoticeWin} />
-
           {blocks.length > 0 &&
             blocks.map((item: any, index: number) => (
               <div className="float-left" key={index}>
@@ -613,6 +396,9 @@ const DecorationPCPage = () => {
                   className={curBlockIndex === index ? "active item" : "item"}
                   onClick={() => setCurBlockIndex(index)}
                 >
+                  {item.sign === "pc-slider" && (
+                    <RenderSliderBlock config={item.config_render} />
+                  )}
                   {item.sign === "pc-vod-v1" && (
                     <RenderVod config={item.config_render} />
                   )}
@@ -662,9 +448,6 @@ const DecorationPCPage = () => {
                 </div>
               </div>
             ))}
-
-          {/* 友情链接  */}
-          <RenderLinks reload={showLinkWin} />
         </div>
       </div>
       {curBlockIndex !== null && (
@@ -680,16 +463,12 @@ const DecorationPCPage = () => {
               关闭配置
             </Button>
           </div>
-          <ConfigSetting
+          <PCConfigSetting
             block={blocks[curBlockIndex]}
             onUpdate={() => reloadData()}
           />
         </div>
       )}
-      <NavsList open={showNavWin} onClose={() => close()} />
-      <SlidersList open={showListWin} onClose={() => close()} />
-      <NoticeList open={showNoticeWin} onClose={() => close()} />
-      <LinksList open={showLinkWin} onClose={() => close()} />
     </div>
   );
 };

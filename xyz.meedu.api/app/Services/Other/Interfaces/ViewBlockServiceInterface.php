@@ -10,5 +10,11 @@ namespace App\Services\Other\Interfaces;
 
 interface ViewBlockServiceInterface
 {
-    public function getPageBlocks(string $platform, string $page): array;
+    /**
+     * 根据装修页面ID获取装修块
+     *
+     * @param int $pageId
+     * @return array
+     */
+    public function getPageBlocksByPageId(int $pageId): array;
 }

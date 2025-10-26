@@ -7,3 +7,4 @@ export * as viewBlock from "./viewBlock";
 export * as order from "./order";
 export * as search from "./search";
 export * as comment from "./comment";
+export * as announcement from "./announcement";

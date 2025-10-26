@@ -13,12 +13,11 @@ use App\Services\Other\Interfaces\ViewBlockServiceInterface;
 
 class ViewBlockService implements ViewBlockServiceInterface
 {
-    public function getPageBlocks(string $platform, string $page): array
+    public function getPageBlocksByPageId(int $pageId): array
     {
         return ViewBlock::query()
-            ->select(['id', 'platform', 'page', 'sign', 'sort', 'config'])
-            ->where('platform', $platform)
-            ->where('page', $page)
+            ->select(['id', 'platform', 'page', 'decoration_page_id', 'sign', 'sort', 'config'])
+            ->where('decoration_page_id', $pageId)
             ->orderBy('sort')
             ->get()
             ->toArray();

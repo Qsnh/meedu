@@ -41,7 +41,6 @@ class AdministratorLog extends Model
     public const MODULE_AD_FROM = 'ad-from';
     public const MODULE_LINK = 'link';
     public const MODULE_NAV = 'nav';
-    public const MODULE_SLIDER = 'slider';
     public const MODULE_ORDER = 'order';
     public const MODULE_VIEW_BLOCK = 'view-block';
     public const MODULE_PROMO_CODE = 'promo-code';

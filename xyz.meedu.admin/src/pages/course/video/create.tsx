@@ -67,7 +67,7 @@ const CourseVideoCreatePage = () => {
   }, [result.get("course_id")]);
 
   const getParams = () => {
-    course.videoCreate(cid).then((res: any) => {
+    course.chaptersList(cid, {}).then((res: any) => {
       let chapters = res.data.chapters;
 
       if (chapters.length > 0) {

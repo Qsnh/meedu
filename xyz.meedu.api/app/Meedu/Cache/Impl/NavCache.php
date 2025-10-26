@@ -18,6 +18,8 @@ class NavCache
 
     private $navService;
 
+    public const CACHE_EXPIRE = 1296000; // 15天
+
     public function __construct(NavServiceInterface $navService)
     {
         $this->navService = $navService;
@@ -25,7 +27,7 @@ class NavCache
 
     public function get(string $platform)
     {
-        return Cache::get($this->key($platform), function () use ($platform) {
+        return Cache::remember($this->key($platform), self::CACHE_EXPIRE, function () use ($platform) {
             return $this->navService->all($platform);
         });
     }

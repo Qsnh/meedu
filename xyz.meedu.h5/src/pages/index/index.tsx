@@ -8,7 +8,7 @@ import { IndexGridNav } from "./compenents/grid-nav";
 import { IndexImageGroup } from "./compenents/image-group";
 import { IndexGzhV1 } from "./compenents/gzh-v1";
 import { IndexVodV1 } from "./compenents/vod-v1";
-import { SearchBox, TechSupport } from "../../components";
+import { SearchBox, TechSupport, AnnouncementBanner } from "../../components";
 import wechatShare from "../../js/wechat-share";
 import { RootState } from "../../store";
 import { AppConfigInterface } from "../../store/system/systemConfigSlice";
@@ -43,7 +43,6 @@ const IndexPage = () => {
   const getData = () => {
     viewBlock
       .PageBlocks({
-        platform: "h5",
         page_name: "h5-page-index",
       })
       .then((res: any) => {
@@ -58,6 +57,7 @@ const IndexPage = () => {
   return (
     <>
       <div className={styles["container"]}>
+        <AnnouncementBanner />
         {!loading && <SearchBox />}
         {blocks.length > 0 &&
           blocks.map((item: any) => (

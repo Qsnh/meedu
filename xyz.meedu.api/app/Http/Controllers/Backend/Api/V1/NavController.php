@@ -58,7 +58,13 @@ class NavController extends BaseController
 
     public function create()
     {
-        $navs = Nav::query()->where('parent_id', 0)->where('platform', FrontendConstant::NAV_PLATFORM_PC)->get()->toArray();
+        $navs = Nav::query()
+            ->where('parent_id', 0)
+            ->where('platform', FrontendConstant::NAV_PLATFORM_PC)
+            ->orderBy('sort')
+            ->get()
+            ->toArray();
+
         $platforms = [
             [
                 'id' => FrontendConstant::NAV_PLATFORM_PC,

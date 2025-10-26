@@ -34,14 +34,11 @@ const items = [
   ),
   getItem(
     "装修",
-    "decoration",
+    "/decoration",
     <i className="iconfont icon-icon-decorate" />,
-    [
-      getItem("电脑端", "/decoration/pc", null, null, null, "viewBlock"),
-      getItem("移动端", "/decoration/h5", null, null, null, "viewBlock"),
-    ],
     null,
-    null
+    null,
+    ["decorationPage", "nav", "link"]
   ),
   getItem(
     "资源",
@@ -101,6 +98,7 @@ const items = [
       getItem("VIP会员", "/role", null, null, null, "role"),
       getItem("优惠码", "/promocode", null, null, null, "promoCode"),
       getItem("协议管理", "/agreement/index", null, null, null, "agreements"),
+      getItem("公告管理", "/announcement/index", null, null, null, "announcement"),
     ],
     null,
     null
@@ -182,6 +180,7 @@ export const LeftMenu: React.FC = () => {
     "^/role": ["operate"],
     "^/promocode": ["operate"],
     "^/agreement": ["operate"],
+    "^/announcement": ["operate"],
     "^/wechat": ["operate"],
     "^/stats": ["stats"],
     "^/member": ["user"],
@@ -282,6 +281,9 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/agreement") !== -1) {
       setSelectedKeys(["/agreement/index"]);
       setOpenKeys(openKeyMerge("/agreement"));
+    } else if (location.pathname.indexOf("/announcement") !== -1) {
+      setSelectedKeys(["/announcement/index"]);
+      setOpenKeys(openKeyMerge("/announcement"));
     } else if (location.pathname.indexOf("/wechat/messagereply") !== -1) {
       setSelectedKeys(["/wechat/messagereply/index"]);
       setOpenKeys(openKeyMerge("/wechat"));
@@ -303,6 +305,9 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/system") !== -1) {
       setSelectedKeys(["/system/index"]);
       setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/decoration/") !== -1) {
+      setSelectedKeys(["/decoration"]);
+      setOpenKeys(openKeyMerge("/decoration"));
     } else {
       setSelectedKeys([location.pathname]);
       setOpenKeys(openKeyMerge(location.pathname));
@@ -320,11 +325,24 @@ export const LeftMenu: React.FC = () => {
       return;
     }
 
+    // 检查权限是否存在（支持字符串或数组形式）
+    const hasPermission = (permission: string | string[]): boolean => {
+      if (Array.isArray(permission)) {
+        // 数组形式：只要有一个权限存在就返回 true（OR 逻辑）
+        return permission.some(
+          (p) => typeof user.permissions[p] !== "undefined"
+        );
+      } else {
+        // 字符串形式：检查单个权限
+        return typeof user.permissions[permission] !== "undefined";
+      }
+    };
+
     for (let i in items) {
       let menuItem = items[i];
       if (!menuItem.children) {
         // 一级菜单不做权限控制
-        if (typeof user.permissions[menuItem.permission] !== "undefined") {
+        if (hasPermission(menuItem.permission)) {
           // 存在权限
           menus.push(menuItem);
         }
@@ -344,7 +362,7 @@ export const LeftMenu: React.FC = () => {
           continue;
         }
 
-        if (typeof user.permissions[childrenItem.permission] !== "undefined") {
+        if (hasPermission(childrenItem.permission)) {
           // 存在权限
           children.push(childrenItem);
         }

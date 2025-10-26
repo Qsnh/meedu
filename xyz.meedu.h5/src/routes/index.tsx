@@ -55,6 +55,8 @@ const BindMobilePage = lazy(() => import("../pages/bind-mobile/index"));
 const CodeBindMobilePage = lazy(
   () => import("../pages/code-bind-mobile/index")
 );
+//公告页面
+const AnnouncementPage = lazy(() => import("../pages/announcement/index"));
 //404页面
 const ErrorPage = lazy(() => import("../pages/error/index"));
 
@@ -174,6 +176,10 @@ const routes: RouteObject[] = [
           {
             path: "/code-bind-mobile",
             element: <CodeBindMobilePage />,
+          },
+          {
+            path: "/announcement",
+            element: <AnnouncementPage />,
           },
           {
             path: "/error",

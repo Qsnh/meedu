@@ -10,6 +10,7 @@ import {
   Space,
   Dropdown,
   Modal,
+  Progress,
 } from "antd";
 import type { MenuProps } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -90,6 +91,13 @@ const MemberPage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [showAddWin, setShowAddWin] = useState<boolean>(false);
   const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [deleteProgressVisible, setDeleteProgressVisible] = useState<boolean>(false);
+  const [deleteProgress, setDeleteProgress] = useState({
+    total: 0,
+    current: 0,
+    success: 0,
+    failed: 0,
+  });
 
   useEffect(() => {
     document.title = "学员列表";
@@ -501,6 +509,68 @@ const MemberPage = () => {
     });
   };
 
+  const executeBatchDelete = async (userIds: any[]) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    setDeleteProgressVisible(true);
+    setDeleteProgress({
+      total: userIds.length,
+      current: 0,
+      success: 0,
+      failed: 0,
+    });
+
+    let successCount = 0;
+    let failedCount = 0;
+
+    for (let i = 0; i < userIds.length; i++) {
+      const uid = userIds[i];
+      try {
+        await member.destroy(uid);
+        successCount++;
+      } catch (error) {
+        failedCount++;
+      }
+
+      setDeleteProgress({
+        total: userIds.length,
+        current: i + 1,
+        success: successCount,
+        failed: failedCount,
+      });
+
+      // 间隔150ms，避免触发接口限流
+      if (i < userIds.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+    }
+
+    setLoading(false);
+  };
+
+  const removeMultiMember = () => {
+    if (selectedRowKeys.length === 0) {
+      message.error("请选择需要删除的学员");
+      return;
+    }
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `即将删除 ${selectedRowKeys.length} 个学员账号及其所有数据，此操作不可恢复，确认删除？`,
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        executeBatchDelete(selectedRowKeys);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   const resetData = () => {
     resetLocalSearchParams({
       page: 1,
@@ -522,8 +592,101 @@ const MemberPage = () => {
     return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
+  const handleCloseDeleteProgress = () => {
+    setDeleteProgressVisible(false);
+    const successCount = deleteProgress.success;
+    const failedCount = deleteProgress.failed;
+    if (failedCount === 0) {
+      message.success(`成功删除 ${successCount} 个学员`);
+    } else {
+      message.warning(
+        `成功删除 ${successCount} 个，失败 ${failedCount} 个`
+      );
+    }
+    resetData();
+  };
+
+  const isDeleteCompleted = deleteProgress.current === deleteProgress.total && deleteProgress.total > 0;
+
   return (
     <div className="meedu-main-body">
+      <Modal
+        title="批量删除进度"
+        open={deleteProgressVisible}
+        footer={
+          isDeleteCompleted ? (
+            <Button type="primary" onClick={handleCloseDeleteProgress}>
+              关闭
+            </Button>
+          ) : null
+        }
+        closable={false}
+        centered
+        width={480}
+      >
+        <div style={{ padding: "24px 0" }}>
+          <Progress
+            percent={
+              deleteProgress.total > 0
+                ? Math.round((deleteProgress.current / deleteProgress.total) * 100)
+                : 0
+            }
+            status={isDeleteCompleted ? (deleteProgress.failed > 0 ? "exception" : "success") : "active"}
+            strokeColor={isDeleteCompleted && deleteProgress.failed > 0 ? "#ff4d4f" : undefined}
+          />
+          <div
+            style={{
+              marginTop: 24,
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "16px 24px",
+              fontSize: 14,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#666", marginRight: 8 }}>总计:</span>
+              <span style={{ fontWeight: 500, fontSize: 16 }}>
+                {deleteProgress.total} 个
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#666", marginRight: 8 }}>已处理:</span>
+              <span style={{ fontWeight: 500, fontSize: 16 }}>
+                {deleteProgress.current} 个
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#666", marginRight: 8 }}>成功:</span>
+              <span style={{ color: "#52c41a", fontWeight: 500, fontSize: 16 }}>
+                {deleteProgress.success} 个
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ color: "#666", marginRight: 8 }}>失败:</span>
+              <span style={{ color: "#ff4d4f", fontWeight: 500, fontSize: 16 }}>
+                {deleteProgress.failed} 个
+              </span>
+            </div>
+          </div>
+          {isDeleteCompleted && (
+            <div
+              style={{
+                marginTop: 24,
+                padding: "12px 16px",
+                backgroundColor: deleteProgress.failed > 0 ? "#fff2f0" : "#f6ffed",
+                border: `1px solid ${deleteProgress.failed > 0 ? "#ffccc7" : "#b7eb8f"}`,
+                borderRadius: 4,
+                color: deleteProgress.failed > 0 ? "#cf1322" : "#389e0d",
+                fontSize: 14,
+              }}
+            >
+              {deleteProgress.failed > 0
+                ? `删除完成！成功 ${deleteProgress.success} 个，失败 ${deleteProgress.failed} 个`
+                : `删除完成！成功删除 ${deleteProgress.success} 个学员`}
+            </div>
+          )}
+        </div>
+      </Modal>
       <SendMessageDialog
         open={visiable}
         mid={mid}
@@ -601,6 +764,15 @@ const MemberPage = () => {
             icon={null}
             p="member.update"
             onClick={() => editMulti()}
+            disabled={null}
+          />
+          <PerButton
+            type="danger"
+            text="批量删除"
+            class="ml-10"
+            icon={null}
+            p="member.destroy"
+            onClick={() => removeMultiMember()}
             disabled={null}
           />
         </div>

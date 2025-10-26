@@ -34,7 +34,8 @@ class AdministratorRoleController extends BaseController
     public function create()
     {
         $permissions = AdministratorPermission::query()
-            ->select(['id', 'slug', 'display_name', 'group_name'])
+            ->select(['id', 'slug', 'display_name', 'group_name', 'sort'])
+            ->orderBy('sort', 'asc')
             ->get()
             ->groupBy('group_name')
             ->toArray();

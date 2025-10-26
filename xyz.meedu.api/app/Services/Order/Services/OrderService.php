@@ -218,7 +218,7 @@ class OrderService implements OrderServiceInterface
         $list = $query
             ->with([
                 'goods:id,oid,goods_id,goods_type,goods_name,goods_thumb,goods_charge,goods_ori_charge,num,charge',
-                'refund' => function($query) {
+                'refund' => function ($query) {
                     $query->where('status', \App\Services\Order\Models\OrderRefund::STATUS_SUCCESS)
                           ->select(['order_id', 'amount']);
                 }

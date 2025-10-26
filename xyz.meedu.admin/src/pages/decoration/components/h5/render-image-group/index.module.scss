@@ -3,4 +3,57 @@
   height: auto;
   float: left;
   text-align: left;
+
+  .image-row {
+    display: flex;
+    gap: 2px;
+
+    .image-item {
+      flex: 1;
+      overflow: hidden;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .special-layout {
+    display: flex;
+    gap: 2px;
+
+    .large-image {
+      flex: 1;
+      overflow: hidden;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .small-images {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .small-image-item {
+        flex: 1;
+        overflow: hidden;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
 export function adminRoleList(params: any) {
-  return client.get("/backend/api/v1/administrator_role", params);
+  return client.get("/backend/api/v1/administrator_role/index", params);
 }
 
 export function createAdminRole() {
@@ -9,7 +9,7 @@ export function createAdminRole() {
 }
 
 export function storeAdminRole(params: any) {
-  return client.post("/backend/api/v1/administrator_role", params);
+  return client.post("/backend/api/v1/administrator_role/create", params);
 }
 
 export function adminRole(id: number) {
