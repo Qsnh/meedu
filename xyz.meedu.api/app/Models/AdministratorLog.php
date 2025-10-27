@@ -38,7 +38,6 @@ class AdministratorLog extends Model
     public const MODULE_MEMBER_TAG = 'member-tag';
     public const MODULE_VIP = 'vip';
     public const MODULE_ADDONS = 'addons';
-    public const MODULE_AD_FROM = 'ad-from';
     public const MODULE_LINK = 'link';
     public const MODULE_NAV = 'nav';
     public const MODULE_ORDER = 'order';

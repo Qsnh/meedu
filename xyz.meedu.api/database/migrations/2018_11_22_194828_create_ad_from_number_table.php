@@ -19,15 +19,15 @@ class CreateAdFromNumberTable extends Migration
      */
     public function up()
     {
-        Schema::create('ad_from_number', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('from_id');
-            $table->date('day');
-            $table->integer('num');
-            $table->timestamps();
-
-            $table->engine = 'InnoDB';
-        });
+        //        Schema::create('ad_from_number', function (Blueprint $table) {
+        //            $table->increments('id');
+        //            $table->integer('from_id');
+        //            $table->date('day');
+        //            $table->integer('num');
+        //            $table->timestamps();
+        //
+        //            $table->engine = 'InnoDB';
+        //        });
     }
 
     /**

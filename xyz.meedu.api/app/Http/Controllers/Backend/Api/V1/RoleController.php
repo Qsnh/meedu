@@ -16,19 +16,6 @@ use App\Http\Requests\Backend\RoleRequest;
 
 class RoleController extends BaseController
 {
-    public function all()
-    {
-        $roles = Role::query()->get();
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VIP,
-            AdministratorLog::OPT_VIEW,
-            []
-        );
-
-        return $this->successData(['data' => $roles]);
-    }
-
     public function index()
     {
         $roles = Role::query()->orderByDesc('id')->paginate(request()->input('size', 10));

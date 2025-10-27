@@ -47,13 +47,13 @@ class AdministratorTest extends Base
 
     public function test_index()
     {
-        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/' . self::MODEL_NAME);
+        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/index');
         $this->assertResponseSuccess($response);
     }
 
     public function test_create()
     {
-        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/' . self::MODEL_NAME, self::FILL_DATA);
+        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/create', self::FILL_DATA);
         $this->assertResponseSuccess($response);
     }
 

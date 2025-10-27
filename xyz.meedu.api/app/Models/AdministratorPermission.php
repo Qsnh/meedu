@@ -16,13 +16,16 @@ class AdministratorPermission extends Model
     protected $table = 'administrator_permissions';
 
     protected $fillable = [
-        'display_name', 'slug', 'description', 'url', 'group_name', 'sort',
-
-        // HTTP请求方法[GET,POST,PUT,DELETE] 还有额外的 [DATA] => 意味着数据权限
-        'method',
+        'sort',
+        'group_name',
+        'display_name',
+        'description',
+        'slug',
 
         // 废弃字段
         'route',
+        'url',
+        'method',
     ];
 
     public function roles()

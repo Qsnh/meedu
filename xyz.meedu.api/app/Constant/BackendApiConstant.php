@@ -8,12 +8,14 @@
 
 namespace App\Constant;
 
+/**
+ * 后台 API 常量
+ *
+ * 注意：权限相关常量已迁移至 BackendPermission 类
+ * @see BackendPermission
+ */
 class BackendApiConstant
 {
+    // 后台认证守卫名称
     public const GUARD = 'administrator';
-
-    public const P_DATA_USER_MOBILE = 'data.user.mobile';
-    public const P_DATA_USER_ID_NUMBER = 'data.user.id_number';
-    public const P_DATA_USER_REAL_NAME = 'data.user.real_name';
-    public const P_DATA_ADMINISTRATOR_EMAIL = 'data.administrator.email';
 }

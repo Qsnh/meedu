@@ -30,7 +30,7 @@ class NavTest extends Base
     protected $admin;
     protected $role;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->admin = Administrator::factory()->create();
@@ -41,7 +41,7 @@ class NavTest extends Base
         ]);
     }
 
-    public function tearDown():void
+    public function tearDown(): void
     {
         $this->admin->delete();
         parent::tearDown();
@@ -49,13 +49,13 @@ class NavTest extends Base
 
     public function test_index()
     {
-        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/' . self::MODEL_NAME);
+        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/index');
         $this->assertResponseSuccess($response);
     }
 
     public function test_create()
     {
-        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/' . self::MODEL_NAME, self::FILL_DATA);
+        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/' . self::MODEL_NAME . '/create', self::FILL_DATA);
         $this->assertResponseSuccess($response);
     }
 

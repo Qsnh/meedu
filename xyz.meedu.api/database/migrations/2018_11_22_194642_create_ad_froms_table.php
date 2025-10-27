@@ -19,14 +19,14 @@ class CreateAdFromsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ad_from', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('from_name');
-            $table->string('from_key');
-            $table->timestamps();
-
-            $table->engine = 'InnoDB';
-        });
+        //        Schema::create('ad_from', function (Blueprint $table) {
+        //            $table->increments('id');
+        //            $table->string('from_name');
+        //            $table->string('from_key');
+        //            $table->timestamps();
+        //
+        //            $table->engine = 'InnoDB';
+        //        });
     }
 
     /**

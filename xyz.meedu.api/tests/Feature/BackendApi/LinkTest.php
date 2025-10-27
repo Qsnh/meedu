@@ -37,13 +37,13 @@ class LinkTest extends Base
 
     public function test_index()
     {
-        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/link');
+        $response = $this->user($this->admin)->get(self::API_V1_PREFIX . '/link/index');
         $data = $this->assertResponseSuccess($response);
     }
 
     public function test_create()
     {
-        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/link', [
+        $response = $this->user($this->admin)->post(self::API_V1_PREFIX . '/link/create', [
             'sort' => 1,
             'name' => 'meedu',
             'url' => 'http://meedu.vip',

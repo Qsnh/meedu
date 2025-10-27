@@ -32,19 +32,6 @@ class CourseController extends BaseController
 {
     use CourseCategoryTrait;
 
-    public function all()
-    {
-        $courses = Course::query()->select(['id', 'title'])->get();
-
-        AdministratorLog::storeLog(
-            AdministratorLog::MODULE_VOD,
-            AdministratorLog::OPT_VIEW,
-            []
-        );
-
-        return $this->successData(['data' => $courses]);
-    }
-
     public function index(Request $request)
     {
         $id = $request->input('id');

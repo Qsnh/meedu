@@ -18,7 +18,7 @@ class AddonsProviderMapGeneratorTest extends OriginalTestCase
         parent::tearDown();
     }
 
-    public function test_ad_from_sync_command()
+    public function test_addons_provider_map_command()
     {
         $this->artisan('addons:provider:map')
             ->assertExitCode(0);
