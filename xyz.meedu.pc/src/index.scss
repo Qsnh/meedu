@@ -587,6 +587,8 @@ sup {
   width: 900px;
   height: 506px;
   float: left;
+  border-top-left-radius: 8px;
+  overflow: hidden;
 }
 
 .iframe-player-box {
@@ -599,10 +601,11 @@ sup {
   width: 300px;
   height: 506px;
   box-sizing: border-box;
-  padding: 30px 10px 30px 30px;
-  background: #ffffff;
+  padding: 15px 15px 0 15px;
+  background-color: rgba(0, 0, 0, 0.9);
   overflow-y: auto;
   overflow-x: hidden;
+  border-top-right-radius: 8px;
 }
 
 .chat-box {

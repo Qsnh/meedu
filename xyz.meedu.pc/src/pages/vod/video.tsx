@@ -579,6 +579,7 @@ const VodPlayPage = () => {
                   videos={videos}
                   isBuy={isBuy}
                   buyVideos={buyVideos}
+                  videoWatchedProgress={videoWatchedProgress}
                   switchVideo={(item: any) => goPlay(item)}
                 />
               )}
@@ -589,6 +590,7 @@ const VodPlayPage = () => {
                   videos={videos[0]}
                   isBuy={isBuy}
                   buyVideos={buyVideos}
+                  videoWatchedProgress={videoWatchedProgress}
                   switchVideo={(item: any) => goPlay(item)}
                 />
               )}

@@ -30,6 +30,7 @@ const VodDetailPage = () => {
   const [isCollect, setIsCollect] = useState(false);
   const [videos, setVideos] = useState<any>({});
   const [buyVideos, setBuyVideos] = useState<any[]>([]);
+  const [videoWatchedProgress, setVideoWatchedProgress] = useState<any>({});
   const [isfixTab, setIsfixTab] = useState(false);
 
   const tabs = [
@@ -99,6 +100,7 @@ const VodDetailPage = () => {
       setIsCollect(res.data.isCollect);
       setVideos(res.data.videos);
       setBuyVideos(res.data.buyVideos);
+      setVideoWatchedProgress(res.data.videoWatchedProgress || {});
 
       setLoading(false);
     });
@@ -361,6 +363,7 @@ const VodDetailPage = () => {
                 videos={videos}
                 isBuy={isBuy}
                 buyVideos={buyVideos}
+                videoWatchedProgress={videoWatchedProgress}
                 switchVideo={(item: any) => goPlay(item)}
               />
             )}
@@ -370,6 +373,7 @@ const VodDetailPage = () => {
                 videos={videos[0]}
                 isBuy={isBuy}
                 buyVideos={buyVideos}
+                videoWatchedProgress={videoWatchedProgress}
                 switchVideo={(item: any) => goPlay(item)}
               />
             )}

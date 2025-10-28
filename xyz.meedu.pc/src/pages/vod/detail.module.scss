@@ -148,11 +148,13 @@
 
 .course-chapter-box {
   width: 1200px;
-  padding: 50px 30px;
+  padding: 30px;
   box-sizing: border-box;
   background: #ffffff;
   margin-top: 30px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .attach-list-box {

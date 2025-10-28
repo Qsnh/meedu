@@ -281,40 +281,50 @@
   width: 100%;
   height: auto;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
   line-height: 36px;
   box-sizing: border-box;
-  padding: 0 10px 0 10px;
+  padding: 8px 10px;
   background: #f6f6f6;
   border-radius: 4px;
   text-align: left;
+  margin-bottom: 10px;
 }
 
 .video-item > .video-title {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 100%;
   font-size: 14px;
   color: #333;
+  line-height: 20px;
+  margin-bottom: 4px;
 }
 
-.video-item > .video-title > .free {
+.video-item > .video-title > .text {
+  word-break: break-word;
+}
+
+.video-item > .video-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.video-item > .video-info > .free {
   padding: 2px 4px;
   background-color: #04c877;
   border-radius: 2px;
   color: white;
   font-size: 12px;
-  margin-right: 10px;
 }
 
-.video-item > .video-duration {
-  width: auto;
-  height: auto;
-  font-size: 12px;
-  margin-left: 10px;
+.video-item > .video-info > .video-duration {
+  color: #999999;
+}
+
+.video-item > .video-info > .video-progress {
   color: #999999;
 }
 

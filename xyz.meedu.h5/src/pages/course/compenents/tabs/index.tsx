@@ -75,6 +75,13 @@ export default function TabsComponent(props: PropsInterafce) {
     setConfigkey(sel);
   }, [props.data]);
 
+  const getProgressText = (videoId: number, duration: number) => {
+    const progress = props.data.videoWatchedProgress?.[videoId];
+    if (!progress || !progress.watch_seconds || !duration) return null;
+    const percent = Math.floor((progress.watch_seconds / duration) * 100);
+    return percent > 0 ? `已学 ${percent}%` : null;
+  };
+
   const goLogin = () => {
     navigate(
       "/login?redirect=" +
@@ -234,16 +241,23 @@ export default function TabsComponent(props: PropsInterafce) {
                               onClick={() => goVideo(video)}
                             >
                               <div className={styles["video-title"]}>
-                                {props.data.course.is_free !== 1 &&
-                                  video.free_seconds > 0 && (
-                                    <span className={styles["free"]}>试看</span>
-                                  )}
                                 <span className={styles["text"]}>
                                   {video.title}
                                 </span>
                               </div>
-                              <div className={styles["video-duration"]}>
-                                <DurationText seconds={video.duration} />
+                              <div className={styles["video-info"]}>
+                                {props.data.course.is_free !== 1 &&
+                                  video.free_seconds > 0 && (
+                                    <span className={styles["free"]}>试看</span>
+                                  )}
+                                <span className={styles["video-duration"]}>
+                                  <DurationText seconds={video.duration} />
+                                </span>
+                                {getProgressText(video.id, video.duration) && (
+                                  <span className={styles["video-progress"]}>
+                                    {getProgressText(video.id, video.duration)}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           ))}
@@ -262,16 +276,23 @@ export default function TabsComponent(props: PropsInterafce) {
                           onClick={() => goVideo(video)}
                         >
                           <div className={styles["video-title"]}>
-                            {props.data.course.is_free !== 1 &&
-                              video.free_seconds > 0 && (
-                                <span className={styles["free"]}>试看</span>
-                              )}
                             <span className={styles["text"]}>
                               {video.title}
                             </span>
                           </div>
-                          <div className={styles["video-duration"]}>
-                            <DurationText seconds={video.duration} />
+                          <div className={styles["video-info"]}>
+                            {props.data.course.is_free !== 1 &&
+                              video.free_seconds > 0 && (
+                                <span className={styles["free"]}>试看</span>
+                              )}
+                            <span className={styles["video-duration"]}>
+                              <DurationText seconds={video.duration} />
+                            </span>
+                            {getProgressText(video.id, video.duration) && (
+                              <span className={styles["video-progress"]}>
+                                {getProgressText(video.id, video.duration)}
+                              </span>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -290,14 +311,21 @@ export default function TabsComponent(props: PropsInterafce) {
                       onClick={() => goVideo(video)}
                     >
                       <div className={styles["video-title"]}>
+                        <span className={styles["text"]}>{video.title}</span>
+                      </div>
+                      <div className={styles["video-info"]}>
                         {props.data.course.is_free !== 1 &&
                           video.free_seconds > 0 && (
                             <span className={styles["free"]}>试看</span>
                           )}
-                        <span className={styles["text"]}>{video.title}</span>
-                      </div>
-                      <div className={styles["video-duration"]}>
-                        <DurationText seconds={video.duration} />
+                        <span className={styles["video-duration"]}>
+                          <DurationText seconds={video.duration} />
+                        </span>
+                        {getProgressText(video.id, video.duration) && (
+                          <span className={styles["video-progress"]}>
+                            {getProgressText(video.id, video.duration)}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}

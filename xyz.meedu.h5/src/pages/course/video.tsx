@@ -41,6 +41,7 @@ const CoursePlayPage = () => {
   const [playendedStatus, setPlayendedStatus] = useState<boolean>(false);
   const [playDuration, setPlayDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
+  const [videoWatchedProgress, setVideoWatchedProgress] = useState<any>([]);
   const user = useSelector((state: RootState) => state.loginUser.value.user);
   const config: AppConfigInterface = useSelector(
     (state: RootState) => state.systemConfig.value
@@ -68,6 +69,13 @@ const CoursePlayPage = () => {
     },
   ];
 
+  const getProgressText = (videoId: number, duration: number) => {
+    const progress = videoWatchedProgress?.[videoId];
+    if (!progress || !progress.watch_seconds || !duration) return null;
+    const percent = Math.floor((progress.watch_seconds / duration) * 100);
+    return percent > 0 ? `已学 ${percent}%` : null;
+  };
+
   useEffect(() => {
     window.player && window.player.destroy();
     myRef.current = 0;
@@ -90,6 +98,7 @@ const CoursePlayPage = () => {
         setVideos(res.data.videos);
         setIsWatch(res.data.is_watch);
         setChapters(res.data.chapters);
+        setVideoWatchedProgress(res.data.video_watched_progress || []);
         document.title = res.data.video.title;
         let chapteId = parseInt(res.data.video.chapter_id) || 0;
         let videoBox: any = [];
@@ -426,32 +435,39 @@ const CoursePlayPage = () => {
                                 onClick={() => goVideo(videoItem)}
                               >
                                 <div className={styles["video-title"]}>
+                                  <span className={styles["text"]}>
+                                    {videoItem.title}
+                                  </span>
+                                </div>
+                                <div className={styles["video-info"]}>
                                   {course.is_free !== 1 &&
                                     videoItem.free_seconds > 0 && (
                                       <span className={styles["free"]}>
                                         试看
                                       </span>
                                     )}
-                                  <span className={styles["text"]}>
-                                    {videoItem.title}
-                                  </span>
+                                  {video.id === videoItem.id ? (
+                                    <span className={styles["video-duration"]}>
+                                      <img
+                                        width="24"
+                                        height="24"
+                                        className={styles["play-icon"]}
+                                        src={playIcon}
+                                      />
+                                    </span>
+                                  ) : (
+                                    <span className={styles["video-duration"]}>
+                                      <DurationText
+                                        seconds={videoItem.duration}
+                                      />
+                                    </span>
+                                  )}
+                                  {getProgressText(videoItem.id, videoItem.duration) && (
+                                    <span className={styles["video-progress"]}>
+                                      {getProgressText(videoItem.id, videoItem.duration)}
+                                    </span>
+                                  )}
                                 </div>
-                                {video.id === videoItem.id ? (
-                                  <div className={styles["video-duration"]}>
-                                    <img
-                                      width="24"
-                                      height="24"
-                                      className={styles["play-icon"]}
-                                      src={playIcon}
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className={styles["video-duration"]}>
-                                    <DurationText
-                                      seconds={videoItem.duration}
-                                    />
-                                  </div>
-                                )}
                               </div>
                             ))}
                         </div>
@@ -469,28 +485,35 @@ const CoursePlayPage = () => {
                             onClick={() => goVideo(videoItem)}
                           >
                             <div className={styles["video-title"]}>
-                              {course.is_free !== 1 &&
-                                videoItem.free_seconds > 0 && (
-                                  <span className={styles["free"]}>试看</span>
-                                )}
                               <span className={styles["text"]}>
                                 {videoItem.title}
                               </span>
                             </div>
-                            {video.id === videoItem.id ? (
-                              <div className={styles["video-duration"]}>
-                                <img
-                                  width="24"
-                                  height="24"
-                                  className={styles["play-icon"]}
-                                  src={playIcon}
-                                />
-                              </div>
-                            ) : (
-                              <div className={styles["video-duration"]}>
-                                <DurationText seconds={videoItem.duration} />
-                              </div>
-                            )}
+                            <div className={styles["video-info"]}>
+                              {course.is_free !== 1 &&
+                                videoItem.free_seconds > 0 && (
+                                  <span className={styles["free"]}>试看</span>
+                                )}
+                              {video.id === videoItem.id ? (
+                                <span className={styles["video-duration"]}>
+                                  <img
+                                    width="24"
+                                    height="24"
+                                    className={styles["play-icon"]}
+                                    src={playIcon}
+                                  />
+                                </span>
+                              ) : (
+                                <span className={styles["video-duration"]}>
+                                  <DurationText seconds={videoItem.duration} />
+                                </span>
+                              )}
+                              {getProgressText(videoItem.id, videoItem.duration) && (
+                                <span className={styles["video-progress"]}>
+                                  {getProgressText(videoItem.id, videoItem.duration)}
+                                </span>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -508,28 +531,35 @@ const CoursePlayPage = () => {
                         onClick={() => goVideo(videoItem)}
                       >
                         <div className={styles["video-title"]}>
-                          {course.is_free !== 1 &&
-                            videoItem.free_seconds > 0 && (
-                              <span className={styles["free"]}>试看</span>
-                            )}
                           <span className={styles["text"]}>
                             {videoItem.title}
                           </span>
                         </div>
-                        {video.id === videoItem.id ? (
-                          <div className={styles["video-duration"]}>
-                            <img
-                              width="24"
-                              height="24"
-                              className={styles["play-icon"]}
-                              src={playIcon}
-                            />
-                          </div>
-                        ) : (
-                          <div className={styles["video-duration"]}>
-                            <DurationText seconds={videoItem.duration} />
-                          </div>
-                        )}
+                        <div className={styles["video-info"]}>
+                          {course.is_free !== 1 &&
+                            videoItem.free_seconds > 0 && (
+                              <span className={styles["free"]}>试看</span>
+                            )}
+                          {video.id === videoItem.id ? (
+                            <span className={styles["video-duration"]}>
+                              <img
+                                width="24"
+                                height="24"
+                                className={styles["play-icon"]}
+                                src={playIcon}
+                              />
+                            </span>
+                          ) : (
+                            <span className={styles["video-duration"]}>
+                              <DurationText seconds={videoItem.duration} />
+                            </span>
+                          )}
+                          {getProgressText(videoItem.id, videoItem.duration) && (
+                            <span className={styles["video-progress"]}>
+                              {getProgressText(videoItem.id, videoItem.duration)}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     ))}
                 </>

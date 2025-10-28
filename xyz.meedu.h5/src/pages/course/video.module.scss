@@ -157,23 +157,34 @@
     width: 100%;
     height: auto;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     margin-bottom: 10px;
     line-height: 36px;
     box-sizing: border-box;
-    padding: 0 10px 0 10px;
+    padding: 8px 10px;
     background: #f6f6f6;
     border-radius: 4px;
     text-align: left;
 
     .video-title {
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      width: 100%;
       font-size: 14px;
       color: #333;
+      line-height: 20px;
+      margin-bottom: 4px;
+
+      .text {
+        word-break: break-word;
+      }
+    }
+
+    .video-info {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 20px;
 
       .free {
         padding: 2px 4px;
@@ -181,16 +192,15 @@
         border-radius: 2px;
         color: white;
         font-size: 12px;
-        margin-right: 10px;
       }
-    }
 
-    .video-duration {
-      width: auto;
-      height: auto;
-      font-size: 12px;
-      margin-left: 10px;
-      color: #999999;
+      .video-duration {
+        color: #999999;
+      }
+
+      .video-progress {
+        color: #999999;
+      }
     }
 
     &.active {
