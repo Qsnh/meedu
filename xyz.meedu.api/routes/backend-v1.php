@@ -235,6 +235,7 @@ Route::group(['middleware' => ['auth:administrator', 'backend.sensitive.mask']],
     Route::group(['prefix' => 'promoCode'], function () {
         Route::get('/', 'PromoCodeController@index')->middleware('mbp:' . BackendPermission::PROMO_CODE);
         Route::post('/', 'PromoCodeController@store')->middleware('mbp:' . BackendPermission::PROMO_CODE_STORE);
+        Route::get('/{id}/usage-details', 'PromoCodeController@usageDetails')->middleware('mbp:' . BackendPermission::PROMO_CODE_DETAIL);
         Route::get('/{id}', 'PromoCodeController@edit')->middleware('mbp:' . BackendPermission::PROMO_CODE_UPDATE);
         Route::put('/{id}', 'PromoCodeController@update')->middleware('mbp:' . BackendPermission::PROMO_CODE_UPDATE);
         Route::post('/delete/multi', 'PromoCodeController@destroy')->middleware('mbp:' . BackendPermission::PROMO_CODE_DESTROY_MULTI);

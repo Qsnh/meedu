@@ -17,6 +17,7 @@ class PromoCodeGeneratorRequest extends BaseRequest
             'num' => 'required',
             'money' => 'required',
             'expired_at' => 'required',
+            'use_times' => 'nullable|integer|min:0',
         ];
     }
 
@@ -27,6 +28,8 @@ class PromoCodeGeneratorRequest extends BaseRequest
             'num.required' => __('请输入生成优惠码数量'),
             'money.required' => __('请输入优惠码面值'),
             'expired_at.required' => __('请输入优惠码过期时间'),
+            'use_times.integer' => __('可使用次数必须是整数'),
+            'use_times.min' => __('可使用次数不能小于0'),
         ];
     }
 }

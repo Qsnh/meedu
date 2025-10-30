@@ -86,6 +86,9 @@ const PromoCodeCreateMultiPage = lazy(
   () => import("../pages/promocode/create-multi")
 );
 const PromoCodeCreatePage = lazy(() => import("../pages/promocode/create"));
+const PromoCodeUsageDetailsPage = lazy(
+  () => import("../pages/promocode/usage-details")
+);
 //系统配置
 const SystemConfigPage = lazy(() => import("../pages/system/config/index"));
 const SystemPlayerConfigPage = lazy(
@@ -250,7 +253,11 @@ const routes: RouteObject[] = [
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },
           { path: "/promocode", element: <PromoCodePage /> },
-          { path: "/order/code-import", element: <PromoCodeImportPage /> },
+          { path: "/promocode/import", element: <PromoCodeImportPage /> },
+          {
+            path: "/promocode/usage-details/:id",
+            element: <PromoCodeUsageDetailsPage />,
+          },
           { path: "/createcode", element: <PromoCodeCreatePage /> },
           { path: "/createmulticode", element: <PromoCodeCreateMultiPage /> },
           { path: "/agreement/index", element: <AgreementPage /> },

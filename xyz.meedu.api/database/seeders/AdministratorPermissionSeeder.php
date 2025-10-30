@@ -554,6 +554,12 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => BackendPermission::PROMO_CODE_GENERATOR,
                         'sort' => 7011,
                     ],
+                    [
+                        'display_name' => '运营-优惠码-使用明细',
+                        'slug' => BackendPermission::PROMO_CODE_DETAIL,
+                        'sort' => 7011,
+                    ],
+
 
                     // 协议管理
                     [

@@ -19,3 +19,7 @@ export function createMulti(params: any) {
 export function importCode(params: any) {
   return client.post("/backend/api/v1/promoCode/import", params);
 }
+
+export function usageDetails(id: number, params: any) {
+  return client.get(`/backend/api/v1/promoCode/${id}/usage-details`, params);
+}

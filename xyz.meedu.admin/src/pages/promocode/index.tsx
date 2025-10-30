@@ -9,6 +9,7 @@ import {
   Tag,
   DatePicker,
   Space,
+  Select,
 } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
@@ -34,6 +35,7 @@ interface LocalSearchParamsInterface {
   page?: number;
   size?: number;
   keywords?: string;
+  status?: string;
 }
 
 const PromoCodePage = () => {
@@ -43,10 +45,12 @@ const PromoCodePage = () => {
     page: "1",
     size: "10",
     keywords: "",
+    status: "",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
   const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [status, setStatus] = useState(searchParams.get("status") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -59,7 +63,7 @@ const PromoCodePage = () => {
   const [expiredAts, setExpiredAts] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
-  const [showStatus, setShowStatus] = useState(false);
+  const [, setShowStatus] = useState(false);
   const [showAddWin, setShowAddWin] = useState<boolean>(false);
   const [showAddMultiWin, setShowAddMultiWin] = useState<boolean>(false);
 
@@ -77,13 +81,14 @@ const PromoCodePage = () => {
       (created_at && created_at.length > 0) ||
       (expired_at && expired_at.length > 0) ||
       user_id ||
-      keywords
+      keywords ||
+      status
     ) {
       setShowStatus(true);
     } else {
       setShowStatus(false);
     }
-  }, [created_at, expired_at, user_id, keywords]);
+  }, [created_at, expired_at, user_id, keywords, status]);
 
   const getData = () => {
     if (loading) {
@@ -98,6 +103,7 @@ const PromoCodePage = () => {
         key: keywords,
         created_at: created_at,
         expired_at: expired_at,
+        status: status,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -120,6 +126,9 @@ const PromoCodePage = () => {
         }
         if (typeof params.size !== "undefined") {
           prev.set("size", params.size + "");
+        }
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status);
         }
         return prev;
       },
@@ -148,8 +157,10 @@ const PromoCodePage = () => {
           .destroyMulti({
             ids: selectedRowKeys,
           })
-          .then(() => {
-            message.success("成功");
+          .then((res: any) => {
+            // 显示后端返回的详细信息
+            const msg = res.message || "成功";
+            message.success(msg);
             resetList();
             setLoading(false);
           })
@@ -168,10 +179,12 @@ const PromoCodePage = () => {
       page: 1,
       size: 10,
       keywords: "",
+      status: "",
     });
     setList([]);
     setSelectedRowKeys([]);
     setKeywords("");
+    setStatus("");
     setUserId("");
     setCreatedAts([]);
     setExpiredAt([]);
@@ -196,6 +209,31 @@ const PromoCodePage = () => {
     });
   };
 
+  // 判断优惠码是否已过期
+  const isExpired = (record: any) => {
+    return new Date(record.expired_at) < new Date();
+  };
+
+  // 判断优惠码是否已用完
+  const isUsedUp = (record: any) => {
+    return record.use_times !== 0 && record.used_times >= record.use_times;
+  };
+
+  // 根据优惠码状态返回表格行的 CSS 类名
+  const getRowClassName = (record: any) => {
+    const expired = isExpired(record);
+    const usedUp = isUsedUp(record);
+
+    if (usedUp && expired) {
+      return 'promocode-row-used-up-and-expired';
+    } else if (usedUp) {
+      return 'promocode-row-used-up';
+    } else if (expired) {
+      return 'promocode-row-expired';
+    }
+    return '';
+  };
+
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
@@ -204,28 +242,33 @@ const PromoCodePage = () => {
     },
     {
       title: "优惠码",
+      render: (_, record: any) => <span>{record.code}</span>,
+    },
+    {
+      title: "面值",
+      width: 120,
+      render: (_, record: any) => <span>{record.invited_user_reward}元</span>,
+    },
+    {
+      title: "可用次数",
+      width: 120,
       render: (_, record: any) => (
         <>
-          <div className="mb-10">{record.code}</div>
-          <div>面值：{record.invited_user_reward}元</div>
+          {record.use_times === 0 && "-"}
+          {record.use_times !== 0 && record.use_times + "次"}
         </>
       ),
     },
     {
-      title: "可使用次数",
-      width: 300,
-      render: (_, record: any) => (
-        <>
-          {record.use_times === 0 && <Tag color="error">不限制</Tag>}
-          {record.use_times !== 0 && <Tag>{record.use_times || 0}次</Tag>}
-        </>
-      ),
-    },
-    {
-      title: "已使用次数",
-      width: 150,
+      title: "剩余次数",
+      width: 120,
       dataIndex: "used_times",
-      render: (used_times: number) => <span>{used_times || 0}次</span>,
+      render: (_, record: any) => (
+        <>
+          {record.use_times === 0 && <span>-</span>}
+          {record.use_times !== 0 && <span>{record.use_times - record.used_times}次</span>}
+        </>
+      ),
     },
     {
       title: "过期时间",
@@ -239,6 +282,22 @@ const PromoCodePage = () => {
       dataIndex: "created_at",
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
+    {
+      title: "操作",
+      width: 120,
+      fixed: "right",
+      render: (_, record: any) => (
+        <PerButton
+          type="link"
+          text="使用明细"
+          class="c-primary"
+          icon={null}
+          p="promoCode.detail"
+          onClick={() => navigate(`/promocode/usage-details/${record.id}`)}
+          disabled={null}
+        />
+      ),
+    },
   ];
 
   const rowSelection = {
@@ -246,6 +305,9 @@ const PromoCodePage = () => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },
+    getCheckboxProps: (record: any) => ({
+      disabled: record.used_times > 0, // 已使用的优惠码禁止勾选
+    }),
   };
 
   return (
@@ -292,7 +354,7 @@ const PromoCodePage = () => {
             class="ml-10"
             icon={null}
             p="promoCode.store"
-            onClick={() => navigate("/order/code-import")}
+            onClick={() => navigate("/promocode/import")}
             disabled={null}
           />
           <PerButton
@@ -306,6 +368,22 @@ const PromoCodePage = () => {
           />
         </div>
         <div className="d-flex">
+          <Select
+            value={status}
+            onChange={(value) => {
+              setStatus(value);
+            }}
+            allowClear
+            style={{ width: 150 }}
+            placeholder="优惠码状态"
+            options={[
+              { label: "全部", value: "" },
+              { label: "生效中", value: "active" },
+              { label: "已用完", value: "used_up" },
+              { label: "已过期", value: "expired" },
+              { label: "已用完+已过期", value: "used_up_and_expired" },
+            ]}
+          />
           <Input
             value={keywords}
             onChange={(e) => {
@@ -314,6 +392,7 @@ const PromoCodePage = () => {
             allowClear
             style={{ width: 150 }}
             placeholder="请输入优惠码"
+            className="ml-10"
           />
           <Button className="ml-10" onClick={resetList}>
             清空
@@ -325,6 +404,7 @@ const PromoCodePage = () => {
               resetLocalSearchParams({
                 page: 1,
                 keywords: keywords,
+                status: status,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -362,6 +442,7 @@ const PromoCodePage = () => {
           dataSource={list}
           rowKey={(record) => record.id}
           pagination={paginationProps}
+          rowClassName={(record) => getRowClassName(record)}
         />
       </div>
       {drawer ? (

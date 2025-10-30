@@ -2072,3 +2072,12 @@ textarea.ant-input {
   height: 14px;
   background-color: #d8d8d8;
 }
+
+.promocode-row-used-up-and-expired,
+.promocode-row-expired,
+.promocode-row-used-up {
+  background-color: #f5f5f5 !important;
+  &:hover > td {
+    background-color: #e8e8e8 !important;
+  }
+}

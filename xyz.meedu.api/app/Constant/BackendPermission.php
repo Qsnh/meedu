@@ -144,6 +144,7 @@ class BackendPermission
     public const PROMO_CODE_UPDATE = 'promoCode.update';
     public const PROMO_CODE_DESTROY_MULTI = 'promoCode.destroy.multi';
     public const PROMO_CODE_GENERATOR = 'promoCode.generator';
+    public const PROMO_CODE_DETAIL = 'promoCode.detail';
 
     // 协议管理
     public const AGREEMENTS = 'agreements';

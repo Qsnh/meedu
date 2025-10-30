@@ -21,6 +21,7 @@ export const PromocodeCreateMultiDialog = (props: PropsInterface) => {
         num: undefined,
         expired_at: undefined,
         money: undefined,
+        use_times: 1,
       });
     }
   }, [props.open]);
@@ -124,6 +125,21 @@ export const PromocodeCreateMultiDialog = (props: PropsInterface) => {
                   </Form.Item>
                   <div className="ml-10">
                     <HelperText text="该字段决定优惠码的有效期限，到了选定的时间就无法使用了。"></HelperText>
+                  </div>
+                </Space>
+              </Form.Item>
+              <Form.Item label="可使用次数">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="use_times">
+                    <Input
+                      type="number"
+                      style={{ width: 300 }}
+                      placeholder="请输入可使用次数"
+                      allowClear
+                    />
+                  </Form.Item>
+                  <div className="ml-10">
+                    <HelperText text="可使用次数。0表示不限制使用次数；大于0表示该优惠码最多可使用N次。默认为1次。"></HelperText>
                   </div>
                 </Space>
               </Form.Item>

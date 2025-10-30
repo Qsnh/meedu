@@ -248,7 +248,7 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/member/") !== -1) {
       setSelectedKeys(["/member/index"]);
       setOpenKeys(openKeyMerge("/member"));
-    } else if (location.pathname.indexOf("/order/code-import") !== -1) {
+    } else if (location.pathname.indexOf("/promocode/import") !== -1) {
       setSelectedKeys(["/promocode"]);
       setOpenKeys(openKeyMerge("/promocode"));
     } else if (location.pathname.indexOf("/order/recharge") !== -1) {
