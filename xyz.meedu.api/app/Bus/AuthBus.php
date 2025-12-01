@@ -71,7 +71,7 @@ class AuthBus
         // 创建新的用户
         $data = [
             'nickname' => $data['nickname'] ?? '',
-            'avatar' => $data['headimgurl'] ?? '',
+            'avatar' => $data['avatar'] ?? '',
         ];
 
         return $this->socialiteService->bindAppWithNewUser(FrontendConstant::WECHAT_LOGIN_SIGN, $openId, $data, $unionId, Visitor::data());
