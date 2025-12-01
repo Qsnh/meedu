@@ -62,42 +62,6 @@ class VideoController extends BaseController
     }
 
     /**
-     * @api {get} /api/v2/videos [V2]录播课-课时-列表
-     * @apiGroup 录播课模块
-     * @apiName Videos
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 视频ID
-     * @apiSuccess {String} data.data.title 视频名
-     * @apiSuccess {Number} data.data.charge 视频价格
-     * @apiSuccess {Number} data.data.view_num 观看数[已废弃]
-     * @apiSuccess {String} data.data.short_description 简短介绍
-     * @apiSuccess {String} data.data.render_desc 详细介绍[已废弃]
-     * @apiSuccess {String} data.data.published_at 上架时间
-     * @apiSuccess {Number} data.data.duration 时长[单位：秒]
-     * @apiSuccess {String} data.data.seo_keywords SEO关键字
-     * @apiSuccess {String} data.data.seo_description SEO描述
-     * @apiSuccess {Number} data.data.is_ban_sell 禁止出售[1:是,0否]
-     * @apiSuccess {Number} data.data.chapter_id 章节ID
-     */
-    public function paginate(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 10);
-        [
-            'list' => $list,
-            'total' => $total
-        ] = $this->videoService->simplePage($page, $pageSize);
-        $list = arr2_clear($list, ApiV2Constant::MODEL_VIDEO_FIELD);
-        $videos = $this->paginator($list, $total, $page, $pageSize);
-
-        return $this->data($videos);
-    }
-
-    /**
      * @api {get} /api/v2//video/{id} [V2]录播课-课时-详情
      * @apiGroup 录播课模块
      * @apiName VideoDetail

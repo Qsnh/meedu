@@ -12,10 +12,6 @@ export function Courses(params: any) {
   return client.get("/api/v2/member/courses", params);
 }
 
-export function LikeCourses(params: any) {
-  return client.get("/api/v2/member/courses/like", params);
-}
-
 export function UnReadNum() {
   return client.get("/api/v2/member/unreadNotificationCount", {});
 }

@@ -140,17 +140,6 @@ class VideoServiceTest extends TestCase
         $this->assertEquals($list, $list1);
     }
 
-    public function test_simplePage()
-    {
-        $videos = Video::factory()->count(10)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $page = $this->service->simplePage(1, 5);
-        $this->assertEquals(10, $page['total']);
-        $this->assertEquals(5, count($page['list']));
-    }
-
     public function test_find()
     {
         $video = Video::factory()->create([
@@ -182,49 +171,6 @@ class VideoServiceTest extends TestCase
             'published_at' => Carbon::now()->subDays(1),
         ]);
         $this->service->find($video->id);
-    }
-
-    public function test_getLatestVideos()
-    {
-        Video::factory()->count(5)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $videos = $this->service->getLatestVideos(3);
-        $this->assertNotEmpty(3, count($videos));
-    }
-
-    public function test_getLatestVideos_with_cache()
-    {
-        config(['meedu.system.cache.status' => 1]);
-        Video::factory()->count(5)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $videos = $this->service->getLatestVideos(10);
-        $this->assertNotEmpty(5, count($videos));
-
-        Video::factory()->count(2)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $videos = $this->service->getLatestVideos(10);
-        $this->assertNotEmpty(5, count($videos));
-    }
-
-    public function test_getList()
-    {
-        $videos = Video::factory()->count(5)->create([
-            'is_show' => Video::IS_SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $video1 = $videos[0];
-        $video2 = $videos[1];
-        $list = $this->service->getList([$video1->id, $video2->id]);
-        $list = array_column($list, null, 'id');
-        $this->assertNotEmpty($list);
-        $this->assertTrue(isset($list[$video1->id]));
-        $this->assertTrue(isset($list[$video2->id]));
     }
 
     public function test_viewNumIncrement()

@@ -14,12 +14,10 @@ use App\Businesses\BusinessState;
 use App\Events\UserRegisterEvent;
 use App\Exceptions\ServiceException;
 use App\Services\Member\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Events\UserVideoWatchedEvent;
 use App\Services\Member\Models\UserVideo;
 use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserProfile;
 use App\Services\Member\Models\UserWatchStat;
 use App\Services\Member\Models\UserLikeCourse;
 use App\Services\Member\Models\UserVideoWatchRecord;
@@ -38,91 +36,29 @@ class UserService implements UserServiceInterface
         $this->businessState = $businessState;
     }
 
-    /**
-     * @return array
-     */
-    public function currentUser(): array
-    {
-        return $this->find(Auth::id(), ['role']);
-    }
-
-    /**
-     * @param string $mobile
-     *
-     * @return array
-     */
     public function findMobile(string $mobile): array
     {
-        $user = User::whereMobile($mobile)->first();
+        $user = User::query()->where('mobile', $mobile)->first();
 
         return $user ? $user->toArray() : [];
     }
 
-    /**
-     * @param string $nickname
-     * @return array
-     */
-    public function findNickname(string $nickname): array
-    {
-        $user = User::whereNickName($nickname)->first();
-
-        return $user ? $user->toArray() : [];
-    }
-
-    /**
-     * @param string $mobile
-     * @param string $password
-     *
-     * @return array
-     */
     public function passwordLogin(string $mobile, string $password): array
     {
-        $user = User::whereMobile($mobile)->first();
+        $user = User::query()->where('mobile', $mobile)->first();
         if (!$user) {
             return [];
         }
-        if (!Hash::check($password, $user->password)) {
+        if (!Hash::check($password, $user['password'])) {
             return [];
         }
 
         return $user->toArray();
     }
 
-    /**
-     * @param int $userId
-     * @param string $oldPassword
-     * @param string $newPassword
-     *
-     * @throws \Exception
-     */
-    public function resetPassword(int $userId, string $oldPassword, string $newPassword): void
-    {
-        $user = User::findOrFail($userId);
-        if ($oldPassword && !Hash::check($oldPassword, $user->password)) {
-            throw new ServiceException(__('原密码错误'));
-        }
-        $this->changePassword($user->id, $newPassword);
-    }
-
-    /**
-     * 找回密码
-     *
-     * @param $mobile string 手机号
-     * @param $password string 新密码
-     */
-    public function findPassword(string $mobile, string $password): void
-    {
-        $user = User::whereMobile($mobile)->firstOrFail();
-        $this->changePassword($user->id, $password);
-    }
-
-    /**
-     * @param int $userId
-     * @param string $password
-     */
     public function changePassword(int $userId, string $password): void
     {
-        User::whereId($userId)->update([
+        User::query()->where('id', $userId)->update([
             'password' => Hash::make($password),
             'is_password_set' => 1,
         ]);
@@ -169,35 +105,6 @@ class UserService implements UserServiceInterface
         return $user->toArray();
     }
 
-    /**
-     * @param string $mobile
-     * @param int $userId
-     *
-     * @throws ServiceException
-     */
-    public function bindMobile(string $mobile, int $userId): void
-    {
-        $user = User::query()->where('id', $userId)->first();
-
-        if (!$this->businessState->isNeedBindMobile($user->toArray())) {
-            throw new ServiceException(__('该账号已绑定手机号'));
-        }
-
-        if (User::query()->where('mobile', $mobile)->exists()) {
-            throw new ServiceException(__('手机号已存在'));
-        }
-
-        $user->mobile = $mobile;
-        $user->save();
-    }
-
-    /**
-     * 更换手机号
-     *
-     * @param integer $userId
-     * @param string $mobile
-     * @return void
-     */
     public function changeMobile(int $userId, string $mobile): void
     {
         if ($this->findMobile($mobile)) {
@@ -207,8 +114,9 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param $userId
-     * @param $avatar
+     * @param int $userId
+     * @param string $avatar
+     * @return void
      */
     public function updateAvatar(int $userId, string $avatar): void
     {
@@ -240,17 +148,6 @@ class UserService implements UserServiceInterface
     }
 
     /**
-     * @param array $ids
-     * @param array $with
-     *
-     * @return array
-     */
-    public function getList(array $ids, array $with = []): array
-    {
-        return User::with($with)->whereIn('id', $ids)->get()->toArray();
-    }
-
-    /**
      * @param int $id
      * @param array $with
      *
@@ -258,18 +155,21 @@ class UserService implements UserServiceInterface
      */
     public function find(int $id, array $with = []): array
     {
-        return User::with($with)->findOrFail($id)->toArray();
+        return User::query()->with($with)->findOrFail($id)->toArray();
     }
 
     /**
+     * @param int $userId
      * @param int $page
      * @param int $pageSize
-     *
      * @return array
      */
-    public function messagePaginate(int $page, int $pageSize): array
+    public function messagePaginate(int $userId, int $page, int $pageSize): array
     {
-        $query = User::find(Auth::id())->notifications()->latest();
+        $query = User::query()
+            ->findOrFail($userId)
+            ->notifications()
+            ->latest();
 
         $total = $query->count();
         $data = $query->forPage($page, $pageSize)->get();
@@ -279,14 +179,14 @@ class UserService implements UserServiceInterface
     }
 
     /**
+     * @param int $userId
      * @param int $page
      * @param int $pageSize
-     *
      * @return array
      */
-    public function getUserBuyCourses(int $page, int $pageSize): array
+    public function getUserBuyCourses(int $userId, int $page, int $pageSize): array
     {
-        $query = UserCourse::query()->whereUserId(Auth::id())->orderByDesc('created_at');
+        $query = UserCourse::query()->where('user_id', $userId)->orderByDesc('created_at');
 
         $total = $query->count();
         $list = $query->forPage($page, $pageSize)->get()->toArray();
@@ -301,23 +201,7 @@ class UserService implements UserServiceInterface
      */
     public function hasCourse(int $userId, int $courseId): bool
     {
-        return UserCourse::whereUserId($userId)->whereCourseId($courseId)->exists();
-    }
-
-    /**
-     * @param int $page
-     * @param int $pageSize
-     *
-     * @return array
-     */
-    public function getUserBuyVideos(int $page, int $pageSize): array
-    {
-        $query = UserVideo::query()->whereUserId(Auth::id())->orderByDesc('created_at');
-
-        $total = $query->count();
-        $list = $query->forPage($page, $pageSize)->get()->toArray();
-
-        return compact('list', 'total');
+        return UserCourse::query()->where('user_id', $userId)->where('course_id', $courseId)->exists();
     }
 
     public function getUserBuyVideosIn(int $userId, array $videoIds): array
@@ -338,7 +222,7 @@ class UserService implements UserServiceInterface
      */
     public function hasVideo(int $userId, int $videoId): bool
     {
-        return UserVideo::whereUserId($userId)->whereVideoId($videoId)->exists();
+        return UserVideo::query()->where('user_id', $userId)->where('video_id', $videoId)->exists();
     }
 
     /**
@@ -348,60 +232,12 @@ class UserService implements UserServiceInterface
      */
     public function changeRole(int $userId, int $roleId, string $expiredAt): void
     {
-        User::whereId($userId)->update([
-            'role_id' => $roleId,
-            'role_expired_at' => Carbon::parse($expiredAt),
-        ]);
-    }
-
-    /**
-     * @param array $nicknames
-     * @return array
-     */
-    public function getUsersInNicknames(array $nicknames): array
-    {
-        return User::whereIn('nick_name', $nicknames)->get(['id', 'nick_name'])->keyBy('nick_name')->toArray();
-    }
-
-    /**
-     * @param int $page
-     * @param int $pageSize
-     * @return array
-     */
-    public function inviteUsers(int $page, int $pageSize): array
-    {
-        $query = User::whereInviteUserId(Auth::id())->orderByDesc('id');
-        $total = $query->count();
-        $list = $query->forPage($page, $pageSize)->get()->toArray();
-
-        return compact('list', 'total');
-    }
-
-    /**
-     * @param int $userId
-     * @return int
-     */
-    public function getUserCourseCount(int $userId): int
-    {
-        return (int)UserCourse::query()->where('user_id', $userId)->count();
-    }
-
-    /**
-     * @param int $userId
-     * @return int
-     */
-    public function getUserVideoCount(int $userId): int
-    {
-        return (int)UserVideo::query()->where('user_id', $userId)->count();
-    }
-
-    /**
-     * @param int $userId
-     * @param int $inc
-     */
-    public function inviteBalanceInc(int $userId, int $inc): void
-    {
-        User::find($userId)->increment('invite_balance', $inc);
+        User::query()
+            ->where('id', $userId)
+            ->update([
+                'role_id' => $roleId,
+                'role_expired_at' => Carbon::parse($expiredAt)->toDateTimeLocalString(),
+            ]);
     }
 
     /**
@@ -410,7 +246,7 @@ class UserService implements UserServiceInterface
      */
     public function notificationMarkAsRead(int $userId, string $id): void
     {
-        $notification = User::find($userId)->notifications()->whereId($id)->first();
+        $notification = User::query()->find($userId)->notifications()->whereId($id)->first();
         $notification && $notification->markAsRead();
     }
 
@@ -419,7 +255,7 @@ class UserService implements UserServiceInterface
      */
     public function notificationMarkAllAsRead(int $userId): void
     {
-        User::find($userId)->unreadNotifications->markAsRead();
+        User::query()->find($userId)->unreadNotifications->markAsRead();
     }
 
     /**
@@ -430,7 +266,7 @@ class UserService implements UserServiceInterface
      */
     public function unreadNotificationCount(int $userId): int
     {
-        return (int)User::find($userId)->unreadNotifications->count();
+        return User::query()->find($userId)->unreadNotifications->count();
     }
 
     /**
@@ -440,15 +276,20 @@ class UserService implements UserServiceInterface
      */
     public function likeACourse(int $userId, int $courseId): int
     {
-        $record = UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->first();
+        $record = UserLikeCourse::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->first();
         if ($record) {
             $record->delete();
             return 0;
         }
-        UserLikeCourse::create([
-            'user_id' => $userId,
-            'course_id' => $courseId,
-        ]);
+
+        UserLikeCourse::query()
+            ->create([
+                'user_id' => $userId,
+                'course_id' => $courseId,
+            ]);
         return 1;
     }
 
@@ -459,23 +300,10 @@ class UserService implements UserServiceInterface
      */
     public function likeCourseStatus(int $userId, int $courseId): bool
     {
-        return UserLikeCourse::whereUserId($userId)->whereCourseId($courseId)->exists();
-    }
-
-    /**
-     * @param int $userId
-     * @param int $page
-     * @param int $pageSize
-     * @return array
-     */
-    public function userLikeCoursesPaginate(int $userId, int $page, int $pageSize): array
-    {
-        $query = UserLikeCourse::whereUserId($userId)->orderByDesc('id')->forPage($page, $pageSize);
-
-        $total = $query->count();
-        $list = $query->get()->toArray();
-
-        return compact('list', 'total');
+        return UserLikeCourse::query()
+            ->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->exists();
     }
 
     /**
@@ -508,13 +336,14 @@ class UserService implements UserServiceInterface
                 $record->fill($data)->save();
             }
         } else {
-            UserVideoWatchRecord::create([
-                'user_id' => $userId,
-                'course_id' => $courseId,
-                'video_id' => $videoId,
-                'watch_seconds' => $duration,
-                'watched_at' => $isWatched ? Carbon::now() : null,
-            ]);
+            UserVideoWatchRecord::query()
+                ->create([
+                    'user_id' => $userId,
+                    'course_id' => $courseId,
+                    'video_id' => $videoId,
+                    'watch_seconds' => $duration,
+                    'watched_at' => $isWatched ? Carbon::now() : null,
+                ]);
             $isEmitWatchedEvent = $isWatched;
         }
 
@@ -531,18 +360,6 @@ class UserService implements UserServiceInterface
     {
         $records = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->get();
         return $records->toArray();
-    }
-
-    /**
-     * 获取课程的最新一条观看记录
-     * @param int $userId
-     * @param int $courseId
-     * @return array
-     */
-    public function getLatestRecord(int $userId, int $courseId): array
-    {
-        $record = UserVideoWatchRecord::query()->where('user_id', $userId)->where('course_id', $courseId)->orderByDesc('updated_at')->first();
-        return $record ? $record->toArray() : [];
     }
 
     /**
@@ -609,87 +426,12 @@ class UserService implements UserServiceInterface
         }
     }
 
-    /**
-     * @param int $userId
-     * @return array
-     */
-    public function getProfile(int $userId): array
-    {
-        $profile = UserProfile::query()->where('user_id', $userId)->first();
-        return $profile ? $profile->toArray() : [];
-    }
 
-    /**
-     * @param int $userId
-     * @param array $profileData
-     */
-    public function saveProfile(int $userId, array $profileData): void
-    {
-        $updateData = [];
-        foreach (UserProfile::EDIT_COLUMNS as $column) {
-            if (!isset($profileData[$column])) {
-                continue;
-            }
-            if ($profileData[$column] !== null) {
-                $updateData[$column] = $profileData[$column];
-            }
-        }
-
-        $profile = UserProfile::query()->where('user_id', $userId)->first();
-        if ($profile) {
-            $profile->fill($updateData)->save();
-        } else {
-            $updateData['user_id'] = $userId;
-            UserProfile::create($updateData);
-        }
-    }
-
-    public function getUserWatchStatForYear(int $userId, int $year): int
-    {
-        return (int)UserWatchStat::query()
-            ->where('user_id', $userId)
-            ->where('year', $year)
-            ->sum('seconds');
-    }
-
-    public function getUserWatchStatForMonth(int $userId, int $year, int $month): int
-    {
-        return (int)UserWatchStat::query()
-            ->where('user_id', $userId)
-            ->where('year', $year)
-            ->where('month', $month)
-            ->sum('seconds');
-    }
-
-    /**
-     * @param int $userId
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     * @return int
-     */
-    public function getUserWatchStatForDay(int $userId, int $year, int $month, int $day): int
-    {
-        return (int)UserWatchStat::query()
-            ->where('user_id', $userId)
-            ->where('year', $year)
-            ->where('month', $month)
-            ->where('day', $day)
-            ->sum('seconds');
-    }
-
-    /**
-     * @param int $userId
-     * @return int
-     */
     public function inviteCount(int $userId): int
     {
-        return (int)User::query()->where('invite_user_id', $userId)->count();
+        return User::query()->where('invite_user_id', $userId)->count();
     }
 
-    /**
-     * @param int $videoId
-     */
     public function clearVideoWatchRecords(int $videoId)
     {
         UserVideoWatchRecord::query()->where('video_id', $videoId)->delete();

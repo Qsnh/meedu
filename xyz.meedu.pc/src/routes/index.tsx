@@ -18,11 +18,12 @@ const VodPlayPage = lazy(() => import("../pages/vod/video"));
 // 其它
 const AnnouncementPage = lazy(() => import("../pages/announcement/index"));
 // 学员相关
+const MemberLayout = lazy(() => import("../pages/member/layout"));
 const MemberPage = lazy(() => import("../pages/member/index"));
 const MemberMessagesPage = lazy(() => import("../pages/member/messages"));
 const MemberOrdersPage = lazy(() => import("../pages/member/orders"));
 const MemberCredit1FreePage = lazy(
-  () => import("../pages/member/credit1-free")
+  () => import("../pages/member/credit1")
 );
 //会员
 const RolePage = lazy(() => import("../pages/role"));
@@ -71,19 +72,25 @@ const routes: RouteObject[] = [
           { path: "/announcement", element: <AnnouncementPage /> },
           {
             path: "/member",
-            element: <PrivateRoute Component={<MemberPage />} />,
-          },
-          {
-            path: "/member/messages",
-            element: <PrivateRoute Component={<MemberMessagesPage />} />,
-          },
-          {
-            path: "/member/orders",
-            element: <PrivateRoute Component={<MemberOrdersPage />} />,
-          },
-          {
-            path: "/member/credit1-free",
-            element: <PrivateRoute Component={<MemberCredit1FreePage />} />,
+            element: <PrivateRoute Component={<MemberLayout />} />,
+            children: [
+              {
+                index: true,
+                element: <MemberPage />,
+              },
+              {
+                path: "messages",
+                element: <MemberMessagesPage />,
+              },
+              {
+                path: "orders",
+                element: <MemberOrdersPage />,
+              },
+              {
+                path: "credit1",
+                element: <MemberCredit1FreePage />,
+              },
+            ],
           },
           { path: "/vip", element: <RolePage /> },
           {

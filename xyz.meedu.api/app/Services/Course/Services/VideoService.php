@@ -22,7 +22,8 @@ class VideoService implements VideoServiceInterface
      */
     public function courseVideos(int $courseId): array
     {
-        return Video::with(['chapter'])
+        return Video::query()
+            ->with(['chapter'])
             ->where('is_show', 1)
             ->where('published_at', '<=', Carbon::now())
             ->where('course_id', $courseId)
@@ -32,43 +33,6 @@ class VideoService implements VideoServiceInterface
                 return $item->chapter ? $item->chapter->id : 0;
             })
             ->toArray();
-    }
-
-    /**
-     * @param int $page
-     * @param int $pageSize
-     *
-     * @return array
-     */
-    public function simplePage(int $page, int $pageSize): array
-    {
-        $query = Video::query()
-            ->with(['course'])
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->orderByDesc('published_at');
-
-        $total = $query->count();
-        $list = $query->forPage($page, $pageSize)->get()->toArray();
-
-        return compact('total', 'list');
-    }
-
-    /**
-     * @param int $id
-     * @param array $with
-     *
-     * @return mixed
-     */
-    public function findOrNull(int $id, $with = [])
-    {
-        $video = Video::query()
-            ->with($with)
-            ->where('id', $id)
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->first();
-        return $video ?: null;
     }
 
     /**
@@ -83,40 +47,6 @@ class VideoService implements VideoServiceInterface
             ->where('is_show', 1)
             ->where('published_at', '<=', Carbon::now())
             ->findOrFail($id)
-            ->toArray();
-    }
-
-    /**
-     * @param int $limit
-     *
-     * @return array
-     */
-    public function getLatestVideos(int $limit): array
-    {
-        return Video::query()
-            ->with(['course'])
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->orderByDesc('published_at')
-            ->limit($limit)
-            ->get()
-            ->toArray();
-    }
-
-    /**
-     * @param array $ids
-     *
-     * @return array
-     */
-    public function getList(array $ids): array
-    {
-        return Video::query()
-            ->with(['course'])
-            ->whereIn('id', $ids)
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->orderByDesc('published_at')
-            ->get()
             ->toArray();
     }
 

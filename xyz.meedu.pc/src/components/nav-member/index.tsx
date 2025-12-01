@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./index.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store";
@@ -26,6 +26,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
   );
 
   useEffect(() => {
+    setId(cid);
+  }, [cid]);
+
+  useEffect(() => {
     if (configFunc) {
       let menus = [
         {
@@ -47,7 +51,7 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
             {
               name: "我的积分",
               id: 18,
-              path: "/member/credit1-free",
+              path: "/member/credit1",
               status: true,
             },
           ],
@@ -63,8 +67,15 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
     }
   }, [isLogin, refresh]);
 
-  const setScene = (val: any) => {
-    navigate(val);
+  useEffect(() => {
+    if (freshUnread) {
+      getUnread();
+    }
+  }, [freshUnread]);
+
+  const setScene = (menuId: number, path: string) => {
+    setId(menuId);
+    navigate(path);
   };
 
   const getUnread = () => {
@@ -84,7 +95,10 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
       <div className={styles["nav-content"]}>
         <div
           className={id === 0 ? styles["active-spItem"] : styles["spItem"]}
-          onClick={() => navigate("/member")}
+          onClick={() => {
+            setId(0);
+            navigate("/member");
+          }}
         >
           用户中心
         </div>
@@ -102,7 +116,7 @@ export const NavMember: React.FC<PropInterface> = ({ cid, refresh }) => {
                               ? styles["active-item-children"]
                               : styles["item-children"]
                           }
-                          onClick={() => setScene(child.path)}
+                          onClick={() => setScene(child.id, child.path)}
                         >
                           {child.name}
                           {hasMessage && child.id === 7 && (

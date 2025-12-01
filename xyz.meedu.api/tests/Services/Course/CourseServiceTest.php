@@ -123,38 +123,6 @@ class CourseServiceTest extends TestCase
         $this->assertEquals(10, count($c));
     }
 
-    public function test_getLatestCourses()
-    {
-        Course::factory()->count(5)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $latestCourses = $this->courseService->getLatestCourses(3);
-        $this->assertNotEmpty($latestCourses);
-        $this->assertEquals(3, count($latestCourses));
-    }
-
-    public function test_getLatestCourses_withCache()
-    {
-        config(['meedu.system.cache.status' => 1]);
-        Course::factory()->count(5)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-        $latestCourses = $this->courseService->getLatestCourses(10);
-        $this->assertNotEmpty($latestCourses);
-        $this->assertEquals(5, count($latestCourses));
-
-        Course::factory()->count(2)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-        ]);
-
-        $latestCourses = $this->courseService->getLatestCourses(10);
-        $this->assertNotEmpty($latestCourses);
-        $this->assertEquals(5, count($latestCourses));
-    }
-
     public function test_getList()
     {
         $courses = Course::factory()->count(5)->create([
@@ -184,22 +152,6 @@ class CourseServiceTest extends TestCase
         ]);
 
         $res = $this->courseService->titleSearch('我是', 20);
-        $this->assertEquals(3, count($res));
-    }
-
-    public function test_getRecCourses()
-    {
-        Course::factory()->count(3)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_rec' => Course::REC_YES,
-        ]);
-        Course::factory()->count(4)->create([
-            'is_show' => Course::SHOW_YES,
-            'published_at' => Carbon::now()->subDays(1),
-            'is_rec' => Course::REC_NO,
-        ]);
-        $res = $this->courseService->getRecCourses(10);
         $this->assertEquals(3, count($res));
     }
 

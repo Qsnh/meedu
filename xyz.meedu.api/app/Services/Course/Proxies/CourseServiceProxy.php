@@ -19,12 +19,6 @@ class CourseServiceProxy extends ServiceProxy implements CourseServiceInterface
     public function __construct(CourseService $service)
     {
         parent::__construct($service);
-        $this->cache['getLatestCourses'] = function ($limit) {
-            return new CacheInfo(
-                get_cache_key(CacheConstant::COURSE_SERVICE_LATEST['name'], $limit),
-                $this->configService->getCacheExpire()
-            );
-        };
         $this->cache['chapters'] = function ($courseId) {
             return new CacheInfo(
                 get_cache_key(CacheConstant::COURSE_SERVICE_CHAPTERS['name'], $courseId),

@@ -37,7 +37,6 @@ Route::get('/course/attach/{id}/download', 'CourseController@attachDownload')->m
 Route::get('/course_categories', 'CourseCategoryController@all');
 
 // 视频
-Route::get('/videos', 'VideoController@paginate');
 Route::get('/video/{id}', 'VideoController@detail');
 Route::get('/video/{id}/playinfo', 'VideoController@playInfo')->middleware(['auth:apiv2']);
 Route::get('/video/open/play', 'VideoController@openPlay');
@@ -97,12 +96,6 @@ Route::group(['middleware' => ['auth:apiv2', 'api.login.status.check']], functio
         Route::put('mobile', 'MemberController@mobileChange');
         // 我的录播课
         Route::get('courses', 'MemberController@courses');
-        // 录播课程收藏
-        Route::get('courses/like', 'MemberController@likeCourses');
-        // 录播课程学习历史
-        Route::get('courses/history', 'MemberController@learnHistory');
-        // 我的录播视频
-        Route::get('videos', 'MemberController@videos');
         // 我的订单
         Route::get('orders', 'MemberController@orders');
         // 我的VIP记录

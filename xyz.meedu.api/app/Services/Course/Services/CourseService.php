@@ -102,9 +102,7 @@ class CourseService implements CourseServiceInterface
      */
     public function find(int $id): array
     {
-        $course = Course::query()->where('published_at', '<=', Carbon::now())->findOrFail($id);
-
-        return $course->toArray();
+        return Course::query()->where('published_at', '<=', Carbon::now())->findOrFail($id)->toArray();
     }
 
     /**
@@ -119,48 +117,6 @@ class CourseService implements CourseServiceInterface
             ->orderBy('sort')
             ->get()
             ->toArray();
-    }
-
-    /**
-     * @param int $limit
-     *
-     * @return array
-     */
-    public function getLatestCourses(int $limit): array
-    {
-        $courses = Course::query()
-            ->withCount(['videos' => function ($query) {
-                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
-            }])
-            ->with(['category:id,name'])
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->orderByDesc('published_at')
-            ->limit($limit)
-            ->get()
-            ->toArray();
-        return $this->addLatestVideos($courses);
-    }
-
-    /**
-     * @param int $limit
-     * @return array
-     */
-    public function getRecCourses(int $limit): array
-    {
-        $courses = Course::query()
-            ->withCount(['videos' => function ($query) {
-                $query->where('is_show', 1)->where('published_at', '<=', Carbon::now());
-            }])
-            ->with(['category:id,name'])
-            ->where('is_show', 1)
-            ->where('published_at', '<=', Carbon::now())
-            ->where('is_rec', 1)
-            ->orderByDesc('published_at')
-            ->limit($limit)
-            ->get()
-            ->toArray();
-        return $this->addLatestVideos($courses);
     }
 
     /**
@@ -193,11 +149,10 @@ class CourseService implements CourseServiceInterface
          */
         $videoService = app()->make(VideoServiceInterface::class);
         $videos = collect($videoService->getCourseList(array_column($list, 'id')))->groupBy('course_id');
-        $list = array_map(function ($item) use ($videos) {
+        return array_map(function ($item) use ($videos) {
             $item['videos'] = isset($videos[$item['id']]) ? $videos[$item['id']]->take(3)->toArray() : [];
             return $item;
         }, $list);
-        return $list;
     }
 
     /**
@@ -260,25 +215,6 @@ class CourseService implements CourseServiceInterface
                 'watched_at' => Carbon::now(),
                 'progress' => 100,
             ]);
-    }
-
-    /**
-     * @param int $userId
-     * @param int $page
-     * @param int $pageSize
-     * @return array
-     */
-    public function userLearningCoursesPaginate(int $userId, int $page, int $pageSize): array
-    {
-        $query = CourseUserRecord::query()
-            ->where('user_id', $userId)
-            ->orderByDesc('id')
-            ->forPage($page, $pageSize);
-
-        $total = $query->count();
-        $list = $query->get()->toArray();
-
-        return compact('list', 'total');
     }
 
     /**

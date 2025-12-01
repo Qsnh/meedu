@@ -325,7 +325,7 @@ class MemberController extends BaseController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->messagePaginate($page, $pageSize);
+        ] = $this->userService->messagePaginate($this->id(), $page, $pageSize);
         $list = arr2_clear($list, ApiV2Constant::MODEL_NOTIFICATON_FIELD);
 
         return $this->data([
@@ -371,7 +371,7 @@ class MemberController extends BaseController
         [
             'total' => $total,
             'list' => $list,
-        ] = $this->userService->getUserBuyCourses($page, $pageSize);
+        ] = $this->userService->getUserBuyCourses($this->id(), $page, $pageSize);
         $records = $this->paginator($list, $total, $page, $pageSize);
         // 读取关联课程
         $courses = $this->courseService->getList(array_column($list, 'course_id'));
@@ -381,129 +381,6 @@ class MemberController extends BaseController
             'current_page' => $records->currentPage(),
             'total' => $records->total(),
             'data' => $courses,
-        ]);
-    }
-
-    /**
-     * @api {get} /api/v2/member/courses/like [V2]学员-录播课-收藏-列表
-     * @apiGroup 学员
-     * @apiName MemberCoursesLikeV2
-     * @apiHeader Authorization Bearer+空格+token
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 课程ID
-     * @apiSuccess {String} data.data.title 课程名
-     * @apiSuccess {String} data.data.thumb 封面
-     * @apiSuccess {Number} data.data.charge 价格
-     * @apiSuccess {String} data.data.short_description 简短介绍
-     * @apiSuccess {String} data.data.render_desc 详细介绍
-     * @apiSuccess {String} data.data.seo_keywords SEO关键字
-     * @apiSuccess {String} data.data.seo_description SEO描述
-     * @apiSuccess {String} data.data.published_at 上架时间
-     * @apiSuccess {Number} data.data.is_rec 推荐[1:是,0否][已弃用]
-     * @apiSuccess {Number} data.data.user_count 购买人数
-     * @apiSuccess {Number} data.data.videos_count 视频数
-     * @apiSuccess {Object} data.data.category 分类
-     * @apiSuccess {Number} data.data.category.id 分类ID
-     * @apiSuccess {String} data.data.category.name 分类名
-     */
-    public function likeCourses(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
-
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $this->userService->userLikeCoursesPaginate($this->id(), $page, $pageSize);
-        $records = $this->paginator($list, $total, $page, $pageSize);
-        // 读取关联课程
-        $courses = $this->courseService->getList(array_column($list, 'course_id'));
-        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
-
-        return $this->data([
-            'current_page' => $records->currentPage(),
-            'total' => $records->total(),
-            'data' => $courses,
-        ]);
-    }
-
-    /**
-     * @api {get} /api/v2/member/courses/history [V2]学员-录播课-学习-列表
-     * @apiGroup 学员
-     * @apiName MemberCoursesHistory
-     * @apiHeader Authorization Bearer+空格+token
-     * @apiDescription 只要学习超过10s的都会返回，不管课程是否收费
-     *
-     * @apiParam {Number} [page] page
-     * @apiParam {Number} [page_size] size
-     *
-     * @apiSuccess {Number} code 0成功,非0失败
-     * @apiSuccess {Object} data
-     * @apiSuccess {Number} data.total 总数
-     * @apiSuccess {Object[]} data.data
-     * @apiSuccess {Number} data.data.id 课程ID
-     * @apiSuccess {String} data.data.title 课程名
-     * @apiSuccess {String} data.data.thumb 封面
-     * @apiSuccess {Number} data.data.charge 价格
-     * @apiSuccess {String} data.data.short_description 简短介绍
-     * @apiSuccess {String} data.data.render_desc 详细介绍
-     * @apiSuccess {String} data.data.seo_keywords SEO关键字
-     * @apiSuccess {String} data.data.seo_description SEO描述
-     * @apiSuccess {String} data.data.published_at 上架时间
-     * @apiSuccess {Number} data.data.is_rec 推荐[1:是,0否][已弃用]
-     * @apiSuccess {Number} data.data.user_count 购买人数
-     * @apiSuccess {Number} data.data.videos_count 视频数
-     * @apiSuccess {Object} data.data.category 分类
-     * @apiSuccess {Number} data.data.category.id 分类ID
-     * @apiSuccess {String} data.data.category.name 分类名
-     */
-    public function learnHistory(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
-
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $this->courseService->userLearningCoursesPaginate($this->id(), $page, $pageSize);
-        $records = $this->paginator($list, $total, $page, $pageSize);
-        // 读取关联课程
-        $courses = $this->courseService->getList(array_column($list, 'course_id'));
-        $courses = arr2_clear($courses, ApiV2Constant::MODEL_COURSE_FIELD);
-
-        return $this->data([
-            'current_page' => $records->currentPage(),
-            'total' => $records->total(),
-            'data' => $courses,
-        ]);
-    }
-
-    public function videos(Request $request)
-    {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 5);
-
-        [
-            'total' => $total,
-            'list' => $list,
-        ] = $this->userService->getUserBuyVideos($page, $pageSize);
-        $records = $this->paginator($list, $total, $page, $pageSize);
-
-        // 读取关联视频
-        $videos = $this->videoService->getList(array_column($list, 'video_id'));
-        $videos = arr2_clear($videos, ApiV2Constant::MODEL_VIDEO_FIELD);
-
-        return $this->data([
-            'current_page' => $records->currentPage(),
-            'total' => $records->total(),
-            'data' => $videos,
         ]);
     }
 

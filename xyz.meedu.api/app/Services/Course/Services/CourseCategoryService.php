@@ -44,13 +44,4 @@ class CourseCategoryService implements CourseCategoryServiceInterface
 
         return $categories;
     }
-
-    /**
-     * @param int $id
-     * @return array
-     */
-    public function findOrFail(int $id): array
-    {
-        return CourseCategory::query()->where('id', $id)->firstOrFail()->toArray();
-    }
 }

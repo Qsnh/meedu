@@ -4,9 +4,8 @@ import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useOutletContext } from "react-router-dom";
 import { system, login, user as member } from "../../api/index";
-import { NavMember } from "../../components";
 import config from "../../js/config";
 import {
   getToken,
@@ -25,12 +24,14 @@ import { BindWeixinDialog } from "./components/bind-weixin";
 import { ProfileComp } from "./components/profile";
 import qqIcon from "../../assets/img/commen/icon-qq.png";
 import wxIcon from "../../assets/img/commen/icon-wechat.png";
+import type { MemberLayoutContextValue } from "./layout";
 
 const { confirm } = Modal;
 
 const MemberPage = () => {
   document.title = "学员中心";
   const dispatch = useDispatch();
+  const { setActiveId } = useOutletContext<MemberLayoutContextValue>();
 
   // --------- store变量 ---------
   // 当前登录学员
@@ -79,6 +80,10 @@ const MemberPage = () => {
   useEffect(() => {
     resetData();
   }, []);
+
+  useEffect(() => {
+    setActiveId(0);
+  }, [setActiveId]);
 
   useEffect(() => {
     if (loginCode && urlLoginAction === "bind") {
@@ -273,7 +278,7 @@ const MemberPage = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <DestroyUserDialog
         open={destroyUserVisible}
         onCancel={() => setDestroyUserVisible(false)}
@@ -324,9 +329,7 @@ const MemberPage = () => {
           getConfig();
         }}
       ></BindWeixinDialog>
-      <div className={styles["box"]}>
-        <NavMember cid={0} refresh={true}></NavMember>
-        <div className={styles["project-box"]}>
+      <div className={styles["project-box"]}>
           <div className={styles["user-box"]}>
             <div className={styles["avatar"]}>
               <img src={user.avatar} />
@@ -553,8 +556,7 @@ const MemberPage = () => {
             )}
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 

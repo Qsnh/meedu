@@ -90,10 +90,6 @@ export function myCourses(params: any) {
   return client.get("/api/v2/member/courses", params);
 }
 
-export function myVideos(params: any) {
-  return client.get("/api/v2/member/videos", params);
-}
-
 export function newCourses(params: any) {
   return client.get("/api/v3/member/courses", params);
 }
