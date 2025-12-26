@@ -40,6 +40,7 @@ const VodPlayPage = () => {
   const [playDuration, setPlayDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(4);
   const [isfixTab, setIsfixTab] = useState<boolean>(false);
+  const [noPlayAddress, setNoPlayAddress] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -63,6 +64,7 @@ const VodPlayPage = () => {
     setVid(Number(params.courseId));
     window.player && window.player.destroy();
     myRef.current = 0;
+    setNoPlayAddress(false);
   }, [params.courseId]);
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const VodPlayPage = () => {
     timer && clearInterval(timer);
     window.removeEventListener("scroll", handleTabFix, true);
     window.player && window.player.destroy();
+    setNoPlayAddress(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -194,7 +197,7 @@ const VodPlayPage = () => {
     }
     vod.playInfo(vid, { is_try: isTrySee }).then((res: any) => {
       if (res.data.urls.length === 0) {
-        message.error("无播放地址");
+        setNoPlayAddress(true);
         return;
       }
 
@@ -479,7 +482,7 @@ const VodPlayPage = () => {
                   您已打开新视频，暂停本视频播放
                 </div>
               )}
-              {!playendedStatus && (isWatch || video.free_seconds > 0) && (
+              {!playendedStatus && (isWatch || video.free_seconds > 0) && !noPlayAddress && (
                 <>
                   {isIframe && (
                     <div
@@ -494,6 +497,12 @@ const VodPlayPage = () => {
                     ></div>
                   )}
                 </>
+              )}
+              {noPlayAddress && (
+                <div className={styles["alert-message"]}>
+                  <div className={styles["error-text"]}>暂无播放地址</div>
+                  <div className={styles["error-hint"]}>该视频暂时无法播放，请稍后再试</div>
+                </div>
               )}
               {(playendedStatus || (!isWatch && video.free_seconds <= 0)) && (
                 <>

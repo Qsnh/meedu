@@ -42,6 +42,7 @@ const CoursePlayPage = () => {
   const [playDuration, setPlayDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
   const [videoWatchedProgress, setVideoWatchedProgress] = useState<any>([]);
+  const [noPlayAddress, setNoPlayAddress] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.loginUser.value.user);
   const config: AppConfigInterface = useSelector(
     (state: RootState) => state.systemConfig.value
@@ -82,6 +83,7 @@ const CoursePlayPage = () => {
     setPlayDuration(0);
     setLastSeeValue(null);
     setPlayendedStatus(false);
+    setNoPlayAddress(false);
     setLoading(true);
     getVideo();
   }, [params.videoId, isLogin, user]);
@@ -182,7 +184,7 @@ const CoursePlayPage = () => {
     Course.PlayInfo(Number(params.videoId), { is_try: isTrySee }).then(
       (res: any) => {
         if (res.data.urls.length === 0) {
-          Toast.show("无播放地址");
+          setNoPlayAddress(true);
           return;
         }
 
@@ -324,7 +326,7 @@ const CoursePlayPage = () => {
       <div className={styles["box"]}>
         <NavHeader text="" />
         <div className={styles["play-box"]}>
-          {!playendedStatus && (isWatch || video.free_seconds > 0) ? (
+          {!playendedStatus && (isWatch || video.free_seconds > 0) && !noPlayAddress ? (
             <div className={styles["playing"]} v-if="">
               {isIframe ? (
                 <div
@@ -339,6 +341,11 @@ const CoursePlayPage = () => {
                   id="meedu-player-container"
                 ></div>
               )}
+            </div>
+          ) : noPlayAddress ? (
+            <div className={styles["alert-message"]}>
+              <div className={styles["error-text"]}>暂无播放地址</div>
+              <div className={styles["error-hint"]}>该视频暂时无法播放，请稍后再试</div>
             </div>
           ) : (
             <>

@@ -12,6 +12,8 @@
       width: 900px;
       height: 506px;
       position: relative;
+      background: #000000;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
       .des-video {
         position: absolute;
         left: 350px;
@@ -106,6 +108,23 @@
           font-weight: 400;
           color: #ffffff;
           line-height: 15px;
+        }
+
+        .error-text {
+          font-size: 18px;
+          font-weight: 500;
+          color: #ffffff;
+          line-height: 25px;
+          margin-bottom: 12px;
+          text-align: center;
+        }
+
+        .error-hint {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.7);
+          line-height: 20px;
+          text-align: center;
         }
       }
     }
