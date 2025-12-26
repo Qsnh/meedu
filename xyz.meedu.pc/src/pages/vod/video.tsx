@@ -41,6 +41,7 @@ const VodPlayPage = () => {
   const [currentTab, setCurrentTab] = useState(4);
   const [isfixTab, setIsfixTab] = useState<boolean>(false);
   const [noPlayAddress, setNoPlayAddress] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<string>("");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const config = useSelector((state: any) => state.systemConfig.value.config);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
@@ -195,27 +196,35 @@ const VodPlayPage = () => {
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
     }
-    vod.playInfo(vid, { is_try: isTrySee }).then((res: any) => {
-      if (res.data.urls.length === 0) {
-        setNoPlayAddress(true);
-        return;
-      }
+    setLoadError("");
+    vod.playInfo(vid, { is_try: isTrySee })
+      .then((res: any) => {
+        if (res.data.urls.length === 0) {
+          setNoPlayAddress(true);
+          return;
+        }
 
-      let playUrls = res.data.urls;
-      let firstPlayUrl = playUrls[0].url;
+        let playUrls = res.data.urls;
+        let firstPlayUrl = playUrls[0].url;
 
-      if (firstPlayUrl.substr(1, 6) === "iframe") {
-        setIsIframe(true);
-        let playUrl = firstPlayUrl.replace(
-          ">",
-          ' style="width:100%;height:506px" >'
-        );
-        setPlayUrl(playUrl);
-        return;
-      }
-      setIsIframe(false);
-      initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
-    });
+        if (firstPlayUrl.substr(1, 6) === "iframe") {
+          setIsIframe(true);
+          let playUrl = firstPlayUrl.replace(
+            ">",
+            ' style="width:100%;height:506px" >'
+          );
+          setPlayUrl(playUrl);
+          return;
+        }
+        setIsIframe(false);
+        initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
+      })
+      .catch((err: any) => {
+        const msg = err.response?.data?.message;
+        if (!msg || msg.trim() === "") {
+          setLoadError("视频加载失败，请稍后重试");
+        }
+      });
   };
 
   const initDPlayer = (
@@ -482,7 +491,7 @@ const VodPlayPage = () => {
                   您已打开新视频，暂停本视频播放
                 </div>
               )}
-              {!playendedStatus && (isWatch || video.free_seconds > 0) && !noPlayAddress && (
+              {!playendedStatus && (isWatch || video.free_seconds > 0) && !noPlayAddress && !loadError && (
                 <>
                   {isIframe && (
                     <div
@@ -502,6 +511,11 @@ const VodPlayPage = () => {
                 <div className={styles["alert-message"]}>
                   <div className={styles["error-text"]}>暂无播放地址</div>
                   <div className={styles["error-hint"]}>该视频暂时无法播放，请稍后再试</div>
+                </div>
+              )}
+              {loadError && (
+                <div className={styles["alert-message"]}>
+                  <div className={styles["error-text"]}>{loadError}</div>
                 </div>
               )}
               {(playendedStatus || (!isWatch && video.free_seconds <= 0)) && (

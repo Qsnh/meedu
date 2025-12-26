@@ -48,7 +48,11 @@ export class HttpClient {
           console.log("查询中");
         } else {
           if (msg !== "请勿重复绑定") {
-            message.error(msg);
+            // 判断是否是 playInfo 接口，如果是则不显示全局提示
+            const isPlayInfoRequest = response.config.url?.includes('/playinfo');
+            if (!isPlayInfoRequest) {
+              message.error(msg);
+            }
           }
         }
         return Promise.reject(response);

@@ -50,9 +50,13 @@ export class HttpClient {
           });
           GoLogin();
         } else {
-          Toast.show({
-            content: msg,
-          });
+          // 判断是否是 playInfo 接口，如果是则不显示全局提示
+          const isPlayInfoRequest = response.config.url?.includes('/playinfo');
+          if (!isPlayInfoRequest) {
+            Toast.show({
+              content: msg,
+            });
+          }
         }
         return Promise.reject(response);
       },

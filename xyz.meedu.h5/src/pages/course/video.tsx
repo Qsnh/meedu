@@ -43,6 +43,7 @@ const CoursePlayPage = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [videoWatchedProgress, setVideoWatchedProgress] = useState<any>([]);
   const [noPlayAddress, setNoPlayAddress] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<string>("");
   const user = useSelector((state: RootState) => state.loginUser.value.user);
   const config: AppConfigInterface = useSelector(
     (state: RootState) => state.systemConfig.value
@@ -181,8 +182,9 @@ const CoursePlayPage = () => {
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
     }
-    Course.PlayInfo(Number(params.videoId), { is_try: isTrySee }).then(
-      (res: any) => {
+    setLoadError("");
+    Course.PlayInfo(Number(params.videoId), { is_try: isTrySee })
+      .then((res: any) => {
         if (res.data.urls.length === 0) {
           setNoPlayAddress(true);
           return;
@@ -202,8 +204,13 @@ const CoursePlayPage = () => {
         }
         setIsIframe(false);
         initDPlayer(playUrls, isTrySee, ban_drag, last_see_value, course);
-      }
-    );
+      })
+      .catch((err: any) => {
+        const msg = err?.message || "";
+        if (!msg || msg.trim() === "") {
+          setLoadError("视频加载失败，请稍后重试");
+        }
+      });
   };
 
   const initDPlayer = (
@@ -326,7 +333,10 @@ const CoursePlayPage = () => {
       <div className={styles["box"]}>
         <NavHeader text="" />
         <div className={styles["play-box"]}>
-          {!playendedStatus && (isWatch || video.free_seconds > 0) && !noPlayAddress ? (
+          {!playendedStatus &&
+          (isWatch || video.free_seconds > 0) &&
+          !noPlayAddress &&
+          !loadError ? (
             <div className={styles["playing"]} v-if="">
               {isIframe ? (
                 <div
@@ -345,7 +355,13 @@ const CoursePlayPage = () => {
           ) : noPlayAddress ? (
             <div className={styles["alert-message"]}>
               <div className={styles["error-text"]}>暂无播放地址</div>
-              <div className={styles["error-hint"]}>该视频暂时无法播放，请稍后再试</div>
+              <div className={styles["error-hint"]}>
+                该视频暂时无法播放，请稍后再试
+              </div>
+            </div>
+          ) : loadError ? (
+            <div className={styles["alert-message"]}>
+              <div className={styles["error-text"]}>{loadError}</div>
             </div>
           ) : (
             <>
@@ -469,9 +485,15 @@ const CoursePlayPage = () => {
                                       />
                                     </span>
                                   )}
-                                  {getProgressText(videoItem.id, videoItem.duration) && (
+                                  {getProgressText(
+                                    videoItem.id,
+                                    videoItem.duration
+                                  ) && (
                                     <span className={styles["video-progress"]}>
-                                      {getProgressText(videoItem.id, videoItem.duration)}
+                                      {getProgressText(
+                                        videoItem.id,
+                                        videoItem.duration
+                                      )}
                                     </span>
                                   )}
                                 </div>
@@ -515,9 +537,15 @@ const CoursePlayPage = () => {
                                   <DurationText seconds={videoItem.duration} />
                                 </span>
                               )}
-                              {getProgressText(videoItem.id, videoItem.duration) && (
+                              {getProgressText(
+                                videoItem.id,
+                                videoItem.duration
+                              ) && (
                                 <span className={styles["video-progress"]}>
-                                  {getProgressText(videoItem.id, videoItem.duration)}
+                                  {getProgressText(
+                                    videoItem.id,
+                                    videoItem.duration
+                                  )}
                                 </span>
                               )}
                             </div>
@@ -561,9 +589,15 @@ const CoursePlayPage = () => {
                               <DurationText seconds={videoItem.duration} />
                             </span>
                           )}
-                          {getProgressText(videoItem.id, videoItem.duration) && (
+                          {getProgressText(
+                            videoItem.id,
+                            videoItem.duration
+                          ) && (
                             <span className={styles["video-progress"]}>
-                              {getProgressText(videoItem.id, videoItem.duration)}
+                              {getProgressText(
+                                videoItem.id,
+                                videoItem.duration
+                              )}
                             </span>
                           )}
                         </div>
