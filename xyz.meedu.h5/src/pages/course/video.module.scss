@@ -3,6 +3,7 @@
   box-sizing: border-box;
   padding-top: 50px;
 }
+
 .play-box {
   width: 100%;
   height: auto;
@@ -16,7 +17,7 @@
     .iframe-player-box,
     .meedu-player-container {
       width: 100%;
-      height: 250px;
+      aspect-ratio: 16 / 9;
       float: left;
     }
   }
