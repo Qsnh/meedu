@@ -58,5 +58,5 @@ class TableConstant
 
     public const TABLE_AGREEMENTS = 'agreements';
 
-    public const TABLE_USER_AGREEMENT_RECORDS = 'user_agreement_records';
+    public const TABLE_USER_AGREEMENT_RECORDS = 'agreement_user_records';
 }

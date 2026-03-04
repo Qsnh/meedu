@@ -128,11 +128,11 @@ const AgreementRecordsPage = () => {
       render: (_, record: any) => (
         <div className="user-item d-flex">
           <div className="avatar">
-            <Avatar src={record.user.avatar} size={40} />
+            <Avatar src={record.user?.avatar} size={40} />
           </div>
           <div className="ml-10">
-            <div className="nickname">{record.user.nick_name}</div>
-            <div className="mobile">{record.user.mobile}</div>
+            <div className="nickname">{record.user?.nick_name || '-'}</div>
+            <div className="mobile">{record.user?.mobile || '-'}</div>
           </div>
         </div>
       ),

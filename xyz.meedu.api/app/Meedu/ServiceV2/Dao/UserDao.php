@@ -197,6 +197,7 @@ SQL;
             TableConstant::TABLE_COURSE_USER_RECORDS,//用户录播课观看进度表
             TableConstant::TABLE_USER_COURSE,//用户已购录播课表
             TableConstant::TABLE_USER_SOCIALITE,//三方登录记录表
+            TableConstant::TABLE_USER_AGREEMENT_RECORDS,//用户协议同意记录表
         ];
         foreach ($tables as $tableName) {
             DB::table($tableName)->where('user_id', $userId)->delete();
