@@ -477,7 +477,7 @@ class MemberController extends BaseController
             return $this->error(__('一次最多导入1000条数据'));
         }
 
-        $roles = Role::query()->select(['id'])->get()->pluck('id')->toArray();
+        $roles = Role::query()->select(['id'])->get()->pluck('id', 'id')->toArray();
 
         $transformedUserList = [];
         $tmpMobileList = [];

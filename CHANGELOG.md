@@ -1,3 +1,7 @@
+## [unrelease]
+
+- 修复:[Admin]学员批量导入时校验 VIP 会员是否存在的逻辑错误,导致填写了正确 VIP 会员 ID 也提示"VIP会员不存在"的 BUG
+
 ## 4.9.30
 
 - 修复:[Admin]管理员列表邮箱字段权限(DATA)被 Seeder 覆盖为空导致无法查看的 BUG
