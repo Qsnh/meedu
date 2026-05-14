@@ -71,6 +71,7 @@ class AgreementService implements AgreementServiceInterface
     {
         // 获取当前生效的协议
         $activeAgreements = $this->agreementDao->getActiveAgreementsByTypes(AgreementConstant::REQUIRED_AGREEMENT_TYPES);
+        $activeTypes = array_column($activeAgreements, 'type');
         $agreementIds = array_column($activeAgreements, 'id');
 
         // 获取用户已同意的协议
@@ -79,6 +80,11 @@ class AgreementService implements AgreementServiceInterface
         $data = [];
         foreach (AgreementConstant::TYPES as $type => $typeName) {
             if (!in_array($type, AgreementConstant::REQUIRED_AGREEMENT_TYPES)) {
+                continue;
+            }
+            // 该类型没有激活的协议时，视为无需同意，跳过弹窗
+            if (!in_array($type, $activeTypes)) {
+                $data[$type . '_agreed'] = true;
                 continue;
             }
             $agreed = isset($userAgreedAgreements[$type]);
