@@ -19,7 +19,7 @@ class AgreementDao implements AgreementDaoInterface
     public function getActiveAgreementsByTypes(array $types): array
     {
         return Agreement::query()
-            ->select(['id'])
+            ->select(['id', 'type'])
             ->where('is_active', 1)
             ->whereIn('type', $types)
             ->get()
