@@ -38,6 +38,17 @@ const DecorationPCPage = () => {
   const [previewWidth, setPreviewWidth] = useState(1200);
   const [lastSort, setLastSort] = useState(0);
 
+  const user = useSelector((state: any) => state.loginUser.value.user);
+
+  const canEditCodeBlock = () => {
+    if (!user || !user.permissions) {
+      return false;
+    }
+    return (
+      typeof user.permissions["decorationPage.codeBlockEdit"] !== "undefined"
+    );
+  };
+
   useEffect(() => {
     document.title = "电脑端装修";
     dispatch(titleAction("电脑端装修"));
@@ -359,20 +370,27 @@ const DecorationPCPage = () => {
               <div className={styles["name"]}>录播</div>
             </div>
           </div>
-          <div
-            className={styles["block-item"]}
-            draggable
-            onDragEnd={(e: any) => {
-              dragChange(e, "code");
-            }}
-          >
-            <div className={styles["btn"]}>
-              <div className={styles["icon"]}>
-                <img draggable={false} src={codeIocn} width={44} height={44} />
+          {canEditCodeBlock() && (
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "code");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img
+                    draggable={false}
+                    src={codeIocn}
+                    width={44}
+                    height={44}
+                  />
+                </div>
+                <div className={styles["name"]}>代码块</div>
               </div>
-              <div className={styles["name"]}>代码块</div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <div className={styles["navs-box"]}>
@@ -390,64 +408,72 @@ const DecorationPCPage = () => {
       >
         <div className="pc-box" style={{ width: previewWidth }}>
           {blocks.length > 0 &&
-            blocks.map((item: any, index: number) => (
-              <div className="float-left" key={index}>
-                <div
-                  className={curBlockIndex === index ? "active item" : "item"}
-                  onClick={() => setCurBlockIndex(index)}
-                >
-                  {item.sign === "pc-slider" && (
-                    <RenderSliderBlock config={item.config_render} />
-                  )}
-                  {item.sign === "pc-vod-v1" && (
-                    <RenderVod config={item.config_render} />
-                  )}
-                  {item.sign === "code" && (
-                    <RenderCode config={item.config_render} />
-                  )}
-                  {curBlockIndex === index && (
-                    <div className="item-options">
-                      <Tooltip placement="top" title="删除模块">
-                        <div
-                          className="btn-item"
-                          onClick={() => blockDestroy(index, item)}
-                        >
-                          <DeleteOutlined />
-                        </div>
-                      </Tooltip>
-                      <Tooltip placement="top" title="复制模块">
-                        <div
-                          className="btn-item"
-                          onClick={() => blockCopy(index, item)}
-                        >
-                          <CopyOutlined />
-                        </div>
-                      </Tooltip>
-                      {index !== 0 && (
-                        <Tooltip placement="top" title="模块上移">
-                          <div
-                            className="btn-item"
-                            onClick={() => moveTop(index, item)}
-                          >
-                            <UpOutlined />
-                          </div>
-                        </Tooltip>
-                      )}
-                      {index !== blocks.length - 1 && (
-                        <Tooltip placement="top" title="模块下移">
-                          <div
-                            className="btn-item"
-                            onClick={() => moveBottom(index, item)}
-                          >
-                            <DownOutlined />
-                          </div>
-                        </Tooltip>
-                      )}
-                    </div>
-                  )}
+            blocks.map((item: any, index: number) => {
+              const isCode = item.sign === "code";
+              const canTouchThisBlock = !isCode || canEditCodeBlock();
+              return (
+                <div className="float-left" key={index}>
+                  <div
+                    className={curBlockIndex === index ? "active item" : "item"}
+                    onClick={() => setCurBlockIndex(index)}
+                  >
+                    {item.sign === "pc-slider" && (
+                      <RenderSliderBlock config={item.config_render} />
+                    )}
+                    {item.sign === "pc-vod-v1" && (
+                      <RenderVod config={item.config_render} />
+                    )}
+                    {item.sign === "code" && (
+                      <RenderCode config={item.config_render} />
+                    )}
+                    {curBlockIndex === index && (
+                      <div className="item-options">
+                        {canTouchThisBlock && (
+                          <Tooltip placement="top" title="删除模块">
+                            <div
+                              className="btn-item"
+                              onClick={() => blockDestroy(index, item)}
+                            >
+                              <DeleteOutlined />
+                            </div>
+                          </Tooltip>
+                        )}
+                        {canTouchThisBlock && (
+                          <Tooltip placement="top" title="复制模块">
+                            <div
+                              className="btn-item"
+                              onClick={() => blockCopy(index, item)}
+                            >
+                              <CopyOutlined />
+                            </div>
+                          </Tooltip>
+                        )}
+                        {index !== 0 && (
+                          <Tooltip placement="top" title="模块上移">
+                            <div
+                              className="btn-item"
+                              onClick={() => moveTop(index, item)}
+                            >
+                              <UpOutlined />
+                            </div>
+                          </Tooltip>
+                        )}
+                        {index !== blocks.length - 1 && (
+                          <Tooltip placement="top" title="模块下移">
+                            <div
+                              className="btn-item"
+                              onClick={() => moveBottom(index, item)}
+                            >
+                              <DownOutlined />
+                            </div>
+                          </Tooltip>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </div>
       {curBlockIndex !== null && (
