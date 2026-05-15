@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { CodeSet } from "./code";
 import { VodV1Set } from "./vod-v1";
@@ -14,6 +15,11 @@ interface PropInterface {
 }
 export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const user = useSelector((state: any) => state.loginUser.value.user);
+  const canEditCodeBlock =
+    !!user &&
+    !!user.permissions &&
+    typeof user.permissions["decorationPage.codeBlockEdit"] !== "undefined";
 
   const update = () => {
     onUpdate();
@@ -30,7 +36,7 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       {(block.sign === "h5-vod-v1" || block.sign === "pc-vod-v1") && (
         <VodV1Set block={block} onUpdate={() => update()}></VodV1Set>
       )}
-      {block.sign === "code" && (
+      {block.sign === "code" && canEditCodeBlock && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>
       )}
       {block.sign === "blank" && (
