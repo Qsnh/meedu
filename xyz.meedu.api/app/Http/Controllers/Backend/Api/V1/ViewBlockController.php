@@ -16,6 +16,9 @@ use App\Meedu\ViewBlock\Constant;
 use App\Services\Other\Models\ViewBlock;
 use App\Events\DecorationPageUpdateEvent;
 use App\Services\Other\Models\DecorationPage;
+use App\Bus\AdminPermissionBus;
+use App\Constant\BackendPermission;
+use Illuminate\Support\Facades\Auth;
 
 class ViewBlockController extends BaseController
 {
@@ -60,8 +63,15 @@ class ViewBlockController extends BaseController
 
     public function store(Request $request)
     {
-        $pageId = (int)$request->input('page_id');
         $sign = $request->input('sign');
+
+        if ($sign === 'code') {
+            if ($resp = $this->ensureCodeBlockPermission()) {
+                return $resp;
+            }
+        }
+
+        $pageId = (int)$request->input('page_id');
         $config = $request->input('config');
         $sort = (int)$request->input('sort');
 
@@ -110,11 +120,17 @@ class ViewBlockController extends BaseController
 
     public function update(Request $request, $id)
     {
+        $block = ViewBlock::query()->where('id', $id)->firstOrFail();
+
+        if ($block->sign === 'code') {
+            if ($resp = $this->ensureCodeBlockPermission()) {
+                return $resp;
+            }
+        }
+
         $config = $request->input('config');
         $sort = $request->input('sort');
         $updateData = ['config' => $config, 'sort' => $sort];
-
-        $block = ViewBlock::query()->where('id', $id)->firstOrFail();
 
         AdministratorLog::storeLogDiff(
             AdministratorLog::MODULE_VIEW_BLOCK,
@@ -140,6 +156,12 @@ class ViewBlockController extends BaseController
     {
         $block = ViewBlock::query()->where('id', $id)->first();
 
+        if ($block && $block->sign === 'code') {
+            if ($resp = $this->ensureCodeBlockPermission()) {
+                return $resp;
+            }
+        }
+
         ViewBlock::query()->where('id', $id)->delete();
 
         AdministratorLog::storeLog(
@@ -157,5 +179,21 @@ class ViewBlockController extends BaseController
         }
 
         return $this->success();
+    }
+
+    private function ensureCodeBlockPermission(): ?\Illuminate\Http\JsonResponse
+    {
+        $adminId = (int)Auth::guard('administrator')->id();
+        $bus = app(AdminPermissionBus::class);
+
+        if ($bus->isSuperAdmin($adminId)) {
+            return null;
+        }
+
+        if ($bus->hasPermissionBySlug($adminId, BackendPermission::DECORATION_CODE_BLOCK_EDIT)) {
+            return null;
+        }
+
+        return $this->error(__('您没有编辑代码块的权限'));
     }
 }
