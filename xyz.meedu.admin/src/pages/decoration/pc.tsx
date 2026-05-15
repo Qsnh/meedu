@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Modal, message, Button, Tooltip } from "antd";
 import styles from "./pc.module.scss";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { viewBlock, decorationPage } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
+import { useHasPermission } from "../../hooks/usePermission";
+import { BACKEND_PERMISSIONS } from "../../constants/backendPermissions";
 import {
   CloseOutlined,
   UpOutlined,
@@ -38,16 +40,9 @@ const DecorationPCPage = () => {
   const [previewWidth, setPreviewWidth] = useState(1200);
   const [lastSort, setLastSort] = useState(0);
 
-  const user = useSelector((state: any) => state.loginUser.value.user);
-
-  const canEditCodeBlock = () => {
-    if (!user || !user.permissions) {
-      return false;
-    }
-    return (
-      typeof user.permissions["decorationPage.codeBlockEdit"] !== "undefined"
-    );
-  };
+  const canEditCodeBlock = useHasPermission(
+    BACKEND_PERMISSIONS.DECORATION_CODE_BLOCK_EDIT
+  );
 
   useEffect(() => {
     document.title = "电脑端装修";
@@ -370,7 +365,7 @@ const DecorationPCPage = () => {
               <div className={styles["name"]}>录播</div>
             </div>
           </div>
-          {canEditCodeBlock() && (
+          {canEditCodeBlock && (
             <div
               className={styles["block-item"]}
               draggable
@@ -409,8 +404,8 @@ const DecorationPCPage = () => {
         <div className="pc-box" style={{ width: previewWidth }}>
           {blocks.length > 0 &&
             blocks.map((item: any, index: number) => {
-              const isCode = item.sign === "code";
-              const canTouchThisBlock = !isCode || canEditCodeBlock();
+              const canTouchThisBlock =
+                item.sign !== "code" || canEditCodeBlock;
               return (
                 <div className="float-left" key={index}>
                   <div
@@ -426,28 +421,24 @@ const DecorationPCPage = () => {
                     {item.sign === "code" && (
                       <RenderCode config={item.config_render} />
                     )}
-                    {curBlockIndex === index && (
+                    {curBlockIndex === index && canTouchThisBlock && (
                       <div className="item-options">
-                        {canTouchThisBlock && (
-                          <Tooltip placement="top" title="删除模块">
-                            <div
-                              className="btn-item"
-                              onClick={() => blockDestroy(index, item)}
-                            >
-                              <DeleteOutlined />
-                            </div>
-                          </Tooltip>
-                        )}
-                        {canTouchThisBlock && (
-                          <Tooltip placement="top" title="复制模块">
-                            <div
-                              className="btn-item"
-                              onClick={() => blockCopy(index, item)}
-                            >
-                              <CopyOutlined />
-                            </div>
-                          </Tooltip>
-                        )}
+                        <Tooltip placement="top" title="删除模块">
+                          <div
+                            className="btn-item"
+                            onClick={() => blockDestroy(index, item)}
+                          >
+                            <DeleteOutlined />
+                          </div>
+                        </Tooltip>
+                        <Tooltip placement="top" title="复制模块">
+                          <div
+                            className="btn-item"
+                            onClick={() => blockCopy(index, item)}
+                          >
+                            <CopyOutlined />
+                          </div>
+                        </Tooltip>
                         {index !== 0 && (
                           <Tooltip placement="top" title="模块上移">
                             <div

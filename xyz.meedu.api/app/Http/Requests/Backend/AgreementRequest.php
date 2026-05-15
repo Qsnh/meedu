@@ -9,8 +9,8 @@
 namespace App\Http\Requests\Backend;
 
 use Carbon\Carbon;
-use Mews\Purifier\Facades\Purifier;
 use App\Constant\AgreementConstant;
+use App\Meedu\ServiceV2\Services\AgreementService;
 
 class AgreementRequest extends BaseRequest
 {
@@ -75,7 +75,7 @@ class AgreementRequest extends BaseRequest
         $data = [
             'type' => $this->input('type'),
             'title' => $this->input('title'),
-            'content' => Purifier::clean((string)$this->input('content'), 'default'),
+            'content' => AgreementService::sanitizeContent($this->input('content')),
             'version' => $this->input('version'),
             'is_active' => (int)$this->input('is_active'),
         ];

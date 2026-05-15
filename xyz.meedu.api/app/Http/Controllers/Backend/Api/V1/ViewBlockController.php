@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
 use App\Meedu\ViewBlock\Render;
 use App\Models\AdministratorLog;
 use App\Meedu\ViewBlock\Constant;
+use Illuminate\Http\JsonResponse;
 use App\Services\Other\Models\ViewBlock;
 use App\Events\DecorationPageUpdateEvent;
 use App\Services\Other\Models\DecorationPage;
 use App\Bus\AdminPermissionBus;
 use App\Constant\BackendPermission;
-use Illuminate\Support\Facades\Auth;
 
 class ViewBlockController extends BaseController
 {
@@ -181,16 +181,11 @@ class ViewBlockController extends BaseController
         return $this->success();
     }
 
-    private function ensureCodeBlockPermission(): ?\Illuminate\Http\JsonResponse
+    private function ensureCodeBlockPermission(): ?JsonResponse
     {
-        $adminId = (int)Auth::guard('administrator')->id();
         $bus = app(AdminPermissionBus::class);
 
-        if ($bus->isSuperAdmin($adminId)) {
-            return null;
-        }
-
-        if ($bus->hasPermissionBySlug($adminId, BackendPermission::DECORATION_CODE_BLOCK_EDIT)) {
+        if ($bus->canAccessBySlug((int)$this->adminId(), BackendPermission::DECORATION_CODE_BLOCK_EDIT)) {
             return null;
         }
 

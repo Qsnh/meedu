@@ -39,23 +39,18 @@ class BackendPermissionCheckMiddleware
         }
 
         $admin = Auth::guard(BackendApiConstant::GUARD)->user();
+        $adminId = (int)$admin['id'];
 
-        // 超级管理员拥有所有权限
-        if ($this->bus->isSuperAdmin($admin['id'])) {
+        if ($this->bus->canAccessBySlug($adminId, $slug)) {
             return $next($request);
         }
 
-        // 非超管情况下，如果是超管专属权限，直接拒绝
+        // SUPER_ADMIN_ONLY 拒绝时给出更明确的提示
         if ($slug === BackendPermission::SUPER_ADMIN_ONLY) {
             return response()->json([
                 'status' => 403,
                 'message' => __('该功能仅限超级管理员访问'),
             ], 403);
-        }
-
-        // 检查管理员是否拥有该 slug 权限
-        if ($this->bus->hasPermissionBySlug($admin['id'], $slug)) {
-            return $next($request);
         }
 
         return response()->json([

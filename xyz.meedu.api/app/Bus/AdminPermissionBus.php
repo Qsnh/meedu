@@ -60,6 +60,23 @@ class AdminPermissionBus
             ->exists();
     }
 
+    /**
+     * 超管直通,否则按 slug 校验;SUPER_ADMIN_ONLY 仅放行超管。
+     * 与 BackendPermissionCheckMiddleware 保持一致的判定语义,供需要在控制器内部按条件做权限校验的场景复用。
+     */
+    public function canAccessBySlug(int $adminId, string $slug): bool
+    {
+        if ($this->isSuperAdmin($adminId)) {
+            return true;
+        }
+
+        if ($slug === BackendPermission::SUPER_ADMIN_ONLY) {
+            return false;
+        }
+
+        return $this->hasPermissionBySlug($adminId, $slug);
+    }
+
     public function hasDATAPermission(int $adminId, string $slug): bool
     {
         $permissionIds = $this->getAdminRelatingPermissionIds($adminId);

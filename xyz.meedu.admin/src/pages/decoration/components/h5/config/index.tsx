@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { CodeSet } from "./code";
 import { VodV1Set } from "./vod-v1";
@@ -8,6 +7,8 @@ import { ImageGroupSet } from "./image-group";
 import { SliderSet } from "./slider";
 import { BlankSet } from "./blank";
 import { GridNavSet } from "./grid-nav";
+import { useHasPermission } from "../../../../../hooks/usePermission";
+import { BACKEND_PERMISSIONS } from "../../../../../constants/backendPermissions";
 
 interface PropInterface {
   block: any;
@@ -15,11 +16,9 @@ interface PropInterface {
 }
 export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const user = useSelector((state: any) => state.loginUser.value.user);
-  const canEditCodeBlock =
-    !!user &&
-    !!user.permissions &&
-    typeof user.permissions["decorationPage.codeBlockEdit"] !== "undefined";
+  const canEditCodeBlock = useHasPermission(
+    BACKEND_PERMISSIONS.DECORATION_CODE_BLOCK_EDIT
+  );
 
   const update = () => {
     onUpdate();
