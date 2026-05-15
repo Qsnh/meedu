@@ -2,6 +2,7 @@
 
 - 修复:[Admin]学员批量导入时校验 VIP 会员是否存在的逻辑错误,导致填写了正确 VIP 会员 ID 也提示"VIP会员不存在"的 BUG
 - 修复:[API]未配置用户协议/隐私协议时登录后仍弹出同意弹窗的问题
+- 修复:[API|Admin]用户协议(服务/隐私/付费内容)与装修代码块加固 XSS 风险:协议保存启用 HTMLPurifier 白名单,新增 Artisan 命令 `agreement:sanitize-history` 净化存量;装修代码块编辑新增 `decorationPage.codeBlockEdit` 权限,默认仅超管可用
 
 ## 4.9.30
 
