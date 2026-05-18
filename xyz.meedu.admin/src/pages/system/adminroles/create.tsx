@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Input, message, Form, Cascader } from "antd";
+import { Button, Input, message, Form, TreeSelect } from "antd";
 import { adminRole } from "../../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
-const { SHOW_CHILD } = Cascader;
 
 const SystemAdminrolesCreatePage = () => {
   const [form] = Form.useForm();
@@ -32,13 +31,13 @@ const SystemAdminrolesCreatePage = () => {
           ids.push(roles[i][j].id);
           children.push({
             value: roles[i][j].id,
-            label: roles[i][j].display_name,
+            title: roles[i][j].display_name,
           });
         }
 
         arr.push({
           value: i,
-          label: i,
+          title: i,
           children: children,
         });
       }
@@ -71,32 +70,8 @@ const SystemAdminrolesCreatePage = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const getChildValues = (children: any) => {
-    return children.map((child: any) => child.value);
-  };
-
-  const handleChange = (value: any, selectedOptions: any) => {
-    if (selectedOptions.length > 0) {
-      // If only the parent is selected, get all child values
-      const parent = selectedOptions;
-      let box: any = [];
-      parent.map((item: any) => {
-        if (item[1]) {
-          box.push(item[1].value);
-        } else {
-          const childValues = getChildValues(item[0].children);
-          box.push(...childValues);
-        }
-      });
-      setSelectedValues(box);
-    } else {
-      // If any child is selected, just set the selected value
-      setSelectedValues(value);
-    }
-  };
-
-  const displayRender = (label: any, selectedOptions: any) => {
-    return label[label.length - 1];
+  const handleChange = (value: any) => {
+    setSelectedValues(value);
   };
 
   return (
@@ -132,16 +107,17 @@ const SystemAdminrolesCreatePage = () => {
             <Input style={{ width: 300 }} placeholder="请输入描述" allowClear />
           </Form.Item>
           <Form.Item label="权限" name="permission_ids">
-            <Cascader
+            <TreeSelect
               style={{ width: "100%" }}
               placeholder="请选择权限"
               multiple
               allowClear
-              options={permissionsTransform}
+              treeCheckable
+              treeData={permissionsTransform}
               onChange={handleChange}
-              expand-trigger="hover"
-              displayRender={displayRender}
-              showCheckedStrategy={SHOW_CHILD}
+              showCheckedStrategy={TreeSelect.SHOW_CHILD}
+              maxTagCount="responsive"
+              treeDefaultExpandAll
             />
           </Form.Item>
         </Form>
