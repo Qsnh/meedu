@@ -7,6 +7,8 @@ import { ImageGroupSet } from "./image-group";
 import { SliderSet } from "./slider";
 import { BlankSet } from "./blank";
 import { GridNavSet } from "./grid-nav";
+import { useHasPermission } from "../../../../../hooks/usePermission";
+import { BACKEND_PERMISSIONS } from "../../../../../constants/backendPermissions";
 
 interface PropInterface {
   block: any;
@@ -14,6 +16,9 @@ interface PropInterface {
 }
 export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const canEditCodeBlock = useHasPermission(
+    BACKEND_PERMISSIONS.DECORATION_CODE_BLOCK_EDIT
+  );
 
   const update = () => {
     onUpdate();
@@ -30,7 +35,7 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       {(block.sign === "h5-vod-v1" || block.sign === "pc-vod-v1") && (
         <VodV1Set block={block} onUpdate={() => update()}></VodV1Set>
       )}
-      {block.sign === "code" && (
+      {block.sign === "code" && canEditCodeBlock && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>
       )}
       {block.sign === "blank" && (

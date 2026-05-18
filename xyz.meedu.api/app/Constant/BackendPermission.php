@@ -28,6 +28,7 @@ class BackendPermission
     public const DECORATION_PAGE_SET_DEFAULT = 'decorationPage.setDefault';
     public const DECORATION_PAGE_COPY = 'decorationPage.copy';
     public const DECORATION_PAGE_BLOCKS = 'decorationPage.blocks';
+    public const DECORATION_CODE_BLOCK_EDIT = 'decorationPage.codeBlockEdit';
 
     // 友情链接
     public const LINK = 'link';

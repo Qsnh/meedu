@@ -11,9 +11,18 @@ namespace App\Meedu\ServiceV2\Services;
 use Carbon\Carbon;
 use App\Constant\AgreementConstant;
 use App\Meedu\ServiceV2\Dao\AgreementDaoInterface;
+use Mews\Purifier\Facades\Purifier;
 
 class AgreementService implements AgreementServiceInterface
 {
+    /**
+     * 协议正文统一净化入口,供保存和存量净化命令复用,确保 Purifier profile 不会两处漂移
+     */
+    public static function sanitizeContent(?string $html): string
+    {
+        return Purifier::clean((string)$html, 'default');
+    }
+
     protected $agreementDao;
 
     public function __construct(AgreementDaoInterface $agreementDao)

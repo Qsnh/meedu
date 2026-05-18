@@ -119,6 +119,11 @@ class AdministratorPermissionSeeder extends Seeder
                         'slug' => BackendPermission::NAV_DESTROY,
                         'sort' => 2014,
                     ],
+                    [
+                        'display_name' => '装修-代码块-编辑',
+                        'slug' => BackendPermission::DECORATION_CODE_BLOCK_EDIT,
+                        'sort' => 2015,
+                    ],
                 ],
             ],
 
