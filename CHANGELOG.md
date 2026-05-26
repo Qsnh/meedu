@@ -3,6 +3,9 @@
 - 安全:[API]修复 JWT 密钥未配置时回退为硬编码默认值导致可伪造管理员 Token 的未授权访问漏洞 (CNVD 补充材料)
   - ⚠️ **破坏性变更**:升级后若 `.env` 中未设置 `JWT_SECRET`,服务将无法启动;请先执行 `php artisan jwt:secret` 生成密钥
   - ⚠️ 更换 `JWT_SECRET` 会使所有现有 Token 失效,全体用户需重新登录
+- 安全:[API]修复 Laravel APP_KEY 硬编码默认值导致全应用对称加密层(Cookie/Session/加密字段等)可被预测的安全风险
+  - ⚠️ **破坏性变更**:升级后若 `.env` 中未设置 `APP_KEY`,服务将无法启动;请先执行 `php artisan key:generate` 生成密钥
+  - ⚠️ 更换 `APP_KEY` 会使所有已加密的 Cookie/Session 失效,用户需重新登录;若项目有自定义加密 Eloquent 列,旧数据将无法解密,请提前评估
 - 修复:[Admin]学员批量导入时校验 VIP 会员是否存在的逻辑错误,导致填写了正确 VIP 会员 ID 也提示"VIP会员不存在"的 BUG
 - 修复:[API]未配置用户协议/隐私协议时登录后仍弹出同意弹窗的问题
 - 修复:[API|Admin]用户协议(服务/隐私/付费内容)与装修代码块加固 XSS 风险
