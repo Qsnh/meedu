@@ -26,6 +26,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // JWT 密钥安全校验:未配置时严禁继续运行 HTTP 请求,杜绝硬编码默认密钥风险
+        $jwtSecret = config('jwt.secret');
+        if (empty($jwtSecret)) {
+            $message = 'JWT_SECRET 未配置!请在 .env 中设置 JWT_SECRET 后再启动服务。'
+                . '可执行 `php artisan jwt:secret` 自动生成。';
+            if ($this->app->runningInConsole()) {
+                logger()->error($message);
+            } else {
+                throw new \RuntimeException($message);
+            }
+        }
+
         // 兼容MySQL5.6
         Schema::defaultStringLength(191);
         // ServiceV2注册

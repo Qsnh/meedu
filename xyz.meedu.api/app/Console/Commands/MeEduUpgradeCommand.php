@@ -21,6 +21,13 @@ class MeEduUpgradeCommand extends Command
 
     public function handle()
     {
+        // JWT 密钥校验
+        if (empty(config('jwt.secret'))) {
+            $this->error('JWT_SECRET 未配置!请在 .env 中设置后再执行升级。');
+            $this->warn('可执行 `php artisan jwt:secret` 自动生成并写入 .env');
+            return 1;
+        }
+
         // 数据库迁移命令
         $this->info('执行数据库迁移...');
         Artisan::call('migrate', ['--force' => true]);
