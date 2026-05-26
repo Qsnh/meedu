@@ -21,10 +21,39 @@
 git clone --branch main https://gitee.com/myteng/MeEdu.git meedu
 ```
 
-运行：
+运行(分 3 步):
+
+**① 进入目录并复制环境配置**
 
 ```
-cd meedu && cp .env.example .env && docker-compose up -d
+cd meedu
+cp .env.example .env          # Windows: 改为 copy .env.example .env
+```
+
+**② 编辑 `.env`,把 `JWT_SECRET=` 这一行填上一个随机密钥**
+
+> `JWT_SECRET` 是 JWT 签名密钥,**必须自行生成且保密**;留空或使用公开示例值会导致 Token 可被伪造,出现未授权访问风险。
+
+随机密钥生成方式(任选其一):
+
+```
+# macOS / Linux
+openssl rand -base64 48
+
+# Windows PowerShell
+$b=New-Object byte[] 48;[Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b);[Convert]::ToBase64String($b)
+```
+
+将输出粘贴到 `.env` 中 `JWT_SECRET=` 后面(等号后无空格),例如:
+
+```
+JWT_SECRET=hVZ8b2pK...(此处为你生成的字符串)
+```
+
+**③ 启动容器**
+
+```
+docker-compose up -d
 ```
 
 > 🚨请注意，上述命令运行 MeEdu 存在一定的使用安全风险，仅供测试使用！如需在正式生产环境使用 MeEdu 还请阅读 [部署文档](https://faq.meedu.vip/doc/g9jK0KXmFe) 。
