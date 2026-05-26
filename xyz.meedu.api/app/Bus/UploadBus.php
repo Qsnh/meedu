@@ -29,6 +29,9 @@ class UploadBus
         'decoration',
     ];
 
+    private const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+    private const ALLOWED_IMAGE_MIMETYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'];
+
     private $configService;
 
     public function __construct(ConfigServiceInterface $configService)
@@ -51,6 +54,14 @@ class UploadBus
          */
         if (!$file->isValid()) {
             throw new ServiceException(__('请上传有效文件'));
+        }
+
+        // 防御性二次校验：拦截 SVG 等非白名单格式，避免存储型 XSS
+        $extension = strtolower((string)$file->getClientOriginalExtension());
+        $mimeType = strtolower((string)$file->getMimeType());
+        if (!in_array($extension, self::ALLOWED_IMAGE_EXTENSIONS, true)
+            || !in_array($mimeType, self::ALLOWED_IMAGE_MIMETYPES, true)) {
+            throw new ServiceException(__('仅支持上传 jpg、jpeg、png、gif、bmp、webp 格式图片'));
         }
 
         $s3Config = $this->configService->getS3PublicConfig();

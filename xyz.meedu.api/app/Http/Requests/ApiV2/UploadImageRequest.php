@@ -13,7 +13,7 @@ class UploadImageRequest extends BaseRequest
     public function rules()
     {
         return [
-            'file' => 'required|image|max:2048',
+            'file' => 'bail|required|file|mimes:jpg,jpeg,png,gif,bmp,webp|mimetypes:image/jpeg,image/png,image/gif,image/bmp,image/webp|max:2048',
         ];
     }
 
@@ -21,7 +21,9 @@ class UploadImageRequest extends BaseRequest
     {
         return [
             'file.required' => __('请上传文件'),
-            'file.image' => __('请上传图片文件'),
+            'file.file' => __('请上传图片文件'),
+            'file.mimes' => __('仅支持上传 jpg、jpeg、png、gif、bmp、webp 格式图片'),
+            'file.mimetypes' => __('仅支持上传 jpg、jpeg、png、gif、bmp、webp 格式图片'),
             'file.max' => __('文件不能超过:size', ['size' => '2M']),
         ];
     }
