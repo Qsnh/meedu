@@ -30,11 +30,21 @@ cd meedu
 cp .env.example .env          # Windows: 改为 copy .env.example .env
 ```
 
-**② 编辑 `.env`,把 `JWT_SECRET=` 这一行填上一个随机密钥**
+**② 编辑 `.env`,把 `APP_KEY=` 和 `JWT_SECRET=` 两行都填上随机密钥**
 
-> `JWT_SECRET` 是 JWT 签名密钥,**必须自行生成且保密**;留空或使用公开示例值会导致 Token 可被伪造,出现未授权访问风险。
+> `APP_KEY` 是 Laravel 全应用对称加密密钥(Cookie/Session/加密字段等);`JWT_SECRET` 是 JWT 签名密钥。两者**都必须自行生成且保密**,留空或使用公开示例值会导致 Cookie 可被解密、Token 可被伪造,出现未授权访问风险。
 
-随机密钥生成方式(任选其一):
+**生成 `APP_KEY`**(任选其一,必须是 `base64:<32 字节 base64>` 格式):
+
+```
+# macOS / Linux
+echo "base64:$(openssl rand -base64 32)"
+
+# Windows PowerShell
+$b=New-Object byte[] 32;[Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b);"base64:"+[Convert]::ToBase64String($b)
+```
+
+**生成 `JWT_SECRET`**(任选其一):
 
 ```
 # macOS / Linux
@@ -44,10 +54,11 @@ openssl rand -base64 48
 $b=New-Object byte[] 48;[Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b);[Convert]::ToBase64String($b)
 ```
 
-将输出粘贴到 `.env` 中 `JWT_SECRET=` 后面(等号后无空格),例如:
+将输出分别粘贴到 `.env` 中对应行后面(等号后无空格),例如:
 
 ```
-JWT_SECRET=hVZ8b2pK...(此处为你生成的字符串)
+APP_KEY=base64:7tQp...(你生成的字符串)
+JWT_SECRET=hVZ8b2pK...(你生成的字符串)
 ```
 
 **③ 启动容器**
