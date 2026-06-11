@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { setup as setupApi } from "../../api";
+import logoImg from "../../assets/home/logo.png";
 import styles from "./index.module.scss";
 
 type FormValues = {
@@ -12,10 +13,23 @@ type FormValues = {
 };
 
 const SetupPage = () => {
-  document.title = "初始化超级管理员";
   const navigate = useNavigate();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    document.title = "初始化超级管理员 · MeEdu";
+  }, []);
+
+  const passwordChecks = useMemo(
+    () => [
+      { key: "length", label: "8–32 位", met: password.length >= 8 && password.length <= 32 },
+      { key: "letter", label: "含字母", met: /[A-Za-z]/.test(password) },
+      { key: "digit", label: "含数字", met: /\d/.test(password) },
+    ],
+    [password]
+  );
 
   const onFinish = async (values: FormValues) => {
     if (loading) return;
@@ -26,7 +40,6 @@ const SetupPage = () => {
       message.success("超级管理员创建成功，请登录");
       navigate(`/login?email=${encodeURIComponent(email)}`, { replace: true });
     } catch {
-      // 业务错误已被 axios 拦截器 toast，无需在此再次处理
       setLoading(false);
     }
   };
@@ -34,17 +47,23 @@ const SetupPage = () => {
   return (
     <div className={styles["setup-container"]}>
       <div className={styles["card"]}>
-        <div className={styles["logo"]}>
-          <img src="/images/logo.png" alt="MeEdu" />
+        <div className={styles["brand"]}>
+          <img src={logoImg} alt="MeEdu" />
         </div>
-        <div className={styles["title"]}>欢迎使用 MeEdu</div>
-        <div className={styles["subtitle"]}>请创建首位超级管理员账号</div>
+
+        <div className={styles["eyebrow"]}>系统初始化</div>
+        <h1 className={styles["title"]}>创建超级管理员</h1>
+        <p className={styles["subtitle"]}>
+          该账号将持有后台全部权限，请妥善保管登录凭据。
+        </p>
 
         <Form
           form={form}
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
+          requiredMark={false}
+          className={styles["form"]}
         >
           <Form.Item
             label="姓名"
@@ -54,7 +73,7 @@ const SetupPage = () => {
               { min: 2, max: 20, message: "姓名长度为 2-20 个字符" },
             ]}
           >
-            <Input placeholder="请输入姓名" />
+            <Input placeholder="用于在后台显示和操作日志" />
           </Form.Item>
 
           <Form.Item
@@ -65,13 +84,12 @@ const SetupPage = () => {
               { type: "email", message: "请输入合法邮箱" },
             ]}
           >
-            <Input placeholder="用作登录账号" />
+            <Input placeholder="将作为后续登录账号" />
           </Form.Item>
 
           <Form.Item
             label="密码"
             name="password"
-            extra="8-32 位，至少包含字母和数字"
             rules={[
               { required: true, message: "请输入密码" },
               { min: 8, max: 32, message: "密码长度为 8-32 个字符" },
@@ -81,13 +99,28 @@ const SetupPage = () => {
               },
             ]}
           >
-            <Input.Password placeholder="请输入密码" />
+            <Input.Password
+              placeholder="设置后台登录密码"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Form.Item>
+
+          <ul className={styles["checklist"]} aria-label="密码要求">
+            {passwordChecks.map((check) => (
+              <li
+                key={check.key}
+                className={`${styles["check-item"]} ${check.met ? styles["met"] : ""}`}
+              >
+                {check.label}
+              </li>
+            ))}
+          </ul>
 
           <Form.Item
             label="确认密码"
             name="password_confirmation"
             dependencies={["password"]}
+            style={{ marginTop: 18 }}
             rules={[
               { required: true, message: "请再次输入密码" },
               ({ getFieldValue }) => ({
@@ -100,18 +133,21 @@ const SetupPage = () => {
               }),
             ]}
           >
-            <Input.Password placeholder="再次输入密码" />
+            <Input.Password placeholder="再次输入以确认" />
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item className={styles["submit-row"]}>
             <Button
               type="primary"
               htmlType="submit"
               loading={loading}
               className={styles["submit"]}
             >
-              创建并登录
+              创建并前往登录
             </Button>
+            <div className={styles["footer-note"]}>
+              创建成功后将跳转登录页，使用该邮箱与密码登录后台。
+            </div>
           </Form.Item>
         </Form>
       </div>
