@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 // 公开路由
 Route::post('/login', 'LoginController@login');
 Route::get('/captcha/image', 'CaptchaController@image');
+// 超管初始化状态查询（公开）
 Route::get('/system/setup-status', 'SystemSetupController@status');
 
 // 需要认证但不需要权限检查的路由
