@@ -121,7 +121,7 @@
   DB::transaction(function () use ($req) {
       $exists = Administrator::query()->lockForUpdate()->exists();
       if ($exists) {
-          abort(409, '系统已完成超管初始化');
+          return $this->error('系统已完成超管初始化');
       }
       $super = AdministratorRole::query()
           ->where('slug', config('meedu.administrator.super_slug'))
@@ -135,13 +135,15 @@
   });
   ```
 
+- 响应规范遵循 meedu 既有 `BaseController` 约定（HTTP 200 + JSON `{status, message, data}`，`status=0` 表示成功）。
+
 - 成功响应：
 
   ```json
-  { "code": 0, "data": { "email": "zhangsan@example.com" } }
+  { "status": 0, "message": "", "data": { "email": "zhangsan@example.com" } }
   ```
 
-- 已初始化时再次调用：返回 `409 Conflict`，前端按"状态过期"处理（刷新 + 重判）。
+- 已初始化时再次调用：返回 `{ "status": 1, "message": "系统已完成超管初始化" }`（与 meedu 其他业务错误同一约定）。前端拿到 `status!==0` 时统一处理：toast 提示 + 重新调 `setup-status` 重判路由。
 
 ### 5.3 代码位置
 
@@ -237,10 +239,9 @@ navigate("/setup",          进 dashboard，无 token 走 login）
 - 密码强度条：简单正则跑出 弱/中/强 三档作为软提示，不阻拦提交。
 - "创建并登录"按钮：点击后 `loading`；接口成功后 `navigate("/login?email=<email>", { replace: true })`，**replace** 防止用户后退又回到向导。
 - 失败处理：
-  - 字段校验失败 → Antd Form 红字；
-  - 后端 422 → errors 映射到对应 `Form.Item`；
-  - 后端 409 → `message.warning("系统已被其他人完成初始化，请直接登录")` + `replace("/login")`；
-  - 网络异常 → `message.error("网络异常，请重试")` + 解锁按钮。
+  - 字段校验由 Antd `Form rules` 在前端兜下来（与 meedu 既有做法一致，后端 ValidateException 的 `status=406` 不做字段映射，仅作为兜底）。
+  - 后端业务错误（`status!==0`，例如"系统已完成超管初始化"）→ axios 拦截器已自动 `message.error`；前端 catch 后再调一次 `setup-status`，若 `needs_init=false` 则 `replace("/login")`。
+  - 网络异常（HTTP 非 200）→ 已被全局拦截器导向 `/error`，无需在表单内额外处理。
 
 ### 6.4 登录页轻改（`pages/login/index.tsx`）
 
@@ -278,7 +279,7 @@ useEffect(() => {
 | # | 场景 | 行为 |
 |---|---|---|
 | 1 | install.lock 不存在但 admin 表已存在（老站升级） | `setup-status` 据 `Administrator::count()` 返回 `needs_init=false`，老站零打扰 |
-| 2 | 两个浏览器同时打开向导并提交 | 后端事务内 `lockForUpdate` 复核 `exists()`，第一个成功，第二个 `abort(409)`；前端 409 转登录页 |
+| 2 | 两个浏览器同时打开向导并提交 | 后端事务内 `lockForUpdate` 复核 `exists()`，第一个成功，第二个返回 `error('系统已完成超管初始化')`；前端 toast 后重判路由跳登录页 |
 | 3 | 中途断网，事务回滚 | 表里仍无管理员，刷新页面重判 `needs_init=true`，用户重试 |
 | 4 | 用户已登录后手动敲 `/setup` | 反向守卫强制跳走（已登录则回首页，未登录则回登录页） |
 | 5 | 运维事后从命令行 `install administrator` 创建账号 | `setup-status` 即时反映 `needs_init=false`，向导不再展示 |
@@ -298,15 +299,15 @@ useEffect(() => {
   - email 已存在 → 422
   - 密码不一致 → 422
   - 密码不符合复杂度 → 422
-  - 已存在管理员时再调 → 409
-  - 并发模拟（两个事务同时跑）→ 1 成功 1 失败 409
+  - 已存在管理员时再调 → `{status:1, message:'系统已完成超管初始化'}`，admin 表行数不变
+  - 并发模拟（两个事务同时跑）→ 一个成功（admin 数 = 1）、一个返回业务错误
 
 ### 8.2 前端手测清单
 
 - 全新部署：install → `/admin` → 自动跳 `/setup` → 填表 → 跳 `/login?email=xxx` → 邮箱已填、焦点在密码框 → 登录成功 → 进 `/edit-config`
 - 已初始化系统：`/admin` → 直接登录页；手动敲 `/setup` → 立刻回 `/login`
-- 后端 422 错误能映射到对应表单字段
-- 后端 409 触发提示并跳登录页
+- 客户端 `Form rules` 能在不发请求的前提下兜住空值/邮箱格式/密码长度/两次密码不一致
+- 后端业务错误（status≠0）触发 toast，后续 setup-status 重判把用户带去登录页
 
 ## 9. 兼容与回滚
 
