@@ -47,7 +47,7 @@
    用户打开 <URL>/admin
             │
             ▼
-   SPA 启动门 → GET /api/v3/system/setup-status
+   SPA 启动门 → GET /backend/api/v1/system/setup-status
             │
             ▼
        needs_init?
@@ -61,7 +61,7 @@
 [ /setup 单卡片向导：姓名 / 邮箱 / 密码 / 确认密码 ]
         │
         ▼
-   POST /api/v3/system/setup
+   POST /backend/api/v1/system/setup
         │
    后端原子操作：
    ① 事务内 lockForUpdate 复核 admin 表为空
@@ -81,7 +81,7 @@
 
 ## 5. 后端契约（xyz.meedu.api）
 
-### 5.1 `GET /api/v3/system/setup-status`
+### 5.1 `GET /backend/api/v1/system/setup-status`
 
 - 鉴权：无（SPA 启动时一定要能调通）
 - 响应：
@@ -93,7 +93,7 @@
 - 判定：`Administrator::query()->count() === 0` 则 `needs_init=true`，否则 `false`。
 - 频率：SPA 启动时调一次，`/setup` 提交成功后清前端状态，无需轮询。
 
-### 5.2 `POST /api/v3/system/setup`
+### 5.2 `POST /backend/api/v1/system/setup`
 
 - 鉴权：无（前端尚未登录）
 - 请求体：
@@ -145,7 +145,7 @@
 
 ### 5.3 代码位置
 
-- 路由：`xyz.meedu.api/routes/backend.php` 顶部新增一组"公开 setup"路由，绕开管理员鉴权中间件。
+- 路由：`xyz.meedu.api/routes/backend-v1.php` 顶部"公开路由"区域（`/login`、`/captcha/image` 旁边）新增两条 setup 路由，不进入 `auth:administrator` 中间件组。
 - 控制器：`app/Http/Controllers/Backend/Api/V1/SystemSetupController.php`，方法 `status()` / `setup()`。
 - 请求验证类：`app/Http/Requests/Backend/SystemSetupRequest.php`。
 
@@ -175,7 +175,7 @@ React 18 + Antd 5 + Redux Toolkit + react-router-dom 6。注意：`src/pages/ini
 App 挂载
   │
   ▼
-GET /api/v3/system/setup-status
+GET /backend/api/v1/system/setup-status
   │
 needs_init?
  ┌──┴──┐
