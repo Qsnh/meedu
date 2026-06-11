@@ -18,3 +18,4 @@ export * as pre from "./pre";
 export * as videoCategory from "./video-category";
 export * as comment from "./comment";
 export * as agreement from "./agreement";
+export * as setup from "./setup";
