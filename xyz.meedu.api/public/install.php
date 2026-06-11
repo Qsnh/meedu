@@ -382,9 +382,6 @@ if ($step === 0) {
             // install role
             $artisan->call('install', ['action' => 'role'], $output);
 
-            // install administrator
-            $artisan->call('install', ['action' => 'administrator', '-q' => true], $output);
-
             // config
             $artisan->call('install', ['action' => 'config'], $output);
 
@@ -656,29 +653,6 @@ if ($step === 0) {
                 margin-bottom: 2rem;
             }
 
-            .admin-info {
-                background-color: #f3f4f6;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 2rem;
-            }
-
-            .admin-info h3 {
-                font-size: 1.125rem;
-                color: #374151;
-                margin-top: 0;
-                margin-bottom: 1rem;
-            }
-
-            .admin-info p {
-                margin: 0.5rem 0;
-            }
-
-            .warning {
-                color: #ef4444;
-                font-weight: bold;
-            }
-
             footer {
                 background-color: #f9fafb;
                 padding: 20px 40px 20px 20px;
@@ -716,13 +690,7 @@ if ($step === 0) {
         <main>
             <h2>恭喜！安装成功</h2>
             <div class="success-message">
-                <p>MeEdu程序已经成功安装到您的服务器上。您现在可以开始使用了。</p>
-            </div>
-            <div class="admin-info">
-                <h3>管理员账号信息</h3>
-                <p><strong>账号：</strong> meedu@meedu.meedu</p>
-                <p><strong>密码：</strong> meedu123</p>
-                <p class="warning">请立即登录并修改默认密码！</p>
+                <p>MeEdu 程序已经成功安装到您的服务器上。请访问后台完成超管初始化。</p>
             </div>
         </main>
     </div>
