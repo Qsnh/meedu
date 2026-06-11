@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { setup as setupApi } from "../../api";
-import { setNeedsInit } from "../../store/system/systemSetupSlice";
 import styles from "./index.module.scss";
 
 type FormValues = {
@@ -16,7 +14,6 @@ type FormValues = {
 const SetupPage = () => {
   document.title = "初始化超级管理员";
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
@@ -26,20 +23,10 @@ const SetupPage = () => {
     try {
       const res: any = await setupApi.submitSetup(values);
       const email = res?.data?.email ?? values.email;
-      dispatch(setNeedsInit(false));
       message.success("超级管理员创建成功，请登录");
       navigate(`/login?email=${encodeURIComponent(email)}`, { replace: true });
     } catch {
-      // 业务错误已被 axios 拦截器 toast；这里只需判定是否系统状态变化
-      try {
-        const statusRes: any = await setupApi.getSetupStatus();
-        if (statusRes?.data?.needs_init === false) {
-          dispatch(setNeedsInit(false));
-          navigate("/login", { replace: true });
-        }
-      } catch {
-        // 状态查询本身失败，让用户重试
-      }
+      // 业务错误已被 axios 拦截器 toast，无需在此再次处理
       setLoading(false);
     }
   };

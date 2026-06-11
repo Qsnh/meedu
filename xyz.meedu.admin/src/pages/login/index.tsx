@@ -37,10 +37,9 @@ const LoginPage = () => {
     const presetEmail = searchParams.get("email");
     if (presetEmail) {
       setEmail(presetEmail);
-      setTimeout(() => passwordRef.current?.focus(), 0);
+      passwordRef.current?.focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams]);
 
   const fetchImageCaptcha = () => {
     setCaptchaVal("");
