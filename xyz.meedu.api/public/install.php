@@ -599,8 +599,15 @@ if ($step === 0) {
                 $url = (is_https() ? 'https://' : 'http://') . $url;
             }
 
+            // 直接用 CSPRNG 生成敏感密钥,与 DB 配置一同写入 .env;
+            // 避免空密钥的 .env 提前触发 AppServiceProvider 的安全校验,导致后续 artisan 无法执行
+            $appKey = 'base64:' . base64_encode(random_bytes(32));
+            $jwtSecret = bin2hex(random_bytes(32));
+
             $replaceArr = [
                 '{URL}' => $url,
+                '{APP_KEY}' => $appKey,
+                '{JWT_SECRET}' => $jwtSecret,
                 '{MYSQL_HOST}' => $dbHost,
                 '{MYSQL_PORT}' => $dbPort,
                 '{MYSQL_DATABASE}' => $dbDb,
@@ -616,8 +623,6 @@ if ($step === 0) {
             $artisan = $app->make(Illuminate\Contracts\Console\Kernel::class);
             $output = $app->make(\Symfony\Component\Console\Output\BufferedOutput::class);
 
-            $artisan->call('key:generate', ['--force' => true], $output);
-            $artisan->call('jwt:secret', ['--force' => true], $output);
             $artisan->call('storage:link', [], $output);
             $artisan->call('migrate', ['--force' => true], $output);
             $artisan->call('install', ['action' => 'role'], $output);
