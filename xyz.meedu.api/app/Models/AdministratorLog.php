@@ -58,7 +58,7 @@ class AdministratorLog extends Model
         'admin_id', 'module', 'opt', 'remark', 'created_at', 'ip'
     ];
 
-    public static function storeLog(string $module, string $opt, $remark = ''): void
+    public static function storeLog(string $module, string $opt, $remark = '', ?int $adminId = null): void
     {
         if (is_array($remark)) {
             if (!isset($remark['path'])) {//携带上当前请求的path
@@ -68,7 +68,7 @@ class AdministratorLog extends Model
         }
 
         self::create([
-            'admin_id' => Auth::guard('administrator')->id(),
+            'admin_id' => $adminId ?? Auth::guard('administrator')->id() ?? 0,
             'module' => $module,
             'opt' => $opt,
             'remark' => $remark,

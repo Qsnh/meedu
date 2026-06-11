@@ -9,6 +9,7 @@
 namespace Tests\Api\Backend;
 
 use App\Models\Administrator;
+use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\Hash;
 
@@ -42,6 +43,13 @@ class SystemSetupTest extends Base
 
         $superSlug = config('meedu.administrator.super_slug');
         $this->assertTrue($admin->roles()->where('slug', $superSlug)->exists());
+
+        // 审计日志必须落库,且 admin_id 归属到新建的超管自身(回归 #1048 admin_id NULL)
+        $this->assertDatabaseHas('administrator_logs', [
+            'admin_id' => $admin->id,
+            'module'   => AdministratorLog::MODULE_ADMINISTRATOR,
+            'opt'      => AdministratorLog::OPT_STORE,
+        ]);
     }
 
     public function test_already_initialized_returns_business_error()

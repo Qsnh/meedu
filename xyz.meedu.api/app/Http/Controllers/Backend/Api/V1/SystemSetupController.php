@@ -33,7 +33,7 @@ class SystemSetupController extends BaseController
         $superSlug = config('meedu.administrator.super_slug');
 
         try {
-            $createdEmail = DB::transaction(function () use ($request, $superSlug) {
+            [$createdId, $createdEmail] = DB::transaction(function () use ($request, $superSlug) {
                 // InnoDB 在空表上的 SELECT ... FOR UPDATE 仍会落 supremum gap 锁,
                 // 阻止并发事务插入;email 字段本身也有 UNIQUE 索引做兜底。
                 if (Administrator::query()->lockForUpdate()->exists()) {
@@ -47,16 +47,18 @@ class SystemSetupController extends BaseController
 
                 $admin = Administrator::query()->create($request->filldata());
                 $admin->roles()->attach($super->id);
-                return $admin->email;
+                return [$admin->id, $admin->email];
             });
         } catch (\DomainException $e) {
             return $this->error($e->getMessage());
         }
 
+        // /setup 接口无登录态,显式把日志归属到新建的超管自身。
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_ADMINISTRATOR,
             AdministratorLog::OPT_STORE,
-            ['email' => $createdEmail]
+            ['email' => $createdEmail],
+            $createdId
         );
 
         return $this->successData(['email' => $createdEmail]);
