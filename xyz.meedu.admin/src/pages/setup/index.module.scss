@@ -65,10 +65,11 @@
   line-height: 1.5;
   color: #00000073;
   margin-bottom: 28px;
-  max-width: 36ch;
 }
 
 .form {
+  text-align: left;
+
   :global(.ant-form-item) {
     margin-bottom: 18px;
   }
@@ -168,10 +169,6 @@
     padding: 32px 24px;
     box-shadow: none;
     border: 1px solid #e5e5e5;
-  }
-
-  .subtitle {
-    max-width: none;
   }
 }
 
