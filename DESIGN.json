@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-10T00:00:00Z",
+  "title": "Design System: MeEdu",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Sky Blue 天空蓝",
+        "canonical": "#3ca7fa",
+        "tonalRamp": ["#0a1d2e", "#0d3a5e", "#1166a3", "#1c7fc4", "#3ca7fa", "#6dc0fb", "#a8d8fc", "#dbeefe"]
+      },
+      "primary-legacy": {
+        "role": "primary",
+        "displayName": "Legacy Blue（待退役）",
+        "canonical": "#409eff",
+        "tonalRamp": ["#0a1a2e", "#0d2f5e", "#1153a3", "#1e6fc4", "#409eff", "#6db4ff", "#a8cdff", "#dbe6ff"]
+      },
+      "success": {
+        "role": "status",
+        "displayName": "Success 绿",
+        "canonical": "#04c877",
+        "tonalRamp": ["#021a10", "#053219", "#086a3c", "#0a9658", "#04c877", "#4fd897", "#93e7bc", "#cef3dc"]
+      },
+      "warning": {
+        "role": "status",
+        "displayName": "Warning 黄",
+        "canonical": "#e1a500",
+        "tonalRamp": ["#2c1f00", "#5c4100", "#997000", "#c08c00", "#e1a500", "#ecbe43", "#f3d784", "#faecc4"]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Danger 红",
+        "canonical": "#ff4d4f",
+        "tonalRamp": ["#2e0a0a", "#5e0d0d", "#a31313", "#d62828", "#ff4d4f", "#ff7d7e", "#ffb8b9", "#ffe5e5"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Surface 白",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#213547", "#44546a", "#6c7a8c", "#999999", "#c0c8d2", "#d9d9d9", "#e5e5e5", "#ffffff"]
+      },
+      "neutral-bg-soft": {
+        "role": "neutral",
+        "displayName": "Soft Sky 浅天空（学员端底色）",
+        "canonical": "#f4fafe",
+        "tonalRamp": ["#1a3245", "#2b5570", "#4d7a98", "#7a9fbc", "#aac4dc", "#cee0ee", "#e6f1f8", "#f4fafe"]
+      },
+      "surface-elevated": {
+        "role": "neutral",
+        "displayName": "Elevated Surface",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#213547", "#44546a", "#6c7a8c", "#999999", "#c0c8d2", "#d9d9d9", "#e5e5e5", "#ffffff"]
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Text Primary",
+        "canonical": "#213547",
+        "tonalRamp": ["#0a1018", "#101a26", "#172538", "#1c2d3e", "#213547", "#3d5670", "#7a8da2", "#c5d1de"]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Text Secondary 45%",
+        "canonical": "#00000073",
+        "tonalRamp": ["#000000", "#0000001f", "#00000040", "#00000073", "#00000099", "#000000bf", "#000000d9", "#000000f0"]
+      },
+      "text-tertiary": {
+        "role": "neutral",
+        "displayName": "Text Tertiary 灰",
+        "canonical": "#999999",
+        "tonalRamp": ["#1a1a1a", "#333333", "#4d4d4d", "#666666", "#808080", "#999999", "#b3b3b3", "#cccccc"]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Divider",
+        "canonical": "#e5e5e5",
+        "tonalRamp": ["#1a1a1a", "#333333", "#666666", "#999999", "#c0c0c0", "#d9d9d9", "#e5e5e5", "#f5f5f5"]
+      },
+      "selection": {
+        "role": "primary",
+        "displayName": "Selection",
+        "canonical": "#3ca7fa",
+        "tonalRamp": ["#0a1d2e", "#0d3a5e", "#1166a3", "#1c7fc4", "#3ca7fa", "#6dc0fb", "#a8d8fc", "#dbeefe"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "页面主标题、登录欢迎语；一屏一处。" },
+      "title": { "displayName": "Title", "purpose": "卡片标题、模态标题、表单分组标题。" },
+      "body": { "displayName": "Body", "purpose": "Antd 默认正文：表单、表格、菜单、按钮内文。" },
+      "label": { "displayName": "Label", "purpose": "helper-text、时间戳、表单提示、表格次要列。" }
+    },
+    "shadows": [
+      {
+        "name": "resting",
+        "value": "none",
+        "purpose": "静止表面默认。深度靠 1px #e5e5e5 边框 + 底色对比，不靠阴影。"
+      },
+      {
+        "name": "lifted-signature",
+        "value": "20px 20px 100px 0 rgba(85, 102, 119, 0.1)",
+        "purpose": "MeEdu 的签名长柔阴影。仅用于真正从工作台浮起的元素：登录卡、初始化向导主面板、关键引导。"
+      },
+      {
+        "name": "modal-default",
+        "value": "0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)",
+        "purpose": "Antd 模态 / Drawer / Popover 默认阴影。不再叠加自定义。"
+      },
+      {
+        "name": "focus-ring-primary",
+        "value": "0 0 0 2px rgba(60, 167, 250, 0.2)",
+        "purpose": "聚焦态主色描边，2px 同色半透明。无障碍焦点指示。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Antd 默认缓动，hover / focus / state 切换通用。"
+      },
+      {
+        "name": "duration-fast",
+        "value": "120ms",
+        "purpose": "Button hover、Input focus 等微交互的反馈时长。"
+      },
+      {
+        "name": "duration-base",
+        "value": "200ms",
+        "purpose": "默认状态切换时长。超出此值的过渡需要尊重 prefers-reduced-motion。"
+      }
+    ],
+    "breakpoints": [
+      { "name": "h5", "value": "480px" },
+      { "name": "sm", "value": "768px" },
+      { "name": "md", "value": "992px" },
+      { "name": "lg", "value": "1200px" },
+      { "name": "xl", "value": "1600px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "主操作按钮。Antd Button type=primary 的项目级定值。",
+      "html": "<button class=\"ds-btn-primary\">保存设置</button>",
+      "css": ".ds-btn-primary { background: #3ca7fa; color: #ffffff; padding: 4px 16px; height: 32px; border: 1px solid #3ca7fa; border-radius: 4px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.5; cursor: pointer; transition: background 120ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 120ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #69b8fb; border-color: #69b8fb; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(60, 167, 250, 0.2); } .ds-btn-primary:active { background: #1f8fdc; border-color: #1f8fdc; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "次要操作按钮。白底 + 灰边 + 深色文字。",
+      "html": "<button class=\"ds-btn-ghost\">取消</button>",
+      "css": ".ds-btn-ghost { background: #ffffff; color: #213547; padding: 4px 16px; height: 32px; border: 1px solid #d9d9d9; border-radius: 4px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.5; cursor: pointer; transition: color 120ms, border-color 120ms; } .ds-btn-ghost:hover { color: #3ca7fa; border-color: #3ca7fa; } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(60, 167, 250, 0.2); }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "不可逆动作按钮。一屏最多一个。",
+      "html": "<button class=\"ds-btn-danger\">删除课程</button>",
+      "css": ".ds-btn-danger { background: #ff4d4f; color: #ffffff; padding: 4px 16px; height: 32px; border: 1px solid #ff4d4f; border-radius: 4px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.5; cursor: pointer; transition: background 120ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-danger:hover { background: #ff7875; border-color: #ff7875; } .ds-btn-danger:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2); }"
+    },
+    {
+      "name": "Default Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "表单输入框。Antd Input 默认尺寸。",
+      "html": "<input class=\"ds-input\" placeholder=\"请输入超管邮箱\" />",
+      "css": ".ds-input { background: #ffffff; color: #213547; padding: 4px 12px; height: 32px; border: 1px solid #d9d9d9; border-radius: 4px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.5; outline: none; transition: border-color 120ms, box-shadow 120ms; width: 280px; box-sizing: border-box; } .ds-input::placeholder { color: rgba(0, 0, 0, 0.45); } .ds-input:hover { border-color: #6dc0fb; } .ds-input:focus { border-color: #3ca7fa; box-shadow: 0 0 0 2px rgba(60, 167, 250, 0.2); }"
+    },
+    {
+      "name": "Default Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "静止卡片。无阴影，1px 边框。",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">课程基本信息</div><div class=\"ds-card-body\">设置课程标题、封面与简介。学员侧将以此为入口呈现。</div></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #e5e5e5; border-radius: 4px; padding: 24px; font-family: Inter, system-ui, sans-serif; color: #213547; width: 480px; box-sizing: border-box; } .ds-card-title { font-size: 16px; font-weight: 500; line-height: 1.5; margin-bottom: 12px; } .ds-card-body { font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(0, 0, 0, 0.65); }"
+    },
+    {
+      "name": "Status Tag",
+      "kind": "chip",
+      "refersTo": "chip-tag",
+      "description": "分类 / 身份 / 状态标签。主色版本：浅天空底 + 主色文字。",
+      "html": "<span class=\"ds-tag\">付费学员</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; background: #f4fafe; color: #3ca7fa; border: 1px solid #dbeefe; border-radius: 4px; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 400; line-height: 20px; }"
+    },
+    {
+      "name": "Status Cell",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "MeEdu admin 表格状态列签名组件。圆点 + 文字双信号，禁止仅靠颜色区分。",
+      "html": "<div class=\"ds-status-cell\"><span class=\"ds-status-dot ds-status-dot--danger\"></span><span class=\"ds-status-label\">订单失败</span></div>",
+      "css": ".ds-status-cell { display: inline-flex; align-items: center; gap: 8px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 400; line-height: 1.5; color: #213547; } .ds-status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; } .ds-status-dot--success { background: #04c877; } .ds-status-dot--warning { background: #e1a500; } .ds-status-dot--danger { background: #ff4d4f; } .ds-status-dot--neutral { background: #999999; } .ds-status-label { white-space: nowrap; }"
+    },
+    {
+      "name": "Sidebar Menu Item",
+      "kind": "nav",
+      "refersTo": "nav-sidebar",
+      "description": "200px 固定侧边栏菜单项。当前项使用浅天空底 + 主色文字。",
+      "html": "<nav class=\"ds-sidebar\"><a class=\"ds-sidebar-item\" href=\"#\">概览</a><a class=\"ds-sidebar-item ds-sidebar-item--active\" href=\"#\">课程管理</a><a class=\"ds-sidebar-item\" href=\"#\">订单</a><a class=\"ds-sidebar-item\" href=\"#\">学员</a></nav>",
+      "css": ".ds-sidebar { width: 200px; background: #ffffff; padding: 24px 0; display: flex; flex-direction: column; font-family: Inter, system-ui, sans-serif; border-right: 1px solid #e5e5e5; } .ds-sidebar-item { display: block; padding: 10px 24px; color: #213547; font-size: 14px; font-weight: 400; line-height: 1.5; text-decoration: none; transition: background 120ms, color 120ms; } .ds-sidebar-item:hover { color: #3ca7fa; background: #f4fafe; } .ds-sidebar-item--active { color: #3ca7fa; background: #f4fafe; font-weight: 500; }"
+    },
+    {
+      "name": "Lifted Hero Panel",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "登录卡 / 初始化向导主面板。MeEdu 签名长柔阴影的唯一使用场景示例。",
+      "html": "<div class=\"ds-hero-panel\"><div class=\"ds-hero-title\">欢迎使用 MeEdu</div><div class=\"ds-hero-sub\">完成超管初始化，开启您的网校</div></div>",
+      "css": ".ds-hero-panel { background: #ffffff; border-radius: 4px; padding: 48px; width: 480px; box-shadow: 20px 20px 100px 0 rgba(85, 102, 119, 0.1); font-family: Inter, system-ui, sans-serif; color: #213547; box-sizing: border-box; } .ds-hero-title { font-size: 24px; font-weight: 500; line-height: 1; margin-bottom: 16px; } .ds-hero-sub { font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(0, 0, 0, 0.45); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "运营人员的工作台 / The Operator's Console",
+    "overview": "MeEdu 的视觉系统不是品牌宣言，是一张工作台桌面。运营人员每天要完成订单核销、课程上下架、学员管理、内容审核与异常排查；学员要在 pc/h5 端不被打断地完成找课、购买、学习。系统的工作是让两种心流都不掉线——不是让人停下来欣赏 UI。默认色是 Ant Design 的中性灰白，主色 #3ca7fa 是一束克制的天空蓝，只在交互节点上点亮，从不平铺到大块表面。视觉密度向桌面 B 端工具看齐（腾讯课堂 / Stripe Dashboard / 后台型 SaaS），不向 K12 教育网站、微商课程页或老派 OA 系统看齐。",
+    "keyCharacteristics": [
+      "中性灰白底面 + 单一天空蓝点缀，色彩出现频率 ≤10%",
+      "Antd 5 默认结构 + 项目级精修，不重写组件而是收敛 token",
+      "信息密度向 B 端工具靠拢——表格、统计、筛选区不靠加大间距显档次",
+      "异常状态（红 #ff4d4f / 黄 #e1a500）享有视觉优先权",
+      "静态层级——阴影仅用于浮起态，不用于装饰",
+      "4 个端共享 token：api / admin / pc / h5"
+    ],
+    "rules": [
+      { "name": "The One-Voice Rule（一票通过律）", "body": "主色 #3ca7fa 是单一发声口。任意单屏内主色覆盖面积 ≤10%。如果一屏出现两片以上的实蓝色面板，说明在用色彩贴标签，回去用层级和字重重做。", "section": "colors" },
+      { "name": "The Status-Reserves Rule（状态色保留律）", "body": "红 / 黄 / 绿三色只为状态而存在。一个绿色 chip 用来装饰\"全部分类\"就是误用——它会稀释生产环境中真正成功那条信号的视觉权重。", "section": "colors" },
+      { "name": "The Legacy-Blue Sundown Rule（旧蓝退役律）", "body": "项目里存在历史遗留蓝 #409eff（c-blue / c-primary 工具类）。新代码禁止引用，老代码遇到即顺手替换为 #3ca7fa。两条主色并存等于没有主色。", "section": "colors" },
+      { "name": "The Density-Over-Whitespace Rule（密度优先律）", "body": "admin 是工作面板。表格行高、卡片内边距向 Antd 默认（compact / middle）看齐，不靠加 padding 显高级。行距加大只为长文阅读区，不为表格显气派。", "section": "typography" },
+      { "name": "The Plain-Speech Rule（朴素表达律）", "body": "标题不写鸡汤，按钮不写立即开启您的精彩之旅。运营场景下文案是工具的一部分，每个字都要为操作服务。", "section": "typography" },
+      { "name": "The Flat-By-Default Rule（默认平面律）", "body": "静止表面无阴影。如果你在一个不会被浮起的卡片上加阴影，就把它换成 1px 边框或底色 token。卡片不是重要的同义词。", "section": "elevation" },
+      { "name": "The Signature-Shadow Rule（签名阴影律）", "body": "长柔阴影 20px 20px 100px rgba(85, 102, 119, 0.1) 只用于真正离开了工作台层的元素（登录卡、空态启动门、关键引导）。日常表格、模态、Drawer 都不用它——稀有性是它的全部意义。", "section": "elevation" }
+    ],
+    "dos": [
+      "Do 用 token 引用代替硬编码——#3ca7fa 写在 main.tsx 一处，其余都通过 Antd theme.token 或 CSS 变量消费。",
+      "Do 把异常状态做成视觉头牌——红色 #ff4d4f + 文字 + 图标三位一体，确保运营一眼定位异常。",
+      "Do 在长流程页面（设置向导、批量编辑）使用签名长柔阴影 20px 20px 100px rgba(85, 102, 119, 0.1)，让关键面板从工作台漂起来。",
+      "Do 错误提示原位说清楚原因和下一步动作。",
+      "Do 学员端 (pc/h5) 优先使用 toast / 顶部条 / inline 提示，不用 modal 兜底任何可以 inline 完成的反馈——保护学员心流。",
+      "Do 把 c-blue / c-primary 工具类里的遗留 #409eff 顺手替换为 #3ca7fa（旧蓝退役律）。"
+    ],
+    "donts": [
+      "Don't 用卡通插画、彩虹渐变、奖章弹窗、放大成就动画——这是 K12 教育站的语言，与运营 / 职业学员场景不匹配。",
+      "Don't 用满屏倒计时、滚动小红字、已有 XXX 人购买伪从众提示、闪烁加粗价格——这是微商课程页的语言，会破坏交易系统的可信度。",
+      "Don't 套用左侧深蓝竖条 + 顶部灰蓝渐变 + Antd 默认主色的工程师顺手搭组合——这是老派 OA 后台的语言。",
+      "Don't 写彩色玻璃卡片、渐变文字（background-clip: text）、大圆角通用 hero 模板——任何一眼能被识别为 AI 套模板的元素。",
+      "Don't 用 border-left > 1px 当彩色饰条加在卡片 / 列表 / Alert 上。改用整边框、底色 tint 或左侧图标。",
+      "Don't 主色面积超过单屏 10%（One-Voice Rule）。蓝色按钮 + 蓝色 chip + 蓝色顶部条同屏出现就是失败信号。",
+      "Don't 用绿色作全部分类装饰底——绿色专供成功 / 通过 / 已支付（Status-Reserves Rule）。",
+      "Don't 嵌套卡片。卡内再开卡 = 层级失败。",
+      "Don't 学员看视频时弹 modal 推送活动 / 推荐 / 升级——心流不被弹窗打断（PRODUCT.md 第 3 原则）。",
+      "Don't 在静止表面上加阴影装饰。阴影是状态信号，不是装饰（Flat-By-Default Rule）。",
+      "Don't 在按钮 / 标题 / 表格里用 emoji——B 端工具的专业语气不允许 emoji。"
+    ]
+  }
+}
