@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Spin, Input, Button, message } from "antd";
+import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import { login as loginApi, system } from "../../api/index";
 import { loginAction } from "../../store/user/loginUserSlice";
@@ -25,9 +26,20 @@ const LoginPage = () => {
   const [captchaVal, setCaptchaVal] = useState("");
   const [captchaKey, setCaptchaKey] = useState("");
   const [captchaLoading, setCaptchaLoading] = useState(true);
+  const passwordRef = useRef<InputRef>(null);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     fetchImageCaptcha();
+  }, []);
+
+  useEffect(() => {
+    const presetEmail = searchParams.get("email");
+    if (presetEmail) {
+      setEmail(presetEmail);
+      setTimeout(() => passwordRef.current?.focus(), 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchImageCaptcha = () => {
@@ -200,6 +212,7 @@ const LoginPage = () => {
         </div>
         <div className="login-box d-flex mt-50">
           <Input.Password
+            ref={passwordRef}
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
