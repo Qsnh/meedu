@@ -116,6 +116,7 @@ const SystemNormalConfigPage = lazy(
   () => import("../pages/system/config/config")
 );
 const EditConfigPage = lazy(() => import("../pages/edit-config/index"));
+const SetupPage = lazy(() => import("../pages/setup"));
 const ErrorPage = lazy(() => import("../pages/error"));
 const NoServicePage = lazy(() => import("../pages/error/no-sevice"));
 //装修
@@ -172,7 +173,8 @@ if (getToken() && window.location.pathname !== "/error") {
   if (
     window.location.pathname !== "/login" &&
     window.location.pathname !== "/edit-config" &&
-    window.location.pathname !== "/error"
+    window.location.pathname !== "/error" &&
+    window.location.pathname !== "/setup"
   ) {
     window.location.href = "/login";
   }
@@ -336,6 +338,10 @@ const routes: RouteObject[] = [
           {
             path: "/login",
             element: <LoginPage />,
+          },
+          {
+            path: "/setup",
+            element: <SetupPage />,
           },
           { path: "/decoration/pc", element: <DecorationPCPage /> },
           { path: "/decoration/pc/editor", element: <DecorationPCPage /> },
