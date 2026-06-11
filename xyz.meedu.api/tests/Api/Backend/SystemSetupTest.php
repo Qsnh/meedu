@@ -101,4 +101,18 @@ class SystemSetupTest extends Base
         ]);
         $this->assertResponseError($response);
     }
+
+    public function test_missing_super_role_returns_business_error()
+    {
+        AdministratorRole::query()->where('slug', config('meedu.administrator.super_slug'))->delete();
+
+        $response = $this->postJson(self::API_V1_PREFIX . '/system/setup', [
+            'name' => '张三',
+            'email' => 'zhangsan@example.com',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
+        ]);
+        $this->assertResponseError($response);
+        $this->assertEquals(0, Administrator::query()->count());
+    }
 }
