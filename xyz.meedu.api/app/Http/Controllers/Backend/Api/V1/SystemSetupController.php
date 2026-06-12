@@ -19,7 +19,6 @@ class SystemSetupController extends BaseController
 {
     public function status()
     {
-        // setup.lock 是超管初始化完成的权威哨兵,文件存在直接短路 DB 查询。
         if (SystemSetupLock::exists()) {
             return $this->successData(['needs_init' => false]);
         }
@@ -29,13 +28,12 @@ class SystemSetupController extends BaseController
 
     public function setup(SystemSetupRequest $request)
     {
-        // 第一道防线:setup.lock 文件存在即拒绝,fail-closed。
-        // 即便 administrators 表被清空,只要 lock 文件健在,公开路由也无法被滥用重建超管。
+        // 三层防护:lock 文件 fail-closed(防 administrators 被清空后滥用)、
+        // 廉价存在性检查(挡掉无谓的事务开销)、lockForUpdate 在空表上落 supremum gap 锁防并发。
         if (SystemSetupLock::exists()) {
             return $this->error(__('系统已完成超管初始化'));
         }
 
-        // 第二道防线:廉价的索引存在性检查,避免恶意/误发的 POST 都付出事务+行锁开销。
         if (Administrator::query()->exists()) {
             return $this->error(__('系统已完成超管初始化'));
         }
@@ -44,8 +42,6 @@ class SystemSetupController extends BaseController
 
         try {
             [$createdId, $createdEmail] = DB::transaction(function () use ($request, $superSlug) {
-                // 第三道防线:InnoDB 在空表上的 SELECT ... FOR UPDATE 仍会落 supremum gap 锁,
-                // 阻止并发事务插入;email 字段本身也有 UNIQUE 索引做兜底。
                 if (Administrator::query()->lockForUpdate()->exists()) {
                     throw new \DomainException(__('系统已完成超管初始化'));
                 }
@@ -63,10 +59,8 @@ class SystemSetupController extends BaseController
             return $this->error($e->getMessage());
         }
 
-        // 事务已提交即超管已落库,无论 lock 写入是否成功都必须返回成功;
-        // 写入失败由 helper 内部 Log::warning,由运维通过 ops 手段补写。
         SystemSetupLock::write([
-            'source' => 'setup_api',
+            'source' => SystemSetupLock::SOURCE_SETUP_API,
             'admin_id' => $createdId,
             'email' => $createdEmail,
             'ip' => $request->ip(),

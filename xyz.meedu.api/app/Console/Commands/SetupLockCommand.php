@@ -34,7 +34,7 @@ class SetupLockCommand extends Command
         }
 
         $ok = SystemSetupLock::write([
-            'source' => 'cli',
+            'source' => SystemSetupLock::SOURCE_CLI,
             'admin_exists' => $adminExists,
             'force' => (bool) $this->option('force'),
         ]);

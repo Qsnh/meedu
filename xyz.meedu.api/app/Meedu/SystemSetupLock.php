@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Log;
  */
 class SystemSetupLock
 {
+    public const SOURCE_SETUP_API = 'setup_api';
+    public const SOURCE_LOGIN_HEAL = 'login_heal';
+    public const SOURCE_CLI = 'cli';
+
     public static function path(): string
     {
         return storage_path('setup.lock');

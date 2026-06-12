@@ -53,7 +53,7 @@ class LoginController extends BaseController
         // 在任意管理员成功登录时一次性补写,让公开 /system/setup 接口立即关闭。
         if (!SystemSetupLock::exists()) {
             SystemSetupLock::write([
-                'source' => 'login_heal',
+                'source' => SystemSetupLock::SOURCE_LOGIN_HEAL,
                 'admin_id' => $admin['id'],
                 'email' => $admin['email'],
                 'ip' => $request->getClientIp(),

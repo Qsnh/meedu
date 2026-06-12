@@ -16,7 +16,7 @@ const SetupPage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState("");
+  const password = Form.useWatch("password", form) ?? "";
 
   useEffect(() => {
     document.title = "初始化超级管理员 · MeEdu";
@@ -99,10 +99,7 @@ const SetupPage = () => {
               },
             ]}
           >
-            <Input.Password
-              placeholder="设置后台登录密码"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <Input.Password placeholder="设置后台登录密码" />
           </Form.Item>
 
           <ul className={styles["checklist"]} aria-label="密码要求">
