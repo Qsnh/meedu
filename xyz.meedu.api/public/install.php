@@ -461,7 +461,8 @@ HTML;
 }
 
 if (file_exists('../storage/install.lock')) {
-    alert_page('安装已完成', '检测到安装锁文件，无法重复执行安装程序。', '如果你确实需要重装，请先删除 storage/install.lock 文件再访问本页。');
+    http_response_code(404);
+    exit;
 }
 
 $uri = $_SERVER['REQUEST_URI'];
@@ -713,8 +714,6 @@ if ($step === 0) {
             <li>使用该邮箱与密码登录，开始配置课程与运营。</li>
         </ol>
     </div>
-
-    <p class="summary">为安全起见，已在 <code style="font-family: SFMono-Regular, Consolas, Menlo, monospace; font-size: 12.5px; background: var(--color-bg); padding: 1px 6px; border-radius: 4px;">storage/install.lock</code> 写入安装锁，重新访问本页将被拒绝。</p>
     <?php
     $body = ob_get_clean();
     shell_html('安装完成', '第 3 步 / 共 3 步', $body);
