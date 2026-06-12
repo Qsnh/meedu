@@ -18,10 +18,19 @@ class SystemSetupTest extends Base
     protected function setUp(): void
     {
         parent::setUp();
+        @unlink(storage_path('setup.lock'));
+        @unlink(storage_path('setup.lock.tmp'));
         AdministratorRole::query()->firstOrCreate(
             ['slug' => config('meedu.administrator.super_slug')],
             ['display_name' => '超级管理员', 'description' => '超管']
         );
+    }
+
+    protected function tearDown(): void
+    {
+        @unlink(storage_path('setup.lock'));
+        @unlink(storage_path('setup.lock.tmp'));
+        parent::tearDown();
     }
 
     public function test_valid_request_creates_super_admin()
@@ -50,6 +59,28 @@ class SystemSetupTest extends Base
             'module'   => AdministratorLog::MODULE_ADMINISTRATOR,
             'opt'      => AdministratorLog::OPT_STORE,
         ]);
+
+        // 成功路径必须落 setup.lock,且 payload 中带新建超管的标识用于后续审计
+        $this->assertTrue(file_exists(storage_path('setup.lock')));
+        $payload = json_decode(file_get_contents(storage_path('setup.lock')), true);
+        $this->assertEquals('zhangsan@example.com', $payload['email']);
+        $this->assertEquals($admin->id, $payload['admin_id']);
+        $this->assertArrayHasKey('ts', $payload);
+    }
+
+    public function test_setup_lock_present_blocks_setup_even_when_admin_table_empty()
+    {
+        // 模拟 administrators 表被清空但 lock 仍在的灾难场景:必须拒绝重建超管
+        file_put_contents(storage_path('setup.lock'), json_encode(['ts' => time()]));
+
+        $response = $this->postJson(self::API_V1_PREFIX . '/system/setup', [
+            'name' => '张三',
+            'email' => 'zhangsan@example.com',
+            'password' => 'StrongPass123',
+            'password_confirmation' => 'StrongPass123',
+        ]);
+        $this->assertResponseError($response, '系统已完成超管初始化');
+        $this->assertEquals(0, Administrator::query()->count());
     }
 
     public function test_already_initialized_returns_business_error()
@@ -122,5 +153,8 @@ class SystemSetupTest extends Base
         ]);
         $this->assertResponseError($response);
         $this->assertEquals(0, Administrator::query()->count());
+
+        // 业务校验失败时不得写入 lock,否则下次合法 setup 会被无端拒绝
+        $this->assertFalse(file_exists(storage_path('setup.lock')));
     }
 }

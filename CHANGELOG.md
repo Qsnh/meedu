@@ -1,6 +1,7 @@
 ## 4.9.32
 
 - 安全:[API]禁止上传 SVG 图片以避免被植入脚本造成存储型 XSS 风险
+- 安全:[API]超管初始化接口引入 setup.lock 文件锁,防止 administrators 表被清空后被未授权重建超管
 - 新增:[API|Admin]初次安装系统进入后台的超管初始化
 - 优化:[API]重构傻瓜安装界面并修复安装错误的 BUG
 - 修复:[Docker]静默安装在容器启动阶段补写 install.lock

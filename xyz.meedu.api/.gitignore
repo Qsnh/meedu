@@ -20,6 +20,8 @@ php-cs-fixer.phar
 _ide_helper.php
 package-lock.json
 /storage/install.lock
+/storage/setup.lock
+/storage/setup.lock.tmp
 .phpunit.result.cache
 public/mix-manifest.json
 apidoc/
