@@ -3,6 +3,7 @@
 - 安全:[API]禁止上传 SVG 图片以避免被植入脚本造成存储型 XSS 风险
 - 新增:[API|Admin]初次安装系统进入后台的超管初始化
 - 优化:[API]重构傻瓜安装界面并修复安装错误的 BUG
+- [修复:[Docker]静默安装在容器启动阶段补写 install.lock](https://github.com/Qsnh/meedu/pull/308/commits/27568dd3b5d9eb6129d6c8d73e1b1e5f6645f2f9)
 
 ## 4.9.31
 
