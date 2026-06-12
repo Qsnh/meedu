@@ -54,11 +54,14 @@ class SystemSetupTest extends Base
         $this->assertTrue($admin->roles()->where('slug', $superSlug)->exists());
 
         // 审计日志必须落库,且 admin_id 归属到新建的超管自身(回归 #1048 admin_id NULL)
-        $this->assertDatabaseHas('administrator_logs', [
-            'admin_id' => $admin->id,
-            'module'   => AdministratorLog::MODULE_ADMINISTRATOR,
-            'opt'      => AdministratorLog::OPT_STORE,
-        ]);
+        $this->assertTrue(
+            AdministratorLog::query()
+                ->where('admin_id', $admin->id)
+                ->where('module', AdministratorLog::MODULE_ADMINISTRATOR)
+                ->where('opt', AdministratorLog::OPT_STORE)
+                ->exists(),
+            'administrator_logs 未记录超管创建审计日志'
+        );
 
         // 成功路径必须落 setup.lock,且 payload 中带新建超管的标识用于后续审计
         $this->assertTrue(file_exists(storage_path('setup.lock')));
