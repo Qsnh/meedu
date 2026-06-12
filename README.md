@@ -69,7 +69,7 @@ docker-compose up -d
 
 > 🚨请注意，上述命令运行 MeEdu 存在一定的使用安全风险，仅供测试使用！如需在正式生产环境使用 MeEdu 还请阅读 [部署文档](https://faq.meedu.vip/doc/g9jK0KXmFe) 。
 
-等待 `30s` 左右。现在打开您的浏览器，输入 `http://localhost:8300` 即可访问后台管理界面，默认管理员账号和密码 `meedu@meedu.meedu / meedu123` 。
+等待 `30s` 左右。现在打开您的浏览器，输入 `http://localhost:8300` 即可访问后台管理界面。
 
 - PC 端口 `http://localhost:8100`
 - H5 端口 `http://localhost:8200`
@@ -81,5 +81,5 @@ docker-compose up -d
 
 ## 📃 使用许可
 
-- 2024 © 杭州白书科技有限公司。
+- 2026 © 杭州白书科技有限公司。
 - 本软件遵循 Apache 2.0 许可证，附加特定的商业使用条件，使用此软件还需要遵循[附件条款和条件](ADDITIONAL_TERMS.md)。
