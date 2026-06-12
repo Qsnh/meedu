@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Backend\Api\V1;
 
 use Carbon\Carbon;
+use App\Meedu\SystemSetupLock;
 use App\Models\Administrator;
 use App\Models\AdministratorLog;
 use App\Constant\BackendApiConstant;
@@ -47,6 +48,17 @@ class LoginController extends BaseController
             AdministratorLog::OPT_LOGIN,
             compact('username')
         );
+
+        // 老站点自愈:升级到 4.9.32+ 但未补写 setup.lock 的站点,
+        // 在任意管理员成功登录时一次性补写,让公开 /system/setup 接口立即关闭。
+        if (!SystemSetupLock::exists()) {
+            SystemSetupLock::write([
+                'source' => 'login_heal',
+                'admin_id' => $admin['id'],
+                'email' => $admin['email'],
+                'ip' => $request->getClientIp(),
+            ]);
+        }
 
         return $this->successData(compact('token'));
     }

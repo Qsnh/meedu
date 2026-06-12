@@ -8,11 +8,11 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
+use App\Meedu\SystemSetupLock;
 use App\Models\Administrator;
 use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Requests\Backend\SystemSetupRequest;
 
 class SystemSetupController extends BaseController
@@ -20,7 +20,7 @@ class SystemSetupController extends BaseController
     public function status()
     {
         // setup.lock 是超管初始化完成的权威哨兵,文件存在直接短路 DB 查询。
-        if (file_exists(storage_path('setup.lock'))) {
+        if (SystemSetupLock::exists()) {
             return $this->successData(['needs_init' => false]);
         }
         $needsInit = Administrator::query()->doesntExist();
@@ -31,7 +31,7 @@ class SystemSetupController extends BaseController
     {
         // 第一道防线:setup.lock 文件存在即拒绝,fail-closed。
         // 即便 administrators 表被清空,只要 lock 文件健在,公开路由也无法被滥用重建超管。
-        if (file_exists(storage_path('setup.lock'))) {
+        if (SystemSetupLock::exists()) {
             return $this->error(__('系统已完成超管初始化'));
         }
 
@@ -64,8 +64,13 @@ class SystemSetupController extends BaseController
         }
 
         // 事务已提交即超管已落库,无论 lock 写入是否成功都必须返回成功;
-        // 写入失败仅记录告警,由运维通过 ops 手段补写,不让用户卡死。
-        $this->writeSetupLock($createdId, $createdEmail, $request->ip());
+        // 写入失败由 helper 内部 Log::warning,由运维通过 ops 手段补写。
+        SystemSetupLock::write([
+            'source' => 'setup_api',
+            'admin_id' => $createdId,
+            'email' => $createdEmail,
+            'ip' => $request->ip(),
+        ]);
 
         // /setup 接口无登录态,显式把日志归属到新建的超管自身。
         AdministratorLog::storeLog(
@@ -76,29 +81,5 @@ class SystemSetupController extends BaseController
         );
 
         return $this->successData(['email' => $createdEmail]);
-    }
-
-    /**
-     * 原子写入 setup.lock:先写 tmp 再 rename,避免半写文件被后续校验误读。
-     */
-    protected function writeSetupLock(int $adminId, string $email, ?string $ip): void
-    {
-        $lockPath = storage_path('setup.lock');
-        $tmpPath = $lockPath . '.tmp';
-        $payload = json_encode([
-            'ts' => time(),
-            'admin_id' => $adminId,
-            'email' => $email,
-            'ip' => $ip,
-        ], JSON_UNESCAPED_UNICODE);
-
-        $written = @file_put_contents($tmpPath, $payload, LOCK_EX);
-        if ($written === false || !@rename($tmpPath, $lockPath)) {
-            @unlink($tmpPath);
-            Log::warning('setup.lock 写入失败,请人工执行 php artisan setup:lock 补写', [
-                'admin_id' => $adminId,
-                'storage_path' => $lockPath,
-            ]);
-        }
     }
 }
