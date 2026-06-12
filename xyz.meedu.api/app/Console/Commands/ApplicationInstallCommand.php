@@ -37,32 +37,6 @@ class ApplicationInstallCommand extends Command
         return $this->{$method}();
     }
 
-    public function actionAdministratorOnce()
-    {
-        if (Administrator::query()->count() > 0) {
-            $this->warn('系统默认管理员已初始化!');
-            return CommandAlias::SUCCESS;
-        }
-
-        $super = AdministratorRole::query()->where('slug', config('meedu.administrator.super_slug'))->first();
-        if (!$super) {
-            $this->warn('请先运行 [ php artisan install role ] 命令来初始化meedu的管理员权限数据');
-            return CommandAlias::FAILURE;
-        }
-
-        $administrator = new Administrator([
-            'name' => '超级管理员',
-            'email' => 'meedu@meedu.meedu',
-            'password' => Hash::make('meedu123'),
-        ]);
-        $administrator->save();
-        $administrator->roles()->attach($super['id']);
-
-        $this->info('管理员初始化成功');
-
-        return CommandAlias::SUCCESS;
-    }
-
     public function actionAdministrator()
     {
         $super = AdministratorRole::query()->where('slug', config('meedu.administrator.super_slug'))->first();
