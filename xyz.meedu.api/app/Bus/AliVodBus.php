@@ -15,7 +15,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class AliVodBus
 {
-
     private $accessKeyId;
     private $accessKeySecret;
     private $region;
@@ -198,5 +197,4 @@ class AliVodBus
             throw_if($throw, $e);
         }
     }
-
 }

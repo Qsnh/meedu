@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SearchRecord extends Model
 {
-
     use Searchable;
 
     protected $table = 'search_records';
@@ -22,5 +21,4 @@ class SearchRecord extends Model
         'resource_type', 'resource_id', 'title', 'charge', 'thumb', 'short_desc',
         'desc',
     ];
-
 }

@@ -12,7 +12,6 @@ use App\Http\Requests\ApiV2\BaseRequest;
 
 class CommentRequest extends BaseRequest
 {
-
     public function rules()
     {
         return [
@@ -44,5 +43,4 @@ class CommentRequest extends BaseRequest
             'content' => strip_tags($this->post('content')),
         ];
     }
-
 }

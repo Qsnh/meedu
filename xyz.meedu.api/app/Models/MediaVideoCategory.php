@@ -12,11 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MediaVideoCategory extends Model
 {
-
     protected $table = 'media_video_categories';
 
     protected $fillable = [
         'name', 'sort', 'admin_id', 'parent_id', 'parent_chain',
     ];
-
 }

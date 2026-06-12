@@ -16,7 +16,6 @@ use App\Services\Member\Interfaces\CreditServiceInterface;
 
 class CreditServiceTest extends TestCase
 {
-
     /**
      * @var CreditService
      */

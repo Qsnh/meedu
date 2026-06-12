@@ -75,5 +75,4 @@ class OtherService implements OtherServiceInterface
     {
         $this->otherDao->deleteMediaVideos($service, $videoIds);
     }
-
 }

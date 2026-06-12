@@ -13,7 +13,6 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/order/status [V2]订单-状态查询
      * @apiGroup 订单支付模块

@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderGoods extends Model
 {
-
     protected $table = TableConstant::TABLE_ORDER_GOODS;
 
     protected $fillable = [
@@ -28,5 +27,4 @@ class OrderGoods extends Model
         // todo 即将废弃
         'order_id',
     ];
-
 }

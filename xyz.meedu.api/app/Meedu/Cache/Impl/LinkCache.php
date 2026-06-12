@@ -13,7 +13,6 @@ use App\Services\Other\Interfaces\LinkServiceInterface;
 
 class LinkCache
 {
-
     public const KEY_NAME = 'links';
     public const CACHE_EXPIRE = 1296000; // 15天
 
@@ -35,5 +34,4 @@ class LinkCache
     {
         Cache::forget(self::KEY_NAME);
     }
-
 }

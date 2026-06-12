@@ -14,7 +14,6 @@ use App\Meedu\Cache\Impl\DecorationPageCache;
 
 class DecorationPageController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/decorationPage/blocks [V2]装修-页面块
      * @apiGroup 装修模块

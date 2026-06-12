@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminPermissionBusTest extends TestCase
 {
-
     /**
      * @var AdminPermissionBus
      */

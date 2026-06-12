@@ -10,7 +10,6 @@ namespace App\Meedu\ServiceV2\Dao;
 
 interface OrderDaoInterface
 {
-
     public function findById(int $orderId): array;
 
     public function getOrderGoodsListById($id): array;

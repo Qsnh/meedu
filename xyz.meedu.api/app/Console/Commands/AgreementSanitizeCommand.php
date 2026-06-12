@@ -8,10 +8,10 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use App\Events\AgreementChangeEvent;
 use App\Meedu\ServiceV2\Models\Agreement;
 use App\Meedu\ServiceV2\Services\AgreementService;
-use Illuminate\Console\Command;
 
 class AgreementSanitizeCommand extends Command
 {

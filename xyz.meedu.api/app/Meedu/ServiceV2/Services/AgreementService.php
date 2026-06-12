@@ -10,8 +10,8 @@ namespace App\Meedu\ServiceV2\Services;
 
 use Carbon\Carbon;
 use App\Constant\AgreementConstant;
-use App\Meedu\ServiceV2\Dao\AgreementDaoInterface;
 use Mews\Purifier\Facades\Purifier;
+use App\Meedu\ServiceV2\Dao\AgreementDaoInterface;
 
 class AgreementService implements AgreementServiceInterface
 {

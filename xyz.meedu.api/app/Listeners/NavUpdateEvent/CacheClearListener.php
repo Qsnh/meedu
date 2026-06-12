@@ -14,7 +14,6 @@ use App\Meedu\Cache\Impl\NavCache;
 
 class CacheClearListener
 {
-
     private $navCache;
 
     public function __construct(NavCache $navCache)

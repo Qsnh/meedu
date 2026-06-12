@@ -10,7 +10,6 @@ namespace App\Services\Member\Interfaces;
 
 interface SocialiteServiceInterface
 {
-
     public function findBind(string $app, string $appId): array;
 
     public function getBindUserId(string $app, string $appId): int;

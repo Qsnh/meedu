@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class MediaVideo extends Model
 {
-
     protected $table = 'media_videos';
 
     protected $fillable = [
@@ -33,5 +32,4 @@ class MediaVideo extends Model
     {
         return round($this->size / 1024 / 1024, 2);
     }
-
 }

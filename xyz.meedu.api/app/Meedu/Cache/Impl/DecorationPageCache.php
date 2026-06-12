@@ -14,7 +14,6 @@ use App\Services\Other\Interfaces\DecorationPageServiceInterface;
 
 class DecorationPageCache
 {
-
     public const KEY_NAME = 'decoration_pages';
     public const BLOCKS_KEY_NAME = 'decoration_page_blocks';
     public const CACHE_EXPIRE = 1296000; // 15天
@@ -88,5 +87,4 @@ class DecorationPageCache
     {
         return self::BLOCKS_KEY_NAME . '-' . $pageId;
     }
-
 }

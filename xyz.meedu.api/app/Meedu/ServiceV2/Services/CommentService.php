@@ -121,6 +121,4 @@ class CommentService implements CommentServiceInterface
             'rid' => $rid,
         ]);
     }
-
-
 }

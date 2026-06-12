@@ -18,7 +18,6 @@ use App\Events\TencentVodCallbackProcedureStateChangedEvent;
 
 class TencentVodCallbackController
 {
-
     public function handler(Request $request, ConfigServiceInterface $configService, $sign)
     {
         $data = $request->all();
@@ -93,5 +92,4 @@ class TencentVodCallbackController
 
         return 'success';
     }
-
 }

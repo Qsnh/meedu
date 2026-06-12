@@ -23,5 +23,4 @@ class AgreementChangeEvent
         $this->id = $id;
         $this->type = $type;
     }
-
 }

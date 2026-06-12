@@ -15,7 +15,6 @@ use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class SearchController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/search [V2]录播课-标题搜索
      * @apiGroup 录播课模块

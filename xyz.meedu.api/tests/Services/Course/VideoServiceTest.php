@@ -20,7 +20,6 @@ use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoServiceTest extends TestCase
 {
-
     /**
      * @var VideoService
      */

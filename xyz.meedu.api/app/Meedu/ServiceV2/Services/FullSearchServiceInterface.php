@@ -10,7 +10,6 @@ namespace App\Meedu\ServiceV2\Services;
 
 interface FullSearchServiceInterface
 {
-
     public function storeOrUpdate(string $resourceType, int $resourceId, string $title, string $thumb, int $charge, string $shortDesc, string $desc): void;
 
     public function delete(string $resourceType, int $resourceId): void;

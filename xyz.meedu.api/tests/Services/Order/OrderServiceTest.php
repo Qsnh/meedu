@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderServiceTest extends TestCase
 {
-
     /**
      * @var OrderService
      */

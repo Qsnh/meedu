@@ -19,7 +19,6 @@ use App\Services\Member\Interfaces\RoleServiceInterface;
 
 class RoleServiceTest extends TestCase
 {
-
     /**
      * @var RoleService
      */

@@ -10,7 +10,6 @@ namespace App\Constant;
 
 class CacheConstant
 {
-
     // controller 层调用的前缀
     public const PREFIX_C = 'c::';
 

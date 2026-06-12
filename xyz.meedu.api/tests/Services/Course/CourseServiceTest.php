@@ -21,7 +21,6 @@ use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class CourseServiceTest extends TestCase
 {
-
     /**
      * @var CourseService
      */

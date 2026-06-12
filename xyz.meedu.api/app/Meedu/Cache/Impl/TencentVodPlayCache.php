@@ -16,7 +16,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class TencentVodPlayCache
 {
-
     private $id;
     private $videoId;
     private $previewSeconds;
@@ -78,5 +77,4 @@ class TencentVodPlayCache
     {
         return sprintf(self::CACHE_NAME_TPL, $this->videoId, $this->id);
     }
-
 }

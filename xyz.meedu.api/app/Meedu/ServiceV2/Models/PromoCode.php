@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PromoCode extends Model
 {
-
     use SoftDeletes, HasFactory;
 
     protected $table = TableConstant::TABLE_PROMO_CODES;
@@ -28,5 +27,4 @@ class PromoCode extends Model
         // 被使用次数
         'used_times',
     ];
-
 }

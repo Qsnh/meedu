@@ -13,7 +13,6 @@ use App\Meedu\Cache\Impl\DecorationPageCache;
 
 class CacheClearListener
 {
-
     private $decorationPageCache;
 
     public function __construct(DecorationPageCache $decorationPageCache)

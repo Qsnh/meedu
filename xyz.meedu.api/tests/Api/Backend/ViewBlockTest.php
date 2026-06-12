@@ -8,13 +8,13 @@
 
 namespace Tests\Api\Backend;
 
-use App\Constant\BackendPermission;
 use App\Models\Administrator;
-use App\Models\AdministratorPermission;
 use App\Models\AdministratorRole;
-use App\Services\Other\Models\DecorationPage;
-use App\Services\Other\Models\ViewBlock;
 use Illuminate\Support\Facades\DB;
+use App\Constant\BackendPermission;
+use App\Models\AdministratorPermission;
+use App\Services\Other\Models\ViewBlock;
+use App\Services\Other\Models\DecorationPage;
 
 class ViewBlockTest extends Base
 {

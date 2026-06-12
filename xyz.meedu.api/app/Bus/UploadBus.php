@@ -18,7 +18,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class UploadBus
 {
-
     public const SCENE_LIST = [
         'avatar',
         'cover',
@@ -170,5 +169,4 @@ class UploadBus
 
         return (string)$request->getUri();
     }
-
 }

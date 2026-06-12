@@ -13,7 +13,6 @@ use App\Meedu\Cache\Impl\LinkCache;
 
 class CacheClearListener
 {
-
     private $linkCache;
 
     public function __construct(LinkCache $linkCache)

@@ -24,7 +24,6 @@ use App\Meedu\ServiceV2\Services\CourseServiceInterface;
 
 class MemberController extends BaseController
 {
-
     /**
      * @api {get} /api/v3/member/courses [V3]学员-录播课-已购-列表
      * @apiGroup 学员

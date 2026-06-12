@@ -19,7 +19,6 @@ use App\Services\Member\Interfaces\DeliverServiceInterface;
 
 class DeliverServiceTest extends TestCase
 {
-
     /**
      * @var DeliverService
      */

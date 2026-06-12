@@ -17,7 +17,6 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class SocialiteServiceTest extends TestCase
 {
-
     /**
      * @var SocialiteServiceInterface
      */

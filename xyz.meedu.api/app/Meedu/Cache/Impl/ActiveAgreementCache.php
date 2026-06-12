@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Services\AgreementServiceInterface;
 
 class ActiveAgreementCache
 {
-
     public const CACHE_KEY = 'active_agreement_%s';
     public const CACHE_EXPIRE = 1296000;//15天
 
@@ -43,5 +42,4 @@ class ActiveAgreementCache
     {
         return sprintf(self::CACHE_KEY, $type);
     }
-
 }

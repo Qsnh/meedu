@@ -39,5 +39,4 @@ class UpgradeV4929
             ])
             ->delete();
     }
-
 }

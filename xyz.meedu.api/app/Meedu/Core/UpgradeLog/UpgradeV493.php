@@ -12,7 +12,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV493
 {
-
     public static function handle()
     {
         self::renameAppConfig();
@@ -31,5 +30,4 @@ class UpgradeV493
             'help' => '',
         ]);
     }
-
 }

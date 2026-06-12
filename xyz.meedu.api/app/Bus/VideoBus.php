@@ -18,7 +18,6 @@ use App\Services\Course\Interfaces\VideoServiceInterface;
 
 class VideoBus
 {
-
     /**
      * @var VideoService
      */

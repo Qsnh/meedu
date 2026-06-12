@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Cache;
 
 class WechatScanBusV2
 {
-
     public const TTL = 300;
 
     public function getLoginUrl(string $action): array
@@ -46,5 +45,4 @@ class WechatScanBusV2
     {
         return sprintf('wechat-scan-login:%s', $key);
     }
-
 }

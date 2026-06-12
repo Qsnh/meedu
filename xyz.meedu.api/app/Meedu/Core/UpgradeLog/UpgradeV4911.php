@@ -14,7 +14,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4911
 {
-
     public static function handle()
     {
         self::upgradeImageDiskConfigItem();

@@ -17,7 +17,6 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class RoleController extends BaseController
 {
-
     /**
      * @var RoleService
      */

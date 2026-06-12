@@ -23,7 +23,6 @@ use App\Services\Member\Interfaces\SocialiteServiceInterface;
 
 class BusinessState
 {
-
     public function canSeeVideo(array $user, array $course, array $video): bool
     {
         /**

@@ -15,7 +15,6 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class RegisterController extends BaseController
 {
-
     /**
      * @api {post} /api/v2/register/sms [V2]注册-短信
      * @apiGroup 用户认证

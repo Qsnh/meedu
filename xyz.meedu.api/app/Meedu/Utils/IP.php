@@ -10,7 +10,6 @@ namespace App\Meedu\Utils;
 
 class IP
 {
-
     public const UNKNOWN = 'UNKNOWN';
 
     public static function queryCity(string $ip): string
@@ -48,5 +47,4 @@ class IP
         }
         return $region[0] ?? self::UNKNOWN;
     }
-
 }

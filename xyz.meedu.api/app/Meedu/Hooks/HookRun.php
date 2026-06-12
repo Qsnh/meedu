@@ -12,7 +12,6 @@ use Illuminate\Pipeline\Pipeline;
 
 class HookRun
 {
-
     public static function mount(string $hookName, $data, $defaultValue = null)
     {
         return self::run($hookName, new HookParams($data), $defaultValue);

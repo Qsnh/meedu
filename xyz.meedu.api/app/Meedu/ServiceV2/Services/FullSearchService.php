@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
 
 class FullSearchService implements FullSearchServiceInterface
 {
-
     protected $dao;
 
     protected $configService;
@@ -104,6 +103,4 @@ class FullSearchService implements FullSearchServiceInterface
     {
         Artisan::call('scout:import', ['model' => 'App\Meedu\ServiceV2\Models\SearchRecord']);
     }
-
-
 }

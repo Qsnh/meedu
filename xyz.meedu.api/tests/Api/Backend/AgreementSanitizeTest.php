@@ -8,9 +8,9 @@
 
 namespace Tests\Api\Backend;
 
+use Tests\TestCase;
 use App\Constant\AgreementConstant;
 use App\Http\Requests\Backend\AgreementRequest;
-use Tests\TestCase;
 
 class AgreementSanitizeTest extends TestCase
 {

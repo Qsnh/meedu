@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\V2\Traits\ResponseTrait;
 
 class InterruptionException extends \Exception
 {
-
     use ResponseTrait;
 
     private $respCode;
@@ -35,5 +34,4 @@ class InterruptionException extends \Exception
 
         return $this->error($this->respMessage, $this->respCode, $this->respDATA);
     }
-
 }

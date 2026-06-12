@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrderPaidRecord extends Model
 {
-
     use SoftDeletes, HasFactory;
 
     protected $table = 'order_paid_records';
@@ -22,5 +21,4 @@ class OrderPaidRecord extends Model
     protected $fillable = [
         'user_id', 'order_id', 'paid_total', 'paid_type', 'paid_type_id',
     ];
-
 }

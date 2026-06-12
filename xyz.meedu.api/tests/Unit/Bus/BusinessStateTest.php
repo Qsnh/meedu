@@ -21,7 +21,6 @@ use App\Services\Order\Models\OrderPaidRecord;
 
 class BusinessStateTest extends TestCase
 {
-
     /**
      * @var BusinessState
      */

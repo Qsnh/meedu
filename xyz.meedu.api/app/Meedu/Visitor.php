@@ -12,7 +12,6 @@ use App\Meedu\Utils\IP;
 
 class Visitor
 {
-
     public static function data(): array
     {
         $ip = request()->getClientIp();
@@ -25,5 +24,4 @@ class Visitor
             'platform' => get_platform(),
         ];
     }
-
 }

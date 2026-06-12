@@ -20,7 +20,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class PaymentController extends FrontendController
 {
-
     public function index(Request $request, ConfigServiceInterface $configService, OrderServiceInterface $orderService, UniPayBus $bus)
     {
         $sUrl = $request->input('s_url') ?? '';

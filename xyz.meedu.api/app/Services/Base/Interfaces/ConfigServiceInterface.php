@@ -115,5 +115,4 @@ interface ConfigServiceInterface
     public function enabledRedisCache(): bool;
 
     public function getCoursePurchaseNotice(): string;
-
 }

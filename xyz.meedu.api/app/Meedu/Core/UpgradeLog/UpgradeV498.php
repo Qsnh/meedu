@@ -12,7 +12,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV498
 {
-
     public static function handle()
     {
         self::removeAppConfig();
@@ -27,5 +26,4 @@ class UpgradeV498
             ])
             ->update(['field_type' => 'textarea']);
     }
-
 }

@@ -24,5 +24,4 @@ class TencentVodCallbackNewFileUploadEvent
         $this->videoId = $videoId;
         $this->data = $data;
     }
-
 }

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class CourseAttachDownloadCache
 {
-
     public const MAIN_KEY_PREFIX = 'course:attach:';
     public const MAIN_KEY_EXPIRE = 3600;
 
@@ -57,5 +56,4 @@ class CourseAttachDownloadCache
     {
         return sprintf(self::LIMIT_kEY, $userId);
     }
-
 }

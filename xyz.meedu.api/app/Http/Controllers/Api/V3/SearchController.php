@@ -15,7 +15,6 @@ use App\Meedu\ServiceV2\Services\FullSearchServiceInterface;
 
 class SearchController extends BaseController
 {
-
     /**
      * @api {get} /api/v3/search [V3]全站搜索
      * @apiGroup 其它模块

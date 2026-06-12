@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Services\CommentServiceInterface;
 
 class ClearCommentListener
 {
-
     private $commentService;
 
     public function __construct(CommentServiceInterface $commentService)

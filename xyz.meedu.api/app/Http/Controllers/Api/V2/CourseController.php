@@ -22,7 +22,6 @@ use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class CourseController extends BaseController
 {
-
     /**
      * @var CourseService
      */

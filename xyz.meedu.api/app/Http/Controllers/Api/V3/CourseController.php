@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\V2\BaseController;
 
 class CourseController extends BaseController
 {
-
     /**
      * @api {GET} /api/v3/course/{courseId}/attach/{id} [V3]录播课-附件-获取下载地址
      * @apiGroup 录播课模块
@@ -40,5 +39,4 @@ class CourseController extends BaseController
         }
         return $bus->download($sign);
     }
-
 }

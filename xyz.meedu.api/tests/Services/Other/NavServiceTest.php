@@ -15,7 +15,6 @@ use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavServiceTest extends TestCase
 {
-
     /**
      * @var NavServiceInterface
      */

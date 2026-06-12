@@ -16,7 +16,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class AliVodPlayCache
 {
-
     private $id;
     private $videoId;
     private $previewSeconds;
@@ -70,5 +69,4 @@ class AliVodPlayCache
     {
         return sprintf(self::CACHE_NAME_TPL, $this->videoId, $this->id, $this->previewSeconds);
     }
-
 }

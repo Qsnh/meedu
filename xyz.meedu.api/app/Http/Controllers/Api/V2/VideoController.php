@@ -30,7 +30,6 @@ use App\Services\Course\Interfaces\CourseServiceInterface;
 
 class VideoController extends BaseController
 {
-
     /**
      * @var VideoService
      */

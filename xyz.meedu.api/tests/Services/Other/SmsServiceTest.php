@@ -14,7 +14,6 @@ use App\Services\Other\Interfaces\SmsServiceInterface;
 
 class SmsServiceTest extends TestCase
 {
-
     /**
      * @var SmsServiceInterface
      */

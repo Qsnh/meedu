@@ -12,7 +12,6 @@ use App\Meedu\Cache\Impl\LinkCache;
 
 class LinkController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/links [V2]友情链接
      * @apiGroup 其它模块

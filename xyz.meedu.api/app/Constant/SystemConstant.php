@@ -10,8 +10,6 @@ namespace App\Constant;
 
 class SystemConstant
 {
-
     public const STORAGE_DISK_PUBLIC = 's3-public';
     public const STORAGE_DISK_PRIVATE = 's3-private';
-
 }

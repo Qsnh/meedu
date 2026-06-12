@@ -17,7 +17,6 @@ use App\Services\Member\Models\Socialite;
 
 class AuthBusTest extends TestCase
 {
-
     /**
      * @var AuthBus
      */

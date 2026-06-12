@@ -83,5 +83,4 @@ class OtherController extends BaseController
             ],
         ]);
     }
-
 }

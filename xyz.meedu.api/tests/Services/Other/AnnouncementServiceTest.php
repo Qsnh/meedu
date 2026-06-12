@@ -15,7 +15,6 @@ use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class AnnouncementServiceTest extends TestCase
 {
-
     /**
      * @var AnnouncementServiceInterface
      */

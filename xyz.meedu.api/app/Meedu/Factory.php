@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class Factory
 {
-
     public static function s3PublicClient(): array
     {
         /**
@@ -59,5 +58,4 @@ class Factory
 
         return ['client' => $s3Client, 'bucket' => $config['bucket']];
     }
-
 }

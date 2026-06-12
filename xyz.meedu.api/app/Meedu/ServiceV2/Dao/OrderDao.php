@@ -80,5 +80,4 @@ class OrderDao implements OrderDaoInterface
         $item = Order::query()->where('order_id', $orderNo)->first();
         return $item ? $item->toArray() : [];
     }
-
 }

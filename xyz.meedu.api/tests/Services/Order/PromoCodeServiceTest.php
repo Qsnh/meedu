@@ -16,7 +16,6 @@ use App\Services\Order\Services\PromoCodeService;
 
 class PromoCodeServiceTest extends TestCase
 {
-
     /**
      * @var PromoCodeService
      */

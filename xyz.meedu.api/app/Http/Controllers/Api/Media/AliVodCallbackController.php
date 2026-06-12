@@ -20,7 +20,6 @@ use App\Events\AliyunVodCallbackAddLiveRecordVideoCompleteEvent;
 
 class AliVodCallbackController
 {
-
     public function handler(Request $request, ConfigServiceInterface $configService, $sign)
     {
         $data = $request->all();
@@ -123,5 +122,4 @@ class AliVodCallbackController
 
         return 'success';
     }
-
 }

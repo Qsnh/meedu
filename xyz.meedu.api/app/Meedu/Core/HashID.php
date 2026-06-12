@@ -12,7 +12,6 @@ use Hashids\Hashids;
 
 class HashID
 {
-
     private static $client;
 
     private function __construct()
@@ -43,5 +42,4 @@ class HashID
         }
         return $decode[0];
     }
-
 }

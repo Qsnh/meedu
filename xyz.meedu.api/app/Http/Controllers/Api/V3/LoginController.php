@@ -27,7 +27,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class LoginController extends BaseController
 {
-
     /**
      * @api {get} /api/v3/auth/login/wechat/oauth [V3]第三方账号-微信登录|绑定
      * @apiGroup 用户认证

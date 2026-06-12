@@ -14,7 +14,6 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class UserNotificationCountCache
 {
-
     public const KEY_NAME = 'user-noti-c:%d';
 
     public const EXPIRE = 300;

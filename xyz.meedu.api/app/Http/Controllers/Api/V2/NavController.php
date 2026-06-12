@@ -14,7 +14,6 @@ use App\Meedu\Cache\Impl\NavCache;
 
 class NavController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/navs [V2]PC全站导航
      * @apiGroup 其它模块

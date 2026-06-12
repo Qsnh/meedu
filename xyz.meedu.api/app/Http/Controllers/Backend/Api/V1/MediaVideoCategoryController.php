@@ -17,7 +17,6 @@ use App\Http\Requests\Backend\MediaVideoCategoryRequest;
 
 class MediaVideoCategoryController extends BaseController
 {
-
     public function index()
     {
         $categories = MediaVideoCategory::query()->orderBy('sort')->get()->groupBy('parent_id')->toArray();
@@ -162,5 +161,4 @@ class MediaVideoCategoryController extends BaseController
 
         return $this->success();
     }
-
 }

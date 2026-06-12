@@ -8,8 +8,8 @@
 
 namespace App\Console\Commands;
 
-use App\Meedu\SystemSetupLock;
 use App\Models\Administrator;
+use App\Meedu\SystemSetupLock;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 

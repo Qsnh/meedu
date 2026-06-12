@@ -36,5 +36,4 @@ class Comment extends Model
     {
         return $this->belongsTo(self::class, 'reply_id', 'id');
     }
-
 }

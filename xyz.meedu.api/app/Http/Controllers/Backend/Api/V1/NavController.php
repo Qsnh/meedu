@@ -136,7 +136,6 @@ class NavController extends BaseController
 
     public function destroy($id)
     {
-
         AdministratorLog::storeLog(
             AdministratorLog::MODULE_NAV,
             AdministratorLog::OPT_DESTROY,

@@ -35,6 +35,4 @@ class VodCourseVideoCommentHook implements HookRuntimeInterface
         }
         $next($params);
     }
-
-
 }

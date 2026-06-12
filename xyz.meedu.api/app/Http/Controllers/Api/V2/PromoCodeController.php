@@ -15,7 +15,6 @@ use App\Services\Order\Interfaces\PromoCodeServiceInterface;
 
 class PromoCodeController extends BaseController
 {
-
     /**
      * @var PromoCodeService
      */

@@ -11,9 +11,9 @@ namespace Tests\Unit;
 use Tests\CreatesApplication;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Backend\ImageUploadRequest;
 use App\Http\Requests\ApiV2\UploadImageRequest;
 use App\Http\Requests\ApiV2\AvatarChangeRequest;
+use App\Http\Requests\Backend\ImageUploadRequest;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 class SvgUploadRejectionTest extends BaseTestCase

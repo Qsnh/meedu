@@ -13,7 +13,6 @@ use App\Services\Other\Interfaces\NavServiceInterface;
 
 class NavCache
 {
-
     public const KEY_NAME = 'navs';
 
     private $navService;
@@ -41,5 +40,4 @@ class NavCache
     {
         return self::KEY_NAME . '-' . $platform;
     }
-
 }

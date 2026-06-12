@@ -20,7 +20,6 @@ use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 class CourseAttachDownloadBus
 {
-
     private $businessState;
     private $courseService;
     private $uploadBus;
@@ -98,5 +97,4 @@ class CourseAttachDownloadBus
 
         return response()->download($path);
     }
-
 }

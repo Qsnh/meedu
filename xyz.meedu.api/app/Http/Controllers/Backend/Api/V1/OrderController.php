@@ -387,7 +387,6 @@ class OrderController extends BaseController
 
     public function cancel(OrderServiceInterface  $orderService, $id)
     {
-
         /**
          * @var OrderService $orderService
          */

@@ -71,7 +71,6 @@ class OtherDao implements OtherDaoInterface
     public function all(): array
     {
         return AppConfig::query()->orderBy('sort')->get()->toArray();
-
     }
 
 
@@ -134,5 +133,4 @@ class OtherDao implements OtherDaoInterface
     {
         SearchRecord::query()->insert($insectData);
     }
-
 }

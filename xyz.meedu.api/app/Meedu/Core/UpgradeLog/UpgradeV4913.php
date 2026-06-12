@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4913
 {
-
     public static function handle()
     {
         self::deleteConfigs();
@@ -47,5 +46,4 @@ class UpgradeV4913
             ->where('slug', 'course_attach.store')
             ->update(['url' => '(^course_attach|^course_attach\/create$)']);
     }
-
 }

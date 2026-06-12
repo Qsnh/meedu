@@ -14,7 +14,6 @@ use App\Services\Order\Interfaces\OrderServiceInterface;
 
 class OrderRefundStatusChange
 {
-
     /**
      * @var OrderService
      */

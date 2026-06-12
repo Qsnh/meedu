@@ -13,7 +13,6 @@ use App\Services\Other\Interfaces\AnnouncementServiceInterface;
 
 class AnnouncementController extends BaseController
 {
-
     /**
      * @api {get} /api/v2/announcement/latest [V2]公告-最新一条
      * @apiGroup 其它模块

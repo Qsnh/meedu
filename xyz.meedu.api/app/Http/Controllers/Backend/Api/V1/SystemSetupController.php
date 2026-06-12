@@ -8,8 +8,8 @@
 
 namespace App\Http\Controllers\Backend\Api\V1;
 
-use App\Meedu\SystemSetupLock;
 use App\Models\Administrator;
+use App\Meedu\SystemSetupLock;
 use App\Models\AdministratorLog;
 use App\Models\AdministratorRole;
 use Illuminate\Support\Facades\DB;

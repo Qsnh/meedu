@@ -372,6 +372,4 @@ class ConfigService implements ConfigServiceInterface
     {
         return config('meedu.course_purchase_notice') ?? '';
     }
-
-
 }

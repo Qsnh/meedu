@@ -12,7 +12,6 @@ use App\Models\AdministratorPermission;
 
 class UpgradeV4915
 {
-
     public static function handle()
     {
         self::deletePermissions();

@@ -10,7 +10,6 @@ namespace App\Http\Requests\Backend;
 
 class MediaVideoCategoryRequest extends BaseRequest
 {
-
     public function authorize()
     {
         return true;
@@ -38,5 +37,4 @@ class MediaVideoCategoryRequest extends BaseRequest
             'parent_id' => (int)$this->input('parent_id'),
         ];
     }
-
 }

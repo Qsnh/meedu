@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseAttachDownloadRecord extends Model
 {
-
     protected $table = 'course_attach_download_records';
 
     public $timestamps = false;
@@ -20,5 +19,4 @@ class CourseAttachDownloadRecord extends Model
     protected $fillable = [
         'user_id', 'course_id', 'attach_id', 'ip', 'ip_area', 'created_at',
     ];
-
 }

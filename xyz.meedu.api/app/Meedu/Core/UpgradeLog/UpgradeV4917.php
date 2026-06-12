@@ -12,7 +12,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4917
 {
-
     public static function handle()
     {
         self::deleteSomeConfigItems();
@@ -57,5 +56,4 @@ class UpgradeV4917
             AppConfig::query()->where('key', $keyName)->update(['name' => $displayName]);
         }
     }
-
 }

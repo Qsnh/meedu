@@ -16,7 +16,6 @@ use App\Services\Member\Interfaces\NotificationServiceInterface;
 
 class NotificationServiceTest extends TestCase
 {
-
     /**
      * @var NotificationService
      */

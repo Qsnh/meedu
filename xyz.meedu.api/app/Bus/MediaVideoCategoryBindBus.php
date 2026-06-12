@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class MediaVideoCategoryBindBus
 {
-
     public function setCache(string $videoId, int $categoryId): void
     {
         Cache::put($this->keyName($videoId), $categoryId, 86400);
@@ -32,5 +31,4 @@ class MediaVideoCategoryBindBus
     {
         return sprintf('video-upload-category:%s', $videoId);
     }
-
 }

@@ -45,7 +45,6 @@ class AgreementSyncListener implements ShouldQueue
                     $event->extra['platform'] ?? ''
                 );
             }
-
         } catch (\Exception $e) {
             // 记录错误日志，但不影响注册流程
             Log::error('协议同步失败 - 用户注册', [

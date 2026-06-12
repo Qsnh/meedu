@@ -14,7 +14,6 @@ use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class NotificationService implements NotificationServiceInterface
 {
-
     /**
      * @param int $userId
      * @param int $credit1

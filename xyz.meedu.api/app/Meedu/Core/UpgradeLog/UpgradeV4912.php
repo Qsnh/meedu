@@ -13,7 +13,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4912
 {
-
     public static function handle()
     {
         self::deleteSomeConfigItems();
@@ -81,5 +80,4 @@ class UpgradeV4912
                 ]
             );
     }
-
 }

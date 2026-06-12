@@ -14,7 +14,6 @@ use App\Services\Member\Interfaces\UserServiceInterface;
 
 class PasswordController extends BaseController
 {
-
     /**
      * @api {post} /api/v2/password/reset [V2]密码重置
      * @apiGroup 用户认证

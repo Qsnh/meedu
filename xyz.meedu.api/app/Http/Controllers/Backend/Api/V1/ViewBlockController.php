@@ -10,15 +10,15 @@ namespace App\Http\Controllers\Backend\Api\V1;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Bus\AdminPermissionBus;
 use App\Meedu\ViewBlock\Render;
 use App\Models\AdministratorLog;
 use App\Meedu\ViewBlock\Constant;
 use Illuminate\Http\JsonResponse;
+use App\Constant\BackendPermission;
 use App\Services\Other\Models\ViewBlock;
 use App\Events\DecorationPageUpdateEvent;
 use App\Services\Other\Models\DecorationPage;
-use App\Bus\AdminPermissionBus;
-use App\Constant\BackendPermission;
 
 class ViewBlockController extends BaseController
 {

@@ -13,7 +13,6 @@ use App\Services\Course\Interfaces\CourseCategoryServiceInterface;
 
 class CourseCategoryService implements CourseCategoryServiceInterface
 {
-
     /**
      * @return array
      */

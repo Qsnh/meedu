@@ -18,7 +18,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class UniPayBus
 {
-
     public const EXPIRE = 1800;
 
     public function generateSign(int $orderId): string
@@ -140,5 +139,4 @@ class UniPayBus
             ])->getContent();
         });
     }
-
 }

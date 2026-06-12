@@ -12,7 +12,6 @@ use App\Meedu\ServiceV2\Models\AppConfig;
 
 class UpgradeV4927
 {
-
     public static function handle()
     {
         self::hideSomeConfigItems();
@@ -28,5 +27,4 @@ class UpgradeV4927
             ])
             ->update(['is_show' => 0]);
     }
-
 }

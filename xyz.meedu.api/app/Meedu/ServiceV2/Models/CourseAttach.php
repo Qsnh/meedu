@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseAttach extends Model
 {
-
     use SoftDeletes;
 
     protected $table = 'course_attach';
@@ -22,5 +21,4 @@ class CourseAttach extends Model
         'course_id', 'name', 'path', 'only_buyer', 'download_times', 'extension',
         'disk', 'size',
     ];
-
 }

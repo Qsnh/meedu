@@ -20,7 +20,6 @@ class OrderStoreRoleHook implements HookRuntimeInterface
 {
     public function handle(HookParams $params, \Closure $closure)
     {
-
         $goodsType = $params->getValue('goods_type');
         $goodsId = $params->getValue('goods_id');
         if (BusConstant::ORDER_GOODS_TYPE_ROLE !== $goodsType) {
@@ -50,6 +49,4 @@ class OrderStoreRoleHook implements HookRuntimeInterface
 
         return $closure($params);
     }
-
-
 }

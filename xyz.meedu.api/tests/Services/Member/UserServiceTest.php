@@ -10,24 +10,24 @@ namespace Tests\Services\Member;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Events\UserRegisterEvent;
-use App\Events\UserVideoWatchedEvent;
 use App\Exceptions\ServiceException;
-use App\Services\Course\Models\Course;
-use App\Services\Course\Models\Video;
-use App\Services\Member\Interfaces\UserServiceInterface;
 use App\Services\Member\Models\Role;
 use App\Services\Member\Models\User;
-use App\Services\Member\Models\UserCourse;
-use App\Services\Member\Models\UserLikeCourse;
+use Illuminate\Support\Facades\Hash;
+use App\Events\UserVideoWatchedEvent;
+use App\Services\Course\Models\Video;
+use Illuminate\Support\Facades\Event;
+use App\Services\Course\Models\Course;
 use App\Services\Member\Models\UserVideo;
-use App\Services\Member\Models\UserVideoWatchRecord;
+use App\Services\Member\Models\UserCourse;
+use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Member\Models\UserWatchStat;
-use App\Services\Member\Notifications\SimpleMessageNotification;
+use App\Services\Member\Models\UserLikeCourse;
+use App\Services\Member\Models\UserVideoWatchRecord;
 use App\Services\Member\Services\NotificationService;
+use App\Services\Member\Interfaces\UserServiceInterface;
+use App\Services\Member\Notifications\SimpleMessageNotification;
 
 class UserServiceTest extends TestCase
 {

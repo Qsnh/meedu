@@ -15,7 +15,6 @@ use App\Meedu\ServiceV2\Dao\OtherDaoInterface;
 
 class ConfigService implements ConfigServiceInterface
 {
-
     private $dao;
 
     public function __construct(OtherDaoInterface $dao)
@@ -267,6 +266,4 @@ class ConfigService implements ConfigServiceInterface
     {
         return array_column(config('meedu.hook.comment.rt'), 'id');
     }
-
-
 }

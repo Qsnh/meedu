@@ -16,7 +16,6 @@ use App\Events\AliyunVodCallbackDeleteMediaCompleteEvent;
 
 class DeleteMediaVideoListener implements ShouldQueue
 {
-
     use InteractsWithQueue;
 
     private $otherService;

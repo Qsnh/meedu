@@ -16,7 +16,6 @@ use App\Meedu\ServiceV2\Services\ConfigServiceInterface;
 
 class TencentVodBus
 {
-
     private $appId;
     private $secretId;
     private $secretKey;
@@ -153,5 +152,4 @@ class TencentVodBus
             Log::error(__METHOD__ . '|腾讯云的playKey设置失败.错误信息:' . $e->getMessage());
         }
     }
-
 }

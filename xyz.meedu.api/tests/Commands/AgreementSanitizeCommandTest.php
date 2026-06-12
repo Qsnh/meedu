@@ -8,11 +8,11 @@
 
 namespace Tests\Commands;
 
-use App\Constant\AgreementConstant;
-use App\Meedu\Cache\Impl\ActiveAgreementCache;
-use App\Meedu\ServiceV2\Models\Agreement;
-use Illuminate\Support\Facades\Cache;
 use Tests\OriginalTestCase;
+use App\Constant\AgreementConstant;
+use Illuminate\Support\Facades\Cache;
+use App\Meedu\ServiceV2\Models\Agreement;
+use App\Meedu\Cache\Impl\ActiveAgreementCache;
 
 class AgreementSanitizeCommandTest extends OriginalTestCase
 {

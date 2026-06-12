@@ -18,7 +18,6 @@ use App\Meedu\ServiceV2\Services\OrderServiceInterface;
 
 class OrderController extends BaseController
 {
-
     /**
      * @api {post} /api/v3/order [V3]订单-创建
      * @apiGroup 订单支付模块
@@ -75,5 +74,4 @@ class OrderController extends BaseController
 
         return $this->data($data);
     }
-
 }
