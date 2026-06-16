@@ -11,7 +11,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "antd-mobile": "^5.31.1",
-    "axios": "^1.3.4",
+    "axios": "^1.13.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "moment": "^2.29.4",
