@@ -10,7 +10,7 @@ use App\Constant\BackendPermission;
 use Illuminate\Support\Facades\Route;
 
 // 公开路由
-Route::post('/login', 'LoginController@login');
+Route::middleware('decrypt.payload')->post('/login', 'LoginController@login');
 Route::get('/captcha/image', 'CaptchaController@image');
 // 超管初始化状态查询（公开）
 Route::get('/system/setup-status', 'SystemSetupController@status');
@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth:administrator']], function () {
     // 当前登录管理员信息
     Route::get('/user', 'LoginController@user')->middleware('backend.sensitive.mask');
     // 管理员修改密码
-    Route::put('/administrator/password', 'AdministratorController@editPasswordHandle');
+    Route::middleware('decrypt.payload')->put('/administrator/password', 'AdministratorController@editPasswordHandle');
 });
 
 // 需要权限检查的路由

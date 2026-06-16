@@ -91,5 +91,6 @@ class Kernel extends HttpKernel
 
         'api.login.status.check' => \App\Http\Middleware\Api\LoginStatusCheckMiddleware::class,//用户多端口登录控制
         'deprecated.api' => DeprecatedApiGuardMiddleware::class,
+        'decrypt.payload' => \App\Http\Middleware\DecryptRequestPayload::class,
     ];
 }

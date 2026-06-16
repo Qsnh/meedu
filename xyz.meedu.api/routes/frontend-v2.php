@@ -11,14 +11,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
 Route::post('/captcha/sms', 'CaptchaController@sentSms');
-// 手机短信注册
-Route::post('/register/sms', 'RegisterController@smsHandler');
-// 密码重置
-Route::post('/password/reset', 'PasswordController@reset');
-// 密码登录
-Route::post('/login/password', 'LoginController@passwordLogin');
-// 手机号登录
-Route::post('/login/mobile', 'LoginController@mobileLogin');
+// 认证接口 — 请求体经 AES-GCM-256 加密传输
+Route::middleware('decrypt.payload')->group(function () {
+    Route::post('/register/sms', 'RegisterController@smsHandler');
+    Route::post('/password/reset', 'PasswordController@reset');
+    Route::post('/login/password', 'LoginController@passwordLogin');
+    Route::post('/login/mobile', 'LoginController@mobileLogin');
+});
 // 社交登录
 Route::get('/login/socialite/{app}', 'LoginController@socialiteLogin')->middleware(['deprecated.api']);
 Route::get('/login/socialite/{app}/callback', 'LoginController@socialiteLoginCallback')->name('api.v2.login.socialite.callback');
