@@ -11,7 +11,7 @@ class DecryptRequestPayloadTest extends BaseTestCase
 {
     use CreatesApplication;
 
-    private string $testKey = 'test-aes-key-must-be-32-bytes!!';
+    private string $testKey = 'test-aes-key-must-be-32-bytes!!!';
 
     private function encrypt(array $data): string
     {
@@ -53,7 +53,7 @@ class DecryptRequestPayloadTest extends BaseTestCase
     public function test_wrong_key_returns_422()
     {
         $payload = $this->encrypt(['mobile' => '13800138000']);
-        config(['meedu.system.aes_encrypt_key' => 'wrong-key-32-bytes-padding!!!!!']);
+        config(['meedu.system.aes_encrypt_key' => 'wrong-key-32-bytes-padding!!!!!!']);
 
         $middleware = new DecryptRequestPayload();
         $request = Request::create('/test', 'POST', ['payload' => $payload]);
@@ -86,6 +86,42 @@ class DecryptRequestPayloadTest extends BaseTestCase
     {
         $payload = base64_encode(str_repeat('a', 10));
         config(['meedu.system.aes_encrypt_key' => $this->testKey]);
+
+        $middleware = new DecryptRequestPayload();
+        $request = Request::create('/test', 'POST', ['payload' => $payload]);
+
+        $response = $middleware->handle($request, fn($req) => response()->json(['ok' => true]));
+
+        $this->assertEquals(422, $response->getStatusCode());
+    }
+
+    public function test_non_array_json_returns_422()
+    {
+        $iv = random_bytes(12);
+        $tag = '';
+        $ciphertext = openssl_encrypt(
+            json_encode('just-a-string'),
+            'aes-256-gcm',
+            $this->testKey,
+            OPENSSL_RAW_DATA,
+            $iv,
+            $tag
+        );
+        $payload = base64_encode($iv . $ciphertext . $tag);
+        config(['meedu.system.aes_encrypt_key' => $this->testKey]);
+
+        $middleware = new DecryptRequestPayload();
+        $request = Request::create('/test', 'POST', ['payload' => $payload]);
+
+        $response = $middleware->handle($request, fn($req) => response()->json(['ok' => true]));
+
+        $this->assertEquals(422, $response->getStatusCode());
+    }
+
+    public function test_empty_key_returns_422()
+    {
+        $payload = $this->encrypt(['mobile' => '13800138000']);
+        config(['meedu.system.aes_encrypt_key' => '']);
 
         $middleware = new DecryptRequestPayload();
         $request = Request::create('/test', 'POST', ['payload' => $payload]);

@@ -16,11 +16,14 @@ class DecryptRequestPayload
     public function handle(Request $request, Closure $next)
     {
         $payload = $request->input('payload');
-        if (!$payload) {
+        if (!is_string($payload) || $payload === '') {
             return response()->json(['code' => 422, 'message' => '请求数据异常'], 422);
         }
 
         $key = config('meedu.system.aes_encrypt_key');
+        if (strlen($key) !== 32) {
+            return response()->json(['code' => 422, 'message' => '请求数据异常'], 422);
+        }
         $raw = base64_decode($payload, true);
         if ($raw === false || strlen($raw) < 28) {
             return response()->json(['code' => 422, 'message' => '请求数据异常'], 422);
