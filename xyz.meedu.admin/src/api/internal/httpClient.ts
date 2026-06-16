@@ -43,7 +43,7 @@ export class HttpClient {
 
         const url = config.url ?? '';
         const method = config.method ?? '';
-        if (['post', 'put'].includes(method) && ENCRYPTED_PATHS.has(url) && config.data) {
+        if ((method === 'post' || method === 'put') && ENCRYPTED_PATHS.has(url) && config.data) {
           const encrypted = await encryptPayload(config.data);
           config.data = { payload: encrypted };
         }

@@ -14,12 +14,9 @@ export async function encryptPayload(body: object): Promise<string> {
   const key = await getKey();
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const plaintext = new TextEncoder().encode(JSON.stringify(body));
-  // Web Crypto API AES-GCM output = ciphertext + AuthTag(16B) already concatenated
-  const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext);
-  const combined = new Uint8Array(12 + cipherBuf.byteLength);
+  const cipherBytes = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext));
+  const combined = new Uint8Array(12 + cipherBytes.byteLength);
   combined.set(iv, 0);
-  combined.set(new Uint8Array(cipherBuf), 12);
-  let binary = '';
-  combined.forEach((b) => { binary += String.fromCharCode(b); });
-  return btoa(binary);
+  combined.set(cipherBytes, 12);
+  return btoa(String.fromCharCode(...combined));
 }

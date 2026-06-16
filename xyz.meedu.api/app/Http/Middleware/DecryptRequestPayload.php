@@ -11,12 +11,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-/**
- * Decrypts AES-GCM-256 encrypted request payloads sent by the frontend.
- * The frontend encrypts the body as: base64(IV[12] + ciphertext + AuthTag[16]).
- */
+// wire format: base64(IV[12] | ciphertext | AuthTag[16])
 class DecryptRequestPayload
 {
+    private const IV_LENGTH  = 12;
+    private const TAG_LENGTH = 16;
+    private const CIPHER     = 'aes-256-gcm';
+
     public function handle(Request $request, Closure $next)
     {
         $payload = $request->input('payload');
@@ -29,15 +30,15 @@ class DecryptRequestPayload
             return $this->badPayload();
         }
         $raw = base64_decode($payload, true);
-        if ($raw === false || strlen($raw) < 28) {
+        if ($raw === false || strlen($raw) < self::IV_LENGTH + self::TAG_LENGTH) {
             return $this->badPayload();
         }
 
-        $iv         = substr($raw, 0, 12);
-        $tag        = substr($raw, -16);
-        $ciphertext = substr($raw, 12, -16);
+        $iv         = substr($raw, 0, self::IV_LENGTH);
+        $tag        = substr($raw, -self::TAG_LENGTH);
+        $ciphertext = substr($raw, self::IV_LENGTH, -self::TAG_LENGTH);
 
-        $plain = openssl_decrypt($ciphertext, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
+        $plain = openssl_decrypt($ciphertext, self::CIPHER, $key, OPENSSL_RAW_DATA, $iv, $tag);
         if ($plain === false) {
             return $this->badPayload();
         }
