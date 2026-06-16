@@ -1,6 +1,7 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
+import { encryptPayload } from '../../utils/aesGcm';
 
 const GoLogin = () => {
   clearToken();
@@ -21,11 +22,24 @@ export class HttpClient {
     });
 
     //拦截器注册
+    const ENCRYPTED_PATHS = new Set([
+      '/api/v2/login/password',
+      '/api/v2/login/mobile',
+      '/api/v2/register/sms',
+      '/api/v2/password/reset',
+    ]);
+
     this.axios.interceptors.request.use(
-      (config) => {
+      async (config) => {
         const token = getToken();
-        token && (config.headers.Authorization = "Bearer " + token);
-        // config.headers.common["meedu-platform"] = "PC";
+        token && (config.headers.Authorization = 'Bearer ' + token);
+
+        const url = config.url ?? '';
+        if (config.method === 'post' && ENCRYPTED_PATHS.has(url) && config.data) {
+          const encrypted = await encryptPayload(config.data);
+          config.data = { payload: encrypted };
+        }
+
         return config;
       },
       (err) => {
