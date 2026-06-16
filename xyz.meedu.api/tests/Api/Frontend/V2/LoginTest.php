@@ -73,4 +73,21 @@ class LoginTest extends Base
         ]));
         $this->assertResponseSuccess($response);
     }
+
+    public function test_mobile_login_with_not_exists_mobile()
+    {
+        $mobile = '13890900909';
+        config(['meedu.member.is_lock_default' => User::LOCK_NO]);
+
+        /** @var CacheService $cacheService */
+        $cacheService = app()->make(CacheServiceInterface::class);
+        $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
+        $cacheService->put($key, '123456', 100);
+
+        $response = $this->postJson('/api/v2/login/mobile', $this->encryptBody([
+            'mobile' => $mobile,
+            'mobile_code' => '123456',
+        ]));
+        $this->assertResponseSuccess($response);
+    }
 }
