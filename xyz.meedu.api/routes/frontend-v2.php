@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/captcha/image', 'CaptchaController@imageCaptcha');
 // 发送手机验证码
 Route::post('/captcha/sms', 'CaptchaController@sentSms');
-// 认证接口 — 请求体经 AES-GCM-256 加密传输
 Route::middleware('decrypt.payload')->group(function () {
     Route::post('/register/sms', 'RegisterController@smsHandler');
     Route::post('/password/reset', 'PasswordController@reset');

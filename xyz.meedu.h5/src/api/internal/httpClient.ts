@@ -4,6 +4,13 @@ import { Toast } from "antd-mobile";
 import { getToken, clearToken } from "../../utils/index";
 import { encryptPayload } from "../../utils/aesGcm";
 
+const ENCRYPTED_PATHS = new Set([
+  '/api/v2/login/password',
+  '/api/v2/login/mobile',
+  '/api/v2/register/sms',
+  '/api/v2/password/reset',
+]);
+
 const GoLogin = () => {
   clearToken();
   window.location.href = "/login";
@@ -25,13 +32,6 @@ export class HttpClient {
         Accept: "application/json",
       },
     });
-
-    const ENCRYPTED_PATHS = new Set([
-      '/api/v2/login/password',
-      '/api/v2/login/mobile',
-      '/api/v2/register/sms',
-      '/api/v2/password/reset',
-    ]);
 
     //拦截器注册
     this.axios.interceptors.request.use(

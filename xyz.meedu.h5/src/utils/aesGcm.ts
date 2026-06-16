@@ -1,12 +1,13 @@
 const RAW_KEY = import.meta.env.VITE_AES_KEY as string;
 
-let _cachedKey: CryptoKey | null = null;
+let _keyPromise: Promise<CryptoKey> | null = null;
 
 async function getKey(): Promise<CryptoKey> {
-  if (_cachedKey) return _cachedKey;
-  const raw = new TextEncoder().encode(RAW_KEY);
-  _cachedKey = await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt']);
-  return _cachedKey;
+  if (!_keyPromise) {
+    const raw = new TextEncoder().encode(RAW_KEY);
+    _keyPromise = crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt']);
+  }
+  return _keyPromise;
 }
 
 export async function encryptPayload(body: object): Promise<string> {

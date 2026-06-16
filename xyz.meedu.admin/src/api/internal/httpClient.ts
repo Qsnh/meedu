@@ -4,6 +4,11 @@ import { getToken, clearToken } from "../../utils/index";
 import { encryptPayload } from "../../utils/aesGcm";
 import config from "../../js/config";
 
+const ENCRYPTED_PATHS = new Set([
+  '/backend/api/v1/login',
+  '/backend/api/v1/administrator/password',
+]);
+
 const GoLogin = () => {
   clearToken();
   window.location.href = "/login";
@@ -29,11 +34,6 @@ export class HttpClient {
         Accept: "application/json",
       },
     });
-
-    const ENCRYPTED_PATHS = new Set([
-      '/backend/api/v1/login',
-      '/backend/api/v1/administrator/password',
-    ]);
 
     //拦截器注册
     this.axios.interceptors.request.use(

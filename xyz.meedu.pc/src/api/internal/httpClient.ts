@@ -3,6 +3,13 @@ import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
 import { encryptPayload } from '../../utils/aesGcm';
 
+const ENCRYPTED_PATHS = new Set([
+  '/api/v2/login/password',
+  '/api/v2/login/mobile',
+  '/api/v2/register/sms',
+  '/api/v2/password/reset',
+]);
+
 const GoLogin = () => {
   clearToken();
   window.location.href = "/login";
@@ -22,13 +29,6 @@ export class HttpClient {
     });
 
     //拦截器注册
-    const ENCRYPTED_PATHS = new Set([
-      '/api/v2/login/password',
-      '/api/v2/login/mobile',
-      '/api/v2/register/sms',
-      '/api/v2/password/reset',
-    ]);
-
     this.axios.interceptors.request.use(
       async (config) => {
         const token = getToken();
