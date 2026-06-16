@@ -21,6 +21,8 @@ class DeletePlayerColumnForVideos extends Migration
     {
         Schema::table('videos', function (Blueprint $table) {
             $table->dropColumn('player_pc');
+        });
+        Schema::table('videos', function (Blueprint $table) {
             $table->dropColumn('player_h5');
         });
     }

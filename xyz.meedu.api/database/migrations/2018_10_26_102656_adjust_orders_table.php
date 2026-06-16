@@ -21,9 +21,14 @@ class AdjustOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('goods_id');
+        });
+        Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('goods_type');
+        });
+        Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('extra');
-
+        });
+        Schema::table('orders', function (Blueprint $table) {
             $table->string('order_id', 18)->comment('订单编号');
         });
     }
