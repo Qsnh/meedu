@@ -11,7 +11,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-// wire format: base64(IV[12] | ciphertext | AuthTag[16])
 class DecryptRequestPayload
 {
     private const IV_LENGTH  = 12;

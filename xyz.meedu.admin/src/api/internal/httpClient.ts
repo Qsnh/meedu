@@ -42,8 +42,7 @@ export class HttpClient {
         token && (config.headers.Authorization = "Bearer " + token);
 
         const url = config.url ?? '';
-        const method = config.method ?? '';
-        if ((method === 'post' || method === 'put') && ENCRYPTED_PATHS.has(url) && config.data) {
+        if ((config.method === 'post' || config.method === 'put') && ENCRYPTED_PATHS.has(url) && config.data) {
           const encrypted = await encryptPayload(config.data);
           config.data = { payload: encrypted };
         }
