@@ -21,8 +21,11 @@ class ChangeUserLoginRecords extends Migration
     {
         Schema::table(\App\Constant\TableConstant::TABLE_USER_LOGIN_RECORDS, function (Blueprint $table) {
             $table->dropColumn('area');
+        });
+        Schema::table(\App\Constant\TableConstant::TABLE_USER_LOGIN_RECORDS, function (Blueprint $table) {
             $table->dropColumn('at');
-
+        });
+        Schema::table(\App\Constant\TableConstant::TABLE_USER_LOGIN_RECORDS, function (Blueprint $table) {
             $table->string('ua', 255)->default('');
             $table->string('token', 1024)->default('')->comment('登录token');
             $table->string('iss', 255)->default('')->comment('token发行url');

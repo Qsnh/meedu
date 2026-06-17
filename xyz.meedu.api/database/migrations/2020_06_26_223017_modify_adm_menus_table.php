@@ -21,8 +21,11 @@ class ModifyAdmMenusTable extends Migration
     {
         Schema::table('administrator_menus', function (Blueprint $table) {
             $table->dropColumn('permission_id');
+        });
+        Schema::table('administrator_menus', function (Blueprint $table) {
             $table->dropColumn('order');
-
+        });
+        Schema::table('administrator_menus', function (Blueprint $table) {
             $table->string('permission')->default('')->comment('权限');
             $table->string('icon')->default('')->comment('icon');
             $table->integer('sort')->default(0)->comment('升序');

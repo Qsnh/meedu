@@ -26,18 +26,16 @@ class PasswordTest extends Base
 
         $mobileCode = Str::random(6);
 
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, $mobileCode, 100);
 
-        $response = $this->postJson('/api/v2/password/reset', [
+        $response = $this->postJson('/api/v2/password/reset', $this->encryptBody([
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
             'password' => $newPassword,
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
 
         $user->refresh();
@@ -47,40 +45,33 @@ class PasswordTest extends Base
     public function test_sms_error()
     {
         $mobile = '18287829922';
-        $oldPassword = '123123';
         $newPassword = '456456';
-        $user = User::factory()->create(['mobile' => $mobile, 'password' => Hash::make($oldPassword)]);
+        User::factory()->create(['mobile' => $mobile]);
 
-        $mobileCode = Str::random(6);
-
-        $response = $this->postJson('/api/v2/password/reset', [
+        $response = $this->postJson('/api/v2/password/reset', $this->encryptBody([
             'mobile' => $mobile,
-            'mobile_code' => $mobileCode,
+            'mobile_code' => 'wrongcode',
             'password' => $newPassword,
-        ]);
+        ]));
         $this->assertResponseError($response, __('短信验证码错误'));
     }
 
     public function test_mobile_not_exists()
     {
         $mobile = '18287829922';
-        $oldPassword = '123123';
+        $mobileCode = Str::random(6);
         $newPassword = '456456';
 
-        $mobileCode = Str::random(6);
-
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, $mobileCode, 100);
 
-        $response = $this->postJson('/api/v2/password/reset', [
+        $response = $this->postJson('/api/v2/password/reset', $this->encryptBody([
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
             'password' => $newPassword,
-        ]);
+        ]));
         $this->assertResponseError($response, __('手机号不存在'));
     }
 }

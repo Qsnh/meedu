@@ -13,6 +13,7 @@ use App\Services\Member\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Base\Services\CacheService;
 use App\Services\Base\Interfaces\CacheServiceInterface;
+use Illuminate\Support\Str;
 
 class LoginTest extends Base
 {
@@ -22,10 +23,10 @@ class LoginTest extends Base
             'mobile' => '13890900909',
             'is_lock' => User::LOCK_NO,
         ]);
-        $response = $this->postJson('/api/v2/login/password', [
+        $response = $this->postJson('/api/v2/login/password', $this->encryptBody([
             'mobile' => $user->mobile,
             'password' => '123456',
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
     }
 
@@ -36,10 +37,10 @@ class LoginTest extends Base
             'password' => Hash::make('123123'),
             'is_lock' => User::LOCK_YES,
         ]);
-        $response = $this->postJson('/api/v2/login/password', [
+        $response = $this->postJson('/api/v2/login/password', $this->encryptBody([
             'mobile' => $user->mobile,
             'password' => '123123',
-        ]);
+        ]));
         $this->assertResponseError($response, __('账号已被锁定'));
     }
 
@@ -49,33 +50,27 @@ class LoginTest extends Base
             'mobile' => '13890900909',
             'is_lock' => User::LOCK_NO,
         ]);
-        $response = $this->postJson('/api/v2/login/password', [
+        $response = $this->postJson('/api/v2/login/password', $this->encryptBody([
             'mobile' => $user->mobile,
             'password' => 'asd12312',
-        ]);
+        ]));
         $this->assertResponseError($response, __('手机号或密码错误'));
     }
 
     public function test_mobile_login()
     {
         $mobile = '13890900909';
+        $mobileCode = Str::random(6);
 
-        User::factory()->create([
-            'mobile' => $mobile,
-            'is_lock' => User::LOCK_NO,
-        ]);
-
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
-        $cacheService->put($key, '123456', 100);
+        $cacheService->put($key, $mobileCode, 100);
 
-        $response = $this->postJson('/api/v2/login/mobile', [
+        $response = $this->postJson('/api/v2/login/mobile', $this->encryptBody([
             'mobile' => $mobile,
-            'mobile_code' => '123456',
-        ]);
+            'mobile_code' => $mobileCode,
+        ]));
         $this->assertResponseSuccess($response);
     }
 
@@ -84,17 +79,15 @@ class LoginTest extends Base
         $mobile = '13890900909';
         config(['meedu.member.is_lock_default' => User::LOCK_NO]);
 
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, '123456', 100);
 
-        $response = $this->postJson('/api/v2/login/mobile', [
+        $response = $this->postJson('/api/v2/login/mobile', $this->encryptBody([
             'mobile' => $mobile,
             'mobile_code' => '123456',
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
     }
 }

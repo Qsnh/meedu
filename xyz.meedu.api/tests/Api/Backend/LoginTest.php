@@ -38,12 +38,12 @@ class LoginTest extends Base
         $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
         $this->app->instance(Captcha::class, $captchaMock);
 
-        $response = $this->postJson(self::API_V1_PREFIX . '/login', [
+        $response = $this->postJson(self::API_V1_PREFIX . '/login', $this->encryptBody([
             'username' => $administrator['email'],
             'password' => '123123',
             'image_key' => 'image_key',
             'image_captcha' => 'image_captcha',
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
 
         // 老站点自愈:首次成功登录后 setup.lock 自动补写
@@ -64,12 +64,12 @@ class LoginTest extends Base
         $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
         $this->app->instance(Captcha::class, $captchaMock);
 
-        $response = $this->postJson(self::API_V1_PREFIX . '/login', [
+        $response = $this->postJson(self::API_V1_PREFIX . '/login', $this->encryptBody([
             'username' => $administrator['email'],
             'password' => '123123',
             'image_key' => 'image_key',
             'image_captcha' => 'image_captcha',
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
 
         $payload = json_decode(file_get_contents(storage_path('setup.lock')), true);
@@ -87,12 +87,12 @@ class LoginTest extends Base
         $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
         $this->app->instance(Captcha::class, $captchaMock);
 
-        $response = $this->postJson(self::API_V1_PREFIX . '/login', [
+        $response = $this->postJson(self::API_V1_PREFIX . '/login', $this->encryptBody([
             'username' => $administrator['email'],
             'password' => '123456',
             'image_key' => 'image_key',
             'image_captcha' => 'image_captcha',
-        ]);
+        ]));
         $this->assertResponseError($response);
     }
 
@@ -108,12 +108,12 @@ class LoginTest extends Base
         $captchaMock->shouldReceive('check_api')->withAnyArgs()->andReturnTrue();
         $this->app->instance(Captcha::class, $captchaMock);
 
-        $response = $this->postJson(self::API_V1_PREFIX . '/login', [
+        $response = $this->postJson(self::API_V1_PREFIX . '/login', $this->encryptBody([
             'username' => '222@meedu.vip',
             'password' => '123123',
             'image_key' => 'image_key',
             'image_captcha' => 'image_captcha',
-        ]);
+        ]));
         $this->assertResponseError($response);
     }
 }

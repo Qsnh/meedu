@@ -121,6 +121,7 @@ return [
 
     // 系统配置
     'system' => [
+        'aes_encrypt_key' => env('AES_ENCRYPT_KEY', ''),
         // 网站名
         'name' => '',
         // ICP备案

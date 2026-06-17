@@ -23,19 +23,16 @@ class RegisterTest extends Base
         $password = Str::random(12);
         $mobileCode = Str::random(6);
 
-
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, $mobileCode, 100);
 
-        $response = $this->postJson('/api/v2/register/sms', [
+        $response = $this->postJson('/api/v2/register/sms', $this->encryptBody([
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
             'password' => $password,
-        ]);
+        ]));
         $this->assertResponseSuccess($response);
 
         $user = User::query()->where('mobile', $mobile)->first();
@@ -53,18 +50,16 @@ class RegisterTest extends Base
 
         User::factory()->create(['mobile' => $mobile]);
 
-        /**
-         * @var $cacheService CacheService
-         */
+        /** @var CacheService $cacheService */
         $cacheService = app()->make(CacheServiceInterface::class);
         $key = get_cache_key(CacheConstant::MOBILE_CODE['name'], $mobile);
         $cacheService->put($key, $mobileCode, 100);
 
-        $response = $this->postJson('/api/v2/register/sms', [
+        $response = $this->postJson('/api/v2/register/sms', $this->encryptBody([
             'mobile' => $mobile,
             'mobile_code' => $mobileCode,
             'password' => $password,
-        ]);
+        ]));
         $this->assertResponseError($response, __('手机号已存在'));
     }
 }

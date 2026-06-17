@@ -1,7 +1,13 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
+import { encryptPayload } from "../../utils/aesGcm";
 import config from "../../js/config";
+
+const ENCRYPTED_PATHS = new Set([
+  '/backend/api/v1/login',
+  '/backend/api/v1/administrator/password',
+]);
 
 const GoLogin = () => {
   clearToken();
@@ -31,9 +37,16 @@ export class HttpClient {
 
     //拦截器注册
     this.axios.interceptors.request.use(
-      (config) => {
+      async (config) => {
         const token = getToken();
         token && (config.headers.Authorization = "Bearer " + token);
+
+        const url = config.url ?? '';
+        if ((config.method === 'post' || config.method === 'put') && ENCRYPTED_PATHS.has(url) && config.data) {
+          const encrypted = await encryptPayload(config.data);
+          config.data = { payload: encrypted };
+        }
+
         return config;
       },
       (err) => {
