@@ -5,7 +5,8 @@ let _keyPromise: Promise<CryptoKey> | null = null;
 
 async function getKey(): Promise<CryptoKey> {
   if (!_keyPromise) {
-    _keyPromise = crypto.subtle.importKey('raw', encoder.encode(RAW_KEY), 'AES-GCM', false, ['encrypt']);
+    _keyPromise = crypto.subtle.importKey('raw', encoder.encode(RAW_KEY), 'AES-GCM', false, ['encrypt'])
+      .catch(err => { _keyPromise = null; throw err; });
   }
   return _keyPromise;
 }
@@ -17,7 +18,5 @@ export async function encryptPayload(body: object): Promise<string> {
   const combined = new Uint8Array(12 + cipherBytes.byteLength);
   combined.set(iv);
   combined.set(cipherBytes, 12);
-  let binary = '';
-  for (let i = 0; i < combined.length; i++) binary += String.fromCharCode(combined[i]);
-  return btoa(binary);
+  return btoa(Array.from(combined, b => String.fromCharCode(b)).join(''));
 }
