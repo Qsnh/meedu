@@ -4,7 +4,7 @@
 
 <h4 align="center">
   <a href="https://www.meedu.vip">官网</a> |
-  <a href="https://meedu.vip/price.html">商业版</a> |
+  <a href="https://www.meedu.vip/about/">商业版</a> |
   <a href="https://faq.meedu.vip">文档中心</a>
 </h4>
 
